@@ -667,7 +667,7 @@ function PlayVod_hidePanel() {
     Play_BottonIconsResetFocus(true);
 
     Play_clearHidePanel();
-    PlayVod_previews_hide();
+    PlayVod_previews_clear_img();
     PlayVod_jumpStepsIncreaseLock = false;
     PlayVod_ClearProgressJumptime(Settings_value.vod_seek_min.defaultValue);
 }
@@ -885,7 +885,7 @@ function PlayVod_jump() {
     }
     PlayVod_IsJumping = false;
     PlayVod_UpdateRemaining(PlayVod_TimeToJump, Play_DurationSeconds);
-    PlayVod_previews_hide();
+    PlayVod_previews_clear_img();
 
     Play_BottonIcons_Progress_Steps.style.display = 'none';
     Main_innerHTMLWithEle(
@@ -1223,7 +1223,7 @@ function PlayVod_handleKeyDown(e) {
                 if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY++;
                     Play_BottonIconsFocus(false, true);
-                    PlayVod_previews_hide();
+                    PlayVod_previews_clear_img();
                 } else Play_BottomUpDown(2, -1);
                 PlayVod_setHidePanel();
             } else if (Play_isEndDialogVisible()) {
@@ -1444,9 +1444,17 @@ function PlayVod_previews_pre_start(seek_previews_url) {
 }
 
 function PlayVod_previews_clear() {
-    PlayVod_previews_hide();
     PlayVod_previews_obj.images = [];
     PlayVod_previews_images_pos = -1;
+    PlayVod_previews_clear_img();
+}
+
+function PlayVod_previews_clear_img() {
+    var i = 0,
+        len = seek_previews_carousel_array.length;
+    for (i; i < len; i++) {
+        PlayVod_previews_carousel_hide(i);
+    }
 }
 
 var PlayVod_previews_obj = {};
@@ -1458,14 +1466,14 @@ var PlayVod_previews_tmp_images = [];
 
 var PlayVod_previews_scale = 1.55;
 
-function PlayVod_previews_hide() {
-    Play_seek_previews.classList.add('hideimp');
-    PlayVod_previews_images_load = false;
+function PlayVod_previews_carousel_hide(pos) {
+    seek_previews_carousel_array[pos].classList.add('hideimp');
+    seek_previews_carousel_images_load[pos] = false;
 }
 
-function PlayVod_previews_show() {
-    PlayVod_previews_images_load = true;
-    Play_seek_previews.classList.remove('hideimp');
+function PlayVod_previews_carousel_show(pos) {
+    seek_previews_carousel_array[pos].classList.remove('hideimp');
+    seek_previews_carousel_images_load[pos] = true;
 }
 
 function PlayVod_previews_success(resultObj, key, id) {
@@ -1481,7 +1489,7 @@ function PlayVod_previews_success(resultObj, key, id) {
                 } else PlayVod_previews_clear();
             }
         } else {
-            PlayVod_previews_hide();
+            PlayVod_previews_clear_img();
         }
     }
 }
@@ -1490,16 +1498,21 @@ function PlayVod_previews_success_end() {
     PlayVod_previews_obj.width = PlayVod_previews_obj.width * scaleFactor * PlayVod_previews_scale;
     PlayVod_previews_obj.height = PlayVod_previews_obj.height * scaleFactor * PlayVod_previews_scale;
 
-    Play_seek_previews.style.width = PlayVod_previews_obj.width + 'px';
-    Play_seek_previews.style.height = PlayVod_previews_obj.height + 'px';
+    var i = 0,
+        len = seek_previews_carousel_array.length;
 
-    Play_seek_previews.style.backgroundSize = PlayVod_previews_obj.cols * PlayVod_previews_obj.width + 'px';
+    for (i; i < len; i++) {
+        seek_previews_carousel_array[i].style.width = PlayVod_previews_obj.width + 'px';
+        seek_previews_carousel_array[i].style.height = PlayVod_previews_obj.height + 'px';
+
+        seek_previews_carousel_array[i].style.backgroundSize = PlayVod_previews_obj.cols * PlayVod_previews_obj.width + 'px';
+    }
 
     var base_url = PlayVod_previews_url.split(Main_values.ChannelVod_vodId)[0];
     PlayVod_previews_tmp_images = [];
 
-    var i = 0,
-        len = PlayVod_previews_obj.images.length;
+    i = 0;
+    len = PlayVod_previews_obj.images.length;
     for (i; i < len; i++) {
         PlayVod_previews_obj.images[i] = base_url + PlayVod_previews_obj.images[i];
 
@@ -1511,14 +1524,77 @@ function PlayVod_previews_success_end() {
 
 function PlayVod_previews_move(position, time_to_jump_string) {
     if (!PlayVod_PreviewType || !PlayVod_previews_obj.images.length) {
-        PlayVod_previews_hide();
+        PlayVod_previews_clear_img();
         return;
     }
 
+    if (PlayVod_PreviewType === 1) {
+        PlayVod_previews_Single(position);
+    } else {
+        PlayVod_previews_Carousel(position);
+    }
+
+    Main_textContentWithEle(Play_seek_previews_text, time_to_jump_string);
+}
+
+function PlayVod_previews_Carousel(position) {
+    var offset = parseInt(position * PlayVod_previews_obj.count),
+        imagePos = parseInt(offset / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length,
+        i = 0,
+        len = seek_previews_carousel_array.length,
+        forOffset;
+
+    Play_seek_previews_holder.style.transform = 'translate(50.5%, -1240%)';
+
+    for (i; i < len; i++) {
+        forOffset = offset + seek_previews_carousel_offset[i];
+        if (forOffset < 0) {
+            PlayVod_previews_carousel_hide(i);
+            continue;
+        }
+
+        imagePos = parseInt(forOffset / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
+
+        if (!seek_previews_carousel_images_load[i] || imagePos !== seek_previews_carousel_images_pos[i]) {
+            PlayVod_previews_carousel_load_img(i, imagePos);
+        }
+
+        seek_previews_carousel_array[i].style.backgroundPosition =
+            -PlayVod_previews_obj.width * (forOffset % PlayVod_previews_obj.cols) +
+            'px ' +
+            -PlayVod_previews_obj.height * (parseInt(forOffset / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows) +
+            'px';
+    }
+}
+
+function PlayVod_previews_carousel_load_img(i, imagePos) {
+    seek_previews_carousel_images_pos = imagePos;
+    seek_previews_carousel_images_load[i] = false;
+
+    var imgUrl = PlayVod_previews_obj.images[imagePos];
+
+    seek_previews_carousel_img[i].onload = function () {
+        this.onload = null;
+        seek_previews_carousel_array[i].style.backgroundImage = "url('" + imgUrl + "')";
+
+        PlayVod_previews_carousel_show(i);
+    };
+
+    seek_previews_carousel_img[i].onerror = function () {
+        this.onerror = null;
+        PlayVod_previews_carousel_hide(i);
+    };
+
+    seek_previews_carousel_img[i].src = imgUrl;
+}
+
+function PlayVod_previews_Single(position) {
     var offset = parseInt(position * PlayVod_previews_obj.count),
         imagePos = parseInt(offset / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
 
-    //Main_Log('offset ' + offset + ' w ' + (offset % PlayVod_previews_obj.cols) + ' h ' + parseInt(offset / PlayVod_previews_obj.cols) + ' p ' + imagePos);
+    // Main_Log(
+    //     'offset ' + offset + ' w ' + (offset % PlayVod_previews_obj.cols) + ' h ' + parseInt(offset / PlayVod_previews_obj.cols) + ' p ' + imagePos
+    // );
 
     if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
         PlayVod_previews_images_pos = imagePos;
@@ -1529,12 +1605,13 @@ function PlayVod_previews_move(position, time_to_jump_string) {
         Play_seek_previews_img.onload = function () {
             this.onload = null;
             Play_seek_previews.style.backgroundImage = "url('" + imgUrl + "')";
-            PlayVod_previews_show();
+
+            PlayVod_previews_carousel_show(3);
         };
 
         Play_seek_previews_img.onerror = function () {
             this.onerror = null;
-            PlayVod_previews_hide();
+            PlayVod_previews_carousel_hide(3);
         };
 
         Play_seek_previews_img.src = imgUrl;
@@ -1546,15 +1623,13 @@ function PlayVod_previews_move(position, time_to_jump_string) {
         'px ' +
         -PlayVod_previews_obj.height * (parseInt(offset / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows) +
         'px';
-
-    Main_textContentWithEle(Play_seek_previews_text, time_to_jump_string);
 }
 
 function PlayVod_previews_start_test() {
     PlayVod_previews_clear();
     //Main_Log(PlayVod_previews_url);
 
-    PlayVod_previews_hide();
+    PlayVod_previews_clear_img();
     if (!PlayVod_previews_url) return;
 
     PlayVod_previews_obj = {

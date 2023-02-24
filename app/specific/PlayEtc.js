@@ -4329,9 +4329,39 @@ var Play_seek_previews;
 var Play_seek_previews_img;
 var Play_seek_previews_text;
 
+var seek_previews_carousel_0;
+var seek_previews_carousel_1;
+var seek_previews_carousel_2;
+var seek_previews_carousel_3;
+var seek_previews_carousel_4;
+var seek_previews_carousel_5;
+var seek_previews_carousel_images_load = [];
+var seek_previews_carousel_images_pos = [];
+var seek_previews_carousel_array = [];
+var seek_previews_carousel_img = [new Image(), new Image(), new Image(), new Image(), new Image(), new Image(), new Image()];
+var seek_previews_carousel_offset = [-3, -2, -1, 0, 1, 2, 3];
+
 function Play_PreStart() {
     Play_seek_previews_holder = Main_getElementById('seek_previews_holder');
+
+    seek_previews_carousel_0 = Main_getElementById('seek_previews_carousel_0');
+    seek_previews_carousel_1 = Main_getElementById('seek_previews_carousel_1');
+    seek_previews_carousel_2 = Main_getElementById('seek_previews_carousel_2');
+    seek_previews_carousel_3 = Main_getElementById('seek_previews_carousel_3');
+    seek_previews_carousel_4 = Main_getElementById('seek_previews_carousel_4');
+    seek_previews_carousel_5 = Main_getElementById('seek_previews_carousel_5');
     Play_seek_previews = Main_getElementById('seek_previews');
+
+    seek_previews_carousel_array = [
+        seek_previews_carousel_0,
+        seek_previews_carousel_1,
+        seek_previews_carousel_2,
+        Play_seek_previews,
+        seek_previews_carousel_3,
+        seek_previews_carousel_4,
+        seek_previews_carousel_5
+    ];
+
     Play_seek_previews_text = Main_getElementById('seek_previews_text');
     Play_seek_previews_img = new Image();
     Play_chat_container = Main_getElementById('chat_container0');
