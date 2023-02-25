@@ -3187,9 +3187,22 @@ function Screens_UpdatePlaybackTime(key, id) {
             data = Screens_GetObj(key),
             originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
 
-        if (time) {
+        if (time || ScreenObj[key].screenType === 2) {
             Main_innerHTML(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
-            Main_getElementById(ScreenObj[key].ids[7] + id).style.width = (time / originalTime) * 100 + '%';
+            var div = Main_getElementById(ScreenObj[key].ids[7] + id);
+
+            div.style.transition = !time ? 'none' : '';
+
+            if (!time) {
+                //timeout so the css changes is effective
+                div.style.transition = !time ? 'none' : '';
+                Main_setTimeout(function () {
+                    div.style.width = (time / originalTime) * 100 + '%';
+                }, 25);
+            } else {
+                div.style.transition = '';
+                div.style.width = (time / originalTime) * 100 + '%';
+            }
         }
     }
 
