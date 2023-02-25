@@ -3188,7 +3188,7 @@ function Screens_UpdatePlaybackTime(key, id) {
             originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
 
         if (time || ScreenObj[key].screenType === 2) {
-            Main_innerHTML(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
+            Main_textContent(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
             var div = Main_getElementById(ScreenObj[key].ids[7] + id);
 
             if (!time) {
@@ -3217,7 +3217,7 @@ function Screens_ResetPlaybackTime(key, id) {
     var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
         originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
 
-    Main_innerHTML(ScreenObj[key].ids[8] + id, originalTime);
+    Main_textContent(ScreenObj[key].ids[8] + id, originalTime);
 }
 
 function Screens_PlaybackTimeGetOrigianl(key, data) {
