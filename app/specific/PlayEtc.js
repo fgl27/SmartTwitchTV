@@ -1475,11 +1475,11 @@ function Play_GetAudioIcon(pos) {
         STR_SPACE_HTML +
         '<i class="icon-' +
         (Play_audio_enable[pos] ? 'volume' : 'mute') +
-        ' strokicon" ></i>' +
+        ' strokicon_title" ></i>' +
         STR_SPACE_HTML +
         '<i class="icon-' +
         Play_GetVolLevel(pos) +
-        ' strokicon" ></i>'
+        ' strokicon_title" ></i>'
     );
 }
 
