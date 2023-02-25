@@ -18223,11 +18223,11 @@
             STR_SPACE_HTML +
             '<i class="icon-' +
             (Play_audio_enable[pos] ? 'volume' : 'mute') +
-            ' strokicon" ></i>' +
+            ' strokicon_title" ></i>' +
             STR_SPACE_HTML +
             '<i class="icon-' +
             Play_GetVolLevel(pos) +
-            ' strokicon" ></i>'
+            ' strokicon_title" ></i>'
         );
     }
 
@@ -29952,7 +29952,7 @@
                 originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
 
             if (time || ScreenObj[key].screenType === 2) {
-                Main_innerHTML(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
+                Main_textContent(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
                 var div = Main_getElementById(ScreenObj[key].ids[7] + id);
 
                 if (!time) {
@@ -29981,7 +29981,7 @@
         var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
             originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
 
-        Main_innerHTML(ScreenObj[key].ids[8] + id, originalTime);
+        Main_textContent(ScreenObj[key].ids[8] + id, originalTime);
     }
 
     function Screens_PlaybackTimeGetOrigianl(key, data) {
