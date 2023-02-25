@@ -506,11 +506,13 @@ function ScreensObj_StartAllVars() {
             }
         },
         refreshThumb: function () {
-            if (!Screens_ObjNotNull(this.screen)) {
+            var id = this.posY + '_' + this.posX;
+
+            if (!Screens_ObjNotNull(this.screen) || this.DataObj[id].image) {
                 return;
             }
-            var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
-            var div = Main_getElementById(this.ids[1] + this.posY + '_' + this.posX);
+            var url = this.DataObj[id][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
+            var div = Main_getElementById(this.ids[1] + id);
 
             Play_seek_previews_img.onload = function () {
                 div.src = url;
