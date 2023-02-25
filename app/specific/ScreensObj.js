@@ -2547,7 +2547,9 @@ function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
 
 function ScreensObj_AnimateThumbId(screen) {
     Main_clearInterval(screen.AnimateThumbId);
-    if (!Settings_Obj_default('videos_animation')) return;
+
+    if (!Settings_Obj_default('videos_animation') || Play_PreviewId) return;
+
     var div = Main_getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
     if (!screen.DataObj[screen.posY + '_' + screen.posX][8]) {
