@@ -3191,11 +3191,9 @@ function Screens_UpdatePlaybackTime(key, id) {
             Main_innerHTML(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
             var div = Main_getElementById(ScreenObj[key].ids[7] + id);
 
-            div.style.transition = !time ? 'none' : '';
-
             if (!time) {
                 //timeout so the css changes is effective
-                div.style.transition = !time ? 'none' : '';
+                div.style.transition = 'none';
                 Main_setTimeout(function () {
                     div.style.width = (time / originalTime) * 100 + '%';
                 }, 25);
