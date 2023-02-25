@@ -4547,9 +4547,13 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'February 24 2023',
-        WebTag: 649, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'February 25 2023',
+        WebTag: 650, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version February 25 2023',
+                changes: ['General UI improves']
+            },
+            {
                 title: 'Web Version February 24 2023',
                 changes: [
                     'Add Carousel seek preview mode for VOD, enabled by default',
@@ -26880,7 +26884,8 @@
             base + '_scroll', //4
             key + '_animated_', //5
             key + '_row_', //6
-            key + '_watched_' //7
+            key + '_watched_', //7
+            key + '_time_' //8
         ];
     }
 
@@ -27404,13 +27409,19 @@
             '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] +
             id +
-            '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
+            '" class="stream_info_live_name" style="width: 61%; display: inline-block;">' +
             valuesArray[4] +
-            '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+            '</div><div class="stream_info_live" style="width:38%; float: right; text-align: right; display: inline-block;">' +
+            '<span>' +
             valuesArray[11] +
+            '</span>' +
             STR_SPACE_HTML +
+            '<span id="' +
+            idArray[8] +
+            id +
+            '">' +
             Play_timeS(valuesArray[1]) +
-            '</div></div><div class="' +
+            '</span></div></div><div class="' +
             (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
             '">' +
             valuesArray[10] +
@@ -27474,10 +27485,16 @@
             '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
             valuesArray[1] +
             '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
+            '<span>' +
             valuesArray[5] +
+            '</span>' +
             STR_SPACE_HTML +
+            '<span id="' +
+            idArray[8] +
+            id +
+            '">' +
             Play_timeS(valuesArray[11]) +
-            '</div></div><div class="' +
+            '</span></div></div><div class="' +
             (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
             '">' +
             valuesArray[10] +
@@ -27898,6 +27915,14 @@
         var img = Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
         var Rect = img.parentElement.getBoundingClientRect();
 
+        if (!ChatLive_Playing) {
+            OSInterface_PlayPause(true);
+        }
+
+        if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+            Screens_UpdatePlaybackTimeStart(key);
+        }
+
         OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, ScreenObj[key].screenType + 1);
 
         Screens_ClearAnimation(key);
@@ -28001,7 +28026,8 @@
                     var offset = 0,
                         PreviewResponseText = Play_PreviewResponseText,
                         lang,
-                        who_called;
+                        who_called,
+                        isVod = ScreenObj[x].screenType === 1;
 
                     if (isClip) {
                         //clip
@@ -28021,7 +28047,7 @@
                             Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x);
                             return;
                         }
-                    } else if (ScreenObj[x].screenType === 1) {
+                    } else if (isVod) {
                         //vod
                         Play_PreviewId = StreamInfo[7];
 
@@ -28090,6 +28116,10 @@
 
                     Screens_ClearAnimation(x);
                     Main_AddClassWitEle(img, 'opacity_zero');
+
+                    if (isClip || isVod) {
+                        Screens_UpdatePlaybackTimeStart(x);
+                    }
 
                     if (offset) {
                         Main_showWarningDialog(
@@ -28514,7 +28544,13 @@
     function Screens_RemoveFocus(key) {
         if (!ScreenObj[key].itemsCount) return;
 
-        if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+        if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+            Screens_ResetPlaybackTime(key, id);
+        }
+
+        if (ScreenObj[key].posY > -1) Main_removeFocus(id, ScreenObj[key].ids);
         else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
     }
 
@@ -29888,6 +29924,71 @@
             !Main_isChangeDialogVisible()
         );
     }
+
+    function Screens_UpdatePlaybackTimeStart(key) {
+        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+        Screens_UpdatePlaybackTime(key, id);
+    }
+
+    var Screens_UpdatePlaybackTimeId;
+
+    function Screens_UpdatePlaybackTime(key, id) {
+        var currentId = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+        if (
+            !Play_PreviewId ||
+            Main_isStopped ||
+            currentId !== id ||
+            !Screens_IsInUse(key) ||
+            !Screens_IsDivFocused(key) ||
+            !ScreenObj[key].Cells[ScreenObj[key].posY] ||
+            ScreenObj[key].DataObj[id].image
+        ) {
+            return;
+        }
+
+        if (Screens_ObjNotNull(key)) {
+            var time = OSInterface_gettime() / 1000,
+                data = Screens_GetObj(key),
+                originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
+
+            if (time || ScreenObj[key].screenType === 2) {
+                Main_innerHTML(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
+                var div = Main_getElementById(ScreenObj[key].ids[7] + id);
+
+                div.style.transition = !time ? 'none' : '';
+
+                if (!time) {
+                    //timeout so the css changes is effective
+                    div.style.transition = !time ? 'none' : '';
+                    Main_setTimeout(function() {
+                        div.style.width = (time / originalTime) * 100 + '%';
+                    }, 25);
+                } else {
+                    div.style.transition = '';
+                    div.style.width = (time / originalTime) * 100 + '%';
+                }
+            }
+        }
+
+        Screens_UpdatePlaybackTimeId = Main_setTimeout(
+            function() {
+                Screens_UpdatePlaybackTime(key, id);
+            },
+            1000,
+            Screens_UpdatePlaybackTimeId
+        );
+    }
+
+    function Screens_ResetPlaybackTime(key, id) {
+        var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
+            originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
+
+        Main_innerHTML(ScreenObj[key].ids[8] + id, originalTime);
+    }
+
+    function Screens_PlaybackTimeGetOrigianl(key, data) {
+        return data[ScreenObj[key].screenType === 1 ? 11 : 1];
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -30395,11 +30496,13 @@
                 }
             },
             refreshThumb: function() {
-                if (!Screens_ObjNotNull(this.screen)) {
+                var id = this.posY + '_' + this.posX;
+
+                if (!Screens_ObjNotNull(this.screen) || this.DataObj[id].image) {
                     return;
                 }
-                var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
-                var div = Main_getElementById(this.ids[1] + this.posY + '_' + this.posX);
+                var url = this.DataObj[id][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
+                var div = Main_getElementById(this.ids[1] + id);
 
                 Play_seek_previews_img.onload = function() {
                     div.src = url;
@@ -32302,7 +32405,8 @@
             Play_timeHMS(cell.duration), //11
             cell.created_at, //12
             cell.view_count, //13
-            cell.user_id //14
+            cell.user_id, //14
+            cell.duration //15
         ];
     }
 
@@ -32413,7 +32517,9 @@
 
     function ScreensObj_AnimateThumbId(screen) {
         Main_clearInterval(screen.AnimateThumbId);
-        if (!Settings_Obj_default('videos_animation')) return;
+
+        if (!Settings_Obj_default('videos_animation') || Play_PreviewId) return;
+
         var div = Main_getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
         if (!screen.DataObj[screen.posY + '_' + screen.posX][8]) {
@@ -33125,7 +33231,8 @@
     }
 
     function SettingsColor_SetAnimationStyle(pos) {
-        var background = SettingsColor_DefaultColors[pos][0],
+        var animate = Settings_Obj_default('app_animations'),
+            background = SettingsColor_DefaultColors[pos][0],
             TextColor = SettingsColor_DefaultColors[pos][1],
             border = SettingsColor_DefaultColors[pos][2],
             progressColor = SettingsColor_DefaultColors[pos][3],
@@ -33143,7 +33250,11 @@
             '.stream_thumbnail_focused {transition:background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}';
 
         cssClass +=
-            '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
+            '.vod_watched{background:' +
+            progressColor +
+            ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);' +
+            (animate ? 'transition: width 1s linear;' : '') +
+            '}';
 
         Main_innerHTML('focus_class_holder', cssClass);
 
@@ -35019,7 +35130,8 @@
                 'side_panel_feed_thumb',
                 'user_feed',
                 'inner_progress_bar',
-                'inner_progress_bar_muted'
+                'inner_progress_bar_muted',
+                'vod_watched'
             ],
             animate = Settings_Obj_default('app_animations'),
             mtransition = animate ? '' : 'none';
