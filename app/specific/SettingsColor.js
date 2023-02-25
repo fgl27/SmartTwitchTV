@@ -416,7 +416,8 @@ function SettingsColor_SetAnimationStyleRestore() {
 }
 
 function SettingsColor_SetAnimationStyle(pos) {
-    var background = SettingsColor_DefaultColors[pos][0],
+    var animate = Settings_Obj_default('app_animations'),
+        background = SettingsColor_DefaultColors[pos][0],
         TextColor = SettingsColor_DefaultColors[pos][1],
         border = SettingsColor_DefaultColors[pos][2],
         progressColor = SettingsColor_DefaultColors[pos][3],
@@ -434,7 +435,11 @@ function SettingsColor_SetAnimationStyle(pos) {
             '.stream_thumbnail_focused {transition:background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}';
 
     cssClass +=
-        '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
+        '.vod_watched{background:' +
+        progressColor +
+        ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);' +
+        (animate ? 'transition: width 1s linear;' : '') +
+        '}';
 
     Main_innerHTML('focus_class_holder', cssClass);
 

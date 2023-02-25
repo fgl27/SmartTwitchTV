@@ -121,7 +121,8 @@ function Screens_ScreenIds(base, key) {
         base + '_scroll', //4
         key + '_animated_', //5
         key + '_row_', //6
-        key + '_watched_' //7
+        key + '_watched_', //7
+        key + '_time_' //8
     ];
 }
 
@@ -647,13 +648,19 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[2] +
         id +
-        '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
+        '" class="stream_info_live_name" style="width: 61%; display: inline-block;">' +
         valuesArray[4] +
-        '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+        '</div><div class="stream_info_live" style="width:38%; float: right; text-align: right; display: inline-block;">' +
+        '<span>' +
         valuesArray[11] +
+        '</span>' +
         STR_SPACE_HTML +
+        '<span id="' +
+        idArray[8] +
+        id +
+        '">' +
         Play_timeS(valuesArray[1]) +
-        '</div></div><div class="' +
+        '</span></div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' +
         valuesArray[10] +
@@ -717,10 +724,16 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
         valuesArray[1] +
         '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
+        '<span>' +
         valuesArray[5] +
+        '</span>' +
         STR_SPACE_HTML +
+        '<span id="' +
+        idArray[8] +
+        id +
+        '">' +
         Play_timeS(valuesArray[11]) +
-        '</div></div><div class="' +
+        '</span></div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' +
         valuesArray[10] +
@@ -1140,6 +1153,14 @@ function Screens_LoadPreviewRestore(key) {
     var img = Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
     var Rect = img.parentElement.getBoundingClientRect();
 
+    if (!ChatLive_Playing) {
+        OSInterface_PlayPause(true);
+    }
+
+    if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+        Screens_UpdatePlaybackTimeStart(key);
+    }
+
     OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, ScreenObj[key].screenType + 1);
 
     Screens_ClearAnimation(key);
@@ -1243,7 +1264,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                 var offset = 0,
                     PreviewResponseText = Play_PreviewResponseText,
                     lang,
-                    who_called;
+                    who_called,
+                    isVod = ScreenObj[x].screenType === 1;
 
                 if (isClip) {
                     //clip
@@ -1263,7 +1285,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                         Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x);
                         return;
                     }
-                } else if (ScreenObj[x].screenType === 1) {
+                } else if (isVod) {
                     //vod
                     Play_PreviewId = StreamInfo[7];
 
@@ -1332,6 +1354,10 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
 
                 Screens_ClearAnimation(x);
                 Main_AddClassWitEle(img, 'opacity_zero');
+
+                if (isClip || isVod) {
+                    Screens_UpdatePlaybackTimeStart(x);
+                }
 
                 if (offset) {
                     Main_showWarningDialog(
@@ -1755,7 +1781,13 @@ function Screens_ChangeFocus(y, x, key) {
 function Screens_RemoveFocus(key) {
     if (!ScreenObj[key].itemsCount) return;
 
-    if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+    var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+    if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+        Screens_ResetPlaybackTime(key, id);
+    }
+
+    if (ScreenObj[key].posY > -1) Main_removeFocus(id, ScreenObj[key].ids);
     else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
 }
 
@@ -3127,4 +3159,56 @@ function Screens_IsInUse(key) {
         !Main_isUpdateDialogVisible() &&
         !Main_isChangeDialogVisible()
     );
+}
+
+function Screens_UpdatePlaybackTimeStart(key) {
+    var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+    Screens_UpdatePlaybackTime(key, id);
+}
+
+var Screens_UpdatePlaybackTimeId;
+
+function Screens_UpdatePlaybackTime(key, id) {
+    var currentId = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+    if (
+        !Play_PreviewId ||
+        Main_isStopped ||
+        currentId !== id ||
+        !Screens_IsInUse(key) ||
+        !Screens_IsDivFocused(key) ||
+        !ScreenObj[key].Cells[ScreenObj[key].posY] ||
+        ScreenObj[key].DataObj[id].image
+    ) {
+        return;
+    }
+
+    if (Screens_ObjNotNull(key)) {
+        var time = OSInterface_gettime() / 1000,
+            data = Screens_GetObj(key),
+            originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
+
+        if (time) {
+            Main_innerHTML(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
+            Main_getElementById(ScreenObj[key].ids[7] + id).style.width = (time / originalTime) * 100 + '%';
+        }
+    }
+
+    Screens_UpdatePlaybackTimeId = Main_setTimeout(
+        function () {
+            Screens_UpdatePlaybackTime(key, id);
+        },
+        1000,
+        Screens_UpdatePlaybackTimeId
+    );
+}
+
+function Screens_ResetPlaybackTime(key, id) {
+    var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
+        originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
+
+    Main_innerHTML(ScreenObj[key].ids[8] + id, originalTime);
+}
+
+function Screens_PlaybackTimeGetOrigianl(key, data) {
+    return data[ScreenObj[key].screenType === 1 ? 11 : 1];
 }

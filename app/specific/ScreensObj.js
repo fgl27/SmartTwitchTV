@@ -2435,7 +2435,8 @@ function ScreensObj_VodCellArray(cell) {
         Play_timeHMS(cell.duration), //11
         cell.created_at, //12
         cell.view_count, //13
-        cell.user_id //14
+        cell.user_id, //14
+        cell.duration //15
     ];
 }
 

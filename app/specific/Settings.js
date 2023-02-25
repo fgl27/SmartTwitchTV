@@ -1551,7 +1551,8 @@ function Settings_SetAnimations() {
             'side_panel_feed_thumb',
             'user_feed',
             'inner_progress_bar',
-            'inner_progress_bar_muted'
+            'inner_progress_bar_muted',
+            'vod_watched'
         ],
         animate = Settings_Obj_default('app_animations'),
         mtransition = animate ? '' : 'none';
