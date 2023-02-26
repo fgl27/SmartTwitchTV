@@ -834,4 +834,6 @@ function en_USLang() {
     SEEK_PREVIEW_SUMMARY = "Allows to control the VOD seek preview image that shows above the seek bar, seek preview isn't available to all VODs.";
     SEEK_PREVIEW_SINGLE = 'Single image';
     SEEK_PREVIEW_CAROUSEL = 'Carousel of images';
+
+    OPEN_NEW_ISSUE = '(Click New issue)';
 }

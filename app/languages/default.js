@@ -403,6 +403,13 @@ function DefaultLang() {
         DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') +
         '</div>' +
         STR_BR +
+        STR_BR +
+        STR_DIV_LINK +
+        DefaultMakeLink(STR_ABOUT_INFO_5 + '/issues') +
+        '</div>' +
+        OPEN_NEW_ISSUE +
+        STR_BR +
+        STR_BR +
         STR_PAYPAL +
         STR_BITCOIN +
         STR_BR;
