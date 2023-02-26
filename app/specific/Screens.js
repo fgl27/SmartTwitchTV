@@ -1109,6 +1109,7 @@ function Screens_LoadPreview(key) {
         Screens_ObjNotNull(key) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
+        !Main_isAboutDialogVisible() &&
         !Main_ThumbOpenIsNull(obj_id, ScreenObj[key].ids[0]) &&
         !ScreenObj[key].DataObj[obj_id].image
     ) {

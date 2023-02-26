@@ -158,6 +158,7 @@ var Main_UserBackupFile = 'user.json';
 var Main_HistoryBackupFile = 'history.json';
 var Main_Scene1Doc;
 var Main_Scene2Doc;
+var Main_about_dialog_div;
 var Main_vodOffset = 0;
 var Main_body = document.body;
 //Variable initialization end
@@ -260,6 +261,7 @@ function Main_StartApp() {
 
         Main_Scene1Doc = Main_getElementById('scene1');
         Main_Scene2Doc = Main_getElementById('scene2');
+        Main_about_dialog_div = Main_getElementById('dialog_about');
         BrowserTestFun();
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
@@ -804,16 +806,16 @@ function Main_showAboutDialog(removeEventListener, addEventListener) {
 
     Main_HideControlsDialog();
     Main_AboutDialogUpdateTime();
-    Main_ShowElement('dialog_about');
+    Main_ShowElementWithEle(Main_about_dialog_div);
     Main_EventScreen('About');
 }
 
 function Main_HideAboutDialog() {
-    Main_HideElement('dialog_about');
+    Main_HideElementWithEle(Main_about_dialog_div);
 }
 
 function Main_isAboutDialogVisible() {
-    return Main_isElementShowing('dialog_about');
+    return Main_isElementShowingWithEle(Main_about_dialog_div);
 }
 
 function Main_showSettings() {
@@ -1167,12 +1169,12 @@ function Main_showChangelogDialog() {
     Main_RemoveClass('dialog_changelod_text', 'hideimp');
 
     Main_ChangeDialogVisible = true;
-    Main_ShowElement('dialog_about');
+    Main_ShowElementWithEle(Main_about_dialog_div);
     Main_EventScreen('Changelog');
 }
 
 function Main_HideChangeDialog() {
-    Main_HideElement('dialog_about');
+    Main_HideAboutDialog();
     Main_ChangeDialogVisible = false;
 }
 
