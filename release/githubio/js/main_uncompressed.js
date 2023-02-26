@@ -748,6 +748,7 @@
     var SEEK_PREVIEW_SINGLE;
     var SEEK_PREVIEW_CAROUSEL;
     var SEEK_PREVIEW_ARRAY;
+    var OPEN_NEW_ISSUE;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1152,6 +1153,13 @@
             STR_DIV_LINK +
             DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') +
             '</div>' +
+            STR_BR +
+            STR_BR +
+            STR_DIV_LINK +
+            DefaultMakeLink(STR_ABOUT_INFO_5 + '/issues') +
+            '</div>' +
+            OPEN_NEW_ISSUE +
+            STR_BR +
             STR_BR +
             STR_PAYPAL +
             STR_BITCOIN +
@@ -2062,9 +2070,12 @@
         PROXY_SETTINGS_SUMMARY =
             'Only one proxy can be enable, enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop.';
         SEEK_PREVIEW = 'Seek Preview';
-        SEEK_PREVIEW_SUMMARY = "Allows to control the VOD seek preview image that shows above the seek bar, seek preview isn't available to all VODs.";
+        SEEK_PREVIEW_SUMMARY =
+            "Allows to control the VOD seek preview image that shows when rewind or fast forward, seek preview isn't available to all VODs.";
         SEEK_PREVIEW_SINGLE = 'Single image';
         SEEK_PREVIEW_CAROUSEL = 'Carousel of images';
+
+        OPEN_NEW_ISSUE = '(Click New issue)';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3458,6 +3469,12 @@
         STR_PROXY_TIMEOUT = 'Tempo limite do proxy (tempo em segundos)';
         STR_PROXY_TIMEOUT_SUMMARY =
             'Se o servidor proxy estiver fora, este será o tempo que levará para "desistir" da conexão e retornar à implementação padrão do Twitch';
+
+        SEEK_PREVIEW = 'Pré-Visualização avançar/retrocer';
+        SEEK_PREVIEW_SUMMARY =
+            'Permite controlar a imagem de pré-visualização ao avançar ou retroceder uma VOD, a vançar/retrocer não está disponível para todos as VODs.';
+        SEEK_PREVIEW_SINGLE = 'Imagem única';
+        SEEK_PREVIEW_CAROUSEL = 'Carrossel de imagens';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -11408,6 +11425,7 @@
     var Main_HistoryBackupFile = 'history.json';
     var Main_Scene1Doc;
     var Main_Scene2Doc;
+    var Main_about_dialog_div;
     var Main_vodOffset = 0;
     var Main_body = document.body;
     //Variable initialization end
@@ -11510,6 +11528,7 @@
 
             Main_Scene1Doc = Main_getElementById('scene1');
             Main_Scene2Doc = Main_getElementById('scene2');
+            Main_about_dialog_div = Main_getElementById('dialog_about');
             BrowserTestFun();
             Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
             Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
@@ -12055,16 +12074,16 @@
 
         Main_HideControlsDialog();
         Main_AboutDialogUpdateTime();
-        Main_ShowElement('dialog_about');
+        Main_ShowElementWithEle(Main_about_dialog_div);
         Main_EventScreen('About');
     }
 
     function Main_HideAboutDialog() {
-        Main_HideElement('dialog_about');
+        Main_HideElementWithEle(Main_about_dialog_div);
     }
 
     function Main_isAboutDialogVisible() {
-        return Main_isElementShowing('dialog_about');
+        return Main_isElementShowingWithEle(Main_about_dialog_div);
     }
 
     function Main_showSettings() {
@@ -12422,12 +12441,12 @@
         Main_RemoveClass('dialog_changelod_text', 'hideimp');
 
         Main_ChangeDialogVisible = true;
-        Main_ShowElement('dialog_about');
+        Main_ShowElementWithEle(Main_about_dialog_div);
         Main_EventScreen('Changelog');
     }
 
     function Main_HideChangeDialog() {
-        Main_HideElement('dialog_about');
+        Main_HideAboutDialog();
         Main_ChangeDialogVisible = false;
     }
 
@@ -27871,6 +27890,7 @@
             Screens_ObjNotNull(key) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
+            !Main_isAboutDialogVisible() &&
             !Main_ThumbOpenIsNull(obj_id, ScreenObj[key].ids[0]) &&
             !ScreenObj[key].DataObj[obj_id].image
         ) {
@@ -29962,7 +29982,10 @@
                         div.style.width = (time / originalTime) * 100 + '%';
                     }, 25);
                 } else {
-                    div.style.transition = '';
+                    if (!Settings_Obj_default('app_animations')) {
+                        div.style.transition = '';
+                    }
+
                     div.style.width = (time / originalTime) * 100 + '%';
                 }
             }
