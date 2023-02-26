@@ -1551,11 +1551,12 @@ function Settings_SetAnimations() {
             'side_panel_feed_thumb',
             'user_feed',
             'inner_progress_bar',
-            'inner_progress_bar_muted',
-            'vod_watched'
+            'inner_progress_bar_muted'
         ],
         animate = Settings_Obj_default('app_animations'),
         mtransition = animate ? '' : 'none';
+
+    SettingsColor_SetAnimationStyle(Main_getItemInt('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, 0));
 
     classes.forEach(function (classe) {
         array = document.getElementsByClassName(classe);
