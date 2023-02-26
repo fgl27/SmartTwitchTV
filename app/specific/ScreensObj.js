@@ -2594,7 +2594,8 @@ function ScreensObj_getVodAnimatedUrl(screen) {
 function ScreensObj_getVodAnimatedUrlResult(resultObj, key) {
     if (resultObj.status === 200) {
         var obj = JSON.parse(resultObj.responseText);
-        if (obj.data && obj.data.video && obj.data.video.animatedPreviewURL) {
+
+        if (Screens_ObjNotNull(key) && obj.data && obj.data.video && obj.data.video.animatedPreviewURL) {
             ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][8] = obj.data.video.animatedPreviewURL;
             var div = Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
             div.style.cssText =
