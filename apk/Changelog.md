@@ -13,6 +13,7 @@ Web Version February 25 2023
 ==============
 
 * General UI improves
+* General improves
 
 Web Version February 24 2023
 ==============
