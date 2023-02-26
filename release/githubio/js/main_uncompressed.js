@@ -4548,10 +4548,10 @@
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
         WebVersion: 'February 25 2023',
-        WebTag: 650, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 651, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version February 25 2023',
-                changes: ['General UI improves']
+                changes: ['General UI improves', 'General improves']
             },
             {
                 title: 'Web Version February 24 2023',
@@ -28546,12 +28546,12 @@
 
         var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
-        if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
-            Screens_ResetPlaybackTime(key, id);
-        }
-
-        if (ScreenObj[key].posY > -1) Main_removeFocus(id, ScreenObj[key].ids);
-        else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
+        if (ScreenObj[key].posY > -1) {
+            if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+                Screens_ResetPlaybackTime(key, id);
+            }
+            Main_removeFocus(id, ScreenObj[key].ids);
+        } else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
     }
 
     function Screens_addFocusFollow(key) {
@@ -32562,7 +32562,8 @@
     function ScreensObj_getVodAnimatedUrlResult(resultObj, key) {
         if (resultObj.status === 200) {
             var obj = JSON.parse(resultObj.responseText);
-            if (obj.data && obj.data.video && obj.data.video.animatedPreviewURL) {
+
+            if (Screens_ObjNotNull(key) && obj.data && obj.data.video && obj.data.video.animatedPreviewURL) {
                 ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][8] = obj.data.video.animatedPreviewURL;
                 var div = Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
                 div.style.cssText =
