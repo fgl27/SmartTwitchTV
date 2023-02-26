@@ -3198,7 +3198,10 @@ function Screens_UpdatePlaybackTime(key, id) {
                     div.style.width = (time / originalTime) * 100 + '%';
                 }, 25);
             } else {
-                div.style.transition = '';
+                if (!Settings_Obj_default('app_animations')) {
+                    div.style.transition = '';
+                }
+
                 div.style.width = (time / originalTime) * 100 + '%';
             }
         }
