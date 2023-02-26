@@ -29982,7 +29982,7 @@
                         div.style.width = (time / originalTime) * 100 + '%';
                     }, 25);
                 } else {
-                    if (!Settings_Obj_default('app_animations')) {
+                    if (Settings_Obj_default('app_animations')) {
                         div.style.transition = '';
                     }
 
