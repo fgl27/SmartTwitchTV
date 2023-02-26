@@ -1783,12 +1783,12 @@ function Screens_RemoveFocus(key) {
 
     var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
-    if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
-        Screens_ResetPlaybackTime(key, id);
-    }
-
-    if (ScreenObj[key].posY > -1) Main_removeFocus(id, ScreenObj[key].ids);
-    else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
+    if (ScreenObj[key].posY > -1) {
+        if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+            Screens_ResetPlaybackTime(key, id);
+        }
+        Main_removeFocus(id, ScreenObj[key].ids);
+    } else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
 }
 
 function Screens_addFocusFollow(key) {
