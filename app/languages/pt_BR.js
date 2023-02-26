@@ -832,4 +832,10 @@ function pt_BRLang() {
     STR_PROXY_TIMEOUT = 'Tempo limite do proxy (tempo em segundos)';
     STR_PROXY_TIMEOUT_SUMMARY =
         'Se o servidor proxy estiver fora, este será o tempo que levará para "desistir" da conexão e retornar à implementação padrão do Twitch';
+
+    SEEK_PREVIEW = 'Pré-Visualização avançar/retrocer';
+    SEEK_PREVIEW_SUMMARY =
+        'Permite controlar a imagem de pré-visualização ao avançar ou retroceder uma VOD, a vançar/retrocer não está disponível para todos as VODs.';
+    SEEK_PREVIEW_SINGLE = 'Imagem única';
+    SEEK_PREVIEW_CAROUSEL = 'Carrossel de imagens';
 }
