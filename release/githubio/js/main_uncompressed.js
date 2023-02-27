@@ -7145,10 +7145,38 @@
             Main_values.Main_selectedChannelLogo = channel.profile_image_url;
             Main_values.Main_selectedChannelPartner = channel.broadcaster_type;
 
-            ChannelContent_loadDataSuccess();
+            ChannelContent_BannerFollowers();
         } else {
             ChannelContent_GetStreamerInfoError();
         }
+    }
+    var ChannelContent_BannerFollowersPost = '{"query":"{user(login: \\"%x\\") {bannerImageURL, followers(){totalCount}}}"}';
+
+    function ChannelContent_BannerFollowers() {
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Play_base_backup_headers_Array,
+            ChannelContent_BannerFollowersResult,
+            noop_fun,
+            0,
+            PlayClip_loadVodOffsetStartVodId,
+            'POST', //Method, null for get
+            ChannelContent_BannerFollowersPost.replace('%x', Main_values.Main_selectedChannel)
+        );
+    }
+
+    function ChannelContent_BannerFollowersResult(responseObj) {
+        if (responseObj.status === 200) {
+            var obj = JSON.parse(responseObj.responseText);
+
+            if (obj.data && obj.data.user) {
+                ChannelContent_profile_banner = obj.data.user.bannerImageURL ? obj.data.user.bannerImageURL : IMG_404_BANNER;
+                ChannelContent_selectedChannelFollower =
+                    obj.data.user.followers && obj.data.user.followers.totalCount ? obj.data.user.followers.totalCount : '';
+            }
+        }
+
+        ChannelContent_loadDataSuccess();
     }
 
     function ChannelContent_GetStreamerInfoError() {
