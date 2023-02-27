@@ -1974,9 +1974,9 @@ var Play_MultiStream = temp_controls_pos++;
 var Play_controlsAudio = temp_controls_pos++;
 var Play_controlsChatSide = temp_controls_pos++;
 var Play_controlsChat = temp_controls_pos++;
+var Play_controlsChatSettings = temp_controls_pos++;
 var Play_controlsChatSend = temp_controls_pos++;
 
-var Play_controlsChatSettings = temp_controls_pos++;
 var Play_controlsPlayerStatus = temp_controls_pos++;
 var Play_controlsProxy = temp_controls_pos++;
 var Play_controlsPreview = temp_controls_pos++;
@@ -3814,7 +3814,7 @@ function Play_MakeControls() {
         ShowInClip: true,
         ShowInPP: true,
         ShowInMulti: true,
-        ShowInChat: true,
+        ShowInChat: false,
         ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
