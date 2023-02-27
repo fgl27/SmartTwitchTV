@@ -27890,7 +27890,6 @@
             Screens_ObjNotNull(key) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
-            !Main_isAboutDialogVisible() &&
             !Main_ThumbOpenIsNull(obj_id, ScreenObj[key].ids[0]) &&
             !ScreenObj[key].DataObj[obj_id].image
         ) {
@@ -28029,6 +28028,7 @@
             Screens_IsDivFocused(x) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
+            !Main_isAboutDialogVisible() &&
             y === (ScreenObj[x].posY * ScreenObj[x].ColoumnsCount + ScreenObj[x].posX) % 100 &&
             ScreenObj[x].posY + '_' + ScreenObj[x].posX === ScreenObj[x].focusPos
         ) {
