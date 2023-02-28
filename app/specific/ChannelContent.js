@@ -41,7 +41,7 @@ var ChannelContent_KeyEnterID;
 var ChannelContent_clear = false;
 var ChannelContent_DataObj;
 var ChannelContent_Lang = '';
-var ChannelContent_Ids = ['_cell_0_1_img', '_since_'];
+var ChannelContent_Ids = ['_ChannelContent_cell_0_1_img', '_ChannelContent_since_'];
 
 //Variable initialization end
 
@@ -337,12 +337,13 @@ function ChannelContent_createCell(valuesArray) {
             '<div id="channel_content_cell0_5" class="stream_info_live">' +
             (valuesArray[3] !== '' ? STR_PLAYING + valuesArray[3] : '') +
             '</div>' +
-            '<div id="' +
+            '<div class="stream_info_live"><span id="' +
             Main_ChannelContent +
             ChannelContent_Ids[1] +
-            '"  class="stream_info_live">' +
+            '" >' +
             STR_SINCE +
             valuesArray[11] +
+            '</span>' +
             STR_SPACE_HTML +
             STR_FOR +
             valuesArray[4] +
@@ -777,15 +778,9 @@ function ChannelContent_UpdateSince(key) {
         return;
     }
 
-    Main_innerHTML(
+    Main_textContent(
         Main_ChannelContent + ChannelContent_Ids[1],
-        STR_SINCE +
-            Play_streamLiveAtWitDate(new Date().getTime(), ChannelContent_DataObj[12]) +
-            STR_SPACE_HTML +
-            STR_FOR +
-            ChannelContent_DataObj[4] +
-            STR_SPACE_HTML +
-            Main_GetViewerStrings(ChannelContent_DataObj[13])
+        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), ChannelContent_DataObj[12])
     );
 
     ChannelContent_UpdateSinceId = Main_setTimeout(
