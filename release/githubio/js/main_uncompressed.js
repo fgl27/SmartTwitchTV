@@ -7003,7 +7003,7 @@
     var ChannelContent_clear = false;
     var ChannelContent_DataObj;
     var ChannelContent_Lang = '';
-    var ChannelContent_Ids = ['_cell_0_1_img', '_since_'];
+    var ChannelContent_Ids = ['_ChannelContent_cell_0_1_img', '_ChannelContent_since_'];
 
     //Variable initialization end
 
@@ -7301,12 +7301,13 @@
             '<div id="channel_content_cell0_5" class="stream_info_live">' +
             (valuesArray[3] !== '' ? STR_PLAYING + valuesArray[3] : '') +
             '</div>' +
-            '<div id="' +
+            '<div class="stream_info_live"><span id="' +
             Main_ChannelContent +
             ChannelContent_Ids[1] +
-            '"  class="stream_info_live">' +
+            '" >' +
             STR_SINCE +
             valuesArray[11] +
+            '</span>' +
             STR_SPACE_HTML +
             STR_FOR +
             valuesArray[4] +
@@ -7743,15 +7744,9 @@
             return;
         }
 
-        Main_innerHTML(
+        Main_textContent(
             Main_ChannelContent + ChannelContent_Ids[1],
-            STR_SINCE +
-            Play_streamLiveAtWitDate(new Date().getTime(), ChannelContent_DataObj[12]) +
-            STR_SPACE_HTML +
-            STR_FOR +
-            ChannelContent_DataObj[4] +
-            STR_SPACE_HTML +
-            Main_GetViewerStrings(ChannelContent_DataObj[13])
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), ChannelContent_DataObj[12])
         );
 
         ChannelContent_UpdateSinceId = Main_setTimeout(
@@ -26968,7 +26963,8 @@
             key + '_animated_', //5
             key + '_row_', //6
             key + '_watched_', //7
-            key + '_time_' //8
+            key + '_time_', //8
+            key + '_since_' //9
         ];
     }
 
@@ -27661,9 +27657,13 @@
             '</div><div id="' +
             idArray[4] +
             id +
-            '" class="stream_info_live">' +
+            '" class="stream_info_live"><span id="' +
+            idArray[9] +
+            id +
+            '" >' +
             STR_SINCE +
             valuesArray[11] +
+            '</span>' +
             STR_SPACE_HTML +
             STR_FOR +
             valuesArray[4] +
@@ -28548,16 +28548,7 @@
         if (Screens_ObjNotNull(key)) {
             var data = Screens_GetObj(key);
 
-            Main_innerHTML(
-                ScreenObj[key].ids[4] + id,
-                STR_SINCE +
-                Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
-                STR_SPACE_HTML +
-                STR_FOR +
-                data[4] +
-                STR_SPACE_HTML +
-                Main_GetViewerStrings(data[13])
-            );
+            Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
         }
 
         Screens_UpdateSinceId = Main_setTimeout(
@@ -36774,6 +36765,7 @@
     var Sidepannel_UpdateThumbDivTitle;
     var Sidepannel_UpdateThumbDivGame;
     var Sidepannel_UpdateThumbDivViews;
+    var Sidepannel_UpdateThumbDivSince;
     var Sidepannel_UpdateThumbDivThumb;
 
     function Sidepannel_UpdateThumbDiv() {
@@ -36790,6 +36782,7 @@
             Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivQuality, info[5]);
             Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivTitle, Main_ReplaceLargeFont(twemoji.parse(info[2])));
             Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivGame, info[3] !== '' ? STR_PLAYING + info[3] : '');
+            Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivViews, STR_FOR + info[4] + STR_SPACE_HTML + Main_GetViewerStrings(info[13]));
             Play_LoadLogo(Sidepannel_UpdateThumbDivThumb, info[9]);
             Sidepannel_UpdateSince();
         }
@@ -36803,16 +36796,7 @@
         if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             var info = Sidepannel_GetObj();
 
-            Main_innerHTMLWithEle(
-                Sidepannel_UpdateThumbDivViews,
-                STR_SINCE +
-                Play_streamLiveAtWitDate(new Date().getTime(), info[12]) +
-                STR_SPACE_HTML +
-                STR_FOR +
-                info[4] +
-                STR_SPACE_HTML +
-                Main_GetViewerStrings(info[13])
-            );
+            Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivSince, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]));
         }
 
         Sidepannel_UpdateSinceId = Main_setTimeout(Sidepannel_UpdateSince, 1000, Sidepannel_UpdateSinceId);
@@ -37883,6 +37867,7 @@
         Sidepannel_UpdateThumbDivTitle = Main_getElementById('feed_thumb_title');
         Sidepannel_UpdateThumbDivGame = Main_getElementById('feed_thumb_game');
         Sidepannel_UpdateThumbDivViews = Main_getElementById('feed_thumb_views');
+        Sidepannel_UpdateThumbDivSince = Main_getElementById('feed_thumb_since');
         Sidepannel_UpdateThumbDivThumb = Main_getElementById('feed_thumb_icon');
 
         Sidepannel_SetLastRefreshUpDiv(0);
