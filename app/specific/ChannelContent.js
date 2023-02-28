@@ -41,6 +41,7 @@ var ChannelContent_KeyEnterID;
 var ChannelContent_clear = false;
 var ChannelContent_DataObj;
 var ChannelContent_Lang = '';
+var ChannelContent_Ids = ['_cell_0_1_img'];
 
 //Variable initialization end
 
@@ -310,7 +311,8 @@ function ChannelContent_createCell(valuesArray) {
         'channel_content_thumbdiv0_0',
         '<div class="stream_thumbnail_live_img"><img id="' +
             Main_ChannelContent +
-            '_cell_0_1_img" class="stream_img" alt="" src="' +
+            ChannelContent_Ids[0] +
+            '" class="stream_img" alt="" src="' +
             valuesArray[0].replace('{width}x{height}', Main_VideoSize) +
             Main_randomImg +
             '" onerror="this.onerror=null;this.src=\'' +
@@ -351,7 +353,8 @@ function ChannelContent_createCellOffline() {
         'channel_content_thumbdiv0_0',
         '<div class="stream_thumbnail_live_img"><img id="' +
             Main_ChannelContent +
-            '_cell_0_1_img" class="stream_img" alt="" src="' +
+            ChannelContent_Ids[0] +
+            '" class="stream_img" alt="" src="' +
             (ChannelContent_offline_image ? ChannelContent_offline_image + Main_randomImg : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_VIDEO +
@@ -408,7 +411,7 @@ function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) {
         ChannelContent_CheckIfIsLiveSTop();
         Main_RemoveClass('channel_content_thumbdiv0_0', Main_classThumb);
-        Main_RemoveClass(Main_ChannelContent + '_cell_0_1_img', 'opacity_zero');
+        Main_RemoveClass(Main_ChannelContent + ChannelContent_Ids[0], 'opacity_zero');
     } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
 }
 
@@ -654,7 +657,7 @@ function ChannelContent_LoadPreview() {
 }
 
 function ChannelContent_LoadPreviewRestore() {
-    var img = Main_getElementById(Main_ChannelContent + '_cell_0_1_img');
+    var img = Main_getElementById(Main_ChannelContent + ChannelContent_Ids[0]);
     var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, 4);
@@ -714,7 +717,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {
                 Play_PreviewResponseText = StreamData.responseText;
                 Play_PreviewId = StreamInfo[14];
 
-                var img = Main_getElementById(Main_ChannelContent + '_cell_0_1_img');
+                var img = Main_getElementById(Main_ChannelContent + ChannelContent_Ids[0]);
                 var Rect = img.parentElement.getBoundingClientRect();
 
                 OSInterface_StartScreensPlayer(
@@ -741,7 +744,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {
 
 function ChannelContent_LoadPreviewWarn(ErrorText, time) {
     Play_CheckIfIsLiveCleanEnd();
-    Main_RemoveClass(Main_ChannelContent + '_cell_0_1_img', 'opacity_zero');
+    Main_RemoveClass(Main_ChannelContent + ChannelContent_Ids[0], 'opacity_zero');
     Main_showWarningDialog(ErrorText, time);
 }
 
@@ -757,7 +760,7 @@ function ChannelContent_RestoreThumb(play_data) {
 
 function ChannelContent_Isfocused() {
     return (
-        Main_getElementById(Main_ChannelContent + '_cell_0_1_img') &&
+        Main_getElementById(Main_ChannelContent + ChannelContent_Ids[0]) &&
         Main_values.Main_Go === Main_ChannelContent &&
         ChannelContent_cursorY &&
         Main_isScene1DocVisible()
