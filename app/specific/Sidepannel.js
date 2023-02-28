@@ -143,6 +143,7 @@ var Sidepannel_UpdateThumbDivQuality;
 var Sidepannel_UpdateThumbDivTitle;
 var Sidepannel_UpdateThumbDivGame;
 var Sidepannel_UpdateThumbDivViews;
+var Sidepannel_UpdateThumbDivSince;
 var Sidepannel_UpdateThumbDivThumb;
 
 function Sidepannel_UpdateThumbDiv() {
@@ -159,6 +160,7 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivQuality, info[5]);
         Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivTitle, Main_ReplaceLargeFont(twemoji.parse(info[2])));
         Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivGame, info[3] !== '' ? STR_PLAYING + info[3] : '');
+        Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivViews, STR_FOR + info[4] + STR_SPACE_HTML + Main_GetViewerStrings(info[13]));
         Play_LoadLogo(Sidepannel_UpdateThumbDivThumb, info[9]);
         Sidepannel_UpdateSince();
     }
@@ -171,16 +173,7 @@ function Sidepannel_UpdateSince() {
     if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         var info = Sidepannel_GetObj();
 
-        Main_innerHTMLWithEle(
-            Sidepannel_UpdateThumbDivViews,
-            STR_SINCE +
-                Play_streamLiveAtWitDate(new Date().getTime(), info[12]) +
-                STR_SPACE_HTML +
-                STR_FOR +
-                info[4] +
-                STR_SPACE_HTML +
-                Main_GetViewerStrings(info[13])
-        );
+        Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivSince, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]));
     }
 
     Sidepannel_UpdateSinceId = Main_setTimeout(Sidepannel_UpdateSince, 1000, Sidepannel_UpdateSinceId);

@@ -280,6 +280,7 @@ function UserLiveFeed_Prepare() {
     Sidepannel_UpdateThumbDivTitle = Main_getElementById('feed_thumb_title');
     Sidepannel_UpdateThumbDivGame = Main_getElementById('feed_thumb_game');
     Sidepannel_UpdateThumbDivViews = Main_getElementById('feed_thumb_views');
+    Sidepannel_UpdateThumbDivSince = Main_getElementById('feed_thumb_since');
     Sidepannel_UpdateThumbDivThumb = Main_getElementById('feed_thumb_icon');
 
     Sidepannel_SetLastRefreshUpDiv(0);

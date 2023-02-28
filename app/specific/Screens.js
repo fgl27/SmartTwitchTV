@@ -122,7 +122,8 @@ function Screens_ScreenIds(base, key) {
         key + '_animated_', //5
         key + '_row_', //6
         key + '_watched_', //7
-        key + '_time_' //8
+        key + '_time_', //8
+        key + '_since_' //9
     ];
 }
 
@@ -817,9 +818,13 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         '</div><div id="' +
         idArray[4] +
         id +
-        '" class="stream_info_live">' +
+        '" class="stream_info_live"><span id="' +
+        idArray[9] +
+        id +
+        '" >' +
         STR_SINCE +
         valuesArray[11] +
+        '</span>' +
         STR_SPACE_HTML +
         STR_FOR +
         valuesArray[4] +
@@ -1702,16 +1707,7 @@ function Screens_UpdateSince(key) {
     if (Screens_ObjNotNull(key)) {
         var data = Screens_GetObj(key);
 
-        Main_innerHTML(
-            ScreenObj[key].ids[4] + id,
-            STR_SINCE +
-                Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
-                STR_SPACE_HTML +
-                STR_FOR +
-                data[4] +
-                STR_SPACE_HTML +
-                Main_GetViewerStrings(data[13])
-        );
+        Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
     }
 
     Screens_UpdateSinceId = Main_setTimeout(
