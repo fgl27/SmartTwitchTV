@@ -757,7 +757,7 @@ function ChannelContent_RestoreThumb(play_data) {
 
 function ChannelContent_Isfocused() {
     return (
-        Main_getElementById(Main_ChannelContent + '_cell_0_1') &&
+        Main_getElementById(Main_ChannelContent + '_cell_0_1_img') &&
         Main_values.Main_Go === Main_ChannelContent &&
         ChannelContent_cursorY &&
         Main_isScene1DocVisible()

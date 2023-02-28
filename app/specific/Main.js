@@ -947,7 +947,7 @@ function Main_SwitchScreen(removekey, preventRefresh) {
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
     if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
-    else ScreenObj[1].init_fun();
+    else ScreenObj[1].init_fun(); //live
 
     if (removekey) Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
 }
@@ -2831,11 +2831,12 @@ function Main_CheckResumeUpdateToken(UserIsSet) {
 function Main_CheckAccessibility(skipRefresCheck) {
     //Main_Log('Main_CheckAccessibility');
 
-    if (Main_IsOn_OSInterface && Settings_Obj_default('accessibility_warn')) {
-        if (OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
+    if (Main_IsOn_OSInterface) {
+        if (Settings_Obj_default('accessibility_warn') && OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
+
             if (
                 (Screens_Isfocused() || ChannelContent_Isfocused()) &&
                 !Sidepannel_isShowingUserLive() &&
