@@ -7003,6 +7003,7 @@
     var ChannelContent_clear = false;
     var ChannelContent_DataObj;
     var ChannelContent_Lang = '';
+    var ChannelContent_Ids = ['_cell_0_1_img', '_since_'];
 
     //Variable initialization end
 
@@ -7274,7 +7275,8 @@
             'channel_content_thumbdiv0_0',
             '<div class="stream_thumbnail_live_img"><img id="' +
             Main_ChannelContent +
-            '_cell_0_1_img" class="stream_img" alt="" src="' +
+            ChannelContent_Ids[0] +
+            '" class="stream_img" alt="" src="' +
             valuesArray[0].replace('{width}x{height}', Main_VideoSize) +
             Main_randomImg +
             '" onerror="this.onerror=null;this.src=\'' +
@@ -7299,7 +7301,10 @@
             '<div id="channel_content_cell0_5" class="stream_info_live">' +
             (valuesArray[3] !== '' ? STR_PLAYING + valuesArray[3] : '') +
             '</div>' +
-            '<div class="stream_info_live">' +
+            '<div id="' +
+            Main_ChannelContent +
+            ChannelContent_Ids[1] +
+            '"  class="stream_info_live">' +
             STR_SINCE +
             valuesArray[11] +
             STR_SPACE_HTML +
@@ -7315,7 +7320,8 @@
             'channel_content_thumbdiv0_0',
             '<div class="stream_thumbnail_live_img"><img id="' +
             Main_ChannelContent +
-            '_cell_0_1_img" class="stream_img" alt="" src="' +
+            ChannelContent_Ids[0] +
+            '" class="stream_img" alt="" src="' +
             (ChannelContent_offline_image ? ChannelContent_offline_image + Main_randomImg : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_VIDEO +
@@ -7361,6 +7367,7 @@
         if (ChannelContent_cursorY) {
             Main_AddClass('channel_content_thumbdiv0_0', Main_classThumb);
             ChannelContent_LoadPreview();
+            ChannelContent_UpdateSince();
         } else ChannelContent_addFocusFollow();
     }
 
@@ -7372,7 +7379,7 @@
         if (ChannelContent_cursorY) {
             ChannelContent_CheckIfIsLiveSTop();
             Main_RemoveClass('channel_content_thumbdiv0_0', Main_classThumb);
-            Main_RemoveClass(Main_ChannelContent + '_cell_0_1_img', 'opacity_zero');
+            Main_RemoveClass(Main_ChannelContent + ChannelContent_Ids[0], 'opacity_zero');
         } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
     }
 
@@ -7618,7 +7625,7 @@
     }
 
     function ChannelContent_LoadPreviewRestore() {
-        var img = Main_getElementById(Main_ChannelContent + '_cell_0_1_img');
+        var img = Main_getElementById(Main_ChannelContent + ChannelContent_Ids[0]);
         var Rect = img.parentElement.getBoundingClientRect();
 
         OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, 4);
@@ -7679,7 +7686,7 @@
                     Play_PreviewResponseText = StreamData.responseText;
                     Play_PreviewId = StreamInfo[14];
 
-                    var img = Main_getElementById(Main_ChannelContent + '_cell_0_1_img');
+                    var img = Main_getElementById(Main_ChannelContent + ChannelContent_Ids[0]);
                     var Rect = img.parentElement.getBoundingClientRect();
 
                     OSInterface_StartScreensPlayer(
@@ -7706,7 +7713,7 @@
 
     function ChannelContent_LoadPreviewWarn(ErrorText, time) {
         Play_CheckIfIsLiveCleanEnd();
-        Main_RemoveClass(Main_ChannelContent + '_cell_0_1_img', 'opacity_zero');
+        Main_RemoveClass(Main_ChannelContent + ChannelContent_Ids[0], 'opacity_zero');
         Main_showWarningDialog(ErrorText, time);
     }
 
@@ -7722,10 +7729,37 @@
 
     function ChannelContent_Isfocused() {
         return (
-            Main_getElementById(Main_ChannelContent + '_cell_0_1') &&
+            Main_getElementById(Main_ChannelContent + ChannelContent_Ids[0]) &&
             Main_values.Main_Go === Main_ChannelContent &&
             ChannelContent_cursorY &&
             Main_isScene1DocVisible()
+        );
+    }
+
+    var ChannelContent_UpdateSinceId;
+
+    function ChannelContent_UpdateSince(key) {
+        if (Main_isStopped || !ChannelContent_Isfocused() || !ChannelContent_DataObj) {
+            return;
+        }
+
+        Main_innerHTML(
+            Main_ChannelContent + ChannelContent_Ids[1],
+            STR_SINCE +
+            Play_streamLiveAtWitDate(new Date().getTime(), ChannelContent_DataObj[12]) +
+            STR_SPACE_HTML +
+            STR_FOR +
+            ChannelContent_DataObj[4] +
+            STR_SPACE_HTML +
+            Main_GetViewerStrings(ChannelContent_DataObj[13])
+        );
+
+        ChannelContent_UpdateSinceId = Main_setTimeout(
+            function() {
+                ChannelContent_UpdateSince(key);
+            },
+            1000,
+            ChannelContent_UpdateSinceId
         );
     }
     /*
@@ -12243,7 +12277,7 @@
         if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
         if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
-        else ScreenObj[1].init_fun();
+        else ScreenObj[1].init_fun(); //live
 
         if (removekey) Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
     }
@@ -14057,9 +14091,10 @@
         var doc = ScreenObj[Main_values.Main_Go].ids ?
             Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) :
             null;
+
         if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
         else if (ChannelContent_Isfocused()) {
-            Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+            Main_RemoveClass(Main_ChannelContent + ChannelContent_Ids[0], 'opacity_zero');
         }
     }
 
@@ -14143,11 +14178,12 @@
     function Main_CheckAccessibility(skipRefresCheck) {
         //Main_Log('Main_CheckAccessibility');
 
-        if (Main_IsOn_OSInterface && Settings_Obj_default('accessibility_warn')) {
-            if (OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
+        if (Main_IsOn_OSInterface) {
+            if (Settings_Obj_default('accessibility_warn') && OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
             else {
                 Main_CheckAccessibilityHide(false);
                 //if focused and showing force a refresh check
+
                 if (
                     (Screens_Isfocused() || ChannelContent_Isfocused()) &&
                     !Sidepannel_isShowingUserLive() &&
