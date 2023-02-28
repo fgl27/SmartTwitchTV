@@ -1060,9 +1060,13 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         '</div><div id="' +
         UserLiveFeed_ids[4] +
         id +
-        '" class="stream_info_live">' +
+        '" class="stream_info_live"><span id="' +
+        UserLiveFeed_ids[5] +
+        id +
+        '" >' +
         STR_SINCE +
         data[11] +
+        '</span>' +
         STR_SPACE_HTML +
         STR_FOR +
         data[4] +

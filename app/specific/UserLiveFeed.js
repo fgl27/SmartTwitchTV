@@ -52,7 +52,8 @@ var UserLiveFeed_ids = [
     'ulf_img_', //1
     'ulf_title_', //2
     'ulf_data_', //3
-    'ulf_watched_' //4
+    'ulf_watched_', //4
+    'ulf_since_' //4
 ];
 
 var UserLiveFeed_side_ids = [
@@ -1304,16 +1305,7 @@ function UserLiveFeed_UpdateSince(pos) {
         var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
         var data = UserLiveFeed_GetObj(pos);
 
-        Main_innerHTML(
-            UserLiveFeed_ids[4] + id,
-            STR_SINCE +
-                Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
-                STR_SPACE_HTML +
-                STR_FOR +
-                data[4] +
-                STR_SPACE_HTML +
-                Main_GetViewerStrings(data[13])
-        );
+        Main_innerHTML(UserLiveFeed_ids[5] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
     }
 
     UserLiveFeed_UpdateSinceId = Main_setTimeout(
