@@ -41,7 +41,7 @@ var ChannelContent_KeyEnterID;
 var ChannelContent_clear = false;
 var ChannelContent_DataObj;
 var ChannelContent_Lang = '';
-var ChannelContent_Ids = ['_cell_0_1_img'];
+var ChannelContent_Ids = ['_cell_0_1_img', '_since_'];
 
 //Variable initialization end
 
@@ -337,7 +337,10 @@ function ChannelContent_createCell(valuesArray) {
             '<div id="channel_content_cell0_5" class="stream_info_live">' +
             (valuesArray[3] !== '' ? STR_PLAYING + valuesArray[3] : '') +
             '</div>' +
-            '<div class="stream_info_live">' +
+            '<div id="' +
+            Main_ChannelContent +
+            ChannelContent_Ids[1] +
+            '"  class="stream_info_live">' +
             STR_SINCE +
             valuesArray[11] +
             STR_SPACE_HTML +
@@ -400,6 +403,7 @@ function ChannelContent_addFocus() {
     if (ChannelContent_cursorY) {
         Main_AddClass('channel_content_thumbdiv0_0', Main_classThumb);
         ChannelContent_LoadPreview();
+        ChannelContent_UpdateSince();
     } else ChannelContent_addFocusFollow();
 }
 
@@ -764,5 +768,31 @@ function ChannelContent_Isfocused() {
         Main_values.Main_Go === Main_ChannelContent &&
         ChannelContent_cursorY &&
         Main_isScene1DocVisible()
+    );
+}
+
+var ChannelContent_UpdateSinceId;
+function ChannelContent_UpdateSince(key) {
+    if (Main_isStopped || !ChannelContent_Isfocused() || !ChannelContent_DataObj) {
+        return;
+    }
+
+    Main_innerHTML(
+        Main_ChannelContent + ChannelContent_Ids[1],
+        STR_SINCE +
+            Play_streamLiveAtWitDate(new Date().getTime(), ChannelContent_DataObj[12]) +
+            STR_SPACE_HTML +
+            STR_FOR +
+            ChannelContent_DataObj[4] +
+            STR_SPACE_HTML +
+            Main_GetViewerStrings(ChannelContent_DataObj[13])
+    );
+
+    ChannelContent_UpdateSinceId = Main_setTimeout(
+        function () {
+            ChannelContent_UpdateSince(key);
+        },
+        1000,
+        ChannelContent_UpdateSinceId
     );
 }
