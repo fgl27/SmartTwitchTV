@@ -89,7 +89,7 @@ In order for the app to work is necessary that back and for communication betwee
 ## [How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
 
 The application never stops receiving updates the bellow video may be outdated, I try to keep a updated video always available but is not a priority
-[![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=LA2x1c-BOJg)
+[![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=PI2yrGb3pnY)
 
 ## How to translate this
 
