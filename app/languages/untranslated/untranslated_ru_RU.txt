@@ -1,1 +1,4 @@
 
+    STR_PP_WORKAROUND = 'Multiplayer, PP and preview mode workaround';
+    STR_PP_WORKAROUND_SUMMARY =
+        "For some devices usually running old versions of Android, it is necessary to enable this to have multiplayer mode working properly. Usually, the issue is that the player (PP or preview) will not be visible, or even when not in use it is visible as a black box over the main player. Don't enable this if you don't have issues, as it will result in lower image quality and possible loss of performance";

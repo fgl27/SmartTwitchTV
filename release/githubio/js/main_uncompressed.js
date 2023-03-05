@@ -1738,9 +1738,9 @@
         STR_UNKNOWN = 'Unknown';
         STR_ONE_CODEC_ENA = 'At least one codec must be enabled at all times.';
         STR_USER_LIVE = 'User live side pannel: Left D-pad from the side panel or key 3 from anywhere';
-        STR_PP_WORKAROUND = 'Multiplayer mode workaround for older OS';
+        STR_PP_WORKAROUND = 'Multiplayer, PP and preview mode workaround';
         STR_PP_WORKAROUND_SUMMARY =
-            "For some devices running Android 7 (Nougat) or older are necessary to enable this to have multiplayer mode working properly. Don't enable this if you don't have issues, as it will result in a lower image quality and possible loss of performance.";
+            "For some devices usually running old versions of Android, it is necessary to enable this to have multiplayer mode working properly. Usually, the issue is that the player (PP or preview) will not be visible, or even when not in use it is visible as a black box over the main player. Don't enable this if you don't have issues, as it will result in lower image quality and possible loss of performance";
         STR_HISTORY = 'History';
         STR_WATCHED = 'Watched on';
         STR_UNTIL = 'until';
@@ -2466,9 +2466,6 @@
         STR_MAX_INSTANCES = 'Instancias máximas:';
         STR_UNKNOWN = 'Desconocido';
 
-        STR_PP_WORKAROUND = 'Solución al modo multireproductor del antiguo sistema operativo';
-        STR_PP_WORKAROUND_SUMMARY =
-            'Para algunos dispositivos que ejecutan Android 7 (Nougat) o anteriores es necesario habilitar esto para que el modo multijugador funcione correctamente, no lo habilites si no tienes un problema, ya que resultará en una menor calidad de imagen y posible pérdida de rendimiento';
         STR_HISTORY = 'Historial';
 
         STR_HISTORY_LIVE_DIS = 'Habilitar el historial en directo';
@@ -3132,9 +3129,9 @@
         STR_UNKNOWN = 'Desconhecido';
         STR_ONE_CODEC_ENA = 'Pelo menos um codec deve estar habilitado o tempo todo';
         STR_USER_LIVE = 'Painel lateral ao vivo: do painel lateral direcional esquerdo ou de qualquer lugar, pressione 3';
-        STR_PP_WORKAROUND = 'Solução alternativa modo multiplayer';
+        STR_PP_WORKAROUND = 'Solução alternativa modo multiplayer, PP e preview';
         STR_PP_WORKAROUND_SUMMARY =
-            'Para alguns dispositivos rodando Android 7 (Nougat) ou mais antigo é necessário habilitar isto para que o modo Multiplayer funcione corretamente, não habilite isto se você não tiver problemas, pois resultará em uma qualidade de imagem inferior e possível perda de desempenho';
+            'Para alguns dispositivos que geralmente rodam versões antigas do Android, é necessário habilitár este para que o modo com varios players funcione corretamente. Normalmente, o problema é que o player (PP ou preview) não ficará visível, ou mesmo quando não estiver em uso fica visível como uma caixa preta sobre o player principal. Não habilite este se você não tiver problemas, pois isso resultará em qualidade de imagem inferior e possível perda de desempenho';
         STR_HISTORY = 'Histórico';
         STR_WATCHED = 'Assistido em';
         STR_UNTIL = 'até';
@@ -3960,9 +3957,7 @@
         STR_UNKNOWN = 'Неизвестно';
         STR_ONE_CODEC_ENA = 'Хотя бы один кодек должен быть включен постоянно';
         STR_USER_LIVE = 'Боковая панель Акт.каналы: на боковой панели D-pad влево или из любого места кнопка 3';
-        STR_PP_WORKAROUND = 'Временное решение для старой ОС в мультистриме';
-        STR_PP_WORKAROUND_SUMMARY =
-            'Для некоторых устройств под управлением Android 7 (Nougat) или старше необходимо включить это для правильной работы мультистрима. Не включайте это, если у вас нет проблем, так как это приведет к снижению качества изображения и возможной потере производительности.';
+
         STR_HISTORY = 'История';
         STR_WATCHED = 'Смотрел на';
         STR_UNTIL = 'до';

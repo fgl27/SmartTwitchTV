@@ -387,9 +387,6 @@ function es_ESLang() {
     STR_MAX_INSTANCES = 'Instancias máximas:';
     STR_UNKNOWN = 'Desconocido';
 
-    STR_PP_WORKAROUND = 'Solución al modo multireproductor del antiguo sistema operativo';
-    STR_PP_WORKAROUND_SUMMARY =
-        'Para algunos dispositivos que ejecutan Android 7 (Nougat) o anteriores es necesario habilitar esto para que el modo multijugador funcione correctamente, no lo habilites si no tienes un problema, ya que resultará en una menor calidad de imagen y posible pérdida de rendimiento';
     STR_HISTORY = 'Historial';
 
     STR_HISTORY_LIVE_DIS = 'Habilitar el historial en directo';

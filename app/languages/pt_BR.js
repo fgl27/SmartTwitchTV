@@ -495,9 +495,9 @@ function pt_BRLang() {
     STR_UNKNOWN = 'Desconhecido';
     STR_ONE_CODEC_ENA = 'Pelo menos um codec deve estar habilitado o tempo todo';
     STR_USER_LIVE = 'Painel lateral ao vivo: do painel lateral direcional esquerdo ou de qualquer lugar, pressione 3';
-    STR_PP_WORKAROUND = 'Solução alternativa modo multiplayer';
+    STR_PP_WORKAROUND = 'Solução alternativa modo multiplayer, PP e preview';
     STR_PP_WORKAROUND_SUMMARY =
-        'Para alguns dispositivos rodando Android 7 (Nougat) ou mais antigo é necessário habilitar isto para que o modo Multiplayer funcione corretamente, não habilite isto se você não tiver problemas, pois resultará em uma qualidade de imagem inferior e possível perda de desempenho';
+        'Para alguns dispositivos que geralmente rodam versões antigas do Android, é necessário habilitár este para que o modo com varios players funcione corretamente. Normalmente, o problema é que o player (PP ou preview) não ficará visível, ou mesmo quando não estiver em uso fica visível como uma caixa preta sobre o player principal. Não habilite este se você não tiver problemas, pois isso resultará em qualidade de imagem inferior e possível perda de desempenho';
     STR_HISTORY = 'Histórico';
     STR_WATCHED = 'Assistido em';
     STR_UNTIL = 'até';
