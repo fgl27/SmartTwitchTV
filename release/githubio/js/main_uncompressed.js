@@ -9366,7 +9366,7 @@
                         if (typeof emoticon.urls[1] !== 'string') return;
                         if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
-                        url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+                        url = emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1];
                         chat_div = emoteTemplate(url);
                         id = emoticon.name + emoticon.id;
 
