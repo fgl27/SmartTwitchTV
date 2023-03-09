@@ -2372,26 +2372,29 @@ function ScreensObj_SetTopLable(text, small_text) {
 }
 
 function ScreensObj_FeaturedCellArray(cell) {
+    var game = cell.stream.game,
+        broadcaster = cell.stream.broadcaster;
+
     return [
         cell.stream.previewImageURL ? cell.stream.previewImageURL.replace('{width}x{height}', Main_VideoSize) : '', //0
-        cell.stream.broadcaster.displayName, //1
+        broadcaster ? broadcaster.displayName : '', //1
         cell.stream.title, //2
-        cell.stream.game.displayName, //3
+        game ? game.displayName : '', //3
         Main_addCommas(cell.stream.viewersCount), //4
-        cell.stream.broadcaster.language ? '[' + cell.stream.broadcaster.language.toUpperCase() + ']' : '', //5
-        cell.stream.broadcaster.login, //6
+        broadcaster ? (broadcaster.language ? '[' + broadcaster.language.toUpperCase() + ']' : '') : '', //5
+        broadcaster ? broadcaster.login : '', //6
         cell.stream.id.toString(), //7 broadcast id
         Main_is_rerun(cell.stream.type), //8
-        cell.stream.broadcaster.profileImageURL, //9
-        cell.stream.broadcaster.roles.isPartner, //10
+        broadcaster ? broadcaster.profileImageURL : '', //9
+        broadcaster ? broadcaster.roles.isPartner : '', //10
         Play_streamLiveAt(cell.stream.createdAt), //11
         cell.stream.createdAt, //12
         cell.stream.viewersCount, //13
-        cell.stream.broadcaster.id, //14
-        cell.stream.broadcaster.language, //15
+        broadcaster ? broadcaster.id : null, //14
+        broadcaster ? broadcaster.language : '', //15
         null, //16
         null, //17
-        cell.stream.game.id //18
+        game ? game.id : null //18
     ];
 }
 
