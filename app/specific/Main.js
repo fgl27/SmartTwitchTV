@@ -2710,6 +2710,7 @@ function Main_CheckStop() {
     //General related
     Screens_ClearAnimation(Main_values.Main_Go);
 
+    Main_clearInterval(Settings_burn_in_protectionId);
     Main_clearInterval(Main_UpdateClockId);
     Main_clearInterval(Main_StartHistoryworkerId);
     Main_clearInterval(Main_checkWebVersionId);
@@ -2816,6 +2817,7 @@ function Main_CheckResume(skipPlay) {
     if (!skipPlay) Main_CheckAccessibility();
 
     Settings_SetAutoMinimizeTimeout();
+    Settings_burn_in_protection_start();
 }
 
 function Main_CheckResumeUpdateToken(UserIsSet) {

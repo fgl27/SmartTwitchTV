@@ -1028,7 +1028,7 @@ function Settings_SetDefaults() {
         Main_setTimeout(Settings_SetDpad, 2500);
     }
 
-    Main_setInterval(Settings_burn_in_protection, 20 * 60 * 1000);
+    Settings_burn_in_protection_start();
 
     PlayVod_SetPreviewType();
 }
@@ -1135,14 +1135,22 @@ function Settings_CheckPageLang(app_lang) {
     return device_lang;
 }
 
-function Settings_burn_in_protection() {
-    if (!Settings_Obj_default('burn_in_protection')) return;
+var Settings_burn_in_protectionId;
+function Settings_burn_in_protection_start() {
+    if (!Settings_Obj_default('burn_in_protection')) {
+        Main_clearInterval(Settings_burn_in_protectionId);
+        return;
+    }
 
+    Settings_burn_in_protectionId = Main_setInterval(Settings_burn_in_protection, 20 * 60 * 1000, Settings_burn_in_protectionId);
+}
+
+function Settings_burn_in_protection() {
     Main_ShowElement('burn_in_protection');
 
     Main_setTimeout(function () {
         Main_HideElement('burn_in_protection');
-    }, 50);
+    }, 50); //show for a few frames to refresh the OLED screen
 }
 
 function Settings_SetDpad() {
@@ -1249,6 +1257,7 @@ function Settings_SetDefault(position) {
     else if (position === 'round_images') Settings_UpdateRoundImages();
     else if (position === 'hide_main_clock') Settings_HideMainClock();
     else if (position === 'hide_player_clock') Settings_HidePlayerClock();
+    else if (position === 'burn_in_protection') Settings_burn_in_protection_start();
     else if (position === 'hide_main_screen_title') Settings_HideScreenTitle();
     else if (position === 'hide_etc_help_text') Settings_HideEtcHelp();
     else if (position === 'fade_sidepannel') Settings_check_sidePannelFade();
