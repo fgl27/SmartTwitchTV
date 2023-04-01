@@ -12090,8 +12090,8 @@
         Main_empty('dialog_counter_text');
     }
 
-    function Main_CounterDialog(x, y, coloumns, total) {
-        if (total > 0) Main_textContent('dialog_counter_text', y * coloumns + (x + 1) + '/' + total);
+    function Main_CounterDialog(x, y, Columns, total) {
+        if (total > 0) Main_textContent('dialog_counter_text', y * Columns + (x + 1) + '/' + total);
         else Main_CounterDialogRst();
     }
 
@@ -16224,7 +16224,7 @@
 
     function PlayClip_UpdateNext() {
         var nextid = PlayClip_getIdNext(1, 0);
-        var backid = PlayClip_getIdNext(-1, ScreenObj[Main_values.Main_Go].ColoumnsCount - 1);
+        var backid = PlayClip_getIdNext(-1, ScreenObj[Main_values.Main_Go].ColumnsCount - 1);
         var data;
 
         PlayClip_HasNext = false;
@@ -16297,7 +16297,7 @@
     function PlayClip_PlayPreviously() {
         PlayClip_PreshutdownStream(false);
 
-        Screens_KeyLeftRight(-1, ScreenObj[Main_values.Main_Go].ColoumnsCount - 1, Main_values.Main_Go);
+        Screens_KeyLeftRight(-1, ScreenObj[Main_values.Main_Go].ColumnsCount - 1, Main_values.Main_Go);
         PlayClip_PlayNextPreviously();
     }
 
@@ -27170,7 +27170,7 @@
         ScreenObj[key].loadChannelOffsset = 0;
         ScreenObj[key].followerChannels = [];
         ScreenObj[key].followerChannelsDone = false;
-        ScreenObj[key].coloumn_id = 0;
+        ScreenObj[key].column_id = 0;
         ScreenObj[key].channelDataPos = 0;
         ScreenObj[key].getFollowed = true;
         ScreenObj[key].data = null;
@@ -27251,18 +27251,18 @@
             //token expired
 
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !ScreenObj[key].isQuery) {
-                AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+                AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
             } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
-                Screens_loadDatafail(key);
+                Screens_loadDataFail(key);
             } else {
-                AddCode_AppToken(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+                AddCode_AppToken(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
             }
         } else {
-            Screens_loadDatafail(key);
+            Screens_loadDataFail(key);
         }
     }
 
-    function Screens_loadDatafail(key) {
+    function Screens_loadDataFail(key) {
         ScreenObj[key].loadingData = false;
         ScreenObj[key].FirstRunEnd = true;
 
@@ -27294,16 +27294,17 @@
         var data_length = ScreenObj[key].data.length,
             response_items = data_length - ScreenObj[key].data_cursor;
 
-        //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
+        //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColumnsCount,
         //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
 
-        //If the intention is to load less then ColoumnsCount for it row consistently (have multiple not full rows), this function needs to be reworked appendDiv will not solve it, and that doesn't make sense for most screens.
+        //If the intention is to load less then ColumnsCount for it row consistently (have multiple not full rows), this function needs to be reworked appendDiv will not solve it, and that doesn't make sense for most screens.
 
-        //appendDiv doesn't applies if the content end and we have less then ColoumnsCount to add for the last row
+        //appendDiv doesn't applies if the content end and we have less then ColumnsCount to add for the last row
 
-        //var appendDiv = !ScreenObj[key].coloumn_id;
+        //var appendDiv = !ScreenObj[key].column_id;
+
         if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
-        else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
+        else ScreenObj[key].dataEnded = true;
 
         if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
             ScreenObj[key].addSwitches();
@@ -27314,21 +27315,21 @@
         }
 
         if (response_items) {
-            var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount),
+            var response_rows = Math.ceil(response_items / ScreenObj[key].ColumnsCount),
                 max_row = ScreenObj[key].row_id + response_rows;
 
             for (ScreenObj[key].row_id; ScreenObj[key].row_id < max_row;) {
-                if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
-                    ScreenObj[key].coloumn_id = 0;
+                if (ScreenObj[key].column_id === ScreenObj[key].ColumnsCount) {
+                    ScreenObj[key].column_id = 0;
                 }
 
                 for (
-                    ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++
+                    ScreenObj[key].column_id; ScreenObj[key].column_id < ScreenObj[key].ColumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++
                 ) {
                     if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
                 }
 
-                if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
+                if (ScreenObj[key].column_id === ScreenObj[key].ColumnsCount) {
                     ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
                     ScreenObj[key].row_id++;
                     ScreenObj[key].tempHtml = '';
@@ -27759,7 +27760,7 @@
 
             Main_SaveValuesWithTimeout();
         } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
         }
     }
 
@@ -27893,7 +27894,7 @@
             Screens_addFocusFollow(key);
 
             if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible()) {
-                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
             }
 
             return;
@@ -27909,7 +27910,7 @@
             ) {
                 Screens_loadDataRequestStart(key);
             } else if (
-                ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount &&
+                ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColumnsCount &&
                 ScreenObj[key].data_cursor < ScreenObj[key].data.length
             ) {
                 ScreenObj[key].loadDataSuccess();
@@ -28039,7 +28040,7 @@
                 Screens_LoadPreviewResult,
                 noop_fun,
                 key,
-                (ScreenObj[key].posY * ScreenObj[key].ColoumnsCount + ScreenObj[key].posX) % 100, //checkResult
+                (ScreenObj[key].posY * ScreenObj[key].ColumnsCount + ScreenObj[key].posX) % 100, //checkResult
                 'POST', //Method, null for get
                 PlayClip_postMessage.replace('%x', obj[0]) //postMessage, null for get
             );
@@ -28076,7 +28077,7 @@
         PlayHLS_GetPlayListAsync(
             isLive,
             id,
-            (ScreenObj[key].posY * ScreenObj[key].ColoumnsCount + ScreenObj[key].posX) % 100,
+            (ScreenObj[key].posY * ScreenObj[key].ColumnsCount + ScreenObj[key].posX) % 100,
             key,
             Screens_LoadPreviewResult
         );
@@ -28090,7 +28091,7 @@
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
             !Main_isAboutDialogVisible() &&
-            y === (ScreenObj[x].posY * ScreenObj[x].ColoumnsCount + ScreenObj[x].posX) % 100 &&
+            y === (ScreenObj[x].posY * ScreenObj[x].ColumnsCount + ScreenObj[x].posX) % 100 &&
             ScreenObj[x].posY + '_' + ScreenObj[x].posX === ScreenObj[x].focusPos
         ) {
             if (StreamData && Screens_ObjNotNull(x)) {
@@ -28519,7 +28520,7 @@
             ScreenObj[key].addFocus(forceScroll, key);
 
             if (key === Main_values.Main_Go && !Settings_isVisible())
-                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
 
             if (ScreenObj[key].DataObj[id].event_name) {
                 Main_EventBanner(ScreenObj[key].DataObj[id].event_name + '_viewed', ScreenObj[key].ScreenName, ScreenObj[key].DataObj[id].image);
@@ -28673,7 +28674,7 @@
         } else {
             var i = 0;
 
-            for (i; i < ScreenObj[key].ColoumnsCount; i++) {
+            for (i; i < ScreenObj[key].ColumnsCount; i++) {
                 if (ScreenObj[key].DataObj[ScreenObj[key].posY + y + '_' + (ScreenObj[key].posX - i)]) {
                     Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
                     return;
@@ -28752,7 +28753,7 @@
             if (!Screens_clear) {
                 if (!ScreenObj[key].posX) Screens_OpenSidePanel(false, key);
                 else {
-                    Screens_KeyLeftRight(-1, ScreenObj[key].ColoumnsCount - 1, key);
+                    Screens_KeyLeftRight(-1, ScreenObj[key].ColumnsCount - 1, key);
                     Main_addEventListener('keydown', ScreenObj[key].key_fun);
                 }
             }
@@ -28779,10 +28780,10 @@
         //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
         if (
             ScreenObj[key].dataEnded ||
-            ScreenObj[key].posX < ScreenObj[key].ColoumnsCount - 1 ||
+            ScreenObj[key].posX < ScreenObj[key].ColumnsCount - 1 ||
             ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1
         ) {
-            if (ScreenObj[key].posX === ScreenObj[key].ColoumnsCount - 1) {
+            if (ScreenObj[key].posX === ScreenObj[key].ColumnsCount - 1) {
                 if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0, key);
             } else Screens_KeyLeftRight(1, 0, key);
         } else Screens_addFocus(true, key);
@@ -30090,16 +30091,16 @@
     var Main_ReloadLimitOffsetVideos = 1.5;
 
     var Main_ItemsLimitVideo = 45;
-    var Main_ColoumnsCountVideo = 3;
-    var Main_ItemsReloadLimitVideo = Math.floor(Main_ItemsLimitVideo / Main_ColoumnsCountVideo / Main_ReloadLimitOffsetVideos);
+    var Main_ColumnsCountVideo = 3;
+    var Main_ItemsReloadLimitVideo = Math.floor(Main_ItemsLimitVideo / Main_ColumnsCountVideo / Main_ReloadLimitOffsetVideos);
 
     var Main_ItemsLimitGame = 45;
-    var Main_ColoumnsCountGame = 5;
-    var Main_ItemsReloadLimitGame = Math.floor(Main_ItemsLimitGame / Main_ColoumnsCountGame / Main_ReloadLimitOffsetGames);
+    var Main_ColumnsCountGame = 5;
+    var Main_ItemsReloadLimitGame = Math.floor(Main_ItemsLimitGame / Main_ColumnsCountGame / Main_ReloadLimitOffsetGames);
 
     var Main_ItemsLimitChannel = 48;
-    var Main_ColoumnsCountChannel = 6;
-    var Main_ItemsReloadLimitChannel = Math.floor(Main_ItemsLimitChannel / Main_ColoumnsCountChannel / Main_ReloadLimitOffsetVideos);
+    var Main_ColumnsCountChannel = 6;
+    var Main_ItemsReloadLimitChannel = Math.floor(Main_ItemsLimitChannel / Main_ColumnsCountChannel / Main_ReloadLimitOffsetVideos);
 
     var ChannelClip_game = '';
     var ChannelClip_views = '';
@@ -30145,7 +30146,7 @@
             row_id: 0,
             offsettopFontsize: 0,
             offsettop: 0,
-            coloumn_id: 0,
+            column_id: 0,
             dataEnded: false,
             idObject: {},
             loadingData: false,
@@ -30228,6 +30229,7 @@
                 } else Screens_OpenSidePanel(false, this.screen);
             },
             concatenate: function(responseObj) {
+                console.log('responseObj', responseObj);
                 if (this.data) {
                     if (responseObj[this.object]) {
                         this.data.push.apply(this.data, responseObj[this.object]);
@@ -30359,7 +30361,7 @@
                 this.ScreenBackup[game].posY = this.posY;
                 this.ScreenBackup[game].row_id = this.row_id;
                 this.ScreenBackup[game].currY = this.currY;
-                this.ScreenBackup[game].coloumn_id = this.coloumn_id;
+                this.ScreenBackup[game].column_id = this.column_id;
                 this.ScreenBackup[game].data_cursor = this.data_cursor;
                 this.ScreenBackup[game].dataEnded = this.dataEnded;
                 this.ScreenBackup[game].BannerCreated = this.BannerCreated;
@@ -30391,7 +30393,7 @@
                 this.row_id = this.ScreenBackup[game].row_id;
                 this.currY = this.ScreenBackup[game].currY;
                 this.currY = this.ScreenBackup[game].currY;
-                this.coloumn_id = this.ScreenBackup[game].coloumn_id;
+                this.column_id = this.ScreenBackup[game].column_id;
                 this.data_cursor = this.ScreenBackup[game].data_cursor;
                 this.dataEnded = this.ScreenBackup[game].dataEnded;
                 this.BannerCreated = this.ScreenBackup[game].BannerCreated;
@@ -30472,7 +30474,7 @@
 
         Base_Vod_obj = {
             ItemsLimit: Main_ItemsLimitVideo,
-            ColoumnsCount: Main_ColoumnsCountVideo,
+            ColumnsCount: Main_ColumnsCountVideo,
             ItemsReloadLimit: Main_ItemsReloadLimitVideo,
             thumbclass: 'stream_thumbnail_live_holder',
             rowClass: 'animate_height_transition',
@@ -30489,6 +30491,7 @@
             setMax: function(tempObj) {
                 if (this.useHelix) {
                     this.cursor = tempObj.pagination.cursor;
+                    console.log('this.cursor', this.cursor);
                     if (!this.cursor || this.cursor === '') this.dataEnded = true;
                 } else {
                     if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
@@ -30506,9 +30509,9 @@
                     this.itemsCount++;
                     this.idObject[cell.id] = 1;
 
-                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
+                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
 
-                    this.coloumn_id++;
+                    this.column_id++;
                 }
             }
         };
@@ -30516,7 +30519,7 @@
         Base_Live_obj = {
             ItemsReloadLimit: Main_ItemsReloadLimitVideo,
             ItemsLimit: Main_ItemsLimitVideo,
-            ColoumnsCount: Main_ColoumnsCountVideo,
+            ColumnsCount: Main_ColumnsCountVideo,
             rowClass: 'animate_height_transition',
             thumbclass: 'stream_thumbnail_live_holder',
             histPosXName: 'HistoryLive_histPosX',
@@ -30555,9 +30558,9 @@
                     this.itemsCount++;
                     this.idObject[id_cell] = 1;
 
-                    this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen);
+                    this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen);
 
-                    this.coloumn_id++;
+                    this.column_id++;
                 }
             },
             key_play: function() {
@@ -30594,7 +30597,7 @@
             ItemsLimit: Main_ItemsLimitVideo,
             TopRowCreated: false,
             ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-            ColoumnsCount: Main_ColoumnsCountVideo,
+            ColumnsCount: Main_ColumnsCountVideo,
             addFocus: Screens_addFocusVideo,
             rowClass: 'animate_height_transition',
             thumbclass: 'stream_thumbnail_live_holder',
@@ -30653,13 +30656,13 @@
                     this.idObject[idValue] = 1;
 
                     this.tempHtml += Screens_createCellClip(
-                        this.row_id + '_' + this.coloumn_id,
+                        this.row_id + '_' + this.column_id,
                         this.ids,
                         ScreensObj_ClipCellArray(cell, this.isKraken),
                         this.screen
                     );
 
-                    this.coloumn_id++;
+                    this.column_id++;
                 }
             }
         };
@@ -30670,7 +30673,7 @@
             ItemsReloadLimit: Main_ItemsReloadLimitGame,
             ItemsLimit: Main_ItemsLimitGame,
             rowClass: 'animate_height_transition_games',
-            ColoumnsCount: Main_ColoumnsCountGame,
+            ColumnsCount: Main_ColumnsCountGame,
             addFocus: Screens_addFocusVideo,
             img_404: IMG_404_GAME,
             screenType: 3,
@@ -30716,7 +30719,7 @@
 
                     if (this.useHelix) {
                         this.tempHtml += Screens_createCellGame(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             [
                                 game.box_art_url ? game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
@@ -30731,7 +30734,7 @@
                             return;
                         }
                         this.tempHtml += Screens_createCellGame(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             [
                                 game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
@@ -30750,7 +30753,7 @@
                         );
                     } else {
                         this.tempHtml += Screens_createCellGame(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             [
                                 game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
@@ -30771,14 +30774,14 @@
                         );
                     }
 
-                    this.coloumn_id++;
+                    this.column_id++;
                 }
             }
         };
 
         Base_Channel_obj = {
             ItemsLimit: Main_ItemsLimitChannel,
-            ColoumnsCount: Main_ColoumnsCountChannel,
+            ColumnsCount: Main_ColumnsCountChannel,
             addFocus: Screens_addFocusChannel,
             ItemsReloadLimit: Main_ItemsReloadLimitChannel,
             thumbclass: 'stream_thumbnail_channel_holder',
@@ -30800,13 +30803,13 @@
                     this.idObject[cell.id] = 1;
 
                     this.tempHtml += Screens_createCellChannel(
-                        this.row_id + '_' + this.coloumn_id,
+                        this.row_id + '_' + this.column_id,
                         this.ids,
                         [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null],
                         this.screen
                     );
 
-                    this.coloumn_id++;
+                    this.column_id++;
                 }
             },
             base_key_play: function(go_screen, IsFollowing) {
@@ -30835,7 +30838,7 @@
         Base_History_obj = {
             ItemsReloadLimit: Main_ItemsReloadLimitVideo,
             ItemsLimit: Main_ItemsLimitVideo,
-            ColoumnsCount: Main_ColoumnsCountVideo,
+            ColumnsCount: Main_ColumnsCountVideo,
             addFocus: Screens_addFocusVideo,
             rowClass: 'animate_height_transition',
             thumbclass: 'stream_thumbnail_live_holder',
@@ -31495,9 +31498,9 @@
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
-                this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_FeaturedCellArray(cell), this.screen);
+                this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_FeaturedCellArray(cell), this.screen);
 
-                this.coloumn_id++;
+                this.column_id++;
             }
         };
     }
@@ -31855,13 +31858,13 @@
                         this.idObject[cell.id] = 1;
 
                         this.tempHtml += Screens_createCellChannel(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
                             this.screen
                         );
 
-                        this.coloumn_id++;
+                        this.column_id++;
                     }
                 }
             },
@@ -32022,7 +32025,7 @@
                         this.idObject[cell.data[7]] = 1;
 
                         this.tempHtml += Screens_createCellLive(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             cell.data,
                             this.screen,
@@ -32033,7 +32036,7 @@
 
                         //If there is alredy one stream shoing all the rest is a VOD
                         this.streamerID[cell.data[14]] = 1;
-                        this.coloumn_id++;
+                        this.column_id++;
                     }
                 },
                 SwitchesIcons: ['movie-play', 'movie', 'settings'],
@@ -32134,7 +32137,7 @@
                         this.idObject[cell.data[7]] = 1;
 
                         this.tempHtml += Screens_createCellVod(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             cell.data,
                             this.screen,
@@ -32142,7 +32145,7 @@
                             cell.watched
                         );
 
-                        this.coloumn_id++;
+                        this.column_id++;
                     }
                 },
                 SwitchesIcons: ['play', 'movie', 'settings'],
@@ -32227,7 +32230,7 @@
                         this.idObject[cell.data[7]] = 1;
 
                         this.tempHtml += Screens_createCellClip(
-                            this.row_id + '_' + this.coloumn_id,
+                            this.row_id + '_' + this.column_id,
                             this.ids,
                             cell.data,
                             this.screen,
@@ -32235,7 +32238,7 @@
                             cell.watched
                         );
 
-                        this.coloumn_id++;
+                        this.column_id++;
                     }
                 },
                 SwitchesIcons: ['play', 'movie-play', 'settings'],
@@ -32331,12 +32334,12 @@
         }
 
         this.itemsCount += 3;
-        this.coloumn_id += 3;
+        this.column_id += 3;
 
         ScreenObj[key].BannerTime = new Date().getTime() + AffiliatedTIme;
 
         ScreensObj_banner_added_section = true;
-        ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
+        ScreenObj[key].itemsCount += ScreenObj[key].ColumnsCount;
     }
 
     function ScreensObj_CheckIsOpen(key, preventRefresh) {
@@ -40922,7 +40925,7 @@
     //Variable initialization
     var Users_cursorY = 0;
     var Users_cursorX = 0;
-    var Users_ColoumnsCount = 8;
+    var Users_ColumnsCount = 8;
     var Users_RemoveCursor = 0;
     var Users_RemoveDialogID = null;
     var Users_beforeUser = 1;
@@ -41137,7 +41140,7 @@
     function Users_addFocus(forceScroll) {
         Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, Main_classThumb);
 
-        Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColoumnsCountChannel, AddUser_UsernameArray.length + 1);
+        Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColumnsCountChannel, AddUser_UsernameArray.length + 1);
 
         if (Main_YchangeAddFocus(Users_cursorY) || forceScroll) {
             if (Users_cursorY > 1) {
@@ -41358,10 +41361,10 @@
                     Users_addFocus();
                 } else if (!Main_ThumbNull(Users_cursorY - 1, 0, Users_ids[0])) {
                     Users_removeFocus();
-                    Users_cursorX = Users_ColoumnsCount - 1;
+                    Users_cursorX = Users_ColumnsCount - 1;
                     Users_addFocus();
                 } else {
-                    for (i = Users_ColoumnsCount - 1; i > -1; i--) {
+                    for (i = Users_ColumnsCount - 1; i > -1; i--) {
                         if (Main_ThumbNull(Users_cursorY - 1, i, Users_ids[0])) {
                             Users_removeFocus();
                             Users_cursorY--;
@@ -41401,7 +41404,7 @@
             case KEY_UP:
                 if (Users_isRemoveDialogShown() || Users_isUserDialogShown()) break;
                 if (Users_cursorY) {
-                    for (i = 0; i < Users_ColoumnsCount; i++) {
+                    for (i = 0; i < Users_ColumnsCount; i++) {
                         if (Main_ThumbNull(Users_cursorY - 1, Users_cursorX - i, Users_ids[0])) {
                             Users_removeFocus();
                             Users_cursorY--;
@@ -41414,7 +41417,7 @@
                 break;
             case KEY_DOWN:
                 if (Users_isRemoveDialogShown() || Users_isUserDialogShown()) break;
-                for (i = 0; i < Users_ColoumnsCount; i++) {
+                for (i = 0; i < Users_ColumnsCount; i++) {
                     if (Main_ThumbNull(Users_cursorY + 1, Users_cursorX - i, Users_ids[0])) {
                         Users_removeFocus();
                         Users_cursorY++;
