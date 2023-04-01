@@ -164,7 +164,6 @@ function ScreensObj_StartAllVars() {
             } else Screens_OpenSidePanel(false, this.screen);
         },
         concatenate: function (responseObj) {
-            console.log('responseObj', responseObj);
             if (this.data) {
                 if (responseObj[this.object]) {
                     this.data.push.apply(this.data, responseObj[this.object]);
@@ -427,7 +426,7 @@ function ScreensObj_StartAllVars() {
         setMax: function (tempObj) {
             if (this.useHelix) {
                 this.cursor = tempObj.pagination.cursor;
-                console.log('this.cursor', this.cursor);
+
                 if (!this.cursor || this.cursor === '') this.dataEnded = true;
             } else {
                 if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
