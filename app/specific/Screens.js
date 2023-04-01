@@ -466,7 +466,7 @@ function Screens_loadDataSuccess(key) {
     //var appendDiv = !ScreenObj[key].column_id;
 
     if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
-    else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
+    else ScreenObj[key].dataEnded = true;
 
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
         ScreenObj[key].addSwitches();
