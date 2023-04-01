@@ -27304,7 +27304,7 @@
         //var appendDiv = !ScreenObj[key].column_id;
 
         if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
-        else ScreenObj[key].dataEnded = true;
+        else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
 
         if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
             ScreenObj[key].addSwitches();
@@ -28795,9 +28795,11 @@
         } else {
             //Prevent scroll too fast out of ScreenObj[key].Cells.length
             //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
+
             if (
                 ScreenObj[key].dataEnded ||
-                ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1 || //banner
+                ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1 || //banner or mid row
+                ScreenObj[key].Cells[ScreenObj[key].posY + y] || //Last row and Cell len less then ItemsLimit
                 (ScreenObj[key].BannerCreated && ScreenObj[key].itemsCount === 1 && ScreenObj[key].HasSwitches && ScreenObj[key].posY > -1)
             ) {
                 if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(y, key);
@@ -30229,7 +30231,6 @@
                 } else Screens_OpenSidePanel(false, this.screen);
             },
             concatenate: function(responseObj) {
-                console.log('responseObj', responseObj);
                 if (this.data) {
                     if (responseObj[this.object]) {
                         this.data.push.apply(this.data, responseObj[this.object]);
@@ -30491,7 +30492,7 @@
             setMax: function(tempObj) {
                 if (this.useHelix) {
                     this.cursor = tempObj.pagination.cursor;
-                    console.log('this.cursor', this.cursor);
+
                     if (!this.cursor || this.cursor === '') this.dataEnded = true;
                 } else {
                     if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
