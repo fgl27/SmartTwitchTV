@@ -332,7 +332,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].loadChannelOffsset = 0;
     ScreenObj[key].followerChannels = [];
     ScreenObj[key].followerChannelsDone = false;
-    ScreenObj[key].coloumn_id = 0;
+    ScreenObj[key].column_id = 0;
     ScreenObj[key].channelDataPos = 0;
     ScreenObj[key].getFollowed = true;
     ScreenObj[key].data = null;
@@ -413,18 +413,18 @@ function Screens_HttpResultStatus(resultObj, key) {
         //token expired
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !ScreenObj[key].isQuery) {
-            AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+            AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
         } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
-            Screens_loadDatafail(key);
+            Screens_loadDataFail(key);
         } else {
-            AddCode_AppToken(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+            AddCode_AppToken(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
         }
     } else {
-        Screens_loadDatafail(key);
+        Screens_loadDataFail(key);
     }
 }
 
-function Screens_loadDatafail(key) {
+function Screens_loadDataFail(key) {
     ScreenObj[key].loadingData = false;
     ScreenObj[key].FirstRunEnd = true;
 
@@ -456,14 +456,15 @@ function Screens_loadDataSuccess(key) {
     var data_length = ScreenObj[key].data.length,
         response_items = data_length - ScreenObj[key].data_cursor;
 
-    //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
+    //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColumnsCount,
     //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
 
-    //If the intention is to load less then ColoumnsCount for it row consistently (have multiple not full rows), this function needs to be reworked appendDiv will not solve it, and that doesn't make sense for most screens.
+    //If the intention is to load less then ColumnsCount for it row consistently (have multiple not full rows), this function needs to be reworked appendDiv will not solve it, and that doesn't make sense for most screens.
 
-    //appendDiv doesn't applies if the content end and we have less then ColoumnsCount to add for the last row
+    //appendDiv doesn't applies if the content end and we have less then ColumnsCount to add for the last row
 
-    //var appendDiv = !ScreenObj[key].coloumn_id;
+    //var appendDiv = !ScreenObj[key].column_id;
+
     if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
     else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
 
@@ -476,23 +477,23 @@ function Screens_loadDataSuccess(key) {
     }
 
     if (response_items) {
-        var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount),
+        var response_rows = Math.ceil(response_items / ScreenObj[key].ColumnsCount),
             max_row = ScreenObj[key].row_id + response_rows;
 
         for (ScreenObj[key].row_id; ScreenObj[key].row_id < max_row; ) {
-            if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
-                ScreenObj[key].coloumn_id = 0;
+            if (ScreenObj[key].column_id === ScreenObj[key].ColumnsCount) {
+                ScreenObj[key].column_id = 0;
             }
 
             for (
-                ScreenObj[key].coloumn_id;
-                ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length;
+                ScreenObj[key].column_id;
+                ScreenObj[key].column_id < ScreenObj[key].ColumnsCount && ScreenObj[key].data_cursor < data_length;
                 ScreenObj[key].data_cursor++
             ) {
                 if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
             }
 
-            if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
+            if (ScreenObj[key].column_id === ScreenObj[key].ColumnsCount) {
                 ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
                 ScreenObj[key].row_id++;
                 ScreenObj[key].tempHtml = '';
@@ -923,7 +924,7 @@ function Screens_loadDataSuccessFinish(key) {
 
         Main_SaveValuesWithTimeout();
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
-        Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+        Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
     }
 }
 
@@ -1056,7 +1057,7 @@ function Screens_addFocus(forceScroll, key) {
         Screens_addFocusFollow(key);
 
         if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible()) {
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
         }
 
         return;
@@ -1072,7 +1073,7 @@ function Screens_addFocus(forceScroll, key) {
         ) {
             Screens_loadDataRequestStart(key);
         } else if (
-            ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount &&
+            ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColumnsCount &&
             ScreenObj[key].data_cursor < ScreenObj[key].data.length
         ) {
             ScreenObj[key].loadDataSuccess();
@@ -1202,7 +1203,7 @@ function Screens_LoadPreviewStart(key, obj) {
             Screens_LoadPreviewResult,
             noop_fun,
             key,
-            (ScreenObj[key].posY * ScreenObj[key].ColoumnsCount + ScreenObj[key].posX) % 100, //checkResult
+            (ScreenObj[key].posY * ScreenObj[key].ColumnsCount + ScreenObj[key].posX) % 100, //checkResult
             'POST', //Method, null for get
             PlayClip_postMessage.replace('%x', obj[0]) //postMessage, null for get
         );
@@ -1239,7 +1240,7 @@ function Screens_LoadPreviewStart(key, obj) {
     PlayHLS_GetPlayListAsync(
         isLive,
         id,
-        (ScreenObj[key].posY * ScreenObj[key].ColoumnsCount + ScreenObj[key].posX) % 100,
+        (ScreenObj[key].posY * ScreenObj[key].ColumnsCount + ScreenObj[key].posX) % 100,
         key,
         Screens_LoadPreviewResult
     );
@@ -1253,7 +1254,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
         !Main_isAboutDialogVisible() &&
-        y === (ScreenObj[x].posY * ScreenObj[x].ColoumnsCount + ScreenObj[x].posX) % 100 &&
+        y === (ScreenObj[x].posY * ScreenObj[x].ColumnsCount + ScreenObj[x].posX) % 100 &&
         ScreenObj[x].posY + '_' + ScreenObj[x].posX === ScreenObj[x].focusPos
     ) {
         if (StreamData && Screens_ObjNotNull(x)) {
@@ -1682,7 +1683,7 @@ function Screens_addrowEnd(forceScroll, key) {
         ScreenObj[key].addFocus(forceScroll, key);
 
         if (key === Main_values.Main_Go && !Settings_isVisible())
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
 
         if (ScreenObj[key].DataObj[id].event_name) {
             Main_EventBanner(ScreenObj[key].DataObj[id].event_name + '_viewed', ScreenObj[key].ScreenName, ScreenObj[key].DataObj[id].image);
@@ -1835,7 +1836,7 @@ function Screens_KeyUpDown(y, key) {
     } else {
         var i = 0;
 
-        for (i; i < ScreenObj[key].ColoumnsCount; i++) {
+        for (i; i < ScreenObj[key].ColumnsCount; i++) {
             if (ScreenObj[key].DataObj[ScreenObj[key].posY + y + '_' + (ScreenObj[key].posX - i)]) {
                 Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
                 return;
@@ -1914,7 +1915,7 @@ function Screens_handleKeyUp(key, e) {
         if (!Screens_clear) {
             if (!ScreenObj[key].posX) Screens_OpenSidePanel(false, key);
             else {
-                Screens_KeyLeftRight(-1, ScreenObj[key].ColoumnsCount - 1, key);
+                Screens_KeyLeftRight(-1, ScreenObj[key].ColumnsCount - 1, key);
                 Main_addEventListener('keydown', ScreenObj[key].key_fun);
             }
         }
@@ -1941,10 +1942,10 @@ function Screens_keyRight(key) {
     //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
     if (
         ScreenObj[key].dataEnded ||
-        ScreenObj[key].posX < ScreenObj[key].ColoumnsCount - 1 ||
+        ScreenObj[key].posX < ScreenObj[key].ColumnsCount - 1 ||
         ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1
     ) {
-        if (ScreenObj[key].posX === ScreenObj[key].ColoumnsCount - 1) {
+        if (ScreenObj[key].posX === ScreenObj[key].ColumnsCount - 1) {
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0, key);
         } else Screens_KeyLeftRight(1, 0, key);
     } else Screens_addFocus(true, key);

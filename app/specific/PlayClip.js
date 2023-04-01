@@ -484,7 +484,7 @@ function PlayClip_UpdateHistory(screen) {
 
 function PlayClip_UpdateNext() {
     var nextid = PlayClip_getIdNext(1, 0);
-    var backid = PlayClip_getIdNext(-1, ScreenObj[Main_values.Main_Go].ColoumnsCount - 1);
+    var backid = PlayClip_getIdNext(-1, ScreenObj[Main_values.Main_Go].ColumnsCount - 1);
     var data;
 
     PlayClip_HasNext = false;
@@ -557,7 +557,7 @@ function PlayClip_PlayNext() {
 function PlayClip_PlayPreviously() {
     PlayClip_PreshutdownStream(false);
 
-    Screens_KeyLeftRight(-1, ScreenObj[Main_values.Main_Go].ColoumnsCount - 1, Main_values.Main_Go);
+    Screens_KeyLeftRight(-1, ScreenObj[Main_values.Main_Go].ColumnsCount - 1, Main_values.Main_Go);
     PlayClip_PlayNextPreviously();
 }
 

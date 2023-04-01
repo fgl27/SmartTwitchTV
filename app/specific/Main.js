@@ -771,8 +771,8 @@ function Main_CounterDialogRst() {
     Main_empty('dialog_counter_text');
 }
 
-function Main_CounterDialog(x, y, coloumns, total) {
-    if (total > 0) Main_textContent('dialog_counter_text', y * coloumns + (x + 1) + '/' + total);
+function Main_CounterDialog(x, y, Columns, total) {
+    if (total > 0) Main_textContent('dialog_counter_text', y * Columns + (x + 1) + '/' + total);
     else Main_CounterDialogRst();
 }
 

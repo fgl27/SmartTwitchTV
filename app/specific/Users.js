@@ -21,7 +21,7 @@
 //Variable initialization
 var Users_cursorY = 0;
 var Users_cursorX = 0;
-var Users_ColoumnsCount = 8;
+var Users_ColumnsCount = 8;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
 var Users_beforeUser = 1;
@@ -236,7 +236,7 @@ function Users_loadDataSuccessFinish() {
 function Users_addFocus(forceScroll) {
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, Main_classThumb);
 
-    Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColoumnsCountChannel, AddUser_UsernameArray.length + 1);
+    Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColumnsCountChannel, AddUser_UsernameArray.length + 1);
 
     if (Main_YchangeAddFocus(Users_cursorY) || forceScroll) {
         if (Users_cursorY > 1) {
@@ -457,10 +457,10 @@ function Users_handleKeyDown(event) {
                 Users_addFocus();
             } else if (!Main_ThumbNull(Users_cursorY - 1, 0, Users_ids[0])) {
                 Users_removeFocus();
-                Users_cursorX = Users_ColoumnsCount - 1;
+                Users_cursorX = Users_ColumnsCount - 1;
                 Users_addFocus();
             } else {
-                for (i = Users_ColoumnsCount - 1; i > -1; i--) {
+                for (i = Users_ColumnsCount - 1; i > -1; i--) {
                     if (Main_ThumbNull(Users_cursorY - 1, i, Users_ids[0])) {
                         Users_removeFocus();
                         Users_cursorY--;
@@ -500,7 +500,7 @@ function Users_handleKeyDown(event) {
         case KEY_UP:
             if (Users_isRemoveDialogShown() || Users_isUserDialogShown()) break;
             if (Users_cursorY) {
-                for (i = 0; i < Users_ColoumnsCount; i++) {
+                for (i = 0; i < Users_ColumnsCount; i++) {
                     if (Main_ThumbNull(Users_cursorY - 1, Users_cursorX - i, Users_ids[0])) {
                         Users_removeFocus();
                         Users_cursorY--;
@@ -513,7 +513,7 @@ function Users_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             if (Users_isRemoveDialogShown() || Users_isUserDialogShown()) break;
-            for (i = 0; i < Users_ColoumnsCount; i++) {
+            for (i = 0; i < Users_ColumnsCount; i++) {
                 if (Main_ThumbNull(Users_cursorY + 1, Users_cursorX - i, Users_ids[0])) {
                     Users_removeFocus();
                     Users_cursorY++;
