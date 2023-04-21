@@ -658,7 +658,7 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         id +
         '">' +
         Play_timeS(valuesArray[1]) +
-        '<span>' +
+        '</span>' +
         STR_SPACE_HTML +
         '<span>' +
         valuesArray[11] +
