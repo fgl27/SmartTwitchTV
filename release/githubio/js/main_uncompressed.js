@@ -27494,7 +27494,7 @@
             id +
             '">' +
             Play_timeS(valuesArray[1]) +
-            '<span>' +
+            '</span>' +
             STR_SPACE_HTML +
             '<span>' +
             valuesArray[11] +
