@@ -653,15 +653,15 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '" class="stream_info_live_name" style="width: 61%; display: inline-block;">' +
         valuesArray[4] +
         '</div><div class="stream_info_live" style="width:38%; float: right; text-align: right; display: inline-block;">' +
-        '<span>' +
-        valuesArray[11] +
-        '</span>' +
-        STR_SPACE_HTML +
         '<span id="' +
         idArray[8] +
         id +
         '">' +
         Play_timeS(valuesArray[1]) +
+        '<span>' +
+        STR_SPACE_HTML +
+        '<span>' +
+        valuesArray[11] +
         '</span></div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' +
@@ -726,15 +726,15 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
         valuesArray[1] +
         '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
-        '<span>' +
-        valuesArray[5] +
-        '</span>' +
-        STR_SPACE_HTML +
         '<span id="' +
         idArray[8] +
         id +
         '">' +
         Play_timeS(valuesArray[11]) +
+        '</span>' +
+        STR_SPACE_HTML +
+        '<span>' +
+        valuesArray[5] +
         '</span></div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' +
