@@ -4559,9 +4559,13 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'February 25 2023',
-        WebTag: 651, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'May 05 2023',
+        WebTag: 652, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version May 05 2023',
+                changes: ['Fix VOD chat']
+            },
+            {
                 title: 'Web Version February 25 2023',
                 changes: ['General UI improves', 'General improves']
             },
@@ -4579,24 +4583,6 @@
                 changes: [
                     'Update player to latest version',
                     'Fix resolution cap at 720p or lower for the main player during PP mode (only affected a few devices)',
-                    'General improves'
-                ]
-            },
-            {
-                title: 'Web Version February 18 2023',
-                changes: [
-                    'Improve volume scale to use steps of 5% (this reset some volumes to default, Player Preview volume to 100% and player volume (When preview is showing) to 25%)',
-                    'Improve preview related settings description to be easier to understand',
-                    'Add controls over the mains screen player volume (Settings Player section -> Preview thumbnail player settings -> Screen preview volume)',
-                    'General improves'
-                ]
-            },
-            {
-                title: 'Web Version January 29 2022 and Apk Version 3.0.345 and Up',
-                changes: [
-                    'Update player to latest version',
-                    'Fix random unwanted background playback',
-                    'Add a option to open the VOD of current Live once the Live end (Only works if you have a user and Live history enabled)',
                     'General improves'
                 ]
             }
@@ -10673,11 +10659,12 @@
     var Chat_hasEnded = false;
     var Chat_CleanMax = 60;
     var Chat_JustStarted = true;
+    var Chat_comment_ids = {};
 
     var Chat_loadChatRequestPost =
         '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","contentOffsetSeconds":%o},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
-    var Chat_loadChatRequestPost_Cursor =
-        '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","cursor":"%c"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
+    // var Chat_loadChatRequestPost_Cursor =
+    //     '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","cursor":"%c"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
 
     var Chat_UserJPKRegex = new RegExp('[^\x00-\x7F]', 'g');
 
@@ -10934,6 +10921,7 @@
     }
 
     function Chat_loadChatRequest(id) {
+        chat_next_offset = Chat_offset ? parseInt(Chat_offset) : 0;
         FullxmlHttpGet(
             PlayClip_BaseUrl,
             Play_base_backup_headers_Array,
@@ -10942,8 +10930,9 @@
             id,
             0,
             'POST', //Method, null for get
-            Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', Chat_offset ? parseInt(Chat_offset) : 0)
+            Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', chat_next_offset)
         );
+        chat_next_offset++;
     }
 
     function Chat_loadChatRequestResult(responseObj, id) {
@@ -10975,7 +10964,8 @@
         var responseText = JSON.parse(responseObj),
             comments;
 
-        var div,
+        var duplicatedCounter = 0,
+            div,
             mmessage,
             null_next = Chat_cursor === null,
             nickColor,
@@ -11023,6 +11013,11 @@
 
         for (i = 0, len = comments.length; i < len; i++) {
             comments[i] = comments[i].node;
+            if (Chat_comment_ids[comments[i].id]) {
+                duplicatedCounter++;
+                continue;
+            }
+            Chat_comment_ids[comments[i].id] = true;
 
             //some comments have no commenter I assume those have ben deleted during live chat but not fully from chat history
             if (!comments[i].commenter) continue;
@@ -11134,6 +11129,13 @@
             else if (Chat_cursor !== '') Chat_MessageVectorNext(messageObj);
         }
 
+        chat_next_offset = comments[comments.length - 1].contentOffsetSeconds;
+
+        //Iff all msg received are duplicated run again as it will run with a diff offset
+        if (duplicatedCounter >= comments.length && Chat_cursor !== '') {
+            Chat_loadChatNext(id);
+        }
+
         if (null_next && Chat_Id[0] === id) {
             Chat_JustStarted = false;
             Chat_Play(id);
@@ -11192,6 +11194,9 @@
         Chat_Messages = [];
         Chat_MessagesNext = [];
         Chat_Position = 0;
+        chat_next_offset = 0;
+        chat_next_offset_old = 0;
+        Chat_comment_ids = {};
         ChatLive_ClearIds(0);
         ChatLive_ClearIds(1);
         ChatLive_resetChatters(0);
@@ -11211,19 +11216,18 @@
                 }
             }
         } else {
-            Chat_Pause();
             if (Chat_cursor !== '') {
                 //array.slice() may crash RangeError: Maximum call stack size exceeded
                 Chat_Messages = Main_Slice(Chat_MessagesNext);
 
                 Chat_Position = 0;
-                Chat_Play(id);
+
                 Chat_MessagesNext = [];
 
                 if (Chat_Id[0] === id) Chat_loadChatNext(id);
                 Chat_Clean(0);
             } else {
-                //Chat has eneded
+                //Chat has ended
 
                 if (!Chat_hasEnded) {
                     ChatLive_ElemntAdd({
@@ -11242,8 +11246,16 @@
         if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
     }
 
+    var chat_next_offset = 0;
+    var chat_next_offset_old = 0;
+
     function Chat_loadChatNextRequest(id) {
         if (Chat_cursor === '') return;
+
+        if (chat_next_offset_old === chat_next_offset) {
+            chat_next_offset++;
+        }
+        chat_next_offset_old = chat_next_offset;
 
         FullxmlHttpGet(
             PlayClip_BaseUrl,
@@ -11253,7 +11265,7 @@
             id,
             0,
             'POST', //Method, null for get
-            Chat_loadChatRequestPost_Cursor.replace('%v', Main_values.ChannelVod_vodId).replace('%c', Chat_cursor)
+            Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', chat_next_offset ? parseInt(chat_next_offset) : 0)
         );
     }
 

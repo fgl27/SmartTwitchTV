@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'February 25 2023',
-    WebTag: 651, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'May 05 2023',
+    WebTag: 652, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version May 05 2023',
+            changes: ['Fix VOD chat']
+        },
         {
             title: 'Web Version February 25 2023',
             changes: ['General UI improves', 'General improves']
@@ -44,24 +48,6 @@ var version = {
             changes: [
                 'Update player to latest version',
                 'Fix resolution cap at 720p or lower for the main player during PP mode (only affected a few devices)',
-                'General improves'
-            ]
-        },
-        {
-            title: 'Web Version February 18 2023',
-            changes: [
-                'Improve volume scale to use steps of 5% (this reset some volumes to default, Player Preview volume to 100% and player volume (When preview is showing) to 25%)',
-                'Improve preview related settings description to be easier to understand',
-                'Add controls over the mains screen player volume (Settings Player section -> Preview thumbnail player settings -> Screen preview volume)',
-                'General improves'
-            ]
-        },
-        {
-            title: 'Web Version January 29 2022 and Apk Version 3.0.345 and Up',
-            changes: [
-                'Update player to latest version',
-                'Fix random unwanted background playback',
-                'Add a option to open the VOD of current Live once the Live end (Only works if you have a user and Live history enabled)',
                 'General improves'
             ]
         }
