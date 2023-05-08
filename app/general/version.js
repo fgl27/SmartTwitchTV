@@ -31,7 +31,7 @@ var version = {
             changes: [
                 'Add Top VOD section back',
                 'Fix Top Clip and VOD',
-                "This section's API are undocumented and a little unsealable, but works most of the time, if it fails refresh it"
+                "This section's API are undocumented and a little unstable, but works most of the time, if it fails refresh it"
             ]
         },
         {
