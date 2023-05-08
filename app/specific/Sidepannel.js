@@ -689,12 +689,6 @@ function Sidepannel_SetDefaultLabels() {
     if (AddUser_UsernameArray[0]) Sidepannel_SetUserLabel(AddUser_UsernameArray[0].display_name);
     else Sidepannel_SetUserLabel(STR_USER_ADD);
 
-    //No longer supported
-    Main_HideElement('side_panel_movel_new_6');
-    // Main_HideElement('side_panel_movel_new_7');
-    Main_HideElement('side_panel_new_6');
-    // Main_HideElement('side_panel_new_7');
-
     Main_HideElement('side_panel_movel_new_8');
     Main_HideElement('side_panel_new_8');
     Main_ShowElement('side_panel_movel_new_5');
@@ -708,7 +702,7 @@ function Sidepannel_SetDefaultLabels() {
     Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
     Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
     Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
-    //Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
     Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
     Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
@@ -891,7 +885,7 @@ function Sidepannel_handleMainKey(Down) {
             Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
         }
     } else {
-        if (Sidepannel_Sidepannel_Pos === 8 || Sidepannel_Sidepannel_Pos === 6) {
+        if (Sidepannel_Sidepannel_Pos === 8) {
             Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
         }
     }

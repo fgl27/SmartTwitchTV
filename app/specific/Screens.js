@@ -2026,7 +2026,7 @@ function Screens_handleKeyDown(key, event) {
                         Sidepannel_Go(Main_UserChannels);
                     } else {
                         ScreenObj[key].IsOpen = Main_games;
-                        Sidepannel_Go(Main_Clip);
+                        Sidepannel_Go(Main_Vod);
                     }
                 } else Sidepannel_Go(ScreenObj[key].key_pgDown);
             }
@@ -3068,7 +3068,7 @@ var Screens_ThumbOptionLanguages = [];
 var Screens_ThumbOptionLanguagesTitles = [];
 
 function Screens_ThumbOptionSetArrowArray(key) {
-    Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES, STR_CLIPS];
+    Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES, STR_VODS, STR_CLIPS];
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_LIVE);
@@ -3101,6 +3101,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
         Main_Live,
         Main_Featured,
         Main_games,
+        Main_Vod,
         Main_Clip,
         Main_UserLive,
         Main_usergames,

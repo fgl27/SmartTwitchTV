@@ -66,7 +66,9 @@ var featuredQuery =
     '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
 var topClipQuery =
     '{"query":"{games(first: 50) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,broadcast{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
-
+var topVodQuery =
+    '{"query":"{games(first: 30) {edges{node{id,name,videos(first:20,types:%a%l, sort:VIEWS){edges{node{id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id,, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}}}"}';
+//,languages:"EN"
 var Base_obj;
 var Base_Vod_obj;
 var Base_Live_obj;
@@ -446,7 +448,12 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
-                this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
+                this.tempHtml += Screens_createCellVod(
+                    this.row_id + '_' + this.column_id,
+                    this.ids,
+                    ScreensObj_VodCellArray(cell, this.isQuery),
+                    this.screen
+                );
 
                 this.column_id++;
             }
@@ -889,17 +896,14 @@ function ScreensObj_InitVod() {
             ContentLang: '',
             highlight: Main_getItemBool('Vod_highlight', false),
             periodPos: Main_getItemInt('vod_periodPos', 2),
-            base_url: Main_kraken_api + 'videos/top?limit=' + Main_ItemsLimitMax,
+            base_post: topVodQuery,
+            isQuery: true,
             set_url: function () {
-                this.url =
-                    this.base_url +
-                    '&broadcast_type=' +
-                    (this.highlight ? 'highlight' : 'archive') +
-                    '&sort=views&offset=' +
-                    this.offset +
-                    '&period=' +
-                    this.period[this.periodPos - 1] +
-                    (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                this.dataEnded = true;
+                this.url = PlayClip_BaseUrl;
+                this.post = this.base_post
+                    .replace('%l', Main_ContentLang === '' ? '' : ',languages:\\"' + Languages_Selected + '\\"')
+                    .replace('%a', this.highlight ? 'HIGHLIGHT' : 'ARCHIVE');
             },
             key_play: function () {
                 if (this.is_a_Banner()) return;
@@ -913,12 +917,9 @@ function ScreensObj_InitVod() {
                     } else Screens_PeriodStart(this.screen);
                 } else this.OpenVodStart();
             },
-            SwitchesIcons: ['movie-play', 'history'],
+            SwitchesIcons: ['movie-play'],
             addSwitches: function () {
-                ScreensObj_addSwitches(
-                    [STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP],
-                    this.screen
-                );
+                ScreensObj_addSwitches([STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD], this.screen);
             },
             label_init: function () {
                 ScreensObj_CheckUser(this.screen);
@@ -938,6 +939,17 @@ function ScreensObj_InitVod() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Vod_obj);
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.games;
+
+        if (hasData) {
+            this.data = ScreensObj_FormatTopClipVod(responseObj.data.games.edges, 'videos');
+            this.loadDataSuccess();
+        }
+
+        this.loadingData = false;
+    };
 }
 
 function ScreensObj_InitChannelVod() {
@@ -1039,7 +1051,7 @@ function ScreensObj_InitAGameVod() {
             periodMaxPos: 4,
             HeadersArray: Main_base_array_header,
             object: 'data',
-            key_pgDown: Main_Clip,
+            key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             ids: Screens_ScreenIds('AGameVod', key),
             ScreenName: 'AGameVod',
@@ -1320,7 +1332,7 @@ function ScreensObj_InitAGame() {
             object: 'data',
             CheckContentLang: 1,
             ContentLang: '',
-            key_pgDown: Main_Clip,
+            key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             hasBackupData: true,
             base_url: Main_helix_api + 'streams?game_id=',
@@ -1462,7 +1474,7 @@ function ScreensObj_InitClip() {
             table: 'stream_table_clip',
             screen: key,
             key_pgDown: Main_Live,
-            key_pgUp: Main_games,
+            key_pgUp: Main_Vod,
             CheckContentLang: 1,
             ContentLang: '',
             periodPos: Main_getItemInt('Clip_periodPos', 2),
@@ -1503,7 +1515,7 @@ function ScreensObj_InitClip() {
         var hasData = responseObj.data && responseObj.data.games;
 
         if (hasData) {
-            this.data = ScreensObj_FormatTopClipVod(responseObj.data.games.edges);
+            this.data = ScreensObj_FormatTopClipVod(responseObj.data.games.edges, 'clips');
             this.loadDataSuccess();
         }
 
@@ -1571,7 +1583,7 @@ function ScreensObj_InitAGameClip() {
             ScreenName: 'AGameClip',
             table: 'stream_table_a_game_clip',
             screen: key,
-            key_pgDown: Main_Clip,
+            key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             CheckContentLang: 1,
             ContentLang: '',
@@ -1623,7 +1635,7 @@ function ScreensObj_InitGame() {
             ScreenName: 'Game',
             table: 'stream_table_games',
             screen: key,
-            key_pgDown: Main_Clip,
+            key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             object: 'data',
             base_url: Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax,
@@ -2436,7 +2448,28 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
     ];
 }
 
-function ScreensObj_VodCellArray(cell) {
+function ScreensObj_VodCellArray(cell, isQuery) {
+    if (isQuery) {
+        return [
+            ScreensObj_VodGetPreview(cell.thumbnailURLs[0], null), //0
+            cell.creator ? cell.creator.displayName : '', //1
+            Main_videoCreatedAt(cell.createdAt), //2
+            cell.game_name, //3
+            Main_addCommas(cell.viewCount), //4
+            cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
+            cell.creator ? cell.creator.login : '', //6
+            cell.id, //7
+            cell.animatedPreviewURL, //8
+            cell.language, //9
+            twemoji.parse(cell.title), //10
+            Play_timeHMS(cell.duration), //11
+            cell.createdAt, //12
+            cell.viewCount, //13
+            cell.creator ? cell.creator.id : '', //14
+            cell.duration //15
+        ];
+    }
+
     return [
         ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
         cell.user_name, //1
@@ -2653,7 +2686,7 @@ function ScreensObj_UpdateGameInfo(PlayVodClip, key) {
     BaseXmlHttpGet(theUrl, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
 }
 
-function ScreensObj_FormatTopClipVod(data) {
+function ScreensObj_FormatTopClipVod(data, type) {
     var i,
         j,
         i_length = data.length,
@@ -2665,12 +2698,12 @@ function ScreensObj_FormatTopClipVod(data) {
         retArray = [];
 
     for (i = 0; i < i_length; i++) {
-        if (!data[i].node.clips) {
+        if (!data[i].node[type]) {
             continue;
         }
         game_id = data[i].node.id;
         game_name = data[i].node.name;
-        game_node = data[i].node.clips.edges;
+        game_node = data[i].node[type].edges;
         j_length = game_node.length;
 
         for (j = 0; j < j_length; j++) {
