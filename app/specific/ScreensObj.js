@@ -931,7 +931,7 @@ function ScreensObj_InitVod() {
             },
             SetPeriod: function () {
                 Main_setItem('vod_periodPos', this.periodPos);
-                ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
+                ScreensObj_SetTopLable(STR_VIDEOS, this.highlight ? STR_HIGHLIGHTS : STR_VODS);
             }
         },
         Base_obj
