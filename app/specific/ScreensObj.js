@@ -64,6 +64,8 @@ var userGameQuery =
     '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
 var featuredQuery =
     '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
+var topClipQuery =
+    '{"query":"{games(first: 50) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,broadcast{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -584,7 +586,7 @@ function ScreensObj_StartAllVars() {
         },
         Cells: [],
         addCell: function (cell) {
-            var idValue = this.useHelix ? cell.id : cell.tracking_id;
+            var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
 
             if (!this.idObject[idValue]) {
                 this.itemsCount++;
@@ -593,7 +595,7 @@ function ScreensObj_StartAllVars() {
                 this.tempHtml += Screens_createCellClip(
                     this.row_id + '_' + this.column_id,
                     this.ids,
-                    ScreensObj_ClipCellArray(cell, this.isKraken),
+                    ScreensObj_ClipCellArray(cell, this.isKraken, this.isQuery),
                     this.screen
                 );
 
@@ -1456,6 +1458,7 @@ function ScreensObj_InitClip() {
         {
             ids: Screens_ScreenIds('Clip', key),
             ScreenName: 'Clip',
+            isQuery: true,
             table: 'stream_table_clip',
             screen: key,
             key_pgDown: Main_Live,
@@ -1463,17 +1466,14 @@ function ScreensObj_InitClip() {
             CheckContentLang: 1,
             ContentLang: '',
             periodPos: Main_getItemInt('Clip_periodPos', 2),
-            base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
-            isKraken: true,
+            base_post: topClipQuery,
+            periods: [topClipQuery],
             set_url: function () {
-                this.url =
-                    this.base_url +
-                    '&period=' +
-                    this.period[this.periodPos - 1] +
-                    (this.cursor ? '&cursor=' + this.cursor : '') +
-                    (Main_ContentLang !== ''
-                        ? '&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang)
-                        : '');
+                this.dataEnded = true;
+                this.url = PlayClip_BaseUrl;
+                this.post = this.base_post
+                    .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
+                    .replace('%t', this.period[this.periodPos - 1]);
             },
             SetPeriod: function () {
                 Main_setItem('Clip_periodPos', this.periodPos);
@@ -1498,6 +1498,19 @@ function ScreensObj_InitClip() {
     ScreenObj[key].HeadersArray = Main_base_array_header;
     ScreenObj[key].object = 'clips';
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.games;
+
+        if (hasData) {
+            this.data = ScreensObj_FormatTopClipVod(responseObj.data.games.edges);
+            this.loadDataSuccess();
+        }
+
+        this.loadingData = false;
+    };
+
+    ScreenObj[key].period = ['LAST_DAY', 'LAST_WEEK', 'LAST_MONTH', 'ALL_TIME'];
 }
 
 function ScreensObj_InitChannelClip() {
@@ -2444,7 +2457,7 @@ function ScreensObj_VodCellArray(cell) {
     ];
 }
 
-function ScreensObj_ClipCellArray(cell, isKraken) {
+function ScreensObj_ClipCellArray(cell, isKraken, isQuery) {
     if (isKraken) {
         return [
             cell.slug, //0
@@ -2467,6 +2480,31 @@ function ScreensObj_ClipCellArray(cell, isKraken) {
             cell.language //17
         ];
     }
+
+    if (isQuery) {
+        return [
+            cell.slug, //0
+            cell.durationSeconds, //1
+            cell.broadcaster ? cell.broadcaster.id : '', //2
+            cell.game_name, //3
+            cell.broadcaster ? cell.broadcaster.displayName : '', //4
+            null, //5
+            cell.broadcaster ? cell.broadcaster.login : '', //6
+            cell.id, //7
+            cell.broadcast ? cell.broadcast.id : null, //8
+            cell.broadcast ? cell.videoOffsetSeconds : null, //9
+            twemoji.parse(cell.title), //10
+            '[' + cell.language.toUpperCase() + ']', //11
+            cell.created_at, //12
+            cell.viewCount, //13
+            Main_addCommas(cell.viewCount), //14
+            cell.thumbnailURL, //15
+            Main_videoCreatedAt(cell.createdAt), //16
+            cell.language, //17
+            cell.game_id //18
+        ];
+    }
+
     return [
         cell.id, //0
         cell.duration, //1
@@ -2613,6 +2651,44 @@ function ScreensObj_UpdateGameInfo(PlayVodClip, key) {
     var theUrl = Main_helix_api + 'games?id=' + Main_values.Main_gameSelected_id;
 
     BaseXmlHttpGet(theUrl, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
+}
+
+function ScreensObj_FormatTopClipVod(data) {
+    var i,
+        j,
+        i_length = data.length,
+        j_length,
+        game_id,
+        game_name,
+        game_node,
+        clip_node,
+        retArray = [];
+
+    for (i = 0; i < i_length; i++) {
+        if (!data[i].node.clips) {
+            continue;
+        }
+        game_id = data[i].node.id;
+        game_name = data[i].node.name;
+        game_node = data[i].node.clips.edges;
+        j_length = game_node.length;
+
+        for (j = 0; j < j_length; j++) {
+            clip_node = game_node[j].node;
+            clip_node.game_id = game_id;
+            clip_node.game_name = game_name;
+            retArray.push(clip_node);
+        }
+    }
+
+    retArray.sort(function (a, b) {
+        if (!a || !b) {
+            return 0;
+        }
+        return a.viewCount < b.viewCount ? 1 : a.viewCount > b.viewCount ? -1 : 0;
+    });
+
+    return retArray;
 }
 
 function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {

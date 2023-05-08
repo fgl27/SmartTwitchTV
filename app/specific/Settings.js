@@ -27,11 +27,11 @@ var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5
 var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
 var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 //For clips the api accept a coma and extra languages
-var Languages_Extra = {
-    en: 'en,en-gb',
-    es: 'es,es-mx',
-    pt: 'pt,pt-br'
-};
+// var Languages_Extra = {
+//     en: 'en,en-gb',
+//     es: 'es,es-mx',
+//     pt: 'pt,pt-br'
+// };
 var Settings_VolumeScale = 5;
 
 var Settings_value = {
