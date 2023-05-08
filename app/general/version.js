@@ -23,9 +23,17 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'May 05 2023',
-    WebTag: 652, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'May 08 2023',
+    WebTag: 653, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version May 08 2023',
+            changes: [
+                'Add Top VOD section back',
+                'Fix Top Clip and VOD',
+                "This section's API are undocumented and a little unsealable, but works most of the time, if it fails refresh it"
+            ]
+        },
         {
             title: 'Web Version May 05 2023',
             changes: ['Fix VOD chat']

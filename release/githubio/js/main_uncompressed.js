@@ -4559,9 +4559,17 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'May 05 2023',
-        WebTag: 652, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'May 08 2023',
+        WebTag: 653, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version May 08 2023',
+                changes: [
+                    'Add Top VOD section back',
+                    'Fix Top Clip and VOD',
+                    "This section's API are undocumented and a little unsealable, but works most of the time, if it fails refresh it"
+                ]
+            },
+            {
                 title: 'Web Version May 05 2023',
                 changes: ['Fix VOD chat']
             },
@@ -28883,7 +28891,7 @@
                             Sidepannel_Go(Main_UserChannels);
                         } else {
                             ScreenObj[key].IsOpen = Main_games;
-                            Sidepannel_Go(Main_Clip);
+                            Sidepannel_Go(Main_Vod);
                         }
                     } else Sidepannel_Go(ScreenObj[key].key_pgDown);
                 }
@@ -29926,7 +29934,7 @@
     var Screens_ThumbOptionLanguagesTitles = [];
 
     function Screens_ThumbOptionSetArrowArray(key) {
-        Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES, STR_CLIPS];
+        Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES, STR_VODS, STR_CLIPS];
 
         if (AddUser_UserIsSet()) {
             Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_LIVE);
@@ -29959,6 +29967,7 @@
             Main_Live,
             Main_Featured,
             Main_games,
+            Main_Vod,
             Main_Clip,
             Main_UserLive,
             Main_usergames,
@@ -30150,7 +30159,11 @@
         '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
     var featuredQuery =
         '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
-
+    var topClipQuery =
+        '{"query":"{games(first: 50) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,broadcast{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
+    var topVodQuery =
+        '{"query":"{games(first: 30) {edges{node{id,name,videos(first:20,types:%a%l, sort:VIEWS){edges{node{id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id,, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}}}"}';
+    //,languages:"EN"
     var Base_obj;
     var Base_Vod_obj;
     var Base_Live_obj;
@@ -30529,7 +30542,12 @@
                     this.itemsCount++;
                     this.idObject[cell.id] = 1;
 
-                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
+                    this.tempHtml += Screens_createCellVod(
+                        this.row_id + '_' + this.column_id,
+                        this.ids,
+                        ScreensObj_VodCellArray(cell, this.isQuery),
+                        this.screen
+                    );
 
                     this.column_id++;
                 }
@@ -30669,7 +30687,7 @@
             },
             Cells: [],
             addCell: function(cell) {
-                var idValue = this.useHelix ? cell.id : cell.tracking_id;
+                var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
 
                 if (!this.idObject[idValue]) {
                     this.itemsCount++;
@@ -30678,7 +30696,7 @@
                     this.tempHtml += Screens_createCellClip(
                         this.row_id + '_' + this.column_id,
                         this.ids,
-                        ScreensObj_ClipCellArray(cell, this.isKraken),
+                        ScreensObj_ClipCellArray(cell, this.isKraken, this.isQuery),
                         this.screen
                     );
 
@@ -30971,17 +30989,14 @@
                 ContentLang: '',
                 highlight: Main_getItemBool('Vod_highlight', false),
                 periodPos: Main_getItemInt('vod_periodPos', 2),
-                base_url: Main_kraken_api + 'videos/top?limit=' + Main_ItemsLimitMax,
+                base_post: topVodQuery,
+                isQuery: true,
                 set_url: function() {
-                    this.url =
-                        this.base_url +
-                        '&broadcast_type=' +
-                        (this.highlight ? 'highlight' : 'archive') +
-                        '&sort=views&offset=' +
-                        this.offset +
-                        '&period=' +
-                        this.period[this.periodPos - 1] +
-                        (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                    this.dataEnded = true;
+                    this.url = PlayClip_BaseUrl;
+                    this.post = this.base_post
+                        .replace('%l', Main_ContentLang === '' ? '' : ',languages:\\"' + Languages_Selected + '\\"')
+                        .replace('%a', this.highlight ? 'HIGHLIGHT' : 'ARCHIVE');
                 },
                 key_play: function() {
                     if (this.is_a_Banner()) return;
@@ -30995,12 +31010,9 @@
                         } else Screens_PeriodStart(this.screen);
                     } else this.OpenVodStart();
                 },
-                SwitchesIcons: ['movie-play', 'history'],
+                SwitchesIcons: ['movie-play'],
                 addSwitches: function() {
-                    ScreensObj_addSwitches(
-                        [STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP],
-                        this.screen
-                    );
+                    ScreensObj_addSwitches([STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD], this.screen);
                 },
                 label_init: function() {
                     ScreensObj_CheckUser(this.screen);
@@ -31012,7 +31024,7 @@
                 },
                 SetPeriod: function() {
                     Main_setItem('vod_periodPos', this.periodPos);
-                    ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
+                    ScreensObj_SetTopLable(STR_VIDEOS, this.highlight ? STR_HIGHLIGHTS : STR_VODS);
                 }
             },
             Base_obj
@@ -31020,6 +31032,17 @@
 
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Vod_obj);
         ScreenObj[key].Set_Scroll();
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.games;
+
+            if (hasData) {
+                this.data = ScreensObj_FormatTopClipVod(responseObj.data.games.edges, 'videos');
+                this.loadDataSuccess();
+            }
+
+            this.loadingData = false;
+        };
     }
 
     function ScreensObj_InitChannelVod() {
@@ -31119,7 +31142,7 @@
                 periodMaxPos: 4,
                 HeadersArray: Main_base_array_header,
                 object: 'data',
-                key_pgDown: Main_Clip,
+                key_pgDown: Main_Vod,
                 key_pgUp: Main_Featured,
                 ids: Screens_ScreenIds('AGameVod', key),
                 ScreenName: 'AGameVod',
@@ -31395,7 +31418,7 @@
                 object: 'data',
                 CheckContentLang: 1,
                 ContentLang: '',
-                key_pgDown: Main_Clip,
+                key_pgDown: Main_Vod,
                 key_pgUp: Main_Featured,
                 hasBackupData: true,
                 base_url: Main_helix_api + 'streams?game_id=',
@@ -31531,24 +31554,22 @@
         ScreenObj[key] = Screens_assign({
                 ids: Screens_ScreenIds('Clip', key),
                 ScreenName: 'Clip',
+                isQuery: true,
                 table: 'stream_table_clip',
                 screen: key,
                 key_pgDown: Main_Live,
-                key_pgUp: Main_games,
+                key_pgUp: Main_Vod,
                 CheckContentLang: 1,
                 ContentLang: '',
                 periodPos: Main_getItemInt('Clip_periodPos', 2),
-                base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
-                isKraken: true,
+                base_post: topClipQuery,
+                periods: [topClipQuery],
                 set_url: function() {
-                    this.url =
-                        this.base_url +
-                        '&period=' +
-                        this.period[this.periodPos - 1] +
-                        (this.cursor ? '&cursor=' + this.cursor : '') +
-                        (Main_ContentLang !== '' ?
-                            '&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang) :
-                            '');
+                    this.dataEnded = true;
+                    this.url = PlayClip_BaseUrl;
+                    this.post = this.base_post
+                        .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
+                        .replace('%t', this.period[this.periodPos - 1]);
                 },
                 SetPeriod: function() {
                     Main_setItem('Clip_periodPos', this.periodPos);
@@ -31573,6 +31594,19 @@
         ScreenObj[key].HeadersArray = Main_base_array_header;
         ScreenObj[key].object = 'clips';
         ScreenObj[key].Set_Scroll();
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.games;
+
+            if (hasData) {
+                this.data = ScreensObj_FormatTopClipVod(responseObj.data.games.edges, 'clips');
+                this.loadDataSuccess();
+            }
+
+            this.loadingData = false;
+        };
+
+        ScreenObj[key].period = ['LAST_DAY', 'LAST_WEEK', 'LAST_MONTH', 'ALL_TIME'];
     }
 
     function ScreensObj_InitChannelClip() {
@@ -31631,7 +31665,7 @@
                 ScreenName: 'AGameClip',
                 table: 'stream_table_a_game_clip',
                 screen: key,
-                key_pgDown: Main_Clip,
+                key_pgDown: Main_Vod,
                 key_pgUp: Main_Featured,
                 CheckContentLang: 1,
                 ContentLang: '',
@@ -31682,7 +31716,7 @@
                 ScreenName: 'Game',
                 table: 'stream_table_games',
                 screen: key,
-                key_pgDown: Main_Clip,
+                key_pgDown: Main_Vod,
                 key_pgUp: Main_Featured,
                 object: 'data',
                 base_url: Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax,
@@ -32488,7 +32522,28 @@
         ];
     }
 
-    function ScreensObj_VodCellArray(cell) {
+    function ScreensObj_VodCellArray(cell, isQuery) {
+        if (isQuery) {
+            return [
+                ScreensObj_VodGetPreview(cell.thumbnailURLs[0], null), //0
+                cell.creator ? cell.creator.displayName : '', //1
+                Main_videoCreatedAt(cell.createdAt), //2
+                cell.game_name, //3
+                Main_addCommas(cell.viewCount), //4
+                cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
+                cell.creator ? cell.creator.login : '', //6
+                cell.id, //7
+                cell.animatedPreviewURL, //8
+                cell.language, //9
+                twemoji.parse(cell.title), //10
+                Play_timeHMS(cell.duration), //11
+                cell.createdAt, //12
+                cell.viewCount, //13
+                cell.creator ? cell.creator.id : '', //14
+                cell.duration //15
+            ];
+        }
+
         return [
             ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
             cell.user_name, //1
@@ -32509,7 +32564,7 @@
         ];
     }
 
-    function ScreensObj_ClipCellArray(cell, isKraken) {
+    function ScreensObj_ClipCellArray(cell, isKraken, isQuery) {
         if (isKraken) {
             return [
                 cell.slug, //0
@@ -32532,6 +32587,31 @@
                 cell.language //17
             ];
         }
+
+        if (isQuery) {
+            return [
+                cell.slug, //0
+                cell.durationSeconds, //1
+                cell.broadcaster ? cell.broadcaster.id : '', //2
+                cell.game_name, //3
+                cell.broadcaster ? cell.broadcaster.displayName : '', //4
+                null, //5
+                cell.broadcaster ? cell.broadcaster.login : '', //6
+                cell.id, //7
+                cell.broadcast ? cell.broadcast.id : null, //8
+                cell.broadcast ? cell.videoOffsetSeconds : null, //9
+                twemoji.parse(cell.title), //10
+                '[' + cell.language.toUpperCase() + ']', //11
+                cell.created_at, //12
+                cell.viewCount, //13
+                Main_addCommas(cell.viewCount), //14
+                cell.thumbnailURL, //15
+                Main_videoCreatedAt(cell.createdAt), //16
+                cell.language, //17
+                cell.game_id //18
+            ];
+        }
+
         return [
             cell.id, //0
             cell.duration, //1
@@ -32678,6 +32758,44 @@
         var theUrl = Main_helix_api + 'games?id=' + Main_values.Main_gameSelected_id;
 
         BaseXmlHttpGet(theUrl, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
+    }
+
+    function ScreensObj_FormatTopClipVod(data, type) {
+        var i,
+            j,
+            i_length = data.length,
+            j_length,
+            game_id,
+            game_name,
+            game_node,
+            clip_node,
+            retArray = [];
+
+        for (i = 0; i < i_length; i++) {
+            if (!data[i].node[type]) {
+                continue;
+            }
+            game_id = data[i].node.id;
+            game_name = data[i].node.name;
+            game_node = data[i].node[type].edges;
+            j_length = game_node.length;
+
+            for (j = 0; j < j_length; j++) {
+                clip_node = game_node[j].node;
+                clip_node.game_id = game_id;
+                clip_node.game_name = game_name;
+                retArray.push(clip_node);
+            }
+        }
+
+        retArray.sort(function(a, b) {
+            if (!a || !b) {
+                return 0;
+            }
+            return a.viewCount < b.viewCount ? 1 : a.viewCount > b.viewCount ? -1 : 0;
+        });
+
+        return retArray;
     }
 
     function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {
@@ -33705,11 +33823,11 @@
     var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
     var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     //For clips the api accept a coma and extra languages
-    var Languages_Extra = {
-        en: 'en,en-gb',
-        es: 'es,es-mx',
-        pt: 'pt,pt-br'
-    };
+    // var Languages_Extra = {
+    //     en: 'en,en-gb',
+    //     es: 'es,es-mx',
+    //     pt: 'pt,pt-br'
+    // };
     var Settings_VolumeScale = 5;
 
     var Settings_value = {
@@ -37349,12 +37467,6 @@
         if (AddUser_UsernameArray[0]) Sidepannel_SetUserLabel(AddUser_UsernameArray[0].display_name);
         else Sidepannel_SetUserLabel(STR_USER_ADD);
 
-        //No longer supported
-        Main_HideElement('side_panel_movel_new_6');
-        // Main_HideElement('side_panel_movel_new_7');
-        Main_HideElement('side_panel_new_6');
-        // Main_HideElement('side_panel_new_7');
-
         Main_HideElement('side_panel_movel_new_8');
         Main_HideElement('side_panel_new_8');
         Main_ShowElement('side_panel_movel_new_5');
@@ -37368,7 +37480,7 @@
         Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
         Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
         Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
-        //Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+        Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
         Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
         Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
@@ -37551,7 +37663,7 @@
                 Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
             }
         } else {
-            if (Sidepannel_Sidepannel_Pos === 8 || Sidepannel_Sidepannel_Pos === 6) {
+            if (Sidepannel_Sidepannel_Pos === 8) {
                 Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
             }
         }
