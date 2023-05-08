@@ -8795,7 +8795,6 @@
     var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/;
 
     var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
-    var ChatLive_Base_chat_url = 'https://tmi.twitch.tv/';
     //Variable initialization end
 
     function ChatLive_Init(chat_number, SkipClear) {
@@ -9061,12 +9060,12 @@
     }
 
     function ChatLive_loadChattersCheckType(chat_number, id) {
-        if (Settings_value.show_chatters.defaultValue === 1 && Main_IsOn_OSInterface) ChatLive_loadChattersLoad(chat_number, id);
+        if (Settings_value.show_chatters.defaultValue === 1) ChatLive_loadChattersLoad(chat_number, id);
         else ChatLive_loadChattersViewers(chat_number, id);
 
         ChatLive_loadChattersId[chat_number] = Main_setInterval(
             function() {
-                if (Settings_value.show_chatters.defaultValue === 1 && Main_IsOn_OSInterface) ChatLive_loadChattersLoad(chat_number, id);
+                if (Settings_value.show_chatters.defaultValue === 1) ChatLive_loadChattersLoad(chat_number, id);
                 else ChatLive_loadChattersViewers(chat_number, id);
             },
             5 * 60 * 1000, //5 min
@@ -9096,25 +9095,33 @@
         }
     }
 
+    var ChatLive_chat_count_post = '{"query":"{channels(ids: \\"%x\\") {chatters(){count}}}"}';
+
     function ChatLive_loadChattersLoad(chat_number, id) {
-        BaseXmlHttpGet(
-            ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Play_base_backup_headers_Array,
             ChatLive_loadChattersSuccess,
             noop_fun,
             chat_number,
-            id
+            id,
+            'POST', //Method, null for get
+            ChatLive_chat_count_post.replace('%x', ChatLive_selectedChannel_id[chat_number])
         );
     }
 
-    function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
-        try {
-            if (id === Chat_Id[chat_number]) {
-                var resultObj = JSON.parse(responseText);
+    function ChatLive_loadChattersSuccess(responseObj, chat_number, id) {
+        if (responseObj.status === 200) {
+            try {
+                if (id === Chat_Id[chat_number]) {
+                    var resultObj = JSON.parse(responseObj.responseText);
+                    var counter = resultObj.data.channels[0].chatters.count;
 
-                Main_innerHTML('chat_loggedin' + chat_number, Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT);
+                    Main_innerHTML('chat_loggedin' + chat_number, Main_addCommas(counter) + STR_IN_CHAT);
+                }
+            } catch (e) {
+                Main_Log('ChatLive_loadChattersSuccess ' + e);
             }
-        } catch (e) {
-            Main_Log('ChatLive_loadChattersSuccess ' + e);
         }
     }
 
