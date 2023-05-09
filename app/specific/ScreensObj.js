@@ -2694,31 +2694,29 @@ function ScreensObj_FormatTopClipVod(data, type) {
         game_id,
         game_name,
         game_node,
-        clip_node,
+        node,
         retArray = [];
 
     for (i = 0; i < i_length; i++) {
         if (!data[i].node[type]) {
             continue;
         }
+
         game_id = data[i].node.id;
         game_name = data[i].node.name;
         game_node = data[i].node[type].edges;
         j_length = game_node.length;
 
         for (j = 0; j < j_length; j++) {
-            clip_node = game_node[j].node;
-            clip_node.game_id = game_id;
-            clip_node.game_name = game_name;
-            retArray.push(clip_node);
+            node = game_node[j].node;
+            node.game_id = game_id;
+            node.game_name = game_name;
+            retArray.push(node);
         }
     }
 
     retArray.sort(function (a, b) {
-        if (!a || !b) {
-            return 0;
-        }
-        return a.viewCount < b.viewCount ? 1 : a.viewCount > b.viewCount ? -1 : 0;
+        return b.viewCount - a.viewCount;
     });
 
     return retArray;
