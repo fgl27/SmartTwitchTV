@@ -32761,28 +32761,29 @@
     }
 
     function ScreensObj_FormatTopClipVod(data, type) {
-        var i,
+        var i = 0,
             j,
             i_length = data.length,
             j_length,
             game_id,
             game_name,
-            game_node,
+            nodes_array,
             node,
             retArray = [];
 
-        for (i = 0; i < i_length; i++) {
+        for (i; i < i_length; i++) {
             if (!data[i].node[type]) {
                 continue;
             }
 
             game_id = data[i].node.id;
             game_name = data[i].node.name;
-            game_node = data[i].node[type].edges;
-            j_length = game_node.length;
+            nodes_array = data[i].node[type].edges;
+            j_length = nodes_array.length;
+            j = 0;
 
-            for (j = 0; j < j_length; j++) {
-                node = game_node[j].node;
+            for (j; j < j_length; j++) {
+                node = nodes_array[j].node;
                 node.game_id = game_id;
                 node.game_name = game_name;
                 retArray.push(node);
