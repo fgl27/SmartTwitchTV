@@ -2524,8 +2524,8 @@ function ScreensObj_ClipCellArray(cell, isKraken, isQuery) {
             null, //5
             cell.broadcaster ? cell.broadcaster.login : '', //6
             cell.id, //7
-            cell.videoOffsetSeconds ? cell.video.id : null, //8
-            cell.videoOffsetSeconds ? cell.videoOffsetSeconds : null, //9
+            cell.video ? cell.video.id : null, //8
+            cell.videoOffsetSeconds, //9
             twemoji.parse(cell.title), //10
             '[' + cell.language.toUpperCase() + ']', //11
             cell.created_at, //12
