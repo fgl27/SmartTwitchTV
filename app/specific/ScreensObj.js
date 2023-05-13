@@ -60,14 +60,13 @@ var ScreensObj_banner_added_section = false;
 
 var AffiliatedTIme = 60 * 120 * 1000;
 
-var userGameQuery =
-    '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
+var userGameQuery = '{"query":"{user(id:\\"%x\\"){followedGames(first:100,type:LIVE){nodes{id displayName boxArtURL viewersCount channelsCount}}}}"}';
 var featuredQuery =
-    '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
+    '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
 var topClipQuery =
-    '{"query":"{games(first: 100) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
+    '{"query":"{games(first: 100) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,video{id},thumbnailURL(width:480,height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
 var topVodQuery =
-    '{"query":"{games(first: 30) {edges{node{id,name,videos(first:20,types:%a%l, sort:VIEWS){edges{node{id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}}}"}';
+    '{"query":"{games(first: 30) {edges{node{id,name,videos(first:20,types:%a%l,sort:VIEWS){edges{node{duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}}}"}';
 //,languages:"EN"
 var Base_obj;
 var Base_Vod_obj;
