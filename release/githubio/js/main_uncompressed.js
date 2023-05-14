@@ -9280,27 +9280,19 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
-            BaseXmlHttpGet(
-                'https://api.twitch.tv/v5/bits/actions?channel_id=' +
-                encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) +
-                '&client_id=' +
-                AddCode_backup_client_id,
-                ChatLive_loadCheersChannelSuccess,
-                noop_fun,
-                chat_number,
-                id
-            );
+            var theUrl = Main_helix_api + 'bits/cheermotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
+
+            BaseXmlHttpGet(theUrl, ChatLive_loadCheersChannelSuccess, noop_fun, chat_number, id, true);
         }
     }
 
     function ChatLive_loadCheersChannelSuccess(responseText, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
-
         cheers[ChatLive_selectedChannel_id[chat_number]] = {};
         var data = JSON.parse(responseText);
 
         try {
-            data.actions.forEach(function(action) {
+            data.data.forEach(function(action) {
                 cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
 
                 action.tiers.forEach(function(tier) {
