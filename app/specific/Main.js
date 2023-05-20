@@ -1445,7 +1445,7 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
 
     Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], !isHosting ? Main_values_Play_data[15] : 'HOSTING', screen);
 
-    if (!Main_IsOn_OSInterface) {
+    if (!Main_IsOn_OSInterface && data[0]) {
         Play_SetSceneBackground(data[0].replace('{width}x{height}', '1280x720') + Main_randomImg);
     }
 }
@@ -1629,7 +1629,7 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
         Main_EventPlay('clip', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[17], screen);
     });
 
-    if (!Main_IsOn_OSInterface) {
+    if (!Main_IsOn_OSInterface && data[0]) {
         Play_SetSceneBackground(data[15]);
     }
 }
@@ -1665,7 +1665,7 @@ function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
 
     Main_EventPlay('vod', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[9], screen);
 
-    if (!Main_IsOn_OSInterface) {
+    if (!Main_IsOn_OSInterface && data[0]) {
         Play_SetSceneBackground(data[0].replace(Main_VideoSize, '1280x720'));
     }
 }

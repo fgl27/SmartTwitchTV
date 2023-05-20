@@ -332,7 +332,9 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         if (!Main_IsOn_OSInterface && enable_embed) {
             Play_SetFullScreen(Play_isFullScreen);
 
-            Play_SetSceneBackground(Main_values_Play_data[0].replace(Main_VideoSize, '1280x720'));
+            if (Main_values_Play_data[0]) {
+                Play_SetSceneBackground(Main_values_Play_data[0].replace(Main_VideoSize, '1280x720'));
+            }
 
             BrowserTestStartVod(Main_values.ChannelVod_vodId, PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s');
 
