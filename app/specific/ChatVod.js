@@ -448,6 +448,10 @@ function Chat_loadChatSuccess(responseObj, id) {
             for (j = 0, len_j = mmessage.userBadges.length; j < len_j; j++) {
                 badges = mmessage.userBadges[j];
 
+                if (!badges.setID || !badges.version) {
+                    continue;
+                }
+
                 div += '<span class="a' + badges.setID + ChatLive_selectedChannel_id[0] + '-' + badges.version + ' tag"></span>';
 
                 if (ChatLive_Highlight_Mod && Main_A_includes_B(badges.setID, 'mod')) {
