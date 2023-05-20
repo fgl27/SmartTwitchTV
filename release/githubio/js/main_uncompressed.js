@@ -23471,7 +23471,7 @@
             if (PlayClip_isOn) {
                 Play_dialog_warning_play_middle.style.width = PlayClip_HasVOD ? '44%' : '50%';
             } else {
-                Play_dialog_warning_play_middle.style.width = '55%';
+                Play_dialog_warning_play_middle.style.width = '49%';
             }
         } else Play_dialog_warning_play_middle.style.top = '50vh';
 
