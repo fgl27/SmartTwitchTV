@@ -23464,11 +23464,12 @@
         Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
         Play_dialog_warning_play_middle.style.width = '';
 
-        if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.top = '90vh';
-        else if (IsLiveWarning) {
+        if (UserLiveFeed_isPreviewShowing()) {
+            Play_dialog_warning_play_middle.style.top = '90vh';
+        } else if (IsLiveWarning) {
             Play_dialog_warning_play_middle.style.top = '81.5vh';
             if (PlayClip_isOn) {
-                Play_dialog_warning_play_middle.style.width = PlayClip_HasVOD ? '49%' : '55%';
+                Play_dialog_warning_play_middle.style.width = PlayClip_HasVOD ? '44%' : '50%';
             } else {
                 Play_dialog_warning_play_middle.style.width = '55%';
             }
