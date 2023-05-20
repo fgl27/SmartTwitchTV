@@ -7129,7 +7129,7 @@
             var channel = obj.data[0];
             ChannelContent_offline_image = channel.offline_image_url;
             //ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
-            ChannelContent_selectedChannelViews = channel.view_count;
+            //ChannelContent_selectedChannelViews = channel.view_count;
             //ChannelContent_selectedChannelFollower = channel.followers;
             ChannelContent_description = channel.description;
             Main_values.Main_selectedChannelLogo = channel.profile_image_url;
