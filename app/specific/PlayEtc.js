@@ -4450,7 +4450,7 @@ function Play_PreStart() {
         ['Accept', 'application/vnd.twitchtv.v5+json']
     ];
 
-    Play_base_backup_headers = JSON.stringify(Play_base_backup_headers_Array);
+    Play_base_chat_headers_Array = [[clientIdHeader, Chat_token]];
 
     Main_base_array_header = [
         [clientIdHeader, AddCode_clientId],

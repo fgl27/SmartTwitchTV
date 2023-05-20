@@ -74,8 +74,8 @@ var Play_ProgresBarrElm;
 var Play_ProgresBarrBufferElm;
 var Play_DefaultjumpTimers = [];
 
-var Play_base_backup_headers = '';
 var Play_base_backup_headers_Array = [];
+var Play_base_chat_headers_Array = [];
 var Play_base_kraken_headers_Array = [];
 
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions

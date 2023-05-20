@@ -60,10 +60,11 @@ var Chat_comment_ids = {};
 
 var Chat_loadChatRequestPost =
     '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","contentOffsetSeconds":%o},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
-// var Chat_loadChatRequestPost_Cursor =
-//     '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","cursor":"%c"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
+var Chat_loadChatRequestPost_Cursor =
+    '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","cursor":"%c"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
 
 var Chat_UserJPKRegex = new RegExp('[^\x00-\x7F]', 'g');
+var Chat_token;
 
 //Variable initialization end
 
@@ -316,18 +317,16 @@ function Chat_loadChat(id) {
 }
 
 function Chat_loadChatRequest(id) {
-    chat_next_offset = Chat_offset ? parseInt(Chat_offset) : 0;
     FullxmlHttpGet(
         PlayClip_BaseUrl,
-        Play_base_backup_headers_Array,
+        Play_base_chat_headers_Array,
         Chat_loadChatRequestResult,
         noop_fun,
         id,
         0,
         'POST', //Method, null for get
-        Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', chat_next_offset)
+        Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', Chat_offset ? parseInt(Chat_offset) : 0)
     );
-    chat_next_offset++;
 }
 
 function Chat_loadChatRequestResult(responseObj, id) {
@@ -409,6 +408,8 @@ function Chat_loadChatSuccess(responseObj, id) {
 
     for (i = 0, len = comments.length; i < len; i++) {
         comments[i] = comments[i].node;
+
+        //prevent duplicated
         if (Chat_comment_ids[comments[i].id]) {
             duplicatedCounter++;
             continue;
@@ -525,13 +526,6 @@ function Chat_loadChatSuccess(responseObj, id) {
         else if (Chat_cursor !== '') Chat_MessageVectorNext(messageObj);
     }
 
-    chat_next_offset = comments[comments.length - 1].contentOffsetSeconds;
-
-    //Iff all msg received are duplicated run again as it will run with a diff offset
-    if (duplicatedCounter >= comments.length && Chat_cursor !== '') {
-        Chat_loadChatNext(id);
-    }
-
     if (null_next && Chat_Id[0] === id) {
         Chat_JustStarted = false;
         Chat_Play(id);
@@ -590,8 +584,6 @@ function Chat_Clear() {
     Chat_Messages = [];
     Chat_MessagesNext = [];
     Chat_Position = 0;
-    chat_next_offset = 0;
-    chat_next_offset_old = 0;
     Chat_comment_ids = {};
     ChatLive_ClearIds(0);
     ChatLive_ClearIds(1);
@@ -642,32 +634,22 @@ function Chat_loadChatNext(id) {
     if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
 }
 
-var chat_next_offset = 0;
-var chat_next_offset_old = 0;
-
 function Chat_loadChatNextRequest(id) {
     if (Chat_cursor === '') return;
-
-    if (chat_next_offset_old === chat_next_offset) {
-        chat_next_offset++;
-    }
-    chat_next_offset_old = chat_next_offset;
-
     FullxmlHttpGet(
         PlayClip_BaseUrl,
-        Play_base_backup_headers_Array,
+        Play_base_chat_headers_Array,
         Chat_loadChatNextResult,
         noop_fun,
         id,
         0,
         'POST', //Method, null for get
-        Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', chat_next_offset ? parseInt(chat_next_offset) : 0)
+        Chat_loadChatRequestPost_Cursor.replace('%v', Main_values.ChannelVod_vodId).replace('%c', Chat_cursor)
     );
 }
 
 function Chat_loadChatNextResult(responseObj, id) {
     if (Chat_hasEnded || Chat_Id[0] !== id) return;
-
     if (responseObj.status === 200) {
         Chat_loadChatSuccess(responseObj.responseText, id);
     } else {
