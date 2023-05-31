@@ -9030,8 +9030,6 @@
         } else {
             Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
         }
-
-        //https://api.twitch.tv/helix/chat/badges?broadcaster_id=169185650
     }
 
     function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
@@ -10804,7 +10802,7 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!Chat_GlobalBadges) {
-            BaseXmlHttpGet('https://api.twitch.tv/helix/chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
+            BaseXmlHttpGet(Main_helix_api + 'chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
         } else {
             if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
                 Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(
@@ -10843,10 +10841,10 @@
 
                 //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
                 if (checkSubMissing) {
-                    versionInt = parseInt(version) - parseInt(version.toString()[0]) * Math.pow(10, version.length - 1);
+                    versionInt = parseInt(version) - parseInt(version.id.toString()[0]) * Math.pow(10, version.length - 1);
 
                     if (versionInt > -1 && !versions.hasOwnProperty(versionInt)) {
-                        innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(versions[version].image_url_4x));
+                        innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(version.image_url_4x));
                     }
                 }
             });
