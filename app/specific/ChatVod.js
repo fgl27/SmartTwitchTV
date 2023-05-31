@@ -189,7 +189,7 @@ function Chat_loadBadgesGlobalRequest(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!Chat_GlobalBadges) {
-        BaseXmlHttpGet('https://api.twitch.tv/helix/chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
+        BaseXmlHttpGet(Main_helix_api + 'chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
     } else {
         if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
             Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(
