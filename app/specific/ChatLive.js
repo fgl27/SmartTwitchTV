@@ -328,8 +328,6 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
     } else {
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
     }
-
-    //https://api.twitch.tv/helix/chat/badges?broadcaster_id=169185650
 }
 
 function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
