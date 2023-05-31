@@ -228,10 +228,10 @@ function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
 
             //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
             if (checkSubMissing) {
-                versionInt = parseInt(version) - parseInt(version.toString()[0]) * Math.pow(10, version.length - 1);
+                versionInt = parseInt(version) - parseInt(version.id.toString()[0]) * Math.pow(10, version.length - 1);
 
                 if (versionInt > -1 && !versions.hasOwnProperty(versionInt)) {
-                    innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(versions[version].image_url_4x));
+                    innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(version.image_url_4x));
                 }
             }
         });
