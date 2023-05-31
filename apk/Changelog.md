@@ -12,6 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version May 31 2023
 ==============
 
+* Fix live playback
 * Fix chat badges
 
 Web Version May 08 2023
