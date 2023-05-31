@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'May 08 2023',
-    WebTag: 653, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'May 31 2023',
+    WebTag: 655, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version May 31 2023',
+            changes: ['Fix chat badges']
+        },
         {
             title: 'Web Version May 08 2023',
             changes: [
@@ -48,14 +52,6 @@ var version = {
                 'Add Carousel seek preview mode for VOD, enabled by default',
                 'Add settings options to change or disable seek preview mode',
                 'Fix VOD animated preview img, not all VOD have an animated preview',
-                'General improves'
-            ]
-        },
-        {
-            title: 'Web Version February 23 2022 and Apk Version 3.0.347',
-            changes: [
-                'Update player to latest version',
-                'Fix resolution cap at 720p or lower for the main player during PP mode (only affected a few devices)',
                 'General improves'
             ]
         }

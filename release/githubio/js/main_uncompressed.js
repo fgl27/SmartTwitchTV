@@ -4559,9 +4559,13 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'May 08 2023',
-        WebTag: 653, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'May 31 2023',
+        WebTag: 655, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version May 31 2023',
+                changes: ['Fix chat badges']
+            },
+            {
                 title: 'Web Version May 08 2023',
                 changes: [
                     'Add Top VOD section back',
@@ -4583,14 +4587,6 @@
                     'Add Carousel seek preview mode for VOD, enabled by default',
                     'Add settings options to change or disable seek preview mode',
                     'Fix VOD animated preview img, not all VOD have an animated preview',
-                    'General improves'
-                ]
-            },
-            {
-                title: 'Web Version February 23 2022 and Apk Version 3.0.347',
-                changes: [
-                    'Update player to latest version',
-                    'Fix resolution cap at 720p or lower for the main player during PP mode (only affected a few devices)',
                     'General improves'
                 ]
             }
@@ -9024,15 +9020,18 @@
 
         if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
-                'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
+                Main_helix_api + 'chat/badges?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number],
                 ChatLive_loadBadgesChannelSuccess,
                 noop_fun,
                 chat_number,
-                id
+                id,
+                true
             );
         } else {
             Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
         }
+
+        //https://api.twitch.tv/helix/chat/badges?broadcaster_id=169185650
     }
 
     function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
@@ -10805,7 +10804,7 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!Chat_GlobalBadges) {
-            BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/global/display', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id);
+            BaseXmlHttpGet('https://api.twitch.tv/helix/chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
         } else {
             if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
                 Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(
@@ -10829,18 +10828,18 @@
         Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
     }
 
-    function Chat_loadBadgesTransform(responseText, id, checkSubMissing) {
+    function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
         var versions,
             property,
-            version,
             innerHTML = '',
             versionInt;
 
-        for (property in responseText.badge_sets) {
-            versions = responseText.badge_sets[property].versions;
+        responseObj.data.forEach(function(set) {
+            property = set.set_id;
+            versions = set.versions;
 
-            for (version in versions) {
-                innerHTML += Chat_BasetagCSS(property + id, version, Chat_BasetagCSSUrl(versions[version].image_url_4x));
+            versions.forEach(function(version) {
+                innerHTML += Chat_BasetagCSS(property + id, version.id, Chat_BasetagCSSUrl(version.image_url_4x));
 
                 //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
                 if (checkSubMissing) {
@@ -10850,8 +10849,8 @@
                         innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(versions[version].image_url_4x));
                     }
                 }
-            }
-        }
+            });
+        });
 
         return innerHTML;
     }
