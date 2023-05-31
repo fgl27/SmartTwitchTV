@@ -318,15 +318,18 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
 
     if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
-            'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
+            Main_helix_api + 'chat/badges?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number],
             ChatLive_loadBadgesChannelSuccess,
             noop_fun,
             chat_number,
-            id
+            id,
+            true
         );
     } else {
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
     }
+
+    //https://api.twitch.tv/helix/chat/badges?broadcaster_id=169185650
 }
 
 function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
