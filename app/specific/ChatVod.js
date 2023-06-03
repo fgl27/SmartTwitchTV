@@ -220,9 +220,10 @@ function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
 
 function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
     var versions,
+        versionsIds = {},
         property,
-        isSub,
-        isBits,
+        isSubSet,
+        isBitsSet,
         innerHTML = '',
         tempInnerHTML,
         versionInt,
@@ -234,17 +235,22 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
 
         sets[property] = 1;
 
-        isSub = property === 'subscriber';
-        isBits = property === 'bits';
+        isSubSet = property === 'subscriber';
+        isBitsSet = property === 'bits';
+
+        if (isChannel) {
+            versionsIds = Chat_GetVersionsIdsObj(versions);
+        }
 
         versions.forEach(function (version) {
             tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
 
-            //chanel can overwrite bits or subs badges
-            if (isChannel || (!isSub && !isBits)) {
+            //channel can overwrite bits or subs badges
+            ////skip adding global bits or sub
+            if (isChannel || (!isSubSet && !isBitsSet)) {
                 innerHTML += tempInnerHTML;
             } else {
-                if (isSub) {
+                if (isSubSet) {
                     Chat_GlobalBadges_Subs += tempInnerHTML;
                 } else {
                     Chat_GlobalBadges_Bits += tempInnerHTML;
@@ -252,12 +258,12 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
             }
 
             //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
-            //so convert those 2000+ in normal one
+            //so convert those 2000+ in normal one if missing
             versionInt = parseInt(version.id);
             if (isChannel && versionInt >= 2000) {
                 versionInt = versionInt - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
 
-                if (versionInt > -1 && !Chat_HasVersion(versions, versionInt)) {
+                if (versionInt > -1 && !versionsIds[versionInt]) {
                     innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version.image_url_4x));
                 }
             }
@@ -265,6 +271,7 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
     });
 
     if (isChannel) {
+        //If a channel badges list is missing sub or bits badges use global badges
         if (Chat_GlobalBadges_Subs && !sets.subscriber) {
             innerHTML += Chat_GlobalBadges_Subs.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
         }
@@ -277,17 +284,16 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
     return innerHTML;
 }
 
-function Chat_HasVersion(versions, versionInt) {
+function Chat_GetVersionsIdsObj(versions) {
     var i = 0,
-        len = versions.length;
+        len = versions.length,
+        versionsIds = {};
 
     for (i; i < len; i++) {
-        if (parseInt(versions[i].id) === versionInt) {
-            return true;
-        }
+        versionsIds[versions[i].id] = 1;
     }
 
-    return false;
+    return versionsIds;
 }
 
 function Chat_BaseTagCSS(type, version, url) {
