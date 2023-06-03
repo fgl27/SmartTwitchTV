@@ -202,7 +202,7 @@ function Chat_loadBadgesGlobalRequest(chat_number, id) {
 
         Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
 
-        //Load channel chat after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
+        //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
         ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
     }
 }
@@ -220,7 +220,7 @@ function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
 
     Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
 
-    //Load channel chat after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
+    //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
     ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
 }
 
