@@ -227,10 +227,11 @@ function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
             innerHTML += Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
 
             //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
-            if (checkSubMissing) {
-                versionInt = parseInt(version.id) - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
+            versionInt = parseInt(version.id);
+            if (checkSubMissing && versionInt >= 2000) {
+                versionInt = versionInt - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
 
-                if (versionInt > -1 && !versions.hasOwnProperty(versionInt)) {
+                if (versionInt > -1 && !Chat_HasVersion(versions, versionInt)) {
                     innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version.image_url_4x));
                 }
             }
@@ -238,6 +239,19 @@ function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
     });
 
     return innerHTML;
+}
+
+function Chat_HasVersion(versions, versionInt) {
+    var i = 0,
+        len = versions.length;
+
+    for (i; i < len; i++) {
+        if (parseInt(versions[i].id) === versionInt) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function Chat_BaseTagCSS(type, version, url) {
