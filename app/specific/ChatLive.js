@@ -221,13 +221,14 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 
     Chat_Id[chat_number] = new Date().getTime();
 
+    Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
+
     ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelseven_tv(chat_number, Chat_Id[chat_number]);
-    Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
 
-    ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
     ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
 }
 
 function ChatLive_checkFallow(chat_number, id) {
@@ -336,7 +337,8 @@ function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
     extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(
         JSON.parse(responseText),
         ChatLive_selectedChannel_id[chat_number],
-        true
+        true,
+        chat_number
     );
 
     Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);

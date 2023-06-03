@@ -172,6 +172,8 @@ function Chat_StartFakeClockInterval() {
 }
 
 var Chat_GlobalBadges = null;
+var Chat_GlobalBadges_Bits = null;
+var Chat_GlobalBadges_Subs = null;
 function Chat_loadBadgesGlobal() {
     //return;
     if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes();
@@ -207,28 +209,52 @@ function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
 
     Chat_GlobalBadges = {};
 
-    Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x');
+    Chat_GlobalBadges_Bits = '';
+    Chat_GlobalBadges_Subs = '';
+    Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x', false, chat_number);
+
     Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
 
     Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
 }
 
-function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
+function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
     var versions,
         property,
+        isSub,
+        isBits,
         innerHTML = '',
-        versionInt;
+        tempInnerHTML,
+        versionInt,
+        sets = {};
 
     responseObj.data.forEach(function (set) {
         property = set.set_id;
         versions = set.versions;
 
+        sets[property] = 1;
+
+        isSub = property === 'subscriber';
+        isBits = property === 'bits';
+
         versions.forEach(function (version) {
-            innerHTML += Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
+            tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
+
+            //chanel can overwrite bits or subs badges
+            if (isChannel || (!isSub && !isBits)) {
+                innerHTML += tempInnerHTML;
+            } else {
+                if (isSub) {
+                    Chat_GlobalBadges_Subs += tempInnerHTML;
+                } else {
+                    Chat_GlobalBadges_Bits += tempInnerHTML;
+                }
+            }
 
             //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
+            //so convert those 2000+ in normal one
             versionInt = parseInt(version.id);
-            if (checkSubMissing && versionInt >= 2000) {
+            if (isChannel && versionInt >= 2000) {
                 versionInt = versionInt - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
 
                 if (versionInt > -1 && !Chat_HasVersion(versions, versionInt)) {
@@ -237,6 +263,16 @@ function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
             }
         });
     });
+
+    if (isChannel) {
+        if (Chat_GlobalBadges_Subs && !sets.subscriber) {
+            innerHTML += Chat_GlobalBadges_Subs.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+        }
+
+        if (Chat_GlobalBadges_Bits && !sets.bits) {
+            innerHTML += Chat_GlobalBadges_Bits.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+        }
+    }
 
     return innerHTML;
 }
