@@ -222,13 +222,11 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     Chat_Id[chat_number] = new Date().getTime();
 
     Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
 
     ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelseven_tv(chat_number, Chat_Id[chat_number]);
-
-    ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
-    ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
 }
 
 function ChatLive_checkFallow(chat_number, id) {
