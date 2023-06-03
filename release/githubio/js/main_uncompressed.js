@@ -4559,9 +4559,13 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'May 31 2023',
-        WebTag: 657, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'June 03 2023',
+        WebTag: 659, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version June 03 2023',
+                changes: ['General chat improves']
+            },
+            {
                 title: 'Web Version May 31 2023',
                 changes: ['Fix live playback', 'Fix chat badges']
             },
@@ -4580,15 +4584,6 @@
             {
                 title: 'Web Version February 25 2023',
                 changes: ['General UI improves', 'General improves']
-            },
-            {
-                title: 'Web Version February 24 2023',
-                changes: [
-                    'Add Carousel seek preview mode for VOD, enabled by default',
-                    'Add settings options to change or disable seek preview mode',
-                    'Fix VOD animated preview img, not all VOD have an animated preview',
-                    'General improves'
-                ]
             }
         ]
     };
@@ -8923,13 +8918,12 @@
 
         Chat_Id[chat_number] = new Date().getTime();
 
-        ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
-        ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
-        ChatLive_loadEmotesChannelseven_tv(chat_number, Chat_Id[chat_number]);
         Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
-
-        ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
         ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
+
+        ChatLive_loadEmotesChannelBTTV(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadEmotesChannelFFZ(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadEmotesChannelSeven_tv(chat_number, Chat_Id[chat_number]);
     }
 
     function ChatLive_checkFallow(chat_number, id) {
@@ -9038,7 +9032,8 @@
         extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(
             JSON.parse(responseText),
             ChatLive_selectedChannel_id[chat_number],
-            true
+            true,
+            chat_number
         );
 
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
@@ -9205,13 +9200,13 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelbttv(chat_number, id) {
+    function ChatLive_loadEmotesChannelBTTV(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
                 'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                ChatLive_loadEmotesChannelbttvSuccess,
+                ChatLive_loadEmotesChannelBTTVSuccess,
                 noop_fun,
                 chat_number,
                 id
@@ -9221,7 +9216,7 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
+    function ChatLive_loadEmotesChannelBTTVSuccess(data, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_loadEmotesbttv(JSON.parse(data), chat_number, false);
@@ -9315,13 +9310,13 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelffz(chat_number, id) {
+    function ChatLive_loadEmotesChannelFFZ(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
                 'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                ChatLive_loadEmotesChannelffzSuccess,
+                ChatLive_loadEmotesChannelFFZSuccess,
                 noop_fun,
                 chat_number,
                 id
@@ -9331,7 +9326,7 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
+    function ChatLive_loadEmotesChannelFFZSuccess(data, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_loadEmotesffz(JSON.parse(data), chat_number, false);
@@ -9391,13 +9386,13 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelseven_tv(chat_number, id) {
+    function ChatLive_loadEmotesChannelSeven_tv(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
                 'https://api.7tv.app/v2/users/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '/emotes',
-                ChatLive_loadEmotesChannelseven_tvSuccess,
+                ChatLive_loadEmotesChannelSeven_tvSuccess,
                 noop_fun,
                 chat_number,
                 id
@@ -9407,7 +9402,7 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelseven_tvSuccess(data, chat_number, id) {
+    function ChatLive_loadEmotesChannelSeven_tvSuccess(data, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
         ChatLive_loadEmotesseven_tv(JSON.parse(data), chat_number, false);
     }
@@ -10100,29 +10095,38 @@
             msgid = tags['msg-id'] || null,
             recipient = tags['msg-param-recipient-display-name'] || tags['msg-param-recipient-user-name'] || null,
             recipientId = tags['msg-param-recipient-id'] || null,
-            msg = tags['system-msg'] || null;
+            msg = tags['system-msg'] || null,
+            msgIsString = typeof msg === 'string', //Some msg are from type boolean, the real msg will be on params[1]
+            msgBR = msgIsString ? STR_BR + STR_BR : '';
 
         if (msg && msgid) {
             var isAnon = Main_A_includes_B(msgid + '', 'anon');
 
-            msg = msg.replace(ChatLive_sub_replace, ' ');
+            //prevent replace chrashes if is not a string
+            if (msgIsString) {
+                msg = msg.replace(ChatLive_sub_replace, ' ');
 
-            //who sub or gift a sub
-            if (gifter_Or_Sub_name) {
-                msg = msg.replace(gifter_Or_Sub_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
-            }
+                //who sub or gift a sub
+                if (gifter_Or_Sub_name) {
+                    msg = msg.replace(gifter_Or_Sub_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+                }
 
-            //who received a sub
-            if (recipient) {
-                msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+                //who received a sub
+                if (recipient) {
+                    msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+                }
             }
 
             //who sub or gift a sub message
             if (params && params[1]) {
+                //if not a string make it a string
+                if (!msgIsString) {
+                    msg = '';
+                }
+
                 msg +=
                     params && params[1] ?
-                    STR_BR +
-                    STR_BR +
+                    msgBR +
                     ChatLive_GetBadges(tags, chat_number) +
                     "<span style='color: #0fffff; font-weight: bold'>" +
                     (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS : gifter_Or_Sub_name) +
@@ -10131,7 +10135,7 @@
                     '';
             }
 
-            ChatLive_CheckIfSubSend(msg, chat_number);
+            ChatLive_CheckIfSubSend(msg, chat_number, msgIsString); //if is not a string is just a system msg that come via sub fun
 
             //check if who received a sub is current active user
             if (
@@ -10146,11 +10150,12 @@
         }
     }
 
-    function ChatLive_CheckIfSubSend(message, chat_number) {
+    function ChatLive_CheckIfSubSend(message, chat_number, isSub) {
         ChatLive_LineAddCheckDelay(chat_number, {
             chat_number: chat_number,
             message: '<span class="message">' + message + '</span>',
-            sub: 1
+            sub: isSub,
+            mod: !isSub
         });
     }
 
@@ -10784,6 +10789,8 @@
     }
 
     var Chat_GlobalBadges = null;
+    var Chat_GlobalBadges_Bits = null;
+    var Chat_GlobalBadges_Subs = null;
 
     function Chat_loadBadgesGlobal() {
         //return;
@@ -10812,6 +10819,9 @@
             }
 
             Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+
+            //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
+            ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
         }
     }
 
@@ -10820,45 +10830,102 @@
 
         Chat_GlobalBadges = {};
 
-        Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x');
+        Chat_GlobalBadges_Bits = '';
+        Chat_GlobalBadges_Subs = '';
+        Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x', false, chat_number);
+
         Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
 
         Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+
+        //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
+        ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
     }
 
-    function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
+    function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
         var versions,
+            versionsIds = {},
             property,
+            isSubSet,
+            isBitsSet,
             innerHTML = '',
-            versionInt;
+            tempInnerHTML,
+            versionInt,
+            sets = {};
 
         responseObj.data.forEach(function(set) {
             property = set.set_id;
             versions = set.versions;
 
+            sets[property] = 1;
+
+            isSubSet = property === 'subscriber';
+            isBitsSet = property === 'bits';
+
+            if (isChannel) {
+                versionsIds = Chat_GetVersionsIdsObj(versions);
+            }
+
             versions.forEach(function(version) {
-                innerHTML += Chat_BasetagCSS(property + id, version.id, Chat_BasetagCSSUrl(version.image_url_4x));
+                tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
+
+                //channel can overwrite bits or subs badges
+                ////skip adding global bits or sub
+                if (isChannel || (!isSubSet && !isBitsSet)) {
+                    innerHTML += tempInnerHTML;
+                } else {
+                    if (isSubSet) {
+                        Chat_GlobalBadges_Subs += tempInnerHTML;
+                    } else {
+                        Chat_GlobalBadges_Bits += tempInnerHTML;
+                    }
+                }
 
                 //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
-                if (checkSubMissing) {
-                    versionInt = parseInt(version) - parseInt(version.id.toString()[0]) * Math.pow(10, version.length - 1);
+                //so convert those 2000+ in normal one if missing
+                versionInt = parseInt(version.id);
+                if (isChannel && versionInt >= 2000) {
+                    versionInt = versionInt - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
 
-                    if (versionInt > -1 && !versions.hasOwnProperty(versionInt)) {
-                        innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(version.image_url_4x));
+                    if (versionInt > -1 && !versionsIds[versionInt]) {
+                        innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version.image_url_4x));
                     }
                 }
             });
         });
 
+        if (isChannel) {
+            //If a channel badges list is missing sub or bits badges use global badges
+            if (Chat_GlobalBadges_Subs && !sets.subscriber) {
+                innerHTML += Chat_GlobalBadges_Subs.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+            }
+
+            if (Chat_GlobalBadges_Bits && !sets.bits) {
+                innerHTML += Chat_GlobalBadges_Bits.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+            }
+        }
+
         return innerHTML;
     }
 
-    function Chat_BasetagCSS(type, version, url) {
+    function Chat_GetVersionsIdsObj(versions) {
+        var i = 0,
+            len = versions.length,
+            versionsIds = {};
+
+        for (i; i < len; i++) {
+            versionsIds[versions[i].id] = 1;
+        }
+
+        return versionsIds;
+    }
+
+    function Chat_BaseTagCSS(type, version, url) {
         //a prevent class starting with numbers
         return '.a' + type + '-' + version + url;
     }
 
-    function Chat_BasetagCSSUrl(url) {
+    function Chat_BaseTagCSSUrl(url) {
         //a prevent class starting with numbers
         return ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
     }

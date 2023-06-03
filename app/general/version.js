@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'May 31 2023',
-    WebTag: 657, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'June 03 2023',
+    WebTag: 659, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version June 03 2023',
+            changes: ['General chat improves']
+        },
         {
             title: 'Web Version May 31 2023',
             changes: ['Fix live playback', 'Fix chat badges']
@@ -45,15 +49,6 @@ var version = {
         {
             title: 'Web Version February 25 2023',
             changes: ['General UI improves', 'General improves']
-        },
-        {
-            title: 'Web Version February 24 2023',
-            changes: [
-                'Add Carousel seek preview mode for VOD, enabled by default',
-                'Add settings options to change or disable seek preview mode',
-                'Fix VOD animated preview img, not all VOD have an animated preview',
-                'General improves'
-            ]
         }
     ]
 };
