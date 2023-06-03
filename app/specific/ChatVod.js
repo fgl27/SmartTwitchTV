@@ -224,14 +224,14 @@ function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
         versions = set.versions;
 
         versions.forEach(function (version) {
-            innerHTML += Chat_BasetagCSS(property + id, version.id, Chat_BasetagCSSUrl(version.image_url_4x));
+            innerHTML += Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
 
             //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
             if (checkSubMissing) {
                 versionInt = parseInt(version) - parseInt(version.id.toString()[0]) * Math.pow(10, version.length - 1);
 
                 if (versionInt > -1 && !versions.hasOwnProperty(versionInt)) {
-                    innerHTML += Chat_BasetagCSS(property + id, versionInt, Chat_BasetagCSSUrl(version.image_url_4x));
+                    innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version.image_url_4x));
                 }
             }
         });
@@ -240,12 +240,12 @@ function Chat_loadBadgesTransform(responseObj, id, checkSubMissing) {
     return innerHTML;
 }
 
-function Chat_BasetagCSS(type, version, url) {
+function Chat_BaseTagCSS(type, version, url) {
     //a prevent class starting with numbers
     return '.a' + type + '-' + version + url;
 }
 
-function Chat_BasetagCSSUrl(url) {
+function Chat_BaseTagCSSUrl(url) {
     //a prevent class starting with numbers
     return ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
 }
