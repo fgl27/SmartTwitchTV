@@ -224,9 +224,9 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
     ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
 
-    ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
-    ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
-    ChatLive_loadEmotesChannelseven_tv(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadEmotesChannelBTTV(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadEmotesChannelFFZ(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadEmotesChannelSeven_tv(chat_number, Chat_Id[chat_number]);
 }
 
 function ChatLive_checkFallow(chat_number, id) {
@@ -503,13 +503,13 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
     }
 }
 
-function ChatLive_loadEmotesChannelbttv(chat_number, id) {
+function ChatLive_loadEmotesChannelBTTV(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
             'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            ChatLive_loadEmotesChannelbttvSuccess,
+            ChatLive_loadEmotesChannelBTTVSuccess,
             noop_fun,
             chat_number,
             id
@@ -519,7 +519,7 @@ function ChatLive_loadEmotesChannelbttv(chat_number, id) {
     }
 }
 
-function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
+function ChatLive_loadEmotesChannelBTTVSuccess(data, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_loadEmotesbttv(JSON.parse(data), chat_number, false);
@@ -613,13 +613,13 @@ function ChatLive_updateExtraEmotes(obj) {
     }
 }
 
-function ChatLive_loadEmotesChannelffz(chat_number, id) {
+function ChatLive_loadEmotesChannelFFZ(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
             'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            ChatLive_loadEmotesChannelffzSuccess,
+            ChatLive_loadEmotesChannelFFZSuccess,
             noop_fun,
             chat_number,
             id
@@ -629,7 +629,7 @@ function ChatLive_loadEmotesChannelffz(chat_number, id) {
     }
 }
 
-function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
+function ChatLive_loadEmotesChannelFFZSuccess(data, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_loadEmotesffz(JSON.parse(data), chat_number, false);
@@ -689,13 +689,13 @@ function ChatLive_loadEmotesffz(data, chat_number, isGlobal) {
     }
 }
 
-function ChatLive_loadEmotesChannelseven_tv(chat_number, id) {
+function ChatLive_loadEmotesChannelSeven_tv(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
             'https://api.7tv.app/v2/users/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '/emotes',
-            ChatLive_loadEmotesChannelseven_tvSuccess,
+            ChatLive_loadEmotesChannelSeven_tvSuccess,
             noop_fun,
             chat_number,
             id
@@ -705,7 +705,7 @@ function ChatLive_loadEmotesChannelseven_tv(chat_number, id) {
     }
 }
 
-function ChatLive_loadEmotesChannelseven_tvSuccess(data, chat_number, id) {
+function ChatLive_loadEmotesChannelSeven_tvSuccess(data, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
     ChatLive_loadEmotesseven_tv(JSON.parse(data), chat_number, false);
 }
