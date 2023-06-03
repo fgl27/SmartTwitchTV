@@ -1400,29 +1400,38 @@ function ChatLive_CheckIfSub(message, chat_number) {
         msgid = tags['msg-id'] || null,
         recipient = tags['msg-param-recipient-display-name'] || tags['msg-param-recipient-user-name'] || null,
         recipientId = tags['msg-param-recipient-id'] || null,
-        msg = tags['system-msg'] || null;
+        msg = tags['system-msg'] || null,
+        msgIsString = typeof msg === 'string', //Some msg are from type boolean, the real msg will be on params[1]
+        msgBR = msgIsString ? STR_BR + STR_BR : '';
 
     if (msg && msgid) {
         var isAnon = Main_A_includes_B(msgid + '', 'anon');
 
-        msg = msg.replace(ChatLive_sub_replace, ' ');
+        //prevent replace chrashes if is not a string
+        if (msgIsString) {
+            msg = msg.replace(ChatLive_sub_replace, ' ');
 
-        //who sub or gift a sub
-        if (gifter_Or_Sub_name) {
-            msg = msg.replace(gifter_Or_Sub_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
-        }
+            //who sub or gift a sub
+            if (gifter_Or_Sub_name) {
+                msg = msg.replace(gifter_Or_Sub_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+            }
 
-        //who received a sub
-        if (recipient) {
-            msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+            //who received a sub
+            if (recipient) {
+                msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+            }
         }
 
         //who sub or gift a sub message
         if (params && params[1]) {
+            //if not a string make it a string
+            if (!msgIsString) {
+                msg = '';
+            }
+
             msg +=
                 params && params[1]
-                    ? STR_BR +
-                      STR_BR +
+                    ? msgBR +
                       ChatLive_GetBadges(tags, chat_number) +
                       "<span style='color: #0fffff; font-weight: bold'>" +
                       (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS : gifter_Or_Sub_name) +
@@ -1431,7 +1440,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
                     : '';
         }
 
-        ChatLive_CheckIfSubSend(msg, chat_number);
+        ChatLive_CheckIfSubSend(msg, chat_number, msgIsString); //if is not a string is just a system msg that come via sub fun
 
         //check if who received a sub is current active user
         if (
@@ -1446,11 +1455,12 @@ function ChatLive_CheckIfSub(message, chat_number) {
     }
 }
 
-function ChatLive_CheckIfSubSend(message, chat_number) {
+function ChatLive_CheckIfSubSend(message, chat_number, isSub) {
     ChatLive_LineAddCheckDelay(chat_number, {
         chat_number: chat_number,
         message: '<span class="message">' + message + '</span>',
-        sub: 1
+        sub: isSub,
+        mod: !isSub
     });
 }
 
