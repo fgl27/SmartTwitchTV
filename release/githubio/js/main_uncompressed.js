@@ -11649,8 +11649,6 @@
                 AddCode_redirect_uri = window.location.href.split('?code')[0];
             }
 
-            console.log('AddCode_redirect_uri', AddCode_redirect_uri);
-
             if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
             Main_Scene1Doc = Main_getElementById('scene1');
@@ -12442,7 +12440,18 @@
             Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
         }
 
-        Main_innerHTML('dialog_about_text', STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+        Main_innerHTML(
+            'dialog_about_text',
+            STR_ABOUT_INFO_HEADER +
+            Main_versionTag +
+            STR_BR +
+            STR_DIV_LINK +
+            AddCode_redirect_uri +
+            '</div>' +
+            STR_BR +
+            '<span id="about_runningtime"></span>' +
+            STR_ABOUT_INFO_0
+        );
 
         Main_RunningTime = new Date().getTime();
     }
