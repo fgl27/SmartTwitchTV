@@ -1046,7 +1046,18 @@ function Main_checkVersion(skipCheck) {
         Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
     }
 
-    Main_innerHTML('dialog_about_text', STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+    Main_innerHTML(
+        'dialog_about_text',
+        STR_ABOUT_INFO_HEADER +
+            Main_versionTag +
+            STR_BR +
+            STR_DIV_LINK +
+            AddCode_redirect_uri +
+            '</div>' +
+            STR_BR +
+            '<span id="about_runningtime"></span>' +
+            STR_ABOUT_INFO_0
+    );
 
     Main_RunningTime = new Date().getTime();
 }
