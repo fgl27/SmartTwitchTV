@@ -257,8 +257,6 @@ function Main_StartApp() {
             AddCode_redirect_uri = window.location.href.split('?code')[0];
         }
 
-        console.log('AddCode_redirect_uri', AddCode_redirect_uri);
-
         if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
         Main_Scene1Doc = Main_getElementById('scene1');
