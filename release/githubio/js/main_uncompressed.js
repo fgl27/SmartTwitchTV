@@ -11644,10 +11644,12 @@
 
             DefaultLang();
 
-            //When running locally from a browser overwrite AddCode_redirect_uri to be able to add authorization keys
-            if (!Main_IsOn_OSInterface && !Main_A_includes_B(window.location.href, AddCode_redirect_uri)) {
+            //AddCode_redirect_uri is different from default update
+            if (!Main_A_includes_B(window.location.href, AddCode_redirect_uri)) {
                 AddCode_redirect_uri = window.location.href.split('?code')[0];
             }
+
+            console.log('AddCode_redirect_uri', AddCode_redirect_uri);
 
             if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
