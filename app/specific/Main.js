@@ -970,6 +970,7 @@ function Main_OpenSearch() {
 }
 
 function Main_OpenPassword() {
+    Settings_cursorYBackup = Settings_cursorY;
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_Password;
     Main_HideWarningDialog();

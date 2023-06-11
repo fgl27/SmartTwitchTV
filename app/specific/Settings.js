@@ -1346,7 +1346,6 @@ function Settings_checkMatureKeyDown(event) {
             Main_HideElement('yes_no_dialog');
 
             if (Users_RemoveCursor) {
-                Settings_cursorYBackup = Settings_cursorY;
                 Main_OpenPassword();
             } else {
                 Main_addEventListener('keydown', Settings_handleKeyDown);
