@@ -382,6 +382,10 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 1
     },
+    enable_mature: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
     enable_embed: {
         values: ['no', 'yes'],
         defaultValue: 2
@@ -823,6 +827,8 @@ function Settings_SetSettings() {
     if (!Main_isTV || !Main_IsOn_OSInterface) {
         div += Settings_Content('dpad_opt', [STR_ENTER_TO_OPEN], STR_DPAD_OPT, null);
     }
+
+    div += Settings_Content('enable_mature', dis_ena, STR_ENABLE_MATURE, STR_ENABLE_MATURE_SUMMARY);
 
     if (!Main_IsOn_OSInterface) {
         div += Settings_Content('enable_embed', array_no_yes, STR_DISABLE_EMBED, STR_DISABLE_EMBED_SUMMARY);
@@ -1726,7 +1732,7 @@ function Settings_ScrollUp() {
 }
 
 function Settings_ScrollTable() {
-    var scroolPos = 13,
+    var scroolPos = 14,
         offset = !Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {

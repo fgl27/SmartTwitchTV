@@ -106,6 +106,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].sorting = 0;
         UserLiveFeed_obj[i].CheckSort = 0;
         UserLiveFeed_obj[i].Lang = Settings_AppLang;
+        UserLiveFeed_obj[i].enable_mature = Settings_value.enable_mature.defaultValue;
         UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
         UserLiveFeed_obj[i].CheckContentLang = 0;
         UserLiveFeed_obj[i].BannerTime = 0;

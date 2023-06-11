@@ -114,6 +114,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].sorting = Settings_value.live_feed_sort.defaultValue;
     UserLiveFeed_obj[pos].ContentLang = Main_ContentLang;
     UserLiveFeed_obj[pos].Lang = Settings_AppLang;
+    UserLiveFeed_obj[pos].enable_mature = Settings_value.enable_mature.defaultValue;
 
     if (UserLiveFeed_isPreviewShowing()) {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
@@ -270,6 +271,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
         !UserLiveFeed_obj[pos].AddCellsize ||
         (UserLiveFeed_obj[pos].CheckContentLang && !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)) ||
         (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue)) ||
+        UserLiveFeed_obj[pos].enable_mature !== Settings_value.enable_mature.defaultValue ||
         !Main_A_equals_B(UserLiveFeed_obj[pos].Lang, Settings_AppLang)
     ) {
         if (UserLiveFeed_loadingData[pos]) {
@@ -454,7 +456,9 @@ function UserLiveFeedobj_loadFeatured() {
             UserLiveFeedobj_FeaturedPos,
             UserLiveFeedobj_FeaturedPos, //checkResult
             'POST', //Method, null for get
-            featuredQuery.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
+            featuredQuery
+                .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
+                .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
         );
     }
 
@@ -1306,7 +1310,7 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
             stream = response[i];
             id = stream.user_id;
 
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream)) {
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
                 if (!stream.user_name) {
                     stream.user_name = mapLogoPartner[id].display_name;
@@ -1700,7 +1704,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 id = useHelix ? stream.user_id : stream.channel._id;
             }
 
-            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && (isFeatured || ScreensObj_CheckIsMature(stream))) {
                 UserLiveFeed_idObject[pos][id] = itemsCount;
                 mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream);
 

@@ -496,6 +496,7 @@ function Sidepannel_ShowFeed() {
         UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image ||
         new Date().getTime() > UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout() ||
         !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue) ||
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].enable_mature !== Settings_value.enable_mature.defaultValue ||
         !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Lang, Settings_AppLang)
     ) {
         ForceRefresh = true;

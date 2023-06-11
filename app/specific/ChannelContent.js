@@ -42,7 +42,8 @@ var ChannelContent_clear = false;
 var ChannelContent_DataObj;
 var ChannelContent_Lang = '';
 var ChannelContent_Ids = ['_ChannelContent_cell_0_1_img', '_ChannelContent_since_'];
-
+var ChannelContent_enable_mature;
+var ChannelContent_allowMature;
 //Variable initialization end
 
 function ChannelContent_init() {
@@ -66,7 +67,11 @@ function ChannelContent_init() {
     }
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (ChannelContent_status && Main_A_equals_B(ChannelContent_Lang, Settings_AppLang)) {
+    else if (
+        ChannelContent_status &&
+        Main_A_equals_B(ChannelContent_Lang, Settings_AppLang) &&
+        ChannelContent_enable_mature === Settings_value.enable_mature.defaultValue
+    ) {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement('channel_content_scroll');
         ChannelContent_checkUser();
@@ -97,6 +102,11 @@ function ChannelContent_StartLoad() {
     ChannelContent_status = false;
     ChannelContent_isoffline = false;
     ChannelContent_itemsCountOffset = 0;
+
+    ChannelContent_enable_mature = Settings_value.enable_mature.defaultValue;
+    //always allow here as ChannelContent_createCellOffline will update
+    ChannelContent_allowMature = true;
+
     ChannelContent_itemsCount = 0;
     ChannelContent_cursorX = 0;
     ChannelContent_cursorY = 0;
@@ -287,7 +297,9 @@ function ChannelContent_loadDataSuccess() {
 
     Main_innerHTML('channel_content_infodiv0_1', streamer_bio);
 
-    if (ChannelContent_responseText) {
+    var allowMature = ChannelContent_responseText ? ScreensObj_CheckIsMature(ChannelContent_responseText[0]) : true;
+
+    if (ChannelContent_responseText && allowMature) {
         var stream = ChannelContent_responseText[0];
 
         if (ChannelContent_TargetId !== undefined) {
@@ -297,7 +309,7 @@ function ChannelContent_loadDataSuccess() {
         ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
         ChannelContent_cursorX = 1;
-    } else ChannelContent_createCellOffline();
+    } else ChannelContent_createCellOffline(allowMature);
 
     ChannelContent_loadDataSuccessFinish();
 }
@@ -351,8 +363,12 @@ function ChannelContent_createCell(valuesArray) {
     );
 }
 
-function ChannelContent_createCellOffline() {
+function ChannelContent_createCellOffline(allowMature) {
     ChannelContent_isoffline = true;
+    ChannelContent_allowMature = allowMature;
+    var offlineString =
+        '<div class="stream_info_live">' + STR_CH_IS_OFFLINE + '</div><div class="stream_info_live_title">' + STR_OPEN_CHAT + '</div>';
+
     Main_innerHTML(
         'channel_content_thumbdiv0_0',
         '<div class="stream_thumbnail_live_img"><img id="' +
@@ -365,12 +381,8 @@ function ChannelContent_createCellOffline() {
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 140%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
             Main_values.Main_selectedChannelDisplayname +
             '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
-            '<div class="stream_info_live">' +
-            STR_CH_IS_OFFLINE +
-            '</div><div class="stream_info_live_title">' +
-            STR_OPEN_CHAT +
-            '</div></div>' +
-            '</div>'
+            (ChannelContent_allowMature ? offlineString : STR_MATURE_DISABLED) +
+            '</div></div>'
     );
 }
 
@@ -427,6 +439,10 @@ function ChannelContent_removeAllFollowFocus() {
 }
 
 function ChannelContent_keyEnter() {
+    if (!ChannelContent_allowMature) {
+        Main_showWarningDialog(STR_MATURE_DISABLED, 2000);
+        return;
+    }
     if (!ChannelContent_cursorY) {
         if (!ChannelContent_cursorX) {
             Main_removeEventListener('keydown', ChannelContent_handleKeyDown);

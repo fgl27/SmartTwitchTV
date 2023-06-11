@@ -62,7 +62,7 @@ var AffiliatedTIme = 60 * 120 * 1000;
 
 var userGameQuery = '{"query":"{user(id:\\"%x\\"){followedGames(first:100,type:LIVE){nodes{id displayName boxArtURL viewersCount channelsCount}}}}"}';
 var featuredQuery =
-    '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
+    '{"query":"{featuredStreams(first:10,acceptedMature:%m%x){stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
 var topClipQuery =
     '{"query":"{games(first: 100) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,video{id},thumbnailURL(width:480,height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
 var topVodQuery =
@@ -91,6 +91,7 @@ function ScreensObj_StartAllVars() {
         itemsCount: 0,
         MaxOffset: 0,
         offset: 0,
+        enable_mature: 0,
         visiblerows: 3,
         status: false,
         FirstRunEnd: false,
@@ -200,6 +201,7 @@ function ScreensObj_StartAllVars() {
                     responseObj: {},
                     ContentLang: {},
                     Lang: {},
+                    enable_mature: {},
                     offsettopFontsize: {}
                 };
             }
@@ -220,6 +222,7 @@ function ScreensObj_StartAllVars() {
                 this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
                 this.BackupData.responseObj[game] = responseObj;
                 this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+                this.BackupData.enable_mature[game] = Settings_value.enable_mature.defaultValue;
 
                 this.BackupData.ContentLang[game] = Main_ContentLang;
                 this.BackupData.Lang[game] = Settings_AppLang;
@@ -243,6 +246,7 @@ function ScreensObj_StartAllVars() {
                 this.BackupData.data[game].length &&
                 Main_A_equals_B(this.BackupData.ContentLang[game], Main_ContentLang) &&
                 Main_A_equals_B(this.BackupData.Lang[game], Settings_AppLang) &&
+                this.BackupData.enable_mature[game] === Settings_value.enable_mature.defaultValue &&
                 this.BackupData.offsettopFontsize[game] === Settings_Obj_default('global_font_offset') &&
                 (!Settings_Obj_default('auto_refresh_screen') ||
                     new Date().getTime() < this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout())
@@ -362,10 +366,11 @@ function ScreensObj_StartAllVars() {
             return null;
         },
         emptyBanner: function (forceAdd) {
+            var bannerString = this.enable_mature ? STR_REFRESH_PROBLEM_ENTER : STR_MATURE_DISABLED;
             ScreensObj_addBanner(
                 {
                     image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
-                    text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER,
+                    text: this.emptyContent_STR ? this.emptyContent_STR() : bannerString,
                     empty: true
                 },
                 this.screen,
@@ -497,7 +502,7 @@ function ScreensObj_StartAllVars() {
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
-            if (!this.idObject[id_cell]) {
+            if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell)) {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
@@ -1376,6 +1381,11 @@ function ScreensObj_InitAGame() {
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
     ScreenObj[key].Set_Scroll();
     ScreenObj[key].key_play = function () {
+        if (!Settings_value.enable_mature.defaultValue) {
+            Main_showWarningDialog(STR_MATURE_DISABLED, 2000);
+            return;
+        }
+
         if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
             if (this.is_a_Banner()) return;
 
@@ -1408,7 +1418,9 @@ function ScreensObj_InitFeatured() {
             set_url: function () {
                 this.dataEnded = true;
                 this.url = PlayClip_BaseUrl;
-                this.post = this.base_post.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
+                this.post = this.base_post
+                    .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
+                    .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
             },
             label_init: function () {
                 Sidepannel_SetDefaultLabels();
@@ -2738,4 +2750,8 @@ function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {
     } else if (PlayVodClip === 3) {
         ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]);
     }
+}
+
+function ScreensObj_CheckIsMature(cell) {
+    return Settings_value.enable_mature.defaultValue || !cell.is_mature;
 }

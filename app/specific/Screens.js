@@ -265,10 +265,12 @@ function Screens_init(key, preventRefresh) {
     } else if (
         !ScreenObj[key].status ||
         (!preventRefresh && Screens_RefreshTimeout(key)) ||
+        ScreenObj[key].posY < 0 ||
         ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
         !ScreenObj[key].offsettop ||
         (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
         !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
+        ScreenObj[key].enable_mature !== Settings_value.enable_mature.defaultValue ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')
     ) {
         if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
@@ -310,6 +312,7 @@ function Screens_StartLoad(key) {
     Play_PreviewVideoEnded = false;
     Main_HideWarningDialog();
 
+    ScreenObj[key].enable_mature = Settings_value.enable_mature.defaultValue;
     ScreenObj[key].tempHtml = '';
     ScreenObj[key].DataObj = {};
     ScreenObj[key].SetPreviewEnable();
@@ -352,17 +355,21 @@ function Screens_StartLoad(key) {
 function Screens_loadDataRequestStart(key) {
     ScreenObj[key].loadingData = true;
 
-    if (
-        !ScreenObj[key].itemsCount &&
-        !ScreenObj[key].isReloadScreen &&
-        ScreenObj[key].hasBackupData &&
-        ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
-    ) {
-        ScreenObj[key].restoreBackup();
+    if ((ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) && !ScreenObj[key].enable_mature) {
+        Screens_loadDataFail(key);
     } else {
-        Screens_loadDataRequest(key);
+        if (
+            !ScreenObj[key].itemsCount &&
+            !ScreenObj[key].isReloadScreen &&
+            ScreenObj[key].hasBackupData &&
+            ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
+        ) {
+            ScreenObj[key].restoreBackup();
+        } else {
+            Screens_loadDataRequest(key);
 
-        if (ScreenObj[key].hasBackupData) ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+            if (ScreenObj[key].hasBackupData) ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+        }
     }
 
     ScreenObj[key].isReloadScreen = false;
@@ -2132,6 +2139,7 @@ function AGame_headerOptions(key) {
     if (!ScreenObj[key].posX) {
         Main_values.Main_Go = Main_AGameVod;
         Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
+
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
     } else {

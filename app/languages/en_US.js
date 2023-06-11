@@ -837,4 +837,9 @@ function en_USLang() {
     SEEK_PREVIEW_CAROUSEL = 'Carousel of images';
 
     OPEN_NEW_ISSUE = '(Click New issue)';
+
+    STR_MATURE_DISABLED = 'Mature content is disabled';
+    STR_ENABLE_MATURE = 'Enable Mature content';
+    STR_ENABLE_MATURE_SUMMARY =
+        'When disabled the app will block all content marked as mature included followed content, that include lives marked as mature, and all content from general clip and VOD sections';
 }
