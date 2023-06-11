@@ -990,8 +990,6 @@ function Main_SaveValues() {
 function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
     Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
-
-    Main_values.Password_data = null;
 }
 
 function Main_ExitCurrent(ExitCurrent) {
