@@ -284,6 +284,8 @@ function AddCode_AppTokenCheckReady(obj) {
         window.setTimeout(function () {
             AddCode_AppToken();
         }, (parseInt(data.expires_in) - 60) * 1000);
+
+        OSInterface_setAppToken();
     } else {
         AddCode_AppToken(0, Main_initWindowsEnd, Main_initWindowsEnd, 0, true);
     }
