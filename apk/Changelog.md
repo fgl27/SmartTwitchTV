@@ -9,6 +9,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version June 11 2023
+==============
+
+* Add setting options to block Mature content
+
 Web Version June 03 2023
 ==============
 

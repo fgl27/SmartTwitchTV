@@ -4596,7 +4596,7 @@
         WebVersion: 'June 11 2023',
         WebTag: 661, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'Web Version June 1 2023',
+                title: 'Web Version June 11 2023',
                 changes: ['Add setting options to block Mature content']
             },
             {
