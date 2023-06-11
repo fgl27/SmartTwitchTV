@@ -5782,7 +5782,11 @@
                 //if (Main_A_includes_B(id, 'dialog_OffSet_right')) {
                 //    Screens_OffSethandleKeyRight(Main_values.Main_Go);
                 //} else
-                if (Main_A_includes_B(id, 'dialog_OffSet_val') || Main_A_includes_B(id, 'dialog_OffSet_text') || Main_A_includes_B(id, 'dialog_OffSet_text_summary')) {
+                if (
+                    Main_A_includes_B(id, 'dialog_OffSet_val') ||
+                    Main_A_includes_B(id, 'dialog_OffSet_text') ||
+                    Main_A_includes_B(id, 'dialog_OffSet_text_summary')
+                ) {
                     var div = id;
 
                     OnClickId = Main_setTimeout(
@@ -6050,7 +6054,11 @@
                         Screens_ThumbOptionPosY = pos;
                         Screens_ThumbOptionhandleKeyLeft();
                     }
-                } else if (Main_A_includes_B(id, 'dialog_thumb_opt_val_') || Main_A_includes_B(id, 'dialog_thumb_opt_setting_') || Main_A_includes_B(id, 'dialog_thumb_opt_setting_name_')) {
+                } else if (
+                    Main_A_includes_B(id, 'dialog_thumb_opt_val_') ||
+                    Main_A_includes_B(id, 'dialog_thumb_opt_setting_') ||
+                    Main_A_includes_B(id, 'dialog_thumb_opt_setting_name_')
+                ) {
                     var div = id;
 
                     OnClickId = Main_setTimeout(
@@ -6233,6 +6241,8 @@
                     } else if (Main_A_includes_B(id, 'main_dialog_user') || Main_A_includes_B(id, 'yes_no_dialog_button')) {
                         if (Main_values.Main_Go === Main_Users) {
                             Users_handleKeyEnter();
+                        } else if (Settings_isVisible()) {
+                            Settings_checkMatureKeyEnter();
                         } else {
                             Screens_histDeleteKeyEnter(Main_values.Main_Go);
                         }
@@ -6277,6 +6287,8 @@
                     } else if (Main_isElementShowing('search_scroll')) {
                         Search_exit();
                         Main_SwitchScreen();
+                    } else if (Main_isElementShowing('password_scroll')) {
+                        Password_exitWarning();
                     }
                 } else if (Sidepannel_isShowingMenus()) {
                     if (Main_A_includes_B(id, 'side_panel_movel_new_') || Main_A_includes_B(id, 'icon_side_panel')) {
@@ -6349,6 +6361,14 @@
                     Search_cursorY = 1;
                     Search_cursorX = 2;
                     Search_KeyEnter();
+                } else if (Main_A_includes_B(id, 'password_view')) {
+                    Password_cursorY = 1;
+                    Password_cursorX = 2;
+                    Password_KeyEnter();
+                } else if (Main_A_includes_B(id, 'password_save')) {
+                    Password_cursorY = 1;
+                    Password_cursorX = 2;
+                    Password_KeyEnter();
                 } else Main_CheckDialogs();
             };
 
@@ -6973,6 +6993,8 @@
             } else if (Main_isElementShowing('search_scroll')) {
                 Search_exit();
                 Main_SwitchScreen();
+            } else if (Main_isElementShowing('password_scroll')) {
+                Password_exitWarning();
             } else {
                 Screens_OpenSidePanel(false, key);
             }
@@ -35567,17 +35589,21 @@
                 Users_RemoveCursorSet();
                 break;
             case KEY_ENTER:
-                Main_removeEventListener('keydown', Settings_checkMatureKeyDown);
-                Main_HideElement('yes_no_dialog');
-
-                if (Users_RemoveCursor) {
-                    Main_OpenPassword();
-                } else {
-                    Main_addEventListener('keydown', Settings_handleKeyDown);
-                }
+                Settings_checkMatureKeyEnter();
                 break;
             default:
                 break;
+        }
+    }
+
+    function Settings_checkMatureKeyEnter() {
+        Main_removeEventListener('keydown', Settings_checkMatureKeyDown);
+        Main_HideElement('yes_no_dialog');
+
+        if (Users_RemoveCursor) {
+            Main_OpenPassword();
+        } else {
+            Main_addEventListener('keydown', Settings_handleKeyDown);
         }
     }
 
