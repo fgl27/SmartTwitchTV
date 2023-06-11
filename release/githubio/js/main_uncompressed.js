@@ -749,6 +749,15 @@
     var SEEK_PREVIEW_CAROUSEL;
     var SEEK_PREVIEW_ARRAY;
     var OPEN_NEW_ISSUE;
+    var STR_MATURE_DISABLED;
+    var STR_ENABLE_MATURE;
+    var STR_ENABLE_MATURE_SUMMARY;
+    var STR_MATURE_PROTECT;
+    var STR_PLACEHOLDER_PASS;
+    var STR_MATURE_NO_CHANGES;
+    var STR_MATURE_HELP_SET_PASS;
+    var STR_MATURE_HELP_CHECK_PASS;
+    var STR_CONFIRM;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1294,6 +1303,7 @@
         STR_WAITING = 'Wait time';
         STR_SINCE = 'Since';
         STR_AGAME = 'A Game';
+        STR_PLACEHOLDER_PASS = 'Type your password...';
         STR_PLACEHOLDER_SEARCH = 'Type your search ...';
         STR_PLACEHOLDER_OAUTH = 'Type your authorization key ...';
         STR_PLACEHOLDER_USER = 'Type your username and press Enter ...';
@@ -2076,6 +2086,18 @@
         SEEK_PREVIEW_CAROUSEL = 'Carousel of images';
 
         OPEN_NEW_ISSUE = '(Click New issue)';
+
+        STR_CONFIRM = 'Confirm';
+
+        STR_MATURE_NO_CHANGES = 'No changes to mature content due to missing password';
+        STR_MATURE_PROTECT = 'Protect mature changes with a password';
+        STR_MATURE_HELP_SET_PASS = 'Set an password and click Confirm, exit will reset the mature settings';
+        STR_MATURE_HELP_CHECK_PASS = 'Enter the saved password and click Confirm, exit will reset the mature settings';
+
+        STR_MATURE_DISABLED = 'Mature content is disabled';
+        STR_ENABLE_MATURE = 'Mature content';
+        STR_ENABLE_MATURE_SUMMARY =
+            'When disabled the app will block all content marked as mature included followed content, that include lives marked as mature, and all content from clip and VOD sections';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3472,6 +3494,18 @@
             'Permite controlar a imagem de pré-visualização ao avançar ou retroceder uma VOD, a vançar/retrocer não está disponível para todos as VODs.';
         SEEK_PREVIEW_SINGLE = 'Imagem única';
         SEEK_PREVIEW_CAROUSEL = 'Carrossel de imagens';
+
+        STR_CONFIRM = 'Confirmar';
+
+        STR_MATURE_NO_CHANGES = 'Sem alterações no conteúdo adulto devido à falta de senha';
+        STR_MATURE_PROTECT = 'Proteger alterações maduras com uma senha';
+        STR_MATURE_HELP_SET_PASS = 'Defina uma senha e clique em Confirmar, caso sair irá redefinir as configurações de adulto';
+        STR_MATURE_HELP_CHECK_PASS = 'Digite a senha salva e clique em Confirmar, caso sair irá redefinir as configurações maduras';
+
+        STR_MATURE_DISABLED = 'Conteúdo adulto está desabilitado';
+        STR_ENABLE_MATURE = 'Conteúdo adulto';
+        STR_ENABLE_MATURE_SUMMARY =
+            'Quando desativado, o aplicativo bloqueará todo o conteúdo marcado como conteúdo adulto incluído conteúdo de seguidores, isto inclui todas lives marcadas como adultas e todo o conteúdo das seções de clipes e VOD';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4559,9 +4593,13 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'June 03 2023',
-        WebTag: 659, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'June 11 2023',
+        WebTag: 661, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version June 1 2023',
+                changes: ['Add setting options to block Mature content']
+            },
+            {
                 title: 'Web Version June 03 2023',
                 changes: ['General chat improves']
             },
@@ -6984,7 +7022,8 @@
     var ChannelContent_DataObj;
     var ChannelContent_Lang = '';
     var ChannelContent_Ids = ['_ChannelContent_cell_0_1_img', '_ChannelContent_since_'];
-
+    var ChannelContent_enable_mature;
+    var ChannelContent_allowMature;
     //Variable initialization end
 
     function ChannelContent_init() {
@@ -7008,7 +7047,11 @@
         }
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (ChannelContent_status && Main_A_equals_B(ChannelContent_Lang, Settings_AppLang)) {
+        else if (
+            ChannelContent_status &&
+            Main_A_equals_B(ChannelContent_Lang, Settings_AppLang) &&
+            ChannelContent_enable_mature === Settings_value.enable_mature.defaultValue
+        ) {
             Main_YRst(ChannelContent_cursorY);
             Main_ShowElement('channel_content_scroll');
             ChannelContent_checkUser();
@@ -7039,6 +7082,11 @@
         ChannelContent_status = false;
         ChannelContent_isoffline = false;
         ChannelContent_itemsCountOffset = 0;
+
+        ChannelContent_enable_mature = Settings_value.enable_mature.defaultValue;
+        //always allow here as ChannelContent_createCellOffline will update
+        ChannelContent_allowMature = true;
+
         ChannelContent_itemsCount = 0;
         ChannelContent_cursorX = 0;
         ChannelContent_cursorY = 0;
@@ -7231,7 +7279,9 @@
 
         Main_innerHTML('channel_content_infodiv0_1', streamer_bio);
 
-        if (ChannelContent_responseText) {
+        var allowMature = ChannelContent_responseText ? ScreensObj_CheckIsMature(ChannelContent_responseText[0]) : true;
+
+        if (ChannelContent_responseText && allowMature) {
             var stream = ChannelContent_responseText[0];
 
             if (ChannelContent_TargetId !== undefined) {
@@ -7241,7 +7291,7 @@
             ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
             ChannelContent_cursorX = 1;
-        } else ChannelContent_createCellOffline();
+        } else ChannelContent_createCellOffline(allowMature);
 
         ChannelContent_loadDataSuccessFinish();
     }
@@ -7295,8 +7345,12 @@
         );
     }
 
-    function ChannelContent_createCellOffline() {
+    function ChannelContent_createCellOffline(allowMature) {
         ChannelContent_isoffline = true;
+        ChannelContent_allowMature = allowMature;
+        var offlineString =
+            '<div class="stream_info_live">' + STR_CH_IS_OFFLINE + '</div><div class="stream_info_live_title">' + STR_OPEN_CHAT + '</div>';
+
         Main_innerHTML(
             'channel_content_thumbdiv0_0',
             '<div class="stream_thumbnail_live_img"><img id="' +
@@ -7309,12 +7363,8 @@
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 140%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
             Main_values.Main_selectedChannelDisplayname +
             '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
-            '<div class="stream_info_live">' +
-            STR_CH_IS_OFFLINE +
-            '</div><div class="stream_info_live_title">' +
-            STR_OPEN_CHAT +
-            '</div></div>' +
-            '</div>'
+            (ChannelContent_allowMature ? offlineString : STR_MATURE_DISABLED) +
+            '</div></div>'
         );
     }
 
@@ -7371,6 +7421,10 @@
     }
 
     function ChannelContent_keyEnter() {
+        if (!ChannelContent_allowMature) {
+            Main_showWarningDialog(STR_MATURE_DISABLED, 2000);
+            return;
+        }
         if (!ChannelContent_cursorY) {
             if (!ChannelContent_cursorX) {
                 Main_removeEventListener('keydown', ChannelContent_handleKeyDown);
@@ -11441,6 +11495,7 @@
     var Main_HistoryLive = 21;
     var Main_HistoryVod = 22;
     var Main_HistoryClip = 23;
+    var Main_Password = 24;
 
     var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
     var Main_HistoryPos = 0;
@@ -11493,7 +11548,8 @@
         banner_16by9_pos: 0,
         MaxInstancesWarn: false,
         AddCode_main_token: null,
-        API_Change: true
+        API_Change: true,
+        Password_data: null
     };
 
     var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -11511,6 +11567,7 @@
     var Main_ExitDialogID = null;
     var Main_IsDayFirst = false;
     var Main_SearchInput;
+    var Main_PasswordInput;
     var Main_AddUserInput;
     var Main_ChatLiveInput;
     var Main_UpdateClockId;
@@ -11796,6 +11853,7 @@
         Main_SetStringsSecondary();
         Main_checkVersion();
 
+        Main_PasswordInput = Main_getElementById('password_input');
         Main_SearchInput = Main_getElementById('search_input');
         Main_AddUserInput = Main_getElementById('user_input');
         Main_ChatLiveInput = Main_getElementById('chat_send_input');
@@ -11932,6 +11990,10 @@
         Main_textContent('play_dialog_exit_text', STR_EXIT_AGAIN);
 
         Main_textContent('side_panel_back_main_menu', STR_SIDE_PANEL_BACK_MAIN_MENU);
+
+        Main_textContent('password_view', STR_VIEW);
+        Main_textContent('password_save', STR_CONFIRM);
+        Main_textContent('password_help', STR_MATURE_HELP_SET_PASS);
 
         Main_textContent('chanel_button', STR_CHANNELS);
         Main_textContent('game_button', STR_GAMES);
@@ -12354,6 +12416,15 @@
         Search_init();
     }
 
+    function Main_OpenPassword() {
+        Settings_cursorYBackup = Settings_cursorY;
+        Main_ExitCurrent(Main_values.Main_Go);
+        Main_values.Main_Go = Main_Password;
+        Main_HideWarningDialog();
+        Main_CounterDialogRst();
+        Password_init();
+    }
+
     var Main_SaveValuesWithTimeoutId;
 
     function Main_SaveValuesWithTimeout() {
@@ -12372,7 +12443,7 @@
 
     function Main_ExitCurrent(ExitCurrent) {
         //Main_Log('Main_ExitCurrent ' + ExitCurrent);
-        if (ScreenObj[ExitCurrent].exit_fun) ScreenObj[ExitCurrent].exit_fun();
+        if (ScreenObj[ExitCurrent] && ScreenObj[ExitCurrent].exit_fun) ScreenObj[ExitCurrent].exit_fun();
         if (Main_isElementShowing('settings_holder')) Settings_exit();
     }
 
@@ -15819,6 +15890,278 @@
     // function OSInterface_getPlaybackState() {//Not be used
     //     return Android.getPlaybackState();
     // }
+    /*
+     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    //Variable initialization
+    var Password_cursorY = 0;
+    var Password_cursorX = 0;
+    var Password_keyBoardOn = false;
+    //Variable initialization end
+
+    function Password_init() {
+        Settings_setMature(!Settings_enable_matureBackup);
+
+        Main_HideWarningDialog();
+        Main_HideElement('label_refresh');
+        Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
+
+        Main_textContent('password_help', Settings_enable_matureBackup ? STR_MATURE_HELP_CHECK_PASS : STR_MATURE_HELP_SET_PASS);
+
+        Main_innerHTML('label_last_refresh', '');
+        Main_PasswordInput.placeholder = STR_PLACEHOLDER_PASS;
+        Main_ShowElement('password_scroll');
+        Password_cursorY = 0;
+        Password_cursorX = 0;
+        Password_refreshInputFocusTools();
+        Password_inputFocus();
+    }
+
+    function Password_exitWarning() {
+        Password_exit();
+        Main_showWarningDialog(STR_MATURE_NO_CHANGES);
+
+        Main_setTimeout(function() {
+            Main_HideWarningDialog();
+        }, 2000);
+    }
+
+    function Password_exit() {
+        Password_RemoveinputFocus(false);
+        Main_removeEventListener('keydown', Password_handleKeyDown);
+        Password_refreshInputFocusTools();
+        Main_values.Main_Go = Main_values.Main_BeforePassword;
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
+        Main_ShowElement('label_refresh');
+        Main_PasswordInput.value = '';
+        Main_HideElement('password_scroll');
+        Main_PasswordInput.type = 'password';
+
+        Main_showSettings();
+        Settings_RemoveinputFocus();
+        Settings_cursorY = Settings_cursorYBackup;
+        Settings_inputFocus(Settings_cursorY);
+    }
+
+    function Password_refreshInputFocusTools() {
+        Main_RemoveClass('password_view', 'button_search_focused');
+        Main_RemoveClass('password_save', 'button_search_focused');
+
+        if (Password_cursorY) {
+            if (!Password_cursorX) Main_AddClass('password_view', 'button_search_focused');
+            else if (Password_cursorX === 1) Main_AddClass('password_save', 'button_search_focused');
+        }
+    }
+
+    function Password_handleKeyDown(event) {
+        if (Password_keyBoardOn) return;
+
+        switch (event.keyCode) {
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+                else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else {
+                    Password_exitWarning();
+                }
+                break;
+            case KEY_LEFT:
+                if (Password_cursorY === 1) {
+                    Password_cursorX--;
+                    if (Password_cursorX < 0) Password_cursorX = 1;
+                    Password_refreshInputFocusTools();
+                }
+                break;
+            case KEY_RIGHT:
+                if (Password_cursorY === 1) {
+                    Password_cursorX++;
+                    if (Password_cursorX > 1) Password_cursorX = 0;
+                    Password_refreshInputFocusTools();
+                }
+                break;
+            case KEY_UP:
+                if (Password_cursorY === 1) {
+                    Password_cursorY = 0;
+                    Password_refreshInputFocusTools();
+                    Password_inputFocus();
+                }
+                break;
+            case KEY_DOWN:
+                if (!Password_cursorY) {
+                    Password_RemoveinputFocus(false);
+                    Password_cursorY = 1;
+                    Password_refreshInputFocusTools();
+                } else if (Password_cursorY === 1) {
+                    Password_cursorY = 0;
+                    Password_refreshInputFocusTools();
+                    Password_inputFocus();
+                }
+                break;
+            case KEY_PLAY:
+            case KEY_PAUSE:
+            case KEY_PLAYPAUSE:
+            case KEY_ENTER:
+                Password_KeyEnter();
+                break;
+            default:
+                break;
+        }
+    }
+
+    function Password_KeyEnter() {
+        if (!Password_cursorY) Password_inputFocus();
+        else {
+            if (!Password_cursorX) {
+                Main_PasswordInput.type = Main_PasswordInput.type === 'password' ? 'text' : 'password';
+            } else {
+                if (Main_PasswordInput.value !== '' && Main_PasswordInput.value !== null) {
+                    if (Settings_enable_matureBackup) {
+                        //password enabled
+
+                        if (Main_values.Password_data !== Main_PasswordInput.value) {
+                            Main_showWarningDialog('worng pass');
+
+                            Main_setTimeout(function() {
+                                Main_HideWarningDialog();
+                            }, 1000);
+
+                            return;
+                        }
+                    } else {
+                        //password disabled
+
+                        if (!Password_CheckIfStrong(Main_PasswordInput.value)) {
+                            return;
+                        }
+
+                        Main_values.Password_data = Main_PasswordInput.value;
+                        Main_PasswordInput.value = '';
+                    }
+
+                    Settings_setMature(Settings_enable_matureBackup);
+                    Password_exit();
+                } else {
+                    Main_showWarningDialog(STR_SEARCH_EMPTY);
+
+                    Main_setTimeout(function() {
+                        Main_HideWarningDialog();
+                    }, 1000);
+                }
+            }
+        }
+    }
+
+    function Password_CheckIfStrong(password) {
+        var warning = '';
+        if (!password.match(/[0-9]+/)) {
+            warning += 'password must contain at least one number' + STR_BR;
+        }
+
+        if (!password.match(/[A-Z]+/)) {
+            warning += 'password must contain at least one capital letter' + STR_BR;
+        }
+
+        if (password.length < 6) {
+            warning += 'password minimum number of characters is 6';
+        }
+
+        if (warning) {
+            Main_showWarningDialog(warning);
+
+            Main_setTimeout(function() {
+                Main_HideWarningDialog();
+            }, 2000);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    var Password_inputFocusId;
+
+    function Password_inputFocus() {
+        Main_AddClass('scene_keys', 'avoidclicks');
+        OSInterface_AvoidClicks(true);
+        Main_AddClass('scenefeed', 'avoidclicks');
+        Main_removeEventListener('keydown', Password_handleKeyDown);
+        Main_addEventListener('keydown', Password_KeyboardEvent);
+        Main_PasswordInput.placeholder = STR_PLACEHOLDER_PASS;
+
+        Password_inputFocusId = Main_setTimeout(
+            function() {
+                Main_PasswordInput.focus();
+                Password_keyBoardOn = true;
+            },
+            500,
+            Password_inputFocusId
+        );
+    }
+
+    function Password_RemoveinputFocus(EnaKeydown) {
+        Main_clearTimeout(Password_inputFocusId);
+        if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
+
+        Main_RemoveClass('scenefeed', 'avoidclicks');
+        Main_RemoveClass('scene_keys', 'avoidclicks');
+        OSInterface_AvoidClicks(false);
+        Main_PasswordInput.blur();
+        Password_removeEventListener();
+        Main_removeEventListener('keydown', Password_KeyboardEvent);
+
+        if (EnaKeydown) Main_addEventListener('keydown', Password_handleKeyDown);
+        Password_keyBoardOn = false;
+    }
+
+    function Password_removeEventListener() {
+        if (Main_PasswordInput !== null) {
+            var elClone = Main_PasswordInput.cloneNode(true);
+            Main_PasswordInput.parentNode.replaceChild(elClone, Main_PasswordInput);
+            Main_PasswordInput = Main_getElementById('password_input');
+        }
+    }
+
+    function Password_KeyboardEvent(event) {
+        switch (event.keyCode) {
+            case KEY_RETURN:
+                if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+                else {
+                    Password_exitWarning();
+                }
+                break;
+            case KEY_KEYBOARD_DONE:
+            case KEY_DOWN:
+                Password_KeyboardDismiss();
+                break;
+            default:
+                break;
+        }
+    }
+
+    function Password_KeyboardDismiss() {
+        Main_clearTimeout(Password_inputFocusId);
+        Password_RemoveinputFocus(true);
+        Password_cursorY = 1;
+        Password_refreshInputFocusTools();
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -27156,7 +27499,7 @@
                 Play_DurationSeconds = 0;
                 Main_openVod();
             }
-        } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
+        } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search && Main_GoBefore !== Main_Password) {
             if (Main_newUsercode) Main_HideLoadDialog();
             ScreenObj[Main_GoBefore].init_fun();
 
@@ -27192,10 +27535,12 @@
         } else if (
             !ScreenObj[key].status ||
             (!preventRefresh && Screens_RefreshTimeout(key)) ||
+            ScreenObj[key].posY < 0 ||
             ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
             !ScreenObj[key].offsettop ||
             (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
             !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
+            ScreenObj[key].enable_mature !== Settings_value.enable_mature.defaultValue ||
             ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')
         ) {
             if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
@@ -27237,6 +27582,7 @@
         Play_PreviewVideoEnded = false;
         Main_HideWarningDialog();
 
+        ScreenObj[key].enable_mature = Settings_value.enable_mature.defaultValue;
         ScreenObj[key].tempHtml = '';
         ScreenObj[key].DataObj = {};
         ScreenObj[key].SetPreviewEnable();
@@ -27279,17 +27625,21 @@
     function Screens_loadDataRequestStart(key) {
         ScreenObj[key].loadingData = true;
 
-        if (
-            !ScreenObj[key].itemsCount &&
-            !ScreenObj[key].isReloadScreen &&
-            ScreenObj[key].hasBackupData &&
-            ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
-        ) {
-            ScreenObj[key].restoreBackup();
+        if ((ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) && !ScreenObj[key].enable_mature) {
+            Screens_loadDataFail(key);
         } else {
-            Screens_loadDataRequest(key);
+            if (
+                !ScreenObj[key].itemsCount &&
+                !ScreenObj[key].isReloadScreen &&
+                ScreenObj[key].hasBackupData &&
+                ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
+            ) {
+                ScreenObj[key].restoreBackup();
+            } else {
+                Screens_loadDataRequest(key);
 
-            if (ScreenObj[key].hasBackupData) ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+                if (ScreenObj[key].hasBackupData) ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+            }
         }
 
         ScreenObj[key].isReloadScreen = false;
@@ -29059,6 +29409,7 @@
         if (!ScreenObj[key].posX) {
             Main_values.Main_Go = Main_AGameVod;
             Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
+
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
         } else {
@@ -30219,7 +30570,7 @@
 
     var userGameQuery = '{"query":"{user(id:\\"%x\\"){followedGames(first:100,type:LIVE){nodes{id displayName boxArtURL viewersCount channelsCount}}}}"}';
     var featuredQuery =
-        '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
+        '{"query":"{featuredStreams(first:10,acceptedMature:%m%x){stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
     var topClipQuery =
         '{"query":"{games(first: 100) {edges{node{id,name,clips(first:50,criteria:{period:%t%l}){edges{node{title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,id,video{id},thumbnailURL(width:480,height: 272),broadcaster{id,displayName,login}}}}}}}}"}';
     var topVodQuery =
@@ -30248,6 +30599,7 @@
             itemsCount: 0,
             MaxOffset: 0,
             offset: 0,
+            enable_mature: 0,
             visiblerows: 3,
             status: false,
             FirstRunEnd: false,
@@ -30357,6 +30709,7 @@
                         responseObj: {},
                         ContentLang: {},
                         Lang: {},
+                        enable_mature: {},
                         offsettopFontsize: {}
                     };
                 }
@@ -30377,6 +30730,7 @@
                     this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
                     this.BackupData.responseObj[game] = responseObj;
                     this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+                    this.BackupData.enable_mature[game] = Settings_value.enable_mature.defaultValue;
 
                     this.BackupData.ContentLang[game] = Main_ContentLang;
                     this.BackupData.Lang[game] = Settings_AppLang;
@@ -30400,6 +30754,7 @@
                     this.BackupData.data[game].length &&
                     Main_A_equals_B(this.BackupData.ContentLang[game], Main_ContentLang) &&
                     Main_A_equals_B(this.BackupData.Lang[game], Settings_AppLang) &&
+                    this.BackupData.enable_mature[game] === Settings_value.enable_mature.defaultValue &&
                     this.BackupData.offsettopFontsize[game] === Settings_Obj_default('global_font_offset') &&
                     (!Settings_Obj_default('auto_refresh_screen') ||
                         new Date().getTime() < this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout())
@@ -30519,9 +30874,10 @@
                 return null;
             },
             emptyBanner: function(forceAdd) {
+                var bannerString = this.enable_mature ? STR_REFRESH_PROBLEM_ENTER : STR_MATURE_DISABLED;
                 ScreensObj_addBanner({
                         image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
-                        text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER,
+                        text: this.emptyContent_STR ? this.emptyContent_STR() : bannerString,
                         empty: true
                     },
                     this.screen,
@@ -30653,7 +31009,7 @@
             addCellTemp: function(cell) {
                 var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
-                if (!this.idObject[id_cell]) {
+                if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell)) {
                     this.itemsCount++;
                     this.idObject[id_cell] = 1;
 
@@ -31524,6 +31880,11 @@
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
         ScreenObj[key].Set_Scroll();
         ScreenObj[key].key_play = function() {
+            if (!Settings_value.enable_mature.defaultValue) {
+                Main_showWarningDialog(STR_MATURE_DISABLED, 2000);
+                return;
+            }
+
             if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
                 if (this.is_a_Banner()) return;
 
@@ -31555,7 +31916,9 @@
                 set_url: function() {
                     this.dataEnded = true;
                     this.url = PlayClip_BaseUrl;
-                    this.post = this.base_post.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
+                    this.post = this.base_post
+                        .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
+                        .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
                 },
                 label_init: function() {
                     Sidepannel_SetDefaultLabels();
@@ -32875,6 +33238,10 @@
             ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]);
         }
     }
+
+    function ScreensObj_CheckIsMature(cell) {
+        return Settings_value.enable_mature.defaultValue || !cell.is_mature;
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -33052,7 +33419,6 @@
         Main_SearchInput.blur();
         Search_removeEventListener();
         Main_removeEventListener('keydown', Search_KeyboardEvent);
-        Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
 
         if (EnaKeydown) Main_addEventListener('keydown', Search_handleKeyDown);
         Search_keyBoardOn = false;
@@ -34238,6 +34604,10 @@
             values: ['no', 'yes'],
             defaultValue: 1
         },
+        enable_mature: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
         enable_embed: {
             values: ['no', 'yes'],
             defaultValue: 2
@@ -34680,6 +35050,8 @@
             div += Settings_Content('dpad_opt', [STR_ENTER_TO_OPEN], STR_DPAD_OPT, null);
         }
 
+        div += Settings_Content('enable_mature', dis_ena, STR_ENABLE_MATURE, STR_ENABLE_MATURE_SUMMARY);
+
         if (!Main_IsOn_OSInterface) {
             div += Settings_Content('enable_embed', array_no_yes, STR_DISABLE_EMBED, STR_DISABLE_EMBED_SUMMARY);
         }
@@ -35050,12 +35422,14 @@
         Main_RemoveClass(key + '_div', 'settings_div_focus');
     }
 
-    function Settings_ChangeSettigs(position) {
+    function Settings_ChangeSettings(position, skipDefault) {
         var key = Settings_value_keys[position];
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
         Settings_Setarrows(position);
-        Settings_SetDefault(key);
+        if (!skipDefault) {
+            Settings_SetDefault(key);
+        }
     }
 
     function Settings_Setarrows(position) {
@@ -35106,6 +35480,7 @@
         else if (position === 'screen_preview_volume') Play_AudioReset(0, true);
         else if (position === 'preview_sizes') OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
         else if (position === 'enable_embed') enable_embed = Settings_value.enable_embed.defaultValue;
+        else if (position === 'enable_mature') Settings_checkMature();
         else if (position === 'global_font_offset') {
             calculateFontSize();
             AddUser_UpdateSidepanelAfterShow();
@@ -35147,6 +35522,62 @@
             position === 'block_qualities_3'
         ) {
             Settings_QualitiesCheck();
+        }
+    }
+
+    var Settings_cursorYBackup;
+    var Settings_enable_matureBackup;
+
+    function Settings_checkMature() {
+        var enabled = Settings_value.enable_mature.defaultValue;
+        Settings_enable_matureBackup = enabled;
+
+        if (enabled) {
+            if (Main_values.Password_data) {
+                Main_OpenPassword();
+            }
+        } else if (!Main_values.Password_data) {
+            Users_RemoveCursor = 0;
+            Users_RemoveCursorSet();
+            Main_innerHTML('main_dialog_remove', STR_MATURE_PROTECT);
+            Main_textContent('yes_no_dialog_button_no', STR_NO);
+            Main_textContent('yes_no_dialog_button_yes', STR_YES);
+            Main_ShowElement('yes_no_dialog');
+            Main_removeEventListener('keydown', Settings_handleKeyDown);
+            Main_addEventListener('keydown', Settings_checkMatureKeyDown);
+        }
+    }
+
+    function Settings_setMature(enabled) {
+        var enabledInt = enabled ? 1 : 0;
+        Settings_value.enable_mature.defaultValue = enabledInt;
+        Settings_ChangeSettings(Settings_cursorYBackup, true);
+    }
+
+    function Settings_checkMatureKeyDown(event) {
+        switch (event.keyCode) {
+            case KEY_LEFT:
+                Users_RemoveCursor--;
+                if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
+                Users_RemoveCursorSet();
+                break;
+            case KEY_RIGHT:
+                Users_RemoveCursor++;
+                if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
+                Users_RemoveCursorSet();
+                break;
+            case KEY_ENTER:
+                Main_removeEventListener('keydown', Settings_checkMatureKeyDown);
+                Main_HideElement('yes_no_dialog');
+
+                if (Users_RemoveCursor) {
+                    Main_OpenPassword();
+                } else {
+                    Main_addEventListener('keydown', Settings_handleKeyDown);
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -35584,7 +36015,7 @@
     }
 
     function Settings_ScrollTable() {
-        var scroolPos = 13,
+        var scroolPos = 14,
             offset = !Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
         if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
@@ -35632,14 +36063,14 @@
     function Settings_handleKeyLeft(key) {
         if (Settings_Obj_default(key) > 0) {
             Settings_value[key].defaultValue -= 1;
-            Settings_ChangeSettigs(Settings_cursorY);
+            Settings_ChangeSettings(Settings_cursorY);
         }
     }
 
     function Settings_handleKeyRight(key) {
         if (Settings_Obj_default(key) < Settings_Obj_length(key)) {
             Settings_value[key].defaultValue += 1;
-            Settings_ChangeSettigs(Settings_cursorY);
+            Settings_ChangeSettings(Settings_cursorY);
         }
     }
 
@@ -37333,6 +37764,7 @@
             UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image ||
             new Date().getTime() > UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout() ||
             !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue) ||
+            UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].enable_mature !== Settings_value.enable_mature.defaultValue ||
             !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Lang, Settings_AppLang)
         ) {
             ForceRefresh = true;
@@ -37898,6 +38330,7 @@
             UserLiveFeed_obj[i].sorting = 0;
             UserLiveFeed_obj[i].CheckSort = 0;
             UserLiveFeed_obj[i].Lang = Settings_AppLang;
+            UserLiveFeed_obj[i].enable_mature = Settings_value.enable_mature.defaultValue;
             UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
             UserLiveFeed_obj[i].CheckContentLang = 0;
             UserLiveFeed_obj[i].BannerTime = 0;
@@ -39261,6 +39694,7 @@
         UserLiveFeed_obj[pos].sorting = Settings_value.live_feed_sort.defaultValue;
         UserLiveFeed_obj[pos].ContentLang = Main_ContentLang;
         UserLiveFeed_obj[pos].Lang = Settings_AppLang;
+        UserLiveFeed_obj[pos].enable_mature = Settings_value.enable_mature.defaultValue;
 
         if (UserLiveFeed_isPreviewShowing()) {
             UserLiveFeed_obj[pos].div.classList.remove('hide');
@@ -39418,6 +39852,7 @@
             !UserLiveFeed_obj[pos].AddCellsize ||
             (UserLiveFeed_obj[pos].CheckContentLang && !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)) ||
             (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue)) ||
+            UserLiveFeed_obj[pos].enable_mature !== Settings_value.enable_mature.defaultValue ||
             !Main_A_equals_B(UserLiveFeed_obj[pos].Lang, Settings_AppLang)
         ) {
             if (UserLiveFeed_loadingData[pos]) {
@@ -39602,7 +40037,9 @@
                 UserLiveFeedobj_FeaturedPos,
                 UserLiveFeedobj_FeaturedPos, //checkResult
                 'POST', //Method, null for get
-                featuredQuery.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
+                featuredQuery
+                .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
+                .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
             );
         }
 
@@ -40461,7 +40898,7 @@
                 stream = response[i];
                 id = stream.user_id;
 
-                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
+                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream)) {
                     UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
                     if (!stream.user_name) {
                         stream.user_name = mapLogoPartner[id].display_name;
@@ -40856,7 +41293,7 @@
                     id = useHelix ? stream.user_id : stream.channel._id;
                 }
 
-                if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
+                if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && (isFeatured || ScreensObj_CheckIsMature(stream))) {
                     UserLiveFeed_idObject[pos][id] = itemsCount;
                     mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
