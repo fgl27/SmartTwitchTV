@@ -174,7 +174,6 @@ function Search_RemoveinputFocus(EnaKeydown) {
     Main_SearchInput.blur();
     Search_removeEventListener();
     Main_removeEventListener('keydown', Search_KeyboardEvent);
-    Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
 
     if (EnaKeydown) Main_addEventListener('keydown', Search_handleKeyDown);
     Search_keyBoardOn = false;

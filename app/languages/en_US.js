@@ -55,6 +55,7 @@ function en_USLang() {
     STR_WAITING = 'Wait time';
     STR_SINCE = 'Since';
     STR_AGAME = 'A Game';
+    STR_PLACEHOLDER_PASS = 'Type your password...';
     STR_PLACEHOLDER_SEARCH = 'Type your search ...';
     STR_PLACEHOLDER_OAUTH = 'Type your authorization key ...';
     STR_PLACEHOLDER_USER = 'Type your username and press Enter ...';
@@ -837,6 +838,13 @@ function en_USLang() {
     SEEK_PREVIEW_CAROUSEL = 'Carousel of images';
 
     OPEN_NEW_ISSUE = '(Click New issue)';
+
+    STR_CONFIRM = 'Confirm';
+
+    STR_MATURE_NO_CHANGES = 'No changes to mature content due to missing password';
+    STR_MATURE_PROTECT = 'Protect mature changes with a password';
+    STR_MATURE_HELP_SET_PASS = 'Set an password and click Confirm, exit will reset the mature settings';
+    STR_MATURE_HELP_CHECK_PASS = 'Enter the saved password and click Confirm, exit will reset the mature settings';
 
     STR_MATURE_DISABLED = 'Mature content is disabled';
     STR_ENABLE_MATURE = 'Enable Mature content';

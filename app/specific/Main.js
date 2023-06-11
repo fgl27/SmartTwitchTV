@@ -49,6 +49,7 @@ var Main_AGameClip = 20;
 var Main_HistoryLive = 21;
 var Main_HistoryVod = 22;
 var Main_HistoryClip = 23;
+var Main_Password = 24;
 
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
 var Main_HistoryPos = 0;
@@ -101,7 +102,8 @@ var Main_values = {
     banner_16by9_pos: 0,
     MaxInstancesWarn: false,
     AddCode_main_token: null,
-    API_Change: true
+    API_Change: true,
+    Password_data: null
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -119,6 +121,7 @@ var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
 var Main_IsDayFirst = false;
 var Main_SearchInput;
+var Main_PasswordInput;
 var Main_AddUserInput;
 var Main_ChatLiveInput;
 var Main_UpdateClockId;
@@ -404,6 +407,7 @@ function Main_initWindowsEnd() {
     Main_SetStringsSecondary();
     Main_checkVersion();
 
+    Main_PasswordInput = Main_getElementById('password_input');
     Main_SearchInput = Main_getElementById('search_input');
     Main_AddUserInput = Main_getElementById('user_input');
     Main_ChatLiveInput = Main_getElementById('chat_send_input');
@@ -540,6 +544,10 @@ function Main_SetStringsSecondary() {
     Main_textContent('play_dialog_exit_text', STR_EXIT_AGAIN);
 
     Main_textContent('side_panel_back_main_menu', STR_SIDE_PANEL_BACK_MAIN_MENU);
+
+    Main_textContent('password_view', STR_VIEW);
+    Main_textContent('password_save', STR_CONFIRM);
+    Main_textContent('password_help', STR_MATURE_HELP_SET_PASS);
 
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
@@ -961,6 +969,14 @@ function Main_OpenSearch() {
     Search_init();
 }
 
+function Main_OpenPassword() {
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_Password;
+    Main_HideWarningDialog();
+    Main_CounterDialogRst();
+    Password_init();
+}
+
 var Main_SaveValuesWithTimeoutId;
 function Main_SaveValuesWithTimeout() {
     Main_SaveValuesWithTimeoutId = Main_setTimeout(Main_SaveValues, 500, Main_SaveValuesWithTimeoutId);
@@ -974,11 +990,13 @@ function Main_SaveValues() {
 function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
     Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
+
+    Main_values.Password_data = null;
 }
 
 function Main_ExitCurrent(ExitCurrent) {
     //Main_Log('Main_ExitCurrent ' + ExitCurrent);
-    if (ScreenObj[ExitCurrent].exit_fun) ScreenObj[ExitCurrent].exit_fun();
+    if (ScreenObj[ExitCurrent] && ScreenObj[ExitCurrent].exit_fun) ScreenObj[ExitCurrent].exit_fun();
     if (Main_isElementShowing('settings_holder')) Settings_exit();
 }
 

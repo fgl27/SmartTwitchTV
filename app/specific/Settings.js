@@ -1198,12 +1198,14 @@ function Settings_RemoveinputFocusKey(key) {
     Main_RemoveClass(key + '_div', 'settings_div_focus');
 }
 
-function Settings_ChangeSettigs(position) {
+function Settings_ChangeSettings(position, skipDefault) {
     var key = Settings_value_keys[position];
     Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
     Settings_Setarrows(position);
-    Settings_SetDefault(key);
+    if (!skipDefault) {
+        Settings_SetDefault(key);
+    }
 }
 
 function Settings_Setarrows(position) {
@@ -1254,6 +1256,7 @@ function Settings_SetDefault(position) {
     else if (position === 'screen_preview_volume') Play_AudioReset(0, true);
     else if (position === 'preview_sizes') OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     else if (position === 'enable_embed') enable_embed = Settings_value.enable_embed.defaultValue;
+    else if (position === 'enable_mature') Settings_checkMature();
     else if (position === 'global_font_offset') {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();
@@ -1295,6 +1298,62 @@ function Settings_SetDefault(position) {
         position === 'block_qualities_3'
     ) {
         Settings_QualitiesCheck();
+    }
+}
+
+var Settings_cursorYBackup;
+var Settings_enable_matureBackup;
+function Settings_checkMature() {
+    var enabled = Settings_value.enable_mature.defaultValue;
+    Settings_enable_matureBackup = enabled;
+
+    if (enabled) {
+        if (Main_values.Password_data) {
+            Main_OpenPassword();
+        }
+    } else if (!Main_values.Password_data) {
+        Users_RemoveCursor = 0;
+        Users_RemoveCursorSet();
+        Main_innerHTML('main_dialog_remove', STR_MATURE_PROTECT);
+        Main_textContent('yes_no_dialog_button_no', STR_NO);
+        Main_textContent('yes_no_dialog_button_yes', STR_YES);
+        Main_ShowElement('yes_no_dialog');
+        Main_removeEventListener('keydown', Settings_handleKeyDown);
+        Main_addEventListener('keydown', Settings_checkMatureKeyDown);
+    }
+}
+
+function Settings_setMature(enabled) {
+    var enabledInt = enabled ? 1 : 0;
+    Settings_value.enable_mature.defaultValue = enabledInt;
+    Settings_ChangeSettings(Settings_cursorYBackup, true);
+}
+
+function Settings_checkMatureKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_LEFT:
+            Users_RemoveCursor--;
+            if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
+            Users_RemoveCursorSet();
+            break;
+        case KEY_RIGHT:
+            Users_RemoveCursor++;
+            if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
+            Users_RemoveCursorSet();
+            break;
+        case KEY_ENTER:
+            Main_removeEventListener('keydown', Settings_checkMatureKeyDown);
+            Main_HideElement('yes_no_dialog');
+
+            if (Users_RemoveCursor) {
+                Settings_cursorYBackup = Settings_cursorY;
+                Main_OpenPassword();
+            } else {
+                Main_addEventListener('keydown', Settings_handleKeyDown);
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -1780,14 +1839,14 @@ Math.easeInOutQuad = function (t, b, c, d) {
 function Settings_handleKeyLeft(key) {
     if (Settings_Obj_default(key) > 0) {
         Settings_value[key].defaultValue -= 1;
-        Settings_ChangeSettigs(Settings_cursorY);
+        Settings_ChangeSettings(Settings_cursorY);
     }
 }
 
 function Settings_handleKeyRight(key) {
     if (Settings_Obj_default(key) < Settings_Obj_length(key)) {
         Settings_value[key].defaultValue += 1;
-        Settings_ChangeSettigs(Settings_cursorY);
+        Settings_ChangeSettings(Settings_cursorY);
     }
 }
 

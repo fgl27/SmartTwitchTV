@@ -229,7 +229,7 @@ function Screens_first_init() {
             Play_DurationSeconds = 0;
             Main_openVod();
         }
-    } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
+    } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search && Main_GoBefore !== Main_Password) {
         if (Main_newUsercode) Main_HideLoadDialog();
         ScreenObj[Main_GoBefore].init_fun();
 
