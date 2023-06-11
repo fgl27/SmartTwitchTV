@@ -1342,17 +1342,21 @@ function Settings_checkMatureKeyDown(event) {
             Users_RemoveCursorSet();
             break;
         case KEY_ENTER:
-            Main_removeEventListener('keydown', Settings_checkMatureKeyDown);
-            Main_HideElement('yes_no_dialog');
-
-            if (Users_RemoveCursor) {
-                Main_OpenPassword();
-            } else {
-                Main_addEventListener('keydown', Settings_handleKeyDown);
-            }
+            Settings_checkMatureKeyEnter();
             break;
         default:
             break;
+    }
+}
+
+function Settings_checkMatureKeyEnter() {
+    Main_removeEventListener('keydown', Settings_checkMatureKeyDown);
+    Main_HideElement('yes_no_dialog');
+
+    if (Users_RemoveCursor) {
+        Main_OpenPassword();
+    } else {
+        Main_addEventListener('keydown', Settings_handleKeyDown);
     }
 }
 
