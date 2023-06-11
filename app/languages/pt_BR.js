@@ -838,4 +838,16 @@ function pt_BRLang() {
         'Permite controlar a imagem de pré-visualização ao avançar ou retroceder uma VOD, a vançar/retrocer não está disponível para todos as VODs.';
     SEEK_PREVIEW_SINGLE = 'Imagem única';
     SEEK_PREVIEW_CAROUSEL = 'Carrossel de imagens';
+
+    STR_CONFIRM = 'Confirmar';
+
+    STR_MATURE_NO_CHANGES = 'Sem alterações no conteúdo adulto devido à falta de senha';
+    STR_MATURE_PROTECT = 'Proteger alterações maduras com uma senha';
+    STR_MATURE_HELP_SET_PASS = 'Defina uma senha e clique em Confirmar, caso sair irá redefinir as configurações de adulto';
+    STR_MATURE_HELP_CHECK_PASS = 'Digite a senha salva e clique em Confirmar, caso sair irá redefinir as configurações maduras';
+
+    STR_MATURE_DISABLED = 'Conteúdo adulto está desabilitado';
+    STR_ENABLE_MATURE = 'Conteúdo adulto';
+    STR_ENABLE_MATURE_SUMMARY =
+        'Quando desativado, o aplicativo bloqueará todo o conteúdo marcado como conteúdo adulto incluído conteúdo de seguidores, isto inclui todas lives marcadas como adultas e todo o conteúdo das seções de clipes e VOD';
 }

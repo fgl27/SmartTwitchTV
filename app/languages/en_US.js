@@ -847,7 +847,7 @@ function en_USLang() {
     STR_MATURE_HELP_CHECK_PASS = 'Enter the saved password and click Confirm, exit will reset the mature settings';
 
     STR_MATURE_DISABLED = 'Mature content is disabled';
-    STR_ENABLE_MATURE = 'Enable Mature content';
+    STR_ENABLE_MATURE = 'Mature content';
     STR_ENABLE_MATURE_SUMMARY =
-        'When disabled the app will block all content marked as mature included followed content, that include lives marked as mature, and all content from general clip and VOD sections';
+        'When disabled the app will block all content marked as mature included followed content, that include lives marked as mature, and all content from clip and VOD sections';
 }
