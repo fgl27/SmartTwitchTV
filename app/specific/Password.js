@@ -141,6 +141,8 @@ function Password_KeyEnter() {
         } else {
             if (Main_PasswordInput.value !== '' && Main_PasswordInput.value !== null) {
                 if (Settings_enable_matureBackup) {
+                    //password enabled
+
                     if (Main_values.Password_data !== Main_PasswordInput.value) {
                         Main_showWarningDialog('worng pass');
 
@@ -151,6 +153,12 @@ function Password_KeyEnter() {
                         return;
                     }
                 } else {
+                    //password disabled
+
+                    if (!Password_CheckIfStrong(Main_PasswordInput.value)) {
+                        return;
+                    }
+
                     Main_values.Password_data = Main_PasswordInput.value;
                     Main_PasswordInput.value = '';
                 }
@@ -166,6 +174,33 @@ function Password_KeyEnter() {
             }
         }
     }
+}
+
+function Password_CheckIfStrong(password) {
+    var warning = '';
+    if (!password.match(/[0-9]+/)) {
+        warning += 'password must contain at least one number' + STR_BR;
+    }
+
+    if (!password.match(/[A-Z]+/)) {
+        warning += 'password must contain at least one capital letter' + STR_BR;
+    }
+
+    if (password.length < 6) {
+        warning += 'password minimum number of characters is 6';
+    }
+
+    if (warning) {
+        Main_showWarningDialog(warning);
+
+        Main_setTimeout(function () {
+            Main_HideWarningDialog();
+        }, 2000);
+
+        return false;
+    }
+
+    return true;
 }
 
 var Password_inputFocusId;
