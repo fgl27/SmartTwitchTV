@@ -191,7 +191,8 @@ That key will be used to access Twitch specific content of that user, it permiss
 **Get the details of your subscription to a channel.:**
 
 -   The permission used for this is **user:read:subscriptions** the API's used on this is [Check User Subscription by Channel](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
--   Allows to check if you are sub to a particularly channel, that information is used to give a on screen warning when a content is block for Sub-only (a Sub-only chat ROOM (write mode, read will always work) or a VOD for example) and you don't have access because you aren't a sub of a particularly channel (unfortunately twitch has blocked all third party app's to access sub-only VOD's so this warning will let you know that, on the past that wasn't a issue for sub-only VOD's)<br>
+-   Allows to check if you are sub to a particularly channel, that information is used to display chat emotes on the write to chat option and also to give a on screen warning when a content is block for Sub-only (a Sub-only chat ROOM (write mode, read will always work) or a VOD for example).
+-   Unfortunately twitch has blocked all third party app's to access any user privilege that includes sub or turbo privilege, on the past that wasn't a issue but today is, so today the app can only let you know why you can't see something by displaying a on-screen warning<br>
 
 **Send live Stream Chat and Rooms messages:**
 
