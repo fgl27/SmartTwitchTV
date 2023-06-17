@@ -2737,6 +2737,7 @@ function Main_CheckStop() {
         } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
     }
 
+    Play_screeOn();
     Play_StopStay();
     Main_clearTimeout(Main_setHistoryItemId);
     Main_SaveHistoryItem();
