@@ -327,3 +327,7 @@
 .icon-proxy:before {
   content: "\39";
 }
+
+.icon-screen-off:before {
+  content: "\22";
+}
