@@ -224,6 +224,7 @@ function Screens_first_init() {
         } else {
             Play_data.data[3] = tempGame;
             Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
+
             if (!Main_vodOffset) Main_vodOffset = 1;
 
             Play_DurationSeconds = 0;

@@ -389,6 +389,7 @@ function PlayVod_SaveOffset() {
     //Prevent setting it to 0 before it was used
     if (!Main_vodOffset) {
         var vodOffset = parseInt(OSInterface_gettime() / 1000);
+
         if (vodOffset > 0) {
             Main_setItem('Main_vodOffset', vodOffset);
             PlayVod_SaveVodIds(vodOffset);
@@ -553,6 +554,7 @@ function PlayVod_onPlayer() {
 
         Chat_offset = Main_vodOffset;
         Chat_Init();
+        Main_setItem('Main_vodOffset', Main_vodOffset);
         Main_vodOffset = 0;
     } else {
         PlayVod_onPlayerStartPlay(OSInterface_gettime());

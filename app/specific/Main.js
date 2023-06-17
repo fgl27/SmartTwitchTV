@@ -2716,7 +2716,12 @@ function Main_CheckStop() {
     Main_clearInterval(PlayVod_RefreshProgressBarrID);
     Main_clearInterval(PlayVod_SaveOffsetId);
 
-    if (PlayClip_isOn) PlayClip_Resume();
+    if (PlayVod_isOn) {
+        var vodOffset = OSInterface_getsavedtime() / 1000;
+        if (vodOffset) {
+            Main_setItem('Main_vodOffset', vodOffset);
+        }
+    } else if (PlayClip_isOn) PlayClip_Resume();
     else if (Play_isOn) {
         if (Play_MultiEnable) {
             var i = 0;
