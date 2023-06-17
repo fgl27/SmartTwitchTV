@@ -10082,6 +10082,8 @@
         }
     }
 
+    //possible messages
+    //https://dev.twitch.tv/docs/irc/msg-id/#notice-message-ids
     function ChatLive_UserNoticeCheck(message, chat_number, id) {
         //Main_Log(JSON.stringify(message));
         var msgId = message.tags && message.tags.hasOwnProperty('msg-id');
@@ -14202,7 +14204,12 @@
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
         Main_clearInterval(PlayVod_SaveOffsetId);
 
-        if (PlayClip_isOn) PlayClip_Resume();
+        if (PlayVod_isOn) {
+            var vodOffset = OSInterface_getsavedtime() / 1000;
+            if (vodOffset) {
+                Main_setItem('Main_vodOffset', vodOffset);
+            }
+        } else if (PlayClip_isOn) PlayClip_Resume();
         else if (Play_isOn) {
             if (Play_MultiEnable) {
                 var i = 0;
@@ -25834,6 +25841,7 @@
         //Prevent setting it to 0 before it was used
         if (!Main_vodOffset) {
             var vodOffset = parseInt(OSInterface_gettime() / 1000);
+
             if (vodOffset > 0) {
                 Main_setItem('Main_vodOffset', vodOffset);
                 PlayVod_SaveVodIds(vodOffset);
@@ -25999,6 +26007,7 @@
 
             Chat_offset = Main_vodOffset;
             Chat_Init();
+            Main_setItem('Main_vodOffset', Main_vodOffset);
             Main_vodOffset = 0;
         } else {
             PlayVod_onPlayerStartPlay(OSInterface_gettime());
@@ -27518,6 +27527,7 @@
             } else {
                 Play_data.data[3] = tempGame;
                 Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
+
                 if (!Main_vodOffset) Main_vodOffset = 1;
 
                 Play_DurationSeconds = 0;
