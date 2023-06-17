@@ -1139,6 +1139,8 @@ function PlayVod_SetPreview() {
 }
 
 function PlayVod_handleKeyDown(e) {
+    Play_screeOn();
+
     switch (e.keyCode) {
         case KEY_LEFT:
             if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {

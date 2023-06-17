@@ -850,4 +850,6 @@ function en_USLang() {
     STR_ENABLE_MATURE = 'Mature content';
     STR_ENABLE_MATURE_SUMMARY =
         'When disabled the app will block all content marked as mature included followed content, that include lives marked as mature, and all content from clip and VOD sections';
+
+    STR_SCREEN_OFF = 'Screen off (Audio only)';
 }

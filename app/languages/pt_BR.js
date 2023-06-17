@@ -850,4 +850,6 @@ function pt_BRLang() {
     STR_ENABLE_MATURE = 'Conteúdo adulto';
     STR_ENABLE_MATURE_SUMMARY =
         'Quando desativado, o aplicativo bloqueará todo o conteúdo marcado como conteúdo adulto incluído conteúdo de seguidores, isto inclui todas lives marcadas como adultas e todo o conteúdo das seções de clipes e VOD';
+
+    STR_SCREEN_OFF = 'Tela desligada (somente áudio)';
 }

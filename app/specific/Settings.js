@@ -1152,11 +1152,22 @@ function Settings_burn_in_protection_start() {
 }
 
 function Settings_burn_in_protection() {
-    Main_ShowElement('burn_in_protection');
+    if (Play_ScreeIsOff) {
+        return;
+    }
+    Settings_ScreenOff();
 
     Main_setTimeout(function () {
-        Main_HideElement('burn_in_protection');
+        Settings_ScreenOn();
     }, 50); //show for a few frames to refresh the OLED screen
+}
+
+function Settings_ScreenOff() {
+    Main_ShowElement('burn_in_protection');
+}
+
+function Settings_ScreenOn() {
+    Main_HideElement('burn_in_protection');
 }
 
 function Settings_SetDpad() {

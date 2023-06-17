@@ -23,6 +23,16 @@ var Play_MultiChatBeffore;
 var Play_isFullScreenold = null;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
+var Play_ScreeIsOff = false;
+
+function Play_screeOn() {
+    if (!Play_ScreeIsOff) {
+        return;
+    }
+
+    Play_ScreeIsOff = false;
+    Settings_ScreenOn();
+}
 
 function Play_SetControlsVisibilityPlayer(PlayVodClip) {
     if (PlayVodClip === 1) {
@@ -503,9 +513,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
         Play_HideControlsDialog();
     }
 
-    if (PlayVodClip === 1) Play_hidePanel();
-    else if (PlayVodClip === 2) PlayVod_hidePanel();
-    else if (PlayVodClip === 3) PlayClip_hidePanel();
+    Play_hidePanelFull(PlayVodClip);
 
     if (!Play_IsWarning) Play_HideWarningDialog();
 
@@ -1323,9 +1331,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {
         }
 
         if (Play_isPanelShowing()) {
-            if (PlayVodClip === 1) Play_hidePanel();
-            else if (PlayVodClip === 2) PlayVod_hidePanel();
-            else if (PlayVodClip === 3) PlayClip_hidePanel();
+            Play_hidePanelFull(PlayVodClip);
         }
     } else {
         if ((PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) || !Main_IsOn_OSInterface) Chat_Pause();
@@ -1682,6 +1688,8 @@ function Play_handleKeyUpEndClear() {
 }
 
 function Play_handleKeyDown(e) {
+    Play_screeOn();
+
     switch (e.keyCode) {
         case KEY_LEFT:
             if (Play_isPanelShowing()) {
@@ -1968,6 +1976,7 @@ var Play_controlsExternal = temp_controls_pos++;
 var Play_controlsQuality = temp_controls_pos++;
 var Play_controlsQualityMini = temp_controls_pos++;
 var Play_controlsQualityMulti = temp_controls_pos++;
+var Play_controlsScreeOff = temp_controls_pos++;
 var Play_controlsLowLatency = temp_controls_pos++;
 var Play_controlsChapters = temp_controls_pos++;
 var Play_MultiStream = temp_controls_pos++;
@@ -2313,13 +2322,7 @@ function Play_MakeControls() {
                 return;
             }
 
-            if (PlayVodClip === 1) {
-                Play_hidePanel();
-            } else if (PlayVodClip === 2) {
-                PlayVod_hidePanel();
-            } else if (PlayVodClip === 3) {
-                PlayClip_hidePanel();
-            }
+            Play_hidePanelFull(PlayVodClip);
         },
         updown: function (adder) {
             this.defaultValue += adder;
@@ -2517,6 +2520,30 @@ function Play_MakeControls() {
                     ? Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + Play_MultiArray[pos].data[1]
                     : Play_controls[this.position].values[Play_controls[this.position].defaultValue]
             );
+        }
+    };
+
+    Play_controls[Play_controlsScreeOff] = {
+        //quality
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: 'screen-off',
+        offsetY: -6,
+        string: STR_SCREEN_OFF,
+        enterKey: function (PlayVodClip) {
+            Play_hidePanelFull(PlayVodClip);
+
+            Play_ScreeIsOff = true;
+            Settings_ScreenOff();
         }
     };
 

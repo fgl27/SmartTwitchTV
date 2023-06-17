@@ -731,6 +731,8 @@ function PlayClip_CheckPreviewClip() {
 }
 
 function PlayClip_handleKeyDown(e) {
+    Play_screeOn();
+
     switch (e.keyCode) {
         case KEY_LEFT:
             if (Play_isPanelShowing()) {

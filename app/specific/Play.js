@@ -1383,6 +1383,12 @@ function Play_ForceHidePannel() {
     Play_PanneInfoDoclId.style.pointerEvents = 'none';
 }
 
+function Play_hidePanelFull(PlayVodClip) {
+    if (PlayVodClip === 1) Play_hidePanel();
+    else if (PlayVodClip === 2) PlayVod_hidePanel();
+    else if (PlayVodClip === 3) PlayClip_hidePanel();
+}
+
 function Play_hidePanel() {
     //return;//return;
     Play_ForceHidePannel();
