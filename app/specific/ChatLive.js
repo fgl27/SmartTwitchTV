@@ -1307,6 +1307,8 @@ function ChatLive_CheckHostResult(responseObj, chat_number, id) {
     }
 }
 
+//possible messages
+//https://dev.twitch.tv/docs/irc/msg-id/#notice-message-ids
 function ChatLive_UserNoticeCheck(message, chat_number, id) {
     //Main_Log(JSON.stringify(message));
     var msgId = message.tags && message.tags.hasOwnProperty('msg-id');
