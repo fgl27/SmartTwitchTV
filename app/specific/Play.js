@@ -1191,6 +1191,7 @@ function Play_exitMain() {
     //Main_Log('Play_exitMain');
 
     UserLiveFeed_PreventHide = false;
+    Play_screeOn();
     Play_AudioReset(0, true);
     Play_HideBufferDialog();
     Main_showScene1Doc();
