@@ -23230,8 +23230,6 @@
             if (!Main_IsOn_OSInterface && obj.data[0]) {
                 Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomImg);
             }
-        } else if (!obj.streams.length && !Main_IsOn_OSInterface) {
-            Play_StartStay();
         }
     }
 
