@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'June 11 2023',
-    WebTag: 663, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'June 17 2023',
+    WebTag: 665, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version June 17 2023',
+            changes: ['Add Screen off (Audio only) option to player', 'General improves']
+        },
         {
             title: 'Web Version June 11 2023',
             changes: ['Add setting options to block Mature content']
