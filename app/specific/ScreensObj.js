@@ -2776,14 +2776,7 @@ function ScreensObj_updateThumbInfo(key) {
     );
 }
 
-function ScreensObj_ThumbInfoUpdate(responseText, checkResult, check_1, check_2) {
-    var obj = JSON.parse(responseText);
-    if (!obj.data.length) {
-        return;
-    }
-
-    var tempData = ScreensObj_LiveCellArray(obj.data[0]);
-
+function ScreensObj_ThumbInfoUpdate(tempData, checkResult, check_1, check_2) {
     var key = parseInt(checkResult);
     var id = check_1 + '_' + check_2;
 
@@ -2892,15 +2885,22 @@ function BaseXmlHttpGetFull_Process(result, checkResult, check_1, check_2, check
     );
 }
 
-function BaseXmlHttpGetFull_Process_End(obj, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
-    if (obj.status === 200) {
+function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
+    if (response.status === 200) {
+        var obj = JSON.parse(response.responseText);
+        if (!obj.data.length) {
+            return;
+        }
+
+        var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
         // prettier-ignore
         eval(callBackSuccess)( // jshint ignore:line
-            obj.responseText, checkResult, check_1, check_2, check_3, check_4, check_5
+            tempData, checkResult, check_1, check_2, check_3, check_4, check_5
         );
 
         return;
-    } else if (obj.status === 401 || obj.status === 403) {
+    } else if (response.status === 401 || response.status === 403) {
         //token expired
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
@@ -2911,6 +2911,6 @@ function BaseXmlHttpGetFull_Process_End(obj, checkResult, check_1, check_2, chec
     }
     // prettier-ignore
     eval(callBackError)( // jshint ignore:line
-        check_1, checkResult, obj
+        check_1, checkResult, response
     );
 }

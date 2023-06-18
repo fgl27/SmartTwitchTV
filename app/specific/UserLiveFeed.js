@@ -53,7 +53,10 @@ var UserLiveFeed_ids = [
     'ulf_title_', //2
     'ulf_data_', //3
     'ulf_watched_', //4
-    'ulf_since_' //4
+    'ulf_since_', //5
+    'ulf_views_', //6
+    'ulf_innerTitle_', //7
+    'ulf_game_' //8
 ];
 
 var UserLiveFeed_side_ids = [
@@ -607,6 +610,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         } else if (!isGame && !isBanner) {
             UserLiveFeed_UpdateSince(pos);
             UserLiveFeed_refreshThumb(pos);
+            UserLiveFeed_updateThumbInfo(pos);
         }
     }
 
@@ -1349,4 +1353,30 @@ function UserLiveFeed_CheckIsLive(pos) {
         !UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]] ||
         UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
     );
+}
+
+function UserLiveFeed_updateThumbInfo(pos) {
+    var data = UserLiveFeed_GetObj(pos);
+    ScreensObj_getStreamInfo(data[14], pos, UserLiveFeed_FeedPosY[pos] + '', null, null, null, null, UserLiveFeed_ThumbInfoUpdate, noop_fun);
+}
+
+function UserLiveFeed_ThumbInfoUpdate(tempData, checkResult, check_1) {
+    var id = checkResult + '_' + check_1;
+    var pos = parseInt(checkResult);
+
+    if (!Sidepannel_ObjNotNullPos(pos)) {
+        return;
+    }
+
+    var data = UserLiveFeed_GetObj(pos);
+
+    if (data[13] !== tempData[13]) {
+        Main_innerHTML(UserLiveFeed_ids[6] + id, STR_SPACE_HTML + STR_FOR + tempData[4] + STR_SPACE_HTML + Main_GetViewerStrings(tempData[13]));
+    }
+    if (data[2] !== tempData[2]) {
+        Main_innerHTML(UserLiveFeed_ids[7] + id, Main_ReplaceLargeFont(twemoji.parse(tempData[2])));
+    }
+    if (data[3] !== tempData[3]) {
+        Main_innerHTML(UserLiveFeed_ids[8] + id, tempData[3] !== '' ? STR_PLAYING + tempData[3] : '');
+    }
 }

@@ -1057,9 +1057,15 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         data[5] +
         '</div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
-        '">' +
+        '" id="' +
+        UserLiveFeed_ids[7] +
+        id +
+        '" >' +
         Main_ReplaceLargeFont(twemoji.parse(data[2])) +
-        '</div><div class="stream_info_live">' +
+        '</div><div class="stream_info_live" id="' +
+        UserLiveFeed_ids[8] +
+        id +
+        '" >' +
         (data[3] !== '' ? STR_PLAYING + data[3] : '') +
         '</div><div id="' +
         UserLiveFeed_ids[4] +
@@ -1070,13 +1076,16 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         '" >' +
         STR_SINCE +
         data[11] +
-        '</span>' +
+        '</span><span id="' +
+        UserLiveFeed_ids[6] +
+        id +
+        '" >' +
         STR_SPACE_HTML +
         STR_FOR +
         data[4] +
         STR_SPACE_HTML +
         Main_GetViewerStrings(data[13]) +
-        '</div>' +
+        '</span></div>' +
         (Extra_when
             ? '<div class="stream_info_live">' +
               STR_WATCHED +

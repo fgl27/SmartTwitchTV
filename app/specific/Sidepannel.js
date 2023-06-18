@@ -190,14 +190,7 @@ function Sidepannel_updateThumbInfo(obj) {
     ScreensObj_getStreamInfo(obj[14], Sidepannel_PosFeed, null, null, null, null, null, Sidepannel_ThumbInfoUpdate, noop_fun);
 }
 
-function Sidepannel_ThumbInfoUpdate(responseText, checkResult) {
-    var obj = JSON.parse(responseText);
-    if (!obj.data.length) {
-        return;
-    }
-
-    var tempData = ScreensObj_LiveCellArray(obj.data[0]);
-
+function Sidepannel_ThumbInfoUpdate(tempData, checkResult) {
     var pos = parseInt(checkResult);
 
     if (!Sidepannel_ObjNotNullPos(pos)) {
