@@ -2755,3 +2755,162 @@ function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {
 function ScreensObj_CheckIsMature(cell) {
     return Settings_value.enable_mature.defaultValue || !cell.is_mature;
 }
+
+function ScreensObj_updateThumbInfo(key) {
+    if (ScreenObj[key].screenType !== 0 || !Screens_ObjNotNull(key)) {
+        return;
+    }
+
+    var obj = Screens_GetObj(key);
+
+    ScreensObj_getStreamInfo(
+        obj[14],
+        key,
+        ScreenObj[key].posY + '',
+        ScreenObj[key].posX + '',
+        null,
+        null,
+        null,
+        ScreensObj_ThumbInfoUpdate,
+        noop_fun
+    );
+}
+
+function ScreensObj_ThumbInfoUpdate(responseText, checkResult, check_1, check_2) {
+    var obj = JSON.parse(responseText);
+    if (!obj.data.length) {
+        return;
+    }
+
+    var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
+    var key = parseInt(checkResult);
+    var id = check_1 + '_' + check_2;
+
+    if (!ScreenObj[key].DataObj[id]) {
+        return;
+    }
+
+    var data = Screens_GetObjId(id, key);
+
+    if (data[13] !== tempData[13]) {
+        Main_innerHTML(ScreenObj[key].ids[10] + id, STR_SPACE_HTML + STR_FOR + tempData[4] + STR_SPACE_HTML + Main_GetViewerStrings(tempData[13]));
+    }
+    if (data[2] !== tempData[2]) {
+        Main_innerHTML(ScreenObj[key].ids[11] + id, Main_ReplaceLargeFont(twemoji.parse(tempData[2])));
+    }
+    if (data[3] !== tempData[3]) {
+        Main_innerHTML(ScreenObj[key].ids[12] + id, tempData[3] !== '' ? STR_PLAYING + tempData[3] : '');
+    }
+}
+
+function ScreensObj_getStreamInfo(userId, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
+    if (!userId) return;
+
+    var theUrl = Main_helix_api + 'streams?user_id=' + userId;
+
+    BaseXmlHttpGetFull(theUrl, true, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError);
+}
+
+function BaseXmlHttpGetFull(
+    theUrl,
+    UseHeaders,
+    checkResult,
+    check_1,
+    check_2,
+    check_3,
+    check_4,
+    check_5,
+    callBackSuccess,
+    callBackError,
+    postMessage,
+    Method
+) {
+    var headers;
+
+    if (UseHeaders) {
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
+
+            headers = Main_Bearer_User_Headers;
+        } else {
+            headers = Main_Bearer_Headers;
+        }
+    }
+
+    if (Main_IsOn_OSInterface) {
+        OSInterface_XmlHttpGetFull(
+            theUrl, //String urlString
+            DefaultHttpGetTimeout, //int timeout
+            postMessage ? postMessage : null, // String postMessage
+            Method ? Method : null, //String Method
+            UseHeaders ? JSON.stringify(headers) : null, //String JsonHeadersArray
+            'BaseXmlHttpGetFull_Process', //String callback
+            checkResult, //long checkResult
+            check_1, //String check_1
+            check_2, //String check_2
+            check_3, // String check_3
+            check_4, // reserved for token result String check_4
+            check_5, // String check_5
+            callBackSuccess.name, //String callBackSuccess
+            callBackError.name //String callBackError
+        );
+    } else {
+        var xmlHttp = new XMLHttpRequest(),
+            i = 0;
+
+        xmlHttp.open('GET', theUrl, true);
+        xmlHttp.timeout = DefaultHttpGetTimeout;
+
+        if (UseHeaders) {
+            for (i; i < headers.length; i++) {
+                xmlHttp.setRequestHeader(headers[i][0], headers[i][1]);
+            }
+        }
+
+        xmlHttp.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                BaseXmlHttpGetFull_Process_End(this, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError);
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function BaseXmlHttpGetFull_Process(result, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
+    BaseXmlHttpGetFull_Process_End(
+        JSON.parse(result),
+        checkResult,
+        check_1,
+        check_2,
+        check_3,
+        check_4,
+        check_5,
+        callBackSuccess, // jshint ignore:line
+        callBackError // jshint ignore:line
+    );
+}
+
+function BaseXmlHttpGetFull_Process_End(obj, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
+    if (obj.status === 200) {
+        // prettier-ignore
+        eval(callBackSuccess)( // jshint ignore:line
+            obj.responseText, checkResult, check_1, check_2, check_3, check_4, check_5
+        );
+
+        return;
+    } else if (obj.status === 401 || obj.status === 403) {
+        //token expired
+
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            AddCode_refreshTokens();
+        } else {
+            AddCode_AppToken();
+        }
+    }
+    // prettier-ignore
+    eval(callBackError)( // jshint ignore:line
+        check_1, checkResult, obj
+    );
+}

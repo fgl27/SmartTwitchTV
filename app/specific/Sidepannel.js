@@ -129,13 +129,19 @@ function Sidepannel_isShowingUserLiveSide() {
 }
 
 function Sidepannel_GetObj() {
-    return Main_Slice(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed]);
+    return Sidepannel_GetObjPos(Sidepannel_PosFeed);
+}
+
+function Sidepannel_GetObjPos(pos) {
+    return Main_Slice(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][pos]);
 }
 
 function Sidepannel_ObjNotNull() {
-    return Boolean(
-        UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed] && !UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image
-    );
+    return Sidepannel_ObjNotNullPos(Sidepannel_PosFeed);
+}
+
+function Sidepannel_ObjNotNullPos(Pos) {
+    return Boolean(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Pos] && !UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image);
 }
 
 var Sidepannel_UpdateThumbDivName;
@@ -163,6 +169,7 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivViews, STR_FOR + info[4] + STR_SPACE_HTML + Main_GetViewerStrings(info[13]));
         Play_LoadLogo(Sidepannel_UpdateThumbDivThumb, info[9]);
         Sidepannel_UpdateSince();
+        Sidepannel_updateThumbInfo(info);
     }
 }
 
@@ -177,6 +184,49 @@ function Sidepannel_UpdateSince() {
     }
 
     Sidepannel_UpdateSinceId = Main_setTimeout(Sidepannel_UpdateSince, 1000, Sidepannel_UpdateSinceId);
+}
+
+function Sidepannel_updateThumbInfo(obj) {
+    ScreensObj_getStreamInfo(obj[14], Sidepannel_PosFeed, null, null, null, null, null, Sidepannel_ThumbInfoUpdate, noop_fun);
+}
+
+function Sidepannel_ThumbInfoUpdate(responseText, checkResult) {
+    var obj = JSON.parse(responseText);
+    if (!obj.data.length) {
+        return;
+    }
+
+    var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
+    var pos = parseInt(checkResult);
+
+    if (!Sidepannel_ObjNotNullPos(pos)) {
+        return;
+    }
+
+    var data = Sidepannel_GetObjPos(pos);
+
+    if (data[3] !== tempData[3]) {
+        Main_innerHTML(UserLiveFeed_side_ids[8] + pos, tempData[3] !== '' ? tempData[3] : '');
+    }
+
+    if (data[13] !== tempData[13]) {
+        Main_innerHTML(UserLiveFeed_side_ids[12] + pos, tempData[4]);
+    }
+
+    if (pos !== Sidepannel_PosFeed) {
+        return;
+    }
+
+    if (data[13] !== tempData[13]) {
+        Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivViews, STR_FOR + tempData[4] + STR_SPACE_HTML + Main_GetViewerStrings(tempData[13]));
+    }
+    if (data[2] !== tempData[2]) {
+        Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivTitle, Main_ReplaceLargeFont(twemoji.parse(tempData[2])));
+    }
+    if (data[3] !== tempData[3]) {
+        Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivGame, tempData[3] !== '' ? STR_PLAYING + tempData[3] : '');
+    }
 }
 
 function Sidepannel_UpdateThumb() {

@@ -219,6 +219,7 @@ function Main_StartApp() {
                     Main_EventChannelRefresh: Main_EventChannelRefresh,
                     ChatLive_SetLatency: ChatLive_SetLatency,
                     Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
+                    BaseXmlHttpGetFull_Process: BaseXmlHttpGetFull_Process,
                     AddCode_refreshTokensResult: AddCode_refreshTokensResult,
                     Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
                     PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
@@ -256,7 +257,7 @@ function Main_StartApp() {
         DefaultLang();
 
         //AddCode_redirect_uri is different from default update
-        if (!Main_A_includes_B(window.location.href, AddCode_redirect_uri)) {
+        if (!Main_A_includes_B(window.location.href.split('?code')[0], AddCode_redirect_uri)) {
             AddCode_redirect_uri = window.location.href.split('?code')[0];
         }
 
@@ -1921,7 +1922,7 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, UseHeaders) {
+function BaseXmlHttpGet(theUrl, callbackSuccess, calbackError, key, checkResult, UseHeaders) {
     var headers;
 
     if (UseHeaders) {
@@ -1944,7 +1945,7 @@ function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, 
             'Main_CheckBasexmlHttpGet',
             checkResult,
             key,
-            callbackSucess.name,
+            callbackSuccess.name,
             calbackError.name
         );
     } else {
@@ -1962,7 +1963,7 @@ function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, 
 
         xmlHttp.onreadystatechange = function () {
             if (this.readyState === 4) {
-                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError, checkResult);
+                Main_BasexmlHttpStatus(this, key, callbackSuccess, calbackError, checkResult);
             }
         };
 
@@ -1970,19 +1971,19 @@ function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, 
     }
 }
 
-function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
+function Main_CheckBasexmlHttpGet(result, key, callbackSuccess, calbackError, checkResult) {
     Main_BasexmlHttpStatus(
         JSON.parse(result),
         key,
-        eval(callbackSucess), // jshint ignore:line
+        eval(callbackSuccess), // jshint ignore:line
         eval(calbackError), // jshint ignore:line
         checkResult
     );
 }
 
-function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkResult) {
+function Main_BasexmlHttpStatus(obj, key, callbackSuccess, calbackError, checkResult) {
     if (obj.status === 200) {
-        callbackSucess(obj.responseText, key, checkResult); // jshint ignore:line
+        callbackSuccess(obj.responseText, key, checkResult); // jshint ignore:line
 
         return;
     } else if (obj.status === 401 || obj.status === 403) {
@@ -2027,7 +2028,7 @@ function HttpGetSetUserHeader() {
     ];
 }
 
-function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
+function FullxmlHttpGet(theUrl, Headers, callbackSuccess, calbackError, key, checkResult, Method, postMessage) {
     if (Main_IsOn_OSInterface) {
         OSInterface_BaseXmlHttpGet(
             theUrl,
@@ -2038,7 +2039,7 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
             'Main_CheckFullxmlHttpGet',
             checkResult,
             key,
-            callbackSucess.name,
+            callbackSuccess.name,
             calbackError.name
         );
     } else {
@@ -2056,7 +2057,7 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
 
         xmlHttp.onreadystatechange = function () {
             if (this.readyState === 4) {
-                callbackSucess(this, key, checkResult);
+                callbackSuccess(this, key, checkResult);
             }
         };
 
@@ -2076,11 +2077,11 @@ function Main_CheckFullxmlHttpGet(result, key, callbackSuccess, callBackError, c
 
 var Main_GetHostBaseUrl =
     '{"operationName":"UseHosting","variables":{"channelLogin":"%x"},"extensions":{"persistedQuery":{"version": 1,"sha256Hash":"427f55a3daca510f726c02695a898ef3a0de4355b39af328848876052ea6b337"}}}';
-function Main_GetHost(callbackSucess, key, checkResult, channel) {
+function Main_GetHost(callbackSuccess, key, checkResult, channel) {
     FullxmlHttpGet(
         PlayClip_BaseUrl,
         Play_base_backup_headers_Array,
-        callbackSucess,
+        callbackSuccess,
         noop_fun,
         key,
         checkResult,

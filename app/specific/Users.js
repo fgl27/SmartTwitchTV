@@ -375,6 +375,7 @@ function Users_handleKeyEnter() {
             if (temp_RemoveCursor) {
                 Main_values.Users_AddcodePosition = Users_showUserDialogPos;
                 Main_SaveValues();
+
                 var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
                     type_code = 'code',
                     client_id = AddCode_clientId,

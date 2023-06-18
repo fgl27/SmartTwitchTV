@@ -123,7 +123,10 @@ function Screens_ScreenIds(base, key) {
         key + '_row_', //6
         key + '_watched_', //7
         key + '_time_', //8
-        key + '_since_' //9
+        key + '_since_', //9
+        key + '_views_', //10
+        key + '_innerTitle_', //11
+        key + '_game_' //12
     ];
 }
 
@@ -819,10 +822,16 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         valuesArray[5] +
         '</div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
-        '">' +
+        '" id="' +
+        idArray[11] +
+        id +
+        '" >' +
         Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) +
         '</div>' +
-        '<div class="stream_info_live">' +
+        '<div class="stream_info_live" id="' +
+        idArray[12] +
+        id +
+        '" >' +
         (valuesArray[3] !== '' ? STR_PLAYING + valuesArray[3] : '') +
         '</div><div id="' +
         idArray[4] +
@@ -833,13 +842,16 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         '" >' +
         STR_SINCE +
         valuesArray[11] +
-        '</span>' +
+        '</span><span id="' +
+        idArray[10] +
+        id +
+        '" >' +
         STR_SPACE_HTML +
         STR_FOR +
         valuesArray[4] +
         STR_SPACE_HTML +
         Main_GetViewerStrings(valuesArray[13]) +
-        '</div>' +
+        '</span></div>' +
         (Extra_when
             ? '<div class="stream_info_live">' +
               STR_WATCHED +
@@ -1103,6 +1115,10 @@ function Screens_LoadPreviewSTop(PreventCleanQualities) {
 function Screens_GetObj(key) {
     var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
+    return Screens_GetObjId(obj_id, key);
+}
+
+function Screens_GetObjId(obj_id, key) {
     return Main_Slice(ScreenObj[key].DataObj[obj_id].image ? [] : ScreenObj[key].DataObj[obj_id]);
 }
 
@@ -1686,6 +1702,7 @@ function Screens_addrowEnd(forceScroll, key) {
             }
         } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
             Screens_UpdateSince(key);
+            ScreensObj_updateThumbInfo(key);
         }
 
         ScreenObj[key].addFocus(forceScroll, key);

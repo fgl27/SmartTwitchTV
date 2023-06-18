@@ -1005,7 +1005,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
         UserLiveFeed_side_ids[12] +
         id +
         '" style="font-size: 58%;">' +
-        Main_addCommas(data[13]) +
+        data[4] +
         '</div></div></div></div></div></div></div>'
     );
 }
