@@ -6028,6 +6028,10 @@
 
             // };
 
+            var burn_in_protection = Main_getElementById('burn_in_protection');
+            burn_in_protection.onmousemove = Play_screeOn;
+            burn_in_protection.onclick = Play_screeOn;
+
             var dialogThumb = Main_getElementById('dialog_thumb_opt');
             dialogThumb.onmousemove = function(event) {
                 var id = event.target.id;
