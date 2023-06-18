@@ -92,8 +92,6 @@ function Chat_Init() {
         Chat_StartFakeClock();
     }
 
-    Chat_loadBadgesGlobal();
-
     ChatLive_SetOptions(0, Main_values.Main_selectedChannel_id, Main_values.Main_selectedChannel);
 
     Chat_loadChat(Chat_Id[0]);
@@ -175,10 +173,9 @@ var Chat_GlobalBadges = null;
 var Chat_GlobalBadges_Bits = null;
 var Chat_GlobalBadges_Subs = null;
 function Chat_loadBadgesGlobal() {
-    //return;
-    if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes();
-    if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
-    if (!extraEmotesDone.Seven_tvGlobal) Chat_loadSeven_tvGlobalEmotes();
+    Chat_loadBTTVGlobalEmotes();
+    Chat_loadEmotesffz();
+    Chat_loadSeven_tvGlobalEmotes();
 
     ChatLiveControls_Set();
 }
@@ -321,7 +318,11 @@ function Chat_tagCSS(content, doc) {
 }
 
 function Chat_loadBTTVGlobalEmotes() {
-    Chat_BaseLoadUrl('https://api.betterttv.net/3/cached/emotes/global', Chat_loadEmotesSuccessBttv, noop_fun);
+    if (!extraEmotesDone.bttvGlobal) {
+        Chat_BaseLoadUrl('https://api.betterttv.net/3/cached/emotes/global', Chat_loadEmotesSuccessBttv, noop_fun);
+    } else {
+        ChatLive_updateExtraEmotes(extraEmotesDone.bttvGlobal);
+    }
 }
 
 function Chat_loadEmotesSuccessBttv(data) {
@@ -359,7 +360,11 @@ function Chat_loadEmotesbttvGlobal(data) {
 }
 
 function Chat_loadSeven_tvGlobalEmotes() {
-    Chat_BaseLoadUrl('https://api.7tv.app/v2/emotes/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
+    if (!extraEmotesDone.Seven_tvGlobal) {
+        Chat_BaseLoadUrl('https://api.7tv.app/v2/emotes/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
+    } else {
+        ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal);
+    }
 }
 
 function Chat_loadEmotesSuccessSeven_tv(data) {
@@ -367,7 +372,11 @@ function Chat_loadEmotesSuccessSeven_tv(data) {
 }
 
 function Chat_loadEmotesffz() {
-    Chat_BaseLoadUrl('https://api.frankerfacez.com/v1/set/global', Chat_loadEmotesSuccessffz, noop_fun);
+    if (!extraEmotesDone.ffzGlobal) {
+        Chat_BaseLoadUrl('https://api.frankerfacez.com/v1/set/global', Chat_loadEmotesSuccessffz, noop_fun);
+    } else {
+        ChatLive_updateExtraEmotes(extraEmotesDone.ffzGlobal);
+    }
 }
 
 function Chat_loadEmotesSuccessffz(data) {

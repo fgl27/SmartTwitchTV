@@ -113,8 +113,6 @@ function ChatLive_Init(chat_number, SkipClear) {
         Chat_StartFakeClock();
     }
 
-    Chat_loadBadgesGlobal();
-
     ChatLive_SetOptions(
         chat_number,
         !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
@@ -185,6 +183,10 @@ var ChatLive_ClearChat;
 var ChatLive_HideBots;
 
 function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
+    extraEmotes = {};
+
+    Chat_loadBadgesGlobal();
+
     ChatLive_selectedChannel_id[chat_number] = Channel_id;
     ChatLive_selectedChannel[chat_number] = selectedChannel;
     if (ChatLive_selectedChannel[chat_number]) ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
