@@ -39102,7 +39102,11 @@
     }
 
     function UserLiveFeed_ObjNotNull(pos) {
-        return Boolean(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]);
+        return UserLiveFeed_ObjNotNullYpos(pos, UserLiveFeed_FeedPosY[pos]);
+    }
+
+    function UserLiveFeed_ObjNotNullYpos(pos, Ypos) {
+        return Boolean(UserLiveFeed_DataObj[pos][Ypos]);
     }
 
     function UserLiveFeed_OpenBannerUrl(obj) {
@@ -39919,7 +39923,7 @@
         var id = checkResult + '_' + check_1;
         var pos = parseInt(checkResult);
 
-        if (!Sidepannel_ObjNotNullPos(pos)) {
+        if (!UserLiveFeed_ObjNotNullYpos(pos, check_1)) {
             return;
         }
 
