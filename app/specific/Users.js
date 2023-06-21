@@ -395,7 +395,7 @@ function Users_handleKeyEnter() {
                     'response_type=' +
                     type_code +
                     '&client_id=' +
-                    encodeURIComponent(client_id) +
+                    client_id +
                     '&redirect_uri=' +
                     redirect_uri +
                     '&scope=' +

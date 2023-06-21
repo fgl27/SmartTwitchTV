@@ -510,7 +510,7 @@ function ChatLive_loadEmotesChannelBTTV(chat_number, id) {
 
     if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
-            'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+            'https://api.betterttv.net/3/cached/users/twitch/' + ChatLive_selectedChannel_id[chat_number],
             ChatLive_loadEmotesChannelBTTVSuccess,
             noop_fun,
             chat_number,
@@ -620,7 +620,7 @@ function ChatLive_loadEmotesChannelFFZ(chat_number, id) {
 
     if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
-            'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+            'https://api.frankerfacez.com/v1/room/id/' + ChatLive_selectedChannel_id[chat_number],
             ChatLive_loadEmotesChannelFFZSuccess,
             noop_fun,
             chat_number,
@@ -696,7 +696,7 @@ function ChatLive_loadEmotesChannelSeven_tv(chat_number, id) {
 
     if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
-            'https://api.7tv.app/v2/users/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '/emotes',
+            'https://api.7tv.app/v2/users/' + ChatLive_selectedChannel_id[chat_number] + '/emotes',
             ChatLive_loadEmotesChannelSeven_tvSuccess,
             noop_fun,
             chat_number,
