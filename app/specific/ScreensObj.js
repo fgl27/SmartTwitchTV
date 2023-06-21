@@ -980,7 +980,7 @@ function ScreensObj_InitChannelVod() {
             set_url: function () {
                 this.url =
                     this.base_url +
-                    Main_values.Main_selectedChannel_id +
+                    this.lastselectedChannel +
                     '&type=' +
                     (this.highlight ? 'highlight' : 'archive') +
                     '&sort=' +
@@ -1016,12 +1016,16 @@ function ScreensObj_InitChannelVod() {
             label_init: function () {
                 ScreensObj_CheckUser(this.screen);
 
-                if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+                if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) {
+                    ChannelContent_RestoreChannelValue();
+                }
+
                 if (Main_values.Main_selectedChannel_id !== this.lastselectedChannel) {
                     this.OffSetPos = 0;
                     this.extraoffset = 0;
                     this.status = false;
                 }
+
                 this.lastselectedChannel = Main_values.Main_selectedChannel_id;
                 Main_cleanTopLabel();
                 Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
@@ -1552,7 +1556,7 @@ function ScreensObj_InitChannelClip() {
             set_url: function () {
                 this.url =
                     this.base_url +
-                    encodeURIComponent(Main_values.Main_selectedChannel_id) +
+                    this.lastselectedChannel +
                     '&first=' +
                     Main_ItemsLimitMax +
                     ScreensObj_ClipGetPeriod(this.periodPos) +
