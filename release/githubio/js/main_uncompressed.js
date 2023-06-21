@@ -9298,7 +9298,7 @@
 
         if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
-                'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+                'https://api.betterttv.net/3/cached/users/twitch/' + ChatLive_selectedChannel_id[chat_number],
                 ChatLive_loadEmotesChannelBTTVSuccess,
                 noop_fun,
                 chat_number,
@@ -9408,7 +9408,7 @@
 
         if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
-                'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+                'https://api.frankerfacez.com/v1/room/id/' + ChatLive_selectedChannel_id[chat_number],
                 ChatLive_loadEmotesChannelFFZSuccess,
                 noop_fun,
                 chat_number,
@@ -9484,7 +9484,7 @@
 
         if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
-                'https://api.7tv.app/v2/users/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '/emotes',
+                'https://api.7tv.app/v2/users/' + ChatLive_selectedChannel_id[chat_number] + '/emotes',
                 ChatLive_loadEmotesChannelSeven_tvSuccess,
                 noop_fun,
                 chat_number,
@@ -31598,7 +31598,7 @@
                 set_url: function() {
                     this.url =
                         this.base_url +
-                        Main_values.Main_selectedChannel_id +
+                        this.lastselectedChannel +
                         '&type=' +
                         (this.highlight ? 'highlight' : 'archive') +
                         '&sort=' +
@@ -31634,12 +31634,16 @@
                 label_init: function() {
                     ScreensObj_CheckUser(this.screen);
 
-                    if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
+                    if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) {
+                        ChannelContent_RestoreChannelValue();
+                    }
+
                     if (Main_values.Main_selectedChannel_id !== this.lastselectedChannel) {
                         this.OffSetPos = 0;
                         this.extraoffset = 0;
                         this.status = false;
                     }
+
                     this.lastselectedChannel = Main_values.Main_selectedChannel_id;
                     Main_cleanTopLabel();
                     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
@@ -32161,7 +32165,7 @@
                 set_url: function() {
                     this.url =
                         this.base_url +
-                        encodeURIComponent(Main_values.Main_selectedChannel_id) +
+                        this.lastselectedChannel +
                         '&first=' +
                         Main_ItemsLimitMax +
                         ScreensObj_ClipGetPeriod(this.periodPos) +
@@ -42301,7 +42305,7 @@
                         'response_type=' +
                         type_code +
                         '&client_id=' +
-                        encodeURIComponent(client_id) +
+                        client_id +
                         '&redirect_uri=' +
                         redirect_uri +
                         '&scope=' +
