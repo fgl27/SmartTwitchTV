@@ -4598,9 +4598,13 @@
         VersionBase: '3.0',
         publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'June 17 2023',
-        WebTag: 665, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'June 27 2023',
+        WebTag: 667, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version June 27 2023',
+                changes: ['General improves']
+            },
+            {
                 title: 'Web Version June 17 2023',
                 changes: ['Add Screen off (Audio only) option to player', 'General improves']
             },
@@ -4627,10 +4631,6 @@
             {
                 title: 'Web Version May 05 2023',
                 changes: ['Fix VOD chat']
-            },
-            {
-                title: 'Web Version February 25 2023',
-                changes: ['General UI improves', 'General improves']
             }
         ]
     };
@@ -4908,8 +4908,6 @@
                     return;
                 }
             }
-
-            //AddCode_refreshTokens(position, null, null, null, !position); //token expired
         } else {
             FullxmlHttpGet(AddCode_ValidateUrl, header, AddCode_AppTokenCheckReady, noop_fun, 0, 0, null, null);
         }
@@ -4924,10 +4922,10 @@
             window.setTimeout(function() {
                 AddCode_AppToken();
             }, (parseInt(data.expires_in) - 60) * 1000);
-
-            OSInterface_setAppToken();
         } else {
             AddCode_AppToken(0, Main_initWindowsEnd, Main_initWindowsEnd, 0, true);
+
+            Main_EventToken(obj.status, obj.responseText);
         }
     }
 
@@ -5091,7 +5089,7 @@
         var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + AddCode_Channel_id,
             header;
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             header = Main_Bearer_User_Headers;
         } else {
             header = Main_Bearer_Headers;
@@ -5509,6 +5507,10 @@
 
     function AddUser_UserIsSet() {
         return AddUser_UsernameArray.length > 0;
+    }
+
+    function AddUser_UserHasToken() {
+        return AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
     }
 
     function AddUser_UpdateUserAllUsers() {
@@ -7478,7 +7480,7 @@
                     Screens_init(Main_ChannelClip);
                 });
             } else if (ChannelContent_cursorX === 2) {
-                // if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+                // if (AddUser_UserHasToken()) {
                 //     AddCode_PlayRequest = false;
                 //     AddCode_Channel_id = Main_values.Main_selectedChannel_id;
                 //     if (AddCode_IsFollowing) AddCode_UnFollow();
@@ -9993,7 +9995,7 @@
                 case 'NOTICE':
                     if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
                         ChatLive_LineAddErro(message.params[1], 0, true);
-                        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
+                        if (AddUser_UserHasToken()) AddCode_refreshTokens(0, null, null);
                     } else ChatLive_UserNoticeWarn(message);
                     break;
                     // case "USERSTATE":
@@ -10116,7 +10118,7 @@
             ChatLive_Check(chat_number, id, 0);
         } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
             ChatLive_LineAddErro(message.params[1], chat_number);
-            if (useToken[chat_number] && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
+            if (useToken[chat_number] && AddUser_UserHasToken()) AddCode_refreshTokens(0, null, null);
         } else ChatLive_UserNoticeWarn(message);
     }
 
@@ -11842,7 +11844,7 @@
                         if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
 
                         AddUser_RestoreUsers();
-                        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) OSInterface_mCheckRefresh();
+                        if (AddUser_UserHasToken()) OSInterface_mCheckRefresh();
                     }
                 }
             }
@@ -11854,10 +11856,7 @@
     }
 
     function Main_initWindows() {
-        if (!AddCode_main_token) {
-            OSInterface_getAppToken();
-        }
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             Main_initWindowsEnd();
         } else {
             AddCode_AppTokenCheck();
@@ -11883,7 +11882,7 @@
 
         Screens_InitScreens();
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
         }
 
@@ -13433,7 +13432,7 @@
         var headers;
 
         if (UseHeaders) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            if (AddUser_UserHasToken()) {
                 Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
                 headers = Main_Bearer_User_Headers;
@@ -13496,7 +13495,7 @@
         } else if (obj.status === 401 || obj.status === 403) {
             //token expired
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            if (AddUser_UserHasToken()) {
                 AddCode_refreshTokens();
             } else {
                 AddCode_AppToken();
@@ -14015,7 +14014,7 @@
                                 Main_StartHistoryworkerBradcast(
                                     Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
                                     'live',
-                                    AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers
+                                    AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers
                                 );
                             } else {
                                 Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
@@ -14063,7 +14062,7 @@
             len = array.length,
             header;
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             header = Main_Bearer_User_Headers;
         } else {
             header = Main_Bearer_Headers;
@@ -14097,7 +14096,7 @@
             len = array.length,
             header;
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             header = Main_Bearer_User_Headers;
         } else {
             header = Main_Bearer_Headers;
@@ -14133,7 +14132,7 @@
             len = array.length,
             header;
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             header = Main_Bearer_User_Headers;
         } else {
             header = Main_Bearer_Headers;
@@ -14169,7 +14168,7 @@
             len = array.length,
             header;
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             header = Main_Bearer_User_Headers;
         } else {
             header = Main_Bearer_Headers;
@@ -14338,7 +14337,7 @@
             Main_values.IsUpDating = false;
         }
 
-        var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+        var UserIsSet = AddUser_UserHasToken();
 
         Main_CheckResumeUpdateToken(UserIsSet);
 
@@ -14617,7 +14616,7 @@
 
     function Main_onNewIntentGetScreen(obj) {
         var goTo = Main_values.Main_Go;
-        var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+        var UserIsSet = AddUser_UserHasToken();
 
         switch (
             obj.screen //In relateton to java CHANNEL_TYPE_*
@@ -14722,6 +14721,21 @@
                 gtag('event', 'proxy_status', {
                     name: proxyType,
                     result: success ? 'Success' : 'Fail'
+                });
+            } catch (e) {
+                console.log('Main_EventProxy e ' + e);
+            }
+        });
+    }
+
+    function Main_EventToken(status, responseText) {
+        Main_ready(function() {
+            if (skipfirebase) return;
+
+            try {
+                gtag('event', 'token_status', {
+                    status: status,
+                    responseText: responseText
                 });
             } catch (e) {
                 console.log('Main_EventProxy e ' + e);
@@ -15226,13 +15240,13 @@
 
     //public String getAppToken()
     //Get the app token when is saved on APK
-    function OSInterface_getAppToken() {
-        if (Main_IsOn_OSInterface) {
-            try {
-                AddCode_main_token = Android.getAppToken();
-            } catch (e) {}
-        }
-    }
+    // function OSInterface_getAppToken() {
+    //     if (Main_IsOn_OSInterface) {
+    //         try {
+    //             AddCode_main_token = Android.getAppToken();
+    //         } catch (e) {}
+    //     }
+    // }
 
     //public void UpdateUserId(String id, String name, String refresh_token)
     //id =  the user id
@@ -18551,7 +18565,7 @@
     }
 
     function Play_FollowUnfollow() {
-        // if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        // if (AddUser_UserHasToken()) {
         //     if (AddCode_IsFollowing) AddCode_UnFollow();
         //     else AddCode_Follow();
         // } else {
@@ -21777,7 +21791,7 @@
         ];
 
         HttpGetSetMainHeader();
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             HttpGetSetUserHeader();
         }
 
@@ -26005,7 +26019,7 @@
     }
 
     function PlayVod_loadDataCheckSub() {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             AddCode_Channel_id = Main_values.Main_selectedChannel_id;
             AddCode_CheckSub();
         } else PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
@@ -27750,7 +27764,7 @@
         if (ScreenObj[key].isHistory) {
             ScreenObj[key].history_concatenate();
         } else {
-            var HeadersArray = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers;
+            var HeadersArray = AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers;
             var Method = null;
             var PostString = null;
 
@@ -27788,7 +27802,7 @@
         } else if (resultObj.status === 401 || resultObj.status === 403) {
             //token expired
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !ScreenObj[key].isQuery) {
+            if (AddUser_UserHasToken() && !ScreenObj[key].isQuery) {
                 AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
             } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
                 Screens_loadDataFail(key);
@@ -30273,7 +30287,7 @@
 
     // function Screens_FollowUnfollow(key) {
 
-    //     if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    //     if (Screens_canFollow && AddUser_UserHasToken()) {
 
     //         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
 
@@ -33426,7 +33440,7 @@
         var headers;
 
         if (UseHeaders) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            if (AddUser_UserHasToken()) {
                 Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
                 headers = Main_Bearer_User_Headers;
@@ -33507,7 +33521,7 @@
         } else if (response.status === 401 || response.status === 403) {
             //token expired
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            if (AddUser_UserHasToken()) {
                 AddCode_refreshTokens();
             } else {
                 AddCode_AppToken();
@@ -38065,7 +38079,7 @@
         Sidepannel_Callback = callback;
         Main_removeEventListener('keydown', Sidepannel_Callback);
         if (!Sidepannel_IsMain || forceFeed) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) Sidepannel_StartFeed();
+            if (AddUser_UserHasToken()) Sidepannel_StartFeed();
             else {
                 Sidepannel_ShowNoUserWarning();
                 Sidepannel_StartMain();
@@ -38471,7 +38485,7 @@
     }
 
     function Sidepannel_MainKeyLeft() {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             Main_removeEventListener('keydown', Sidepannel_handleKeyDownMain);
             Sidepannel_StartFeed();
         } else {
@@ -38852,7 +38866,7 @@
 
     function UserLiveFeed_RefreshLive() {
         //Main_Log('UserLiveFeed_RefreshLive');
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
             UserLiveFeedobj_CheckToken();
         }
@@ -38998,7 +39012,7 @@
         if (Settings_Obj_default('auto_refresh_screen') && Settings_Obj_default('auto_refresh_background')) {
             var i = 0,
                 run = 1,
-                len = (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1,
+                len = (AddUser_UserHasToken() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1,
                 date = new Date().getTime();
 
             for (i; i < len; i++) {
@@ -40158,7 +40172,7 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
         }
 
@@ -40183,8 +40197,7 @@
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)
-                AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+            if (AddUser_UserHasToken()) AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
             else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
@@ -41305,7 +41318,7 @@
             UserLiveFeedobj_AddBanner(UserLiveFeedobj_UserLivePos);
 
             if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
-                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+                if (AddUser_UserHasToken()) {
                     UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
                 } else {
                     UserLiveFeedobj_HolderDiv(UserLiveFeedobj_UserLivePos, STR_NOKUSER_WARNING);
@@ -41404,8 +41417,7 @@
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)
-                AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
+            if (AddUser_UserHasToken()) AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
             else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
