@@ -358,9 +358,6 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
-    if (!AddCode_main_token) {
-        OSInterface_getAppToken();
-    }
     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         Main_initWindowsEnd();
     } else {
@@ -3205,6 +3202,21 @@ function Main_EventProxy(success) {
             gtag('event', 'proxy_status', {
                 name: proxyType,
                 result: success ? 'Success' : 'Fail'
+            });
+        } catch (e) {
+            console.log('Main_EventProxy e ' + e);
+        }
+    });
+}
+
+function Main_EventToken(status, responseText) {
+    Main_ready(function () {
+        if (skipfirebase) return;
+
+        try {
+            gtag('event', 'token_status', {
+                status: status,
+                responseText: responseText
             });
         } catch (e) {
             console.log('Main_EventProxy e ' + e);

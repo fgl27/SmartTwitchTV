@@ -268,8 +268,6 @@ function AddCode_AppTokenCheck() {
                 return;
             }
         }
-
-        //AddCode_refreshTokens(position, null, null, null, !position); //token expired
     } else {
         FullxmlHttpGet(AddCode_ValidateUrl, header, AddCode_AppTokenCheckReady, noop_fun, 0, 0, null, null);
     }
@@ -284,10 +282,10 @@ function AddCode_AppTokenCheckReady(obj) {
         window.setTimeout(function () {
             AddCode_AppToken();
         }, (parseInt(data.expires_in) - 60) * 1000);
-
-        OSInterface_setAppToken();
     } else {
         AddCode_AppToken(0, Main_initWindowsEnd, Main_initWindowsEnd, 0, true);
+
+        Main_EventToken(obj.status, obj.responseText);
     }
 }
 
