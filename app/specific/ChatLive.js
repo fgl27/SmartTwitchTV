@@ -1205,7 +1205,7 @@ function ChatLive_SendPrepared(chat_number, id) {
             case 'NOTICE':
                 if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
                     ChatLive_LineAddErro(message.params[1], 0, true);
-                    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
+                    if (AddUser_UserHasToken()) AddCode_refreshTokens(0, null, null);
                 } else ChatLive_UserNoticeWarn(message);
                 break;
             // case "USERSTATE":
@@ -1328,7 +1328,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
         ChatLive_Check(chat_number, id, 0);
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
         ChatLive_LineAddErro(message.params[1], chat_number);
-        if (useToken[chat_number] && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
+        if (useToken[chat_number] && AddUser_UserHasToken()) AddCode_refreshTokens(0, null, null);
     } else ChatLive_UserNoticeWarn(message);
 }
 

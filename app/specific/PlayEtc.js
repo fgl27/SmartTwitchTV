@@ -1242,7 +1242,7 @@ function Play_ClearPP() {
 }
 
 function Play_FollowUnfollow() {
-    // if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    // if (AddUser_UserHasToken()) {
     //     if (AddCode_IsFollowing) AddCode_UnFollow();
     //     else AddCode_Follow();
     // } else {
@@ -4467,7 +4467,7 @@ function Play_PreStart() {
     ];
 
     HttpGetSetMainHeader();
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         HttpGetSetUserHeader();
     }
 

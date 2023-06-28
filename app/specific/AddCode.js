@@ -445,7 +445,7 @@ function AddCode_CheckFollow() {
     var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + AddCode_Channel_id,
         header;
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         header = Main_Bearer_User_Headers;
     } else {
         header = Main_Bearer_Headers;

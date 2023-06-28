@@ -459,7 +459,7 @@ function ChannelContent_keyEnter() {
                 Screens_init(Main_ChannelClip);
             });
         } else if (ChannelContent_cursorX === 2) {
-            // if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            // if (AddUser_UserHasToken()) {
             //     AddCode_PlayRequest = false;
             //     AddCode_Channel_id = Main_values.Main_selectedChannel_id;
             //     if (AddCode_IsFollowing) AddCode_UnFollow();

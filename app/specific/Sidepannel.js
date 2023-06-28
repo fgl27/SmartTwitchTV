@@ -506,7 +506,7 @@ function Sidepannel_Start(callback, forceFeed) {
     Sidepannel_Callback = callback;
     Main_removeEventListener('keydown', Sidepannel_Callback);
     if (!Sidepannel_IsMain || forceFeed) {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) Sidepannel_StartFeed();
+        if (AddUser_UserHasToken()) Sidepannel_StartFeed();
         else {
             Sidepannel_ShowNoUserWarning();
             Sidepannel_StartMain();
@@ -911,7 +911,7 @@ function Sidepannel_handleKeyDown(event) {
 }
 
 function Sidepannel_MainKeyLeft() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         Main_removeEventListener('keydown', Sidepannel_handleKeyDownMain);
         Sidepannel_StartFeed();
     } else {

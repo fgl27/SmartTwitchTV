@@ -493,7 +493,7 @@ function PlayVod_loadDataSuccessEnd(playlist) {
 }
 
 function PlayVod_loadDataCheckSub() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckSub();
     } else PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);

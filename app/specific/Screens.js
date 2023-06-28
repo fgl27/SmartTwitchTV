@@ -385,7 +385,7 @@ function Screens_loadDataRequest(key) {
     if (ScreenObj[key].isHistory) {
         ScreenObj[key].history_concatenate();
     } else {
-        var HeadersArray = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers;
+        var HeadersArray = AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers;
         var Method = null;
         var PostString = null;
 
@@ -423,7 +423,7 @@ function Screens_HttpResultStatus(resultObj, key) {
     } else if (resultObj.status === 401 || resultObj.status === 403) {
         //token expired
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !ScreenObj[key].isQuery) {
+        if (AddUser_UserHasToken() && !ScreenObj[key].isQuery) {
             AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
         } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
             Screens_loadDataFail(key);
@@ -2907,7 +2907,7 @@ function Screens_SetLangValue(position) {
 
 // function Screens_FollowUnfollow(key) {
 
-//     if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+//     if (Screens_canFollow && AddUser_UserHasToken()) {
 
 //         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
 

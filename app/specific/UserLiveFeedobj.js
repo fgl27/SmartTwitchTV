@@ -210,7 +210,7 @@ function UserLiveFeedobj_loadChannelUserLive() {
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
     }
 
@@ -235,8 +235,7 @@ function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)
-            AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+        if (AddUser_UserHasToken()) AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
         else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
@@ -1349,7 +1348,7 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
         UserLiveFeedobj_AddBanner(UserLiveFeedobj_UserLivePos);
 
         if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            if (AddUser_UserHasToken()) {
                 UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
             } else {
                 UserLiveFeedobj_HolderDiv(UserLiveFeedobj_UserLivePos, STR_NOKUSER_WARNING);
@@ -1447,8 +1446,7 @@ function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)
-            AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
+        if (AddUser_UserHasToken()) AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
         else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);

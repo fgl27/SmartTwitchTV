@@ -2826,7 +2826,7 @@ function BaseXmlHttpGetFull(
     var headers;
 
     if (UseHeaders) {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
             headers = Main_Bearer_User_Headers;
@@ -2907,7 +2907,7 @@ function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2,
     } else if (response.status === 401 || response.status === 403) {
         //token expired
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             AddCode_refreshTokens();
         } else {
             AddCode_AppToken();

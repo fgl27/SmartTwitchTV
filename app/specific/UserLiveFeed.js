@@ -294,7 +294,7 @@ function UserLiveFeed_Prepare() {
 
 function UserLiveFeed_RefreshLive() {
     //Main_Log('UserLiveFeed_RefreshLive');
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeedobj_CheckToken();
     }
@@ -440,7 +440,7 @@ function UserLiveFeed_CheckRefreshAfterResume() {
     if (Settings_Obj_default('auto_refresh_screen') && Settings_Obj_default('auto_refresh_background')) {
         var i = 0,
             run = 1,
-            len = (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1,
+            len = (AddUser_UserHasToken() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1,
             date = new Date().getTime();
 
         for (i; i < len; i++) {

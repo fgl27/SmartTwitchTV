@@ -346,7 +346,7 @@ function Main_initRestoreBackups() {
                     if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
-                    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) OSInterface_mCheckRefresh();
+                    if (AddUser_UserHasToken()) OSInterface_mCheckRefresh();
                 }
             }
         }
@@ -358,7 +358,7 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         Main_initWindowsEnd();
     } else {
         AddCode_AppTokenCheck();
@@ -384,7 +384,7 @@ function Main_initWindowsEnd() {
 
     Screens_InitScreens();
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
 
@@ -1923,7 +1923,7 @@ function BaseXmlHttpGet(theUrl, callbackSuccess, calbackError, key, checkResult,
     var headers;
 
     if (UseHeaders) {
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
             headers = Main_Bearer_User_Headers;
@@ -1986,7 +1986,7 @@ function Main_BasexmlHttpStatus(obj, key, callbackSuccess, calbackError, checkRe
     } else if (obj.status === 401 || obj.status === 403) {
         //token expired
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserHasToken()) {
             AddCode_refreshTokens();
         } else {
             AddCode_AppToken();
@@ -2500,7 +2500,7 @@ function Main_SetHistoryworker() {
                             Main_StartHistoryworkerBradcast(
                                 Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
                                 'live',
-                                AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers
+                                AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers
                             );
                         } else {
                             Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
@@ -2548,7 +2548,7 @@ function Main_StartHistoryworker() {
         len = array.length,
         header;
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         header = Main_Bearer_User_Headers;
     } else {
         header = Main_Bearer_Headers;
@@ -2582,7 +2582,7 @@ function Main_RunVODWorker() {
         len = array.length,
         header;
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         header = Main_Bearer_User_Headers;
     } else {
         header = Main_Bearer_Headers;
@@ -2618,7 +2618,7 @@ function Main_RunLiveVODWorker() {
         len = array.length,
         header;
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         header = Main_Bearer_User_Headers;
     } else {
         header = Main_Bearer_Headers;
@@ -2654,7 +2654,7 @@ function Main_RunClipWorker() {
         len = array.length,
         header;
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    if (AddUser_UserHasToken()) {
         header = Main_Bearer_User_Headers;
     } else {
         header = Main_Bearer_Headers;
@@ -2822,7 +2822,7 @@ function Main_CheckResume(skipPlay) {
         Main_values.IsUpDating = false;
     }
 
-    var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+    var UserIsSet = AddUser_UserHasToken();
 
     Main_CheckResumeUpdateToken(UserIsSet);
 
@@ -3099,7 +3099,7 @@ function Main_onNewIntent(mobj) {
 
 function Main_onNewIntentGetScreen(obj) {
     var goTo = Main_values.Main_Go;
-    var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+    var UserIsSet = AddUser_UserHasToken();
 
     switch (
         obj.screen //In relateton to java CHANNEL_TYPE_*

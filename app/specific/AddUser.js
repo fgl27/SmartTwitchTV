@@ -271,6 +271,10 @@ function AddUser_UserIsSet() {
     return AddUser_UsernameArray.length > 0;
 }
 
+function AddUser_UserHasToken() {
+    return AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+}
+
 function AddUser_UpdateUserAllUsers() {
     var i = 0,
         len = AddUser_UsernameArray.length;
