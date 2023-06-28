@@ -378,13 +378,13 @@ function OSInterface_setAppToken() {
 
 //public String getAppToken()
 //Get the app token when is saved on APK
-function OSInterface_getAppToken() {
-    if (Main_IsOn_OSInterface) {
-        try {
-            AddCode_main_token = Android.getAppToken();
-        } catch (e) {}
-    }
-}
+// function OSInterface_getAppToken() {
+//     if (Main_IsOn_OSInterface) {
+//         try {
+//             AddCode_main_token = Android.getAppToken();
+//         } catch (e) {}
+//     }
+// }
 
 //public void UpdateUserId(String id, String name, String refresh_token)
 //id =  the user id
