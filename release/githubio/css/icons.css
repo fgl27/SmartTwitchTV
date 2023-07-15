@@ -293,27 +293,23 @@
 }
 
 .icon-vol-level-0:before {
-  content: "\59";
+  content: "\2d";
 }
 
 .icon-vol-level-1:before {
-  content: "\31";
+  content: "\3a";
 }
 
 .icon-vol-level-2:before {
-  content: "\33";
+  content: "\29";
 }
 
 .icon-vol-level-3:before {
-  content: "\34";
+  content: "\28";
 }
 
 .icon-vol-level-4:before {
-  content: "\35";
-}
-
-.icon-status:before {
-  content: "\37";
+  content: "\2a";
 }
 
 .icon-side-by-side:before {
