@@ -314,6 +314,10 @@
   content: "\2a";
 }
 
+.icon-status:before {
+  content: "\37";
+}
+
 .icon-side-by-side:before {
   content: "\36";
 }
