@@ -600,6 +600,9 @@ function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
         'stream_info_multi_views' + extraText + pos,
         views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
     );
+
+    var icon = views > 0 ? Play_GetAudioIcon(pos) : '';
+    Main_innerHTML('stream_info_multi_audio_' + extraText + pos, STR_SPACE_HTML + icon);
 }
 
 function Play_MultiSetpannelInfo() {
