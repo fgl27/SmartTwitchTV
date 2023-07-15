@@ -1477,16 +1477,9 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 }
 
 function Play_GetAudioIcon(pos) {
-    return (
-        STR_SPACE_HTML +
-        '<i class="icon-' +
-        (Play_audio_enable[pos] ? 'volume' : 'mute') +
-        ' strokicon_title" ></i>' +
-        STR_SPACE_HTML +
-        '<i class="icon-' +
-        Play_GetVolLevel(pos) +
-        ' strokicon_title" ></i>'
-    );
+    var icon = Play_audio_enable[pos] ? Play_GetVolLevel(pos) : 'vol-level-0';
+
+    return STR_SPACE_HTML + '<i class="icon-' + icon + ' strokicon_title" ></i>';
 }
 
 function Play_SetAudioIcon() {

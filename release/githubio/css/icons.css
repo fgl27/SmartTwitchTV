@@ -294,10 +294,12 @@
 
 .icon-vol-level-0:before {
   content: "\2d";
+  transform: scale(0.8);
 }
 
 .icon-vol-level-1:before {
   content: "\3a";
+  transform: scale(0.8);
 }
 
 .icon-vol-level-2:before {
