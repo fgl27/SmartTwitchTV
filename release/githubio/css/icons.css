@@ -292,6 +292,7 @@
   content: "\32";
 }
 
+/* volume 0 and 1 are not exactly the same as 123 resize to look almost the same size */
 .icon-vol-level-0:before {
   content: "\2d";
   transform: scale(0.8);
