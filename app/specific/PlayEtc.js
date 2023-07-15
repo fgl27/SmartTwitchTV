@@ -1490,7 +1490,7 @@ function Play_SetAudioIcon() {
         var extraText = Play_Multi_MainBig ? 'big' : '';
 
         for (i; i < 4; i++) {
-            icon = Play_GetAudioIcon(i);
+            icon = Play_MultiArray[i].data.length > 0 ? Play_GetAudioIcon(i) : '';
 
             Main_innerHTML('stream_info_multi_audio_' + extraText + i, STR_SPACE_HTML + icon);
         }
