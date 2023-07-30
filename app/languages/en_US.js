@@ -543,7 +543,7 @@ function en_USLang() {
     STR_OPEN_CHANNEL = 'Open the channel';
     STR_THUMB_OPTIONS_KEY = 'Press enter above an action (to open or apply it), return to exit without applying';
     STR_DELETE_FROM_HISTORY = 'Delete this from history';
-    STR_CHECK_HISTORY = 'Checking follow status ...';
+    STR_CHECK_FOLLOW = 'Checking follow status ...';
     STR_REFRESH_DELETE = 'Refresh the screen after deleting to see the change.';
     STR_THUMB_OPTIONS_TOP = 'Hold left for thumbnail options';
     STR_REPLACE_MULTI = 'Choose with to replace by the above?';

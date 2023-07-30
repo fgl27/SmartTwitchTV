@@ -524,7 +524,7 @@ function ru_RULang() {
     STR_OPEN_CHANNEL = 'Открыть канал';
     STR_THUMB_OPTIONS_KEY = 'Нажмите ОК (чтобы открыть или применить). Назад, чтобы выйти без применения';
     STR_DELETE_FROM_HISTORY = 'Удалить это из истории';
-    STR_CHECK_HISTORY = 'Проверка статуса подписки ...';
+    STR_CHECK_FOLLOW = 'Проверка статуса подписки ...';
     STR_REFRESH_DELETE = 'Обновите экран после удаления, чтобы увидеть изменения.';
     STR_THUMB_OPTIONS_TOP = 'Удерж. влево для доп. опций';
     STR_REPLACE_MULTI = 'Выбрать для замены на указанное выше?';

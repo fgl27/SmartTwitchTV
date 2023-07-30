@@ -429,7 +429,7 @@ function ScreensObj_StartAllVars() {
         },
         setTODialog: function () {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
-            Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_VOD_DIS);
+            Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
         },
         setMax: function (tempObj) {
             if (this.useHelix) {
@@ -490,7 +490,7 @@ function ScreensObj_StartAllVars() {
         },
         setTODialog: function () {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
-            Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_LIVE_DIS);
+            Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
         },
         addCell: function (cell) {
             this.addCellTemp(cell);
@@ -558,7 +558,7 @@ function ScreensObj_StartAllVars() {
         img_404: IMG_404_VOD,
         setTODialog: function () {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
-            Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_CLIP_DIS);
+            Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_CLIP_DIS);
         },
         HasSwitches: true,
         SwitchesIcons: ['history', 'play-1'],
@@ -1997,8 +1997,8 @@ function ScreensObj_HistoryLive() {
             setTODialog: function () {
                 Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
                 if (Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
-                    Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_VOD_DIS);
-                else Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_LIVE_DIS);
+                    Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
+                else Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
             },
             label_init: function () {
                 Main_HistoryPos = 0;
@@ -2096,7 +2096,7 @@ function ScreensObj_HistoryVod() {
             },
             setTODialog: function () {
                 Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-                Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_VOD_DIS);
+                Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
             },
             history_Type: function () {
                 return STR_VIDEOS;
@@ -2188,7 +2188,7 @@ function ScreensObj_HistoryClip() {
             },
             setTODialog: function () {
                 Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-                Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_CLIP_DIS);
+                Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_CLIP_DIS);
             },
             history_Type: function () {
                 return STR_CLIPS;

@@ -538,7 +538,7 @@ function pt_BRLang() {
     STR_OPEN_CHANNEL = 'Abra o canal';
     STR_THUMB_OPTIONS_KEY = 'Pressione enter acima de uma ação (para abri-la ou aplicá-la), retornar para sair sem aplicar';
     STR_DELETE_FROM_HISTORY = 'Excluir este do histórico';
-    STR_CHECK_HISTORY = 'Verificando status de seguidor...';
+    STR_CHECK_FOLLOW = 'Verificando status de seguidor...';
     STR_REFRESH_DELETE = 'Atualize a tela após excluir para ver a alteração.';
     STR_THUMB_OPTIONS_TOP = 'Segure para a esquerda para opções de miniaturas';
     STR_REPLACE_MULTI = 'Escolher qual substituir pelo de acima?';

@@ -2711,10 +2711,13 @@ function Screens_ThumbOptionStart(key, click) {
     Screens_ThumbOptionSetArrowArray(key);
 
     if (Screens_ThumbOptionSpecial) {
-        Screens_ThumbOptionPosY = ScreenObj[key].histPosXName ? 5 : 6;
+        Screens_ThumbOptionPosY = ScreenObj[key].histPosXName ? Screens_ThumbOptionSpecialDefPos : Screens_ThumbOptionSpecialDefPosElse;
 
-        Main_textContent('dialog_thumb_opt_val_6', Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
-        Main_textContent('dialog_thumb_opt_val_7', Screens_ThumbOptionScreens[0]);
+        Main_textContent(
+            Screens_ThumbLangValue,
+            Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionSpecialDefPosElse]]
+        );
+        Main_textContent(Screens_ThumbGotoValue, Screens_ThumbOptionScreens[0]);
 
         Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
         Screens_ThumbOptionShowSpecial();
@@ -2738,7 +2741,7 @@ function Screens_ThumbOptionStart(key, click) {
 }
 
 function Screens_ThumbOptionShowSpecial() {
-    for (var i = 0; i < 7; i++) Main_RemoveClass('dialog_thumb_opt_setting_' + i, 'hideimp');
+    for (var i = 0; i < Screens_ThumbOptionTotalPosition; i++) Main_RemoveClass('dialog_thumb_opt_setting_' + i, 'hideimp');
 }
 
 function Screens_ThumbOptionHideSpecial() {
@@ -2749,6 +2752,16 @@ var Screens_values_Play_data;
 var Screens_canFollow = false;
 var Screens_isFollowing = false;
 
+var Screens_ThumbFollowCheckName = 'dialog_thumb_opt_setting_name_2';
+var Screens_ThumbFollowHistory = 'dialog_thumb_opt_setting_name_5';
+
+var Screens_ThumbLangValue = 'dialog_thumb_opt_val_6';
+var Screens_ThumbGotoValue = 'dialog_thumb_opt_val_7';
+
+var Screens_ThumbOptionSpecialDefPos = 5;
+var Screens_ThumbOptionSpecialDefPosElse = 6;
+var Screens_ThumbOptionTotalPosition = 7;
+
 function Screens_ThumbOptionStringSet(key) {
     Screens_canFollow = false;
     Screens_values_Play_data = Screens_GetObj(key);
@@ -2757,8 +2770,8 @@ function Screens_ThumbOptionStringSet(key) {
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
-        Main_textContent('dialog_thumb_opt_setting_name_2', STR_CHECK_HISTORY);
-    } else Main_textContent('dialog_thumb_opt_setting_name_2', STR_NOKEY + STR_CANT_FOLLOW);
+        Main_textContent(Screens_ThumbFollowCheckName, STR_CHECK_FOLLOW);
+    } else Main_textContent(Screens_ThumbFollowCheckName, STR_NOKEY + STR_CANT_FOLLOW);
 
     Main_textContent('dialog_thumb_opt_val_2', '...');
 
@@ -2795,8 +2808,8 @@ function Screens_ThumbOptionStringSet(key) {
         Main_textContent('dialog_thumb_opt_val_5', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
     }
 
-    Main_textContent('dialog_thumb_opt_val_6', Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[6]]);
-    Main_textContent('dialog_thumb_opt_val_7', Screens_ThumbOptionScreens[0]);
+    Main_textContent(Screens_ThumbLangValue, Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[6]]);
+    Main_textContent(Screens_ThumbGotoValue, Screens_ThumbOptionScreens[0]);
 }
 
 function Screens_ThumbUpdateGameInfo(id) {
@@ -2859,7 +2872,7 @@ function Screens_ThumbOption_RequestCheckFollowEnd(key, FollowState) {
 
 function Screens_ThumbOption_UpdateFollow(key, FollowState) {
     Screens_isFollowing = FollowState;
-    Main_textContent('dialog_thumb_opt_setting_name_2', ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]);
+    Main_textContent(Screens_ThumbFollowCheckName, ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]);
 
     if (FollowState) {
         Main_IconLoad('dialog_thumb_opt_val_2', 'icon-heart', STR_FOLLOWING, '#6441a4');
@@ -2885,7 +2898,7 @@ function Screens_ThumbOptionhandleKeyLeft() {
 function Screens_ThumbOptionhandleKeyRight() {
     if (!Screens_handleKeyUpIsClear) return;
 
-    if (Screens_ThumbOptionPosY > 4) {
+    if (Screens_ThumbOptionPosY > Screens_ThumbOptionSpecialDefPos - 1) {
         Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
 
         if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1) {
@@ -2915,7 +2928,7 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             var min_pos = 0;
 
             if (Screens_ThumbOptionSpecial) {
-                min_pos = ScreenObj[key].histPosXName ? 5 : 6;
+                min_pos = ScreenObj[key].histPosXName ? Screens_ThumbOptionSpecialDefPos : Screens_ThumbOptionSpecialDefPosElse;
             }
 
             var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
@@ -2928,7 +2941,7 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             break;
         case KEY_DOWN:
             Screens_ThumbOptionPosY++;
-            if (Screens_ThumbOptionPosY > 7) Screens_ThumbOptionPosY = 7;
+            if (Screens_ThumbOptionPosY > Screens_ThumbOptionTotalPosition) Screens_ThumbOptionPosY = Screens_ThumbOptionTotalPosition;
             else {
                 Screens_histRemoveFocus(Screens_ThumbOptionPosY - 1, 'thumb_opt');
                 Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
@@ -3026,7 +3039,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 }
 
 function Screens_SetLang(key) {
-    Screens_SetLangValue(Screens_ThumbOptionPosXArrays[6]);
+    Screens_SetLangValue(Screens_ThumbOptionPosXArrays[Screens_ThumbOptionSpecialDefPosElse]);
 
     if (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
 }
