@@ -855,4 +855,6 @@ function en_USLang() {
 
     STR_BLOCK_CHANNEL = 'Block channel';
     STR_BLOCK_GAME = 'Block game';
+    STR_BLOCK_NO_USER = 'Add a user first before being able to block';
+    STR_BLOCK_NO_CHANNEL = "Can't get the channel for this";
 }

@@ -2839,7 +2839,7 @@ function Screens_ThumbUpdateGameInfo(id) {
 var Screens_ThumbUpdateGameInfoName = null;
 function Screens_ThumbUpdateGameInfoSuccess(response) {
     response = JSON.parse(response);
-    console.log(response);
+
     if (response.data && response.data.length) {
         Main_innerHTML('dialog_thumb_opt_val_1', response.data[0].name);
         Main_innerHTML('dialog_thumb_opt_val_4', response.data[0].name);
@@ -3078,7 +3078,11 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 }
 
 function Screens_BlockChannel(key) {
-    console.log('block channel');
+    if (!AddUser_IsUserSet()) {
+        Main_showWarningDialog(STR_BLOCK_NO_USER, 2000);
+        return;
+    }
+
     var channelId, channelName;
 
     if (ScreenObj[key].screenType === 2) {
@@ -3092,20 +3096,61 @@ function Screens_BlockChannel(key) {
         channelId = Screens_values_Play_data[14];
     }
 
-    console.log('channelId', channelId);
-    console.log('channelName', channelName);
+    if (!channelId) {
+        Main_showWarningDialog(STR_BLOCK_NO_CHANNEL, 2000);
+        return;
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel = {};
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId]) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId] = {};
+    }
+
+    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId].blocked = true;
+    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId].name = channelName;
+    Screens_BlockChannelUpdateInfo(channelId);
+
+    Main_setHistoryItem();
+}
+
+function Screens_BlockChannelUpdateInfo(id) {
+    BaseXmlHttpGet(Main_helix_api + 'users?id=' + id, Screens_BlockChannelUpdateInfoEnd, noop_fun, 0, null, true);
+}
+
+function Screens_BlockChannelUpdateInfoEnd(response) {
+    response = JSON.parse(response);
+
+    if (response.data && response.data.length) {
+        var data = response.data[0];
+
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[data.id].blocked) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[data.id].data = [
+                data.login,
+                data.id,
+                data.profile_image_url,
+                data.display_name,
+                data.broadcaster_type === 'partner'
+            ];
+
+            Main_setHistoryItem();
+        }
+    }
 }
 
 function Screens_BlockGame(key) {
-    console.log('block game', Screens_values_Play_data);
+    if (!AddUser_IsUserSet()) {
+        Main_showWarningDialog(STR_BLOCK_NO_USER, 2000);
+        return;
+    }
 
     if (ScreenObj[key].screen === Main_ChannelVod) {
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_NO_GAME, 2000);
         return;
     }
-
-    console.log('ScreenObj[key].screenType', ScreenObj[key].screenType);
 
     var gameId, gameName;
 
@@ -3130,10 +3175,55 @@ function Screens_BlockGame(key) {
     if (!gameId) {
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_NO_GAME, 2000);
+        return;
     }
 
-    console.log('gameId', gameId);
-    console.log('gameName', gameName);
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game = {};
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId]) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId] = {};
+    }
+
+    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId].blocked = true;
+    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId].name = gameName;
+    Screens_BlockGameUpdateInfo(gameId);
+
+    Main_setHistoryItem();
+}
+
+function Screens_BlockGameUpdateInfo(id) {
+    BaseXmlHttpGet(Main_helix_api + 'games?id=' + id, Screens_BlockGameUpdateInfoEnd, noop_fun, 0, null, true);
+}
+
+function Screens_BlockGameUpdateInfoEnd(response) {
+    response = JSON.parse(response);
+
+    if (response.data && response.data.length) {
+        var data = response.data[0];
+
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[data.id].blocked) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[data.id].data = [
+                data.box_art_url ? data.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
+                data.name, //1
+                '', //2
+                data.id //3
+            ];
+
+            Main_setHistoryItem();
+        }
+    }
+}
+
+function Screens_BlockCheck(channelId, GameId) {
+    if (!AddUser_IsUserSet()) {
+        return false;
+    }
+
+    var userBlocked = Main_values_History_data[AddUser_UsernameArray[0].id];
+
+    return (GameId && userBlocked.blocked_game[GameId].blocked) || (channelId && userBlocked.blocked_channel[channelId].blocked);
 }
 
 function Screens_SetLang(key) {
