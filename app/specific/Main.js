@@ -599,9 +599,11 @@ function Main_SetStringsSecondary() {
 
     Main_textContent('dialog_thumb_opt_setting_name_0', STR_OPEN_CHANNEL);
     Main_textContent('dialog_thumb_opt_setting_name_1', STR_OPEN_GAME);
-    Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
-    Main_textContent('dialog_thumb_opt_setting_name_4', STR_CONTENT_LANG);
-    Main_textContent('dialog_thumb_opt_setting_name_5', STR_GO_TO);
+    Main_textContent('dialog_thumb_opt_setting_name_3', STR_BLOCK_CHANNEL);
+    Main_textContent('dialog_thumb_opt_setting_name_4', STR_BLOCK_GAME);
+    Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_LIVE_DIS);
+    Main_textContent('dialog_thumb_opt_setting_name_6', STR_CONTENT_LANG);
+    Main_textContent('dialog_thumb_opt_setting_name_7', STR_GO_TO);
 
     Main_innerHTML('dialog_multi_help_text', STR_CONTROLS_MULTI);
 
