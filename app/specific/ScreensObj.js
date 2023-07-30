@@ -450,7 +450,10 @@ function ScreensObj_StartAllVars() {
         Vod_newImg: new Image(),
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
-            if (!this.idObject[cell.id]) {
+            if (
+                !this.idObject[cell.id] &&
+                (this.IsUser || !Screens_isBlocked(this.isQuery && cell.creator ? cell.creator.id : cell.user_id, cell.game_id))
+            ) {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
@@ -506,7 +509,7 @@ function ScreensObj_StartAllVars() {
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
-            if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell)) {
+            if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell) && (this.IsUser || !Screens_isBlocked(cell.user_id, cell.game_id))) {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
@@ -605,7 +608,10 @@ function ScreensObj_StartAllVars() {
         addCell: function (cell) {
             var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
 
-            if (!this.idObject[idValue]) {
+            if (
+                !this.idObject[idValue] &&
+                (this.IsUser || !Screens_isBlocked(this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id, cell.game_id))
+            ) {
                 this.itemsCount++;
                 this.idObject[idValue] = 1;
 
@@ -667,7 +673,7 @@ function ScreensObj_StartAllVars() {
 
             var id_cell = this.useHelix || this.isQuery ? game.id : game._id;
 
-            if (!this.idObject[id_cell]) {
+            if (!this.idObject[id_cell] && (this.IsUser || !Screens_isBlocked(null, id_cell))) {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
@@ -752,7 +758,7 @@ function ScreensObj_StartAllVars() {
             }
         },
         addCellTemp: function (cell) {
-            if (!this.idObject[cell.id]) {
+            if (!this.idObject[cell.id] && (this.IsUser || !Screens_isBlocked(cell.id, null))) {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
@@ -1473,7 +1479,7 @@ function ScreensObj_InitFeatured() {
         }
         var id_cell = cell.stream.broadcaster.id;
 
-        if (!this.idObject[id_cell]) {
+        if (!this.idObject[id_cell] && (this.IsUser || !Screens_isBlocked(id_cell, cell.stream.game.id))) {
             this.itemsCount++;
             this.idObject[id_cell] = 1;
 
@@ -2495,7 +2501,8 @@ function ScreensObj_VodCellArray(cell, isQuery) {
             cell.createdAt, //12
             cell.viewCount, //13
             cell.creator ? cell.creator.id : '', //14
-            cell.duration //15
+            cell.duration, //15
+            cell.game_id //16
         ];
     }
 

@@ -3162,7 +3162,7 @@ function Screens_BlockGame(key) {
         gameId = Screens_values_Play_data[18];
     } else if (ScreenObj[key].screenType === 1) {
         gameName = Screens_values_Play_data[3];
-        gameId = null;
+        gameId = Screens_values_Play_data[16];
     } else if (ScreenObj[key].screenType === 3) {
         gameName = Screens_values_Play_data[1];
         gameId = Screens_values_Play_data[3];
@@ -3215,15 +3215,18 @@ function Screens_BlockGameUpdateInfoEnd(response) {
         }
     }
 }
+//!Screens_isBlocked(cell.user_id, cell.game_id)
+function Screens_isBlocked(channelId, GameId) {
+    var userBlocked = Main_values_History_data[AddUser_UsernameArray[0].id];
 
-function Screens_BlockCheck(channelId, GameId) {
-    if (!AddUser_IsUserSet()) {
+    if (!AddUser_IsUserSet() || !userBlocked.blocked_game) {
         return false;
     }
 
-    var userBlocked = Main_values_History_data[AddUser_UsernameArray[0].id];
-
-    return (GameId && userBlocked.blocked_game[GameId].blocked) || (channelId && userBlocked.blocked_channel[channelId].blocked);
+    return (
+        (GameId && userBlocked.blocked_game[GameId] && userBlocked.blocked_game[GameId].blocked) ||
+        (channelId && userBlocked.blocked_channel[channelId] && userBlocked.blocked_channel[channelId].blocked)
+    );
 }
 
 function Screens_SetLang(key) {
