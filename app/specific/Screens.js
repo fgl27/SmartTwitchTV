@@ -3083,16 +3083,13 @@ function Screens_BlockChannel(key) {
         return;
     }
 
-    var channelId, channelName;
+    var channelId;
 
     if (ScreenObj[key].screenType === 2) {
-        channelName = Screens_values_Play_data[6];
         channelId = Screens_values_Play_data[2];
     } else if (ScreenObj[key].screenType === 4) {
-        channelName = Screens_values_Play_data[0];
         channelId = Screens_values_Play_data[1];
     } else {
-        channelName = Screens_values_Play_data[6];
         channelId = Screens_values_Play_data[14];
     }
 
@@ -3110,7 +3107,6 @@ function Screens_BlockChannel(key) {
     }
 
     Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId].blocked = true;
-    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId].name = channelName;
     Screens_BlockChannelUpdateInfo(channelId);
 
     Main_setHistoryItem();
@@ -3152,24 +3148,16 @@ function Screens_BlockGame(key) {
         return;
     }
 
-    var gameId, gameName;
+    var gameId;
 
     if (ScreenObj[key].screen === Main_AGameClip || ScreenObj[key].screen === Main_AGameVod) {
-        gameName = Main_values.Main_gameSelected;
         gameId = Main_values.Main_gameSelected_id;
     } else if (ScreenObj[key].screenType === 0 || ScreenObj[key].screenType === 2) {
-        gameName = Screens_values_Play_data[3];
         gameId = Screens_values_Play_data[18];
     } else if (ScreenObj[key].screenType === 1) {
-        gameName = Screens_values_Play_data[3];
         gameId = Screens_values_Play_data[16];
     } else if (ScreenObj[key].screenType === 3) {
-        gameName = Screens_values_Play_data[1];
         gameId = Screens_values_Play_data[3];
-    }
-
-    if (!gameName && Screens_ThumbUpdateGameInfoName) {
-        gameName = Screens_ThumbUpdateGameInfoName;
     }
 
     if (!gameId) {
@@ -3187,7 +3175,6 @@ function Screens_BlockGame(key) {
     }
 
     Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId].blocked = true;
-    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId].name = gameName;
     Screens_BlockGameUpdateInfo(gameId);
 
     Main_setHistoryItem();
