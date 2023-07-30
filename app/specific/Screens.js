@@ -389,9 +389,7 @@ function Screens_loadDataRequest(key) {
         var Method = null;
         var PostString = null;
 
-        if (ScreenObj[key].isKraken) {
-            HeadersArray = Play_base_backup_headers_Array;
-        } else if (ScreenObj[key].isQuery) {
+        if (ScreenObj[key].isQuery) {
             HeadersArray = Play_base_backup_headers_Array;
             Method = 'POST';
             PostString = ScreenObj[key].post;
@@ -2719,9 +2717,22 @@ function Screens_ThumbOptionStart(key, click) {
         );
         Main_textContent(Screens_ThumbGotoValue, Screens_ThumbOptionScreens[0]);
 
-        Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
         Screens_ThumbOptionShowSpecial();
         Screens_ThumbOptionHideSpecial();
+
+        if (ScreenObj[key].histPosXName) {
+            ScreenObj[key].setTODialog(true);
+        }
+
+        if (ScreenObj[key].screenType === 4) {
+            Screens_ThumbOptionPosY = 3;
+            Main_RemoveClass('dialog_thumb_opt_setting_3', 'hideimp');
+            Screens_values_Play_data = Screens_GetObj(key);
+
+            Main_textContent('dialog_thumb_opt_val_3', Screens_values_Play_data[3]);
+        }
+
+        Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
     } else {
         Screens_ThumbOptionShowSpecial();
 
@@ -2763,6 +2774,7 @@ var Screens_ThumbOptionSpecialDefPosElse = 6;
 var Screens_ThumbOptionTotalPosition = 7;
 
 function Screens_ThumbOptionStringSet(key) {
+    Screens_ThumbUpdateGameInfoName = null;
     Screens_canFollow = false;
     Screens_values_Play_data = Screens_GetObj(key);
     Screens_ThumbOption_CheckFollow_ID = 0;
@@ -2790,14 +2802,17 @@ function Screens_ThumbOptionStringSet(key) {
         Main_textContent('dialog_thumb_opt_val_3', Screens_values_Play_data[4]);
     }
 
-    if (Screens_values_Play_data[3]) {
+    if (ScreenObj[key].screen === Main_AGameClip || ScreenObj[key].screen === Main_AGameVod) {
+        Main_innerHTML('dialog_thumb_opt_val_1', Main_values.Main_gameSelected);
+        Main_innerHTML('dialog_thumb_opt_val_4', Main_values.Main_gameSelected);
+    } else if (Screens_values_Play_data[3]) {
         Main_innerHTML('dialog_thumb_opt_val_1', Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : STR_EMPTY);
         Main_innerHTML('dialog_thumb_opt_val_4', Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : STR_EMPTY);
     } else {
         Main_innerHTML('dialog_thumb_opt_val_1', '...');
         Main_innerHTML('dialog_thumb_opt_val_4', '...');
 
-        Screens_ThumbUpdateGameInfo(Screens_values_Play_data[18]);
+        Screens_ThumbUpdateGameInfo(Screens_values_Play_data[18], Screens_values_Play_data[3]);
     }
 
     var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
@@ -2813,16 +2828,22 @@ function Screens_ThumbOptionStringSet(key) {
 }
 
 function Screens_ThumbUpdateGameInfo(id) {
+    if (!id) {
+        return;
+    }
     var theUrl = Main_helix_api + 'games?id=' + id;
 
     BaseXmlHttpGet(theUrl, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
 }
 
+var Screens_ThumbUpdateGameInfoName = null;
 function Screens_ThumbUpdateGameInfoSuccess(response) {
     response = JSON.parse(response);
+    console.log(response);
     if (response.data && response.data.length) {
         Main_innerHTML('dialog_thumb_opt_val_1', response.data[0].name);
         Main_innerHTML('dialog_thumb_opt_val_4', response.data[0].name);
+        Screens_ThumbUpdateGameInfoName = response.data[0].name;
     }
 }
 
@@ -2912,6 +2933,7 @@ function Screens_ThumbOptionhandleKeyRight() {
 var Screens_ThumbOptionCanKeyLeft = true;
 function Screens_ThumbOptionhandleKeyDown(key, event) {
     //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
+    var positionBefore;
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -2925,6 +2947,7 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             Screens_ThumbOptionhandleKeyRight();
             break;
         case KEY_UP:
+            positionBefore = Screens_ThumbOptionPosY;
             var min_pos = 0;
 
             if (Screens_ThumbOptionSpecial) {
@@ -2933,19 +2956,35 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
 
             var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
             Screens_ThumbOptionPosY--;
-            if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
-            else {
-                Screens_histRemoveFocus(Screens_ThumbOptionPosY + 1, 'thumb_opt');
+
+            if (ScreenObj[key].screenType === 4 && Screens_ThumbOptionPosY < 6) {
+                Screens_ThumbOptionPosY = 3;
+                lower = 3;
+            }
+
+            if (Screens_ThumbOptionPosY < lower) {
+                Screens_ThumbOptionPosY = lower;
+            } else {
+                Screens_histRemoveFocus(positionBefore, 'thumb_opt');
                 Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
             }
+
             break;
         case KEY_DOWN:
+            positionBefore = Screens_ThumbOptionPosY;
             Screens_ThumbOptionPosY++;
-            if (Screens_ThumbOptionPosY > Screens_ThumbOptionTotalPosition) Screens_ThumbOptionPosY = Screens_ThumbOptionTotalPosition;
-            else {
-                Screens_histRemoveFocus(Screens_ThumbOptionPosY - 1, 'thumb_opt');
+
+            if (ScreenObj[key].screenType === 4 && Screens_ThumbOptionPosY < 6) {
+                Screens_ThumbOptionPosY = 6;
+            }
+
+            if (Screens_ThumbOptionPosY > Screens_ThumbOptionTotalPosition) {
+                Screens_ThumbOptionPosY = Screens_ThumbOptionTotalPosition;
+            } else {
+                Screens_histRemoveFocus(positionBefore, 'thumb_opt');
                 Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
             }
+
             break;
         case KEY_ENTER:
             Screens_ThumbOptionDialogKeyEnter(key);
@@ -3004,9 +3043,9 @@ function Screens_ThumbOptionDialogHide(Update, key) {
         } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
         else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
         else if (Screens_ThumbOptionPosY === 3) {
-            console.log('block channel');
+            Screens_BlockChannel(key);
         } else if (Screens_ThumbOptionPosY === 4) {
-            console.log('block game');
+            Screens_BlockGame(key);
         } else if (Screens_ThumbOptionPosY === 5) {
             if (!ScreenObj[key].screenType) {
                 var index =
@@ -3036,6 +3075,65 @@ function Screens_ThumbOptionDialogHide(Update, key) {
     Screens_ThumbOptionAddFocus(0);
     Screens_ThumbOption_CheckFollow_ID = 0;
     //Screens_ThumbOption_Follow_ID = 0;
+}
+
+function Screens_BlockChannel(key) {
+    console.log('block channel');
+    var channelId, channelName;
+
+    if (ScreenObj[key].screenType === 2) {
+        channelName = Screens_values_Play_data[6];
+        channelId = Screens_values_Play_data[2];
+    } else if (ScreenObj[key].screenType === 4) {
+        channelName = Screens_values_Play_data[0];
+        channelId = Screens_values_Play_data[1];
+    } else {
+        channelName = Screens_values_Play_data[6];
+        channelId = Screens_values_Play_data[14];
+    }
+
+    console.log('channelId', channelId);
+    console.log('channelName', channelName);
+}
+
+function Screens_BlockGame(key) {
+    console.log('block game', Screens_values_Play_data);
+
+    if (ScreenObj[key].screen === Main_ChannelVod) {
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_NO_GAME, 2000);
+        return;
+    }
+
+    console.log('ScreenObj[key].screenType', ScreenObj[key].screenType);
+
+    var gameId, gameName;
+
+    if (ScreenObj[key].screen === Main_AGameClip || ScreenObj[key].screen === Main_AGameVod) {
+        gameName = Main_values.Main_gameSelected;
+        gameId = Main_values.Main_gameSelected_id;
+    } else if (ScreenObj[key].screenType === 0 || ScreenObj[key].screenType === 2) {
+        gameName = Screens_values_Play_data[3];
+        gameId = Screens_values_Play_data[18];
+    } else if (ScreenObj[key].screenType === 1) {
+        gameName = Screens_values_Play_data[3];
+        gameId = null;
+    } else if (ScreenObj[key].screenType === 3) {
+        gameName = Screens_values_Play_data[1];
+        gameId = Screens_values_Play_data[3];
+    }
+
+    if (!gameName && Screens_ThumbUpdateGameInfoName) {
+        gameName = Screens_ThumbUpdateGameInfoName;
+    }
+
+    if (!gameId) {
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_NO_GAME, 2000);
+    }
+
+    console.log('gameId', gameId);
+    console.log('gameName', gameName);
 }
 
 function Screens_SetLang(key) {
@@ -3142,7 +3240,8 @@ function Screens_OpenScreen() {
 
 function Screens_OpenGame() {
     Play_data.data[3] = Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : '';
-    if (!Screens_values_Play_data[18] && Play_data.data[3] === '') {
+
+    if (!Screens_values_Play_data[18] || !Play_data.data[3] || Play_data.data[3] === '') {
         Screens_UpdateGameInfoSuccessError();
         return;
     }

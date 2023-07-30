@@ -427,8 +427,10 @@ function ScreensObj_StartAllVars() {
             this.AnimateThumb(this);
             Screens_addFocusVideo(forceScroll, key);
         },
-        setTODialog: function () {
-            Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+        setTODialog: function (skipShowDelete) {
+            if (!skipShowDelete) {
+                Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            }
             Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
         },
         setMax: function (tempObj) {
@@ -488,8 +490,10 @@ function ScreensObj_StartAllVars() {
                 }
             }
         },
-        setTODialog: function () {
-            Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+        setTODialog: function (skipShowDelete) {
+            if (!skipShowDelete) {
+                Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            }
             Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
         },
         addCell: function (cell) {
@@ -556,8 +560,10 @@ function ScreensObj_StartAllVars() {
         object: 'data',
         period: ['day', 'week', 'month', 'all'],
         img_404: IMG_404_VOD,
-        setTODialog: function () {
-            Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+        setTODialog: function (skipShowDelete) {
+            if (!skipShowDelete) {
+                Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            }
             Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_CLIP_DIS);
         },
         HasSwitches: true,
@@ -606,7 +612,7 @@ function ScreensObj_StartAllVars() {
                 this.tempHtml += Screens_createCellClip(
                     this.row_id + '_' + this.column_id,
                     this.ids,
-                    ScreensObj_ClipCellArray(cell, this.isKraken, this.isQuery),
+                    ScreensObj_ClipCellArray(cell, this.isQuery),
                     this.screen
                 );
 
@@ -1994,11 +2000,15 @@ function ScreensObj_HistoryLive() {
                 Main_innerHTML('dialog_hist_text', STR_LIVE + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
-            setTODialog: function () {
-                Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-                if (Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
+            setTODialog: function (skipShowDelete) {
+                if (!skipShowDelete) {
+                    Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+                }
+                if (Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods')) {
                     Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
-                else Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
+                } else {
+                    Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
+                }
             },
             label_init: function () {
                 Main_HistoryPos = 0;
@@ -2094,8 +2104,10 @@ function ScreensObj_HistoryVod() {
                 Main_innerHTML('dialog_hist_text', STR_VIDEOS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
-            setTODialog: function () {
-                Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            setTODialog: function (skipShowDelete) {
+                if (!skipShowDelete) {
+                    Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+                }
                 Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
             },
             history_Type: function () {
@@ -2186,8 +2198,10 @@ function ScreensObj_HistoryClip() {
                 Main_innerHTML('dialog_hist_text', STR_CLIPS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
-            setTODialog: function () {
-                Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            setTODialog: function (skipShowDelete) {
+                if (!skipShowDelete) {
+                    Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+                }
                 Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_CLIP_DIS);
             },
             history_Type: function () {
@@ -2505,30 +2519,7 @@ function ScreensObj_VodCellArray(cell, isQuery) {
     ];
 }
 
-function ScreensObj_ClipCellArray(cell, isKraken, isQuery) {
-    if (isKraken) {
-        return [
-            cell.slug, //0
-            cell.duration, //1
-            cell.broadcaster.id, //2
-            cell.game, //3
-            cell.broadcaster.display_name, //4
-            cell.broadcaster.logo.replace('150x150', '300x300'), //5
-            cell.broadcaster.name, //6
-            cell.tracking_id, //7
-            cell.vod !== null ? cell.vod.id : null, //8
-            cell.vod !== null ? cell.vod.offset : null, //9
-            twemoji.parse(cell.title), //10
-            '[' + cell.language.toUpperCase() + ']', //11
-            cell.created_at, //12
-            cell.views, //13
-            Main_addCommas(cell.views), //14
-            cell.thumbnails.medium, //15
-            Main_videoCreatedAt(cell.created_at), //16
-            cell.language //17
-        ];
-    }
-
+function ScreensObj_ClipCellArray(cell, isQuery) {
     if (isQuery) {
         return [
             cell.slug, //0
