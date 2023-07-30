@@ -1507,7 +1507,7 @@ function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRe
     Screens_LoadPreview(key);
 }
 
-function Screens_addrowChannel(forceScroll, y, key) {
+function Screens_addrowChannel(forceScroll, y, key, forceAfterDelete) {
     if (ScreenObj[key].currY < y) {
         // down
 
@@ -1515,7 +1515,7 @@ function Screens_addrowChannel(forceScroll, y, key) {
     } else if (ScreenObj[key].currY > y) {
         // Up
 
-        if (y > 1 && ScreenObj[key].Cells.length > y + 3) {
+        if ((y > 1 && ScreenObj[key].Cells.length > y + 3) || forceAfterDelete) {
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) {
                 //If with animation
 
@@ -1588,14 +1588,14 @@ function Screens_addrowChannelDown(y, key) {
     }
 }
 
-function Screens_addrow(forceScroll, y, key) {
+function Screens_addrow(forceScroll, y, key, forceAfterDelete) {
     if (ScreenObj[key].currY < y) {
         // down
         Screens_addrowDown(y, key);
     } else if (ScreenObj[key].currY > y) {
         // Up
 
-        if (y && ScreenObj[key].Cells.length > y + 1 && ScreenObj[key].Cells[y + 2]) {
+        if ((y && ScreenObj[key].Cells.length > y + 1 && ScreenObj[key].Cells[y + 2]) || forceAfterDelete) {
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) {
                 //If with animation
 
@@ -1683,37 +1683,35 @@ function Screens_addrowDown(y, key) {
 }
 
 function Screens_addrowEnd(forceScroll, key) {
-    Main_ready(function () {
-        if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
+    if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
 
-        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX,
-            data;
+    var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX,
+        data;
 
-        Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
-        ScreenObj[key].focusPos = id;
+    Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
+    ScreenObj[key].focusPos = id;
 
-        if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
-            if (Screens_ObjNotNull(key)) {
-                data = Screens_GetObj(key);
+    if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+        if (Screens_ObjNotNull(key)) {
+            data = Screens_GetObj(key);
 
-                if (Main_history_Watched_Obj[data[7]]) {
-                    Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
-                }
+            if (Main_history_Watched_Obj[data[7]]) {
+                Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
             }
-        } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
-            Screens_UpdateSince(key);
-            ScreensObj_updateThumbInfo(key);
         }
+    } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
+        Screens_UpdateSince(key);
+        ScreensObj_updateThumbInfo(key);
+    }
 
-        ScreenObj[key].addFocus(forceScroll, key);
+    ScreenObj[key].addFocus(forceScroll, key);
 
-        if (key === Main_values.Main_Go && !Settings_isVisible())
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
+    if (key === Main_values.Main_Go && !Settings_isVisible())
+        Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColumnsCount, ScreenObj[key].itemsCount);
 
-        if (ScreenObj[key].DataObj[id].event_name) {
-            Main_EventBanner(ScreenObj[key].DataObj[id].event_name + '_viewed', ScreenObj[key].ScreenName, ScreenObj[key].DataObj[id].image);
-        }
-    });
+    if (ScreenObj[key].DataObj[id].event_name) {
+        Main_EventBanner(ScreenObj[key].DataObj[id].event_name + '_viewed', ScreenObj[key].ScreenName, ScreenObj[key].DataObj[id].image);
+    }
 }
 
 var Screens_UpdateSinceId;
@@ -2463,6 +2461,136 @@ function Screens_histDelete(key) {
         if (index > -1) {
             Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
             Main_setHistoryItem();
+        }
+
+        Screens_deleteUpdateRows(key);
+    }
+}
+
+// Not an ideal way to delete a thumbnail
+// The app UI wasn't designed to account for deleted
+// Does this is very complicated
+//TODO on future UI improve update this
+function Screens_deleteUpdateRows(key) {
+    var i = ScreenObj[key].posY,
+        removeId = i + '_' + ScreenObj[key].posX;
+
+    //Remove deleted element and lower items counter
+    Main_getElementById(ScreenObj[key].ids[3] + removeId).remove();
+    ScreenObj[key].itemsCount--;
+
+    //If deleted all, reload the screen
+    if (!ScreenObj[key].itemsCount) {
+        Main_ReloadScreen();
+        return;
+    }
+
+    //If we are on the last cell just move the thumbs
+    if (!ScreenObj[key].Cells[i + 1]) {
+        Screens_deleteUpdateRowsFor(i, key);
+    } else {
+        Screens_deleteAppendNext(i + 1, i, key);
+        var len_i = ScreenObj[key].row_id;
+
+        for (i; i <= len_i; i++) {
+            if (ScreenObj[key].Cells[i]) {
+                Screens_deleteUpdateRowsFor(i, key);
+            }
+        }
+    }
+
+    //If the last cell ends up empty clean it
+    var lastCellPos = ScreenObj[key].Cells.length - 1;
+    if (ScreenObj[key].Cells[lastCellPos] && !ScreenObj[key].Cells[lastCellPos].childNodes.length) {
+        ScreenObj[key].Cells[lastCellPos].remove();
+        ScreenObj[key].row_id--;
+        ScreenObj[key].Cells.pop();
+    }
+
+    //Delete the last obj position after moving all div and objData,
+    //to avoid duplication and issues with Screens_ObjNotNull
+    var lastKey = Object.keys(ScreenObj[key].DataObj).pop();
+    delete ScreenObj[key].DataObj[lastKey];
+
+    //If obj exists just refresh focus, else move one to the left
+    if (Screens_ObjNotNull(key)) {
+        Screens_addFocus(true, key);
+    } else {
+        Screens_KeyLeftRight(-1, ScreenObj[key].ColumnsCount - 1, key);
+    }
+
+    if (!ScreenObj[key].Cells[ScreenObj[key].posY + 1] && ScreenObj[key].posY > 1) {
+        //Force refocus of the screen and add missing rows
+        ScreenObj[key].addrow(true, ScreenObj[key].posY - 1, key, true);
+    } else if (!ScreenObj[key].Cells[ScreenObj[key].posY + 1]) {
+        //Force screen focus position
+        ScreenObj[key].ScrollDoc.style.transform = '';
+    }
+}
+
+function Screens_deleteUpdateRowsFor(i, key) {
+    var cellNodes = ScreenObj[key].Cells[i].childNodes,
+        len_j = cellNodes.length,
+        j = 0,
+        id,
+        idArray;
+
+    for (j; j < len_j; j++) {
+        id = i + '_' + j;
+
+        if (cellNodes[j].id) {
+            //Fix the Id of it childNodes
+            idArray = Screens_deleteUpdateFixId(cellNodes[j], id);
+
+            //Set current DataObj to next
+            Screens_deleteUpdateMoveObj(idArray, key, id);
+
+            //Fix the Id of all child nodes of current elements that have an Id
+            Screens_deleteUpdateSubNodes(cellNodes[j], id);
+        }
+    }
+
+    //After the loop run if we have an empty thumb on next and if the "next next" is available and non empty use it
+    var nextPos = i + 2,
+        currPos = i + 1;
+    if (
+        ScreenObj[key].Cells[currPos] &&
+        ScreenObj[key].Cells[currPos].childNodes.length < ScreenObj[key].ColumnsCount &&
+        ScreenObj[key].Cells[nextPos] &&
+        ScreenObj[key].Cells[nextPos].childNodes.length
+    ) {
+        Screens_deleteAppendNext(nextPos, currPos, key);
+    }
+
+    return j;
+}
+
+function Screens_deleteAppendNext(nextPos, currPos, key) {
+    var nextDiv = ScreenObj[key].Cells[nextPos].childNodes;
+    ScreenObj[key].Cells[currPos].appendChild(nextDiv[0]);
+}
+
+function Screens_deleteUpdateFixId(div, id) {
+    var idArray = div.id.split('_');
+    div.id = idArray.slice(0, -2).join('_') + '_' + id;
+    return idArray;
+}
+
+function Screens_deleteUpdateMoveObj(idArray, key, id) {
+    var nextId = idArray[idArray.length - 2] + '_' + idArray[idArray.length - 1],
+        nextObj = ScreenObj[key].DataObj[nextId];
+
+    ScreenObj[key].DataObj[id] = nextObj;
+}
+
+function Screens_deleteUpdateSubNodes(div, id) {
+    var divNodes = div.querySelectorAll('[id]'),
+        x = 0,
+        len_x = divNodes.length;
+
+    for (x; x < len_x; x++) {
+        if (divNodes[x].id) {
+            Screens_deleteUpdateFixId(divNodes[x], id);
         }
     }
 }
@@ -3244,6 +3372,10 @@ function Screens_UpdatePlaybackTime(key, id) {
 }
 
 function Screens_ResetPlaybackTime(key, id) {
+    if (!Screens_ObjNotNull(key)) {
+        return;
+    }
+
     var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
         originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
 
