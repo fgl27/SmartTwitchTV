@@ -3115,15 +3115,13 @@ function Screens_BlockChannel(key) {
         return;
     }
 
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel = {};
+    Screens_BlockSetDefaultObj();
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId]) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId] = {};
     }
 
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId]) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId] = {};
-    }
-
-    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[channelId].blocked = true;
+    Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].date = new Date().getTime();
     Screens_BlockChannelUpdateInfo(channelId);
 
     Main_setHistoryItem();
@@ -3139,8 +3137,8 @@ function Screens_BlockChannelUpdateInfoEnd(response) {
     if (response.data && response.data.length) {
         var data = response.data[0];
 
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[data.id].blocked) {
-            Main_values_History_data[AddUser_UsernameArray[0].id].blocked_channel[data.id].data = [
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id]) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id].data = [
                 data.login,
                 data.id,
                 data.profile_image_url,
@@ -3150,6 +3148,15 @@ function Screens_BlockChannelUpdateInfoEnd(response) {
 
             Main_setHistoryItem();
         }
+    }
+}
+
+function Screens_BlockSetDefaultObj() {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked = {
+            game: {},
+            channel: {}
+        };
     }
 }
 
@@ -3183,15 +3190,13 @@ function Screens_BlockGame(key) {
         return;
     }
 
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game = {};
+    Screens_BlockSetDefaultObj();
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId]) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId] = {};
     }
 
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId]) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId] = {};
-    }
-
-    Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[gameId].blocked = true;
+    Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].date = new Date().getTime();
     Screens_BlockGameUpdateInfo(gameId);
 
     Main_setHistoryItem();
@@ -3207,8 +3212,8 @@ function Screens_BlockGameUpdateInfoEnd(response) {
     if (response.data && response.data.length) {
         var data = response.data[0];
 
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[data.id].blocked) {
-            Main_values_History_data[AddUser_UsernameArray[0].id].blocked_game[data.id].data = [
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id]) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id].data = [
                 data.box_art_url ? data.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
                 data.name, //1
                 '', //2
@@ -3223,14 +3228,11 @@ function Screens_BlockGameUpdateInfoEnd(response) {
 function Screens_isBlocked(channelId, GameId) {
     var userBlocked = Main_values_History_data[AddUser_UsernameArray[0].id];
 
-    if (!AddUser_IsUserSet() || !userBlocked.blocked_game) {
+    if (!AddUser_IsUserSet() || !userBlocked.blocked) {
         return false;
     }
 
-    return (
-        (GameId && userBlocked.blocked_game[GameId] && userBlocked.blocked_game[GameId].blocked) ||
-        (channelId && userBlocked.blocked_channel[channelId] && userBlocked.blocked_channel[channelId].blocked)
-    );
+    return (GameId && userBlocked.blocked.game[GameId]) || (channelId && userBlocked.blocked.channel[channelId]);
 }
 
 function Screens_SetLang(key) {
