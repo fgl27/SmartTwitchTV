@@ -545,7 +545,7 @@ function Screens_loadDataSuccess(key) {
             }
         }
     }
-    ScreenObj[key].emptyContent = !response_items && !ScreenObj[key].status;
+    ScreenObj[key].emptyContent = (!response_items || !ScreenObj[key].itemsCount) && !ScreenObj[key].status;
 
     if (ScreenObj[key].emptyContent) {
         if (!ScreenObj[key].BannerCreated) {
