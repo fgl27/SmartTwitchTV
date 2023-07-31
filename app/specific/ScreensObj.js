@@ -450,10 +450,9 @@ function ScreensObj_StartAllVars() {
         Vod_newImg: new Image(),
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
-            if (
-                !this.idObject[cell.id] &&
-                (this.IsUser || !Screens_isBlocked(this.isQuery && cell.creator ? cell.creator.id : cell.user_id, cell.game_id))
-            ) {
+            var isNotBlocked = Screens_isNotBlocked(this.isQuery && cell.creator ? cell.creator.id : cell.user_id, cell.game_id, this.IsUser);
+
+            if (!this.idObject[cell.id] && isNotBlocked) {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
@@ -508,8 +507,9 @@ function ScreensObj_StartAllVars() {
         },
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
+            var isNotBlocked = Screens_isNotBlocked(cell.user_id, cell.game_id, this.IsUser);
 
-            if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell) && (this.IsUser || !Screens_isBlocked(cell.user_id, cell.game_id))) {
+            if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell) && isNotBlocked) {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
@@ -608,10 +608,13 @@ function ScreensObj_StartAllVars() {
         addCell: function (cell) {
             var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
 
-            if (
-                !this.idObject[idValue] &&
-                (this.IsUser || !Screens_isBlocked(this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id, cell.game_id))
-            ) {
+            var isNotBlocked = Screens_isNotBlocked(
+                this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id,
+                cell.game_id,
+                this.IsUser
+            );
+
+            if (!this.idObject[idValue] && isNotBlocked) {
                 this.itemsCount++;
                 this.idObject[idValue] = 1;
 
@@ -672,8 +675,9 @@ function ScreensObj_StartAllVars() {
             var game = this.hasGameProp && !this.isQuery ? cell.game : cell;
 
             var id_cell = this.useHelix || this.isQuery ? game.id : game._id;
+            var isNotBlocked = Screens_isNotBlocked(null, id_cell, this.IsUser);
 
-            if (!this.idObject[id_cell] && (this.IsUser || !Screens_isBlocked(null, id_cell))) {
+            if (!this.idObject[id_cell] && isNotBlocked) {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
@@ -758,7 +762,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         addCellTemp: function (cell) {
-            if (!this.idObject[cell.id] && (this.IsUser || !Screens_isBlocked(cell.id, null))) {
+            var isNotBlocked = Screens_isNotBlocked(cell.id, null, this.IsUser);
+
+            if (!this.idObject[cell.id] && isNotBlocked) {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
@@ -1478,8 +1484,9 @@ function ScreensObj_InitFeatured() {
             return;
         }
         var id_cell = cell.stream.broadcaster.id;
+        var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game.id, this.IsUser);
 
-        if (!this.idObject[id_cell] && (this.IsUser || !Screens_isBlocked(id_cell, cell.stream.game.id))) {
+        if (!this.idObject[id_cell] && isNotBlocked) {
             this.itemsCount++;
             this.idObject[id_cell] = 1;
 

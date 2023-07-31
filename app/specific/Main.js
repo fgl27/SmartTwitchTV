@@ -103,7 +103,8 @@ var Main_values = {
     MaxInstancesWarn: false,
     AddCode_main_token: null,
     API_Change: true,
-    Password_data: null
+    Password_data: null,
+    OverwriteBlock: 0
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -601,9 +602,11 @@ function Main_SetStringsSecondary() {
     Main_textContent('dialog_thumb_opt_setting_name_1', STR_OPEN_GAME);
     Main_textContent('dialog_thumb_opt_setting_name_3', STR_BLOCK_CHANNEL);
     Main_textContent('dialog_thumb_opt_setting_name_4', STR_BLOCK_GAME);
-    Main_textContent('dialog_thumb_opt_setting_name_5', STR_HISTORY_LIVE_DIS);
-    Main_textContent('dialog_thumb_opt_setting_name_6', STR_CONTENT_LANG);
-    Main_textContent('dialog_thumb_opt_setting_name_7', STR_GO_TO);
+    Main_textContent('dialog_thumb_opt_setting_name_5', STR_BLOCK_OVERWRITE);
+
+    Main_textContent('dialog_thumb_opt_setting_name_6', STR_HISTORY_LIVE_DIS);
+    Main_textContent('dialog_thumb_opt_setting_name_7', STR_CONTENT_LANG);
+    Main_textContent('dialog_thumb_opt_setting_name_8', STR_GO_TO);
 
     Main_innerHTML('dialog_multi_help_text', STR_CONTROLS_MULTI);
 
@@ -2253,6 +2256,7 @@ function Main_history_UpdateVodClip(id, time, type) {
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
     Main_history_SetVod_Watched();
+    console.log(Main_values_History_data);
 }
 
 function Main_History_Sort(array, msort, direction) {
