@@ -2732,6 +2732,14 @@ function Screens_ThumbOptionStart(key, click) {
             Main_textContent('dialog_thumb_opt_val_3', Screens_values_Play_data[3]);
         }
 
+        if (ScreenObj[key].screenType === 3) {
+            Screens_ThumbOptionPosY = 4;
+            Main_RemoveClass('dialog_thumb_opt_setting_4', 'hideimp');
+            Screens_values_Play_data = Screens_GetObj(key);
+
+            Main_innerHTML('dialog_thumb_opt_val_4', Screens_values_Play_data[1] !== '' ? Screens_values_Play_data[1] : STR_EMPTY);
+        }
+
         Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
     } else {
         Screens_ThumbOptionShowSpecial();
@@ -2962,6 +2970,11 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
                 lower = 3;
             }
 
+            if (ScreenObj[key].screenType === 3 && Screens_ThumbOptionPosY < 6) {
+                Screens_ThumbOptionPosY = 4;
+                lower = 4;
+            }
+
             if (Screens_ThumbOptionPosY < lower) {
                 Screens_ThumbOptionPosY = lower;
             } else {
@@ -2975,6 +2988,10 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             Screens_ThumbOptionPosY++;
 
             if (ScreenObj[key].screenType === 4 && Screens_ThumbOptionPosY < 6) {
+                Screens_ThumbOptionPosY = 6;
+            }
+
+            if (ScreenObj[key].screenType === 3 && Screens_ThumbOptionPosY < 6) {
                 Screens_ThumbOptionPosY = 6;
             }
 
