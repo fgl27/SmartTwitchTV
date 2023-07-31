@@ -266,17 +266,7 @@ function Screens_init(key, preventRefresh) {
 
     if (Main_CheckAccessibilityVisible()) {
         Main_CheckAccessibilitySet();
-    } else if (
-        !ScreenObj[key].status ||
-        (!preventRefresh && Screens_RefreshTimeout(key)) ||
-        ScreenObj[key].posY < 0 ||
-        ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
-        !ScreenObj[key].offsettop ||
-        (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
-        !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
-        ScreenObj[key].enable_mature !== Settings_value.enable_mature.defaultValue ||
-        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')
-    ) {
+    } else if (Screens_needsRefresh(key, preventRefresh)) {
         if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
         else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
     } else {
@@ -288,6 +278,21 @@ function Screens_init(key, preventRefresh) {
         Main_SaveValuesWithTimeout();
         ScreenObj[key].screen_view();
     }
+}
+
+function Screens_needsRefresh(key, preventRefresh) {
+    return (
+        !ScreenObj[key].status ||
+        (!preventRefresh && Screens_RefreshTimeout(key)) ||
+        ScreenObj[key].posY < 0 ||
+        ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
+        !ScreenObj[key].offsettop ||
+        (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+        !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
+        ScreenObj[key].enable_mature !== Settings_value.enable_mature.defaultValue ||
+        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
+        ScreenObj[key].OverwriteBlock !== Main_values.OverwriteBlock
+    );
 }
 
 function Screens_exit(key) {
@@ -318,6 +323,7 @@ function Screens_StartLoad(key) {
 
     ScreenObj[key].enable_mature = Settings_value.enable_mature.defaultValue;
     ScreenObj[key].tempHtml = '';
+    ScreenObj[key].OverwriteBlock = Main_values.OverwriteBlock;
     ScreenObj[key].DataObj = {};
     ScreenObj[key].SetPreviewEnable();
     ScreenObj[key].cursor = null;
@@ -3261,10 +3267,11 @@ function Screens_BlockSetDefaultObj() {
     }
 }
 
-function Screens_SetBlockOverwrite() {
-    console.log('Screens_SetBlockOverwrite', Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]);
+function Screens_SetBlockOverwrite(key) {
     Main_values.OverwriteBlock = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
     Main_SaveValuesWithTimeout();
+
+    if (ScreenObj[key].OverwriteBlock !== Main_values.OverwriteBlock) Main_ReloadScreen();
 }
 
 function Screens_SetLang(key) {
