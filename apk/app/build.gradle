@@ -34,17 +34,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lintOptions {
-        abortOnError false
-        lintConfig file("lint.xml")
-        disable 'SetJavaScriptEnabled', //To run webview and load js file
-                'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
-                'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
-                'IconLauncherShape', //IconLauncherShape: Looks better the way it's
-                'RtlHardcoded', //Not suporting it
-                'ObsoleteLintCustomCheck' //Firebase related ignore
-    }
     productFlavors {
+    }
+    lint {
+        abortOnError false
+        disable 'SetJavaScriptEnabled', 'GoogleAppIndexingWarning', 'IconMissingDensityFolder', 'IconLauncherShape', 'RtlHardcoded', 'ObsoleteLintCustomCheck'
+        lintConfig file('lint.xml')
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
