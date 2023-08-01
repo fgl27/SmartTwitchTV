@@ -3159,38 +3159,34 @@ function Screens_BlockUpdateAllIds() {
     Screens_BlockUpdateAllIdsObj();
 }
 
-function Screens_BlockUpdateAllIdsObj(channel) {
+function Screens_BlockUpdateAllIdsObj(isChannel) {
     if (!AddUser_IsUserSet() || !Main_values_History_data[AddUser_UsernameArray[0].id].blocked) {
         return;
     }
 
-    var ids = Object.keys(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[channel ? 'channel' : 'game']),
+    var ids = Object.keys(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[isChannel ? 'channel' : 'game']),
         i = 0,
         len = ids.length,
         chunkSize = 100,
-        chunks = [],
-        chunk;
+        chunks = [];
 
     for (i; i < len; i += chunkSize) {
-        chunk = ids.slice(i, i + chunkSize);
-        chunks.push(chunk);
+        chunks.push(ids.slice(i, i + chunkSize));
     }
 
     var len_j = chunks.length,
         j = 0,
-        api = channel ? 'users' : 'games',
-        baseUrl = Main_helix_api + api + '?id=',
-        url;
+        api = isChannel ? 'users' : 'games',
+        baseUrl = Main_helix_api + api + '?id=';
 
     for (j; j < len_j; j++) {
-        url = baseUrl + chunks[j].pop() + '&id=' + chunks[j].join('&id=');
-        Screens_BlockUpdateAllIdsObjFor(j + 1, url, channel);
+        Screens_BlockUpdateAllIdsObjFor(j + 1, baseUrl + chunks[j].pop() + '&id=' + chunks[j].join('&id='), isChannel);
     }
 }
 
-function Screens_BlockUpdateAllIdsObjFor(i, url, channel) {
+function Screens_BlockUpdateAllIdsObjFor(i, url, isChannel) {
     Main_setTimeout(function () {
-        BaseXmlHttpGet(url, channel ? Screens_BlockChannelUpdateInfoEnd : Screens_BlockGameUpdateInfoEnd, noop_fun, 0, null, true);
+        BaseXmlHttpGet(url, isChannel ? Screens_BlockChannelUpdateInfoEnd : Screens_BlockGameUpdateInfoEnd, noop_fun, 0, null, true);
     }, 3000 * i);
 }
 
