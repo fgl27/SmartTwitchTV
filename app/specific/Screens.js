@@ -2731,7 +2731,7 @@ function Screens_ThumbOptionStart(key, click) {
         }
 
         if (ScreenObj[key].screenType === 4) {
-            Screens_ThumbOptionPosY = 3;
+            Screens_ThumbOptionPosY = 5;
             Main_RemoveClass('dialog_thumb_opt_setting_3', 'hideimp');
             Screens_values_Play_data = Screens_GetObj(key);
 
@@ -2739,7 +2739,7 @@ function Screens_ThumbOptionStart(key, click) {
         }
 
         if (ScreenObj[key].screenType === 3) {
-            Screens_ThumbOptionPosY = 4;
+            Screens_ThumbOptionPosY = 5;
             Main_RemoveClass('dialog_thumb_opt_setting_4', 'hideimp');
             Screens_values_Play_data = Screens_GetObj(key);
 
