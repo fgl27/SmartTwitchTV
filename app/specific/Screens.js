@@ -3154,22 +3154,69 @@ function Screens_BlockChannelUpdateInfo(id) {
     BaseXmlHttpGet(Main_helix_api + 'users?id=' + id, Screens_BlockChannelUpdateInfoEnd, noop_fun, 0, null, true);
 }
 
+function Screens_BlockUpdateAllIds() {
+    Screens_BlockUpdateAllIdsObj(true);
+    Screens_BlockUpdateAllIdsObj();
+}
+
+function Screens_BlockUpdateAllIdsObj(channel) {
+    if (!AddUser_IsUserSet() || !Main_values_History_data[AddUser_UsernameArray[0].id].blocked) {
+        return;
+    }
+
+    var ids = Object.keys(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[channel ? 'channel' : 'game']),
+        i = 0,
+        len = ids.length,
+        chunkSize = 100,
+        chunks = [],
+        chunk;
+
+    for (i; i < len; i += chunkSize) {
+        chunk = ids.slice(i, i + chunkSize);
+        chunks.push(chunk);
+    }
+
+    var len_j = chunks.length,
+        j = 0,
+        api = channel ? 'users' : 'games',
+        baseUrl = Main_helix_api + api + '?id=',
+        url;
+
+    for (j; j < len_j; j++) {
+        url = baseUrl + chunks[j].pop() + '&id=' + chunks[j].join('&id=');
+        Screens_BlockUpdateAllIdsObjFor(j + 1, url, channel);
+    }
+}
+
+function Screens_BlockUpdateAllIdsObjFor(i, url, channel) {
+    Main_setTimeout(function () {
+        BaseXmlHttpGet(url, channel ? Screens_BlockChannelUpdateInfoEnd : Screens_BlockGameUpdateInfoEnd, noop_fun, 0, null, true);
+    }, 3000 * i);
+}
+
 function Screens_BlockChannelUpdateInfoEnd(response) {
     response = JSON.parse(response);
 
     if (response.data && response.data.length) {
-        var data = response.data[0];
+        var array = response.data;
 
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id]) {
-            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id].data = [
-                data.login,
-                data.id,
-                data.profile_image_url,
-                data.display_name,
-                data.broadcaster_type === 'partner'
-            ];
+        var i = 0,
+            len = array.length;
 
-            Main_setHistoryItem();
+        for (i; i < len; i++) {
+            var data = array[i];
+
+            if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id]) {
+                Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id].data = [
+                    data.login,
+                    data.id,
+                    data.profile_image_url,
+                    data.display_name,
+                    data.broadcaster_type === 'partner'
+                ];
+
+                Main_setHistoryItem();
+            }
         }
     }
 }
@@ -3236,17 +3283,24 @@ function Screens_BlockGameUpdateInfoEnd(response) {
     response = JSON.parse(response);
 
     if (response.data && response.data.length) {
-        var data = response.data[0];
+        var array = response.data;
 
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id]) {
-            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id].data = [
-                data.box_art_url ? data.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
-                data.name, //1
-                '', //2
-                data.id //3
-            ];
+        var i = 0,
+            len = array.length;
 
-            Main_setHistoryItem();
+        for (i; i < len; i++) {
+            var data = array[i];
+
+            if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id]) {
+                Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id].data = [
+                    data.box_art_url ? data.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
+                    data.name, //1
+                    '', //2
+                    data.id //3
+                ];
+
+                Main_setHistoryItem();
+            }
         }
     }
 }
