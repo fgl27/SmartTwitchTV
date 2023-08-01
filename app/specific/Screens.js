@@ -2713,15 +2713,10 @@ function Screens_ThumbOptionStart(key, click) {
     Screens_clear = true;
 
     Screens_ThumbOptionSetArrowArray(key);
+    Screens_ThumbOptionStringSet(key);
 
     if (Screens_ThumbOptionSpecial) {
         Screens_ThumbOptionPosY = ScreenObj[key].histPosXName ? Screens_ThumbOptionSpecialDefPos : Screens_ThumbOptionSpecialDefPosElse;
-
-        Main_textContent(
-            Screens_ThumbLangValue,
-            Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionSpecialDefPosElse]]
-        );
-        Main_textContent(Screens_ThumbGotoValue, Screens_ThumbOptionScreens[0]);
 
         Screens_ThumbOptionShowSpecial();
         Screens_ThumbOptionHideSpecial();
@@ -2731,14 +2726,14 @@ function Screens_ThumbOptionStart(key, click) {
         }
 
         if (ScreenObj[key].screenType === 4) {
+            //Don't add focus above block to prevent unintentional block
             Screens_ThumbOptionPosY = 5;
             Main_RemoveClass('dialog_thumb_opt_setting_3', 'hideimp');
             Screens_values_Play_data = Screens_GetObj(key);
-
-            Main_textContent('dialog_thumb_opt_val_3', Screens_values_Play_data[3]);
         }
 
         if (ScreenObj[key].screenType === 3) {
+            //Don't add focus above block to prevent unintentional block
             Screens_ThumbOptionPosY = 5;
             Main_RemoveClass('dialog_thumb_opt_setting_4', 'hideimp');
             Screens_values_Play_data = Screens_GetObj(key);
@@ -2748,13 +2743,11 @@ function Screens_ThumbOptionStart(key, click) {
 
         //show show blocked on all modes
         Main_RemoveClass('dialog_thumb_opt_setting_5', 'hideimp');
-        Main_textContent(Screens_ThumbBlockOveWriteValue, Screens_NoYes[Screens_ThumbOptionPosXArrays[5]]);
 
         Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
     } else {
         Screens_ThumbOptionShowSpecial();
 
-        Screens_ThumbOptionStringSet(key);
         Screens_ThumbOptionPosY = 0;
     }
 
@@ -2846,6 +2839,29 @@ function Screens_ThumbOptionStringSet(key) {
     Main_textContent(Screens_ThumbBlockOveWriteValue, Screens_NoYes[Screens_ThumbOptionPosXArrays[5]]);
     Main_textContent(Screens_ThumbLangValue, Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionSpecialDefPosElse]]);
     Main_textContent(Screens_ThumbGotoValue, Screens_ThumbOptionScreens[0]);
+
+    //Check if is blocked to allow reverting
+    Main_textContent('dialog_thumb_opt_setting_name_3', STR_BLOCK_CHANNEL);
+    Main_textContent('dialog_thumb_opt_setting_name_4', STR_BLOCK_GAME);
+    if (AddUser_IsUserSet()) {
+        var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
+        if (!blockedObj.blocked) {
+            return;
+        }
+
+        var channelId = Screens_BlockChannelGetId(key),
+            gameId = Screens_BlockGameGetId(key),
+            isGameBlocked = Screens_getGameIsBlocked(gameId),
+            isChannelBlocked = Screens_getChannelIsBlocked(channelId);
+
+        if (isChannelBlocked) {
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_UNBLOCK_CHANNEL);
+        }
+
+        if (isGameBlocked) {
+            Main_textContent('dialog_thumb_opt_setting_name_4', STR_UNBLOCK_GAME);
+        }
+    }
 }
 
 function Screens_ThumbUpdateGameInfo(id) {
@@ -3098,6 +3114,29 @@ function Screens_BlockChannel(key) {
         return;
     }
 
+    var channelId = Screens_BlockChannelGetId(key);
+
+    if (!channelId) {
+        Main_showWarningDialog(STR_BLOCK_NO_CHANNEL, 2000);
+        return;
+    }
+
+    Screens_BlockSetDefaultObj();
+
+    if (Screens_getChannelIsBlocked(channelId)) {
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
+    } else {
+        if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId]) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId] = {};
+        }
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].date = new Date().getTime();
+        Screens_BlockChannelUpdateInfo(channelId);
+    }
+
+    Main_setHistoryItem();
+}
+
+function Screens_BlockChannelGetId(key) {
     var channelId;
 
     if (ScreenObj[key].screenType === 2) {
@@ -3108,21 +3147,7 @@ function Screens_BlockChannel(key) {
         channelId = Screens_values_Play_data[14];
     }
 
-    if (!channelId) {
-        Main_showWarningDialog(STR_BLOCK_NO_CHANNEL, 2000);
-        return;
-    }
-
-    Screens_BlockSetDefaultObj();
-
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId]) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId] = {};
-    }
-
-    Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].date = new Date().getTime();
-    Screens_BlockChannelUpdateInfo(channelId);
-
-    Main_setHistoryItem();
+    return channelId;
 }
 
 function Screens_BlockChannelUpdateInfo(id) {
@@ -3161,6 +3186,33 @@ function Screens_BlockGame(key) {
         return;
     }
 
+    var gameId = Screens_BlockGameGetId(key);
+
+    if (!gameId) {
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_NO_GAME, 2000);
+        return;
+    }
+
+    Screens_BlockSetDefaultObj();
+
+    if (Screens_getGameIsBlocked(gameId)) {
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
+    } else {
+        if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId]) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId] = {};
+        }
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].date = new Date().getTime();
+        Screens_BlockGameUpdateInfo(gameId);
+    }
+
+    Main_setHistoryItem();
+
+    console.log(Main_values_History_data);
+}
+
+function Screens_BlockGameGetId(key) {
     var gameId;
 
     if (ScreenObj[key].screen === Main_AGameClip || ScreenObj[key].screen === Main_AGameVod) {
@@ -3173,22 +3225,7 @@ function Screens_BlockGame(key) {
         gameId = Screens_values_Play_data[3];
     }
 
-    if (!gameId) {
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_NO_GAME, 2000);
-        return;
-    }
-
-    Screens_BlockSetDefaultObj();
-
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId]) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId] = {};
-    }
-
-    Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].date = new Date().getTime();
-    Screens_BlockGameUpdateInfo(gameId);
-
-    Main_setHistoryItem();
+    return gameId;
 }
 
 function Screens_BlockGameUpdateInfo(id) {
@@ -3214,7 +3251,7 @@ function Screens_BlockGameUpdateInfoEnd(response) {
     }
 }
 
-function Screens_isNotBlocked(channelId, GameId, IsUser) {
+function Screens_isNotBlocked(channelId, gameId, IsUser) {
     if (IsUser || Main_values.OverwriteBlock || !AddUser_IsUserSet()) {
         return 1;
     }
@@ -3225,9 +3262,21 @@ function Screens_isNotBlocked(channelId, GameId, IsUser) {
         return 1;
     }
 
-    var isBLocked = (GameId && blockedObj.blocked.game[GameId]) || (channelId && blockedObj.blocked.channel[channelId]);
+    var isBLocked = Screens_getGameIsBlocked(gameId) || Screens_getChannelIsBlocked(channelId);
 
     return isBLocked ? 0 : 1;
+}
+
+function Screens_getGameIsBlocked(gameId) {
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
+
+    return Boolean(gameId && blockedObj.blocked.game[gameId]);
+}
+
+function Screens_getChannelIsBlocked(channelId) {
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
+
+    return Boolean(channelId && blockedObj.blocked.channel[channelId]);
 }
 
 function Screens_BlockSetDefaultObj() {

@@ -853,6 +853,8 @@ function en_USLang() {
 
     STR_SCREEN_OFF = 'Screen off (Audio only)';
 
+    STR_UNBLOCK_CHANNEL = 'Unblock channel';
+    STR_UNBLOCK_GAME = 'Unblock game';
     STR_BLOCK_CHANNEL = 'Block channel';
     STR_BLOCK_GAME = 'Block game';
     STR_BLOCK_NO_USER = 'Add a user first before being able to block';
