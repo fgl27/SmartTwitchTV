@@ -2927,34 +2927,6 @@ function Screens_ThumbOptionStringGetHistory(key) {
     return Main_getItemJson(ScreenObj[key].histPosXName, [0, 0, 0])[1];
 }
 
-function Screens_ThumbOptionhandleKeyLeft() {
-    if (!Screens_ThumbOptionCanKeyLeft) return;
-
-    if (Screens_ThumbOptionPosY > 2) {
-        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
-
-        if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0) {
-            Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
-        } else {
-            Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
-        }
-    }
-}
-
-function Screens_ThumbOptionhandleKeyRight() {
-    if (!Screens_handleKeyUpIsClear) return;
-
-    if (Screens_ThumbOptionPosY > Screens_ThumbOptionSpecialDefPos - 2) {
-        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
-
-        if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1) {
-            Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
-        } else {
-            Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
-        }
-    }
-}
-
 var Screens_ThumbOptionCanKeyLeft = true;
 function Screens_ThumbOptionhandleKeyDown(key, event) {
     //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
@@ -2981,6 +2953,34 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             break;
         default:
             break;
+    }
+}
+
+function Screens_ThumbOptionhandleKeyLeft() {
+    if (!Screens_ThumbOptionCanKeyLeft) return;
+
+    if (Screens_ThumbOptionPosY > 2) {
+        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
+
+        if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0) {
+            Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
+        } else {
+            Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+        }
+    }
+}
+
+function Screens_ThumbOptionhandleKeyRight() {
+    if (!Screens_handleKeyUpIsClear) return;
+
+    if (Screens_ThumbOptionPosY > Screens_ThumbOptionSpecialDefPos - 2) {
+        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
+
+        if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1) {
+            Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
+        } else {
+            Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+        }
     }
 }
 
