@@ -2958,7 +2958,6 @@ function Screens_ThumbOptionhandleKeyRight() {
 var Screens_ThumbOptionCanKeyLeft = true;
 function Screens_ThumbOptionhandleKeyDown(key, event) {
     //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
-    var positionBefore;
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -2972,60 +2971,10 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             Screens_ThumbOptionhandleKeyRight();
             break;
         case KEY_UP:
-            positionBefore = Screens_ThumbOptionPosY;
-            var min_pos = 0;
-
-            if (Screens_ThumbOptionSpecial) {
-                min_pos = ScreenObj[key].histPosXName ? Screens_ThumbOptionSpecialDefPos : Screens_ThumbOptionSpecialDefPosElse;
-            }
-
-            var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
-            Screens_ThumbOptionPosY--;
-
-            if (ScreenObj[key].screenType === 4 && Screens_ThumbOptionPosY < 6) {
-                Screens_ThumbOptionPosY = 3;
-                lower = 3;
-            }
-
-            if (ScreenObj[key].screenType === 3 && Screens_ThumbOptionPosY < 6) {
-                Screens_ThumbOptionPosY = 4;
-                lower = 4;
-            }
-            if (Screens_ThumbOptionPosY === 6 && Screens_ThumbOptionSpecial) {
-                Screens_ThumbOptionPosY = 5;
-                lower = 5;
-            }
-            if (Screens_ThumbOptionPosY < lower) {
-                Screens_ThumbOptionPosY = lower;
-            } else {
-                Screens_histRemoveFocus(positionBefore, 'thumb_opt');
-                Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
-            }
-
+            Screens_ThumbOptionDialogKeyUpDown(key, Screens_ThumbOptionPosY, -1);
             break;
         case KEY_DOWN:
-            positionBefore = Screens_ThumbOptionPosY;
-            Screens_ThumbOptionPosY++;
-
-            if (ScreenObj[key].screenType === 4 && Screens_ThumbOptionPosY < 6) {
-                Screens_ThumbOptionPosY = 5;
-            }
-
-            if (ScreenObj[key].screenType === 3 && Screens_ThumbOptionPosY < 6) {
-                Screens_ThumbOptionPosY = 5;
-            }
-
-            if (Screens_ThumbOptionPosY === 6 && Screens_ThumbOptionSpecial) {
-                Screens_ThumbOptionPosY++;
-            }
-
-            if (Screens_ThumbOptionPosY > Screens_ThumbOptionTotalPosition) {
-                Screens_ThumbOptionPosY = Screens_ThumbOptionTotalPosition;
-            } else {
-                Screens_histRemoveFocus(positionBefore, 'thumb_opt');
-                Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
-            }
-
+            Screens_ThumbOptionDialogKeyUpDown(key, Screens_ThumbOptionPosY, 1);
             break;
         case KEY_ENTER:
             Screens_ThumbOptionDialogKeyEnter(key);
@@ -3033,6 +2982,29 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
         default:
             break;
     }
+}
+
+function Screens_ThumbOptionDialogKeyUpDown(key, current, adder) {
+    Screens_ThumbOptionPosY += adder;
+
+    if (Screens_ThumbOptionPosY < 0) {
+        Screens_ThumbOptionPosY = current;
+        return;
+    }
+
+    if (Screens_ThumbOptionPosY > Screens_ThumbOptionTotalPosition) {
+        Screens_ThumbOptionPosY = Screens_ThumbOptionTotalPosition;
+        return;
+    }
+
+    var elemt = Main_getElementById('dialog_thumb_opt_setting_' + Screens_ThumbOptionPosY);
+    if (!elemt || Main_A_includes_B(elemt.className, 'hideimp')) {
+        Screens_ThumbOptionDialogKeyUpDown(key, current, adder);
+        return;
+    }
+
+    Screens_histRemoveFocus(current, 'thumb_opt');
+    Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
 }
 
 function Screens_ThumbOptionDialogKeyEnter(key) {
