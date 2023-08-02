@@ -1863,7 +1863,9 @@ function ScreensObj_InitUserChannels() {
                 this.base_key_play(key, true);
             },
             addCell: function (cell) {
-                if (!this.idObject[cell.id]) {
+                var isNotBlocked = Screens_isNotBlocked(cell.id, null, this.IsUser);
+
+                if (!this.idObject[cell.id] && isNotBlocked) {
                     this.itemsCount++;
                     this.idObject[cell.id] = 1;
 

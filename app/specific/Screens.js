@@ -2725,14 +2725,14 @@ function Screens_ThumbOptionStart(key, click) {
             ScreenObj[key].setTODialog(true);
         }
 
-        if (ScreenObj[key].screenType === 4) {
+        if (ScreenObj[key].screenType === 4 && !ScreenObj[key].BannerCreated) {
             //Don't add focus above block to prevent unintentional block
             Screens_ThumbOptionPosY = 5;
             Main_RemoveClass('dialog_thumb_opt_setting_3', 'hideimp');
             Screens_values_Play_data = Screens_GetObj(key);
         }
 
-        if (ScreenObj[key].screenType === 3) {
+        if (ScreenObj[key].screenType === 3 && !ScreenObj[key].BannerCreated) {
             //Don't add focus above block to prevent unintentional block
             Screens_ThumbOptionPosY = 5;
             Main_RemoveClass('dialog_thumb_opt_setting_4', 'hideimp');
