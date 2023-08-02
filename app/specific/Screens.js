@@ -3259,7 +3259,7 @@ function Screens_BlockGameGetId(key) {
     var gameId;
 
     if (ScreenObj[key].screen === Main_AGameClip || ScreenObj[key].screen === Main_AGameVod) {
-        gameId = Main_values.Main_gameSelected_id;
+        gameId = ScreenObj[key].gameSelected_Id;
     } else if (ScreenObj[key].screenType === 0 || ScreenObj[key].screenType === 2) {
         gameId = Screens_values_Play_data[18];
     } else if (ScreenObj[key].screenType === 1) {
