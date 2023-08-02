@@ -403,9 +403,10 @@ function Main_initWindowsEnd() {
 
     Main_setTimeout(AddUser_UpdateUserAllUsers, 30000);
 
+    Main_setTimeout(Screens_BlockUpdateAllIds, 60000);
+
     Main_SetStringsSecondary();
     Main_checkVersion();
-    Screens_BlockUpdateAllIds();
 
     Main_PasswordInput = Main_getElementById('password_input');
     Main_SearchInput = Main_getElementById('search_input');
