@@ -50,6 +50,7 @@ var Main_HistoryLive = 21;
 var Main_HistoryVod = 22;
 var Main_HistoryClip = 23;
 var Main_Password = 24;
+var Main_Blocked = 25;
 
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
 var Main_HistoryPos = 0;
@@ -104,7 +105,8 @@ var Main_values = {
     AddCode_main_token: null,
     API_Change: true,
     Password_data: null,
-    OverwriteBlock: 0
+    OverwriteBlock: 0,
+    BlockSort: false
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];

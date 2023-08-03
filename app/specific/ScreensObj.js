@@ -811,7 +811,7 @@ function ScreensObj_StartAllVars() {
         isHistory: true,
         streamerID: {},
         HasSwitches: true,
-        key_pgDown: Main_UserLive,
+        key_pgDown: Main_Blocked,
         key_pgUp: Main_UserChannels,
         histPosY: 0,
         emptyContent_STR: function () {
@@ -1317,7 +1317,7 @@ function ScreensObj_InitUserLive() {
             object: 'data',
             IsUser: true,
             key_pgDown: Main_usergames,
-            key_pgUp: Main_HistoryLive,
+            key_pgUp: Main_Blocked,
             base_url: Main_helix_api + 'streams/',
             loadChannelOffsset: 0,
             followerChannels: [],
@@ -1705,7 +1705,6 @@ function ScreensObj_InitUserGames() {
             ScreenName: 'UserGames',
             table: 'stream_table_user_games',
             screen: key,
-            key_pgDownNext: Main_UserChannels,
             key_pgDown: Main_UserChannels,
             key_pgUp: Main_UserLive,
             isLive: false,
@@ -1824,7 +1823,6 @@ function ScreensObj_InitUserChannels() {
             IsUser: true,
             key_pgDown: Main_History[Main_HistoryPos],
             key_pgUp: Main_usergames,
-            key_pgUpNext: Main_usergames,
             getFollowed: true,
             channelData: null,
             channelDataPos: 0,
@@ -2285,9 +2283,159 @@ function ScreensObj_HistoryClip() {
     ScreenObj[key].Set_Scroll();
 }
 
-function ScreensObj_addSwitches(StringsArray, key) {
+function ScreensObj_Blocked() {
+    var key = Main_Blocked;
+
+    ScreenObj[key] = Screens_assign(
+        {
+            isBlocked: true,
+            ids: Screens_ScreenIds('blocked', key),
+            ScreenName: 'blocked',
+            table: 'stream_table_blocked',
+            screen: key,
+            isGame: true,
+            set_url: noop_fun,
+            img_404: IMG_404_GAME, //IMG_404_GAME game IMG_404_LOGO channel
+            screenType: 3, //4 channel 3 game
+            ItemsReloadLimit: Main_ItemsReloadLimitGame, // Main_ItemsReloadLimitGame or Main_ItemsReloadLimitChannel
+            ItemsLimit: Main_ItemsLimitGame, //Main_ItemsLimitGame or Main_ItemsLimitChannel
+            ColumnsCount: Main_ColumnsCountGame, //Main_ColumnsCountGame or Main_ColumnsCountChannel
+            addFocus: Screens_addFocusVideo, //Screens_addFocusVideo or Screens_addFocusChannel
+            rowClass: 'animate_height_transition_blocked_games', // animate_height_transition_blocked_games or animate_height_transition_blocked_channel
+            thumbclass: 'stream_thumbnail_blocked_game_holder', //stream_thumbnail_blocked_game_holder or stream_thumbnail_blocked_channel_holder
+            visiblerows: 3, // 3 or 5
+            HasSwitches: true,
+            key_pgDown: Main_UserLive,
+            key_pgUp: Main_HistoryLive,
+            sortPosition: Main_values.BlockSort,
+            label_init: function () {
+                ScreensObj_CheckUser(this.screen);
+                ScreensObj_TopLableUserInit(this.screen);
+                var mainTitle = 'Blocked',
+                    extraInfoType = this.isGame ? STR_GAMES : STR_CHANNELS,
+                    extraInfoSort = this.sortPosition ? STR_BLOCK_SORT_DATE : STR_BLOCK_SORT_NAME,
+                    extraInfo = extraInfoType + STR_SPACE_HTML + extraInfoSort;
+
+                ScreensObj_SetTopLable(mainTitle, extraInfo);
+            },
+            addCell: function (cell) {
+                var createFun = this.isGame ? Screens_createCellGame : Screens_createCellChannel;
+                var id = cell.data[this.isGame ? 3 : 1];
+
+                if (!this.idObject[id]) {
+                    this.itemsCount++;
+                    this.idObject[id] = 1;
+
+                    this.tempHtml += createFun(this.row_id + '_' + this.column_id, this.ids, cell.data, this.screen);
+                    this.column_id++;
+                }
+            },
+            SwitchesIcons: ['filmstrip', 'settings'],
+            addSwitches: function () {
+                this.SwitchesIcons[0] = this.isGame ? 'filmstrip' : 'gamepad';
+                var screen = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.isGame ? STR_CHANNELS : STR_GAMES),
+                    sorting = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.sortPosition ? STR_BLOCK_SORT_NAME : STR_BLOCK_SORT_DATE);
+                ScreensObj_addSwitches([STR_SPACE_HTML + screen, STR_SPACE_HTML + sorting], this.screen, '0.4em');
+            },
+            blockedSort: function () {
+                if (this.sortPosition) {
+                    //date
+                    this.data.sort(function (a, b) {
+                        return b.date - a.date;
+                    });
+                } else {
+                    //a-z
+                    var position = this.isGame ? 1 : 0;
+
+                    this.data.sort(function (a, b) {
+                        return a.data[position] < b.data[position] ? -1 : a.data[position] > b.data[position] ? 1 : 0;
+                    });
+                }
+            },
+            blocked_concatenate: function () {
+                var type = this.isGame ? 'game' : 'channel';
+                this.data = Object.values(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type]);
+                this.blockedSort();
+                this.dataEnded = true;
+                this.loadDataSuccess();
+                this.loadingData = false;
+
+                console.log('data', this.data);
+            }
+        },
+        Base_obj
+    );
+
+    ScreenObj[key].key_play_game = Base_Game_obj.key_play;
+    ScreenObj[key].key_play_channel = Base_Channel_obj.base_key_play;
+
+    ScreenObj[key].key_play = function () {
+        if (this.posY === -1) {
+            if (this.posX === 0) {
+                this.isGame = !this.isGame;
+
+                if (this.isGame) {
+                    this.img_404 = IMG_404_GAME;
+                    this.screenType = 3;
+                    this.ItemsReloadLimit = Main_ItemsReloadLimitGame;
+                    this.ItemsLimit = Main_ItemsLimitGame;
+                    this.ColumnsCount = Main_ColumnsCountGame;
+                    this.addFocus = Screens_addFocusVideo;
+                    this.rowClass = 'animate_height_transition_blocked_games';
+                    this.thumbclass = 'stream_thumbnail_blocked_game_holder';
+                    this.visiblerows = 3;
+                } else {
+                    this.img_404 = IMG_404_LOGO;
+                    this.screenType = 4;
+                    this.ItemsReloadLimit = Main_ItemsReloadLimitChannel;
+                    this.ItemsLimit = Main_ItemsLimitChannel;
+                    this.ColumnsCount = Main_ColumnsCountChannel;
+                    this.addFocus = Screens_addFocusChannel;
+                    this.rowClass = 'animate_height_transition_blocked_channel';
+                    this.thumbclass = 'stream_thumbnail_blocked_channel_holder';
+                    this.visiblerows = 5;
+                }
+
+                Screens_StartLoad(this.screen);
+            } else if (this.posX === 1) {
+                this.sortPosition = !this.sortPosition;
+                this.label_init();
+                Screens_StartLoad(this.screen);
+
+                Main_values.BlockSort = this.sortPosition;
+                Main_SaveValuesWithTimeout();
+            }
+        } else {
+            if (this.isGame) {
+                this.key_play_game();
+            } else {
+                this.key_play_channel(key, false);
+            }
+        }
+    };
+
+    ScreenObj[key].addrowGame = Screens_addrow;
+    ScreenObj[key].addrowChannel = Screens_addrowChannel;
+
+    ScreenObj[key].addrow = function (forceScroll, y, key, forceAfterDelete) {
+        if (this.isGame) {
+            ScreenObj[key].addrowGame(forceScroll, y, key, forceAfterDelete);
+        } else {
+            ScreenObj[key].addrowChannel(forceScroll, y, key, forceAfterDelete);
+        }
+    };
+
+    ScreenObj[key].Set_Scroll();
+}
+
+function ScreensObj_addSwitches(StringsArray, key, padding) {
     ScreenObj[key].TopRowCreated = true;
     ScreenObj[key].row = document.createElement('div');
+
+    if (padding) {
+        ScreenObj[key].row.style.paddingBottom = padding;
+    }
+
     var thumbfollow,
         div,
         i = 0,

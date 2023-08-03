@@ -134,8 +134,10 @@
                 position: absolute;
             }
 
+            .animate_height_transition_blocked_channel,
             .animate_height_transition_channel,
             .animate_height_transition_games,
+            .animate_height_transition_blocked_games,
             .animate_height_transition {
                 height: 49%;
                 width: 95%;
@@ -149,8 +151,16 @@
                 height: 50.1%;
             }
 
+            .animate_height_transition_blocked_games {
+                height: 48.7%;
+            }
+
             .animate_height_transition_channel {
                 height: 32.075%;
+            }
+
+            .animate_height_transition_blocked_channel {
+                height: 31.575%;
             }
 
             .side_panel_holder_ani {
@@ -357,12 +367,17 @@
                 position: relative;
             }
 
+            .stream_thumbnail_blocked_game_holder,
             .stream_thumbnail_game_holder {
                 width: 17.1%;
                 display: inline-block;
                 padding: 1%;
                 padding-top: 0;
                 padding-bottom: 0.2%;
+            }
+
+            .stream_thumbnail_blocked_game_holder {
+                width: 16.5%;
             }
 
             .stream_thumbnail_game_feed,
@@ -388,11 +403,16 @@
             }
 
             .stream_thumbnail_user_icon_holder,
+            .stream_thumbnail_blocked_channel_holder,
             .stream_thumbnail_channel_holder {
                 width: 15%;
                 display: inline-block;
                 padding: 0.5%;
                 padding-bottom: 1.25%;
+            }
+
+            .stream_thumbnail_blocked_channel_holder {
+                width: 14.5%;
             }
 
             .stream_thumbnail_user_icon_holder {
@@ -2960,6 +2980,11 @@
                     </div>
                     <div id="SearchLive_scroll" class="screen_holder hide">
                         <div id="stream_table_search_live" class="streams_div"></div>
+                    </div>
+
+                    <!-- Blocked screens-->
+                    <div id="blocked_scroll" class="screen_holder_switch hide">
+                        <div id="stream_table_blocked" class="streams_div" style="margin-left: 7%"></div>
                     </div>
 
                     <!-- History screens-->
