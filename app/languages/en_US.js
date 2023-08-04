@@ -860,6 +860,6 @@ function en_USLang() {
     STR_BLOCK_NO_USER = 'Add a user first before being able to block';
     STR_BLOCK_NO_CHANNEL = "Can't get the channel for this";
     STR_BLOCK_OVERWRITE = 'Show blocked';
-    STR_BLOCK_SORT_DATE = 'Sorted by included date';
+    STR_BLOCK_SORT_DATE = 'Sorted by blocked date';
     STR_BLOCK_SORT_NAME = 'Sorted by name A to Z';
 }
