@@ -334,3 +334,7 @@
 .icon-screen-off:before {
   content: "\22";
 }
+
+.icon-blocked:before {
+  content: "\59";
+}
