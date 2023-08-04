@@ -1711,13 +1711,14 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 id = useHelix ? stream.user_id : stream.channel._id;
             }
 
-            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && (isFeatured || ScreensObj_CheckIsMature(stream))) {
-                UserLiveFeed_idObject[pos][id] = itemsCount;
+            if (!UserLiveFeed_idObject[pos][id] && (isFeatured || ScreensObj_CheckIsMature(stream))) {
                 mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
-                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
-
-                itemsCount++;
+                if (Screens_isNotBlocked(mArray[14], mArray[18], false)) {
+                    UserLiveFeed_idObject[pos][id] = itemsCount;
+                    UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
+                    itemsCount++;
+                }
             }
         }
     }
@@ -1866,8 +1867,9 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
                 continue;
             }
             var id_cell = useHelix || isUserGames ? game.id : game._id;
+            var isNotBlocked = Screens_isNotBlocked(null, id_cell, isUserGames);
 
-            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id_cell)) {
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id_cell) && isNotBlocked) {
                 UserLiveFeed_idObject[pos][id_cell] = itemsCount;
 
                 if (useHelix) {
