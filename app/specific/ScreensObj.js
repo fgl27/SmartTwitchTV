@@ -2558,7 +2558,12 @@ function ScreensObj_TopLableAgameInit(key) {
         Sidepannel_SetDefaultLabels();
     }
 
-    Sidepannel_Sidepannel_Pos = Main_values.Main_BeforeAgame === Main_usergames ? 4 : 5;
+    if (Main_values.Main_BeforeAgame === Main_Blocked) {
+        Sidepannel_Sidepannel_Pos = 9;
+    } else {
+        Sidepannel_Sidepannel_Pos = Main_values.Main_BeforeAgame === Main_usergames ? 4 : 5;
+    }
+
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
 
     Main_EventAgame(Main_values.Main_gameSelected);
