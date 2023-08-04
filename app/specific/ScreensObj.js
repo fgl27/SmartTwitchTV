@@ -2335,6 +2335,7 @@ function ScreensObj_Blocked() {
                 this.SwitchesIcons[0] = this.isGame ? 'filmstrip' : 'gamepad';
                 var screen = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.isGame ? STR_CHANNELS : STR_GAMES),
                     sorting = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.sortByDate ? STR_BLOCK_SORT_NAME : STR_BLOCK_SORT_DATE);
+
                 ScreensObj_addSwitches([STR_SPACE_HTML + screen, STR_SPACE_HTML + sorting], this.screen, '0.4em');
             },
             blockedSort: function () {

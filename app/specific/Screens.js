@@ -3131,7 +3131,8 @@ function Screens_BlockChannel(key) {
         return;
     }
 
-    var channelId = Screens_BlockChannelGetId(key);
+    var channelId = Screens_BlockChannelGetId(key),
+        channelName = Screens_BlockChannelGetName(key);
 
     if (!channelId) {
         Main_showWarningDialog(STR_BLOCK_NO_CHANNEL, 2000);
@@ -3146,7 +3147,16 @@ function Screens_BlockChannel(key) {
         if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId]) {
             Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId] = {};
         }
+
         Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].date = new Date().getTime();
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].data = [];
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].data[1] = channelId;
+
+        if (channelName) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].data[3] = channelName;
+        }
+
         Screens_BlockChannelUpdateInfo(channelId);
     }
 
@@ -3165,6 +3175,18 @@ function Screens_BlockChannelGetId(key) {
     }
 
     return channelId;
+}
+
+function Screens_BlockChannelGetName(key) {
+    var channelName;
+
+    if (ScreenObj[key].screenType === 4) {
+        channelName = Screens_values_Play_data[3];
+    } else {
+        channelName = Screens_values_Play_data[6];
+    }
+
+    return channelName;
 }
 
 function Screens_BlockChannelUpdateInfo(id) {
@@ -3246,7 +3268,8 @@ function Screens_BlockGame(key) {
         return;
     }
 
-    var gameId = Screens_BlockGameGetId(key);
+    var gameId = Screens_BlockGameGetId(key),
+        gameName = Screens_BlockGameGetName(key);
 
     if (!gameId) {
         Main_HideLoadDialog();
@@ -3264,6 +3287,15 @@ function Screens_BlockGame(key) {
         }
 
         Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].date = new Date().getTime();
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].data = [];
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].data[3] = gameId;
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].data[2] = '';
+
+        if (gameName) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].data[1] = gameName;
+        }
+
         Screens_BlockGameUpdateInfo(gameId);
     }
 
@@ -3284,6 +3316,24 @@ function Screens_BlockGameGetId(key) {
     }
 
     return gameId;
+}
+
+function Screens_BlockGameGetName(key) {
+    var gameName;
+
+    if (ScreenObj[key].screen === Main_AGameClip || ScreenObj[key].screen === Main_AGameVod) {
+        gameName = Main_values.Main_gameSelected;
+    } else if (ScreenObj[key].screenType < 3) {
+        gameName = Screens_values_Play_data[3];
+    } else if (ScreenObj[key].screenType === 3) {
+        gameName = Screens_values_Play_data[1];
+    }
+
+    if (!gameName && Screens_ThumbUpdateGameInfoName) {
+        gameName = Screens_ThumbUpdateGameInfoName;
+    }
+
+    return gameName;
 }
 
 function Screens_BlockGameUpdateInfo(id) {
