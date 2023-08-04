@@ -3633,6 +3633,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_GAMES);
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_CHANNELS);
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_HISTORY);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_BLOCKED);
     }
 
     Screens_YesNo = [STR_YES, STR_NO];
@@ -3665,7 +3666,8 @@ function Screens_ThumbOptionSetArrowArray(key) {
         Main_UserLive,
         Main_usergames,
         Main_UserChannels,
-        Main_History[Main_HistoryPos]
+        Main_History[Main_HistoryPos],
+        Main_Blocked
     ];
 }
 
