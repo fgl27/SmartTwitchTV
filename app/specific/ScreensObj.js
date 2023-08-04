@@ -2307,13 +2307,13 @@ function ScreensObj_Blocked() {
             HasSwitches: true,
             key_pgDown: Main_UserLive,
             key_pgUp: Main_HistoryLive,
-            sortPosition: Main_values.BlockSort,
+            sortByDate: Main_values.BlockSort,
             label_init: function () {
                 ScreensObj_CheckUser(this.screen);
                 ScreensObj_TopLableUserInit(this.screen);
                 var mainTitle = 'Blocked',
                     extraInfoType = this.isGame ? STR_GAMES : STR_CHANNELS,
-                    extraInfoSort = this.sortPosition ? STR_BLOCK_SORT_DATE : STR_BLOCK_SORT_NAME,
+                    extraInfoSort = this.sortByDate ? STR_BLOCK_SORT_DATE : STR_BLOCK_SORT_NAME,
                     extraInfo = extraInfoType + STR_SPACE_HTML + extraInfoSort;
 
                 ScreensObj_SetTopLable(mainTitle, extraInfo);
@@ -2334,11 +2334,11 @@ function ScreensObj_Blocked() {
             addSwitches: function () {
                 this.SwitchesIcons[0] = this.isGame ? 'filmstrip' : 'gamepad';
                 var screen = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.isGame ? STR_CHANNELS : STR_GAMES),
-                    sorting = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.sortPosition ? STR_BLOCK_SORT_NAME : STR_BLOCK_SORT_DATE);
+                    sorting = STR_USER_MAKE_ONE + STR_SPACE_HTML + (this.sortByDate ? STR_BLOCK_SORT_NAME : STR_BLOCK_SORT_DATE);
                 ScreensObj_addSwitches([STR_SPACE_HTML + screen, STR_SPACE_HTML + sorting], this.screen, '0.4em');
             },
             blockedSort: function () {
-                if (this.sortPosition) {
+                if (this.sortByDate) {
                     //date
                     this.data.sort(function (a, b) {
                         return b.date - a.date;
@@ -2398,11 +2398,11 @@ function ScreensObj_Blocked() {
 
                 Screens_StartLoad(this.screen);
             } else if (this.posX === 1) {
-                this.sortPosition = !this.sortPosition;
+                this.sortByDate = !this.sortByDate;
                 this.label_init();
                 Screens_StartLoad(this.screen);
 
-                Main_values.BlockSort = this.sortPosition;
+                Main_values.BlockSort = this.sortByDate;
                 Main_SaveValuesWithTimeout();
             }
         } else {
