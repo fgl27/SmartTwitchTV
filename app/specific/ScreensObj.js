@@ -450,7 +450,11 @@ function ScreensObj_StartAllVars() {
         Vod_newImg: new Image(),
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
-            var isNotBlocked = Screens_isNotBlocked(this.isQuery && cell.creator ? cell.creator.id : cell.user_id, cell.game_id, this.IsUser);
+            var isNotBlocked = Screens_isNotBlocked(
+                this.isQuery && cell.creator ? cell.creator.id : cell.user_id,
+                cell.game_id,
+                this.screen !== Main_Vod
+            );
 
             if (!this.idObject[cell.id] && isNotBlocked) {
                 this.itemsCount++;
@@ -507,7 +511,7 @@ function ScreensObj_StartAllVars() {
         },
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
-            var isNotBlocked = Screens_isNotBlocked(cell.user_id, cell.game_id, this.IsUser);
+            var isNotBlocked = Screens_isNotBlocked(cell.user_id, cell.game_id, this.IsUser || this.screen === Main_aGame);
 
             if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell) && isNotBlocked) {
                 this.itemsCount++;
@@ -611,7 +615,7 @@ function ScreensObj_StartAllVars() {
             var isNotBlocked = Screens_isNotBlocked(
                 this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id,
                 cell.game_id,
-                this.IsUser
+                this.IsUser || this.screen === Main_AGameClip || this.screen === Main_ChannelClip
             );
 
             if (!this.idObject[idValue] && isNotBlocked) {
@@ -1861,9 +1865,7 @@ function ScreensObj_InitUserChannels() {
                 this.base_key_play(key, true);
             },
             addCell: function (cell) {
-                var isNotBlocked = Screens_isNotBlocked(cell.id, null, this.IsUser);
-
-                if (!this.idObject[cell.id] && isNotBlocked) {
+                if (!this.idObject[cell.id]) {
                     this.itemsCount++;
                     this.idObject[cell.id] = 1;
 
