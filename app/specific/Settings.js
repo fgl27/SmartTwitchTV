@@ -99,7 +99,7 @@ var Settings_value = {
         apply_values: ['en_US', 'es_Us', 'pt_BR', 'ru_RU'],
         defaultValue: 1
     },
-    show_affiliate: {
+    show_banner: {
         values: ['no', 'yes'],
         defaultValue: 2
     },

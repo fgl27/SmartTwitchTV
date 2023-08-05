@@ -360,7 +360,7 @@ function ScreensObj_StartAllVars() {
             Main_OpenLiveStream(Screens_GetObj(this.screen), this.posY + '_' + this.posX, this.ids, this.key_fun, checkHistory, this.ScreenName);
         },
         hasBanner: function () {
-            return this.showBanner && Settings_Obj_default('show_affiliate');
+            return this.showBanner && Settings_Obj_default('show_banner');
         },
         addBanner: function () {
             return null;
