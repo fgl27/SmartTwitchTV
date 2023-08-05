@@ -460,11 +460,8 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
-                this.tempHtml += Screens_createCellVod(
-                    this.row_id + '_' + this.column_id,
-                    this.ids,
-                    ScreensObj_VodCellArray(cell, this.isQuery),
-                    this.screen
+                this.tempHtml.push(
+                    Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, ScreensObj_VodCellArray(cell, this.isQuery), this.screen)
                 );
 
                 this.column_id++;
@@ -517,7 +514,7 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
-                this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen);
+                this.tempHtml.push(Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen));
 
                 this.column_id++;
             }
@@ -622,11 +619,8 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[idValue] = 1;
 
-                this.tempHtml += Screens_createCellClip(
-                    this.row_id + '_' + this.column_id,
-                    this.ids,
-                    ScreensObj_ClipCellArray(cell, this.isQuery),
-                    this.screen
+                this.tempHtml.push(
+                    Screens_createCellClip(this.row_id + '_' + this.column_id, this.ids, ScreensObj_ClipCellArray(cell, this.isQuery), this.screen)
                 );
 
                 this.column_id++;
@@ -686,59 +680,65 @@ function ScreensObj_StartAllVars() {
                 this.idObject[id_cell] = 1;
 
                 if (this.useHelix) {
-                    this.tempHtml += Screens_createCellGame(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        [
-                            game.box_art_url ? game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
-                            game.name, //1
-                            '', //2
-                            id_cell //3
-                        ],
-                        this.screen
+                    this.tempHtml.push(
+                        Screens_createCellGame(
+                            this.row_id + '_' + this.column_id,
+                            this.ids,
+                            [
+                                game.box_art_url ? game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
+                                game.name, //1
+                                '', //2
+                                id_cell //3
+                            ],
+                            this.screen
+                        )
                     );
                 } else if (this.isQuery) {
                     if (!game) {
                         return;
                     }
-                    this.tempHtml += Screens_createCellGame(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        [
-                            game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
-                            game.displayName, //1
-                            (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
-                                STR_SPACE_HTML +
-                                STR_CHANNELS +
-                                STR_BR +
-                                STR_FOR +
-                                (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
-                                STR_SPACE_HTML +
-                                Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //2
-                            id_cell //3
-                        ],
-                        this.screen
+                    this.tempHtml.push(
+                        Screens_createCellGame(
+                            this.row_id + '_' + this.column_id,
+                            this.ids,
+                            [
+                                game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
+                                game.displayName, //1
+                                (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                                    STR_SPACE_HTML +
+                                    STR_CHANNELS +
+                                    STR_BR +
+                                    STR_FOR +
+                                    (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                                    STR_SPACE_HTML +
+                                    Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //2
+                                id_cell //3
+                            ],
+                            this.screen
+                        )
                     );
                 } else {
-                    this.tempHtml += Screens_createCellGame(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        [
-                            game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
-                            game.name, //1
-                            hasLive
-                                ? Main_addCommas(cell.channels) +
-                                  STR_SPACE_HTML +
-                                  STR_CHANNELS +
-                                  STR_BR +
-                                  STR_FOR +
-                                  Main_addCommas(cell.viewers) +
-                                  STR_SPACE_HTML +
-                                  Main_GetViewerStrings(cell.viewers)
-                                : '', //2
-                            game._id //3
-                        ],
-                        this.screen
+                    this.tempHtml.push(
+                        Screens_createCellGame(
+                            this.row_id + '_' + this.column_id,
+                            this.ids,
+                            [
+                                game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
+                                game.name, //1
+                                hasLive
+                                    ? Main_addCommas(cell.channels) +
+                                      STR_SPACE_HTML +
+                                      STR_CHANNELS +
+                                      STR_BR +
+                                      STR_FOR +
+                                      Main_addCommas(cell.viewers) +
+                                      STR_SPACE_HTML +
+                                      Main_GetViewerStrings(cell.viewers)
+                                    : '', //2
+                                game._id //3
+                            ],
+                            this.screen
+                        )
                     );
                 }
 
@@ -772,11 +772,13 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
-                this.tempHtml += Screens_createCellChannel(
-                    this.row_id + '_' + this.column_id,
-                    this.ids,
-                    [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null],
-                    this.screen
+                this.tempHtml.push(
+                    Screens_createCellChannel(
+                        this.row_id + '_' + this.column_id,
+                        this.ids,
+                        [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null],
+                        this.screen
+                    )
                 );
 
                 this.column_id++;
@@ -1494,7 +1496,7 @@ function ScreensObj_InitFeatured() {
             this.itemsCount++;
             this.idObject[id_cell] = 1;
 
-            this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_FeaturedCellArray(cell), this.screen);
+            this.tempHtml.push(Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_FeaturedCellArray(cell), this.screen));
 
             this.column_id++;
         }
@@ -1869,11 +1871,13 @@ function ScreensObj_InitUserChannels() {
                     this.itemsCount++;
                     this.idObject[cell.id] = 1;
 
-                    this.tempHtml += Screens_createCellChannel(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
-                        this.screen
+                    this.tempHtml.push(
+                        Screens_createCellChannel(
+                            this.row_id + '_' + this.column_id,
+                            this.ids,
+                            [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
+                            this.screen
+                        )
                     );
 
                     this.column_id++;
@@ -2042,14 +2046,16 @@ function ScreensObj_HistoryLive() {
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
 
-                    this.tempHtml += Screens_createCellLive(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        cell.data,
-                        this.screen,
-                        cell.date,
-                        cell.vodimg,
-                        (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
+                    this.tempHtml.push(
+                        Screens_createCellLive(
+                            this.row_id + '_' + this.column_id,
+                            this.ids,
+                            cell.data,
+                            this.screen,
+                            cell.date,
+                            cell.vodimg,
+                            (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
+                        )
                     );
 
                     //If there is alredy one stream shoing all the rest is a VOD
@@ -2157,13 +2163,8 @@ function ScreensObj_HistoryVod() {
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
 
-                    this.tempHtml += Screens_createCellVod(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        cell.data,
-                        this.screen,
-                        cell.date,
-                        cell.watched
+                    this.tempHtml.push(
+                        Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, cell.data, this.screen, cell.date, cell.watched)
                     );
 
                     this.column_id++;
@@ -2253,13 +2254,8 @@ function ScreensObj_HistoryClip() {
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
 
-                    this.tempHtml += Screens_createCellClip(
-                        this.row_id + '_' + this.column_id,
-                        this.ids,
-                        cell.data,
-                        this.screen,
-                        cell.date,
-                        cell.watched
+                    this.tempHtml.push(
+                        Screens_createCellClip(this.row_id + '_' + this.column_id, this.ids, cell.data, this.screen, cell.date, cell.watched)
                     );
 
                     this.column_id++;
@@ -2328,7 +2324,7 @@ function ScreensObj_Blocked() {
                     this.itemsCount++;
                     this.idObject[id] = 1;
 
-                    this.tempHtml += createFun(this.row_id + '_' + this.column_id, this.ids, cell.data, this.screen);
+                    this.tempHtml.push(createFun(this.row_id + '_' + this.column_id, this.ids, cell.data, this.screen));
                     this.column_id++;
                 }
             },
@@ -2357,13 +2353,20 @@ function ScreensObj_Blocked() {
             },
             blocked_concatenate: function () {
                 var type = this.isGame ? 'game' : 'channel';
-                this.data = Object.values(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type]);
+                this.data =
+                    Main_values_History_data[AddUser_UsernameArray[0].id].blocked &&
+                    Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type]
+                        ? Object.values(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type])
+                        : [];
                 this.blockedSort();
                 this.dataEnded = true;
                 this.loadDataSuccess();
                 this.loadingData = false;
 
                 console.log('data', this.data);
+            },
+            emptyContent_STR: function () {
+                return STR_BLOCK_EMPTY_CONTENT;
             }
         },
         Base_obj

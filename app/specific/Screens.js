@@ -325,7 +325,7 @@ function Screens_StartLoad(key) {
     Main_HideWarningDialog();
 
     ScreenObj[key].enable_mature = Settings_value.enable_mature.defaultValue;
-    ScreenObj[key].tempHtml = '';
+    ScreenObj[key].tempHtml = [];
     ScreenObj[key].OverwriteBlock = Main_values.OverwriteBlock;
     ScreenObj[key].DataObj = {};
     ScreenObj[key].SetPreviewEnable();
@@ -505,18 +505,24 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].column_id = 0;
             }
 
+            if (ScreenObj[key].tempHtml.length === ScreenObj[key].ColumnsCount) {
+                ScreenObj[key].tempHtml = [];
+            }
+
             for (
                 ScreenObj[key].column_id;
                 ScreenObj[key].column_id < ScreenObj[key].ColumnsCount && ScreenObj[key].data_cursor < data_length;
                 ScreenObj[key].data_cursor++
             ) {
-                if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
+                if (ScreenObj[key].data[ScreenObj[key].data_cursor]) {
+                    ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
+                }
             }
 
             if (ScreenObj[key].column_id === ScreenObj[key].ColumnsCount) {
                 ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
+                ScreenObj[key].tempHtml = [];
                 ScreenObj[key].row_id++;
-                ScreenObj[key].tempHtml = '';
 
                 if (
                     ScreenObj[key].hasBanner() &&
@@ -530,19 +536,19 @@ function Screens_loadDataSuccess(key) {
                 //Content ended and last row is full
                 if (ScreenObj[key].data_cursor === data_length && ScreenObj[key].hasBanner() && !ScreenObj[key].BannerCreated) {
                     ScreenObj[key].row_id++;
-                    ScreenObj[key].tempHtml = '';
+                    ScreenObj[key].tempHtml = [];
                     ScreenObj[key].addBanner();
                 }
             } else if (ScreenObj[key].data_cursor >= data_length) {
                 //Content ended and last row is not full
 
-                if (ScreenObj[key].tempHtml !== '') {
+                if (ScreenObj[key].tempHtml.length) {
                     ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
                 }
 
                 if (ScreenObj[key].hasBanner() && !ScreenObj[key].BannerCreated) {
                     ScreenObj[key].row_id++;
-                    ScreenObj[key].tempHtml = '';
+                    ScreenObj[key].tempHtml = [];
                     ScreenObj[key].addBanner();
                 }
 
@@ -570,7 +576,7 @@ function Screens_createRow(key) {
     var div = document.createElement('div');
     if (ScreenObj[key].rowClass) div.className = ScreenObj[key].rowClass;
     div.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
-    div.innerHTML = ScreenObj[key].tempHtml;
+    div.innerHTML = ScreenObj[key].tempHtml.join('');
 
     return div;
 }
@@ -2504,12 +2510,34 @@ function Screens_deleteUpdateRows(key) {
         }
     }
 
-    //If the last cell ends up empty clean it
     var lastCellPos = ScreenObj[key].Cells.length - 1;
     if (ScreenObj[key].Cells[lastCellPos] && !ScreenObj[key].Cells[lastCellPos].childNodes.length) {
+        //If the last cell ends up empty clean it
         ScreenObj[key].Cells[lastCellPos].remove();
         ScreenObj[key].row_id--;
         ScreenObj[key].Cells.pop();
+        ScreenObj[key].tempHtml = [];
+        ScreenObj[key].column_id = 0;
+    } else {
+        //else Update tempHtml to avoid empty position in the cell
+        var cellNodes = ScreenObj[key].Cells[lastCellPos].childNodes,
+            x = 0,
+            len_x = cellNodes.length;
+
+        ScreenObj[key].tempHtml = [];
+
+        for (x; x < len_x; x++) {
+            ScreenObj[key].tempHtml.push(cellNodes[x].outerHTML);
+        }
+
+        //Update column_id position
+        ScreenObj[key].column_id = ScreenObj[key].tempHtml.length;
+
+        //Update row_id in relation to current row id, as this isn't full yet
+        if (ScreenObj[key].column_id < ScreenObj[key].ColumnsCount && len_x) {
+            var idArray = cellNodes[0].id.split('_');
+            ScreenObj[key].row_id = parseInt(idArray[idArray.length - 2]);
+        }
     }
 
     //Delete the last obj position after moving all div and objData,
@@ -3160,6 +3188,7 @@ function Screens_BlockChannel(key) {
         Screens_BlockChannelUpdateInfo(channelId);
     }
 
+    Screens_deleteUpdateRows(key);
     Main_setHistoryItem();
 }
 
@@ -3299,6 +3328,7 @@ function Screens_BlockGame(key) {
         Screens_BlockGameUpdateInfo(gameId);
     }
 
+    Screens_deleteUpdateRows(key);
     Main_setHistoryItem();
 }
 
@@ -3385,13 +3415,13 @@ function Screens_isNotBlocked(channelId, gameId, IsUser) {
 function Screens_getGameIsBlocked(gameId) {
     var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
 
-    return Boolean(gameId && blockedObj.blocked.game[gameId]);
+    return Boolean(gameId && blockedObj.blocked && blockedObj.blocked.game && blockedObj.blocked.game[gameId]);
 }
 
 function Screens_getChannelIsBlocked(channelId) {
     var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
 
-    return Boolean(channelId && blockedObj.blocked.channel[channelId]);
+    return Boolean(channelId && blockedObj.blocked && blockedObj.blocked.channel && blockedObj.blocked.channel[channelId]);
 }
 
 function Screens_BlockSetDefaultObj() {
@@ -3400,6 +3430,14 @@ function Screens_BlockSetDefaultObj() {
             game: {},
             channel: {}
         };
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game = {};
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel = {};
     }
 }
 

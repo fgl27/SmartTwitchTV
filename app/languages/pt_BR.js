@@ -852,4 +852,15 @@ function pt_BRLang() {
         'Quando desativado, o aplicativo bloqueará todo o conteúdo marcado como conteúdo adulto incluído conteúdo de seguidores, isto inclui todas lives marcadas como adultas e todo o conteúdo das seções de clipes e VOD';
 
     STR_SCREEN_OFF = 'Tela desligada (somente áudio)';
+
+    STR_UNBLOCK_CHANNEL = 'Desbloquear canal';
+    STR_UNBLOCK_GAME = 'Desbloquear jogo';
+    STR_BLOCK_CHANNEL = 'Bloquear canal';
+    STR_BLOCK_GAME = 'Bloquear jogo';
+    STR_BLOCK_NO_USER = 'Adicione um usuário antes de poder bloquear';
+    STR_BLOCK_NO_CHANNEL = 'Não é possível obter o canal para este';
+    STR_BLOCK_OVERWRITE = 'Mostrar bloqueados';
+    STR_BLOCK_SORT_DATE = 'Ordenado por data de bloqueio';
+    STR_BLOCK_SORT_NAME = 'Ordenado por nome de A a Z';
+    STR_BLOCK_EMPTY_CONTENT = 'Não há conteúdo bloqueado deste tipo';
 }

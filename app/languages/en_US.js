@@ -862,4 +862,5 @@ function en_USLang() {
     STR_BLOCK_OVERWRITE = 'Show blocked';
     STR_BLOCK_SORT_DATE = 'Sorted by blocked date';
     STR_BLOCK_SORT_NAME = 'Sorted by name A to Z';
+    STR_BLOCK_EMPTY_CONTENT = 'There is no blocked content of this type';
 }
