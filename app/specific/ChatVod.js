@@ -782,3 +782,27 @@ function Chat_Clean(chat_number) {
         Chat_div[chat_number].removeChild(linesToDelete[0]);
     }
 }
+
+function Chat_SetHighlights() {
+    var bright = !Play_isFullScreen || Play_Multi_MainBig ? 1 : (Main_values.ChatBackground * 0.05).toFixed(2);
+
+    var classes = '';
+
+    classes += '.chat_highlighted {background: rgba(100, 65, 164, ' + bright + ');}';
+
+    classes += '.chat_atstreamer {background: rgba(150, 0, 0, ' + bright + ');}';
+
+    classes += '.chat_fromstreamer {background: rgba(182, 0, 143, ' + bright + ');}';
+
+    classes += '.chat_mod {background: rgba(0, 139, 156, ' + bright + ');}';
+
+    classes += '.chat_atuser {background: rgba(0, 120, 0, ' + bright + ');    }';
+
+    classes += '.chat_bits {background: rgba(125, 100, 0, ' + bright + ');    }';
+
+    classes += '.chat_purged {background: rgba(39, 63, 115, ' + bright + ') !important;}';
+
+    classes += '.chat_sub {background: rgba(163, 76, 0, ' + bright + ');}';
+
+    Main_innerHTML('chat_highlights', classes);
+}

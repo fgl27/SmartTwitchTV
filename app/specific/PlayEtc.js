@@ -20,7 +20,7 @@
 
 //Etc player fun and controls
 var Play_MultiChatBeffore;
-var Play_isFullScreenold = null;
+var Play_isFullScreenOld = null;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
 var Play_ScreeIsOff = false;
@@ -219,11 +219,11 @@ function Play_A_Control(value, control) {
     Play_controls[control].setLable();
 }
 
-function Play_SetFullScreen(isfull) {
-    var changed = Play_isFullScreenold !== Play_isFullScreen;
-    Play_isFullScreenold = Play_isFullScreen;
+function Play_SetFullScreen(isFull) {
+    var changed = Play_isFullScreenOld !== Play_isFullScreen;
+    Play_isFullScreenOld = Play_isFullScreen;
 
-    if (isfull) {
+    if (isFull) {
         if (changed) Play_ResStoreChatFullScreen();
     } else {
         if (changed) Play_StoreChatFullScreen();
@@ -1640,6 +1640,7 @@ function Play_MultiKeyDown() {
         Play_ResetQualityControls();
     }
 
+    Chat_SetHighlights();
     Play_SetAudioIcon();
 }
 
@@ -2791,6 +2792,7 @@ function Play_MakeControls() {
                     PlayExtra_HideChat();
                 }
             }
+            Chat_SetHighlights();
             this.setLable();
             this.setIcon();
             Play_Resetpanel(PlayVodClip);

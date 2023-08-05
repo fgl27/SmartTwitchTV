@@ -1644,6 +1644,8 @@ function Play_SetChatPosString() {
 function Play_ChatBackgroundChange(showDialog) {
     Play_chat_container.style.backgroundColor = 'rgba(0, 0, 0, ' + Play_ChatBackground + ')';
     if (showDialog) Play_showChatBackgroundDialog(STR_BRIGHTNESS + (Play_ChatBackground * 100).toFixed(0) + '%');
+
+    Chat_SetHighlights();
 }
 
 function Play_ChatPositionConvert(up) {
