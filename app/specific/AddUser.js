@@ -196,7 +196,11 @@ function AddUser_RestoreUsers() {
         for (i; i < len; i++) {
             AddUser_UsernameArray[i].timeout_id = null;
 
-            if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
+            if (AddUser_UsernameArray[i].access_token) {
+                AddCode_CheckTokenStart(i);
+            } else if (!i) {
+                Main_showWarningDialog(STR_NO_TOKEN_WARNING, 5000);
+            }
 
             //Set user history obj
             Main_values_History_data[AddUser_UsernameArray[i].id] = {
@@ -420,6 +424,8 @@ function AddUser_UserMakeOne(position) {
 
     if (AddUser_UsernameArray[0].access_token) {
         HttpGetSetUserHeader();
+    } else {
+        Main_showWarningDialog(STR_NO_TOKEN_WARNING, 5000);
     }
 }
 

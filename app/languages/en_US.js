@@ -863,4 +863,8 @@ function en_USLang() {
     STR_BLOCK_SORT_DATE = 'Sorted by blocked date';
     STR_BLOCK_SORT_NAME = 'Sorted by name A to Z';
     STR_BLOCK_EMPTY_CONTENT = 'There is no blocked content of this type';
+
+    STR_NO_TOKEN_WARNING = 'Without adding a user and authorization token the app, may fail to load the content, this is a Twitch API limitation';
+    STR_NO_TOKEN_WARNING_429 =
+        'The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token.';
 }

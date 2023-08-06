@@ -863,4 +863,9 @@ function pt_BRLang() {
     STR_BLOCK_SORT_DATE = 'Ordenado por data de bloqueio';
     STR_BLOCK_SORT_NAME = 'Ordenado por nome de A a Z';
     STR_BLOCK_EMPTY_CONTENT = 'Não há conteúdo bloqueado deste tipo';
+
+    STR_NO_TOKEN_WARNING =
+        'Sem adicionar um usuário e token de autorização, o aplicativo pode falhar ao carregar o conteúdo, esta é uma limitação da API do Twitch';
+    STR_NO_TOKEN_WARNING_429 =
+        'O aplicativo está falhando ao carregar o conteúdo devido a uma limitação da API do Twitch, para corrigir isso, adicione um usuário e um token de autorização.';
 }

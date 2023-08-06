@@ -429,6 +429,9 @@ function Screens_HttpResultStatus(resultObj, key) {
         if (ScreenObj[key].itemsCount && Main_ThumbOpenIsNull(ScreenObj[key].posY + 1 + '_0', ScreenObj[key].ids[0])) {
             Screens_addFocus(true, key);
         }
+    } else if (resultObj.status === 429 && !AddUser_UserHasToken()) {
+        Main_showWarningDialog(STR_NO_TOKEN_WARNING_429, 5000);
+        Screens_loadDataFail(key);
     } else if (resultObj.status === 401 || resultObj.status === 403) {
         //token expired
 
