@@ -430,7 +430,7 @@ function Screens_HttpResultStatus(resultObj, key) {
             Screens_addFocus(true, key);
         }
     } else if (resultObj.status === 429 && !AddUser_UserHasToken()) {
-        Main_showWarningDialog(STR_NO_TOKEN_WARNING_429, 5000);
+        Main_showWarningDialog(STR_NO_TOKEN_WARNING_429, 10000);
         Screens_loadDataFail(key);
     } else if (resultObj.status === 401 || resultObj.status === 403) {
         //token expired
