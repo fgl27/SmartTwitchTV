@@ -783,26 +783,34 @@ function Chat_Clean(chat_number) {
     }
 }
 
+var replaceHighlights = new RegExp('%x', 'g');
+var highlightsClasses = '.chat_highlighted {background: rgba(100, 65, 164, %x);}';
+highlightsClasses += '.chat_atstreamer {background: rgba(150, 0, 0, %x);}';
+highlightsClasses += '.chat_fromstreamer {background: rgba(182, 0, 143, %x);}';
+highlightsClasses += '.chat_mod {background: rgba(0, 139, 156, %x);}';
+highlightsClasses += '.chat_atuser {background: rgba(0, 120, 0, %x);}';
+highlightsClasses += '.chat_bits {background: rgba(125, 100, 0, %x);}';
+highlightsClasses += '.chat_purged {background: rgba(39, 63, 115, %x) !important;}';
+highlightsClasses += '.chat_sub {background: rgba(163, 76, 0, %x);}';
+
 function Chat_SetHighlights() {
-    var bright = !Play_isFullScreen || Play_Multi_MainBig ? 1 : (Main_values.ChatBackground * 0.05).toFixed(2);
+    Main_innerHTML('chat_highlights', highlightsClasses.replace(replaceHighlights, Chat_getHighlightsValue()));
+}
 
-    var classes = '';
+function Chat_getHighlightsValue() {
+    if (Play_MultiEnable) {
+        if (Play_Multi_MainBig) {
+            return 1;
+        }
+    } else if (!Play_isFullScreen) {
+        return 1;
+    }
 
-    classes += '.chat_highlighted {background: rgba(100, 65, 164, ' + bright + ');}';
+    var bright = Play_ChatBackground;
 
-    classes += '.chat_atstreamer {background: rgba(150, 0, 0, ' + bright + ');}';
+    if (bright > 0) {
+        bright = Math.max(bright, 0.15);
+    }
 
-    classes += '.chat_fromstreamer {background: rgba(182, 0, 143, ' + bright + ');}';
-
-    classes += '.chat_mod {background: rgba(0, 139, 156, ' + bright + ');}';
-
-    classes += '.chat_atuser {background: rgba(0, 120, 0, ' + bright + ');    }';
-
-    classes += '.chat_bits {background: rgba(125, 100, 0, ' + bright + ');    }';
-
-    classes += '.chat_purged {background: rgba(39, 63, 115, ' + bright + ') !important;}';
-
-    classes += '.chat_sub {background: rgba(163, 76, 0, ' + bright + ');}';
-
-    Main_innerHTML('chat_highlights', classes);
+    return bright;
 }
