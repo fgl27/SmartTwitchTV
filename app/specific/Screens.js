@@ -2556,7 +2556,14 @@ function Screens_deleteUpdateRows(key) {
 
     if (!ScreenObj[key].Cells[ScreenObj[key].posY + 1] && ScreenObj[key].posY > 1) {
         //Force refocus of the screen and add missing rows
-        ScreenObj[key].addrow(true, ScreenObj[key].posY - 1, key, true);
+
+        if (ScreenObj[key].screenType === 4) {
+            //channel screen
+            ScreenObj[key].addrow(true, ScreenObj[key].posY - 2, key, true);
+        } else {
+            //other screens
+            ScreenObj[key].addrow(true, ScreenObj[key].posY - 1, key, true);
+        }
     } else if (!ScreenObj[key].Cells[ScreenObj[key].posY + 1]) {
         //Force screen focus position
         ScreenObj[key].ScrollDoc.style.transform = '';
