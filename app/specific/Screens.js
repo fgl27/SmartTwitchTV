@@ -3256,8 +3256,9 @@ function Screens_BlockUpdateAllIdsObjFor(i, url, isChannel) {
 
 function Screens_BlockChannelUpdateInfoEnd(response) {
     response = JSON.parse(response);
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
 
-    if (response.data && response.data.length) {
+    if (response.data && response.data.length && blockedObj.blocked && blockedObj.blocked.channel) {
         var array = response.data;
 
         var i = 0,
@@ -3266,8 +3267,8 @@ function Screens_BlockChannelUpdateInfoEnd(response) {
         for (i; i < len; i++) {
             var data = array[i];
 
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id]) {
-                Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[data.id].data = [
+            if (blockedObj.blocked.channel[data.id]) {
+                blockedObj.blocked.channel[data.id].data = [
                     data.login,
                     data.id,
                     data.profile_image_url,
@@ -3368,8 +3369,9 @@ function Screens_BlockGameUpdateInfo(id) {
 
 function Screens_BlockGameUpdateInfoEnd(response) {
     response = JSON.parse(response);
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
 
-    if (response.data && response.data.length) {
+    if (response.data && response.data.length && blockedObj.blocked && blockedObj.blocked.game) {
         var array = response.data;
 
         var i = 0,
@@ -3378,8 +3380,8 @@ function Screens_BlockGameUpdateInfoEnd(response) {
         for (i; i < len; i++) {
             var data = array[i];
 
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id]) {
-                Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[data.id].data = [
+            if (blockedObj.blocked.game[data.id]) {
+                blockedObj.blocked.game[data.id].data = [
                     data.box_art_url ? data.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
                     data.name, //1
                     '', //2
