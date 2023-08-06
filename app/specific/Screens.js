@@ -505,10 +505,6 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].column_id = 0;
             }
 
-            if (ScreenObj[key].tempHtml.length === ScreenObj[key].ColumnsCount) {
-                ScreenObj[key].tempHtml = [];
-            }
-
             for (
                 ScreenObj[key].column_id;
                 ScreenObj[key].column_id < ScreenObj[key].ColumnsCount && ScreenObj[key].data_cursor < data_length;
