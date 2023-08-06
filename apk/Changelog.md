@@ -20,7 +20,7 @@ Web Version August 08 2023
 * Note about blocked: If you open a blocked channel content, it will show all content
 * Make highlighted messages in chat have the same background transparency as the chat
 * Fix extra emotes (FFZ, BTTV, 7TV) not showing on one of the chats in 50/50 plus chats mode
-* Add a new warning for users using the app without a user or authorization token: The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token, there is no workaround this is Twitch just limits the app when running without and authorization a user
+* Add a new warning for users using the app without a user or authorization token: The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token, there is no workaround for this is just a Twitch API limitation
 * General improves
 
 Web Version June 17 2023
