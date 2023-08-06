@@ -2260,7 +2260,6 @@ function Main_history_UpdateVodClip(id, time, type) {
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
     Main_history_SetVod_Watched();
-    console.log(Main_values_History_data);
 }
 
 function Main_History_Sort(array, msort, direction) {

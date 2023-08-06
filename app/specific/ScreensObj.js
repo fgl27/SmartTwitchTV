@@ -2367,8 +2367,6 @@ function ScreensObj_Blocked() {
                 this.dataEnded = true;
                 this.loadDataSuccess();
                 this.loadingData = false;
-
-                console.log('data', this.data);
             },
             emptyContent_STR: function () {
                 return STR_BLOCK_EMPTY_CONTENT;
