@@ -26,7 +26,8 @@ function extraMessageTokenize(message, chat_number, bits) {
         if (cheer) {
             SplittedMessage[i] = cheer;
         } else {
-            emote = extraEmotes[SplittedMessage[i]];
+            emote = extraEmotes[chat_number][SplittedMessage[i]];
+
             SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
         }
     }

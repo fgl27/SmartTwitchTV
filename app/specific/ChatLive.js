@@ -183,7 +183,7 @@ var ChatLive_ClearChat;
 var ChatLive_HideBots;
 
 function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
-    extraEmotes = {};
+    extraEmotes[chat_number] = {};
 
     Chat_loadBadgesGlobal();
 
@@ -483,7 +483,7 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
             url = emoteURL(emoticon.id);
             id = emoticon.code + emoticon.id; //combine code and id to make t uniq
 
-            extraEmotes[emoticon.code] = {
+            extraEmotes[chat_number][emoticon.code] = {
                 code: emoticon.code,
                 id: id,
                 chat_div: emoteTemplate(url),
@@ -517,7 +517,7 @@ function ChatLive_loadEmotesChannelBTTV(chat_number, id) {
             id
         );
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]);
+        ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]], chat_number);
     }
 }
 
@@ -554,7 +554,7 @@ function ChatLive_loadEmotesbttvChannel(data, chat_number) {
             chat_div = emoteTemplate(url);
             id = emote.code + emote.id;
 
-            extraEmotes[emote.code] = {
+            extraEmotes[chat_number][emote.code] = {
                 code: emote.code,
                 id: id,
                 chat_div: chat_div,
@@ -603,10 +603,10 @@ function ChatLive_loadCheersChannelSuccess(responseText, chat_number, id) {
     }
 }
 
-function ChatLive_updateExtraEmotes(obj) {
+function ChatLive_updateExtraEmotes(obj, chat_number) {
     //We need to update the main obj as some channel have the same code for different emotes image
     for (var property in obj) {
-        extraEmotes[property] = {
+        extraEmotes[chat_number][property] = {
             code: obj[property].code,
             id: obj[property].id,
             chat_div: obj[property].chat_div,
@@ -627,7 +627,7 @@ function ChatLive_loadEmotesChannelFFZ(chat_number, id) {
             id
         );
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
+        ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]], chat_number);
     }
 }
 
@@ -660,7 +660,7 @@ function ChatLive_loadEmotesffz(data, chat_number, isGlobal) {
                     chat_div = emoteTemplate(url);
                     id = emoticon.name + emoticon.id;
 
-                    extraEmotes[emoticon.name] = {
+                    extraEmotes[chat_number][emoticon.name] = {
                         code: emoticon.name,
                         id: id,
                         chat_div: chat_div,
@@ -703,7 +703,7 @@ function ChatLive_loadEmotesChannelSeven_tv(chat_number, id) {
             id
         );
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]);
+        ChatLive_updateExtraEmotes(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]], chat_number);
     }
 }
 
@@ -727,7 +727,7 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
             chat_div = emoteTemplate(url);
             id = emote.name + emote.id;
 
-            extraEmotes[emote.name] = {
+            extraEmotes[chat_number][emote.name] = {
                 code: emote.name,
                 id: id,
                 chat_div: chat_div,

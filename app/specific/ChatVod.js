@@ -77,6 +77,8 @@ function Chat_Preinit() {
     ChatLive_Messages[1] = [];
     ChatLive_Latency[0] = 0;
     ChatLive_Latency[0] = 1;
+    extraEmotes[0] = {};
+    extraEmotes[1] = {};
 }
 
 function Chat_Init() {
@@ -321,7 +323,8 @@ function Chat_loadBTTVGlobalEmotes() {
     if (!extraEmotesDone.bttvGlobal) {
         Chat_BaseLoadUrl('https://api.betterttv.net/3/cached/emotes/global', Chat_loadEmotesSuccessBttv, noop_fun);
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.bttvGlobal);
+        ChatLive_updateExtraEmotes(extraEmotesDone.bttvGlobal, 0);
+        ChatLive_updateExtraEmotes(extraEmotesDone.bttvGlobal, 1);
     }
 }
 
@@ -340,7 +343,14 @@ function Chat_loadEmotesbttvGlobal(data) {
             chat_div = emoteTemplate(url);
             id = emote.code + emote.id;
 
-            extraEmotes[emote.code] = {
+            extraEmotes[0][emote.code] = {
+                code: emote.code,
+                id: id,
+                chat_div: chat_div,
+                '4x': url
+            };
+
+            extraEmotes[1][emote.code] = {
                 code: emote.code,
                 id: id,
                 chat_div: chat_div,
@@ -363,7 +373,8 @@ function Chat_loadSeven_tvGlobalEmotes() {
     if (!extraEmotesDone.Seven_tvGlobal) {
         Chat_BaseLoadUrl('https://api.7tv.app/v2/emotes/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal);
+        ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal, 0);
+        ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal, 1);
     }
 }
 
@@ -375,7 +386,8 @@ function Chat_loadEmotesffz() {
     if (!extraEmotesDone.ffzGlobal) {
         Chat_BaseLoadUrl('https://api.frankerfacez.com/v1/set/global', Chat_loadEmotesSuccessffz, noop_fun);
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.ffzGlobal);
+        ChatLive_updateExtraEmotes(extraEmotesDone.ffzGlobal, 0);
+        ChatLive_updateExtraEmotes(extraEmotesDone.ffzGlobal, 1);
     }
 }
 
