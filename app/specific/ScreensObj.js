@@ -452,8 +452,8 @@ function ScreensObj_StartAllVars() {
         addCell: function (cell) {
             var isNotBlocked = Screens_isNotBlocked(
                 this.isQuery && cell.creator ? cell.creator.id : cell.user_id,
-                cell.game_id,
-                this.screen !== Main_Vod
+                this.screen !== Main_AGameVod ? cell.game_id : null, //skip game check if on game screen
+                this.screen !== Main_Vod //skip all check if on channel screen
             );
 
             if (!this.idObject[cell.id] && isNotBlocked) {
@@ -508,7 +508,12 @@ function ScreensObj_StartAllVars() {
         },
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
-            var isNotBlocked = Screens_isNotBlocked(cell.user_id, cell.game_id, this.IsUser || this.screen === Main_aGame);
+
+            var isNotBlocked = Screens_isNotBlocked(
+                cell.user_id,
+                this.screen === Main_aGame ? null : cell.game_id, //skip game check if on game screen
+                this.IsUser
+            );
 
             if (!this.idObject[id_cell] && ScreensObj_CheckIsMature(cell) && isNotBlocked) {
                 this.itemsCount++;
@@ -611,8 +616,8 @@ function ScreensObj_StartAllVars() {
 
             var isNotBlocked = Screens_isNotBlocked(
                 this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id,
-                cell.game_id,
-                this.IsUser || this.screen === Main_AGameClip || this.screen === Main_ChannelClip
+                this.screen !== Main_AGameClip ? cell.game_id : null, //skip game check if on game screen
+                this.IsUser || this.screen === Main_ChannelClip //skip all check if on channel screen
             );
 
             if (!this.idObject[idValue] && isNotBlocked) {
