@@ -3411,15 +3411,15 @@ function Screens_isNotBlocked(channelId, gameId, IsUser) {
 }
 
 function Screens_getGameIsBlocked(gameId) {
-    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id].blocked;
 
-    return Boolean(gameId && blockedObj.blocked && blockedObj.blocked.game && blockedObj.blocked.game[gameId]);
+    return Boolean(gameId && blockedObj && blockedObj.game && blockedObj.game[gameId]);
 }
 
 function Screens_getChannelIsBlocked(channelId) {
-    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id];
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id].blocked;
 
-    return Boolean(channelId && blockedObj.blocked && blockedObj.blocked.channel && blockedObj.blocked.channel[channelId]);
+    return Boolean(channelId && blockedObj && blockedObj.channel && blockedObj.channel[channelId]);
 }
 
 function Screens_BlockSetDefaultObj() {
