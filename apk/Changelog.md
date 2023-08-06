@@ -9,6 +9,20 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version August 08 2023
+==============
+
+* Add an option to block channels and games, use the thumbnail option to set by holding left above any thumbnail, then press enter above the channel or game to block
+* Add "Show blocked" to the thumbnail option, setting this to YES allows you to see all blocked content without having to unblock it
+* Add a new user section block, to manage blocked content
+* Note about blocked: Blocked channels or games don't apply to followed channels
+* Note about blocked: If you open a blocked game content, it will show all content minus blocked channels
+* Note about blocked: If you open a blocked channel content, it will show all content
+* Make highlighted messages in chat have the same background transparency as the chat
+* Fix extra emotes (FFZ, BTTV, 7TV) not showing on one of the chats in 50/50 plus chats mode
+* Add a new warning for users using the app without a user or authorization token: The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token, there is no workaround this is Twitch just limits the app when running without and authorization a user
+* General improves
+
 Web Version June 17 2023
 ==============
 
