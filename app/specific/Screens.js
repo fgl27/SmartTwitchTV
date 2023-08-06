@@ -2156,6 +2156,9 @@ function Screens_handleKeyDown(key, event) {
                 Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
             }
             break;
+        case KEY_T:
+            Screens_ThumbOptionStart(key);
+            break;
         default:
             break;
     }
