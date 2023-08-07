@@ -14,7 +14,7 @@ Web Version August 08 2023
 
 * Add an option to block channels and games, use the thumbnail option to set by holding left above any thumbnail, then press enter above the channel or game to block
 * Add "Show blocked" to the thumbnail option, setting this to YES allows you to see all blocked content without having to unblock it
-* Add a new user section block, to manage blocked content
+* Add a new user section "Blocked", to manage blocked content
 * Note about blocked: Blocked channels or games don't apply to followed channels
 * Note about blocked: If you open a blocked game content, it will show all content minus blocked channels
 * Note about blocked: If you open a blocked channel content, it will show all content

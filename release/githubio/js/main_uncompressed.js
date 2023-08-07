@@ -4649,7 +4649,7 @@
                 changes: [
                     'Add an option to block channels and games, use the thumbnail option to set by holding left above any thumbnail, then press enter above the channel or game to block',
                     'Add "Show blocked" to the thumbnail option, setting this to YES allows you to see all blocked content without having to unblock it',
-                    'Add a new user section block, to manage blocked content',
+                    'Add a new user section "Blocked", to manage blocked content',
                     "Note about blocked: Blocked channels or games don't apply to followed channels",
                     'Note about blocked: If you open a blocked game content, it will show all content minus blocked channels',
                     'Note about blocked: If you open a blocked channel content, it will show all content',
@@ -14813,6 +14813,20 @@
         } catch (e) {
             console.log('Main_EventShowScreen e ' + e);
         }
+    }
+
+    function Main_EventBlocked(type, name) {
+        Main_ready(function() {
+            if (skipfirebase) return;
+
+            try {
+                gtag('event', type, {
+                    name: name
+                });
+            } catch (e) {
+                console.log('Main_EventProxy e ' + e);
+            }
+        });
     }
 
     function Main_EventProxy(success) {
@@ -30675,6 +30689,7 @@
 
             if (channelName) {
                 Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].data[3] = channelName;
+                Main_EventBlocked('blocked_channel', channelName);
             }
 
             Screens_BlockChannelUpdateInfo(channelId);
@@ -30816,6 +30831,7 @@
 
             if (gameName) {
                 Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].data[1] = gameName;
+                Main_EventBlocked('blocked_game', gameName);
             }
 
             Screens_BlockGameUpdateInfo(gameId);
