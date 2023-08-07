@@ -3203,6 +3203,20 @@ function Main_EventShowScreen(type, name) {
     }
 }
 
+function Main_EventBlocked(type, name) {
+    Main_ready(function () {
+        if (skipfirebase) return;
+
+        try {
+            gtag('event', type, {
+                name: name
+            });
+        } catch (e) {
+            console.log('Main_EventProxy e ' + e);
+        }
+    });
+}
+
 function Main_EventProxy(success) {
     Main_ready(function () {
         if (skipfirebase) return;

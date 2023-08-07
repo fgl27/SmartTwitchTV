@@ -3192,6 +3192,7 @@ function Screens_BlockChannel(key) {
 
         if (channelName) {
             Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId].data[3] = channelName;
+            Main_EventBlocked('blocked_channel', channelName);
         }
 
         Screens_BlockChannelUpdateInfo(channelId);
@@ -3333,6 +3334,7 @@ function Screens_BlockGame(key) {
 
         if (gameName) {
             Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId].data[1] = gameName;
+            Main_EventBlocked('blocked_game', gameName);
         }
 
         Screens_BlockGameUpdateInfo(gameId);
