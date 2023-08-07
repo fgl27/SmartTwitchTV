@@ -30677,6 +30677,10 @@
 
         if (Screens_getChannelIsBlocked(channelId)) {
             delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
+
+            if (channelName) {
+                Main_EventBlocked('unblocked_channel', channelName);
+            }
         } else {
             if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId]) {
                 Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId] = {};
@@ -30818,6 +30822,10 @@
 
         if (Screens_getGameIsBlocked(gameId)) {
             delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
+
+            if (gameName) {
+                Main_EventBlocked('unblocked_game', gameName);
+            }
         } else {
             if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId]) {
                 Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId] = {};
