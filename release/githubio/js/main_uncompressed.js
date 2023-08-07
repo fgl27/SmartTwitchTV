@@ -30678,6 +30678,10 @@
         if (Screens_getChannelIsBlocked(channelId)) {
             delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
 
+            if (ScreenObj[key].screen === Main_Blocked) {
+                Screens_deleteUpdateRows(key);
+            }
+
             if (channelName) {
                 Main_EventBlocked('unblocked_channel', channelName);
             }
@@ -30697,10 +30701,22 @@
             }
 
             Screens_BlockChannelUpdateInfo(channelId);
+
+            Screens_BlockCheckDeleteChannel(key);
         }
 
-        Screens_deleteUpdateRows(key);
         Main_setHistoryItem();
+    }
+
+    function Screens_BlockCheckDeleteChannel(key) {
+        if (
+            ScreenObj[key].screen !== Main_Blocked &&
+            ScreenObj[key].screen !== Main_ChannelClip &&
+            ScreenObj[key].screen !== Main_ChannelVod &&
+            !ScreenObj[key].IsUser
+        ) {
+            Screens_deleteUpdateRows(key);
+        }
     }
 
     function Screens_BlockChannelGetId(key) {
@@ -30823,6 +30839,10 @@
         if (Screens_getGameIsBlocked(gameId)) {
             delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
 
+            if (ScreenObj[key].screen === Main_Blocked) {
+                Screens_deleteUpdateRows(key);
+            }
+
             if (gameName) {
                 Main_EventBlocked('unblocked_game', gameName);
             }
@@ -30843,10 +30863,23 @@
             }
 
             Screens_BlockGameUpdateInfo(gameId);
+
+            Screens_BlockCheckDeleteGame(key);
         }
 
-        Screens_deleteUpdateRows(key);
         Main_setHistoryItem();
+    }
+
+    function Screens_BlockCheckDeleteGame(key) {
+        if (
+            ScreenObj[key].screen !== Main_Blocked &&
+            ScreenObj[key].screen !== Main_aGame &&
+            ScreenObj[key].screen !== Main_AGameVod &&
+            ScreenObj[key].screen !== Main_AGameClip &&
+            !ScreenObj[key].IsUser
+        ) {
+            Screens_deleteUpdateRows(key);
+        }
     }
 
     function Screens_BlockGameGetId(key) {
