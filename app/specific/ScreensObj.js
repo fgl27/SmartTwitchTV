@@ -2405,6 +2405,8 @@ function ScreensObj_Blocked() {
                     this.visiblerows = 5;
                 }
 
+                this.label_init();
+
                 Screens_StartLoad(this.screen);
             } else if (this.posX === 1) {
                 this.sortByDate = !this.sortByDate;
