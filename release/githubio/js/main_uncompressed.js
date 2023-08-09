@@ -22487,7 +22487,9 @@
     var Play_live_token_prop = 'streamPlaybackAccessToken';
     var Play_live_token =
         '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
-    var Play_base_live_links = 'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
+    var Play_base_live_links =
+        'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30=&p=%d&play_session_id=%d';
+    var Play_base_live_links_regex = new RegExp('%d', 'g');
 
     var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
@@ -22611,7 +22613,8 @@
             headers;
 
         if (isLive) {
-            var URL_parameters = Play_base_live_links.replace('%d', Math.random() * 100000);
+            var randonInt = parseInt(Math.random() * 10000000000000000);
+            var URL_parameters = Play_base_live_links.replace(Play_base_live_links_regex, randonInt);
 
             if (useProxy) {
                 headers = proxy_headers;
@@ -33765,6 +33768,8 @@
                         this.thumbclass = 'stream_thumbnail_blocked_channel_holder';
                         this.visiblerows = 5;
                     }
+
+                    this.label_init();
 
                     Screens_StartLoad(this.screen);
                 } else if (this.posX === 1) {
