@@ -1,39 +1,49 @@
 **SmartTV Twitch AndroidTV APK**
 
--   [About the project](#about-the-project)
--   [About this fork](#about-this-fork)
--   [How the application works](#how-the-application-works)
-    -   [The web app](#the-web-app)
-    -   [The Apk](#the-apk)
-    -   [The interactions between web app and apk](#the-interactions-between-web-app-and-apk)
--   [How the application looks](#how-the-application-looks)
--   [How to translate this](#how-to-translate-this)
-    -   [How to translate and test?](#how-to-translate-and-test)
-    -   [Translate](#translate)
-    -   [Testing app/languages/en_US.js](#testing-applanguagesen_usjs)
-    -   [Testing apk/app/src/main/res/values/strings.xml](#testing-apkappsrcmainresvaluesstringsxml)
-    -   [How to send the files](#how-to-send-the-files)
--   [Download](#download)
--   [Dependencies](#dependencies)
-    -   [Web Dependencies](#web-dependencies)
-    -   [Apk Dependencies](#apk-dependencies)
--   [Are phones and tablets supported?](#are-phones-and-tablets-supported)
--   [Authorization](#authorization)
-    -   [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
--   [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
-    -   [Code Languages used by the project](#code-languages-used-by-the-project)
-    -   [How to Build](#how-to-build)
-    -   [Building The web app](#building-the-web-app)
-    -   [Javascript (building The web app)](#javascript-building-the-web-app)
-    -   [Html (building The web app)](#html-building-the-web-app)
-    -   [CSS (building The web app)](#css-building-the-web-app)
-    -   [Build The apk](#build-the-apk)
--   [Contributing instructions](#contributing-instructions)
--   [How to make changes and test it](#how-to-make-changes-and-test-it)
--   [Changelog](#changelog)
--   [TODO list](#todo-list)
--   [Donations](#donations)
--   [In doubt open a issue](#in-doubt-open-a-issue)
+<!-- TOC -->
+
+- [About the project](#about-the-project)
+- [About this fork](#about-this-fork)
+- [How the application works](#how-the-application-works)
+  - [The web app](#the-web-app)
+  - [The Apk](#the-apk)
+  - [The interactions between web app and apk](#the-interactions-between-web-app-and-apk)
+- [How the application looks](#how-the-application-looks)
+- [How to translate this](#how-to-translate-this)
+  - [How to translate and test?](#how-to-translate-and-test)
+  - [Translate](#translate)
+  - [Testing app/languages/en\_US.js](#testing-applanguagesen_usjs)
+  - [Testing apk/app/src/main/res/values/strings.xml](#testing-apkappsrcmainresvaluesstringsxml)
+  - [How to send the files](#how-to-send-the-files)
+- [Download](#download)
+- [Dependencies](#dependencies)
+  - [Web Dependencies](#web-dependencies)
+  - [Apk Dependencies](#apk-dependencies)
+- [Are phones and tablets supported?](#are-phones-and-tablets-supported)
+- [Authorization](#authorization)
+  - [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
+- [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
+  - [Code Languages used by the project](#code-languages-used-by-the-project)
+  - [How to Build](#how-to-build)
+  - [Building The web app](#building-the-web-app)
+  - [Javascript (building The web app)](#javascript-building-the-web-app)
+  - [Html (building The web app)](#html-building-the-web-app)
+  - [CSS (building The web app)](#css-building-the-web-app)
+  - [Build The apk](#build-the-apk)
+- [How to test the Web app](#how-to-test-the-web-app)
+  - [In an browser](#in-an-browser)
+  - [Inside the APK](#inside-the-apk)
+- [Contributing instructions](#contributing-instructions)
+- [How to make changes and test it](#how-to-make-changes-and-test-it)
+- [Changelog](#changelog)
+- [TODO list](#todo-list)
+- [Donations](#donations)
+  - [PayPal](#paypal)
+  - [BitCoin](#bitcoin)
+  - [Pix](#pix)
+- [In doubt open a issue](#in-doubt-open-a-issue)
+
+<!-- /TOC -->
 
 ## About the project
 
@@ -257,6 +267,24 @@ To build the apk:
 -   Building the apk, on **Studio**, Build -> Build Bundle(s) / APK(s) -> Build APK(s)... if all OK after a few moments a app will be generated, a pop notification inside **Studio** will show and let you click to see where that apk is generated to.
 -   If you have any problem using **Android Studio** just try to google as the project is solely build using **Android Studio** it must work for you, if it doesn't is because you did something wrong, **Android Studio** apk build is a very common thing one can find any type of help about it just by "googling it", but if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or [send a email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com)
 
+## How to test the Web app
+
+### In an browser
+
+You can just open the [SmartTwitchTV/app/index.html](https://github.com/fgl27/SmartTwitchTV/tree/master/app/index.html) in a browser, but that will not allow you to for example add a user and authorization key.
+
+To be able to do that, you need to run this html from the https link https://127.0.0.1:5000/app/, to do that you can just use Node.js extension http-server.
+
+I have made a simple scrip that start the server at the correct URL just call this if you are on linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), or [use this command](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/release/scripts/http-server.sh#L23) from root  project directory 
+
+### Inside the APK
+
+Let's say you made modifications to the web app and you wanna to test those on a real device.
+
+You need to copy the content of the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) folder to the [SmartTwitchTV/apk/app/src/main/assets/app](https://github.com/fgl27/SmartTwitchTV/tree/master/apk/app/src/main/assets/app) (this folder may not exist just create it), then set LoadFromAssets to true in [SmartTwitchTV/apk/app/src/main/java/com/fgl27/twitch/Constants.java](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/apk/app/src/main/java/com/fgl27/twitch/Constants.java#L26)
+
+I have made a script that does it for you works linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), call the script without passing any argument to set, pass 1 to unset
+
 ## Contributing instructions
 
 Any help is welcome.<br>
@@ -284,12 +312,18 @@ To make changes to the app apk, just use the **Android Studio** to make the chan
 
 ## Donations
 
+### PayPal
+
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/paypal.png) **Paypal email link (clickable donation link):** [fglfgl27@gmail.com](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fglfgl27@gmail.com&lc=US&no_note=0&item_name=Donate+to+thanks+for+the+Twitch+Android+app&cn=&curency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted)
 
-#
+### BitCoin
 
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/bitcoin.png)**Bitcoin wallet address (or use bellow QR code):** 1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x
 
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png)
+
+### Pix
+
+Use the email fglfgl27@gmail.com
 
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
