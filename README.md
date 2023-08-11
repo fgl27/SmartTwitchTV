@@ -273,9 +273,9 @@ To build the apk:
 
 You can just open the [SmartTwitchTV/app/index.html](https://github.com/fgl27/SmartTwitchTV/tree/master/app/index.html) in a browser, but that will not allow you to for example add a user and authorization key.
 
-To be able to do that, you need to run this html from the https link https://127.0.0.1:5000/app/, to do that you can just use Node.js extension http-server.
+To be able to do that, you need to run this html from the https link https://127.0.0.1:5000/app/, to do that you can just use Node.js extension http-server to create a web server and call the link https://127.0.0.1:5000/app/.
 
-I have made a simple scrip that start the server at the correct URL just call this if you are on linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), or [use this command](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/release/scripts/http-server.sh#L23) from root  project directory 
+I have made a simple scrip that start the server at the correct URL just call this if you are on Linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), or [use this command](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/release/scripts/http-server.sh#L23) from root  project directory.
 
 ### Inside the APK
 
@@ -283,7 +283,7 @@ Let's say you made modifications to the web app and you wanna to test those on a
 
 You need to copy the content of the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) folder to the [SmartTwitchTV/apk/app/src/main/assets/app](https://github.com/fgl27/SmartTwitchTV/tree/master/apk/app/src/main/assets/app) (this folder may not exist just create it), then set LoadFromAssets to true in [SmartTwitchTV/apk/app/src/main/java/com/fgl27/twitch/Constants.java](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/apk/app/src/main/java/com/fgl27/twitch/Constants.java#L26)
 
-I have made a script that does it for you works linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), call the script without passing any argument to set, pass 1 to unset
+I have made a script that does it for you works Linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), call the script without passing any argument to set, pass 1 to unset
 
 ## Contributing instructions
 
