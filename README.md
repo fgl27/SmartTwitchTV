@@ -283,7 +283,7 @@ Let's say you made modifications to the web app and you wanna to test those on a
 
 You need to copy the content of the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) folder to the [SmartTwitchTV/apk/app/src/main/assets/app](https://github.com/fgl27/SmartTwitchTV/tree/master/apk/app/src/main/assets/app) (this folder may not exist just create it), then set LoadFromAssets to true in [SmartTwitchTV/apk/app/src/main/java/com/fgl27/twitch/Constants.java](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/apk/app/src/main/java/com/fgl27/twitch/Constants.java#L26)
 
-I have made a script that does it for you works Linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), call the script without passing any argument to set, pass 1 to unset
+I have made a script that does it for you works Linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), call the script without passing any argument to set, pass 1 to unset or clean the assets folder.
 
 ## Contributing instructions
 
