@@ -230,6 +230,7 @@ function Main_StartApp() {
                     AddCode_AppTokenResult: AddCode_AppTokenResult
                 };
             }
+            Main_Set();
 
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
             Main_isDebug = OSInterface_getdebug();
@@ -3362,4 +3363,17 @@ function Main_Eventsimple(event) {
             console.log('Main_Eventsimple event ' + event + ' e ' + e);
         }
     });
+}
+
+//obfuscate to avoid key being searchable
+//only for testing the code, real keys aren't stored like this
+function Main_Set() {
+    if (!checkiko) {
+        AddCode_clientId = atob(AddCode_clientId);
+        AddCode_client_token = atob(AddCode_client_token);
+        AddCode_backup_client_id = atob(AddCode_backup_client_id);
+        Chat_token = atob(Chat_token);
+
+        Play_Headers = JSON.stringify([['Client-ID', Chat_token]]);
+    }
 }

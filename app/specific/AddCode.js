@@ -583,11 +583,11 @@ function AddCode_CheckSubSucessFail() {
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.html';
 //Get yours app register to get tokens at https://dev.twitch.tv/console
-var AddCode_clientId = '5seja5ptej058mxqy7gh5tcudjqtm9'; //public but get yours link above is free
+var AddCode_clientId = 'Y2N6anV6ZXNwMGR4eDMxbGRxd3ViMjdqcTRjMjM3'; //public but get yours link above is free
 //none public get yours link above is free
 var AddCode_main_token;
-var AddCode_client_token;
-var AddCode_backup_client_id;
-
+var AddCode_client_token = 'bmFsejdnYmxhc3l3bzY2cGN5d2lnNzdyNmc5aG9u';
+var AddCode_backup_client_id = 'a2ltbmU3OGt4M25jeDZicmdvNG12NndraTVoMWtv';
+var checkiko;
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
