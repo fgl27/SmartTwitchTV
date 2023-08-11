@@ -5275,6 +5275,7 @@
     var AddCode_main_token;
     var AddCode_client_token = 'bmFsejdnYmxhc3l3bzY2cGN5d2lnNzdyNmc5aG9u';
     var AddCode_backup_client_id = 'a2ltbmU3OGt4M25jeDZicmdvNG12NndraTVoMWtv';
+    var Chat_token = 'a2QxdW5iNGIzcTR0NThmd2xwY2J6Y2JubTc2YThmcA==';
     var checkiko;
     var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
     var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
@@ -10826,7 +10827,6 @@
         '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","cursor":"%c"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
 
     var Chat_UserJPKRegex = new RegExp('[^\x00-\x7F]', 'g');
-    var Chat_token = 'a2QxdW5iNGIzcTR0NThmd2xwY2J6Y2JubTc2YThmcA==';
 
     //Variable initialization end
 
