@@ -224,6 +224,8 @@ function AddCode_requestTokensSucessValidate(obj, position) {
     else AddCode_requestTokensFail(position);
 }
 
+var checkiko;
+
 function AddCode_CheckOauthTokenSucess(response) {
     var token = JSON.parse(response);
 
@@ -589,6 +591,6 @@ var AddCode_main_token;
 var AddCode_client_token = 'bmFsejdnYmxhc3l3bzY2cGN5d2lnNzdyNmc5aG9u';
 var AddCode_backup_client_id = 'a2ltbmU3OGt4M25jeDZicmdvNG12NndraTVoMWtv';
 var Chat_token = 'a2QxdW5iNGIzcTR0NThmd2xwY2J6Y2JubTc2YThmcA==';
-var checkiko;
+
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';

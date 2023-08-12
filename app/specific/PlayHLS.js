@@ -25,8 +25,7 @@ var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token =
     '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_base_live_links =
-    'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30=&p=%d&play_session_id=%d';
-var Play_base_live_links_regex = new RegExp('%d', 'g');
+    'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
@@ -148,8 +147,9 @@ function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy)
         headers;
 
     if (isLive) {
-        var randonInt = parseInt(Math.random() * 10000000000000000);
-        var URL_parameters = Play_base_live_links.replace(Play_base_live_links_regex, randonInt);
+        var randomId = parseInt(Math.random() * 10000000000000000);
+        var randomInt = parseInt(Math.random() * 100000000);
+        var URL_parameters = Play_base_live_links.replace('%p', randomInt).replace('%i', randomId + '' + randomId);
 
         if (useProxy) {
             headers = proxy_headers;
