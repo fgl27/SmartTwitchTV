@@ -1495,7 +1495,7 @@ function ScreensObj_InitFeatured() {
             return;
         }
         var id_cell = cell.stream.broadcaster.id;
-        var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game.id, this.IsUser);
+        var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
 
         if (!this.idObject[id_cell] && isNotBlocked) {
             this.itemsCount++;
