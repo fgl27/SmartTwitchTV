@@ -30575,7 +30575,7 @@
     function Screens_ThumbOptionDialogKeyUpDown(key, current, adder) {
         Screens_ThumbOptionPosY += adder;
 
-        if (Screens_ThumbOptionPosY < 0) {
+        if (Screens_ThumbOptionPosY < -1) {
             Screens_ThumbOptionPosY = current;
             return;
         }
