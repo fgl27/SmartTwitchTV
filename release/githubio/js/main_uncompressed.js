@@ -12553,11 +12553,19 @@
         //Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
 
         Main_HideWarningDialog();
-        if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
-        if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
+        if (Main_values.Main_Go !== Main_ChannelContent) {
+            Main_values.Main_BeforeChannelisSet = false;
+        }
 
-        if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
-        else ScreenObj[1].init_fun(); //live
+        if (Main_values.Main_Go !== Main_aGame) {
+            Main_values.Main_BeforeAgameisSet = false;
+        }
+
+        if (ScreenObj[Main_values.Main_Go]) {
+            ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
+        } else {
+            ScreenObj[1].init_fun(); //live
+        }
 
         if (removekey) Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
     }
@@ -12933,8 +12941,11 @@
         if (Sidepannel_isShowingUserLive()) {
             Sidepannel_RemoveFocusFeed();
             Sidepannel_UpdateThumbDiv();
-        } else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
-        else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
+        } else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) {
+            UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+        } else if (Screens_Isfocused()) {
+            Screens_RemoveFocus(Main_values.Main_Go);
+        }
 
         Main_ShowElement('update_dialog');
         Main_UpdateDialogVisible = true;
@@ -12956,8 +12967,7 @@
         } else if (UserLiveFeed_isPreviewShowing()) {
             UserLiveFeed_FeedAddFocus(true, UserLiveFeed_FeedPosX);
         } else if (Main_isScene1DocVisible() && !Sidepannel_isShowingMenus()) {
-            if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
-            else ScreenObj[Main_values.Main_Go].init_fun();
+            ScreenObj[Main_values.Main_Go].init_fun();
         }
     }
 
