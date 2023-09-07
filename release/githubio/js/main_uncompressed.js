@@ -5131,7 +5131,7 @@
 
     function AddCode_CheckFollow() {
         AddCode_IsFollowing = false;
-        var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + AddCode_Channel_id,
+        var theUrl = Main_helix_api + 'channels/followed?user_id=' + AddUser_UsernameArray[0].id + '&broadcaster_id=' + AddCode_Channel_id,
             header;
 
         if (AddUser_UserHasToken()) {
@@ -9077,7 +9077,8 @@
         if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
         ChatLive_FollowState[chat_number] = {};
-        var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + ChatLive_selectedChannel_id[chat_number];
+        var theUrl =
+            Main_helix_api + 'channels/followed?user_id=' + AddUser_UsernameArray[0].id + '&broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
         BaseXmlHttpGet(theUrl, ChatLive_checkFallowSuccess, ChatLive_RequestCheckFollowNOK, chat_number, id, true);
     }
@@ -27933,7 +27934,6 @@
             } else if (!ScreenObj[key].useHelix) {
                 HeadersArray = ScreenObj[key].HeadersArray;
             }
-
             FullxmlHttpGet(
                 ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwitchV5Flag),
                 HeadersArray,
@@ -30473,7 +30473,7 @@
     }
 
     function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
-        var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + channel_id;
+        var theUrl = Main_helix_api + 'channels/followed?user_id=' + AddUser_UsernameArray[0].id + '&broadcaster_id=' + channel_id;
 
         BaseXmlHttpGet(theUrl, Screens_ThumbOption_RequestCheckFollowSuccess, Screens_ThumbOption_RequestCheckFollowFail, key, ID, true);
     }
@@ -33234,20 +33234,20 @@
                 getFollowed: true,
                 channelData: null,
                 channelDataPos: 0,
-                base_url: Main_helix_api + 'users/follows?first=' + Main_ItemsLimitMax + '&from_id=',
+                base_url: Main_helix_api + 'channels/followed?first=' + Main_ItemsLimitMax + '&user_id=',
                 base_url_channels: Main_helix_api + 'users?',
                 set_url: function() {
                     if (this.getFollowed) {
                         this.url = this.base_url + AddUser_UsernameArray[0].id + (this.cursor ? '&after=' + this.cursor : '');
                     } else {
-                        this.channels = 'id=' + this.channelData[this.channelDataPos].to_id;
+                        this.channels = 'id=' + this.channelData[this.channelDataPos].broadcaster_id;
                         var i = this.channelDataPos + 1,
                             dataLen = this.channelData.length,
                             len = Math.min(dataLen, i + 99);
 
                         this.channelDataPos++;
                         for (i; i < len; i++) {
-                            this.channels += '&id=' + this.channelData[i].to_id;
+                            this.channels += '&id=' + this.channelData[i].broadcaster_id;
                             this.channelDataPos++;
                         }
 
@@ -33321,7 +33321,7 @@
                         if (!a || !b) {
                             return 0;
                         }
-                        return a.to_login < b.to_login ? -1 : a.to_login > b.to_login ? 1 : 0;
+                        return a.broadcaster_login < b.broadcaster_login ? -1 : a.broadcaster_login > b.broadcaster_login ? 1 : 0;
                     });
                     this.getFollowed = false;
                     Screens_loadDataRequest(this.screen);
