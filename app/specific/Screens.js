@@ -2945,7 +2945,7 @@ function Screens_ThumbOption_CheckFollow(data, key) {
 }
 
 function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
-    var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + channel_id;
+    var theUrl = Main_helix_api + 'channels/followed?user_id=' + AddUser_UsernameArray[0].id + '&broadcaster_id=' + channel_id;
 
     BaseXmlHttpGet(theUrl, Screens_ThumbOption_RequestCheckFollowSuccess, Screens_ThumbOption_RequestCheckFollowFail, key, ID, true);
 }
