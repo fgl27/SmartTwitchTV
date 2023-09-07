@@ -444,7 +444,7 @@ function AddCode_Refreshtimeout(position) {
 
 function AddCode_CheckFollow() {
     AddCode_IsFollowing = false;
-    var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + AddCode_Channel_id,
+    var theUrl = Main_helix_api + 'channels/followed?user_id=' + AddUser_UsernameArray[0].id + '&broadcaster_id=' + AddCode_Channel_id,
         header;
 
     if (AddUser_UserHasToken()) {
