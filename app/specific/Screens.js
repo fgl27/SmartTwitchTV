@@ -407,7 +407,6 @@ function Screens_loadDataRequest(key) {
         } else if (!ScreenObj[key].useHelix) {
             HeadersArray = ScreenObj[key].HeadersArray;
         }
-
         FullxmlHttpGet(
             ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwitchV5Flag),
             HeadersArray,
