@@ -235,7 +235,8 @@ function ChatLive_checkFallow(chat_number, id) {
     if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
     ChatLive_FollowState[chat_number] = {};
-    var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + ChatLive_selectedChannel_id[chat_number];
+    var theUrl =
+        Main_helix_api + 'channels/followed?user_id=' + AddUser_UsernameArray[0].id + '&broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
     BaseXmlHttpGet(theUrl, ChatLive_checkFallowSuccess, ChatLive_RequestCheckFollowNOK, chat_number, id, true);
 }
