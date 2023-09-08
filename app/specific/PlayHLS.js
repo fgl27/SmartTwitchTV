@@ -23,9 +23,9 @@ var Play_Headers;
 //Live
 var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token =
-    '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
+    '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\", playerBackend: \\"mediaplayer\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_base_live_links =
-    'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
+    'platform=site&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
