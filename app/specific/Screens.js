@@ -435,7 +435,8 @@ function Screens_HttpResultStatus(resultObj, key) {
         //token expired
 
         if (AddUser_UserHasToken() && !ScreenObj[key].isQuery) {
-            AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
+            AddCode_validateToken(0);
+            Screens_loadDataFail(key);
         } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
             Screens_loadDataFail(key);
         } else {

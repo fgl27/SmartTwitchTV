@@ -3079,7 +3079,7 @@ function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2,
         //token expired
 
         if (AddUser_UserHasToken()) {
-            AddCode_refreshTokens();
+            AddCode_validateToken(0);
         } else {
             AddCode_AppToken();
         }

@@ -236,12 +236,6 @@ function AddUser_RestoreUsers() {
         for (i; i < len; i++) {
             AddUser_UsernameArray[i].timeout_id = null;
 
-            if (AddUser_UsernameArray[i].access_token) {
-                AddCode_CheckTokenStart(i);
-            } else if (!i) {
-                Main_showWarningDialog(STR_NO_TOKEN_WARNING, 5000);
-            }
-
             //Set user history obj
             Main_values_History_data[AddUser_UsernameArray[i].id] = {
                 live: [],
@@ -381,11 +375,7 @@ function AddUser_SaveNewUser(responseText) {
         Main_values.Main_Go = Main_Users;
         Main_HideLoadDialog();
         if (AddUser_UsernameArray.length === 1) {
-            AddUser_UpdateSidepanel();
-            OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
-            OSInterface_mCheckRefresh();
-            HttpGetSetUserHeader();
-            if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
+            AddUser_SaveNewUserRefreshTokens(0);
         }
         Main_SwitchScreen();
 
@@ -393,6 +383,14 @@ function AddUser_SaveNewUser(responseText) {
     } else {
         AddUser_getCodeError();
     }
+}
+
+function AddUser_SaveNewUserRefreshTokens(position) {
+    AddUser_UpdateSidepanel();
+    OSInterface_UpdateUserId(AddUser_UsernameArray[position]);
+    OSInterface_mCheckRefresh();
+    HttpGetSetUserHeader();
+    if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
 }
 
 function AddUser_removeUser(position) {

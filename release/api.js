@@ -71,7 +71,6 @@
         ChatLive_SetLatency: ChatLive_SetLatency,
         Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
         BaseXmlHttpGetFull_Process: BaseXmlHttpGetFull_Process,
-        AddCode_refreshTokensResult: AddCode_refreshTokensResult,
         Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
         PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
         PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,

@@ -24,7 +24,7 @@ var AddCode_IsFollowing = false;
 var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
 var AddCode_Channel_id = '';
-var AddCode_Expires_in_offset = 100;
+//var AddCode_Expires_in_offset = 100;
 
 var AddCode_Scopes = ['chat:edit', 'chat:read', 'user:read:follows', 'user:read:subscriptions', 'user_follows_edit', 'user_read'];
 //Variable initialization end
@@ -35,130 +35,130 @@ function AddCode_CheckNewCode(code) {
     AddCode_requestTokens();
 }
 
-function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
-    //Main_Log('AddCode_refreshTokens ' + position);
+// function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
+//     //Main_Log('AddCode_refreshTokens ' + position);
 
-    if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
-        if (callbackFuncNOK) callbackFuncNOK();
+//     if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
+//         if (callbackFuncNOK) callbackFuncNOK();
 
-        return;
-    }
+//         return;
+//     }
 
-    var url =
-        AddCode_UrlToken +
-        'grant_type=refresh_token&client_id=' +
-        AddCode_clientId +
-        '&client_secret=' +
-        AddCode_client_token +
-        '&refresh_token=' +
-        AddUser_UsernameArray[position].refresh_token +
-        '&redirect_uri=' +
-        AddCode_redirect_uri;
+//     var url =
+//         AddCode_UrlToken +
+//         'grant_type=refresh_token&client_id=' +
+//         AddCode_clientId +
+//         '&client_secret=' +
+//         AddCode_client_token +
+//         '&refresh_token=' +
+//         AddUser_UsernameArray[position].refresh_token +
+//         '&redirect_uri=' +
+//         AddCode_redirect_uri;
 
-    //Run in synchronous mode to prevent anything happening until user token is restored
-    if (Main_IsOn_OSInterface && sync) {
-        AddCode_refreshTokensReady(
-            position,
-            callbackFunc,
-            callbackFuncNOK,
-            key,
-            JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
-        );
-    } else {
-        if (!Main_IsOn_OSInterface) {
-            var xmlHttp = new XMLHttpRequest();
+//     //Run in synchronous mode to prevent anything happening until user token is restored
+//     if (Main_IsOn_OSInterface && sync) {
+//         AddCode_refreshTokensReady(
+//             position,
+//             callbackFunc,
+//             callbackFuncNOK,
+//             key,
+//             JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
+//         );
+//     } else {
+//         if (!Main_IsOn_OSInterface) {
+//             var xmlHttp = new XMLHttpRequest();
 
-            xmlHttp.open('POST', url, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout;
+//             xmlHttp.open('POST', url, true);
+//             xmlHttp.timeout = DefaultHttpGetTimeout;
 
-            xmlHttp.onreadystatechange = function () {
-                if (this.readyState === 4) {
-                    //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                    AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
-                }
-            };
+//             xmlHttp.onreadystatechange = function () {
+//                 if (this.readyState === 4) {
+//                     //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
+//                     AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
+//                 }
+//             };
 
-            xmlHttp.send(null);
-        } else {
-            OSInterface_BaseXmlHttpGet(
-                url,
-                DefaultHttpGetTimeout,
-                null,
-                'POST',
-                null,
-                'AddCode_refreshTokensResult',
-                position,
-                key,
-                callbackFunc ? callbackFunc.name : null,
-                callbackFuncNOK ? callbackFuncNOK.name : null
-            );
-        }
-    }
-}
+//             xmlHttp.send(null);
+//         } else {
+//             OSInterface_BaseXmlHttpGet(
+//                 url,
+//                 DefaultHttpGetTimeout,
+//                 null,
+//                 'POST',
+//                 null,
+//                 'AddCode_refreshTokensResult',
+//                 position,
+//                 key,
+//                 callbackFunc ? callbackFunc.name : null,
+//                 callbackFuncNOK ? callbackFuncNOK.name : null
+//             );
+//         }
+//     }
+// }
 
-function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
-    AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
-}
+// function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
+//     AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
+// }
 
-function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
-    if (xmlHttp.status === 200) {
-        AddCode_refreshTokensSuccess(xmlHttp.responseText, position, callbackFunc, key);
-        return;
-    } else {
-        try {
-            var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
-            if (response) {
-                if (Main_A_includes_B(response, 'Invalid refresh token')) {
-                    AddCode_requestTokensFailRunning(position);
-                    if (callbackFuncNOK) callbackFuncNOK(key);
+// function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+//     if (xmlHttp.status === 200) {
+//         AddCode_refreshTokensSuccess(xmlHttp.responseText, position, callbackFunc, key);
+//         return;
+//     } else {
+//         try {
+//             var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
+//             if (response) {
+//                 if (Main_A_includes_B(response, 'Invalid refresh token')) {
+//                     AddCode_requestTokensFailRunning(position);
+//                     if (callbackFuncNOK) callbackFuncNOK(key);
 
-                    return;
-                }
-            }
-        } catch (e) {
-            Main_Log('AddCode_refreshTokens e ' + e);
-        }
-    }
+//                     return;
+//                 }
+//             }
+//         } catch (e) {
+//             Main_Log('AddCode_refreshTokens e ' + e);
+//         }
+//     }
 
-    AddCode_refreshTokensError(callbackFuncNOK, key);
-}
+//     AddCode_refreshTokensError(callbackFuncNOK, key);
+// }
 
-function AddCode_refreshTokensError(callbackFuncNOK, key) {
-    if (callbackFuncNOK) callbackFuncNOK(key);
-}
+// function AddCode_refreshTokensError(callbackFuncNOK, key) {
+//     if (callbackFuncNOK) callbackFuncNOK(key);
+// }
 
-function AddCode_refreshTokensSuccess(responseText, position, callbackFunc, key) {
-    var response = JSON.parse(responseText);
-    if (AddCode_TokensCheckScope(response.scope)) {
-        AddUser_UsernameArray[position].access_token = response.access_token;
-        AddUser_UsernameArray[position].refresh_token = response.refresh_token;
-        AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
-        AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
-        //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
+// function AddCode_refreshTokensSuccess(responseText, position, callbackFunc, key) {
+//     var response = JSON.parse(responseText);
+//     if (AddCode_TokensCheckScope(response.scope)) {
+//         AddUser_UsernameArray[position].access_token = response.access_token;
+//         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
+//         AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
+//         AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
+//         //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
-        if (!position) {
-            HttpGetSetUserHeader();
-        }
+//         if (!position) {
+//             HttpGetSetUserHeader();
+//         }
 
-        AddUser_SaveUserArray();
+//         AddUser_SaveUserArray();
 
-        //AddCode_Refreshtimeout(position);
-    } else AddCode_requestTokensFailRunning(position);
+//         //AddCode_Refreshtimeout(position);
+//     } else AddCode_requestTokensFailRunning(position);
 
-    if (callbackFunc) callbackFunc(key);
-}
+//     if (callbackFunc) callbackFunc(key);
+// }
 
 //Check if has all scopes, in canse they change
-function AddCode_TokensCheckScope(scope) {
-    var i = 0,
-        len = AddCode_Scopes.length;
+// function AddCode_TokensCheckScope(scope) {
+//     var i = 0,
+//         len = AddCode_Scopes.length;
 
-    for (i; i < len; i++) {
-        if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
-    }
+//     for (i; i < len; i++) {
+//         if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
 function AddCode_requestTokens() {
     var theUrl =
@@ -172,10 +172,10 @@ function AddCode_requestTokens() {
         '&redirect_uri=' +
         AddCode_redirect_uri;
 
-    FullxmlHttpGet(theUrl, null, AddCode_requestTokensSucess, noop_fun, 0, 0, 'POST', null);
+    FullxmlHttpGet(theUrl, null, AddCode_requestTokensSuccess, noop_fun, 0, 0, 'POST', null);
 }
 
-function AddCode_requestTokensSucess(obj) {
+function AddCode_requestTokensSuccess(obj) {
     if (obj.status === 200) {
         var response = JSON.parse(obj.responseText);
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
@@ -184,7 +184,7 @@ function AddCode_requestTokensSucess(obj) {
         FullxmlHttpGet(
             AddCode_ValidateUrl,
             [[Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token]],
-            AddCode_requestTokensSucessValidate,
+            AddCode_requestTokensSuccessValidate,
             noop_fun,
             0,
             0,
@@ -209,24 +209,24 @@ function AddCode_requestTokensFail() {
     AddUser_SaveUserArray();
 }
 
-function AddCode_requestTokensFailRunning(position) {
-    //Token fail remove it and warn
-    Users_status = false;
-    Main_HideLoadDialog();
-    AddUser_UsernameArray[position].access_token = 0;
-    AddUser_UsernameArray[position].refresh_token = 0;
-    AddUser_SaveUserArray();
-    Main_SaveValues();
-}
+// function AddCode_requestTokensFailRunning(position) {
+//     //Token fail remove it and warn
+//     Users_status = false;
+//     Main_HideLoadDialog();
+//     AddUser_UsernameArray[position].access_token = 0;
+//     AddUser_UsernameArray[position].refresh_token = 0;
+//     AddUser_SaveUserArray();
+//     Main_SaveValues();
+// }
 
-function AddCode_requestTokensSucessValidate(obj, position) {
-    if (obj.status === 200) AddCode_CheckOauthTokenSucess(obj.responseText);
+function AddCode_requestTokensSuccessValidate(obj, position) {
+    if (obj.status === 200) AddCode_CheckOauthTokenSuccess(obj.responseText);
     else AddCode_requestTokensFail(position);
 }
 
 var checkiko;
 
-function AddCode_CheckOauthTokenSucess(response) {
+function AddCode_CheckOauthTokenSuccess(response) {
     var token = JSON.parse(response);
 
     if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
@@ -347,7 +347,7 @@ function AddCode_AppTokenResult(result, key, callbackSucess, calbackError, posit
 
 function AddCode_AppTokenReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
     if (xmlHttp.status === 200) {
-        AddCode_AppTokenSucess(xmlHttp.responseText, position, callbackFunc, key);
+        AddCode_AppTokenSuccess(xmlHttp.responseText, position, callbackFunc, key);
         return;
     }
 
@@ -358,7 +358,7 @@ function AddCode_AppTokenError(callbackFuncNOK, key) {
     if (callbackFuncNOK) callbackFuncNOK(key);
 }
 
-function AddCode_AppTokenSucess(responseText, position, callbackFunc, key) {
+function AddCode_AppTokenSuccess(responseText, position, callbackFunc, key) {
     var response = JSON.parse(responseText);
 
     if (response) {
@@ -374,59 +374,82 @@ function AddCode_AppTokenSucess(responseText, position, callbackFunc, key) {
     Main_SaveValues();
 }
 
-function AddCode_CheckTokenStart(position) {
-    if (Main_IsOn_OSInterface && !position) {
-        var obj = OSInterface_mMethodUrlHeaders(
-            AddCode_ValidateUrl,
-            DefaultHttpGetTimeout,
-            null,
-            null,
-            0,
-            JSON.stringify([[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]])
-        );
+function AddCode_validateToken(position) {
+    var header = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [Bearer_Header, Bearer + AddUser_UsernameArray[position].access_token]
+    ];
 
-        if (obj) {
-            obj = JSON.parse(obj);
+    FullxmlHttpGet(AddCode_ValidateUrl, header, AddCode_validateTokenSuccess, noop_fun, position, 0, null, null);
+}
 
-            if (obj) {
-                AddCode_CheckTokenReady(obj, position);
-                return;
-            }
+function AddCode_validateTokenSuccess(resultObj, position) {
+    if (resultObj.status !== 200) {
+        AddUser_removeUser(position);
+        AddUser_SaveUserArray();
+
+        if (!position) {
+            AddUser_SaveNewUserRefreshTokens(position);
         }
+        Main_showWarningDialog(STR_USER_TOKEN_ERROR, 5000);
 
-        AddCode_refreshTokens(position, null, null, null, !position); //token expired
-    } else {
-        FullxmlHttpGet(
-            AddCode_ValidateUrl,
-            [[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]],
-            AddCode_CheckTokenReady,
-            noop_fun,
-            position,
-            0,
-            null,
-            null
-        );
+        Main_SaveValues();
     }
 }
 
-function AddCode_CheckTokenReady(obj, position) {
-    if (obj.status === 200) {
-        AddCode_CheckTokenSuccess(obj.responseText, position);
-    } else {
-        AddCode_refreshTokens(position, null, null, null, !position); //token expired
-    }
-}
+// function AddCode_CheckTokenStart(position) {
+//     if (Main_IsOn_OSInterface && !position) {
+//         var obj = OSInterface_mMethodUrlHeaders(
+//             AddCode_ValidateUrl,
+//             DefaultHttpGetTimeout,
+//             null,
+//             null,
+//             0,
+//             JSON.stringify([[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]])
+//         );
 
-function AddCode_CheckTokenSuccess(responseText, position) {
-    var token = JSON.parse(responseText);
+//         if (obj) {
+//             obj = JSON.parse(obj);
 
-    if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
-    else if (token.hasOwnProperty('expires_in')) {
-        AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
-        AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
-        //AddCode_Refreshtimeout(position);
-    }
-}
+//             if (obj) {
+//                 AddCode_CheckTokenReady(obj, position);
+//                 return;
+//             }
+//         }
+
+//         AddCode_refreshTokens(position, null, null, null, !position); //token expired
+//     } else {
+//         FullxmlHttpGet(
+//             AddCode_ValidateUrl,
+//             [[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]],
+//             AddCode_CheckTokenReady,
+//             noop_fun,
+//             position,
+//             0,
+//             null,
+//             null
+//         );
+//     }
+// }
+
+// function AddCode_CheckTokenReady(obj, position) {
+//     if (obj.status === 200) {
+//         AddCode_CheckTokenSuccess(obj.responseText, position);
+//     } else {
+//         AddCode_refreshTokens(position, null, null, null, !position); //token expired
+//     }
+// }
+
+// function AddCode_CheckTokenSuccess(responseText, position) {
+//     var token = JSON.parse(responseText);
+
+//     if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
+//     else if (token.hasOwnProperty('expires_in')) {
+//         AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
+//         AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
+//         //AddCode_Refreshtimeout(position);
+//     }
+// }
 
 // function AddCode_Refreshtimeout(position) {
 //     if (AddUser_UsernameArray[position].access_token) {
@@ -499,18 +522,16 @@ function AddCode_FollowSucess(obj) {
         //success user now is following the channel
 
         AddCode_IsFollowing = true;
-
-        if (AddCode_PlayRequest) {
-            Play_setFollow();
-            ChatLive_checkFallowSuccessUpdate(obj.responseText, 0);
-        } else ChannelContent_setFollow();
-
-        return;
     } else if (obj.status === 401 || obj.status === 403) {
         //token expired
 
-        AddCode_refreshTokens(0, AddCode_Follow, null);
+        AddCode_validateToken(0);
     }
+
+    if (AddCode_PlayRequest) {
+        Play_setFollow();
+        ChatLive_checkFallowSuccessUpdate(obj.responseText, 0);
+    } else ChannelContent_setFollow();
 }
 
 function AddCode_UnFollow() {
@@ -533,16 +554,16 @@ function AddCode_UnFollowSucess(xmlHttp) {
         //success user is now not following the channel
 
         AddCode_IsFollowing = false;
-
-        if (AddCode_PlayRequest) {
-            Play_setFollow();
-            ChatLive_FollowState[0].follows = false;
-        } else ChannelContent_setFollow();
     } else if (xmlHttp.status === 401 || xmlHttp.status === 403) {
         //token expired
 
-        AddCode_refreshTokens(0, AddCode_UnFollow, null);
+        AddCode_validateToken(0);
     }
+
+    if (AddCode_PlayRequest) {
+        Play_setFollow();
+        ChatLive_FollowState[0].follows = false;
+    } else ChannelContent_setFollow();
 }
 
 function AddCode_CheckSub() {
@@ -571,7 +592,8 @@ function AddCode_CheckSubSucess(obj) {
     } else if (obj.status === 401 || obj.status === 403) {
         //token expired
 
-        AddCode_refreshTokens(0, AddCode_CheckSub, AddCode_CheckSubSucessFail);
+        AddCode_validateToken(0);
+        PlayVod_isSub();
     } else {
         // internet error
         AddCode_CheckSubSucessFail();

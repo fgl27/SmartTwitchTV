@@ -226,7 +226,6 @@ function Main_StartApp() {
                     ChatLive_SetLatency: ChatLive_SetLatency,
                     Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
                     BaseXmlHttpGetFull_Process: BaseXmlHttpGetFull_Process,
-                    AddCode_refreshTokensResult: AddCode_refreshTokensResult,
                     Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
                     PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
                     PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
@@ -2014,7 +2013,7 @@ function Main_BasexmlHttpStatus(obj, key, callbackSuccess, calbackError, checkRe
         //token expired
 
         if (AddUser_UserHasToken()) {
-            AddCode_refreshTokens();
+            AddCode_validateToken(0);
         } else {
             AddCode_AppToken();
         }
@@ -2853,7 +2852,7 @@ function Main_CheckResume(skipPlay) {
 
     var UserIsSet = AddUser_UserHasToken();
 
-    Main_CheckResumeUpdateToken(UserIsSet);
+    //Main_CheckResumeUpdateToken(UserIsSet);
 
     Main_SetUpdateclock();
 
@@ -2881,16 +2880,16 @@ function Main_CheckResume(skipPlay) {
     Settings_burn_in_protection_start();
 }
 
-function Main_CheckResumeUpdateToken(UserIsSet) {
-    //Check on resume if token has expired and refresh
-    //The token may expire while the device is on standby and on that case even if the app is running
-    //the internet connection may be down (do to standby), on that case the update token fun will run and not work
-    //On that case the expires_when will be less the time now and we need to update on resume
-    //If the app closes next reopen the same check will happen but somewhere else
-    if (UserIsSet && AddUser_UsernameArray[0].access_token && new Date().getTime() - AddUser_UsernameArray[0].expires_when > 0) {
-        AddCode_refreshTokens(0, null, null, null, true);
-    }
-}
+// function Main_CheckResumeUpdateToken(UserIsSet) {
+//     //Check on resume if token has expired and refresh
+//     //The token may expire while the device is on standby and on that case even if the app is running
+//     //the internet connection may be down (do to standby), on that case the update token fun will run and not work
+//     //On that case the expires_when will be less the time now and we need to update on resume
+//     //If the app closes next reopen the same check will happen but somewhere else
+//     if (UserIsSet && AddUser_UsernameArray[0].access_token && new Date().getTime() - AddUser_UsernameArray[0].expires_when > 0) {
+//         AddCode_validateToken(0);
+//     }
+// }
 
 function Main_CheckAccessibility(skipRefresCheck) {
     //Main_Log('Main_CheckAccessibility');
