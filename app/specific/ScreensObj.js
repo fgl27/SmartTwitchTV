@@ -1403,9 +1403,16 @@ function ScreensObj_InitAGame() {
                 ScreensObj_TopLableAgameExit(this.screen);
             },
             HasSwitches: true,
-            SwitchesIcons: ['movie-play', 'movie'],
+            SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
             addSwitches: function () {
-                ScreensObj_addSwitches([STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS, STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS], this.screen);
+                ScreensObj_addSwitches(
+                    [
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW
+                    ],
+                    this.screen
+                );
             }
         },
         Base_obj

@@ -274,6 +274,9 @@ function Screens_init(key, preventRefresh) {
         else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
     } else {
         ScreenObj[key].SetPreviewEnable();
+
+        if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_CheckFollow();
+
         Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true, key);
         Screens_SetLastRefresh(key);
@@ -883,6 +886,8 @@ function Screens_loadDataSuccessFinish(key) {
     //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
     ScreenObj[key].FirstRunEnd = true;
     if (!ScreenObj[key].status) {
+        if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_CheckFollow();
+
         if (ScreenObj[key].emptyContent) {
             if (Screens_IsInUse(key)) {
                 Main_showWarningDialog(ScreenObj[key].emptyContent_STR ? ScreenObj[key].emptyContent_STR() : STR_REFRESH_PROBLEM);
@@ -2171,11 +2176,13 @@ function AGame_headerOptions(key) {
 
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
-    } else {
+    } else if (ScreenObj[key].posX === 1) {
         Main_values.Main_Go = Main_AGameClip;
         Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
+    } else {
+        AGame_follow(key);
     }
 }
 
@@ -3875,4 +3882,126 @@ function Screens_ResetPlaybackTime(key, id) {
 
 function Screens_PlaybackTimeGetOrigianl(key, data) {
     return data[ScreenObj[key].screenType === 1 ? 11 : 1];
+}
+
+var AGame_following = false;
+
+function AGame_follow(key) {
+    if (AddUser_UserIsSet()) {
+        Screens_FollowUnfollowGame();
+    } else {
+        Main_showWarningDialog(STR_NOKEY_WARN);
+        Main_setTimeout(function () {
+            if (ScreenObj[key].emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+            else Main_HideWarningDialog();
+        }, 2000);
+    }
+}
+
+function AGame_CheckFollow() {
+    if (AddUser_UserIsSet()) {
+        AGame_CheckFollowGame();
+    } else {
+        AGame_following = false;
+        AGame_setFollow();
+    }
+}
+var AGame_CheckFollowGameQuery = '{"query":"{game(id: \\"%x\\") {self{follow{followedAt}}}}"}';
+var AGame_CheckFollowGameId;
+function AGame_CheckFollowGame(key) {
+    var header = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+    ];
+
+    AGame_CheckFollowGameId = new Date().getTime();
+
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        header,
+        AGame_CheckFollowGameReady,
+        noop_fun,
+        key,
+        AGame_CheckFollowGameId,
+        'POST',
+        AGame_CheckFollowGameQuery.replace('%x', Main_values.Main_gameSelected_id)
+    );
+}
+
+function AGame_CheckFollowGameReady(obj, key, ID) {
+    if (AGame_CheckFollowGameId === ID && obj.status === 200) {
+        var data = JSON.parse(obj.responseText).data;
+
+        AGame_following = Boolean(data && data.game && data.game.self && data.game.self.follow);
+    }
+    AGame_setFollow();
+}
+
+function AGame_setFollow() {
+    if (Main_values.Main_Go !== Main_aGame) return;
+    console.log(AGame_following);
+    //return;
+    if (AGame_following) {
+        Main_innerHTML(
+            ScreenObj[Main_aGame].ids[2] + '-1_2',
+            '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE_HTML + STR_SPACE + STR_FOLLOWING
+        );
+    } else {
+        Main_innerHTML(
+            ScreenObj[Main_aGame].ids[2] + '-1_2',
+            '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' +
+                STR_SPACE_HTML +
+                STR_SPACE_HTML +
+                (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY)
+        );
+    }
+}
+
+var Screens_UnFollowGameQuery =
+    '{"operationName":"FollowGameButton_UnfollowGame","variables":{"input":{"gameID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"811e02e396ebba0664f21ff002f2eff3c6f57e8af9aedb4f4dfa77cefd0db43d"}}}';
+
+var Screens_FollowGameQuery =
+    '{"operationName":"FollowGameButton_FollowGame","variables":{"input":{"gameID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b846b65ba4bc9a3561dbe2d069d95deed9b9e031bcfda2482d1bedd84a1c2eb3"}}}';
+var Screens_FollowUnfollowGameId;
+
+function Screens_FollowUnfollowGame(key) {
+    var header = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+    ];
+
+    Screens_FollowUnfollowGameId = new Date().getTime();
+
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        header,
+        AGame_following ? Screens_UnFollowGmaeRequestReady : Screens_FollowGameRequestReady,
+        noop_fun,
+        key,
+        Screens_FollowUnfollowGameId,
+        'POST',
+        (AGame_following ? Screens_UnFollowGameQuery : Screens_FollowGameQuery).replace('%x', Main_values.Main_gameSelected_id)
+    );
+}
+
+function Screens_UnFollowGmaeRequestReady(obj, key, ID) {
+    if (Screens_FollowUnfollowGameId === ID && obj.status === 200) {
+        var data = JSON.parse(obj.responseText).data;
+
+        Screens_FollowGameRequestEnd(!Boolean(data.unfollowGame));
+    }
+}
+
+function Screens_FollowGameRequestReady(obj, key, ID) {
+    if (Screens_FollowUnfollowGameId === ID && obj.status === 200) {
+        var data = JSON.parse(obj.responseText).data;
+
+        Screens_FollowGameRequestEnd(Boolean(data.followGame));
+    }
+}
+
+function Screens_FollowGameRequestEnd(FollowState) {
+    AGame_following = FollowState;
+    Screens_FollowUnfollowGameId = 0;
+    AGame_setFollow();
 }
