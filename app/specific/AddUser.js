@@ -108,7 +108,7 @@ function AddUser_insertString(str, index, value) {
 
 function AddUser_getCodeError() {
     Main_HideLoadDialog();
-    Main_showWarningDialog(STR_ADD_ERROR);
+    Main_showWarningDialog(STR_ADD_ERROR, 7500, true);
     Main_setTimeout(function () {
         AddUser_handleKeyBack();
     }, 3000);
