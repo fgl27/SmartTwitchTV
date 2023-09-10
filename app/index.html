@@ -557,6 +557,15 @@
                 white-space: normal;
             }
 
+            .add_user_text {
+                width: 99% !important;
+                height: auto !important;
+                left: 0;
+                color: #ffffff;
+                font-size: 200%;
+                text-align: center;
+            }
+
             .dialog_multi_help,
             .dialog_multi {
                 z-index: 2;
@@ -2910,7 +2919,11 @@
                     <!-- Input screens-->
                     <div id="add_user_scroll" class="screen_holder hide">
                         <div id="add_user" class="input_text_box" style="margin-top: 10%">
-                            <input id="user_input" class="input_class" type="text" placeholder="" />
+                            <!-- <input id="user_input" class="input_class hide" type="text" placeholder="" /> -->
+                            <div id="add_user_text_holder" class="hide">
+                                <div id="add_user_text" class="add_user_text">Text</div>
+                                <div id="add_user_text_counter" class="add_user_text">counter 1 2 ...</div>
+                            </div>
                         </div>
                     </div>
                     <div id="search_scroll" class="screen_holder hide">

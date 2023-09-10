@@ -867,4 +867,9 @@ function en_USLang() {
     STR_NO_TOKEN_WARNING = 'Without adding a user and authorization token the app, may fail to load the content, this is a Twitch API limitation';
     STR_NO_TOKEN_WARNING_429 =
         'The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token.';
+
+    STR_ADD_USER_TEXT = 'Visit %site and enter the code: %code';
+    STR_ADD_USER_TEXT_COUNTER = 'Checking access confirmation in %d...';
+    STR_ADD_USER_TEXT_COUNTER_NOW = 'Checking now!';
+    STR_ADD_ERROR = 'Can access the add user service.';
 }

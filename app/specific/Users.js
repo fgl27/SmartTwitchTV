@@ -27,7 +27,7 @@ var Users_RemoveDialogID = null;
 var Users_beforeUser = 1;
 var Users_UserDialogID = null;
 var Users_Isautentication = true;
-var Users_ShowAutetication = false;
+var Users_ShowAuthentication = false;
 var Users_Userlastadded = '';
 
 var Users_ids;
@@ -222,8 +222,8 @@ function Users_loadDataSuccessFinish() {
         Main_ShowElement(Users_ids[5]);
         Main_FirstLoad = false;
         Users_loadingData = false;
-        if (Users_ShowAutetication) {
-            Users_ShowAutetication = false;
+        if (Users_ShowAuthentication) {
+            Users_ShowAuthentication = false;
             Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
             Users_Isautentication = true;
             Users_showRemoveDialog();

@@ -125,7 +125,10 @@ var Main_ExitDialogID = null;
 var Main_IsDayFirst = false;
 var Main_SearchInput;
 var Main_PasswordInput;
-var Main_AddUserInput;
+//var Main_AddUserInput;
+var Main_AddUserText;
+var Main_AddUserTextHolder;
+var Main_AddUserTextCounter;
 var Main_ChatLiveInput;
 var Main_UpdateClockId;
 var Main_ContentLang = '';
@@ -413,8 +416,12 @@ function Main_initWindowsEnd() {
 
     Main_PasswordInput = Main_getElementById('password_input');
     Main_SearchInput = Main_getElementById('search_input');
-    Main_AddUserInput = Main_getElementById('user_input');
     Main_ChatLiveInput = Main_getElementById('chat_send_input');
+
+    //Main_AddUserInput = Main_getElementById('user_input');
+    Main_AddUserText = Main_getElementById('add_user_text');
+    Main_AddUserTextHolder = Main_getElementById('add_user_text_holder');
+    Main_AddUserTextCounter = Main_getElementById('add_user_text_counter');
 }
 
 function Main_CheckBackup() {
@@ -2040,9 +2047,11 @@ function HttpGetSetMainHeader() {
 
 function HttpGetSetUserHeader() {
     Main_Bearer_User_Headers = [
-        [clientIdHeader, AddCode_clientId],
+        [clientIdHeader, AddCode_backup_client_id],
         [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
     ];
+
+    Play_Headers = JSON.stringify(Main_Bearer_User_Headers);
 }
 
 function FullxmlHttpGet(theUrl, Headers, callbackSuccess, calbackError, key, checkResult, Method, postMessage) {

@@ -26,7 +26,7 @@ var AddCode_PlayRequest = false;
 var AddCode_Channel_id = '';
 var AddCode_Expires_in_offset = 100;
 
-var AddCode_Scopes = ['user:read:follows', 'user:read:subscriptions', 'chat:edit', 'chat:read'];
+var AddCode_Scopes = ['chat:edit', 'chat:read', 'user:read:follows', 'user:read:subscriptions', 'user_follows_edit', 'user_read'];
 //Variable initialization end
 
 function AddCode_CheckNewCode(code) {
@@ -102,7 +102,7 @@ function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, 
 
 function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
     if (xmlHttp.status === 200) {
-        AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
+        AddCode_refreshTokensSuccess(xmlHttp.responseText, position, callbackFunc, key);
         return;
     } else {
         try {
@@ -127,7 +127,7 @@ function AddCode_refreshTokensError(callbackFuncNOK, key) {
     if (callbackFuncNOK) callbackFuncNOK(key);
 }
 
-function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
+function AddCode_refreshTokensSuccess(responseText, position, callbackFunc, key) {
     var response = JSON.parse(responseText);
     if (AddCode_TokensCheckScope(response.scope)) {
         AddUser_UsernameArray[position].access_token = response.access_token;
@@ -142,7 +142,7 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) 
 
         AddUser_SaveUserArray();
 
-        AddCode_Refreshtimeout(position);
+        //AddCode_Refreshtimeout(position);
     } else AddCode_requestTokensFailRunning(position);
 
     if (callbackFunc) callbackFunc(key);
@@ -424,23 +424,23 @@ function AddCode_CheckTokenSuccess(responseText, position) {
     else if (token.hasOwnProperty('expires_in')) {
         AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
         AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
-        AddCode_Refreshtimeout(position);
+        //AddCode_Refreshtimeout(position);
     }
 }
 
-function AddCode_Refreshtimeout(position) {
-    if (AddUser_UsernameArray[position].access_token) {
-        AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
-            function () {
-                AddCode_refreshTokens(position, null, null);
-            },
-            AddUser_UsernameArray[position].expires_in,
-            AddUser_UsernameArray[position].timeout_id
-        );
-    } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
+// function AddCode_Refreshtimeout(position) {
+//     if (AddUser_UsernameArray[position].access_token) {
+//         AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
+//             function () {
+//                 AddCode_refreshTokens(position, null, null);
+//             },
+//             AddUser_UsernameArray[position].expires_in,
+//             AddUser_UsernameArray[position].timeout_id
+//         );
+//     } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
-    //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
-}
+//     //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
+// }
 
 function AddCode_CheckFollow() {
     AddCode_IsFollowing = false;
@@ -589,8 +589,9 @@ var AddCode_clientId = 'Y2N6anV6ZXNwMGR4eDMxbGRxd3ViMjdqcTRjMjM3'; //public but 
 //none public get yours link above is free
 var AddCode_main_token;
 var AddCode_client_token = 'bmFsejdnYmxhc3l3bzY2cGN5d2lnNzdyNmc5aG9u';
-var AddCode_backup_client_id = 'a2ltbmU3OGt4M25jeDZicmdvNG12NndraTVoMWtv';
+var AddCode_backup_client_id = 'dWU2NjY2cW85ODN0c3g2c28xdDB2bmF3aTIzM3dh';
 var Chat_token = 'a2QxdW5iNGIzcTR0NThmd2xwY2J6Y2JubTc2YThmcA==';
 
-var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
-var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
+var AddCode_Url = 'https://id.twitch.tv/oauth2/';
+var AddCode_UrlToken = AddCode_Url + 'token?';
+var AddCode_ValidateUrl = AddCode_Url + 'validate';
