@@ -23,9 +23,12 @@ var Play_Headers;
 //Live
 var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token =
-    '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\", playerBackend: \\"mediaplayer\\",playerType:\\"mobile\\"}){value signature}}"}';
+    '{"operationName":"PlaybackAccessToken_Template","query":"query PlaybackAccessToken_Template($login: String!, $isLive: Boolean!, $vodID: ID!, $isVod: Boolean!, $playerType: String!, $platform: String!) ' +
+    '{  streamPlaybackAccessToken(channelName: $login, params: {platform: $platform, playerBackend: \\"mediaplayer\\", playerType: $playerType}) @include(if: $isLive) {    value    signature    __typename  } ' +
+    ' videoPlaybackAccessToken(id: $vodID, params: {platform: $platform, playerBackend: \\"mediaplayer\\", playerType: $playerType}) @include(if: $isVod) {    value    signature    __typename  }}",' +
+    '"variables":{"isLive":true,"login":"%x","isVod":false,"vodID":"","playerType":"pulsar","platform":"switch_web_tv"}}';
 var Play_base_live_links =
-    'platform=site&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
+    'player_backend=mediaplayer&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
