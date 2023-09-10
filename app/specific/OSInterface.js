@@ -394,7 +394,7 @@ function OSInterface_setAppToken() {
 function OSInterface_UpdateUserId(user) {
     if (Main_IsOn_OSInterface)
         if (user) {
-            Android.UpdateUserId(user.id, user.name ? encodeURIComponent(user.name) : user.name, user.refresh_token ? user.refresh_token : null);
+            Android.UpdateUserId(user.id, user.name ? encodeURIComponent(user.name) : user.name, Bearer + AddUser_UsernameArray[0].access_token);
         } else {
             Android.UpdateUserId(null, null, null);
         }

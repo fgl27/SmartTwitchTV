@@ -2714,67 +2714,24 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void UpdateUserId(String id, String name, String refresh_token) {
-
-            String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
-            String temp_refresh_token = Tools.getString(id + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
+        public void UpdateUserId(String id, String name, String access_token) {
 
             appPreferences.put(Constants.PREF_USER_ID, id);
-            //appPreferences.put(Constants.PREF_USER_NAME, name);
-            if (id != null)
-                appPreferences.put(id + Constants.PREF_REFRESH_TOKEN, refresh_token);
+
+            if (id != null) {
+                appPreferences.put(id + Constants.PREF_ACCESS_TOKEN, access_token);
+
+                ChannelsUtils.UpdateAllChannels(mWebViewContext, appPreferences, Constants.CHANNELS_NAMES);
+            }
 
             if (id == null) {
-
                 StopNotifications();
 
                 mUpdateUserChannels();
+            }
 
-            } else if (!Objects.equals(tempUserId, id)) {
-                //User has changed stop notifications and reset list
-                ToastHandler.removeCallbacksAndMessages(null);
-                NotificationUtils.ResetNotificationList(appPreferences, id);
-
-                ChannelHandler.post(() -> {
-
-                    if (refresh_token != null) {
-
-                        if (temp_refresh_token == null ||
-                                Tools.getString(id + Constants.PREF_ACCESS_TOKEN, null, appPreferences) == null ||
-                                !Objects.equals(temp_refresh_token, refresh_token)) {
-
-                            Tools.refreshTokens(id, appPreferences);
-
-                        } else {
-
-                            Tools.checkTokens(id, appPreferences);
-
-                        }
-
-                    } else Tools.eraseTokens(id, appPreferences);
-
-                    mUpdateUserChannels();
-
-                });
-
-            } else if (refresh_token != null) {
-
-                if (temp_refresh_token == null ||
-                        Tools.getString(id + Constants.PREF_ACCESS_TOKEN, null, appPreferences) == null ||
-                        !Objects.equals(temp_refresh_token, refresh_token)) {
-
-                    ChannelHandler.post(() -> Tools.refreshTokens(id, appPreferences));
-
-                } else {
-
-                    ChannelHandler.post(() -> Tools.checkTokens(id, appPreferences));
-
-                }
-
-            } else {
-
+            if (access_token == null) {
                 Tools.eraseTokens(id, appPreferences);
-
             }
         }
 

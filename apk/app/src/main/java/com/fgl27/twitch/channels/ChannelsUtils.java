@@ -516,6 +516,7 @@ public final class ChannelsUtils {
         String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
         if (!Tools.hasTokens(UserId, appPreferences)) {
+            UpdateUserChannels(context, appPreferences, CHANNELS_NAMES);
             return;
         }
         StartLive(context, UserId, appPreferences, CHANNELS_NAMES);

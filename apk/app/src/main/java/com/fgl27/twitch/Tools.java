@@ -20,8 +20,6 @@
 
 package com.fgl27.twitch;
 
-import static com.google.gson.JsonParser.parseString;
-
 import android.Manifest;
 import android.app.ActivityManager;
 import android.app.UiModeManager;
@@ -74,7 +72,6 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -876,155 +873,153 @@ public final class Tools {
         }
     }
 
-    static void checkTokens(String UserId, AppPreferences appPreferences) {
-        String token = getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences);
-
-        try {
-            String urlString = "https://id.twitch.tv/oauth2/validate";
-
-            String[][] HEADERS = {
-                    {Constants.BASE_HEADERS[1][0], token}
-            };
-
-            JsonObject obj;
-            int status;
-            ResponseObj response;
-
-            for (int i = 0; i < 3; i++) {
-
-                response =
-                        Internal_MethodUrl(
-                                urlString,
-                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-                                null,
-                                null,
-                                0,
-                                HEADERS
-                        );
-
-                if (response != null) {
-
-                    status = response.status;
-
-                    if (status == 200) {
-                        obj = parseString(response.responseText).getAsJsonObject();
-
-                        if (obj.has("expires_in") && obj.get("expires_in").isJsonNull()) {
-
-                            appPreferences.put(
-                                    UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
-                                    (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000))
-                            );
-
-                        }
-                        break;
-                    } else if (status == 401 || status == 403) {
-
-                        refreshTokens(
-                                UserId,
-                                appPreferences
-                        );
-                        break;
-                    }
-
-                }
-
-            }
-        } catch (Exception e) {
-            recordException(TAG, "checkTokens e ", e);
-        }
-    }
+//    static void checkTokens(String UserId, AppPreferences appPreferences) {
+//        String token = getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences);
+//
+//        try {
+//            String urlString = "https://id.twitch.tv/oauth2/validate";
+//
+//            String[][] HEADERS = {
+//                    {Constants.BASE_HEADERS[1][0], token}
+//            };
+//
+//            JsonObject obj;
+//            int status;
+//            ResponseObj response;
+//
+//            for (int i = 0; i < 3; i++) {
+//
+//                response =
+//                        Internal_MethodUrl(
+//                                urlString,
+//                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+//                                null,
+//                                null,
+//                                0,
+//                                HEADERS
+//                        );
+//
+//                if (response != null) {
+//
+//                    status = response.status;
+//
+//                    if (status == 200) {
+//                        obj = parseString(response.responseText).getAsJsonObject();
+//
+//                        if (obj.has("expires_in") && obj.get("expires_in").isJsonNull()) {
+//
+//                            appPreferences.put(
+//                                    UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
+//                                    (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000))
+//                            );
+//
+//                        }
+//                        break;
+//                    } else if (status == 401 || status == 403) {
+//
+//                        refreshTokens(
+//                                UserId,
+//                                appPreferences
+//                        );
+//                        break;
+//                    }
+//
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            recordException(TAG, "checkTokens e ", e);
+//        }
+//    }
 
     public static boolean hasTokens(String UserId, AppPreferences appPreferences) {
-        return Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null &&
-                (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
-                        Tools.refreshTokens(UserId, appPreferences));
+        return Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null;
     }
 
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
 
-        String refresh_token = getString(UserId + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
-        String client_id = getString(Constants.PREF_CLIENT_ID, null, appPreferences);
-        String client_secret = getString(Constants.PREF_CLIENT_SECRET, null, appPreferences);
-        String redirect_uri = getString(Constants.PREF_REDIRECT_URI, null, appPreferences);
-
-        if (client_id == null || client_secret == null || redirect_uri == null || refresh_token == null) {
-
-            if (refresh_token == null) eraseTokens(UserId, appPreferences);
-
-            return false;
-
-        }
-
-        try {
-            String urlString = String.format(
-                    Locale.US,
-                    "https://id.twitch.tv/oauth2/token?grant_type=refresh_token&client_id=%s&client_secret=%s&refresh_token=%s&redirect_uri=%s",
-                    client_id,
-                    client_secret,
-                    refresh_token,
-                    redirect_uri
-            );
-
-            JsonObject obj;
-            String ResponseText;
-            ResponseObj response;
-
-            for (int i = 0; i < 3; i++) {
-
-                response =
-                        Internal_MethodUrl(
-                                urlString,
-                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-                                null,
-                                "POST",
-                                0,
-                                new String[0][2]
-                        );
-
-                if (response != null) {
-
-                    ResponseText = response.responseText;
-
-                    if (response.status == 200) {
-
-                        obj = parseString(ResponseText).getAsJsonObject();
-
-                        appPreferences.put(
-                                UserId + Constants.PREF_REFRESH_TOKEN,
-                                obj.has("refresh_token") && !obj.get("refresh_token").isJsonNull() ?
-                                        obj.get("refresh_token").getAsString() :
-                                        null
-                        );
-
-                        appPreferences.put(
-                                UserId + Constants.PREF_ACCESS_TOKEN,
-                                obj.has("access_token") && !obj.get("access_token").isJsonNull() ?
-                                        (Constants.BASE_HEADERS[1][1] + obj.get("access_token").getAsString()) :
-                                        null
-                        );
-
-                        appPreferences.put(
-                                UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
-                                obj.has("expires_in") && !obj.get("expires_in").isJsonNull() ?
-                                        (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) :
-                                        0
-                        );
-
-                        return true;
-                    } else if (ResponseText.contains("Invalid refresh token")) {
-
-                        eraseTokens(UserId, appPreferences);
-
-                        return false;
-                    }
-
-                }
-
-            }
-        } catch (Exception e) {
-            recordException(TAG, "refreshTokens e ", e);
-        }
+//        String refresh_token = getString(UserId + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
+//        String client_id = getString(Constants.PREF_CLIENT_ID, null, appPreferences);
+//        String client_secret = getString(Constants.PREF_CLIENT_SECRET, null, appPreferences);
+//        String redirect_uri = getString(Constants.PREF_REDIRECT_URI, null, appPreferences);
+//
+//        if (client_id == null || client_secret == null || redirect_uri == null || refresh_token == null) {
+//
+//            if (refresh_token == null) eraseTokens(UserId, appPreferences);
+//
+//            return false;
+//
+//        }
+//
+//        try {
+//            String urlString = String.format(
+//                    Locale.US,
+//                    "https://id.twitch.tv/oauth2/token?grant_type=refresh_token&client_id=%s&client_secret=%s&refresh_token=%s&redirect_uri=%s",
+//                    client_id,
+//                    client_secret,
+//                    refresh_token,
+//                    redirect_uri
+//            );
+//
+//            JsonObject obj;
+//            String ResponseText;
+//            ResponseObj response;
+//
+//            for (int i = 0; i < 3; i++) {
+//
+//                response =
+//                        Internal_MethodUrl(
+//                                urlString,
+//                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+//                                null,
+//                                "POST",
+//                                0,
+//                                new String[0][2]
+//                        );
+//
+//                if (response != null) {
+//
+//                    ResponseText = response.responseText;
+//
+//                    if (response.status == 200) {
+//
+//                        obj = parseString(ResponseText).getAsJsonObject();
+//
+//                        appPreferences.put(
+//                                UserId + Constants.PREF_REFRESH_TOKEN,
+//                                obj.has("refresh_token") && !obj.get("refresh_token").isJsonNull() ?
+//                                        obj.get("refresh_token").getAsString() :
+//                                        null
+//                        );
+//
+//                        appPreferences.put(
+//                                UserId + Constants.PREF_ACCESS_TOKEN,
+//                                obj.has("access_token") && !obj.get("access_token").isJsonNull() ?
+//                                        (Constants.BASE_HEADERS[1][1] + obj.get("access_token").getAsString()) :
+//                                        null
+//                        );
+//
+//                        appPreferences.put(
+//                                UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
+//                                obj.has("expires_in") && !obj.get("expires_in").isJsonNull() ?
+//                                        (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) :
+//                                        0
+//                        );
+//
+//                        return true;
+//                    } else if (ResponseText.contains("Invalid refresh token")) {
+//
+//                        eraseTokens(UserId, appPreferences);
+//
+//                        return false;
+//                    }
+//
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            recordException(TAG, "refreshTokens e ", e);
+//        }
 
         return false;
     }

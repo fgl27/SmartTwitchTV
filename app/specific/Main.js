@@ -238,7 +238,7 @@ function Main_StartApp() {
             Main_isDebug = OSInterface_getdebug();
             Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
-            OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
+            OSInterface_setAppIds(AddCode_backup_client_id, null, null);
         } catch (e) {
             Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
             Main_IsOn_OSInterface = 0;
