@@ -77,6 +77,10 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_getCode() {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
     AddUser_DeviceCode = null;
     var theUrl = AddCode_Url + 'device?scopes=' + encodeURIComponent(AddCode_Scopes.join(' ')) + '&client_id=' + AddCode_backup_client_id;
 
@@ -86,6 +90,11 @@ function AddUser_getCode() {
 var AddUser_DeviceCode = null;
 var AddUser_DeviceCodeTimeout = 5;
 function AddUser_getCodeSuccess(resultObj) {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
+
     if (resultObj.status === 200) {
         var data = JSON.parse(resultObj.responseText);
         var codeDiv = STR_BR + STR_BR + AddUser_insertString(data.user_code, data.user_code.length / 2, '-') + STR_BR + STR_BR;
@@ -116,6 +125,11 @@ function AddUser_getCodeError() {
 
 var AddUser_getCodeCheckId;
 function AddUser_getCodeCheck(counter) {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
+
     if (counter) {
         Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
 
@@ -133,6 +147,11 @@ function AddUser_getCodeCheck(counter) {
 }
 
 function AddUser_getDeviceCode() {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
+
     AddUser_getDeviceCodeToken = null;
     var theUrl =
         AddCode_UrlToken +
@@ -148,6 +167,11 @@ function AddUser_getDeviceCode() {
 
 var AddUser_getDeviceCodeToken;
 function AddUser_getDeviceCodeSuccess(resultObj) {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
+
     var data;
     if (resultObj.status === 200) {
         data = JSON.parse(resultObj.responseText);
@@ -166,6 +190,11 @@ function AddUser_getDeviceCodeSuccess(resultObj) {
 }
 
 function AddUser_getUserToken() {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
+
     var header = [
         [clientIdHeader, AddCode_backup_client_id],
         [Bearer_Header, Bearer + AddUser_getDeviceCodeToken]
@@ -177,6 +206,11 @@ function AddUser_getUserToken() {
 }
 
 function AddUser_getUserTokenSuccess(resultObj) {
+    if (!AddUser_IsInUserScreen()) {
+        AddUser_handleKeyBack();
+        return;
+    }
+
     if (resultObj.status === 200) {
         AddUser_SaveNewUser(resultObj.responseText);
     } else {
@@ -497,4 +531,8 @@ function AddUser_UserFindpos(user) {
 
 function AddUser_IsUserSet() {
     return AddUser_UsernameArray.length > 0;
+}
+
+function AddUser_IsInUserScreen() {
+    return Main_values.Main_Go === Main_addUser;
 }
