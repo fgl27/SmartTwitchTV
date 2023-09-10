@@ -404,13 +404,6 @@ function Users_handleKeyEnter() {
         Users_HideUserDialog();
         if (!temp_RemoveCursor) {
             AddUser_UserMakeOne(Users_showUserDialogPos);
-        } else if (temp_RemoveCursor === 1) {
-            if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
-                Main_showWarningDialog(STR_USER_CODE_OK, 2000);
-            } else {
-                Users_Isautentication = true;
-                Users_showRemoveDialog();
-            }
         } else {
             Users_Isautentication = false;
             Users_showRemoveDialog();

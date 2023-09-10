@@ -2045,10 +2045,14 @@ function HttpGetSetMainHeader() {
 }
 
 function HttpGetSetUserHeader() {
-    Main_Bearer_User_Headers = [
-        [clientIdHeader, AddCode_backup_client_id],
-        [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
-    ];
+    if (AddUser_UserIsSet()) {
+        Main_Bearer_User_Headers = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
+        ];
+    } else {
+        Main_Bearer_User_Headers = [[clientIdHeader, AddCode_backup_client_id]];
+    }
 
     Play_Headers = JSON.stringify(Main_Bearer_User_Headers);
 }

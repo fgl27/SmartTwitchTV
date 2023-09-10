@@ -385,15 +385,17 @@ function AddCode_validateToken(position) {
 
 function AddCode_validateTokenSuccess(resultObj, position) {
     if (resultObj.status !== 200) {
-        AddUser_removeUser(position);
-        AddUser_SaveUserArray();
+        AddUser_removeUser(position, true);
 
         if (!position) {
             AddUser_SaveNewUserRefreshTokens(position);
         }
-        Main_showWarningDialog(STR_USER_TOKEN_ERROR, 5000);
 
         Main_SaveValues();
+
+        Main_setTimeout(function () {
+            Main_showWarningDialog(STR_USER_TOKEN_ERROR, 5000);
+        }, 3500);
     }
 }
 

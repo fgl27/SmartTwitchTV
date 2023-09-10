@@ -254,7 +254,9 @@ function AddUser_RestoreUsers() {
 }
 
 function AddUser_UpdateSidepanel() {
-    AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+    if (AddUser_UserIsSet()) {
+        AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+    }
 }
 
 function AddUser_UpdateSidepanelDefault() {
@@ -393,7 +395,7 @@ function AddUser_SaveNewUserRefreshTokens(position) {
     if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
 }
 
-function AddUser_removeUser(position) {
+function AddUser_removeUser(position, skipInitUser) {
     // remove the user
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
     if (index > -1) {
@@ -413,10 +415,14 @@ function AddUser_removeUser(position) {
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
         }
         Users_status = false;
-        Users_init();
+        if (!skipInitUser) {
+            Users_init();
+        }
     } else {
         AddUser_UpdateSidepanelDefault();
-        AddUser_init();
+        if (!skipInitUser) {
+            Users_init();
+        }
 
         OSInterface_UpdateUserId(null);
     }
