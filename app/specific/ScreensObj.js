@@ -873,7 +873,8 @@ function ScreensObj_StartAllVars() {
         set_url: noop_fun,
         history_concatenate: function () {
             this.streamerID = {};
-            this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
+            this.data = AddUser_UserIsSet() ? JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type])) : [];
+
             Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
             this.dataEnded = true;
             this.loadDataSuccess();
@@ -2366,10 +2367,12 @@ function ScreensObj_Blocked() {
             blocked_concatenate: function () {
                 var type = this.isGame ? 'game' : 'channel';
                 this.data =
+                    AddUser_UserIsSet() &&
                     Main_values_History_data[AddUser_UsernameArray[0].id].blocked &&
                     Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type]
                         ? Object.values(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type])
                         : [];
+
                 this.blockedSort();
                 this.dataEnded = true;
                 this.loadDataSuccess();

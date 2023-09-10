@@ -222,7 +222,8 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 // }
 
 function AddUser_RestoreUsers() {
-    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
+    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
+    Main_Restore_history();
 
     if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
@@ -244,7 +245,6 @@ function AddUser_RestoreUsers() {
             };
         }
 
-        Main_Restore_history();
         return true;
     } else {
         AddUser_UsernameArray = [];
@@ -351,7 +351,7 @@ function AddUser_SaveNewUser(responseText) {
     var data = JSON.parse(responseText).data;
     if (data && data.length) {
         AddUser_Username = data[0];
-        AddUser_UsernameArray.push({
+        var userObj = {
             name: AddUser_Username.login,
             id: AddUser_Username.id,
             display_name: AddUser_Username.display_name,
@@ -361,13 +361,16 @@ function AddUser_SaveNewUser(responseText) {
             expires_in: 0,
             expires_when: 0,
             timeout_id: null
-        });
-
-        Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.login)].id] = {
-            live: [],
-            vod: [],
-            clip: []
         };
+        AddUser_UsernameArray.push(userObj);
+
+        if (!Main_values_History_data[userObj.id]) {
+            Main_values_History_data[userObj.id] = {
+                live: [],
+                vod: [],
+                clip: []
+            };
+        }
 
         AddUser_SaveUserArray();
         Users_status = false;
@@ -381,7 +384,7 @@ function AddUser_SaveNewUser(responseText) {
         }
         Main_SwitchScreen();
 
-        Main_Eventsimple('New_User_Added');
+        Main_Eventsimple('User_Added', userObj);
     } else {
         AddUser_getCodeError();
     }
@@ -439,7 +442,7 @@ function AddUser_SaveUserArray() {
     }
 
     var string = JSON.stringify(AddUser_UsernameArray);
-    Main_setItem('AddUser_UsernameArray', string);
+    Main_setItem('AddUser_UsernameArrayNew', string);
 
     if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
 

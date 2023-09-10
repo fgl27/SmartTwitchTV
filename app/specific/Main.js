@@ -344,7 +344,7 @@ function Main_initRestoreBackups() {
                 var tempBackupArray = JSON.parse(tempBackup) || [];
 
                 if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
-                    Main_setItem('AddUser_UsernameArray', tempBackup);
+                    Main_setItem('AddUser_UsernameArrayNew', tempBackup);
 
                     tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
                     var tempBackupObj = JSON.parse(tempBackup) || {};
@@ -2195,6 +2195,10 @@ function Main_Set_history(type, Data, skipUpdateDate) {
 var Main_history_Watched_Obj = {};
 
 function Main_history_SetVod_Watched() {
+    if (!AddUser_UserIsSet()) {
+        return;
+    }
+
     Main_history_Watched_Obj = {};
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
@@ -2282,6 +2286,7 @@ function Main_history_UpdateVodClip(id, time, type) {
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+
     Main_history_SetVod_Watched();
 }
 
@@ -3375,12 +3380,16 @@ function Main_EventGetChannelScreen(obj) {
     return obj.screen && Main_EventChannelScreens[obj.screen] ? Main_EventChannelScreens[obj.screen] : Main_EventChannelScreens[0];
 }
 
-function Main_Eventsimple(event) {
+function Main_Eventsimple(event, obj) {
     Main_ready(function () {
         if (skipfirebase) return;
 
         try {
-            firebase.analytics().logEvent(event);
+            if (obj) {
+                gtag('event', event, obj);
+            } else {
+                firebase.analytics().logEvent(event);
+            }
         } catch (e) {
             console.log('Main_Eventsimple event ' + event + ' e ' + e);
         }
