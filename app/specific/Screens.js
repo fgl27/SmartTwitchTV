@@ -3079,7 +3079,7 @@ function Screens_ThumbOptionDialogKeyUpDown(key, current, adder) {
 
 function Screens_ThumbOptionDialogKeyEnter(key) {
     if (Screens_ThumbOptionPosY === 2) {
-        Main_showWarningDialog(STR_FOLLOW_ISSUE, 2000, true);
+        Screens_FollowUnfollow(key);
     } else Screens_ThumbOptionDialogHide(true, key);
 }
 
@@ -3524,62 +3524,54 @@ function Screens_SetLangValue(position) {
     Play_controls[Play_controlsContentLang].bottomArrows();
 }
 
-// var Screens_ThumbOption_Follow_ID = 0;
+var Screens_ThumbOption_Follow_ID = 0;
 
-// function Screens_FollowUnfollow(key) {
+function Screens_FollowUnfollow(key) {
+    if (Screens_canFollow && AddUser_UserHasToken()) {
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+        ];
 
-//     if (Screens_canFollow && AddUser_UserHasToken()) {
+        Screens_ThumbOption_Follow_ID = new Date().getTime();
 
-//         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
+        var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
 
-//         var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
-//             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwitchV5Flag_I;
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            header,
+            Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
+            noop_fun,
+            key,
+            Screens_ThumbOption_Follow_ID,
+            'POST',
+            (Screens_isFollowing ? AddCode_UnFollowQuery : AddCode_FollowQuery).replace('%x', channel_id)
+        );
+    } else {
+        Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+    }
+}
 
-//         FullxmlHttpGet(
-//             theUrl,
-//             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
-//             Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
-//             noop_fun,
-//             key,
-//             Screens_ThumbOption_Follow_ID,
-//             Screens_isFollowing ? 'DELETE' : 'PUT',
-//             null
-//         );
+function Screens_UnFollowRequestReady(obj, key, ID) {
+    if (Screens_ThumbOption_Follow_ID === ID && obj.status === 200) {
+        var data = JSON.parse(obj.responseText).data;
 
-//     } else {
+        Screens_FollowRequestEnd(key, !Boolean(data.unfollowUser));
+    }
+}
 
-//         Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+function Screens_FollowRequestReady(obj, key, ID) {
+    if (Screens_ThumbOption_Follow_ID === ID && obj.status === 200) {
+        var data = JSON.parse(obj.responseText).data;
 
-//     }
+        Screens_FollowRequestEnd(key, Boolean(data.followUser));
+    }
+}
 
-// }
-
-// function Screens_UnFollowRequestReady(xmlHttp, key, ID) {
-
-//     if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 204) { //success user is now not following the channel
-
-//         Screens_FollowRequestEnd(key, false);
-
-//     }
-
-// }
-
-// function Screens_FollowRequestReady(xmlHttp, key, ID) {
-
-//     if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 200) { //success user is now following the channel
-
-//         Screens_FollowRequestEnd(key, true);
-
-//     }
-
-// }
-
-// function Screens_FollowRequestEnd(key, FollowState) {
-
-//     Screens_ThumbOption_UpdateFollow(key, FollowState);
-//     Screens_ThumbOption_Follow_ID = 0;
-
-// }
+function Screens_FollowRequestEnd(key, FollowState) {
+    Screens_ThumbOption_UpdateFollow(key, FollowState);
+    Screens_ThumbOption_Follow_ID = 0;
+}
 
 function Screens_OpenScreen() {
     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && AddUser_UserIsSet() && !AddUser_UsernameArray[0].access_token) {

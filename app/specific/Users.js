@@ -200,11 +200,6 @@ function Users_createCell(id, pos) {
         id +
         '" class="stream_info_user_name">' +
         AddUser_UsernameArray[pos].display_name +
-        '</div><div id="' +
-        Users_ids[8] +
-        id +
-        '" class="stream_info_user_title">' +
-        (AddUser_UsernameArray[pos].access_token ? STR_USER_CODE_OK : STR_USER_CODE) +
         '</div></div></div>';
 
     return div;
@@ -282,7 +277,7 @@ function Users_showUserDialog() {
     Users_showUserDialogPos = parseInt(Main_getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
 
     Main_innerHTML('main_dialog_user_text', STR_USER_OPTION + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
-    Main_innerHTML('main_dialog_user_key', AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE);
+    // Main_innerHTML('main_dialog_user_key', AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE);
 
     Main_ShowElement('main_dialog_user');
 }
@@ -300,12 +295,11 @@ function Users_isUserDialogShown() {
 
 function Users_UserCursorSet() {
     Main_RemoveClass('main_dialog_user_first', 'button_dialog_focused');
-    Main_RemoveClass('main_dialog_user_key', 'button_dialog_focused');
+    // Main_RemoveClass('main_dialog_user_key', 'button_dialog_focused');
     Main_RemoveClass('main_dialog_user_remove', 'button_dialog_focused');
 
     if (!Users_RemoveCursor) Main_AddClass('main_dialog_user_first', 'button_dialog_focused');
-    else if (Users_RemoveCursor === 1) Main_AddClass('main_dialog_user_key', 'button_dialog_focused');
-    else if (Users_RemoveCursor) Main_AddClass('main_dialog_user_remove', 'button_dialog_focused');
+    else if (Users_RemoveCursor === 1) Main_AddClass('main_dialog_user_remove', 'button_dialog_focused');
 }
 
 function Users_clearRemoveDialog() {
@@ -446,7 +440,7 @@ function Users_handleKeyDown(event) {
                 Users_setRemoveDialog();
             } else if (Users_isUserDialogShown()) {
                 Users_RemoveCursor--;
-                if (Users_RemoveCursor < 0) Users_RemoveCursor = 2;
+                if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
                 Users_UserCursorSet();
                 Users_setUserDialog();
             } else if (!Users_cursorX) {
@@ -480,7 +474,7 @@ function Users_handleKeyDown(event) {
                 Users_setRemoveDialog();
             } else if (Users_isUserDialogShown()) {
                 Users_RemoveCursor++;
-                if (Users_RemoveCursor > 2) Users_RemoveCursor = 0;
+                if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
                 Users_UserCursorSet();
                 Users_setUserDialog();
             } else if (Main_ThumbNull(Users_cursorY, Users_cursorX + 1, Users_ids[0])) {

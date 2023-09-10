@@ -511,17 +511,32 @@ function AddCode_RequestCheckFollowEnd() {
     else ChannelContent_setFollow();
 }
 
-function AddCode_Follow() {
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
+var AddCode_FollowQuery =
+    '{"operationName":"FollowButton_FollowUser","variables":{"input":{"disableNotifications":true,"targetID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"800e7346bdf7e5278a3c1d3f21b2b56e2639928f86815677a7126b093b2fdd08"}}}';
 
-    FullxmlHttpGet(theUrl, Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token), AddCode_FollowSucess, noop_fun, 0, 0, 'PUT', null);
+function AddCode_Follow() {
+    var header = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+    ];
+
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        header,
+        AddCode_FollowSucess,
+        noop_fun,
+        0,
+        0,
+        'POST', //Method, null for get
+        AddCode_FollowQuery.replace('%x', AddCode_Channel_id)
+    );
 }
 
 function AddCode_FollowSucess(obj) {
     if (obj.status === 200) {
-        //success user now is following the channel
+        var data = JSON.parse(obj.responseText).data;
 
-        AddCode_IsFollowing = true;
+        AddCode_IsFollowing = Boolean(data.followUser);
     } else if (obj.status === 401 || obj.status === 403) {
         //token expired
 
@@ -534,27 +549,33 @@ function AddCode_FollowSucess(obj) {
     } else ChannelContent_setFollow();
 }
 
+var AddCode_UnFollowQuery =
+    '{"operationName":"FollowButton_UnfollowUser","variables":{"input":{"targetID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"f7dae976ebf41c755ae2d758546bfd176b4eeb856656098bb40e0a672ca0d880"}}} ';
+
 function AddCode_UnFollow() {
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
+    var header = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+    ];
 
     FullxmlHttpGet(
-        theUrl,
-        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+        PlayClip_BaseUrl,
+        header,
         AddCode_UnFollowSucess,
         noop_fun,
         0,
         0,
-        'DELETE',
-        null
+        'POST', //Method, null for get
+        AddCode_UnFollowQuery.replace('%x', AddCode_Channel_id)
     );
 }
 
-function AddCode_UnFollowSucess(xmlHttp) {
-    if (xmlHttp.status === 204) {
-        //success user is now not following the channel
+function AddCode_UnFollowSucess(obj) {
+    if (obj.status === 200) {
+        var data = JSON.parse(obj.responseText).data;
 
-        AddCode_IsFollowing = false;
-    } else if (xmlHttp.status === 401 || xmlHttp.status === 403) {
+        AddCode_IsFollowing = !Boolean(data.unfollowUser);
+    } else if (obj.status === 401 || obj.status === 403) {
         //token expired
 
         AddCode_validateToken(0);
