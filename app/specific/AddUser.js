@@ -68,12 +68,8 @@ function AddUser_handleKeyDown(event) {
 
 var AddUser_inputFocusId;
 function AddUser_inputFocus() {
-    Main_AddClass('scenefeed', 'avoidclicks');
-    Main_AddClass('scene_keys', 'avoidclicks');
-    OSInterface_AvoidClicks(true);
     Main_addEventListener('keydown', AddUser_handleKeyDown);
     AddUser_getCode();
-    //
 }
 
 function AddUser_getCode() {
@@ -226,10 +222,6 @@ function AddUser_getUserTokenSuccess(resultObj) {
 
 function AddUser_removeEventListener() {
     if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
-
-    Main_RemoveClass('scenefeed', 'avoidclicks');
-    Main_RemoveClass('scene_keys', 'avoidclicks');
-    OSInterface_AvoidClicks(false);
 }
 
 function AddUser_RemoveinputFocus(EnaKeydown) {
