@@ -207,7 +207,8 @@ function Screens_first_init() {
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
     }
 
-    //prevent user stuck in user screen without proper token
+    //prevent user stuck in user screen without proper user
+    //user may be removed in case the user removes app access
     if (!AddUser_UserIsSet() &&
         (Main_GoBefore === Main_UserLive ||
             Main_GoBefore === Main_usergames ||
