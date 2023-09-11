@@ -238,6 +238,21 @@ function Screens_first_init() {
         }
     } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search && Main_GoBefore !== Main_Password) {
         if (Main_newUsercode) Main_HideLoadDialog();
+
+        if (
+            !AddUser_UserIsSet() &&
+            (Main_GoBefore === Main_UserLive ||
+                Main_GoBefore === Main_usergames ||
+                Main_GoBefore === Main_UserVod ||
+                Main_GoBefore === Main_UserChannels ||
+                Main_GoBefore === Main_HistoryLive ||
+                Main_GoBefore === Main_HistoryVod ||
+                Main_GoBefore === Main_HistoryClip ||
+                Main_GoBefore === Main_Blocked)
+        ) {
+            Main_GoBefore = Main_Live;
+        }
+
         ScreenObj[Main_GoBefore].init_fun();
 
         if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
