@@ -13,6 +13,7 @@ Web Version September 11 2023 and Apk Version 3.0.349
 ==============
 
 * Add new user logging method that allows you to fully use yours privileged in the app
+* Note: after opening this update there will be no user, after adding a user history and blocked configuration will be restored
 * Add follow/unfollow buttons back
 * General improves
 
