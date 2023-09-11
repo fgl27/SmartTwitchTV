@@ -99,7 +99,13 @@ function AddUser_getCodeSuccess(resultObj) {
         var data = JSON.parse(resultObj.responseText);
         var codeDiv = STR_BR + STR_BR + AddUser_insertString(data.user_code, data.user_code.length / 2, '-') + STR_BR + STR_BR;
 
-        var urlDiv = STR_DIV_LINK + DefaultMakeLink(data.verification_uri) + '</div>';
+        var urlDiv;
+        if (Main_IsOn_OSInterface) {
+            urlDiv = '<div style="color: ' + LINK_COLOR + '; text-decoration:none;">' + data.verification_uri + '</div>';
+        } else {
+            urlDiv = STR_DIV_LINK + DefaultMakeLink(data.verification_uri) + '</div>';
+        }
+
         AddUser_DeviceCode = data.device_code;
 
         Main_innerHTMLWithEle(Main_AddUserText, STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));

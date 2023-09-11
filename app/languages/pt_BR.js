@@ -869,7 +869,7 @@ function pt_BRLang() {
     STR_NO_TOKEN_WARNING_429 =
         'O aplicativo está falhando ao carregar o conteúdo devido a uma limitação da API do Twitch, para corrigir isso, adicione um usuário e um token de autorização.';
 
-    STR_ADD_USER_TEXT = 'Visite %site e digite o código: %code';
+    STR_ADD_USER_TEXT = 'Visite %site em outro aparelho e digite o código: %code';
     STR_ADD_USER_TEXT_COUNTER = 'Verificando confirmação de acesso em %d...';
     STR_ADD_USER_TEXT_COUNTER_NOW = 'Verificando agora!';
     STR_ADD_ERROR = 'Sem acessar o serviço de adição de usuário';
