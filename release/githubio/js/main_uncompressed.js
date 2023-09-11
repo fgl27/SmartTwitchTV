@@ -2134,7 +2134,7 @@
         STR_NO_TOKEN_WARNING_429 =
             'The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token.';
 
-        STR_ADD_USER_TEXT = 'Visit %site and enter the code: %code';
+        STR_ADD_USER_TEXT = 'Visit %site on another device and enter the code: %code';
         STR_ADD_USER_TEXT_COUNTER = 'Checking access confirmation in %d...';
         STR_ADD_USER_TEXT_COUNTER_NOW = 'Checking now!';
         STR_ADD_ERROR = "Can't access the add user service";
@@ -3566,7 +3566,7 @@
         STR_NO_TOKEN_WARNING_429 =
             'O aplicativo está falhando ao carregar o conteúdo devido a uma limitação da API do Twitch, para corrigir isso, adicione um usuário e um token de autorização.';
 
-        STR_ADD_USER_TEXT = 'Visite %site e digite o código: %code';
+        STR_ADD_USER_TEXT = 'Visite %site em outro aparelho e digite o código: %code';
         STR_ADD_USER_TEXT_COUNTER = 'Verificando confirmação de acesso em %d...';
         STR_ADD_USER_TEXT_COUNTER_NOW = 'Verificando agora!';
         STR_ADD_ERROR = 'Sem acessar o serviço de adição de usuário';
@@ -5412,12 +5412,8 @@
     var AddUser_inputFocusId;
 
     function AddUser_inputFocus() {
-        Main_AddClass('scenefeed', 'avoidclicks');
-        Main_AddClass('scene_keys', 'avoidclicks');
-        OSInterface_AvoidClicks(true);
         Main_addEventListener('keydown', AddUser_handleKeyDown);
         AddUser_getCode();
-        //
     }
 
     function AddUser_getCode() {
@@ -5444,7 +5440,13 @@
             var data = JSON.parse(resultObj.responseText);
             var codeDiv = STR_BR + STR_BR + AddUser_insertString(data.user_code, data.user_code.length / 2, '-') + STR_BR + STR_BR;
 
-            var urlDiv = STR_DIV_LINK + DefaultMakeLink(data.verification_uri) + '</div>';
+            var urlDiv;
+            if (Main_IsOn_OSInterface) {
+                urlDiv = '<div style="color: ' + LINK_COLOR + '; text-decoration:none;">' + data.verification_uri + '</div>';
+            } else {
+                urlDiv = STR_DIV_LINK + DefaultMakeLink(data.verification_uri) + '</div>';
+            }
+
             AddUser_DeviceCode = data.device_code;
 
             Main_innerHTMLWithEle(Main_AddUserText, STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
@@ -5567,10 +5569,6 @@
 
     function AddUser_removeEventListener() {
         if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
-
-        Main_RemoveClass('scenefeed', 'avoidclicks');
-        Main_RemoveClass('scene_keys', 'avoidclicks');
-        OSInterface_AvoidClicks(false);
     }
 
     function AddUser_RemoveinputFocus(EnaKeydown) {
@@ -17844,9 +17842,9 @@
         );
     }
 
-    function Play_ResetProxy() {
-        Play_A_Control(Settings_get_enabled_Proxy(), Play_controlsProxy);
-    }
+    // function Play_ResetProxy() {
+    //     Play_A_Control(Settings_get_enabled_Proxy(), Play_controlsProxy);
+    // }
 
     function Play_ResetQualityControls() {
         if (Play_MultiEnable) {
@@ -19625,7 +19623,7 @@
     var Play_controlsChatSend = temp_controls_pos++;
 
     var Play_controlsPlayerStatus = temp_controls_pos++;
-    var Play_controlsProxy = temp_controls_pos++;
+    //var Play_controlsProxy = temp_controls_pos++;
     var Play_controlsPreview = temp_controls_pos++;
 
     var Play_controlsChatForceDis = temp_controls_pos++;
@@ -20563,75 +20561,75 @@
             }
         };
 
-        Play_controls[Play_controlsProxy] = {
-            ShowInLive: true,
-            ShowInVod: false,
-            ShowInClip: false,
-            ShowInPP: true,
-            ShowInMulti: true,
-            ShowInChat: false,
-            ShowInAudio: false,
-            ShowInAudioPP: false,
-            ShowInAudioMulti: false,
-            ShowInPreview: false,
-            ShowInStay: false,
-            icons: 'proxy',
-            offsetY: -5,
-            string: PROXY_SERVICE,
-            values: STR_PROXY_CONTROLS_ARRAY,
-            defaultValue: Settings_get_enabled_Proxy(),
-            enterKey: function() {
-                var currentProxyEnabled = Settings_get_enabled_Proxy(),
-                    i,
-                    key;
+        // Play_controls[Play_controlsProxy] = {
+        //     ShowInLive: true,
+        //     ShowInVod: false,
+        //     ShowInClip: false,
+        //     ShowInPP: true,
+        //     ShowInMulti: true,
+        //     ShowInChat: false,
+        //     ShowInAudio: false,
+        //     ShowInAudioPP: false,
+        //     ShowInAudioMulti: false,
+        //     ShowInPreview: false,
+        //     ShowInStay: false,
+        //     icons: 'proxy',
+        //     offsetY: -5,
+        //     string: PROXY_SERVICE,
+        //     values: STR_PROXY_CONTROLS_ARRAY,
+        //     defaultValue: Settings_get_enabled_Proxy(),
+        //     enterKey: function () {
+        //         var currentProxyEnabled = Settings_get_enabled_Proxy(),
+        //             i,
+        //             key;
 
-                if (this.defaultValue < this.values.length - 1) {
-                    key = proxyArray[this.defaultValue];
-                    Settings_value[key].defaultValue = 1;
-                    Main_setItem(key, 2);
-                    Settings_set_all_proxy(key);
-                } else {
-                    //reset all proxy to disable
-                    i = 0;
-                    var len = proxyArray.length;
-                    for (i; i < len; i++) {
-                        key = proxyArray[i];
-                        Settings_value[key].defaultValue = 0;
-                        Main_setItem(key, 1);
-                    }
-                    use_proxy = false;
-                }
+        //         if (this.defaultValue < this.values.length - 1) {
+        //             key = proxyArray[this.defaultValue];
+        //             Settings_value[key].defaultValue = 1;
+        //             Main_setItem(key, 2);
+        //             Settings_set_all_proxy(key);
+        //         } else {
+        //             //reset all proxy to disable
+        //             i = 0;
+        //             var len = proxyArray.length;
+        //             for (i; i < len; i++) {
+        //                 key = proxyArray[i];
+        //                 Settings_value[key].defaultValue = 0;
+        //                 Main_setItem(key, 1);
+        //             }
+        //             use_proxy = false;
+        //         }
 
-                if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled_Proxy()) {
-                    Play_showBufferDialog();
-                    if (Play_MultiEnable) {
-                        i = 0;
+        //         if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled_Proxy()) {
+        //             Play_showBufferDialog();
+        //             if (Play_MultiEnable) {
+        //                 i = 0;
 
-                        for (i; i < Play_MultiArray_length; i++) {
-                            Play_ResumeAfterOnlineMulti(i);
-                        }
-                    } else {
-                        if (PlayExtra_PicturePicture) PlayExtra_Resume();
-                        Play_loadData();
-                    }
-                }
+        //                 for (i; i < Play_MultiArray_length; i++) {
+        //                     Play_ResumeAfterOnlineMulti(i);
+        //                 }
+        //             } else {
+        //                 if (PlayExtra_PicturePicture) PlayExtra_Resume();
+        //                 Play_loadData();
+        //             }
+        //         }
 
-                Play_ResetProxy();
-                Settings_proxy_set_Type();
-            },
-            updown: function(adder) {
-                this.defaultValue += adder;
-                if (this.defaultValue < 0) this.defaultValue = 0;
-                else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
-                this.bottomArrows();
-            },
-            bottomArrows: function() {
-                Play_BottomArrows(this.position);
-            },
-            setLable: function() {
-                Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
-            }
-        };
+        //         Play_ResetProxy();
+        //         Settings_proxy_set_Type();
+        //     },
+        //     updown: function (adder) {
+        //         this.defaultValue += adder;
+        //         if (this.defaultValue < 0) this.defaultValue = 0;
+        //         else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+        //         this.bottomArrows();
+        //     },
+        //     bottomArrows: function () {
+        //         Play_BottomArrows(this.position);
+        //     },
+        //     setLable: function () {
+        //         Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
+        //     }
+        // };
 
         Play_controls[Play_controlsPlayerStatus] = {
             ShowInLive: true,
@@ -21569,7 +21567,7 @@
 
         Play_ResetLowlatency();
         Play_ResetSpeed();
-        Play_ResetProxy();
+        //Play_ResetProxy();
     }
 
     function Play_SetControlsArrows(key) {
@@ -22735,6 +22733,7 @@
 
         //if at te end of a request the values are different we have a issues
         proxy_fail_counter_checker = proxy_fail_counter;
+
         if (use_proxy && isLive && !proxy_has_token) {
             PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, null, null, true);
         } else {
@@ -23274,7 +23273,7 @@
             }
         }
 
-        Play_ResetProxy();
+        //Play_ResetProxy();
     }
 
     // To Force a warn, not used regularly so keep commented out
@@ -24414,7 +24413,7 @@
         //Reset values
         Play_qualityReset();
         Play_ResetSpeed();
-        Play_ResetProxy();
+        //Play_ResetProxy();
         Play_ResetLowlatency();
         Play_controls[Play_controlsBack].enterKey(1, true);
         Play_BottonIconsResetFocus(true);
@@ -24531,27 +24530,26 @@
             (latency !== null ? STR_LATENCY + latency + STR_BR : '') +
             STR_PING +
             ping +
-            STR_AVG +
-            Play_UpdateVideoStatusGetProxy()
+            STR_AVG
         );
     }
 
-    function Play_UpdateVideoStatusGetProxy() {
-        if (!Play_isOn) {
-            return '';
-        }
-        var proxyString = STR_BR + PROXY_SERVICE;
+    // function Play_UpdateVideoStatusGetProxy() {
+    //     if (!Play_isOn) {
+    //         return '';
+    //     }
+    //     var proxyString = STR_BR + PROXY_SERVICE;
 
-        if (!use_proxy) {
-            return proxyString + PROXY_SERVICE_OFF;
-        }
+    //     if (!use_proxy) {
+    //         return proxyString + PROXY_SERVICE_OFF;
+    //     }
 
-        if (proxy_fail_counter > proxy_fail_counter_checker) {
-            return proxyString + PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter);
-        }
+    //     if (proxy_fail_counter > proxy_fail_counter_checker) {
+    //         return proxyString + PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter);
+    //     }
 
-        return proxyString + PROXY_SERVICE_STATUS;
-    }
+    //     return proxyString + PROXY_SERVICE_STATUS;
+    // }
 
     var Play_BufferSize = 0;
 
@@ -27912,10 +27910,21 @@
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
         }
 
-        //prevent user stuck in user screen without proper token
-        if (Main_values.API_Change) {
+        //prevent user stuck in user screen without proper user
+        //user may be removed in case the user removes app access
+        if (!AddUser_UserIsSet() &&
+            (Main_GoBefore === Main_UserLive ||
+                Main_GoBefore === Main_usergames ||
+                Main_GoBefore === Main_UserVod ||
+                Main_GoBefore === Main_UserChannels ||
+                Main_GoBefore === Main_HistoryLive ||
+                Main_GoBefore === Main_HistoryVod ||
+                Main_GoBefore === Main_HistoryClip ||
+                Main_GoBefore === Main_Blocked)
+        ) {
             Main_GoBefore = Main_Live;
         }
+
         Main_values.API_Change = false;
 
         if (StartUser) {
@@ -27943,6 +27952,7 @@
             }
         } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search && Main_GoBefore !== Main_Password) {
             if (Main_newUsercode) Main_HideLoadDialog();
+
             ScreenObj[Main_GoBefore].init_fun();
 
             if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
@@ -36629,7 +36639,7 @@
         div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
         //Dialog settings
-        div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
+        //div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
         div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
         div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
         div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -36793,7 +36803,7 @@
         OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
         Settings_SetPingWarning();
         SettingsColor_SetAnimationStyleRestore();
-        Settings_proxy_set_start();
+        //Settings_proxy_set_start();
         Settings_set_proxy_timeout();
         Settings_set_all_notification();
         Settings_SetLang();
@@ -37168,18 +37178,18 @@
         Settings_proxy_set_Type();
     }
 
-    function Settings_proxy_set_start() {
-        var i = 0,
-            len = proxyArray.length;
-        for (i; i < len; i++) {
-            if (Settings_Obj_default(proxyArray[i]) === 1) {
-                use_proxy = true;
-                Settings_proxy_set_current(proxyArray[i]);
-                break;
-            }
-        }
-        Settings_proxy_set_Type();
-    }
+    // function Settings_proxy_set_start() {
+    //     var i = 0,
+    //         len = proxyArray.length;
+    //     for (i; i < len; i++) {
+    //         if (Settings_Obj_default(proxyArray[i]) === 1) {
+    //             use_proxy = true;
+    //             Settings_proxy_set_current(proxyArray[i]);
+    //             break;
+    //         }
+    //     }
+    //     Settings_proxy_set_Type();
+    // }
 
     function Settings_proxy_set_Type() {
         proxyType = proxyArrayFull[Settings_get_enabled_Proxy()];

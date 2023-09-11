@@ -1379,7 +1379,7 @@ function Settings_set_all_proxy(current) {
     var currentEnable = Settings_Obj_default(current) === 1;
 
     use_proxy = currentEnable;
-    console.log(use_proxy);
+
     if (currentEnable) {
         Settings_proxy_set_current(current);
 

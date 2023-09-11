@@ -66,6 +66,7 @@ function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_
 
     //if at te end of a request the values are different we have a issues
     proxy_fail_counter_checker = proxy_fail_counter;
+
     if (use_proxy && isLive && !proxy_has_token) {
         PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, null, null, true);
     } else {

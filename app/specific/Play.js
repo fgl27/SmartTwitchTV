@@ -1512,27 +1512,26 @@ function Play_UpdateVideoStatus(net_speed, net_act, dropped_frames, buffer_size,
             (latency !== null ? STR_LATENCY + latency + STR_BR : '') +
             STR_PING +
             ping +
-            STR_AVG +
-            Play_UpdateVideoStatusGetProxy()
+            STR_AVG
     );
 }
 
-function Play_UpdateVideoStatusGetProxy() {
-    if (!Play_isOn) {
-        return '';
-    }
-    var proxyString = STR_BR + PROXY_SERVICE;
+// function Play_UpdateVideoStatusGetProxy() {
+//     if (!Play_isOn) {
+//         return '';
+//     }
+//     var proxyString = STR_BR + PROXY_SERVICE;
 
-    if (!use_proxy) {
-        return proxyString + PROXY_SERVICE_OFF;
-    }
+//     if (!use_proxy) {
+//         return proxyString + PROXY_SERVICE_OFF;
+//     }
 
-    if (proxy_fail_counter > proxy_fail_counter_checker) {
-        return proxyString + PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter);
-    }
+//     if (proxy_fail_counter > proxy_fail_counter_checker) {
+//         return proxyString + PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter);
+//     }
 
-    return proxyString + PROXY_SERVICE_STATUS;
-}
+//     return proxyString + PROXY_SERVICE_STATUS;
+// }
 
 var Play_BufferSize = 0;
 function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
