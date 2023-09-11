@@ -200,9 +200,9 @@ function Play_ResetSpeed() {
     );
 }
 
-function Play_ResetProxy() {
-    Play_A_Control(Settings_get_enabled_Proxy(), Play_controlsProxy);
-}
+// function Play_ResetProxy() {
+//     Play_A_Control(Settings_get_enabled_Proxy(), Play_controlsProxy);
+// }
 
 function Play_ResetQualityControls() {
     if (Play_MultiEnable) {
@@ -1979,7 +1979,7 @@ var Play_controlsChatSettings = temp_controls_pos++;
 var Play_controlsChatSend = temp_controls_pos++;
 
 var Play_controlsPlayerStatus = temp_controls_pos++;
-var Play_controlsProxy = temp_controls_pos++;
+//var Play_controlsProxy = temp_controls_pos++;
 var Play_controlsPreview = temp_controls_pos++;
 
 var Play_controlsChatForceDis = temp_controls_pos++;
@@ -2917,75 +2917,75 @@ function Play_MakeControls() {
         }
     };
 
-    Play_controls[Play_controlsProxy] = {
-        ShowInLive: true,
-        ShowInVod: false,
-        ShowInClip: false,
-        ShowInPP: true,
-        ShowInMulti: true,
-        ShowInChat: false,
-        ShowInAudio: false,
-        ShowInAudioPP: false,
-        ShowInAudioMulti: false,
-        ShowInPreview: false,
-        ShowInStay: false,
-        icons: 'proxy',
-        offsetY: -5,
-        string: PROXY_SERVICE,
-        values: STR_PROXY_CONTROLS_ARRAY,
-        defaultValue: Settings_get_enabled_Proxy(),
-        enterKey: function () {
-            var currentProxyEnabled = Settings_get_enabled_Proxy(),
-                i,
-                key;
+    // Play_controls[Play_controlsProxy] = {
+    //     ShowInLive: true,
+    //     ShowInVod: false,
+    //     ShowInClip: false,
+    //     ShowInPP: true,
+    //     ShowInMulti: true,
+    //     ShowInChat: false,
+    //     ShowInAudio: false,
+    //     ShowInAudioPP: false,
+    //     ShowInAudioMulti: false,
+    //     ShowInPreview: false,
+    //     ShowInStay: false,
+    //     icons: 'proxy',
+    //     offsetY: -5,
+    //     string: PROXY_SERVICE,
+    //     values: STR_PROXY_CONTROLS_ARRAY,
+    //     defaultValue: Settings_get_enabled_Proxy(),
+    //     enterKey: function () {
+    //         var currentProxyEnabled = Settings_get_enabled_Proxy(),
+    //             i,
+    //             key;
 
-            if (this.defaultValue < this.values.length - 1) {
-                key = proxyArray[this.defaultValue];
-                Settings_value[key].defaultValue = 1;
-                Main_setItem(key, 2);
-                Settings_set_all_proxy(key);
-            } else {
-                //reset all proxy to disable
-                i = 0;
-                var len = proxyArray.length;
-                for (i; i < len; i++) {
-                    key = proxyArray[i];
-                    Settings_value[key].defaultValue = 0;
-                    Main_setItem(key, 1);
-                }
-                use_proxy = false;
-            }
+    //         if (this.defaultValue < this.values.length - 1) {
+    //             key = proxyArray[this.defaultValue];
+    //             Settings_value[key].defaultValue = 1;
+    //             Main_setItem(key, 2);
+    //             Settings_set_all_proxy(key);
+    //         } else {
+    //             //reset all proxy to disable
+    //             i = 0;
+    //             var len = proxyArray.length;
+    //             for (i; i < len; i++) {
+    //                 key = proxyArray[i];
+    //                 Settings_value[key].defaultValue = 0;
+    //                 Main_setItem(key, 1);
+    //             }
+    //             use_proxy = false;
+    //         }
 
-            if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled_Proxy()) {
-                Play_showBufferDialog();
-                if (Play_MultiEnable) {
-                    i = 0;
+    //         if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled_Proxy()) {
+    //             Play_showBufferDialog();
+    //             if (Play_MultiEnable) {
+    //                 i = 0;
 
-                    for (i; i < Play_MultiArray_length; i++) {
-                        Play_ResumeAfterOnlineMulti(i);
-                    }
-                } else {
-                    if (PlayExtra_PicturePicture) PlayExtra_Resume();
-                    Play_loadData();
-                }
-            }
+    //                 for (i; i < Play_MultiArray_length; i++) {
+    //                     Play_ResumeAfterOnlineMulti(i);
+    //                 }
+    //             } else {
+    //                 if (PlayExtra_PicturePicture) PlayExtra_Resume();
+    //                 Play_loadData();
+    //             }
+    //         }
 
-            Play_ResetProxy();
-            Settings_proxy_set_Type();
-        },
-        updown: function (adder) {
-            this.defaultValue += adder;
-            if (this.defaultValue < 0) this.defaultValue = 0;
-            else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
-            this.bottomArrows();
-        },
-        bottomArrows: function () {
-            Play_BottomArrows(this.position);
-        },
-        setLable: function () {
-            Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
-        }
-    };
+    //         Play_ResetProxy();
+    //         Settings_proxy_set_Type();
+    //     },
+    //     updown: function (adder) {
+    //         this.defaultValue += adder;
+    //         if (this.defaultValue < 0) this.defaultValue = 0;
+    //         else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+    //         this.bottomArrows();
+    //     },
+    //     bottomArrows: function () {
+    //         Play_BottomArrows(this.position);
+    //     },
+    //     setLable: function () {
+    //         Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
+    //     }
+    // };
 
     Play_controls[Play_controlsPlayerStatus] = {
         ShowInLive: true,
@@ -3923,7 +3923,7 @@ function Play_MakeControls() {
 
     Play_ResetLowlatency();
     Play_ResetSpeed();
-    Play_ResetProxy();
+    //Play_ResetProxy();
 }
 
 function Play_SetControlsArrows(key) {

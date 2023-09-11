@@ -858,7 +858,7 @@ function Settings_SetSettings() {
     div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
     //Dialog settings
-    div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
+    //div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
     div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -1022,7 +1022,7 @@ function Settings_SetDefaults() {
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
-    Settings_proxy_set_start();
+    //Settings_proxy_set_start();
     Settings_set_proxy_timeout();
     Settings_set_all_notification();
     Settings_SetLang();
@@ -1379,7 +1379,7 @@ function Settings_set_all_proxy(current) {
     var currentEnable = Settings_Obj_default(current) === 1;
 
     use_proxy = currentEnable;
-
+    console.log(use_proxy);
     if (currentEnable) {
         Settings_proxy_set_current(current);
 
@@ -1394,18 +1394,18 @@ function Settings_set_all_proxy(current) {
     Settings_proxy_set_Type();
 }
 
-function Settings_proxy_set_start() {
-    var i = 0,
-        len = proxyArray.length;
-    for (i; i < len; i++) {
-        if (Settings_Obj_default(proxyArray[i]) === 1) {
-            use_proxy = true;
-            Settings_proxy_set_current(proxyArray[i]);
-            break;
-        }
-    }
-    Settings_proxy_set_Type();
-}
+// function Settings_proxy_set_start() {
+//     var i = 0,
+//         len = proxyArray.length;
+//     for (i; i < len; i++) {
+//         if (Settings_Obj_default(proxyArray[i]) === 1) {
+//             use_proxy = true;
+//             Settings_proxy_set_current(proxyArray[i]);
+//             break;
+//         }
+//     }
+//     Settings_proxy_set_Type();
+// }
 
 function Settings_proxy_set_Type() {
     proxyType = proxyArrayFull[Settings_get_enabled_Proxy()];
