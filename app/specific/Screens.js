@@ -208,9 +208,19 @@ function Screens_first_init() {
     }
 
     //prevent user stuck in user screen without proper token
-    if (Main_values.API_Change) {
+    if (!AddUser_UserIsSet() &&
+        (Main_GoBefore === Main_UserLive ||
+            Main_GoBefore === Main_usergames ||
+            Main_GoBefore === Main_UserVod ||
+            Main_GoBefore === Main_UserChannels ||
+            Main_GoBefore === Main_HistoryLive ||
+            Main_GoBefore === Main_HistoryVod ||
+            Main_GoBefore === Main_HistoryClip ||
+            Main_GoBefore === Main_Blocked)
+    ) {
         Main_GoBefore = Main_Live;
     }
+
     Main_values.API_Change = false;
 
     if (StartUser) {
@@ -238,20 +248,6 @@ function Screens_first_init() {
         }
     } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search && Main_GoBefore !== Main_Password) {
         if (Main_newUsercode) Main_HideLoadDialog();
-
-        if (
-            !AddUser_UserIsSet() &&
-            (Main_GoBefore === Main_UserLive ||
-                Main_GoBefore === Main_usergames ||
-                Main_GoBefore === Main_UserVod ||
-                Main_GoBefore === Main_UserChannels ||
-                Main_GoBefore === Main_HistoryLive ||
-                Main_GoBefore === Main_HistoryVod ||
-                Main_GoBefore === Main_HistoryClip ||
-                Main_GoBefore === Main_Blocked)
-        ) {
-            Main_GoBefore = Main_Live;
-        }
 
         ScreenObj[Main_GoBefore].init_fun();
 
