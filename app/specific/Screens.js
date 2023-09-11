@@ -3939,8 +3939,7 @@ function AGame_CheckFollowGameReady(obj, key, ID) {
 
 function AGame_setFollow() {
     if (Main_values.Main_Go !== Main_aGame) return;
-    console.log(AGame_following);
-    //return;
+
     if (AGame_following) {
         Main_innerHTML(
             ScreenObj[Main_aGame].ids[2] + '-1_2',

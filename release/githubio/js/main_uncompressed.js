@@ -771,6 +771,11 @@
     var STR_BLOCK_EMPTY_CONTENT;
     var STR_NO_TOKEN_WARNING;
     var STR_NO_TOKEN_WARNING_429;
+    var STR_ADD_USER_TEXT;
+    var STR_ADD_USER_TEXT_COUNTER;
+    var STR_ADD_USER_TEXT_COUNTER_NOW;
+    var STR_ADD_ERROR;
+    var STR_USER_TOKEN_ERROR;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -2128,6 +2133,12 @@
         STR_NO_TOKEN_WARNING = 'Without adding a user and authorization token the app, may fail to load the content, this is a Twitch API limitation';
         STR_NO_TOKEN_WARNING_429 =
             'The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token.';
+
+        STR_ADD_USER_TEXT = 'Visit %site and enter the code: %code';
+        STR_ADD_USER_TEXT_COUNTER = 'Checking access confirmation in %d...';
+        STR_ADD_USER_TEXT_COUNTER_NOW = 'Checking now!';
+        STR_ADD_ERROR = "Can't access the add user service";
+        STR_USER_TOKEN_ERROR = 'Lost access to current user, please revise the user section';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3554,6 +3565,12 @@
             'Sem adicionar um usuário e token de autorização, o aplicativo pode falhar ao carregar o conteúdo, esta é uma limitação da API do Twitch';
         STR_NO_TOKEN_WARNING_429 =
             'O aplicativo está falhando ao carregar o conteúdo devido a uma limitação da API do Twitch, para corrigir isso, adicione um usuário e um token de autorização.';
+
+        STR_ADD_USER_TEXT = 'Visite %site e digite o código: %code';
+        STR_ADD_USER_TEXT_COUNTER = 'Verificando confirmação de acesso em %d...';
+        STR_ADD_USER_TEXT_COUNTER_NOW = 'Verificando agora!';
+        STR_ADD_ERROR = 'Sem acessar o serviço de adição de usuário';
+        STR_USER_TOKEN_ERROR = 'Aacesso ao usuário atual perdido, revise a seção de usuários';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4640,11 +4657,19 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-        WebVersion: 'August 08 2023',
-        WebTag: 669, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 349, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/349/SmartTV_twitch_3_0_349.apk',
+        WebVersion: 'September 11 2023',
+        WebTag: 671, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version September 11 2023 and Apk Version 3.0.349',
+                changes: [
+                    'Add new user logging method that allows you to fully use yours privileged in the app',
+                    'Add follow/unfollow buttons back',
+                    'General improves'
+                ]
+            },
+            {
                 title: 'Web Version August 08 2023',
                 changes: [
                     'Add an option to block channels and games, use the thumbnail option to set by holding left above any thumbnail, then press enter above the channel or game to block',
@@ -4666,14 +4691,6 @@
             {
                 title: 'Web Version June 17 2023',
                 changes: ['Add Screen off (Audio only) option to player', 'General improves']
-            },
-            {
-                title: 'Web Version June 11 2023',
-                changes: ['Add setting options to block Mature content']
-            },
-            {
-                title: 'Web Version June 03 2023',
-                changes: ['General chat improves']
             }
         ]
     };
@@ -4703,9 +4720,9 @@
     var AddCode_IsSub = false;
     var AddCode_PlayRequest = false;
     var AddCode_Channel_id = '';
-    var AddCode_Expires_in_offset = 100;
+    //var AddCode_Expires_in_offset = 100;
 
-    var AddCode_Scopes = ['user:read:follows', 'user:read:subscriptions', 'chat:edit', 'chat:read'];
+    var AddCode_Scopes = ['chat:edit', 'chat:read', 'user:read:follows', 'user:read:subscriptions', 'user_follows_edit', 'user_read'];
     //Variable initialization end
 
     function AddCode_CheckNewCode(code) {
@@ -4714,130 +4731,130 @@
         AddCode_requestTokens();
     }
 
-    function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
-        //Main_Log('AddCode_refreshTokens ' + position);
+    // function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
+    //     //Main_Log('AddCode_refreshTokens ' + position);
 
-        if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
-            if (callbackFuncNOK) callbackFuncNOK();
+    //     if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
+    //         if (callbackFuncNOK) callbackFuncNOK();
 
-            return;
-        }
+    //         return;
+    //     }
 
-        var url =
-            AddCode_UrlToken +
-            'grant_type=refresh_token&client_id=' +
-            AddCode_clientId +
-            '&client_secret=' +
-            AddCode_client_token +
-            '&refresh_token=' +
-            AddUser_UsernameArray[position].refresh_token +
-            '&redirect_uri=' +
-            AddCode_redirect_uri;
+    //     var url =
+    //         AddCode_UrlToken +
+    //         'grant_type=refresh_token&client_id=' +
+    //         AddCode_clientId +
+    //         '&client_secret=' +
+    //         AddCode_client_token +
+    //         '&refresh_token=' +
+    //         AddUser_UsernameArray[position].refresh_token +
+    //         '&redirect_uri=' +
+    //         AddCode_redirect_uri;
 
-        //Run in synchronous mode to prevent anything happening until user token is restored
-        if (Main_IsOn_OSInterface && sync) {
-            AddCode_refreshTokensReady(
-                position,
-                callbackFunc,
-                callbackFuncNOK,
-                key,
-                JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
-            );
-        } else {
-            if (!Main_IsOn_OSInterface) {
-                var xmlHttp = new XMLHttpRequest();
+    //     //Run in synchronous mode to prevent anything happening until user token is restored
+    //     if (Main_IsOn_OSInterface && sync) {
+    //         AddCode_refreshTokensReady(
+    //             position,
+    //             callbackFunc,
+    //             callbackFuncNOK,
+    //             key,
+    //             JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
+    //         );
+    //     } else {
+    //         if (!Main_IsOn_OSInterface) {
+    //             var xmlHttp = new XMLHttpRequest();
 
-                xmlHttp.open('POST', url, true);
-                xmlHttp.timeout = DefaultHttpGetTimeout;
+    //             xmlHttp.open('POST', url, true);
+    //             xmlHttp.timeout = DefaultHttpGetTimeout;
 
-                xmlHttp.onreadystatechange = function() {
-                    if (this.readyState === 4) {
-                        //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                        AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
-                    }
-                };
+    //             xmlHttp.onreadystatechange = function () {
+    //                 if (this.readyState === 4) {
+    //                     //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
+    //                     AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
+    //                 }
+    //             };
 
-                xmlHttp.send(null);
-            } else {
-                OSInterface_BaseXmlHttpGet(
-                    url,
-                    DefaultHttpGetTimeout,
-                    null,
-                    'POST',
-                    null,
-                    'AddCode_refreshTokensResult',
-                    position,
-                    key,
-                    callbackFunc ? callbackFunc.name : null,
-                    callbackFuncNOK ? callbackFuncNOK.name : null
-                );
-            }
-        }
-    }
+    //             xmlHttp.send(null);
+    //         } else {
+    //             OSInterface_BaseXmlHttpGet(
+    //                 url,
+    //                 DefaultHttpGetTimeout,
+    //                 null,
+    //                 'POST',
+    //                 null,
+    //                 'AddCode_refreshTokensResult',
+    //                 position,
+    //                 key,
+    //                 callbackFunc ? callbackFunc.name : null,
+    //                 callbackFuncNOK ? callbackFuncNOK.name : null
+    //             );
+    //         }
+    //     }
+    // }
 
-    function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
-        AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
-    }
+    // function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
+    //     AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
+    // }
 
-    function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
-        if (xmlHttp.status === 200) {
-            AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
-            return;
-        } else {
-            try {
-                var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
-                if (response) {
-                    if (Main_A_includes_B(response, 'Invalid refresh token')) {
-                        AddCode_requestTokensFailRunning(position);
-                        if (callbackFuncNOK) callbackFuncNOK(key);
+    // function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+    //     if (xmlHttp.status === 200) {
+    //         AddCode_refreshTokensSuccess(xmlHttp.responseText, position, callbackFunc, key);
+    //         return;
+    //     } else {
+    //         try {
+    //             var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
+    //             if (response) {
+    //                 if (Main_A_includes_B(response, 'Invalid refresh token')) {
+    //                     AddCode_requestTokensFailRunning(position);
+    //                     if (callbackFuncNOK) callbackFuncNOK(key);
 
-                        return;
-                    }
-                }
-            } catch (e) {
-                Main_Log('AddCode_refreshTokens e ' + e);
-            }
-        }
+    //                     return;
+    //                 }
+    //             }
+    //         } catch (e) {
+    //             Main_Log('AddCode_refreshTokens e ' + e);
+    //         }
+    //     }
 
-        AddCode_refreshTokensError(callbackFuncNOK, key);
-    }
+    //     AddCode_refreshTokensError(callbackFuncNOK, key);
+    // }
 
-    function AddCode_refreshTokensError(callbackFuncNOK, key) {
-        if (callbackFuncNOK) callbackFuncNOK(key);
-    }
+    // function AddCode_refreshTokensError(callbackFuncNOK, key) {
+    //     if (callbackFuncNOK) callbackFuncNOK(key);
+    // }
 
-    function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
-        var response = JSON.parse(responseText);
-        if (AddCode_TokensCheckScope(response.scope)) {
-            AddUser_UsernameArray[position].access_token = response.access_token;
-            AddUser_UsernameArray[position].refresh_token = response.refresh_token;
-            AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
-            AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
-            //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
+    // function AddCode_refreshTokensSuccess(responseText, position, callbackFunc, key) {
+    //     var response = JSON.parse(responseText);
+    //     if (AddCode_TokensCheckScope(response.scope)) {
+    //         AddUser_UsernameArray[position].access_token = response.access_token;
+    //         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
+    //         AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
+    //         AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
+    //         //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
-            if (!position) {
-                HttpGetSetUserHeader();
-            }
+    //         if (!position) {
+    //             HttpGetSetUserHeader();
+    //         }
 
-            AddUser_SaveUserArray();
+    //         AddUser_SaveUserArray();
 
-            AddCode_Refreshtimeout(position);
-        } else AddCode_requestTokensFailRunning(position);
+    //         //AddCode_Refreshtimeout(position);
+    //     } else AddCode_requestTokensFailRunning(position);
 
-        if (callbackFunc) callbackFunc(key);
-    }
+    //     if (callbackFunc) callbackFunc(key);
+    // }
 
     //Check if has all scopes, in canse they change
-    function AddCode_TokensCheckScope(scope) {
-        var i = 0,
-            len = AddCode_Scopes.length;
+    // function AddCode_TokensCheckScope(scope) {
+    //     var i = 0,
+    //         len = AddCode_Scopes.length;
 
-        for (i; i < len; i++) {
-            if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
-        }
+    //     for (i; i < len; i++) {
+    //         if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     function AddCode_requestTokens() {
         var theUrl =
@@ -4851,10 +4868,10 @@
             '&redirect_uri=' +
             AddCode_redirect_uri;
 
-        FullxmlHttpGet(theUrl, null, AddCode_requestTokensSucess, noop_fun, 0, 0, 'POST', null);
+        FullxmlHttpGet(theUrl, null, AddCode_requestTokensSuccess, noop_fun, 0, 0, 'POST', null);
     }
 
-    function AddCode_requestTokensSucess(obj) {
+    function AddCode_requestTokensSuccess(obj) {
         if (obj.status === 200) {
             var response = JSON.parse(obj.responseText);
             AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
@@ -4865,7 +4882,7 @@
                 [
                     [Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token]
                 ],
-                AddCode_requestTokensSucessValidate,
+                AddCode_requestTokensSuccessValidate,
                 noop_fun,
                 0,
                 0,
@@ -4890,24 +4907,24 @@
         AddUser_SaveUserArray();
     }
 
-    function AddCode_requestTokensFailRunning(position) {
-        //Token fail remove it and warn
-        Users_status = false;
-        Main_HideLoadDialog();
-        AddUser_UsernameArray[position].access_token = 0;
-        AddUser_UsernameArray[position].refresh_token = 0;
-        AddUser_SaveUserArray();
-        Main_SaveValues();
-    }
+    // function AddCode_requestTokensFailRunning(position) {
+    //     //Token fail remove it and warn
+    //     Users_status = false;
+    //     Main_HideLoadDialog();
+    //     AddUser_UsernameArray[position].access_token = 0;
+    //     AddUser_UsernameArray[position].refresh_token = 0;
+    //     AddUser_SaveUserArray();
+    //     Main_SaveValues();
+    // }
 
-    function AddCode_requestTokensSucessValidate(obj, position) {
-        if (obj.status === 200) AddCode_CheckOauthTokenSucess(obj.responseText);
+    function AddCode_requestTokensSuccessValidate(obj, position) {
+        if (obj.status === 200) AddCode_CheckOauthTokenSuccess(obj.responseText);
         else AddCode_requestTokensFail(position);
     }
 
     var checkiko;
 
-    function AddCode_CheckOauthTokenSucess(response) {
+    function AddCode_CheckOauthTokenSuccess(response) {
         var token = JSON.parse(response);
 
         if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
@@ -5030,7 +5047,7 @@
 
     function AddCode_AppTokenReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
         if (xmlHttp.status === 200) {
-            AddCode_AppTokenSucess(xmlHttp.responseText, position, callbackFunc, key);
+            AddCode_AppTokenSuccess(xmlHttp.responseText, position, callbackFunc, key);
             return;
         }
 
@@ -5041,7 +5058,7 @@
         if (callbackFuncNOK) callbackFuncNOK(key);
     }
 
-    function AddCode_AppTokenSucess(responseText, position, callbackFunc, key) {
+    function AddCode_AppTokenSuccess(responseText, position, callbackFunc, key) {
         var response = JSON.parse(responseText);
 
         if (response) {
@@ -5057,77 +5074,98 @@
         Main_SaveValues();
     }
 
-    function AddCode_CheckTokenStart(position) {
-        if (Main_IsOn_OSInterface && !position) {
-            var obj = OSInterface_mMethodUrlHeaders(
-                AddCode_ValidateUrl,
-                DefaultHttpGetTimeout,
-                null,
-                null,
-                0,
-                JSON.stringify([
-                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
-                ])
-            );
+    function AddCode_validateToken(position) {
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Bearer + AddUser_UsernameArray[position].access_token]
+        ];
 
-            if (obj) {
-                obj = JSON.parse(obj);
+        FullxmlHttpGet(AddCode_ValidateUrl, header, AddCode_validateTokenSuccess, noop_fun, position, 0, null, null);
+    }
 
-                if (obj) {
-                    AddCode_CheckTokenReady(obj, position);
-                    return;
-                }
+    function AddCode_validateTokenSuccess(resultObj, position) {
+        if (resultObj.status !== 200) {
+            AddUser_removeUser(position, true);
+
+            if (!position) {
+                AddUser_SaveNewUserRefreshTokens(position);
             }
 
-            AddCode_refreshTokens(position, null, null, null, !position); //token expired
-        } else {
-            FullxmlHttpGet(
-                AddCode_ValidateUrl,
-                [
-                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
-                ],
-                AddCode_CheckTokenReady,
-                noop_fun,
-                position,
-                0,
-                null,
-                null
-            );
+            Main_SaveValues();
+
+            Main_setTimeout(function() {
+                Main_showWarningDialog(STR_USER_TOKEN_ERROR, 5000);
+            }, 3500);
         }
     }
 
-    function AddCode_CheckTokenReady(obj, position) {
-        if (obj.status === 200) {
-            AddCode_CheckTokenSuccess(obj.responseText, position);
-        } else {
-            AddCode_refreshTokens(position, null, null, null, !position); //token expired
-        }
-    }
+    // function AddCode_CheckTokenStart(position) {
+    //     if (Main_IsOn_OSInterface && !position) {
+    //         var obj = OSInterface_mMethodUrlHeaders(
+    //             AddCode_ValidateUrl,
+    //             DefaultHttpGetTimeout,
+    //             null,
+    //             null,
+    //             0,
+    //             JSON.stringify([[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]])
+    //         );
 
-    function AddCode_CheckTokenSuccess(responseText, position) {
-        var token = JSON.parse(responseText);
+    //         if (obj) {
+    //             obj = JSON.parse(obj);
 
-        if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
-        else if (token.hasOwnProperty('expires_in')) {
-            AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
-            AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
-            AddCode_Refreshtimeout(position);
-        }
-    }
+    //             if (obj) {
+    //                 AddCode_CheckTokenReady(obj, position);
+    //                 return;
+    //             }
+    //         }
 
-    function AddCode_Refreshtimeout(position) {
-        if (AddUser_UsernameArray[position].access_token) {
-            AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
-                function() {
-                    AddCode_refreshTokens(position, null, null);
-                },
-                AddUser_UsernameArray[position].expires_in,
-                AddUser_UsernameArray[position].timeout_id
-            );
-        } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
+    //         AddCode_refreshTokens(position, null, null, null, !position); //token expired
+    //     } else {
+    //         FullxmlHttpGet(
+    //             AddCode_ValidateUrl,
+    //             [[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]],
+    //             AddCode_CheckTokenReady,
+    //             noop_fun,
+    //             position,
+    //             0,
+    //             null,
+    //             null
+    //         );
+    //     }
+    // }
 
-        //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
-    }
+    // function AddCode_CheckTokenReady(obj, position) {
+    //     if (obj.status === 200) {
+    //         AddCode_CheckTokenSuccess(obj.responseText, position);
+    //     } else {
+    //         AddCode_refreshTokens(position, null, null, null, !position); //token expired
+    //     }
+    // }
+
+    // function AddCode_CheckTokenSuccess(responseText, position) {
+    //     var token = JSON.parse(responseText);
+
+    //     if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
+    //     else if (token.hasOwnProperty('expires_in')) {
+    //         AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
+    //         AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
+    //         //AddCode_Refreshtimeout(position);
+    //     }
+    // }
+
+    // function AddCode_Refreshtimeout(position) {
+    //     if (AddUser_UsernameArray[position].access_token) {
+    //         AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
+    //             function () {
+    //                 AddCode_refreshTokens(position, null, null);
+    //             },
+    //             AddUser_UsernameArray[position].expires_in,
+    //             AddUser_UsernameArray[position].timeout_id
+    //         );
+    //     } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
+
+    //     //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
+    // }
 
     function AddCode_CheckFollow() {
         AddCode_IsFollowing = false;
@@ -5175,61 +5213,80 @@
         else ChannelContent_setFollow();
     }
 
-    function AddCode_Follow() {
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
+    var AddCode_FollowQuery =
+        '{"operationName":"FollowButton_FollowUser","variables":{"input":{"disableNotifications":true,"targetID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"800e7346bdf7e5278a3c1d3f21b2b56e2639928f86815677a7126b093b2fdd08"}}}';
 
-        FullxmlHttpGet(theUrl, Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token), AddCode_FollowSucess, noop_fun, 0, 0, 'PUT', null);
+    function AddCode_Follow() {
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+        ];
+
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            header,
+            AddCode_FollowSucess,
+            noop_fun,
+            0,
+            0,
+            'POST', //Method, null for get
+            AddCode_FollowQuery.replace('%x', AddCode_Channel_id)
+        );
     }
 
     function AddCode_FollowSucess(obj) {
         if (obj.status === 200) {
-            //success user now is following the channel
+            var data = JSON.parse(obj.responseText).data;
 
-            AddCode_IsFollowing = true;
-
-            if (AddCode_PlayRequest) {
-                Play_setFollow();
-                ChatLive_checkFallowSuccessUpdate(obj.responseText, 0);
-            } else ChannelContent_setFollow();
-
-            return;
+            AddCode_IsFollowing = Boolean(data.followUser);
         } else if (obj.status === 401 || obj.status === 403) {
             //token expired
 
-            AddCode_refreshTokens(0, AddCode_Follow, null);
+            AddCode_validateToken(0);
         }
+
+        if (AddCode_PlayRequest) {
+            Play_setFollow();
+            ChatLive_checkFallowSuccessUpdate(obj.responseText, 0);
+        } else ChannelContent_setFollow();
     }
 
+    var AddCode_UnFollowQuery =
+        '{"operationName":"FollowButton_UnfollowUser","variables":{"input":{"targetID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"f7dae976ebf41c755ae2d758546bfd176b4eeb856656098bb40e0a672ca0d880"}}} ';
+
     function AddCode_UnFollow() {
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+        ];
 
         FullxmlHttpGet(
-            theUrl,
-            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+            PlayClip_BaseUrl,
+            header,
             AddCode_UnFollowSucess,
             noop_fun,
             0,
             0,
-            'DELETE',
-            null
+            'POST', //Method, null for get
+            AddCode_UnFollowQuery.replace('%x', AddCode_Channel_id)
         );
     }
 
-    function AddCode_UnFollowSucess(xmlHttp) {
-        if (xmlHttp.status === 204) {
-            //success user is now not following the channel
+    function AddCode_UnFollowSucess(obj) {
+        if (obj.status === 200) {
+            var data = JSON.parse(obj.responseText).data;
 
-            AddCode_IsFollowing = false;
-
-            if (AddCode_PlayRequest) {
-                Play_setFollow();
-                ChatLive_FollowState[0].follows = false;
-            } else ChannelContent_setFollow();
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) {
+            AddCode_IsFollowing = !Boolean(data.unfollowUser);
+        } else if (obj.status === 401 || obj.status === 403) {
             //token expired
 
-            AddCode_refreshTokens(0, AddCode_UnFollow, null);
+            AddCode_validateToken(0);
         }
+
+        if (AddCode_PlayRequest) {
+            Play_setFollow();
+            ChatLive_FollowState[0].follows = false;
+        } else ChannelContent_setFollow();
     }
 
     function AddCode_CheckSub() {
@@ -5258,7 +5315,8 @@
         } else if (obj.status === 401 || obj.status === 403) {
             //token expired
 
-            AddCode_refreshTokens(0, AddCode_CheckSub, AddCode_CheckSubSucessFail);
+            AddCode_validateToken(0);
+            PlayVod_isSub();
         } else {
             // internet error
             AddCode_CheckSubSucessFail();
@@ -5276,11 +5334,12 @@
     //none public get yours link above is free
     var AddCode_main_token;
     var AddCode_client_token = 'bmFsejdnYmxhc3l3bzY2cGN5d2lnNzdyNmc5aG9u';
-    var AddCode_backup_client_id = 'a2ltbmU3OGt4M25jeDZicmdvNG12NndraTVoMWtv';
+    var AddCode_backup_client_id = 'dWU2NjY2cW85ODN0c3g2c28xdDB2bmF3aTIzM3dh';
     var Chat_token = 'a2QxdW5iNGIzcTR0NThmd2xwY2J6Y2JubTc2YThmcA==';
 
-    var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
-    var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
+    var AddCode_Url = 'https://id.twitch.tv/oauth2/';
+    var AddCode_UrlToken = AddCode_Url + 'token?';
+    var AddCode_ValidateUrl = AddCode_Url + 'validate';
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -5304,16 +5363,15 @@
     //Variable initialization
     var AddUser_UsernameArray = [];
     var AddUser_Username = null;
-    var AddUser_loadingData = false;
-    var AddUser_keyBoardOn = false;
     //Variable initialization end
 
     function AddUser_init() {
         Main_values.Main_Go = Main_addUser;
         ScreensObj_SetTopLable(STR_USER_ADD);
         Main_HideWarningDialog();
-        Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
+        Main_showLoadDialog();
         Main_ShowElement('add_user_scroll');
+        Main_HideElementWithEle(Main_AddUserTextHolder);
         AddUser_inputFocus();
     }
 
@@ -5323,8 +5381,9 @@
 
         AddUser_RemoveinputFocus(false);
         Main_removeEventListener('keydown', AddUser_handleKeyDown);
-        Main_removeEventListener('keydown', AddUser_KeyboardEvent);
         Main_HideElement('add_user_scroll');
+        Main_HideLoadDialog();
+        Main_clearTimeout(AddUser_getCodeCheckId);
     }
 
     function AddUser_handleKeyBack() {
@@ -5337,18 +5396,12 @@
     }
 
     function AddUser_handleKeyDown(event) {
-        if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
+        if (Main_values.Main_Go !== Main_addUser) return;
+
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 AddUser_handleKeyBack();
-                break;
-            case KEY_PLAY:
-            case KEY_PAUSE:
-            case KEY_PLAYPAUSE:
-            case KEY_KEYBOARD_SPACE:
-            case KEY_ENTER:
-                AddUser_inputFocus();
                 break;
             default:
                 break;
@@ -5361,18 +5414,154 @@
         Main_AddClass('scenefeed', 'avoidclicks');
         Main_AddClass('scene_keys', 'avoidclicks');
         OSInterface_AvoidClicks(true);
-        Main_removeEventListener('keydown', AddUser_handleKeyDown);
-        Main_addEventListener('keydown', AddUser_KeyboardEvent);
-        Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
+        Main_addEventListener('keydown', AddUser_handleKeyDown);
+        AddUser_getCode();
+        //
+    }
 
-        AddUser_inputFocusId = Main_setTimeout(
-            function() {
-                Main_AddUserInput.focus();
-                AddUser_keyBoardOn = true;
-            },
-            500,
-            AddUser_inputFocusId
-        );
+    function AddUser_getCode() {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+        AddUser_DeviceCode = null;
+        var theUrl = AddCode_Url + 'device?scopes=' + encodeURIComponent(AddCode_Scopes.join(' ')) + '&client_id=' + AddCode_backup_client_id;
+
+        FullxmlHttpGet(theUrl, null, AddUser_getCodeSuccess, AddUser_getCodeError, 0, 0, 'POST', null);
+    }
+
+    var AddUser_DeviceCode = null;
+    var AddUser_DeviceCodeTimeout = 5;
+
+    function AddUser_getCodeSuccess(resultObj) {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+
+        if (resultObj.status === 200) {
+            var data = JSON.parse(resultObj.responseText);
+            var codeDiv = STR_BR + STR_BR + AddUser_insertString(data.user_code, data.user_code.length / 2, '-') + STR_BR + STR_BR;
+
+            var urlDiv = STR_DIV_LINK + DefaultMakeLink(data.verification_uri) + '</div>';
+            AddUser_DeviceCode = data.device_code;
+
+            Main_innerHTMLWithEle(Main_AddUserText, STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
+            Main_ShowElementWithEle(Main_AddUserTextHolder);
+            Main_HideLoadDialog();
+            AddUser_getCodeCheck(AddUser_DeviceCodeTimeout);
+        } else {
+            AddUser_getCodeError();
+        }
+    }
+
+    function AddUser_insertString(str, index, value) {
+        return str.substr(0, index) + value + str.substr(index);
+    }
+
+    function AddUser_getCodeError() {
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_ADD_ERROR, 7500, true);
+        Main_setTimeout(function() {
+            AddUser_handleKeyBack();
+        }, 3000);
+    }
+
+    var AddUser_getCodeCheckId;
+
+    function AddUser_getCodeCheck(counter) {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+
+        if (counter) {
+            Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
+
+            AddUser_getCodeCheckId = Main_setTimeout(
+                function() {
+                    AddUser_getCodeCheck(counter - 1);
+                },
+                1000,
+                AddUser_getCodeCheckId
+            );
+        } else {
+            Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER_NOW);
+            AddUser_getDeviceCode();
+        }
+    }
+
+    function AddUser_getDeviceCode() {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+
+        AddUser_getDeviceCodeToken = null;
+        var theUrl =
+            AddCode_UrlToken +
+            'grant_type=' +
+            encodeURIComponent('urn:ietf:params:oauth:grant-type:device_code') +
+            '&client_id=' +
+            AddCode_backup_client_id +
+            '&device_code=' +
+            AddUser_DeviceCode;
+
+        FullxmlHttpGet(theUrl, null, AddUser_getDeviceCodeSuccess, AddUser_getCodeError, 0, 0, 'POST', null);
+    }
+
+    var AddUser_getDeviceCodeToken;
+
+    function AddUser_getDeviceCodeSuccess(resultObj) {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+
+        var data;
+        if (resultObj.status === 200) {
+            data = JSON.parse(resultObj.responseText);
+            AddUser_getDeviceCodeToken = data.access_token;
+            AddUser_getUserToken();
+        } else if (resultObj.status === 400) {
+            data = JSON.parse(resultObj.responseText);
+            if (Main_A_includes_B(data.message, 'authorization_pending')) {
+                AddUser_getCodeCheck(AddUser_DeviceCodeTimeout);
+            } else {
+                AddUser_getCodeError();
+            }
+        } else {
+            AddUser_getCodeError();
+        }
+    }
+
+    function AddUser_getUserToken() {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Bearer + AddUser_getDeviceCodeToken]
+        ];
+
+        var theUrl = Main_helix_api + 'users';
+
+        FullxmlHttpGet(theUrl, header, AddUser_getUserTokenSuccess, noop_fun, 0, 0, null, null);
+    }
+
+    function AddUser_getUserTokenSuccess(resultObj) {
+        if (!AddUser_IsInUserScreen()) {
+            AddUser_handleKeyBack();
+            return;
+        }
+
+        if (resultObj.status === 200) {
+            AddUser_SaveNewUser(resultObj.responseText);
+        } else {
+            AddUser_getCodeError();
+        }
     }
 
     function AddUser_removeEventListener() {
@@ -5381,92 +5570,40 @@
         Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_RemoveClass('scene_keys', 'avoidclicks');
         OSInterface_AvoidClicks(false);
-        if (Main_AddUserInput !== null) {
-            var elClone = Main_AddUserInput.cloneNode(true);
-            Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
-            Main_AddUserInput = Main_getElementById('user_input');
-        }
     }
 
     function AddUser_RemoveinputFocus(EnaKeydown) {
         Main_clearTimeout(AddUser_inputFocusId);
-        Main_AddUserInput.blur();
         AddUser_removeEventListener();
-        Main_removeEventListener('keydown', AddUser_KeyboardEvent);
-        Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
 
         if (EnaKeydown) Main_addEventListener('keydown', AddUser_handleKeyDown);
-        AddUser_keyBoardOn = false;
     }
 
-    function AddUser_KeyboardEvent(event) {
-        if (AddUser_loadingData || Main_values.Main_Go !== Main_addUser) return;
+    // function AddUser_loadDataRequest() {
+    //     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
 
-        switch (event.keyCode) {
-            case KEY_RETURN:
-                if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
-                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
-                else {
-                    AddUser_exit();
-                    Main_SwitchScreen();
-                }
-                break;
-            case KEY_KEYBOARD_DONE:
-            case KEY_DOWN:
-                AddUser_KeyboardDismiss();
-                break;
-            default:
-                break;
-        }
-    }
+    //     BaseXmlHttpGet(theUrl, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, null, null, true);
+    // }
 
-    function AddUser_KeyboardDismiss() {
-        Main_clearTimeout(AddUser_inputFocusId);
-        if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
-            AddUser_Username = Main_AddUserInput.value;
+    // function AddUser_loadDataRequestSuccess(response) {
+    //     if (JSON.parse(response).data.length) {
+    //         Main_removeEventListener('keydown', AddUser_handleKeyDown);
+    //         AddUser_SaveNewUser(response);
+    //     } else AddUser_loadDataNoUser();
+    // }
 
-            if (!AddUser_UserCodeExist(AddUser_Username)) {
-                AddUser_loadingData = true;
-                Main_HideElement('add_user_scroll');
-                Main_showLoadDialog();
-                AddUser_loadDataRequest();
-            } else {
-                Main_HideLoadDialog();
-                Main_showWarningDialog(STR_USER + ' ' + AddUser_Username + STR_USER_SET);
-                Main_setTimeout(function() {
-                    Main_HideWarningDialog();
-                    AddUser_inputFocus();
-                }, 1500);
-            }
-        } else AddUser_inputFocus();
-    }
-
-    function AddUser_loadDataRequest() {
-        var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
-
-        BaseXmlHttpGet(theUrl, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, null, null, true);
-    }
-
-    function AddUser_loadDataRequestSuccess(response) {
-        if (JSON.parse(response).data.length) {
-            Main_AddUserInput.value = '';
-            Main_removeEventListener('keydown', AddUser_handleKeyDown);
-            AddUser_SaveNewUser(response);
-        } else AddUser_loadDataNoUser();
-    }
-
-    function AddUser_loadDataNoUser() {
-        AddUser_Username = null;
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_USER_ERROR);
-        Main_setTimeout(function() {
-            AddUser_init();
-        }, 1000);
-        AddUser_loadingData = false;
-    }
+    // function AddUser_loadDataNoUser() {
+    //     AddUser_Username = null;
+    //     Main_HideLoadDialog();
+    //     Main_showWarningDialog(STR_USER_ERROR);
+    //     Main_setTimeout(function () {
+    //         AddUser_init();
+    //     }, 1000);
+    // }
 
     function AddUser_RestoreUsers() {
-        AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
+        AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
+        Main_Restore_history();
 
         if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
@@ -5480,12 +5617,6 @@
             for (i; i < len; i++) {
                 AddUser_UsernameArray[i].timeout_id = null;
 
-                if (AddUser_UsernameArray[i].access_token) {
-                    AddCode_CheckTokenStart(i);
-                } else if (!i) {
-                    Main_showWarningDialog(STR_NO_TOKEN_WARNING, 5000);
-                }
-
                 //Set user history obj
                 Main_values_History_data[AddUser_UsernameArray[i].id] = {
                     live: [],
@@ -5494,7 +5625,6 @@
                 };
             }
 
-            Main_Restore_history();
             return true;
         } else {
             AddUser_UsernameArray = [];
@@ -5504,7 +5634,9 @@
     }
 
     function AddUser_UpdateSidepanel() {
-        AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+        if (AddUser_UserIsSet()) {
+            AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+        }
     }
 
     function AddUser_UpdateSidepanelDefault() {
@@ -5596,45 +5728,57 @@
     }
 
     function AddUser_SaveNewUser(responseText) {
-        AddUser_Username = JSON.parse(responseText).data[0];
-        AddUser_UsernameArray.push({
-            name: AddUser_Username.login,
-            id: AddUser_Username.id,
-            display_name: AddUser_Username.display_name,
-            logo: AddUser_Username.profile_image_url,
-            access_token: 0,
-            refresh_token: 0,
-            expires_in: 0,
-            expires_when: 0,
-            timeout_id: null
-        });
+        var data = JSON.parse(responseText).data;
+        if (data && data.length) {
+            AddUser_Username = data[0];
+            var userObj = {
+                name: AddUser_Username.login,
+                id: AddUser_Username.id,
+                display_name: AddUser_Username.display_name,
+                logo: AddUser_Username.profile_image_url,
+                access_token: AddUser_getDeviceCodeToken,
+                refresh_token: 0,
+                expires_in: 0,
+                expires_when: 0,
+                timeout_id: null
+            };
+            AddUser_UsernameArray.push(userObj);
 
-        Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.login)].id] = {
-            live: [],
-            vod: [],
-            clip: []
-        };
+            if (!Main_values_History_data[userObj.id]) {
+                Main_values_History_data[userObj.id] = {
+                    live: [],
+                    vod: [],
+                    clip: []
+                };
+            }
 
-        AddUser_SaveUserArray();
-        Users_status = false;
-        Users_Userlastadded = AddUser_Username.login;
-        Users_ShowAutetication = true;
-        AddUser_exit();
-        Main_values.Main_Go = Main_Users;
-        Main_HideLoadDialog();
-        if (AddUser_UsernameArray.length === 1) {
-            AddUser_UpdateSidepanel();
-            OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
-            OSInterface_mCheckRefresh();
-            if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
+            AddUser_SaveUserArray();
+            Users_status = false;
+            Users_Userlastadded = AddUser_Username.login;
+            Users_ShowAuthentication = false;
+            AddUser_exit();
+            Main_values.Main_Go = Main_Users;
+            Main_HideLoadDialog();
+            if (AddUser_UsernameArray.length === 1) {
+                AddUser_SaveNewUserRefreshTokens(0);
+            }
+            Main_SwitchScreen();
+
+            Main_Eventsimple('User_Added');
+        } else {
+            AddUser_getCodeError();
         }
-        Main_SwitchScreen();
-        AddUser_loadingData = false;
-
-        Main_Eventsimple('New_User_Added');
     }
 
-    function AddUser_removeUser(position) {
+    function AddUser_SaveNewUserRefreshTokens(position) {
+        AddUser_UpdateSidepanel();
+        OSInterface_UpdateUserId(AddUser_UsernameArray[position]);
+        OSInterface_mCheckRefresh();
+        HttpGetSetUserHeader();
+        if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
+    }
+
+    function AddUser_removeUser(position, skipInitUser) {
         // remove the user
         var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
         if (index > -1) {
@@ -5654,10 +5798,14 @@
                 OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
             }
             Users_status = false;
-            Users_init();
+            if (!skipInitUser) {
+                Users_init();
+            }
         } else {
             AddUser_UpdateSidepanelDefault();
-            AddUser_init();
+            if (!skipInitUser) {
+                Users_init();
+            }
 
             OSInterface_UpdateUserId(null);
         }
@@ -5674,7 +5822,7 @@
         }
 
         var string = JSON.stringify(AddUser_UsernameArray);
-        Main_setItem('AddUser_UsernameArray', string);
+        Main_setItem('AddUser_UsernameArrayNew', string);
 
         if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
 
@@ -5688,8 +5836,8 @@
         AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
         AddUser_UsernameArray[position] = temp_Username;
 
-        AddCode_Refreshtimeout(0);
-        AddCode_Refreshtimeout(position);
+        // AddCode_Refreshtimeout(0);
+        // AddCode_Refreshtimeout(position);
 
         AddUser_SaveUserArray();
         Users_status = false;
@@ -5713,13 +5861,13 @@
         }
     }
 
-    function AddUser_UserCodeExist(user) {
-        return (
-            AddUser_UsernameArray.filter(function(array) {
-                return array.name === user;
-            }).length > 0
-        );
-    }
+    // function AddUser_UserCodeExist(user) {
+    //     return (
+    //         AddUser_UsernameArray.filter(function (array) {
+    //             return array.name === user;
+    //         }).length > 0
+    //     );
+    // }
 
     function AddUser_UserFindpos(user) {
         return AddUser_UsernameArray.map(function(array) {
@@ -5729,6 +5877,10 @@
 
     function AddUser_IsUserSet() {
         return AddUser_UsernameArray.length > 0;
+    }
+
+    function AddUser_IsInUserScreen() {
+        return Main_values.Main_Go === Main_addUser;
     }
     var yOnwheel = 0;
     var OnwheelId;
@@ -6222,9 +6374,6 @@
                 Users_setUserDialog();
                 if (Main_A_includes_B(id, 'main_dialog_user_first') && Users_RemoveCursor) {
                     Users_RemoveCursor = 0;
-                    Users_UserCursorSet();
-                } else if (Main_A_includes_B(id, 'main_dialog_user_key') && Users_RemoveCursor !== 1) {
-                    Users_RemoveCursor = 1;
                     Users_UserCursorSet();
                 } else if (Main_A_includes_B(id, 'main_dialog_user_remove') && Users_RemoveCursor !== 2) {
                     Users_RemoveCursor = 2;
@@ -7532,15 +7681,14 @@
                     Screens_init(Main_ChannelClip);
                 });
             } else if (ChannelContent_cursorX === 2) {
-                // if (AddUser_UserHasToken()) {
-                //     AddCode_PlayRequest = false;
-                //     AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-                //     if (AddCode_IsFollowing) AddCode_UnFollow();
-                //     else AddCode_Follow();
-                // } else {
-                //     Main_showWarningDialog(STR_NOKEY_WARN, 2000);
-                // }
-                Main_showWarningDialog(STR_FOLLOW_ISSUE, 2000);
+                if (AddUser_UserHasToken()) {
+                    AddCode_PlayRequest = false;
+                    AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+                    if (AddCode_IsFollowing) AddCode_UnFollow();
+                    else AddCode_Follow();
+                } else {
+                    Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+                }
             }
         } else {
             Main_removeEventListener('keydown', ChannelContent_handleKeyDown);
@@ -10048,7 +10196,9 @@
                 case 'NOTICE':
                     if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
                         ChatLive_LineAddErro(message.params[1], 0, true);
-                        if (AddUser_UserHasToken()) AddCode_refreshTokens(0, null, null);
+                        if (AddUser_UserHasToken()) {
+                            AddCode_validateToken(0);
+                        }
                     } else ChatLive_UserNoticeWarn(message);
                     break;
                     // case "USERSTATE":
@@ -10171,7 +10321,9 @@
             ChatLive_Check(chat_number, id, 0);
         } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
             ChatLive_LineAddErro(message.params[1], chat_number);
-            if (useToken[chat_number] && AddUser_UserHasToken()) AddCode_refreshTokens(0, null, null);
+            if (useToken[chat_number] && AddUser_UserHasToken()) {
+                AddCode_validateToken(0);
+            }
         } else ChatLive_UserNoticeWarn(message);
     }
 
@@ -11719,7 +11871,10 @@
     var Main_IsDayFirst = false;
     var Main_SearchInput;
     var Main_PasswordInput;
-    var Main_AddUserInput;
+    //var Main_AddUserInput;
+    var Main_AddUserText;
+    var Main_AddUserTextHolder;
+    var Main_AddUserTextCounter;
     var Main_ChatLiveInput;
     var Main_UpdateClockId;
     var Main_ContentLang = '';
@@ -11817,7 +11972,6 @@
                         ChatLive_SetLatency: ChatLive_SetLatency,
                         Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
                         BaseXmlHttpGetFull_Process: BaseXmlHttpGetFull_Process,
-                        AddCode_refreshTokensResult: AddCode_refreshTokensResult,
                         Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
                         PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
                         PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
@@ -11830,7 +11984,7 @@
                 Main_isDebug = OSInterface_getdebug();
                 Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
-                OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
+                OSInterface_setAppIds(AddCode_backup_client_id, null, null);
             } catch (e) {
                 Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
                 Main_IsOn_OSInterface = 0;
@@ -11936,7 +12090,7 @@
                     var tempBackupArray = JSON.parse(tempBackup) || [];
 
                     if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
-                        Main_setItem('AddUser_UsernameArray', tempBackup);
+                        Main_setItem('AddUser_UsernameArrayNew', tempBackup);
 
                         tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
                         var tempBackupObj = JSON.parse(tempBackup) || {};
@@ -12007,8 +12161,12 @@
 
         Main_PasswordInput = Main_getElementById('password_input');
         Main_SearchInput = Main_getElementById('search_input');
-        Main_AddUserInput = Main_getElementById('user_input');
         Main_ChatLiveInput = Main_getElementById('chat_send_input');
+
+        //Main_AddUserInput = Main_getElementById('user_input');
+        Main_AddUserText = Main_getElementById('add_user_text');
+        Main_AddUserTextHolder = Main_getElementById('add_user_text_holder');
+        Main_AddUserTextCounter = Main_getElementById('add_user_text_counter');
     }
 
     function Main_CheckBackup() {
@@ -13612,7 +13770,7 @@
             //token expired
 
             if (AddUser_UserHasToken()) {
-                AddCode_refreshTokens();
+                AddCode_validateToken(0);
             } else {
                 AddCode_AppToken();
             }
@@ -13645,9 +13803,18 @@
 
     function HttpGetSetUserHeader() {
         Main_Bearer_User_Headers = [
-            [clientIdHeader, AddCode_clientId],
-            [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
+            [clientIdHeader, AddCode_backup_client_id]
         ];
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id]
+        ];
+
+        if (AddUser_UserIsSet()) {
+            Main_Bearer_User_Headers.push([Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]);
+            header.push([Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]);
+        }
+
+        Play_Headers = JSON.stringify(header);
     }
 
     function FullxmlHttpGet(theUrl, Headers, callbackSuccess, calbackError, key, checkResult, Method, postMessage) {
@@ -13789,6 +13956,10 @@
     var Main_history_Watched_Obj = {};
 
     function Main_history_SetVod_Watched() {
+        if (!AddUser_UserIsSet()) {
+            return;
+        }
+
         Main_history_Watched_Obj = {};
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
@@ -13876,6 +14047,7 @@
 
     function Main_Restore_history() {
         Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+
         Main_history_SetVod_Watched();
     }
 
@@ -14455,7 +14627,7 @@
 
         var UserIsSet = AddUser_UserHasToken();
 
-        Main_CheckResumeUpdateToken(UserIsSet);
+        //Main_CheckResumeUpdateToken(UserIsSet);
 
         Main_SetUpdateclock();
 
@@ -14483,16 +14655,16 @@
         Settings_burn_in_protection_start();
     }
 
-    function Main_CheckResumeUpdateToken(UserIsSet) {
-        //Check on resume if token has expired and refresh
-        //The token may expire while the device is on standby and on that case even if the app is running
-        //the internet connection may be down (do to standby), on that case the update token fun will run and not work
-        //On that case the expires_when will be less the time now and we need to update on resume
-        //If the app closes next reopen the same check will happen but somewhere else
-        if (UserIsSet && AddUser_UsernameArray[0].access_token && new Date().getTime() - AddUser_UsernameArray[0].expires_when > 0) {
-            AddCode_refreshTokens(0, null, null, null, true);
-        }
-    }
+    // function Main_CheckResumeUpdateToken(UserIsSet) {
+    //     //Check on resume if token has expired and refresh
+    //     //The token may expire while the device is on standby and on that case even if the app is running
+    //     //the internet connection may be down (do to standby), on that case the update token fun will run and not work
+    //     //On that case the expires_when will be less the time now and we need to update on resume
+    //     //If the app closes next reopen the same check will happen but somewhere else
+    //     if (UserIsSet && AddUser_UsernameArray[0].access_token && new Date().getTime() - AddUser_UsernameArray[0].expires_when > 0) {
+    //         AddCode_validateToken(0);
+    //     }
+    // }
 
     function Main_CheckAccessibility(skipRefresCheck) {
         //Main_Log('Main_CheckAccessibility');
@@ -14978,12 +15150,16 @@
         return obj.screen && Main_EventChannelScreens[obj.screen] ? Main_EventChannelScreens[obj.screen] : Main_EventChannelScreens[0];
     }
 
-    function Main_Eventsimple(event) {
+    function Main_Eventsimple(event, obj) {
         Main_ready(function() {
             if (skipfirebase) return;
 
             try {
-                firebase.analytics().logEvent(event);
+                if (obj) {
+                    gtag('event', event, obj);
+                } else {
+                    firebase.analytics().logEvent(event);
+                }
             } catch (e) {
                 console.log('Main_Eventsimple event ' + event + ' e ' + e);
             }
@@ -15401,7 +15577,7 @@
     function OSInterface_UpdateUserId(user) {
         if (Main_IsOn_OSInterface)
             if (user) {
-                Android.UpdateUserId(user.id, user.name ? encodeURIComponent(user.name) : user.name, user.refresh_token ? user.refresh_token : null);
+                Android.UpdateUserId(user.id, user.name ? encodeURIComponent(user.name) : user.name, Bearer + AddUser_UsernameArray[0].access_token);
             } else {
                 Android.UpdateUserId(null, null, null);
             }
@@ -18710,15 +18886,13 @@
     }
 
     function Play_FollowUnfollow() {
-        // if (AddUser_UserHasToken()) {
-        //     if (AddCode_IsFollowing) AddCode_UnFollow();
-        //     else AddCode_Follow();
-        // } else {
-        //     Play_showWarningMiddleDialog(STR_NOKEY_WARN, 2000);
-        //     Play_IsWarning = true;
-        // }
-        Play_showWarningMiddleDialog(STR_FOLLOW_ISSUE, 2000);
-        //Play_showWarningMiddleDialog
+        if (AddUser_UserHasToken()) {
+            if (AddCode_IsFollowing) AddCode_UnFollow();
+            else AddCode_Follow();
+        } else {
+            Play_showWarningMiddleDialog(STR_NOKEY_WARN, 2000);
+            Play_IsWarning = true;
+        }
     }
 
     function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
@@ -22515,9 +22689,12 @@
     //Live
     var Play_live_token_prop = 'streamPlaybackAccessToken';
     var Play_live_token =
-        '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\", playerBackend: \\"mediaplayer\\",playerType:\\"mobile\\"}){value signature}}"}';
+        '{"operationName":"PlaybackAccessToken_Template","query":"query PlaybackAccessToken_Template($login: String!, $isLive: Boolean!, $vodID: ID!, $isVod: Boolean!, $playerType: String!, $platform: String!) ' +
+        '{  streamPlaybackAccessToken(channelName: $login, params: {platform: $platform, playerBackend: \\"mediaplayer\\", playerType: $playerType}) @include(if: $isLive) {    value    signature    __typename  } ' +
+        ' videoPlaybackAccessToken(id: $vodID, params: {platform: $platform, playerBackend: \\"mediaplayer\\", playerType: $playerType}) @include(if: $isVod) {    value    signature    __typename  }}",' +
+        '"variables":{"isLive":true,"login":"%x","isVod":false,"vodID":"","playerType":"pulsar","platform":"switch_web_tv"}}';
     var Play_base_live_links =
-        'platform=site&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
+        'player_backend=mediaplayer&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
 
     var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
@@ -27801,6 +27978,9 @@
             else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
         } else {
             ScreenObj[key].SetPreviewEnable();
+
+            if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_CheckFollow();
+
             Main_YRst(ScreenObj[key].posY);
             Screens_addFocus(true, key);
             Screens_SetLastRefresh(key);
@@ -27962,7 +28142,8 @@
             //token expired
 
             if (AddUser_UserHasToken() && !ScreenObj[key].isQuery) {
-                AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDataFail, key);
+                AddCode_validateToken(0);
+                Screens_loadDataFail(key);
             } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
                 Screens_loadDataFail(key);
             } else {
@@ -28407,6 +28588,8 @@
         //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
         ScreenObj[key].FirstRunEnd = true;
         if (!ScreenObj[key].status) {
+            if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_CheckFollow();
+
             if (ScreenObj[key].emptyContent) {
                 if (Screens_IsInUse(key)) {
                     Main_showWarningDialog(ScreenObj[key].emptyContent_STR ? ScreenObj[key].emptyContent_STR() : STR_REFRESH_PROBLEM);
@@ -29697,11 +29880,13 @@
 
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
-        } else {
+        } else if (ScreenObj[key].posX === 1) {
             Main_values.Main_Go = Main_AGameClip;
             Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
+        } else {
+            AGame_follow(key);
         }
     }
 
@@ -30607,7 +30792,7 @@
 
     function Screens_ThumbOptionDialogKeyEnter(key) {
         if (Screens_ThumbOptionPosY === 2) {
-            Main_showWarningDialog(STR_FOLLOW_ISSUE, 2000, true);
+            Screens_FollowUnfollow(key);
         } else Screens_ThumbOptionDialogHide(true, key);
     }
 
@@ -31052,62 +31237,54 @@
         Play_controls[Play_controlsContentLang].bottomArrows();
     }
 
-    // var Screens_ThumbOption_Follow_ID = 0;
+    var Screens_ThumbOption_Follow_ID = 0;
 
-    // function Screens_FollowUnfollow(key) {
+    function Screens_FollowUnfollow(key) {
+        if (Screens_canFollow && AddUser_UserHasToken()) {
+            var header = [
+                [clientIdHeader, AddCode_backup_client_id],
+                [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+            ];
 
-    //     if (Screens_canFollow && AddUser_UserHasToken()) {
+            Screens_ThumbOption_Follow_ID = new Date().getTime();
 
-    //         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
+            var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
 
-    //         var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
-    //             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwitchV5Flag_I;
+            FullxmlHttpGet(
+                PlayClip_BaseUrl,
+                header,
+                Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
+                noop_fun,
+                key,
+                Screens_ThumbOption_Follow_ID,
+                'POST',
+                (Screens_isFollowing ? AddCode_UnFollowQuery : AddCode_FollowQuery).replace('%x', channel_id)
+            );
+        } else {
+            Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+        }
+    }
 
-    //         FullxmlHttpGet(
-    //             theUrl,
-    //             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
-    //             Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
-    //             noop_fun,
-    //             key,
-    //             Screens_ThumbOption_Follow_ID,
-    //             Screens_isFollowing ? 'DELETE' : 'PUT',
-    //             null
-    //         );
+    function Screens_UnFollowRequestReady(obj, key, ID) {
+        if (Screens_ThumbOption_Follow_ID === ID && obj.status === 200) {
+            var data = JSON.parse(obj.responseText).data;
 
-    //     } else {
+            Screens_FollowRequestEnd(key, !Boolean(data.unfollowUser));
+        }
+    }
 
-    //         Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+    function Screens_FollowRequestReady(obj, key, ID) {
+        if (Screens_ThumbOption_Follow_ID === ID && obj.status === 200) {
+            var data = JSON.parse(obj.responseText).data;
 
-    //     }
+            Screens_FollowRequestEnd(key, Boolean(data.followUser));
+        }
+    }
 
-    // }
-
-    // function Screens_UnFollowRequestReady(xmlHttp, key, ID) {
-
-    //     if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 204) { //success user is now not following the channel
-
-    //         Screens_FollowRequestEnd(key, false);
-
-    //     }
-
-    // }
-
-    // function Screens_FollowRequestReady(xmlHttp, key, ID) {
-
-    //     if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 200) { //success user is now following the channel
-
-    //         Screens_FollowRequestEnd(key, true);
-
-    //     }
-
-    // }
-
-    // function Screens_FollowRequestEnd(key, FollowState) {
-
-    //     Screens_ThumbOption_UpdateFollow(key, FollowState);
-    //     Screens_ThumbOption_Follow_ID = 0;
-
-    // }
+    function Screens_FollowRequestEnd(key, FollowState) {
+        Screens_ThumbOption_UpdateFollow(key, FollowState);
+        Screens_ThumbOption_Follow_ID = 0;
+    }
 
     function Screens_OpenScreen() {
         if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && AddUser_UserIsSet() && !AddUser_UsernameArray[0].access_token) {
@@ -31411,6 +31588,128 @@
 
     function Screens_PlaybackTimeGetOrigianl(key, data) {
         return data[ScreenObj[key].screenType === 1 ? 11 : 1];
+    }
+
+    var AGame_following = false;
+
+    function AGame_follow(key) {
+        if (AddUser_UserIsSet()) {
+            Screens_FollowUnfollowGame();
+        } else {
+            Main_showWarningDialog(STR_NOKEY_WARN);
+            Main_setTimeout(function() {
+                if (ScreenObj[key].emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                else Main_HideWarningDialog();
+            }, 2000);
+        }
+    }
+
+    function AGame_CheckFollow() {
+        if (AddUser_UserIsSet()) {
+            AGame_CheckFollowGame();
+        } else {
+            AGame_following = false;
+            AGame_setFollow();
+        }
+    }
+    var AGame_CheckFollowGameQuery = '{"query":"{game(id: \\"%x\\") {self{follow{followedAt}}}}"}';
+    var AGame_CheckFollowGameId;
+
+    function AGame_CheckFollowGame(key) {
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+        ];
+
+        AGame_CheckFollowGameId = new Date().getTime();
+
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            header,
+            AGame_CheckFollowGameReady,
+            noop_fun,
+            key,
+            AGame_CheckFollowGameId,
+            'POST',
+            AGame_CheckFollowGameQuery.replace('%x', Main_values.Main_gameSelected_id)
+        );
+    }
+
+    function AGame_CheckFollowGameReady(obj, key, ID) {
+        if (AGame_CheckFollowGameId === ID && obj.status === 200) {
+            var data = JSON.parse(obj.responseText).data;
+
+            AGame_following = Boolean(data && data.game && data.game.self && data.game.self.follow);
+        }
+        AGame_setFollow();
+    }
+
+    function AGame_setFollow() {
+        if (Main_values.Main_Go !== Main_aGame) return;
+
+        if (AGame_following) {
+            Main_innerHTML(
+                ScreenObj[Main_aGame].ids[2] + '-1_2',
+                '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE_HTML + STR_SPACE + STR_FOLLOWING
+            );
+        } else {
+            Main_innerHTML(
+                ScreenObj[Main_aGame].ids[2] + '-1_2',
+                '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' +
+                STR_SPACE_HTML +
+                STR_SPACE_HTML +
+                (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY)
+            );
+        }
+    }
+
+    var Screens_UnFollowGameQuery =
+        '{"operationName":"FollowGameButton_UnfollowGame","variables":{"input":{"gameID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"811e02e396ebba0664f21ff002f2eff3c6f57e8af9aedb4f4dfa77cefd0db43d"}}}';
+
+    var Screens_FollowGameQuery =
+        '{"operationName":"FollowGameButton_FollowGame","variables":{"input":{"gameID":"%x"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b846b65ba4bc9a3561dbe2d069d95deed9b9e031bcfda2482d1bedd84a1c2eb3"}}}';
+    var Screens_FollowUnfollowGameId;
+
+    function Screens_FollowUnfollowGame(key) {
+        var header = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]
+        ];
+
+        Screens_FollowUnfollowGameId = new Date().getTime();
+
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            header,
+            AGame_following ? Screens_UnFollowGmaeRequestReady : Screens_FollowGameRequestReady,
+            noop_fun,
+            key,
+            Screens_FollowUnfollowGameId,
+            'POST',
+            (AGame_following ? Screens_UnFollowGameQuery : Screens_FollowGameQuery).replace('%x', Main_values.Main_gameSelected_id)
+        );
+    }
+
+    function Screens_UnFollowGmaeRequestReady(obj, key, ID) {
+        if (Screens_FollowUnfollowGameId === ID && obj.status === 200) {
+            var data = JSON.parse(obj.responseText).data;
+
+            Screens_FollowGameRequestEnd(!Boolean(data.unfollowGame));
+        }
+    }
+
+    function Screens_FollowGameRequestReady(obj, key, ID) {
+        if (Screens_FollowUnfollowGameId === ID && obj.status === 200) {
+            var data = JSON.parse(obj.responseText).data;
+
+            Screens_FollowGameRequestEnd(Boolean(data.followGame));
+        }
+    }
+
+    function Screens_FollowGameRequestEnd(FollowState) {
+        AGame_following = FollowState;
+        Screens_FollowUnfollowGameId = 0;
+        AGame_setFollow();
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -32286,7 +32585,8 @@
             set_url: noop_fun,
             history_concatenate: function() {
                 this.streamerID = {};
-                this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
+                this.data = AddUser_UserIsSet() ? JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type])) : [];
+
                 Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
                 this.dataEnded = true;
                 this.loadDataSuccess();
@@ -32808,9 +33108,16 @@
                     ScreensObj_TopLableAgameExit(this.screen);
                 },
                 HasSwitches: true,
-                SwitchesIcons: ['movie-play', 'movie'],
+                SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
                 addSwitches: function() {
-                    ScreensObj_addSwitches([STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS, STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS], this.screen);
+                    ScreensObj_addSwitches(
+                        [
+                            STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS,
+                            STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS,
+                            STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW
+                        ],
+                        this.screen
+                    );
                 }
             },
             Base_obj
@@ -33751,10 +34058,12 @@
                 blocked_concatenate: function() {
                     var type = this.isGame ? 'game' : 'channel';
                     this.data =
+                        AddUser_UserIsSet() &&
                         Main_values_History_data[AddUser_UsernameArray[0].id].blocked &&
                         Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type] ?
                         Object.values(Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type]) :
                         [];
+
                     this.blockedSort();
                     this.dataEnded = true;
                     this.loadDataSuccess();
@@ -34471,7 +34780,7 @@
             //token expired
 
             if (AddUser_UserHasToken()) {
-                AddCode_refreshTokens();
+                AddCode_validateToken(0);
             } else {
                 AddCode_AppToken();
             }
@@ -41163,19 +41472,22 @@
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-            if (AddUser_UserHasToken()) AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
-            else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+            if (AddUser_UserHasToken()) {
+                AddCode_validateToken(0);
+            }
+
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
         }
     }
 
-    function UserLiveFeedobj_loadDataRefreshTokenError() {
-        //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
+    // function UserLiveFeedobj_loadDataRefreshTokenError() {
+    //     //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
 
-        if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
-        else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-    }
+    //     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
+    //     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+    // }
 
     var UserLiveFeedobj_LiveFeedOldUserName = '';
 
@@ -42383,8 +42695,11 @@
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-            if (AddUser_UserHasToken()) AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
-            else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
+            if (AddUser_UserHasToken()) {
+                AddCode_validateToken(0);
+            }
+
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
         }
@@ -42917,7 +43232,7 @@
     var Users_beforeUser = 1;
     var Users_UserDialogID = null;
     var Users_Isautentication = true;
-    var Users_ShowAutetication = false;
+    var Users_ShowAuthentication = false;
     var Users_Userlastadded = '';
 
     var Users_ids;
@@ -43090,11 +43405,6 @@
             id +
             '" class="stream_info_user_name">' +
             AddUser_UsernameArray[pos].display_name +
-            '</div><div id="' +
-            Users_ids[8] +
-            id +
-            '" class="stream_info_user_title">' +
-            (AddUser_UsernameArray[pos].access_token ? STR_USER_CODE_OK : STR_USER_CODE) +
             '</div></div></div>';
 
         return div;
@@ -43112,8 +43422,8 @@
             Main_ShowElement(Users_ids[5]);
             Main_FirstLoad = false;
             Users_loadingData = false;
-            if (Users_ShowAutetication) {
-                Users_ShowAutetication = false;
+            if (Users_ShowAuthentication) {
+                Users_ShowAuthentication = false;
                 Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
                 Users_Isautentication = true;
                 Users_showRemoveDialog();
@@ -43172,7 +43482,7 @@
         Users_showUserDialogPos = parseInt(Main_getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
 
         Main_innerHTML('main_dialog_user_text', STR_USER_OPTION + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
-        Main_innerHTML('main_dialog_user_key', AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE);
+        // Main_innerHTML('main_dialog_user_key', AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE);
 
         Main_ShowElement('main_dialog_user');
     }
@@ -43190,12 +43500,11 @@
 
     function Users_UserCursorSet() {
         Main_RemoveClass('main_dialog_user_first', 'button_dialog_focused');
-        Main_RemoveClass('main_dialog_user_key', 'button_dialog_focused');
+        // Main_RemoveClass('main_dialog_user_key', 'button_dialog_focused');
         Main_RemoveClass('main_dialog_user_remove', 'button_dialog_focused');
 
         if (!Users_RemoveCursor) Main_AddClass('main_dialog_user_first', 'button_dialog_focused');
-        else if (Users_RemoveCursor === 1) Main_AddClass('main_dialog_user_key', 'button_dialog_focused');
-        else if (Users_RemoveCursor) Main_AddClass('main_dialog_user_remove', 'button_dialog_focused');
+        else if (Users_RemoveCursor === 1) Main_AddClass('main_dialog_user_remove', 'button_dialog_focused');
     }
 
     function Users_clearRemoveDialog() {
@@ -43300,13 +43609,6 @@
             Users_HideUserDialog();
             if (!temp_RemoveCursor) {
                 AddUser_UserMakeOne(Users_showUserDialogPos);
-            } else if (temp_RemoveCursor === 1) {
-                if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
-                    Main_showWarningDialog(STR_USER_CODE_OK, 2000);
-                } else {
-                    Users_Isautentication = true;
-                    Users_showRemoveDialog();
-                }
             } else {
                 Users_Isautentication = false;
                 Users_showRemoveDialog();
@@ -43336,7 +43638,7 @@
                     Users_setRemoveDialog();
                 } else if (Users_isUserDialogShown()) {
                     Users_RemoveCursor--;
-                    if (Users_RemoveCursor < 0) Users_RemoveCursor = 2;
+                    if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
                     Users_UserCursorSet();
                     Users_setUserDialog();
                 } else if (!Users_cursorX) {
@@ -43370,7 +43672,7 @@
                     Users_setRemoveDialog();
                 } else if (Users_isUserDialogShown()) {
                     Users_RemoveCursor++;
-                    if (Users_RemoveCursor > 2) Users_RemoveCursor = 0;
+                    if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
                     Users_UserCursorSet();
                     Users_setUserDialog();
                 } else if (Main_ThumbNull(Users_cursorY, Users_cursorX + 1, Users_ids[0])) {
@@ -44459,7 +44761,6 @@
         ChatLive_SetLatency: ChatLive_SetLatency,
         Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
         BaseXmlHttpGetFull_Process: BaseXmlHttpGetFull_Process,
-        AddCode_refreshTokensResult: AddCode_refreshTokensResult,
         Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
         PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
         PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,

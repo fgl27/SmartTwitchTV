@@ -9,6 +9,13 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version September 11 2023 and Apk Version 3.0.349
+==============
+
+* Add new user logging method that allows you to fully use yours privileged in the app
+* Add follow/unfollow buttons back
+* General improves
+
 Web Version August 08 2023
 ==============
 

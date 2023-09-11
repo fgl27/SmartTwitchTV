@@ -418,7 +418,7 @@ function AddUser_SaveNewUser(responseText) {
         }
         Main_SwitchScreen();
 
-        Main_Eventsimple('User_Added', userObj);
+        Main_Eventsimple('User_Added');
     } else {
         AddUser_getCodeError();
     }

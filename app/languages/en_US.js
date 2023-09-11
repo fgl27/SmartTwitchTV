@@ -871,6 +871,6 @@ function en_USLang() {
     STR_ADD_USER_TEXT = 'Visit %site and enter the code: %code';
     STR_ADD_USER_TEXT_COUNTER = 'Checking access confirmation in %d...';
     STR_ADD_USER_TEXT_COUNTER_NOW = 'Checking now!';
-    STR_ADD_ERROR = 'Can access the add user service.';
+    STR_ADD_ERROR = "Can't access the add user service";
     STR_USER_TOKEN_ERROR = 'Lost access to current user, please revise the user section';
 }

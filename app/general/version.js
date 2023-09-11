@@ -21,11 +21,19 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'August 08 2023',
-    WebTag: 669, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 349, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/349/SmartTV_twitch_3_0_349.apk',
+    WebVersion: 'September 11 2023',
+    WebTag: 671, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version September 11 2023 and Apk Version 3.0.349',
+            changes: [
+                'Add new user logging method that allows you to fully use yours privileged in the app',
+                'Add follow/unfollow buttons back',
+                'General improves'
+            ]
+        },
         {
             title: 'Web Version August 08 2023',
             changes: [
@@ -48,14 +56,6 @@ var version = {
         {
             title: 'Web Version June 17 2023',
             changes: ['Add Screen off (Audio only) option to player', 'General improves']
-        },
-        {
-            title: 'Web Version June 11 2023',
-            changes: ['Add setting options to block Mature content']
-        },
-        {
-            title: 'Web Version June 03 2023',
-            changes: ['General chat improves']
         }
     ]
 };
