@@ -21,13 +21,13 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 349, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/349/SmartTV_twitch_3_0_349.apk',
+    publishVersionCode: 350, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/350/SmartTV_twitch_3_0_350.apk',
     WebVersion: 'September 11 2023',
     WebTag: 671, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'Web Version September 11 2023 and Apk Version 3.0.349',
+            title: 'Web Version September 11 2023 and Apk Version 3.0.349 and 3.0.350',
             changes: [
                 'Add new user logging method that allows you to fully use yours privileged in the app',
                 'Note: after opening this update there will be no user, after adding a user history and blocked configuration will be restored',
