@@ -255,7 +255,6 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 
 function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
-    Main_Restore_history();
 
     if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
@@ -277,8 +276,10 @@ function AddUser_RestoreUsers() {
             };
         }
 
+        Main_Restore_history();
         return true;
     } else {
+        Main_Restore_history();
         AddUser_UsernameArray = [];
         AddUser_UpdateSidepanelDefault();
         return false;
