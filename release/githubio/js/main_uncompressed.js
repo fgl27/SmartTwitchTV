@@ -16476,7 +16476,7 @@
             if (responseObj.status === 200) {
                 var obj = JSON.parse(responseObj.responseText);
 
-                if (obj.data && obj.data.clip && obj.data.clip.videoOffsetSeconds) {
+                if (obj.data && obj.data.clip && (obj.data.clip.videoOffsetSeconds || obj.data.clip.videoOffsetSeconds === 0)) {
                     ChannelVod_vodOffset = obj.data.clip.videoOffsetSeconds;
                     PlayClip_OpenVodEnd();
                     return;
