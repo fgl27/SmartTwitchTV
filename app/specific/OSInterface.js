@@ -429,9 +429,9 @@ function OSInterface_mPageUrl() {
 //public void clearCookie()
 //Android specific: true
 //Clears saved cookies to prevent show a already logged authentication page, as the app has multi users cookies are automatic saved after a login
-function OSInterface_clearCookie() {
-    if (Main_IsOn_OSInterface) Android.clearCookie();
-}
+// function OSInterface_clearCookie() {
+//     if (Main_IsOn_OSInterface) Android.clearCookie();
+// }
 
 //public long getsavedtime()
 //Android specific: false

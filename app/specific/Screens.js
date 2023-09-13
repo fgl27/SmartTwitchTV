@@ -209,7 +209,8 @@ function Screens_first_init() {
 
     //prevent user stuck in user screen without proper user
     //user may be removed in case the user removes app access
-    if (!AddUser_UserIsSet() &&
+    if (
+        !AddUser_UserIsSet() &&
         (Main_GoBefore === Main_UserLive ||
             Main_GoBefore === Main_usergames ||
             Main_GoBefore === Main_UserVod ||
@@ -1080,9 +1081,7 @@ function Screens_handleKeyControls(key, event) {
 function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
     Main_FirstRun = false;
     if (!SkipHidedialog) Main_HideLoadDialog();
-    Main_ShowElement('topbar');
-    Main_ShowElement('clock_holder');
-    Main_ShowElement('side_panel_new_holder');
+
     AddUser_UpdateSidepanelAfterShow();
 
     if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLabels();

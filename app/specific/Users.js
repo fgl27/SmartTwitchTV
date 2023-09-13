@@ -51,14 +51,7 @@ function Users_init() {
         ];
     }
 
-    if (Main_newUsercode) {
-        Main_HideElement('topbar');
-        Main_HideElement('clock_holder');
-        Main_HideElement('side_panel_new_holder');
-        Users_exit();
-        AddCode_CheckNewCode(Main_newUsercode);
-        return;
-    } else if (!AddUser_IsUserSet()) {
+    if (!AddUser_IsUserSet()) {
         Main_values.Main_Go = Main_Live;
         Users_exit();
         Main_SwitchScreen();
