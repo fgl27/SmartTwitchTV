@@ -265,6 +265,9 @@ function Screens_first_init() {
         if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
     }
 
+    Main_ShowElement('topbar');
+    Main_ShowElement('clock_holder');
+    Main_ShowElement('side_panel_new_holder');
     Main_values.IsUpDating = false;
 }
 
