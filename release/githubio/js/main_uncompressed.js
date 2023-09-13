@@ -4716,7 +4716,6 @@
      */
 
     //Variable initialization
-    var AddCode_Code = 0;
     var AddCode_IsFollowing = false;
     var AddCode_IsSub = false;
     var AddCode_PlayRequest = false;
@@ -4726,235 +4725,7 @@
     var AddCode_Scopes = ['chat:edit', 'chat:read', 'user:read:follows', 'user:read:subscriptions', 'user_follows_edit', 'user_read'];
     //Variable initialization end
 
-    function AddCode_CheckNewCode(code) {
-        AddCode_Code = code;
-        Main_showLoadDialog();
-        AddCode_requestTokens();
-    }
-
-    // function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
-    //     //Main_Log('AddCode_refreshTokens ' + position);
-
-    //     if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
-    //         if (callbackFuncNOK) callbackFuncNOK();
-
-    //         return;
-    //     }
-
-    //     var url =
-    //         AddCode_UrlToken +
-    //         'grant_type=refresh_token&client_id=' +
-    //         AddCode_clientId +
-    //         '&client_secret=' +
-    //         AddCode_client_token +
-    //         '&refresh_token=' +
-    //         AddUser_UsernameArray[position].refresh_token +
-    //         '&redirect_uri=' +
-    //         AddCode_redirect_uri;
-
-    //     //Run in synchronous mode to prevent anything happening until user token is restored
-    //     if (Main_IsOn_OSInterface && sync) {
-    //         AddCode_refreshTokensReady(
-    //             position,
-    //             callbackFunc,
-    //             callbackFuncNOK,
-    //             key,
-    //             JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
-    //         );
-    //     } else {
-    //         if (!Main_IsOn_OSInterface) {
-    //             var xmlHttp = new XMLHttpRequest();
-
-    //             xmlHttp.open('POST', url, true);
-    //             xmlHttp.timeout = DefaultHttpGetTimeout;
-
-    //             xmlHttp.onreadystatechange = function () {
-    //                 if (this.readyState === 4) {
-    //                     //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-    //                     AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
-    //                 }
-    //             };
-
-    //             xmlHttp.send(null);
-    //         } else {
-    //             OSInterface_BaseXmlHttpGet(
-    //                 url,
-    //                 DefaultHttpGetTimeout,
-    //                 null,
-    //                 'POST',
-    //                 null,
-    //                 'AddCode_refreshTokensResult',
-    //                 position,
-    //                 key,
-    //                 callbackFunc ? callbackFunc.name : null,
-    //                 callbackFuncNOK ? callbackFuncNOK.name : null
-    //             );
-    //         }
-    //     }
-    // }
-
-    // function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
-    //     AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
-    // }
-
-    // function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
-    //     if (xmlHttp.status === 200) {
-    //         AddCode_refreshTokensSuccess(xmlHttp.responseText, position, callbackFunc, key);
-    //         return;
-    //     } else {
-    //         try {
-    //             var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
-    //             if (response) {
-    //                 if (Main_A_includes_B(response, 'Invalid refresh token')) {
-    //                     AddCode_requestTokensFailRunning(position);
-    //                     if (callbackFuncNOK) callbackFuncNOK(key);
-
-    //                     return;
-    //                 }
-    //             }
-    //         } catch (e) {
-    //             Main_Log('AddCode_refreshTokens e ' + e);
-    //         }
-    //     }
-
-    //     AddCode_refreshTokensError(callbackFuncNOK, key);
-    // }
-
-    // function AddCode_refreshTokensError(callbackFuncNOK, key) {
-    //     if (callbackFuncNOK) callbackFuncNOK(key);
-    // }
-
-    // function AddCode_refreshTokensSuccess(responseText, position, callbackFunc, key) {
-    //     var response = JSON.parse(responseText);
-    //     if (AddCode_TokensCheckScope(response.scope)) {
-    //         AddUser_UsernameArray[position].access_token = response.access_token;
-    //         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
-    //         AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
-    //         AddUser_UsernameArray[position].expires_when = new Date().getTime() + AddUser_UsernameArray[position].expires_in;
-    //         //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
-
-    //         if (!position) {
-    //             HttpGetSetUserHeader();
-    //         }
-
-    //         AddUser_SaveUserArray();
-
-    //         //AddCode_Refreshtimeout(position);
-    //     } else AddCode_requestTokensFailRunning(position);
-
-    //     if (callbackFunc) callbackFunc(key);
-    // }
-
-    //Check if has all scopes, in canse they change
-    // function AddCode_TokensCheckScope(scope) {
-    //     var i = 0,
-    //         len = AddCode_Scopes.length;
-
-    //     for (i; i < len; i++) {
-    //         if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
-    //     }
-
-    //     return true;
-    // }
-
-    function AddCode_requestTokens() {
-        var theUrl =
-            AddCode_UrlToken +
-            'grant_type=authorization_code&client_id=' +
-            AddCode_clientId +
-            '&client_secret=' +
-            AddCode_client_token +
-            '&code=' +
-            AddCode_Code +
-            '&redirect_uri=' +
-            AddCode_redirect_uri;
-
-        FullxmlHttpGet(theUrl, null, AddCode_requestTokensSuccess, noop_fun, 0, 0, 'POST', null);
-    }
-
-    function AddCode_requestTokensSuccess(obj) {
-        if (obj.status === 200) {
-            var response = JSON.parse(obj.responseText);
-            AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
-            AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
-
-            FullxmlHttpGet(
-                AddCode_ValidateUrl,
-                [
-                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token]
-                ],
-                AddCode_requestTokensSuccessValidate,
-                noop_fun,
-                0,
-                0,
-                null,
-                null
-            );
-        } else AddCode_requestTokensFail();
-    }
-
-    function AddCode_requestTokensFail() {
-        Main_HideLoadDialog();
-        Main_showWarningDialog(STR_OAUTH_FAIL);
-        Main_setTimeout(function() {
-            Main_HideWarningDialog();
-            Main_newUsercode = 0;
-            Main_SaveValues();
-            Main_values.Main_Go = Main_Users;
-            Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
-        }, 4000);
-        AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
-        AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
-        AddUser_SaveUserArray();
-    }
-
-    // function AddCode_requestTokensFailRunning(position) {
-    //     //Token fail remove it and warn
-    //     Users_status = false;
-    //     Main_HideLoadDialog();
-    //     AddUser_UsernameArray[position].access_token = 0;
-    //     AddUser_UsernameArray[position].refresh_token = 0;
-    //     AddUser_SaveUserArray();
-    //     Main_SaveValues();
-    // }
-
-    function AddCode_requestTokensSuccessValidate(obj, position) {
-        if (obj.status === 200) AddCode_CheckOauthTokenSuccess(obj.responseText);
-        else AddCode_requestTokensFail(position);
-    }
-
     var checkiko;
-
-    function AddCode_CheckOauthTokenSuccess(response) {
-        var token = JSON.parse(response);
-
-        if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
-            Main_setItem('New_User_Token_Added', 1);
-            AddUser_SaveUserArray();
-            Main_newUsercode = 0;
-            Main_HideLoadDialog();
-            Users_status = false;
-            Main_values.Main_Go = Main_Users;
-            Main_SaveValues();
-            Main_showWarningDialog(STR_USER_CODE_OK);
-            OSInterface_clearCookie();
-            Main_setTimeout(function() {
-                Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
-            }, 3000);
-        } else {
-            AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
-            AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
-            Main_showWarningDialog(STR_OAUTH_FAIL_USER + AddUser_UsernameArray[Main_values.Users_AddcodePosition].name);
-            Main_setTimeout(function() {
-                Main_HideWarningDialog();
-                Main_newUsercode = 0;
-                Main_SaveValues();
-                Main_values.Main_Go = Main_Users;
-                Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
-            }, 4000);
-        }
-        return;
-    }
 
     function AddCode_AppTokenCheck() {
         var header = [
@@ -5372,7 +5143,7 @@
         Main_HideWarningDialog();
         Main_showLoadDialog();
         Main_ShowElement('add_user_scroll');
-        Main_HideElementWithEle(Main_AddUserTextHolder);
+        Main_HideElement('add_user_text_holder');
         AddUser_inputFocus();
     }
 
@@ -5449,8 +5220,8 @@
 
             AddUser_DeviceCode = data.device_code;
 
-            Main_innerHTMLWithEle(Main_AddUserText, STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
-            Main_ShowElementWithEle(Main_AddUserTextHolder);
+            Main_innerHTML('add_user_text', STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
+            Main_ShowElement('add_user_text_holder');
             Main_HideLoadDialog();
             AddUser_getCodeCheck(AddUser_DeviceCodeTimeout);
         } else {
@@ -5479,7 +5250,7 @@
         }
 
         if (counter) {
-            Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
+            Main_textContent('add_user_text_counter', STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
 
             AddUser_getCodeCheckId = Main_setTimeout(
                 function() {
@@ -5489,7 +5260,7 @@
                 AddUser_getCodeCheckId
             );
         } else {
-            Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER_NOW);
+            Main_textContent('add_user_text_counter', STR_ADD_USER_TEXT_COUNTER_NOW);
             AddUser_getDeviceCode();
         }
     }
@@ -5577,28 +5348,6 @@
 
         if (EnaKeydown) Main_addEventListener('keydown', AddUser_handleKeyDown);
     }
-
-    // function AddUser_loadDataRequest() {
-    //     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
-
-    //     BaseXmlHttpGet(theUrl, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, null, null, true);
-    // }
-
-    // function AddUser_loadDataRequestSuccess(response) {
-    //     if (JSON.parse(response).data.length) {
-    //         Main_removeEventListener('keydown', AddUser_handleKeyDown);
-    //         AddUser_SaveNewUser(response);
-    //     } else AddUser_loadDataNoUser();
-    // }
-
-    // function AddUser_loadDataNoUser() {
-    //     AddUser_Username = null;
-    //     Main_HideLoadDialog();
-    //     Main_showWarningDialog(STR_USER_ERROR);
-    //     Main_setTimeout(function () {
-    //         AddUser_init();
-    //     }, 1000);
-    // }
 
     function AddUser_RestoreUsers() {
         AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
@@ -5836,9 +5585,6 @@
         AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
         AddUser_UsernameArray[position] = temp_Username;
 
-        // AddCode_Refreshtimeout(0);
-        // AddCode_Refreshtimeout(position);
-
         AddUser_SaveUserArray();
         Users_status = false;
         AddUser_UpdateSidepanel();
@@ -5860,14 +5606,6 @@
             Main_showWarningDialog(STR_NO_TOKEN_WARNING, 5000);
         }
     }
-
-    // function AddUser_UserCodeExist(user) {
-    //     return (
-    //         AddUser_UsernameArray.filter(function (array) {
-    //             return array.name === user;
-    //         }).length > 0
-    //     );
-    // }
 
     function AddUser_UserFindpos(user) {
         return AddUser_UsernameArray.map(function(array) {
@@ -11871,10 +11609,6 @@
     var Main_IsDayFirst = false;
     var Main_SearchInput;
     var Main_PasswordInput;
-    //var Main_AddUserInput;
-    var Main_AddUserText;
-    var Main_AddUserTextHolder;
-    var Main_AddUserTextCounter;
     var Main_ChatLiveInput;
     var Main_UpdateClockId;
     var Main_ContentLang = '';
@@ -12162,11 +11896,6 @@
         Main_PasswordInput = Main_getElementById('password_input');
         Main_SearchInput = Main_getElementById('search_input');
         Main_ChatLiveInput = Main_getElementById('chat_send_input');
-
-        //Main_AddUserInput = Main_getElementById('user_input');
-        Main_AddUserText = Main_getElementById('add_user_text');
-        Main_AddUserTextHolder = Main_getElementById('add_user_text_holder');
-        Main_AddUserTextCounter = Main_getElementById('add_user_text_counter');
     }
 
     function Main_CheckBackup() {
@@ -15612,9 +15341,9 @@
     //public void clearCookie()
     //Android specific: true
     //Clears saved cookies to prevent show a already logged authentication page, as the app has multi users cookies are automatic saved after a login
-    function OSInterface_clearCookie() {
-        if (Main_IsOn_OSInterface) Android.clearCookie();
-    }
+    // function OSInterface_clearCookie() {
+    //     if (Main_IsOn_OSInterface) Android.clearCookie();
+    // }
 
     //public long getsavedtime()
     //Android specific: false
@@ -27913,7 +27642,8 @@
 
         //prevent user stuck in user screen without proper user
         //user may be removed in case the user removes app access
-        if (!AddUser_UserIsSet() &&
+        if (
+            !AddUser_UserIsSet() &&
             (Main_GoBefore === Main_UserLive ||
                 Main_GoBefore === Main_usergames ||
                 Main_GoBefore === Main_UserVod ||
@@ -28783,9 +28513,7 @@
     function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
         Main_FirstRun = false;
         if (!SkipHidedialog) Main_HideLoadDialog();
-        Main_ShowElement('topbar');
-        Main_ShowElement('clock_holder');
-        Main_ShowElement('side_panel_new_holder');
+
         AddUser_UpdateSidepanelAfterShow();
 
         if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLabels();
@@ -43268,14 +42996,7 @@
             ];
         }
 
-        if (Main_newUsercode) {
-            Main_HideElement('topbar');
-            Main_HideElement('clock_holder');
-            Main_HideElement('side_panel_new_holder');
-            Users_exit();
-            AddCode_CheckNewCode(Main_newUsercode);
-            return;
-        } else if (!AddUser_IsUserSet()) {
+        if (!AddUser_IsUserSet()) {
             Main_values.Main_Go = Main_Live;
             Users_exit();
             Main_SwitchScreen();
