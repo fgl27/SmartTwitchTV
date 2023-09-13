@@ -7839,6 +7839,7 @@
 
         Main_removeEventListener('keydown', Play_handleKeyDown);
         Main_addEventListener('keydown', ChatLiveControls_handleKeyDown);
+        Main_ChatLiveInput = Main_getElementById('chat_send_input');
         Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
         ChatLiveControls_SetRoomState();
         Main_ShowElement('chat_send');
@@ -11892,10 +11893,6 @@
 
         Main_SetStringsSecondary();
         Main_checkVersion();
-
-        Main_PasswordInput = Main_getElementById('password_input');
-        Main_SearchInput = Main_getElementById('search_input');
-        Main_ChatLiveInput = Main_getElementById('chat_send_input');
     }
 
     function Main_CheckBackup() {
@@ -16047,6 +16044,7 @@
         Main_textContent('password_help', Settings_enable_matureBackup ? STR_MATURE_HELP_CHECK_PASS : STR_MATURE_HELP_SET_PASS);
 
         Main_innerHTML('label_last_refresh', '');
+        Main_PasswordInput = Main_getElementById('password_input');
         Main_PasswordInput.placeholder = STR_PLACEHOLDER_PASS;
         Main_ShowElement('password_scroll');
         Password_cursorY = 0;
@@ -34561,6 +34559,7 @@
         Main_HideElement('label_refresh');
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_innerHTML('label_last_refresh', '');
+        Main_SearchInput = Main_getElementById('search_input');
         Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
         Main_ShowElement('search_scroll');
         Search_cursorY = 0;
