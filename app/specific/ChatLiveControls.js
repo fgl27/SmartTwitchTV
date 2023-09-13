@@ -69,6 +69,7 @@ function ChatLiveControls_Show() {
 
     Main_removeEventListener('keydown', Play_handleKeyDown);
     Main_addEventListener('keydown', ChatLiveControls_handleKeyDown);
+    Main_ChatLiveInput = Main_getElementById('chat_send_input');
     Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
     ChatLiveControls_SetRoomState();
     Main_ShowElement('chat_send');

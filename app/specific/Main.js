@@ -408,10 +408,6 @@ function Main_initWindowsEnd() {
 
     Main_SetStringsSecondary();
     Main_checkVersion();
-
-    Main_PasswordInput = Main_getElementById('password_input');
-    Main_SearchInput = Main_getElementById('search_input');
-    Main_ChatLiveInput = Main_getElementById('chat_send_input');
 }
 
 function Main_CheckBackup() {

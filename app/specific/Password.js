@@ -34,6 +34,7 @@ function Password_init() {
     Main_textContent('password_help', Settings_enable_matureBackup ? STR_MATURE_HELP_CHECK_PASS : STR_MATURE_HELP_SET_PASS);
 
     Main_innerHTML('label_last_refresh', '');
+    Main_PasswordInput = Main_getElementById('password_input');
     Main_PasswordInput.placeholder = STR_PLACEHOLDER_PASS;
     Main_ShowElement('password_scroll');
     Password_cursorY = 0;

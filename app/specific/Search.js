@@ -29,6 +29,7 @@ function Search_init() {
     Main_HideElement('label_refresh');
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_innerHTML('label_last_refresh', '');
+    Main_SearchInput = Main_getElementById('search_input');
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_ShowElement('search_scroll');
     Search_cursorY = 0;
