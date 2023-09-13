@@ -29,7 +29,7 @@ function AddUser_init() {
     Main_HideWarningDialog();
     Main_showLoadDialog();
     Main_ShowElement('add_user_scroll');
-    Main_HideElementWithEle(Main_AddUserTextHolder);
+    Main_HideElement('add_user_text_holder');
     AddUser_inputFocus();
 }
 
@@ -104,8 +104,8 @@ function AddUser_getCodeSuccess(resultObj) {
 
         AddUser_DeviceCode = data.device_code;
 
-        Main_innerHTMLWithEle(Main_AddUserText, STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
-        Main_ShowElementWithEle(Main_AddUserTextHolder);
+        Main_innerHTML('add_user_text', STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
+        Main_ShowElement('add_user_text_holder');
         Main_HideLoadDialog();
         AddUser_getCodeCheck(AddUser_DeviceCodeTimeout);
     } else {
@@ -133,7 +133,7 @@ function AddUser_getCodeCheck(counter) {
     }
 
     if (counter) {
-        Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
+        Main_textContent('add_user_text_counter', STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
 
         AddUser_getCodeCheckId = Main_setTimeout(
             function () {
@@ -143,7 +143,7 @@ function AddUser_getCodeCheck(counter) {
             AddUser_getCodeCheckId
         );
     } else {
-        Main_textContentWithEle(Main_AddUserTextCounter, STR_ADD_USER_TEXT_COUNTER_NOW);
+        Main_textContent('add_user_text_counter', STR_ADD_USER_TEXT_COUNTER_NOW);
         AddUser_getDeviceCode();
     }
 }
