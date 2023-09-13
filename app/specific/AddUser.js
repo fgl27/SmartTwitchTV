@@ -231,28 +231,6 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
     if (EnaKeydown) Main_addEventListener('keydown', AddUser_handleKeyDown);
 }
 
-// function AddUser_loadDataRequest() {
-//     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
-
-//     BaseXmlHttpGet(theUrl, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, null, null, true);
-// }
-
-// function AddUser_loadDataRequestSuccess(response) {
-//     if (JSON.parse(response).data.length) {
-//         Main_removeEventListener('keydown', AddUser_handleKeyDown);
-//         AddUser_SaveNewUser(response);
-//     } else AddUser_loadDataNoUser();
-// }
-
-// function AddUser_loadDataNoUser() {
-//     AddUser_Username = null;
-//     Main_HideLoadDialog();
-//     Main_showWarningDialog(STR_USER_ERROR);
-//     Main_setTimeout(function () {
-//         AddUser_init();
-//     }, 1000);
-// }
-
 function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
 
@@ -489,9 +467,6 @@ function AddUser_UserMakeOne(position) {
     AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
     AddUser_UsernameArray[position] = temp_Username;
 
-    // AddCode_Refreshtimeout(0);
-    // AddCode_Refreshtimeout(position);
-
     AddUser_SaveUserArray();
     Users_status = false;
     AddUser_UpdateSidepanel();
@@ -513,14 +488,6 @@ function AddUser_UserMakeOne(position) {
         Main_showWarningDialog(STR_NO_TOKEN_WARNING, 5000);
     }
 }
-
-// function AddUser_UserCodeExist(user) {
-//     return (
-//         AddUser_UsernameArray.filter(function (array) {
-//             return array.name === user;
-//         }).length > 0
-//     );
-// }
 
 function AddUser_UserFindpos(user) {
     return AddUser_UsernameArray.map(function (array) {
