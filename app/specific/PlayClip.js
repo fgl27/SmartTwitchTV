@@ -193,7 +193,7 @@ function PlayClip_loadVodOffsetStartVodResult(responseObj, key, id) {
             var obj = JSON.parse(responseObj.responseText);
 
             if (obj.data && obj.data.clip && (obj.data.clip.videoOffsetSeconds || obj.data.clip.videoOffsetSeconds === 0)) {
-                ChannelVod_vodOffset = obj.data.clip.videoOffsetSeconds;
+                ChannelVod_vodOffset = obj.data.clip.videoOffsetSeconds ? obj.data.clip.videoOffsetSeconds : 1;
                 PlayClip_OpenVodEnd();
                 return;
             }
