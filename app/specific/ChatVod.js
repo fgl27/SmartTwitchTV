@@ -698,7 +698,7 @@ function Main_Addline(id) {
 
             Chat_MessagesNext = [];
 
-            if (Chat_Id[0] === id) Chat_loadChatNext(id);
+            if (Chat_Id[0] === id && Chat_cursor !== '') Chat_loadChatNext(id);
             Chat_Clean(0);
         } else {
             //Chat has ended
