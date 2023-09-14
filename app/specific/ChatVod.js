@@ -690,7 +690,7 @@ function Main_Addline(id) {
             }
         }
     } else {
-        if (Chat_cursor !== '') {
+        if (Chat_cursor !== '' || Chat_MessagesNext.length) {
             //array.slice() may crash RangeError: Maximum call stack size exceeded
             Chat_Messages = Main_Slice(Chat_MessagesNext);
 
