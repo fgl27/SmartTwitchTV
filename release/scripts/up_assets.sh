@@ -22,6 +22,8 @@ sed -i 's/LoadFromAssets = false/LoadFromAssets = true/' apk/app/src/main/java/c
 rm -rf apk/app/src/main/assets
 mkdir apk/app/src/main/assets
 cp -rf app/ apk/app/src/main/assets/app
+mkdir -p apk/app/src/main/assets/release/githubio/
+cp -rf release/githubio/css/ apk/app/src/main/assets/release/githubio/
 
 echo -e "Enable assets run"
 

@@ -249,8 +249,13 @@ new='<script src="githubio/js/Extrapage.js" defer></script>'
 sed --in-place "s%$old%$new%g" release/extrapageindex.html
 cp -rf app/Extrapage/Extrapage.js release/githubio/js/Extrapage.js;
 
-old='https://fgl27.github.io/SmartTwitchTV/release/'
+old='../release/'
 new=''
+sed --in-place "s%$old%$new%g" release/index.html
+sed --in-place "s%$old%$new%g" release/extrapageindex.html
+
+old='css/icons.css'
+new='css/icons.min.css'
 sed --in-place "s%$old%$new%g" release/index.html
 sed --in-place "s%$old%$new%g" release/extrapageindex.html
 
