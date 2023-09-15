@@ -917,22 +917,6 @@ function UserLiveFeedobj_SetBottomText(pos) {
 
     len = UserLiveFeedobj_MAX - 2;
 
-    for (i = 0; i < len; i++) {
-        if (i < pos) {
-            Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
-            Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_down');
-
-            Main_RemoveClass('feed_end_icon_' + i, 'icon-key-down');
-            Main_AddClass('feed_end_icon_' + i, 'icon-key-up');
-        } else {
-            Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_down');
-            Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_up');
-
-            Main_RemoveClass('feed_end_icon_' + i, 'icon-key-up');
-            Main_AddClass('feed_end_icon_' + i, 'icon-key-down');
-        }
-    }
-
     Main_innerHTML('feed_end_0', UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : STR_GAMES);
     Main_innerHTML('feed_end_2', Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME);
     Main_innerHTML(

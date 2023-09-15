@@ -61,6 +61,12 @@
                 font-family: 'Roboto-Bold';
             }
 
+            .feed_end_up_down {
+                display: inline-block;
+                font-size: 65%;
+                transform: translate(0, 33%);
+                padding-right: 0.3em;
+            }
             .feed_end_name {
                 transform: translate(0, 29%);
                 display: inline-block;
@@ -71,22 +77,16 @@
                 text-overflow: ellipsis;
                 margin-left: 0.5vh;
                 margin-right: 0.5vh;
+                opacity: 0.85;
+                padding-left: 0.3em;
+                padding-right: 0.3em;
             }
 
             .feed_end_name_focus {
-                color: #00a94b;
-            }
-
-            .feed_end_icon_down,
-            .feed_end_icon_up {
-                transform: translate(0, 8%);
-                display: inline-block;
-                vertical-align: middle;
-                color: #fed000 !important;
-            }
-
-            .feed_end_icon_down {
-                color: #ff0000 !important;
+                transform: translate(0, 29%) scale(1.11);
+                text-decoration: underline;
+                text-underline-offset: 0.2em;
+                opacity: 1;
             }
 
             .screen_size,
@@ -4078,25 +4078,21 @@
                         <div
                             id="icon_feed_back"
                             class="show_pointer icon_feed_refresh opacity_zero"
-                            style="margin-top: -0.5%; margin-bottom: 0.25%"
+                            style="margin-top: -0.2%; margin-bottom: 0.25%"
                         ></div>
                         <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="margin-bottom: 0.25%">
+                            <div class="feed_end_up_down">
+                                <div class="up" style="opacity: 1"></div>
+                                <div class="down" style="opacity: 1"></div>
+                            </div>
                             <div id="feed_end_0" class="feed_end_name" style="margin-left: 0"></div>
-                            <i id="feed_end_icon_0" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_1" class="feed_end_name"></div>
-                            <i id="feed_end_icon_1" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_2" class="feed_end_name"></div>
-                            <i id="feed_end_icon_2" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_3" class="feed_end_name"></div>
-                            <i id="feed_end_icon_3" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_4" class="feed_end_name"></div>
-                            <i id="feed_end_icon_4" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_5" class="feed_end_name"></div>
-                            <i id="feed_end_icon_5" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_6" class="feed_end_name"></div>
-                            <i id="feed_end_icon_6" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_7" class="feed_end_name hide"></div>
-                            <i id="feed_end_icon_7" class="hide feed_end_icon_up icon-key-down class_bold strokicon"></i>
                             <div id="feed_end_8" class="feed_end_name"></div>
                         </div>
                         <div style="line-height: 0.75em">
