@@ -2018,7 +2018,7 @@ function Screens_KeyUpDownClick(key, y) {
             ScreenObj[key].dataEnded ||
             ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1 || //banner or mid row
             ScreenObj[key].Cells[ScreenObj[key].posY + y] || //Last row and Cell len less then ItemsLimit
-            (ScreenObj[key].BannerCreated && ScreenObj[key].itemsCount === 1 && ScreenObj[key].HasSwitches && ScreenObj[key].posY > -1)
+            (ScreenObj[key].itemsCount && ScreenObj[key].HasSwitches && ScreenObj[key].posY > -1)
         ) {
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(y, key);
         } else {

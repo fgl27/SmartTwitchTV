@@ -481,6 +481,7 @@ function ScreensObj_StartAllVars() {
         setMax: function (tempObj) {
             if (this.useHelix) {
                 this.cursor = tempObj.pagination.cursor;
+
                 if (!this.cursor || this.cursor === '') this.dataEnded = true;
             } else {
                 this.MaxOffset = tempObj._total;
