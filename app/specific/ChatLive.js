@@ -772,6 +772,7 @@ function ChatLive_loadEmotesChannelSeven_tv(chat_number, id) {
 
 function ChatLive_loadEmotesChannelSeven_tvSuccess(data, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
+
     ChatLive_loadEmotesseven_tv(JSON.parse(data), chat_number, false);
 }
 
@@ -1760,7 +1761,7 @@ function ChatLive_LineAddSimple(message) {
 
 function ChatLive_LineAdd(messageObj) {
     if (ChatLive_Playing) {
-        ChatLive_ElemntAdd(messageObj);
+        ChatLive_ElementAdd(messageObj);
 
         if (ChatLive_LineAddCounter[messageObj.chat_number]++ > Chat_CleanMax) {
             ChatLive_LineAddCounter[messageObj.chat_number] = 0;
@@ -1784,7 +1785,7 @@ function ChatLive_LineAdd(messageObj) {
 //     skip_addline: skip_addline,
 // };
 
-function ChatLive_ElemntAdd(messageObj) {
+function ChatLive_ElementAdd(messageObj) {
     var style = '',
         classname = 'chat_line';
 
@@ -1838,20 +1839,20 @@ function ChatLive_ElemntAdd(messageObj) {
     if (!messageObj.addToStart) {
         //skip animation if chat not showing to prevent animations when it shows
         chat_line_holder.className = Play_ChatEnable ? ChatLive_chat_line_class : 'chat_line_holder';
-        ChatLive_ElemntAddCheckExtra(messageObj);
+        ChatLive_ElementAddCheckExtra(messageObj);
         Chat_div[messageObj.chat_number].appendChild(chat_line_holder);
     } else {
         chat_line_holder.className = 'chat_line_holder';
         Chat_div[messageObj.chat_number].insertBefore(chat_line_holder, Chat_div[messageObj.chat_number].childNodes[0]);
-        ChatLive_ElemntAddCheckExtra(messageObj);
+        ChatLive_ElementAddCheckExtra(messageObj);
     }
 }
 
-function ChatLive_ElemntAddCheckExtra(messageObj) {
+function ChatLive_ElementAddCheckExtra(messageObj) {
     if (messageObj.extraMessage) {
         //REDEEMED_MESSAGE or etc related
 
-        ChatLive_ElemntAdd({
+        ChatLive_ElementAdd({
             chat_number: messageObj.chat_number,
             message: ChatLive_LineAddSimple(messageObj.extraMessage),
             skip_addline: 1,

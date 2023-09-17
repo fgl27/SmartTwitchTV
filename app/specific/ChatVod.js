@@ -57,6 +57,7 @@ var Chat_hasEnded = false;
 var Chat_CleanMax = 60;
 var Chat_JustStarted = true;
 var Chat_comment_ids = {};
+var Chat_Channels = {};
 
 var Chat_loadChatRequestPost =
     '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","contentOffsetSeconds":%o},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
@@ -99,13 +100,35 @@ function Chat_Init() {
 
     ChatLive_SetOptions(0, Main_values.Main_selectedChannel_id, Main_values.Main_selectedChannel);
 
-    Chat_loadChat(Chat_Id[0]);
+    ChatLive_ElementAdd({
+        chat_number: 0,
+        time: 0,
+        message:
+            '<span class="message">' +
+            STR_LOADING_CHAT +
+            STR_SPACE_HTML +
+            Main_values.Main_selectedChannelDisplayname +
+            STR_SPACE_HTML +
+            Chat_title +
+            '</span>'
+    });
+
+    //Prevent show empty emotes as the list may not yet loaded
+    Main_setTimeout(
+        function () {
+            Chat_loadChat(Chat_Id[0]);
+        },
+        !Chat_Channels[Main_values.Main_selectedChannel_id] ? 500 : 0
+    );
+
+    Chat_Channels[Main_values.Main_selectedChannel_id] = true;
 }
 
 var Chat_StartFakeClockId;
 var Chat_StartFakeClockAdd = 1;
 function Chat_StartFakeClock() {
     Chat_fakeClock = PlayClip_isOn ? 0 : Chat_offset;
+    Chat_fakeClockOld = PlayClip_isOn ? 0 : Chat_offset;
 
     if (Play_isOn) {
         if (Play_LowLatency) Chat_fakeClock = Play_LowLatency === 1 ? 24 : 26;
@@ -131,8 +154,7 @@ function Chat_StartFakeClockInterval() {
                 try {
                     var player = embedPlayer.getPlayer(),
                         time = player.getCurrentTime();
-
-                    if (time > Chat_fakeClock + 10 || time < Chat_fakeClock - 10) {
+                    if (time > 0 && (time > Chat_fakeClock + 10 || time < Chat_fakeClock - 10)) {
                         //console.log('chat restart time ' + time + ' Chat_fakeClock ' + Chat_fakeClock);
 
                         Chat_fakeClock = time;
@@ -148,7 +170,7 @@ function Chat_StartFakeClockInterval() {
                     console.log('Chat_StartFakeClockInterval e ' + e);
                 }
             } else if (PlayVod_isOn) {
-                if (Chat_fakeClockOld > Chat_fakeClock + 10 || Chat_fakeClockOld < Chat_fakeClock - 10) {
+                if (Chat_fakeClockOld > 0 && (Chat_fakeClockOld > Chat_fakeClock + 10 || Chat_fakeClockOld < Chat_fakeClock - 10)) {
                     //console.log('chat restart time ' + Chat_fakeClockOld + ' Chat_fakeClock ' + Chat_fakeClock);
 
                     Chat_fakeClockOld = Chat_fakeClock;
@@ -478,22 +500,10 @@ function Chat_loadChatSuccess(responseObj, id) {
         Chat_MessageVector({
             chat_number: 0,
             time: 0,
-            message:
-                '<span class="message">' +
-                STR_LOADING_CHAT +
-                STR_SPACE_HTML +
-                Main_values.Main_selectedChannelDisplayname +
-                STR_SPACE_HTML +
-                Chat_title +
-                '</span>'
-        });
-
-        Chat_MessageVector({
-            chat_number: 0,
-            time: 0,
             message: '<span class="message">' + STR_CHAT_CONNECTED + '</span>'
         });
     }
+
     Chat_offset = 0;
 
     for (i = 0, len = comments.length; i < len; i++) {
@@ -692,7 +702,7 @@ function Main_Addline(id) {
         i = Chat_Position;
         for (i; i < len; i++, Chat_Position++) {
             if (Chat_Messages[i].time < ChannelVod_vodOffset + OSInterface_gettime() / 1000) {
-                ChatLive_ElemntAdd(Chat_Messages[i]);
+                ChatLive_ElementAdd(Chat_Messages[i]);
             } else {
                 break;
             }
@@ -712,7 +722,7 @@ function Main_Addline(id) {
             //Chat has ended
 
             if (!Chat_hasEnded) {
-                ChatLive_ElemntAdd({
+                ChatLive_ElementAdd({
                     chat_number: 0,
                     message: '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR + '</span>'
                 });
