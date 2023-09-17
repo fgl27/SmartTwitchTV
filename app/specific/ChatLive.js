@@ -629,7 +629,10 @@ function ChatLive_loadCheersChannelSuccess(responseText, chat_number, id) {
             cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
 
             action.tiers.forEach(function (tier) {
-                cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = emoteTemplate(tier.images.light.animated['4']);
+                cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = emoteTemplate(
+                    tier.images.dark.animated['4'],
+                    ChatLive_ffz_srcset(tier.images.dark.animated)
+                );
             });
         });
 
