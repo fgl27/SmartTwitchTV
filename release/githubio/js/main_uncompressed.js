@@ -43751,7 +43751,15 @@
     }
 
     function emoteTemplate(url, srcset) {
-        return '<img class="emoticon" alt="" src="' + url + '" ' + (srcset ? 'srcset="' + srcset + '"' : '') + '/>';
+        return (
+            '<img class="emoticon" alt="" ' +
+            (srcset ? 'srcset="' + srcset + '"' : '') +
+            ' src="' +
+            url +
+            '" onerror="this.onerror=null;this.src=\'' +
+            url +
+            '\';">'
+        );
     }
 
     function mescape(message) {
