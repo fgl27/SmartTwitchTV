@@ -717,14 +717,16 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
     if (isGlobal) extraEmotesDone.seven_tvGlobal = {};
     else extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]] = {};
 
-    var url, chat_div, id;
+    var url, srcset, chat_div, id;
 
     try {
         data.forEach(function (emote) {
             if (!emote.urls || !emote.urls.length) {
                 return;
             }
+
             url = emote.urls[3][1];
+            srcset = ChatLive_seven_tv_srcset(emote.urls);
             chat_div = emoteTemplate(url);
             id = emote.name + emote.id;
 
@@ -732,7 +734,8 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
                 code: emote.name,
                 id: id,
                 chat_div: chat_div,
-                '4x': url
+                '4x': url,
+                srcset: srcset
             };
 
             //Don't copy to prevent shallow clone
@@ -741,20 +744,34 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
                     code: emote.name,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
             } else {
                 extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]][emote.name] = {
                     code: emote.name,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
             }
         });
     } catch (e) {
         Main_Log('ChatLive_loadEmotesseven_tvChannel ' + e);
     }
+}
+
+function ChatLive_seven_tv_srcset(array) {
+    var i = 0,
+        len = array.length,
+        srcset = '';
+
+    for (i; i < len; i++) {
+        srcset += array[i][1] + ' ' + array[i][0] + 'x,';
+    }
+
+    return srcset.length ? srcset.slice(0, -1) : srcset;
 }
 
 function ChatLive_PreLoadChat(chat_number, id) {

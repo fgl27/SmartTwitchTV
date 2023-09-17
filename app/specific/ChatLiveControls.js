@@ -430,13 +430,13 @@ function ChatLiveControls_CreateEmoteDiv(array, pos, create_elements, prop, div_
     ChatLiveControls_EmotesArray.push(array[pos].id);
 
     if (create_elements || !array[pos].div) {
-        array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code);
+        array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code, array[pos].srcset);
     }
 
     div_holder.appendChild(array[pos].div);
 }
 
-function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
+function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset) {
     var div = document.createElement('div');
     div.setAttribute('id', 'chat_emotes' + id);
     div.setAttribute(Main_DataAttribute, code);
@@ -445,7 +445,11 @@ function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
     div.innerHTML =
         '<div id="chat_emotes_img' +
         id +
-        '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' +
+        '" class="chat_emotes_img_div" ><img alt="' +
+        name +
+        '" class="chat_emotes_img" ' +
+        (srcset ? ' srcset="' + srcset + '"' : '') +
+        ' src="' +
         url +
         '" onerror="this.onerror=null;this.src=\'' +
         url +
