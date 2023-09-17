@@ -334,33 +334,37 @@ function Chat_loadEmotesSuccessBttv(data) {
 function Chat_loadEmotesbttvGlobal(data) {
     extraEmotesDone.bttvGlobal = {};
 
-    var url, chat_div, id;
+    var url, srcset, chat_div, id;
 
     try {
         data.forEach(function (emote) {
+            srcset = ChatLive_bttv_srcset(emote.id);
             url = ChatLive_Base_BTTV_url + emote.id + '/3x';
-            chat_div = emoteTemplate(url);
+            chat_div = emoteTemplate(url, srcset);
             id = emote.code + emote.id;
 
             extraEmotes[0][emote.code] = {
                 code: emote.code,
                 id: id,
                 chat_div: chat_div,
-                '4x': url
+                '4x': url,
+                srcset: srcset
             };
 
             extraEmotes[1][emote.code] = {
                 code: emote.code,
                 id: id,
                 chat_div: chat_div,
-                '4x': url
+                '4x': url,
+                srcset: srcset
             };
 
             extraEmotesDone.bttvGlobal[emote.code] = {
                 code: emote.code,
                 id: id,
                 chat_div: chat_div,
-                '4x': url
+                '4x': url,
+                srcset: srcset
             };
         });
     } catch (e) {
