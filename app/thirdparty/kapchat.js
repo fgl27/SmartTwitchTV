@@ -5,8 +5,12 @@ function emoteURL(id) {
     return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/3.0'; //emotes 3.0 === 4.0
 }
 
-function emoteTemplate(url) {
-    return '<img class="emoticon" alt="" src="' + url + '"/>';
+function emoteURLFromObj(obj) {
+    return Object.values(obj).pop().replace('light', 'dark');
+}
+
+function emoteTemplate(url, srcset) {
+    return '<img class="emoticon" alt="" src="' + url + '" ' + (srcset ? 'srcset="' + srcset + '"' : '') + '/>';
 }
 
 function mescape(message) {

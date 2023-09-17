@@ -455,7 +455,8 @@ function ChatLive_SetTwitchEmotesSuccess(obj) {
         userEmote[AddUser_UsernameArray[0].id][emote] = {
             code: emote,
             id: obj[emote].id,
-            '4x': obj[emote]['4x']
+            '4x': obj[emote]['4x'],
+            srcset: obj[emote].srcset
         };
     }
 }
@@ -472,7 +473,7 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
             userEmote[AddUser_UsernameArray[0].id] = {};
         }
 
-        var url, id;
+        var url, srcset, id;
 
         data.forEach(function (emoticon) {
             if (!emoticon.name || !emoticon.id || typeof emoticon.name !== 'string') return;
@@ -481,29 +482,47 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
 
             if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
-            url = emoteURL(emoticon.id);
+            srcset = ChatLive_Twitch_srcset(emoticon.images);
+            url = emoteURLFromObj(emoticon.images);
             id = emoticon.code + emoticon.id; //combine code and id to make t uniq
 
             extraEmotes[chat_number][emoticon.code] = {
                 code: emoticon.code,
                 id: id,
-                chat_div: emoteTemplate(url),
-                '4x': url
+                chat_div: emoteTemplate(url, srcset),
+                '4x': url,
+                srcset: srcset
             };
 
             extraEmotesDone_obj[emoticon.code] = {
                 code: emoticon.code,
                 id: id,
-                '4x': url
+                '4x': url,
+                srcset: srcset
             };
 
             userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                 code: emoticon.code,
                 id: id,
-                '4x': url
+                '4x': url,
+                srcset: srcset
             };
         });
     }
+}
+
+function ChatLive_Twitch_srcset(obj) {
+    if (!obj) {
+        return '';
+    }
+
+    var srcset = '';
+
+    for (var property in obj) {
+        srcset += obj[property].replace('light', 'dark') + ' ' + property.split('_')[1] + ',';
+    }
+
+    return srcset.length ? srcset.slice(0, -1) : srcset;
 }
 
 function ChatLive_loadEmotesChannelBTTV(chat_number, id) {
@@ -727,7 +746,7 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
 
             url = emote.urls[3][1];
             srcset = ChatLive_seven_tv_srcset(emote.urls);
-            chat_div = emoteTemplate(url);
+            chat_div = emoteTemplate(url, srcset);
             id = emote.name + emote.id;
 
             extraEmotes[chat_number][emote.name] = {
