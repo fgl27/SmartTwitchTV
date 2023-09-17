@@ -78,7 +78,10 @@ function Chat_Preinit() {
     ChatLive_Latency[0] = 1;
     extraEmotes[0] = {};
     extraEmotes[1] = {};
-    CSSPixel = parseInt(window.devicePixelRatio);
+
+    var CSSPixel = parseInt(window.devicePixelRatio);
+    emoteURLSize = emoteURLSizes[CSSPixel] ? emoteURLSizes[CSSPixel] : emoteURLSizes[4];
+    badgeURLSize = badgeURLSizes[CSSPixel] ? badgeURLSizes[CSSPixel] : badgeURLSizes[4];
 }
 
 function Chat_Init() {
@@ -248,7 +251,7 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
         }
 
         versions.forEach(function (version) {
-            tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
+            tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version[badgeURLSize]));
 
             //channel can overwrite bits or subs badges
             ////skip adding global bits or sub
@@ -269,7 +272,7 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
                 versionInt = versionInt - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
 
                 if (versionInt > -1 && !versionsIds[versionInt]) {
-                    innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version.image_url_4x));
+                    innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version[badgeURLSize]));
                 }
             }
         });

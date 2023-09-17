@@ -7,12 +7,18 @@ var emoteURLSizes = {
     3: '3.0',
     4: '3.0'
 };
-var CSSPixel;
+var emoteURLSize;
+
+var badgeURLSizes = {
+    1: 'image_url_1x',
+    2: 'image_url_2x',
+    3: 'image_url_4x',
+    4: 'image_url_4x'
+};
+var badgeURLSize;
 
 function emoteURL(id) {
-    return (
-        'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/' + (emoteURLSizes[CSSPixel] ? emoteURLSizes[CSSPixel] : emoteURLSizes[4])
-    );
+    return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/' + emoteURLSize;
 }
 
 function emoteURLFromObj(obj) {
