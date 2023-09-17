@@ -78,6 +78,7 @@ function Chat_Preinit() {
     ChatLive_Latency[0] = 1;
     extraEmotes[0] = {};
     extraEmotes[1] = {};
+    CSSPixel = parseInt(window.devicePixelRatio);
 }
 
 function Chat_Init() {

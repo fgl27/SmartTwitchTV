@@ -483,6 +483,7 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
             if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
             srcset = ChatLive_Twitch_srcset(emoticon.images);
+
             url = emoteURLFromObj(emoticon.images);
             id = emoticon.code + emoticon.id; //combine code and id to make t uniq
 

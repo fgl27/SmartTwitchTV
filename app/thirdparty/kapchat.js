@@ -1,8 +1,18 @@
 // The bellow are some function or adaptations of function from
 // © NightDev 2016 https://www.nightdev.com/kapchat/
 
+var emoteURLSizes = {
+    1: '1.0',
+    2: '2.0',
+    3: '3.0',
+    4: '3.0'
+};
+var CSSPixel;
+
 function emoteURL(id) {
-    return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/3.0'; //emotes 3.0 === 4.0
+    return (
+        'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/' + (emoteURLSizes[CSSPixel] ? emoteURLSizes[CSSPixel] : emoteURLSizes[4])
+    );
 }
 
 function emoteURLFromObj(obj) {
