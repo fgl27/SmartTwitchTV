@@ -8180,12 +8180,20 @@
 
         ChatLiveControls_ShowEmotes();
 
-        if (i < ChatLiveControls_EmotesTotal) {
+        //Load the rest asynchronism 20 at time
+        ChatLiveControls_CreateEmotes(ChatLiveControls_EmotesTotal, array, i, create_elements, prop, div_holder);
+    }
+
+    function ChatLiveControls_CreateEmotes(total, array, i, create_elements, prop, div_holder) {
+        var len = Math.min(total, i + 20);
+
+        if (i < total) {
             Main_setTimeout(function() {
-                for (i; i < ChatLiveControls_EmotesTotal; i++) {
+                for (i; i < len; i++) {
                     ChatLiveControls_CreateEmoteDiv(array, i, create_elements, prop, div_holder);
                 }
-            }, 10);
+                ChatLiveControls_CreateEmotes(total, array, i, create_elements, prop, div_holder);
+            }, 50);
         }
     }
 
@@ -8211,7 +8219,7 @@
             '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' +
             url +
             '" onerror="this.onerror=null;this.src=\'' +
-            IMG_404_BANNER +
+            url +
             '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' +
             id +
             '" class="chat_emotes_name opacity_zero">' +
