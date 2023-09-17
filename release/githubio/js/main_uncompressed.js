@@ -8201,13 +8201,13 @@
         ChatLiveControls_EmotesArray.push(array[pos].id);
 
         if (create_elements || !array[pos].div) {
-            array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code);
+            array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code, array[pos].srcset);
         }
 
         div_holder.appendChild(array[pos].div);
     }
 
-    function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
+    function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset) {
         var div = document.createElement('div');
         div.setAttribute('id', 'chat_emotes' + id);
         div.setAttribute(Main_DataAttribute, code);
@@ -8216,7 +8216,11 @@
         div.innerHTML =
             '<div id="chat_emotes_img' +
             id +
-            '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' +
+            '" class="chat_emotes_img_div" ><img alt="' +
+            name +
+            '" class="chat_emotes_img" ' +
+            (srcset ? ' srcset="' + srcset + '"' : '') +
+            ' src="' +
             url +
             '" onerror="this.onerror=null;this.src=\'' +
             url +
@@ -9192,7 +9196,8 @@
             userEmote[AddUser_UsernameArray[0].id][emote] = {
                 code: emote,
                 id: obj[emote].id,
-                '4x': obj[emote]['4x']
+                '4x': obj[emote]['4x'],
+                srcset: obj[emote].srcset
             };
         }
     }
@@ -9209,7 +9214,7 @@
                 userEmote[AddUser_UsernameArray[0].id] = {};
             }
 
-            var url, id;
+            var url, srcset, replaceDark, id;
 
             data.forEach(function(emoticon) {
                 if (!emoticon.name || !emoticon.id || typeof emoticon.name !== 'string') return;
@@ -9218,29 +9223,52 @@
 
                 if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
-                url = emoteURL(emoticon.id);
+                replaceDark = emoticon.theme_mode.includes('dark');
+                srcset = ChatLive_Twitch_srcset(emoticon.images, replaceDark);
+
+                url = emoteURLFromObj(emoticon.images, replaceDark);
                 id = emoticon.code + emoticon.id; //combine code and id to make t uniq
 
                 extraEmotes[chat_number][emoticon.code] = {
                     code: emoticon.code,
                     id: id,
-                    chat_div: emoteTemplate(url),
-                    '4x': url
+                    chat_div: emoteTemplate(url, srcset),
+                    '4x': url,
+                    srcset: srcset
                 };
 
                 extraEmotesDone_obj[emoticon.code] = {
                     code: emoticon.code,
                     id: id,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
 
                 userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                     code: emoticon.code,
                     id: id,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
             });
         }
+    }
+
+    function ChatLive_Twitch_srcset(obj, replaceDark) {
+        if (!obj) {
+            return '';
+        }
+
+        var srcset = '',
+            value;
+
+        for (var property in obj) {
+            value = replaceDark ? obj[property].replace('light', 'dark') : obj[property];
+
+            srcset += value + ' ' + property.split('_')[1] + ',';
+        }
+
+        return srcset.length ? srcset.slice(0, -1) : srcset;
     }
 
     function ChatLive_loadEmotesChannelBTTV(chat_number, id) {
@@ -9284,31 +9312,47 @@
     }
 
     function ChatLive_loadEmotesbttvChannel(data, chat_number) {
-        var url, chat_div, id;
+        var url, srcset, chat_div, id;
 
         try {
             data.forEach(function(emote) {
+                srcset = ChatLive_bttv_srcset(emote.id);
                 url = ChatLive_Base_BTTV_url + emote.id + '/3x';
-                chat_div = emoteTemplate(url);
+                chat_div = emoteTemplate(url, srcset);
                 id = emote.code + emote.id;
 
                 extraEmotes[chat_number][emote.code] = {
                     code: emote.code,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
 
                 extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                     code: emote.code,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
             });
         } catch (e) {
             Main_Log('ChatLive_loadEmotesbttvChannel ' + e);
         }
+    }
+
+    function ChatLive_bttv_srcset(id) {
+        var array = ['1x', '2x', '3x'],
+            i = 0,
+            len = array.length,
+            srcset = '';
+
+        for (i; i < len; i++) {
+            srcset += ChatLive_Base_BTTV_url + id + '/' + array[i] + ' ' + array[i] + ',';
+        }
+
+        return srcset.length ? srcset.slice(0, -1) : srcset;
     }
 
     function ChatLive_loadCheersChannel(chat_number, id) {
@@ -9331,7 +9375,10 @@
                 cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
 
                 action.tiers.forEach(function(tier) {
-                    cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = emoteTemplate(tier.images.light.animated['4']);
+                    cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = emoteTemplate(
+                        tier.images.dark.animated['4'],
+                        ChatLive_ffz_srcset(tier.images.dark.animated)
+                    );
                 });
             });
 
@@ -9348,7 +9395,8 @@
                 code: obj[property].code,
                 id: obj[property].id,
                 chat_div: obj[property].chat_div,
-                '4x': obj[property]['4x']
+                '4x': obj[property]['4x'],
+                srcset: obj[property].srcset
             };
         }
     }
@@ -9379,7 +9427,7 @@
         if (isGlobal) extraEmotesDone.ffzGlobal = {};
         else extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
 
-        var url, chat_div, id;
+        var url, srcset, chat_div, id;
 
         try {
             Object.keys(data.sets).forEach(function(set) {
@@ -9394,15 +9442,17 @@
                         if (typeof emoticon.urls[1] !== 'string') return;
                         if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
+                        srcset = ChatLive_ffz_srcset(emoticon.urls);
                         url = emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1];
-                        chat_div = emoteTemplate(url);
+                        chat_div = emoteTemplate(url, srcset);
                         id = emoticon.name + emoticon.id;
 
                         extraEmotes[chat_number][emoticon.name] = {
                             code: emoticon.name,
                             id: id,
                             chat_div: chat_div,
-                            '4x': url
+                            '4x': url,
+                            srcset: srcset
                         };
 
                         //Don't copy to prevent shallow clone
@@ -9411,14 +9461,16 @@
                                 code: emoticon.name,
                                 id: id,
                                 chat_div: chat_div,
-                                '4x': url
+                                '4x': url,
+                                srcset: srcset
                             };
                         } else {
                             extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
                                 code: emoticon.name,
                                 id: id,
                                 chat_div: chat_div,
-                                '4x': url
+                                '4x': url,
+                                srcset: srcset
                             };
                         }
                     });
@@ -9427,6 +9479,20 @@
         } catch (e) {
             Main_Log('ChatLive_loadEmotesffz ' + e);
         }
+    }
+
+    function ChatLive_ffz_srcset(obj) {
+        if (!obj) {
+            return '';
+        }
+
+        var srcset = '';
+
+        for (var property in obj) {
+            srcset += obj[property] + ' ' + property + 'x,';
+        }
+
+        return srcset.length ? srcset.slice(0, -1) : srcset;
     }
 
     function ChatLive_loadEmotesChannelSeven_tv(chat_number, id) {
@@ -9454,22 +9520,25 @@
         if (isGlobal) extraEmotesDone.seven_tvGlobal = {};
         else extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]] = {};
 
-        var url, chat_div, id;
+        var url, srcset, chat_div, id;
 
         try {
             data.forEach(function(emote) {
                 if (!emote.urls || !emote.urls.length) {
                     return;
                 }
+
                 url = emote.urls[3][1];
-                chat_div = emoteTemplate(url);
+                srcset = ChatLive_seven_tv_srcset(emote.urls);
+                chat_div = emoteTemplate(url, srcset);
                 id = emote.name + emote.id;
 
                 extraEmotes[chat_number][emote.name] = {
                     code: emote.name,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
 
                 //Don't copy to prevent shallow clone
@@ -9478,20 +9547,34 @@
                         code: emote.name,
                         id: id,
                         chat_div: chat_div,
-                        '4x': url
+                        '4x': url,
+                        srcset: srcset
                     };
                 } else {
                     extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]][emote.name] = {
                         code: emote.name,
                         id: id,
                         chat_div: chat_div,
-                        '4x': url
+                        '4x': url,
+                        srcset: srcset
                     };
                 }
             });
         } catch (e) {
             Main_Log('ChatLive_loadEmotesseven_tvChannel ' + e);
         }
+    }
+
+    function ChatLive_seven_tv_srcset(array) {
+        var i = 0,
+            len = array.length,
+            srcset = '';
+
+        for (i; i < len; i++) {
+            srcset += array[i][1] + ' ' + array[i][0] + 'x,';
+        }
+
+        return srcset.length ? srcset.slice(0, -1) : srcset;
     }
 
     function ChatLive_PreLoadChat(chat_number, id) {
@@ -10743,6 +10826,10 @@
         ChatLive_Latency[0] = 1;
         extraEmotes[0] = {};
         extraEmotes[1] = {};
+
+        var CSSPixel = parseInt(window.devicePixelRatio);
+        emoteURLSize = emoteURLSizes[CSSPixel] ? emoteURLSizes[CSSPixel] : emoteURLSizes[4];
+        badgeURLSize = badgeURLSizes[CSSPixel] ? badgeURLSizes[CSSPixel] : badgeURLSizes[4];
     }
 
     function Chat_Init() {
@@ -10914,7 +11001,7 @@
             }
 
             versions.forEach(function(version) {
-                tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version.image_url_4x));
+                tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version[badgeURLSize]));
 
                 //channel can overwrite bits or subs badges
                 ////skip adding global bits or sub
@@ -10935,7 +11022,7 @@
                     versionInt = versionInt - parseInt(version.id.toString()[0]) * Math.pow(10, version.id.length - 1);
 
                     if (versionInt > -1 && !versionsIds[versionInt]) {
-                        innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version.image_url_4x));
+                        innerHTML += Chat_BaseTagCSS(property + id, versionInt, Chat_BaseTagCSSUrl(version[badgeURLSize]));
                     }
                 }
             });
@@ -11001,33 +11088,37 @@
     function Chat_loadEmotesbttvGlobal(data) {
         extraEmotesDone.bttvGlobal = {};
 
-        var url, chat_div, id;
+        var url, srcset, chat_div, id;
 
         try {
             data.forEach(function(emote) {
+                srcset = ChatLive_bttv_srcset(emote.id);
                 url = ChatLive_Base_BTTV_url + emote.id + '/3x';
-                chat_div = emoteTemplate(url);
+                chat_div = emoteTemplate(url, srcset);
                 id = emote.code + emote.id;
 
                 extraEmotes[0][emote.code] = {
                     code: emote.code,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
 
                 extraEmotes[1][emote.code] = {
                     code: emote.code,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
 
                 extraEmotesDone.bttvGlobal[emote.code] = {
                     code: emote.code,
                     id: id,
                     chat_div: chat_div,
-                    '4x': url
+                    '4x': url,
+                    srcset: srcset
                 };
             });
         } catch (e) {
@@ -43622,12 +43713,34 @@
     // The bellow are some function or adaptations of function from
     // © NightDev 2016 https://www.nightdev.com/kapchat/
 
+    var emoteURLSizes = {
+        1: '1.0',
+        2: '2.0',
+        3: '3.0',
+        4: '3.0'
+    };
+    var emoteURLSize;
+
+    var badgeURLSizes = {
+        1: 'image_url_1x',
+        2: 'image_url_2x',
+        3: 'image_url_4x',
+        4: 'image_url_4x'
+    };
+    var badgeURLSize;
+
     function emoteURL(id) {
-        return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/3.0'; //emotes 3.0 === 4.0
+        return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/' + emoteURLSize;
     }
 
-    function emoteTemplate(url) {
-        return '<img class="emoticon" alt="" src="' + url + '"/>';
+    function emoteURLFromObj(obj, replaceDark) {
+        var value = Object.values(obj).pop();
+
+        return replaceDark ? value.replace('light', 'dark') : value;
+    }
+
+    function emoteTemplate(url, srcset) {
+        return '<img class="emoticon" alt="" src="' + url + '" ' + (srcset ? 'srcset="' + srcset + '"' : '') + '/>';
     }
 
     function mescape(message) {
