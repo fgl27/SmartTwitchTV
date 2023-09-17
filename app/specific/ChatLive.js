@@ -473,7 +473,7 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
             userEmote[AddUser_UsernameArray[0].id] = {};
         }
 
-        var url, srcset, id;
+        var url, srcset, replaceDark, id;
 
         data.forEach(function (emoticon) {
             if (!emoticon.name || !emoticon.id || typeof emoticon.name !== 'string') return;
@@ -482,9 +482,10 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
 
             if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
-            srcset = ChatLive_Twitch_srcset(emoticon.images);
+            replaceDark = emoticon.theme_mode.includes('dark');
+            srcset = ChatLive_Twitch_srcset(emoticon.images, replaceDark);
 
-            url = emoteURLFromObj(emoticon.images);
+            url = emoteURLFromObj(emoticon.images, replaceDark);
             id = emoticon.code + emoticon.id; //combine code and id to make t uniq
 
             extraEmotes[chat_number][emoticon.code] = {
@@ -512,15 +513,18 @@ function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, ext
     }
 }
 
-function ChatLive_Twitch_srcset(obj) {
+function ChatLive_Twitch_srcset(obj, replaceDark) {
     if (!obj) {
         return '';
     }
 
-    var srcset = '';
+    var srcset = '',
+        value;
 
     for (var property in obj) {
-        srcset += obj[property].replace('light', 'dark') + ' ' + property.split('_')[1] + ',';
+        value = replaceDark ? obj[property].replace('light', 'dark') : obj[property];
+
+        srcset += value + ' ' + property.split('_')[1] + ',';
     }
 
     return srcset.length ? srcset.slice(0, -1) : srcset;

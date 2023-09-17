@@ -21,8 +21,10 @@ function emoteURL(id) {
     return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/' + emoteURLSize;
 }
 
-function emoteURLFromObj(obj) {
-    return Object.values(obj).pop().replace('light', 'dark');
+function emoteURLFromObj(obj, replaceDark) {
+    var value = Object.values(obj).pop();
+
+    return replaceDark ? value.replace('light', 'dark') : value;
 }
 
 function emoteTemplate(url, srcset) {
