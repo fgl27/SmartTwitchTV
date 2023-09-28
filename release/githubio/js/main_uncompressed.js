@@ -42803,7 +42803,13 @@
                 if (!UserLiveFeed_idObject[pos][id] && (isFeatured || ScreensObj_CheckIsMature(stream))) {
                     mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
-                    if (Screens_isNotBlocked(mArray[14], mArray[18], pos === UserLiveFeedobj_UserAGamesPos)) {
+                    if (
+                        Screens_isNotBlocked(
+                            mArray[14],
+                            pos === UserLiveFeedobj_CurrentGamePos ? null : mArray[18],
+                            pos === UserLiveFeedobj_UserAGamesPos
+                        )
+                    ) {
                         UserLiveFeed_idObject[pos][id] = itemsCount;
                         UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
                         itemsCount++;
