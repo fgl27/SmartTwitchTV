@@ -11005,14 +11005,11 @@
             innerHTML = '',
             tempInnerHTML,
             versionInt,
-            sets = {},
             Channel_Badges = {};
 
         responseObj.data.forEach(function(set) {
             property = set.set_id;
             versions = set.versions;
-
-            sets[property] = 1;
 
             isSubSet = property === 'subscriber';
             isBitsSet = property === 'bits';
@@ -11030,7 +11027,7 @@
                     innerHTML += tempInnerHTML;
 
                     if (isChannel) {
-                        Channel_Badges[Chat_BaseTagId(property + id, version.id)] = tempInnerHTML;
+                        Channel_Badges[Chat_BaseTagId(property + '%x', version.id)] = tempInnerHTML;
                     }
                 } else {
                     Chat_GlobalBadges_Bits_Subs[Chat_BaseTagId(property + id, version.id)] = tempInnerHTML;
@@ -11059,13 +11056,13 @@
     function Chat_loadBadgesReplaceMissing(obj, channel_obj, channel, innerHTML) {
         if (obj) {
             for (var property in obj) {
-                if (!channel_obj[property.replace(/\%x/g, channel)]) {
-                    innerHTML += obj[property].replace(/\%x/g, channel);
+                if (!channel_obj[property]) {
+                    innerHTML += obj[property];
                 }
             }
         }
 
-        return innerHTML;
+        return innerHTML.replace(/\%x/g, channel);
     }
 
     function Chat_GetVersionsIdsObj(versions) {
@@ -11095,6 +11092,7 @@
     }
 
     function Chat_tagCSS(content, doc) {
+        console.log(content);
         Main_ready(function() {
             var style = document.createElement('style');
             style.innerHTML = content;
