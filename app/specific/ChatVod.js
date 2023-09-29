@@ -297,22 +297,22 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
     });
 
     if (isChannel) {
-        innerHTML = Chat_loadBadgesReplaceMissing(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
+        innerHTML = Chat_AddMissingBadges(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
     }
 
     return innerHTML;
 }
 
-function Chat_loadBadgesReplaceMissing(obj, channel_obj, channel, innerHTML) {
-    if (obj) {
-        for (var property in obj) {
+function Chat_AddMissingBadges(global_obj, channel_obj, channel_id, innerHTML) {
+    if (global_obj) {
+        for (var property in global_obj) {
             if (!channel_obj[property]) {
-                innerHTML += obj[property];
+                innerHTML += global_obj[property];
             }
         }
     }
 
-    return innerHTML.replace(/\%x/g, channel);
+    return innerHTML.replace(/\%x/g, channel_id);
 }
 
 function Chat_GetVersionsIdsObj(versions) {
