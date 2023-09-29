@@ -10946,8 +10946,7 @@
     }
 
     var Chat_GlobalBadges = null;
-    var Chat_GlobalBadges_Bits = null;
-    var Chat_GlobalBadges_Subs = null;
+    var Chat_GlobalBadges_Bits_Subs;
 
     function Chat_loadBadgesGlobal() {
         Chat_loadBTTVGlobalEmotes();
@@ -10986,8 +10985,7 @@
 
         Chat_GlobalBadges = {};
 
-        Chat_GlobalBadges_Bits = '';
-        Chat_GlobalBadges_Subs = '';
+        Chat_GlobalBadges_Bits_Subs = {};
         Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x', false, chat_number);
 
         Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
@@ -11007,7 +11005,8 @@
             innerHTML = '',
             tempInnerHTML,
             versionInt,
-            sets = {};
+            sets = {},
+            Channel_Badges = {};
 
         responseObj.data.forEach(function(set) {
             property = set.set_id;
@@ -11026,15 +11025,15 @@
                 tempInnerHTML = Chat_BaseTagCSS(property + id, version.id, Chat_BaseTagCSSUrl(version[badgeURLSize]));
 
                 //channel can overwrite bits or subs badges
-                ////skip adding global bits or sub
+                //skip adding global bits or sub
                 if (isChannel || (!isSubSet && !isBitsSet)) {
                     innerHTML += tempInnerHTML;
-                } else {
-                    if (isSubSet) {
-                        Chat_GlobalBadges_Subs += tempInnerHTML;
-                    } else {
-                        Chat_GlobalBadges_Bits += tempInnerHTML;
+
+                    if (isChannel) {
+                        Channel_Badges[Chat_BaseTagId(property + id, version.id)] = tempInnerHTML;
                     }
+                } else {
+                    Chat_GlobalBadges_Bits_Subs[Chat_BaseTagId(property + id, version.id)] = tempInnerHTML;
                 }
 
                 //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
@@ -11051,13 +11050,18 @@
         });
 
         if (isChannel) {
-            //If a channel badges list is missing sub or bits badges use global badges
-            if (Chat_GlobalBadges_Subs && !sets.subscriber) {
-                innerHTML += Chat_GlobalBadges_Subs.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
-            }
+            innerHTML = Chat_loadBadgesReplaceMissing(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
+        }
 
-            if (Chat_GlobalBadges_Bits && !sets.bits) {
-                innerHTML += Chat_GlobalBadges_Bits.replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+        return innerHTML;
+    }
+
+    function Chat_loadBadgesReplaceMissing(obj, channel_obj, channel, innerHTML) {
+        if (obj) {
+            for (var property in obj) {
+                if (!channel_obj[property.replace(/\%x/g, channel)]) {
+                    innerHTML += obj[property].replace(/\%x/g, channel);
+                }
             }
         }
 
@@ -11078,7 +11082,11 @@
 
     function Chat_BaseTagCSS(type, version, url) {
         //a prevent class starting with numbers
-        return '.a' + type + '-' + version + url;
+        return Chat_BaseTagId(type, version) + url;
+    }
+
+    function Chat_BaseTagId(type, version) {
+        return '.a' + type + '-' + version;
     }
 
     function Chat_BaseTagCSSUrl(url) {
