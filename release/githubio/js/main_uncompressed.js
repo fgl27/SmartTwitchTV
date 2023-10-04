@@ -11047,22 +11047,22 @@
         });
 
         if (isChannel) {
-            innerHTML = Chat_loadBadgesReplaceMissing(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
+            innerHTML = Chat_AddMissingBadges(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
         }
 
         return innerHTML;
     }
 
-    function Chat_loadBadgesReplaceMissing(obj, channel_obj, channel, innerHTML) {
-        if (obj) {
-            for (var property in obj) {
+    function Chat_AddMissingBadges(global_obj, channel_obj, channel_id, innerHTML) {
+        if (global_obj) {
+            for (var property in global_obj) {
                 if (!channel_obj[property]) {
-                    innerHTML += obj[property];
+                    innerHTML += global_obj[property];
                 }
             }
         }
 
-        return innerHTML.replace(/\%x/g, channel);
+        return innerHTML.replace(/\%x/g, channel_id);
     }
 
     function Chat_GetVersionsIdsObj(versions) {
@@ -11092,7 +11092,6 @@
     }
 
     function Chat_tagCSS(content, doc) {
-        console.log(content);
         Main_ready(function() {
             var style = document.createElement('style');
             style.innerHTML = content;
@@ -34529,6 +34528,9 @@
         if (data[3] !== tempData[3]) {
             Main_innerHTML(ScreenObj[key].ids[12] + id, tempData[3] !== '' ? STR_PLAYING + tempData[3] : '');
         }
+        if (data[14] === tempData[14]) {
+            ScreenObj[key].DataObj[id] = tempData;
+        }
     }
 
     function ScreensObj_getStreamInfo(userId, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
@@ -34622,6 +34624,7 @@
     function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
         if (response.status === 200) {
             var obj = JSON.parse(response.responseText);
+
             if (!obj.data.length) {
                 return;
             }
