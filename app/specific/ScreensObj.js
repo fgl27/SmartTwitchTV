@@ -2981,6 +2981,9 @@ function ScreensObj_ThumbInfoUpdate(tempData, checkResult, check_1, check_2) {
     if (data[3] !== tempData[3]) {
         Main_innerHTML(ScreenObj[key].ids[12] + id, tempData[3] !== '' ? STR_PLAYING + tempData[3] : '');
     }
+    if (data[14] === tempData[14]) {
+        ScreenObj[key].DataObj[id] = tempData;
+    }
 }
 
 function ScreensObj_getStreamInfo(userId, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
@@ -3074,6 +3077,7 @@ function BaseXmlHttpGetFull_Process(result, checkResult, check_1, check_2, check
 function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
     if (response.status === 200) {
         var obj = JSON.parse(response.responseText);
+
         if (!obj.data.length) {
             return;
         }
