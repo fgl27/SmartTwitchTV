@@ -342,7 +342,6 @@ function Chat_BaseTagCSSUrl(url) {
 }
 
 function Chat_tagCSS(content, doc) {
-    console.log(content);
     Main_ready(function () {
         var style = document.createElement('style');
         style.innerHTML = content;
