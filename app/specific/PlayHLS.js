@@ -281,7 +281,7 @@ function PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, useProxy) {
             (isLive ? Play_live_token : Play_vod_token).replace('%x', Channel_or_VOD_Id), //postMessage
             'POST', //Method
             0, //checkResult
-            JSON.stringify(Play_base_backup_headers_Array) //JsonHeadersArray
+            Play_Headers //JsonHeadersArray
         );
 
         if (obj) {
