@@ -796,6 +796,9 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
                 return;
             }
 
+            // the name on the outer emote object is the actual name to use
+            emote.name = seven_tv_emote.name
+
             // files can contain multiple emote formats
             emoteUrls = ChatLive_seven_tv_filterEmoteFiles(emote.host.files);
             if (!emoteUrls.length) {
