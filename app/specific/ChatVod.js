@@ -405,7 +405,7 @@ function Chat_loadEmotesbttvGlobal(data) {
 
 function Chat_loadSeven_tvGlobalEmotes() {
     if (!extraEmotesDone.Seven_tvGlobal) {
-        Chat_BaseLoadUrl('https://api.7tv.app/v2/emotes/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
+        Chat_BaseLoadUrl('https://7tv.io/v3/emote-sets/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
     } else {
         ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal, 0);
         ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal, 1);
@@ -413,7 +413,13 @@ function Chat_loadSeven_tvGlobalEmotes() {
 }
 
 function Chat_loadEmotesSuccessSeven_tv(data) {
-    ChatLive_loadEmotesseven_tv(JSON.parse(data), 0, true);
+    var emotes = [];
+    var data = JSON.parse(data);
+    if (data && data.emotes) {
+        emotes = data.emotes || [];
+    }
+
+    ChatLive_loadEmotesseven_tv(emotes, 0, true);
 }
 
 function Chat_loadEmotesffz() {
