@@ -849,7 +849,7 @@ function ChatLive_seven_tv_getEmoteUrl(emoteBaseUrl, emote) {
     var actualEmoteUrl = emoteBaseUrl;
 
     // emote url is like //cdn.7tv.app/emote/5f5e0e9f8f0a1c3720f6e0e2
-    if (!Main_startsWith(emoteBaseUrl, 'http')) {
+    if (Main_startsWith(emoteBaseUrl, '//')) {
         actualEmoteUrl = 'https://' + emoteBaseUrl;
     }
 
