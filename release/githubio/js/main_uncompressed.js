@@ -9500,7 +9500,7 @@
 
         if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
-                'https://api.7tv.app/v2/users/' + ChatLive_selectedChannel_id[chat_number] + '/emotes',
+                'https://7tv.io/v3/users/twitch/' + ChatLive_selectedChannel_id[chat_number],
                 ChatLive_loadEmotesChannelSeven_tvSuccess,
                 noop_fun,
                 chat_number,
@@ -9518,19 +9518,46 @@
     }
 
     function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
-        if (isGlobal) extraEmotesDone.seven_tvGlobal = {};
-        else extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]] = {};
+        var emotes = [];
 
-        var url, srcset, chat_div, id;
+        if (isGlobal) {
+            if (data && data.emotes) {
+                emotes = data.emotes || [];
+            }
+
+            extraEmotesDone.seven_tvGlobal = {};
+        } else {
+            if (data && data.emote_set && data.emote_set.emotes) {
+                emotes = data.emote_set.emotes || [];
+            }
+
+            extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]] = {};
+        }
+
+        var url, srcset, chat_div, id, emoteUrls, baseEmoteUrl, emote;
 
         try {
-            data.forEach(function(emote) {
-                if (!emote.urls || !emote.urls.length) {
+            emotes.forEach(function(seven_tv_emote) {
+                emote = seven_tv_emote.data;
+                if (!emote || !emote.name || !emote.host || !emote.host.url || !emote.host.files) {
                     return;
                 }
 
-                url = emote.urls[3][1];
-                srcset = ChatLive_seven_tv_srcset(emote.urls);
+                // the name on the outer emote object is the actual name to use
+                emote.name = seven_tv_emote.name;
+
+                // files can contain multiple emote formats
+                emoteUrls = ChatLive_seven_tv_filterEmoteFiles(emote.host.files);
+
+                if (!emoteUrls.length) {
+                    return;
+                }
+
+                // emote url is made up of host.url and the image file names (1x.webp, 2x.webp, etc)
+                baseEmoteUrl = emote.host.url;
+                url = ChatLive_seven_tv_getEmoteUrl(baseEmoteUrl, emoteUrls[emoteUrls.length - 1]);
+
+                srcset = ChatLive_seven_tv_srcset(baseEmoteUrl, emoteUrls);
                 chat_div = emoteTemplate(url, srcset);
                 id = emote.name + emote.id;
 
@@ -9566,13 +9593,31 @@
         }
     }
 
-    function ChatLive_seven_tv_srcset(array) {
+    function ChatLive_seven_tv_getEmoteUrl(emoteBaseUrl, emote) {
+        return emoteBaseUrl + '/' + emote.name;
+    }
+
+    function ChatLive_seven_tv_filterEmoteFiles(emoteFiles) {
+        var files = [];
+
+        files = emoteFiles.filter(function(file) {
+            return file.format === 'WEBP';
+        });
+
+        return files;
+    }
+
+    function ChatLive_seven_tv_srcset(emoteUrl, array) {
         var i = 0,
             len = array.length,
-            srcset = '';
+            srcset = '',
+            emote,
+            emoteSize;
 
         for (i; i < len; i++) {
-            srcset += array[i][1] + ' ' + array[i][0] + 'x,';
+            emote = array[i];
+            emoteSize = emote.name.split('.')[0]; // name is 1x.webp
+            srcset += ChatLive_seven_tv_getEmoteUrl(emoteUrl, emote) + ' ' + emoteSize + ',';
         }
 
         return srcset.length ? srcset.slice(0, -1) : srcset;
@@ -11155,7 +11200,7 @@
 
     function Chat_loadSeven_tvGlobalEmotes() {
         if (!extraEmotesDone.Seven_tvGlobal) {
-            Chat_BaseLoadUrl('https://api.7tv.app/v2/emotes/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
+            Chat_BaseLoadUrl('https://7tv.io/v3/emote-sets/global', Chat_loadEmotesSuccessSeven_tv, noop_fun);
         } else {
             ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal, 0);
             ChatLive_updateExtraEmotes(extraEmotesDone.seven_tvGlobal, 1);
