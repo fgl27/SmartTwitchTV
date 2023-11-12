@@ -2892,7 +2892,10 @@ function Screens_ThumbOptionStringSet(key) {
         Screens_ThumbUpdateGameInfo(Screens_values_Play_data[18], Screens_values_Play_data[3]);
     }
 
-    var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+    var index =
+        ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && !ScreenObj[key].is_a_Banner()
+            ? Main_history_Exist('live', Screens_values_Play_data[7])
+            : -1;
 
     if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
         Main_textContent(Screens_ThumbHistoryValue, Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
@@ -3752,7 +3755,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
     var historyType = Screens_ThumbOptionStringGetHistory(key);
 
     var index =
-        ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && ScreenObj[key].posY > -1
+        ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && ScreenObj[key].posY > -1 && !ScreenObj[key].is_a_Banner()
             ? Main_history_Exist('live', ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][7])
             : -1;
 
