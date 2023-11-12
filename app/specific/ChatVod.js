@@ -413,13 +413,7 @@ function Chat_loadSeven_tvGlobalEmotes() {
 }
 
 function Chat_loadEmotesSuccessSeven_tv(data) {
-    var emotes = [];
-    var data = JSON.parse(data);
-    if (data && data.emotes) {
-        emotes = data.emotes || [];
-    }
-
-    ChatLive_loadEmotesseven_tv(emotes, 0, true);
+    ChatLive_loadEmotesseven_tv(JSON.parse(data), 0, true);
 }
 
 function Chat_loadEmotesffz() {
