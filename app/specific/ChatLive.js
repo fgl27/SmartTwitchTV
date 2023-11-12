@@ -853,7 +853,7 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
 }
 
 function ChatLive_seven_tv_getEmoteUrl(emoteBaseUrl, emote) {
-    return emoteBaseUrl + '/' + emote.name;
+    return (Main_startsWith(emoteBaseUrl, '//') ? 'https:' : '') + emoteBaseUrl + '/' + emote.name;
 }
 
 function ChatLive_seven_tv_filterEmoteFiles(emoteFiles) {
