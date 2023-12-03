@@ -2820,7 +2820,9 @@ function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
 function ScreensObj_AnimateThumbId(screen) {
     Main_clearInterval(screen.AnimateThumbId);
 
-    if (!Settings_Obj_default('videos_animation') || Play_PreviewId) return;
+    if (!Settings_Obj_default('videos_animation') || Play_PreviewId || screen.posY < 0) {
+        return;
+    }
 
     var div = Main_getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
