@@ -1152,7 +1152,7 @@ function Screens_GetObj(key) {
 }
 
 function Screens_GetObjId(obj_id, key) {
-    return Main_Slice(ScreenObj[key].DataObj[obj_id].image ? [] : ScreenObj[key].DataObj[obj_id]);
+    return Main_Slice(ScreenObj[key].posY > -1 && ScreenObj[key].DataObj[obj_id].image ? [] : ScreenObj[key].DataObj[obj_id]);
 }
 
 function Screens_ObjNotNull(key) {
@@ -2853,7 +2853,7 @@ function Screens_ThumbOptionStringSet(key) {
     Screens_ThumbOption_CheckFollow_ID = 0;
     //Screens_ThumbOption_Follow_ID = 0;
 
-    if (AddUser_UserIsSet()) {
+    if (AddUser_UserIsSet() && Screens_values_Play_data && Screens_values_Play_data.length) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
         Main_textContent(Screens_ThumbFollowCheckName, STR_CHECK_FOLLOW);
     } else {
