@@ -309,7 +309,7 @@ function Play_CheckIfIsLiveGetError(response, isVod) {
     var error;
 
     if (response.status === 1) {
-        error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE_HTML + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
+        error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE_HTML + STR_IS_SUB_ONLY_ERROR;
     } else if (response.status === 403) {
         error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
     } else {

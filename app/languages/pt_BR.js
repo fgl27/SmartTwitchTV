@@ -459,7 +459,6 @@ function pt_BRLang() {
     STR_FADE_SIDEPANNEL = 'Esconder o painel lateral após 5 segundos sem usá-lo';
     STR_RUNNINGTIME = 'Aplicativo em execução por:';
     STR_410_ERROR = 'Não foi possível obter o link do vídeo';
-    STR_410_FEATURING = 'Aplicativos de terceiros estão atualmente sem acesso para este conteúdo.';
     STR_PRESS_ENTER_TO_CHANGE = 'Pressione enter para mudar para -';
     STR_CLICK_UNFOLLOW = '(Pressione enter para deixar de seguir)';
     STR_CLICK_FOLLOW = '(Pressione enter para seguir)';

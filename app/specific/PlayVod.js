@@ -505,7 +505,7 @@ function PlayVod_NotSub() {
 
 //TODO revise this
 function PlayVod_isSub() {
-    PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
+    PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
 }
 
 var PlayVod_WarnEndId;
