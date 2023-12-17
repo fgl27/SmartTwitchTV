@@ -202,7 +202,7 @@ function en_USLang() {
     STR_FOLLOW = 'Not Following';
     STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
     STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
-    STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues has prevent from playing this.';
+    STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues have prevented playing this.';
     STR_OAUTH_FAIL = 'Failed authorization check with the provided key, please check and try again';
     STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
     STR_NOKEY = 'No user';

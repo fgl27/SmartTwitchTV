@@ -32,7 +32,7 @@
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) some are used as shortcuts for audio and video mode changes";
-	STR_IS_SUB_IS_SUB = "You are a sub of this channel but";
+    STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues have prevented playing this.';
 	STR_NET_DOWN = "Network is disconnected, the application can\'t work without INTERNET";
     STR_NET_UP = "Network connection reestablished";
 	STR_REMOVE_USER = "Are you sure you want to remove the user";

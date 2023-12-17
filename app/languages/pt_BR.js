@@ -198,7 +198,7 @@ function pt_BRLang() {
     STR_FOLLOW = 'Não Seguindo';
     STR_IS_SUB_NOOAUTH = 'E você não adicionou uma chave de autorização, o aplicativo não pode verificar o seu status de seguidor.';
     STR_IS_SUB_NOT_SUB = 'E você não é um sub deste canal';
-    STR_IS_SUB_IS_SUB = 'Você é um sub deste canal, mas';
+    STR_IS_SUB_IS_SUB = 'Você é um sub deste canal, mas alguns problemas de radônio impediram a reprodução deste canal.';
     STR_OAUTH_FAIL = 'Falha na verificação de autorização com a chave do provedor, verifique e tente novamente';
     STR_OAUTH_FAIL_USER = 'A chave adicionada não pertence a este usuário';
     STR_NOKEY = 'Nenhum usuário';
