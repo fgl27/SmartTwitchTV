@@ -327,7 +327,6 @@
     var STR_CONTROLS_PLAY_13;
     var STR_RUNNINGTIME;
     var STR_410_ERROR;
-    var STR_410_FEATURING;
     var STR_CLICK_UNFOLLOW;
     var STR_CLICK_FOLLOW;
     var STR_HOLD_UP;
@@ -835,7 +834,7 @@
         STR_JUMP_T0 = STR_SPACE + STR_JUMP_T0 + STR_SPACE;
         STR_LATEST_VERSION = STR_SPACE + STR_LATEST_VERSION + STR_SPACE;
         STR_OAUTH_WRONG2 = STR_SPACE + STR_OAUTH_WRONG2 + STR_SPACE;
-        STR_IS_SUB_IS_SUB = STR_SPACE + STR_IS_SUB_IS_SUB + STR_SPACE;
+        STR_IS_SUB_IS_SUB = STR_SPACE + STR_IS_SUB_IS_SUB;
         STR_BACK_USER_GAMES = STR_SPACE + STR_BACK_USER_GAMES + STR_SPACE;
         STR_OFFSET = STR_SPACE + STR_OFFSET + STR_SPACE;
 
@@ -1468,7 +1467,7 @@
         STR_FOLLOW = 'Not Following';
         STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
         STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
-        STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but';
+        STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues has prevent from playing this.';
         STR_OAUTH_FAIL = 'Failed authorization check with the provided key, please check and try again';
         STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
         STR_NOKEY = 'No user';
@@ -1730,7 +1729,6 @@
         STR_FADE_SIDEPANNEL = 'Hide the side panel after 5 seconds of not using it';
         STR_RUNNINGTIME = 'App running for:';
         STR_410_ERROR = 'Unable to get video link';
-        STR_410_FEATURING = 'Third party apps currently have no access to this feature.';
         STR_PRESS_ENTER_TO_CHANGE = 'Press enter to change to -';
         STR_CLICK_UNFOLLOW = '(Press enter to unfollow)';
         STR_CLICK_FOLLOW = '(Press enter to follow)';
@@ -3156,7 +3154,6 @@
         STR_FADE_SIDEPANNEL = 'Esconder o painel lateral após 5 segundos sem usá-lo';
         STR_RUNNINGTIME = 'Aplicativo em execução por:';
         STR_410_ERROR = 'Não foi possível obter o link do vídeo';
-        STR_410_FEATURING = 'Aplicativos de terceiros estão atualmente sem acesso para este conteúdo.';
         STR_PRESS_ENTER_TO_CHANGE = 'Pressione enter para mudar para -';
         STR_CLICK_UNFOLLOW = '(Pressione enter para deixar de seguir)';
         STR_CLICK_FOLLOW = '(Pressione enter para seguir)';
@@ -4022,7 +4019,6 @@
         STR_FADE_SIDEPANNEL = 'Скрыть боковую панель после 5 секунд неиспользования';
         STR_RUNNINGTIME = 'Приложение работает:';
         STR_410_ERROR = 'Невозможно получить ссылку на видео';
-        STR_410_FEATURING = 'Сторонние приложения в настоящее время не имеют доступа к этой функции.';
         STR_PRESS_ENTER_TO_CHANGE = 'Нажмите ОК, чтобы сменить на -';
         STR_CLICK_UNFOLLOW = '(Нажмите ОК для отписки)';
         STR_CLICK_FOLLOW = '(Нажмите ОК для подписки)';
@@ -23213,7 +23209,7 @@
         var error;
 
         if (response.status === 1) {
-            error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE_HTML + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
+            error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE_HTML + STR_IS_SUB_ONLY_ERROR;
         } else if (response.status === 403) {
             error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
         } else {
@@ -26249,7 +26245,7 @@
 
     //TODO revise this
     function PlayVod_isSub() {
-        PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
+        PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
     }
 
     var PlayVod_WarnEndId;
