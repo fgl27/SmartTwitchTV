@@ -1467,7 +1467,7 @@
         STR_FOLLOW = 'Not Following';
         STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
         STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
-        STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues has prevent from playing this.';
+        STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues have prevented playing this.';
         STR_OAUTH_FAIL = 'Failed authorization check with the provided key, please check and try again';
         STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
         STR_NOKEY = 'No user';
@@ -2893,7 +2893,7 @@
         STR_FOLLOW = 'Não Seguindo';
         STR_IS_SUB_NOOAUTH = 'E você não adicionou uma chave de autorização, o aplicativo não pode verificar o seu status de seguidor.';
         STR_IS_SUB_NOT_SUB = 'E você não é um sub deste canal';
-        STR_IS_SUB_IS_SUB = 'Você é um sub deste canal, mas';
+        STR_IS_SUB_IS_SUB = 'Você é um sub deste canal, mas alguns problemas de radônio impediram a reprodução deste canal.';
         STR_OAUTH_FAIL = 'Falha na verificação de autorização com a chave do provedor, verifique e tente novamente';
         STR_OAUTH_FAIL_USER = 'A chave adicionada não pertence a este usuário';
         STR_NOKEY = 'Nenhum usuário';
@@ -3760,7 +3760,6 @@
         STR_FOLLOW = 'Отслеживать';
         STR_IS_SUB_NOOAUTH = 'И вы не добавили ключ авторизации, приложение не может проверить ваш саб-статус.';
         STR_IS_SUB_NOT_SUB = 'И вы не являетесь подписчиком этого канала';
-        STR_IS_SUB_IS_SUB = 'Вы являетесь подписчиком этого канала, но';
         STR_OAUTH_FAIL = 'Ошибка авторизации ключа, пожалуйста, проверьте и попробуйте еще раз';
         STR_OAUTH_FAIL_USER = 'Добавленный ключ не принадлежит пользователю';
         STR_NOKEY = 'Нет аккаунта';
