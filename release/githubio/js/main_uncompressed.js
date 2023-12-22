@@ -1467,7 +1467,7 @@
         STR_FOLLOW = 'Not Following';
         STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
         STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
-        STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but some radon issues have prevented playing this.';
+        STR_IS_SUB_IS_SUB = 'You are a sub of this channel, but an unknown issue has prevented this from playing.';
         STR_OAUTH_FAIL = 'Failed authorization check with the provided key, please check and try again';
         STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
         STR_NOKEY = 'No user';
@@ -19793,7 +19793,7 @@
             icons: 'speedometer',
             offsetY: -5,
             string: STR_SPEED,
-            values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+            values: [0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.5, 1.75, 2],
             defaultValue: 3,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
