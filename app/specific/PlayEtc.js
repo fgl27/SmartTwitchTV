@@ -2260,7 +2260,7 @@ function Play_MakeControls() {
         icons: 'speedometer',
         offsetY: -5,
         string: STR_SPEED,
-        values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+        values: [0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.5, 1.75, 2],
         defaultValue: 3,
         enterKey: function () {
             if (Play_StayDialogVisible()) return;
