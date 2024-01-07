@@ -2893,7 +2893,7 @@ function Screens_ThumbOptionStringSet(key) {
     }
 
     var index =
-        ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && !ScreenObj[key].is_a_Banner()
+        ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && !ScreenObj[key].is_a_Banner() && ScreenObj[key].posY > -1
             ? Main_history_Exist('live', Screens_values_Play_data[7])
             : -1;
 

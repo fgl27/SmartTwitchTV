@@ -2037,7 +2037,7 @@ function ScreensObj_HistoryLive() {
                 if (!skipShowDelete) {
                     Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
                 }
-                if (Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods')) {
+                if (ScreenObj[key].posY > -1 && Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods')) {
                     Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_VOD_DIS);
                 } else {
                     Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
