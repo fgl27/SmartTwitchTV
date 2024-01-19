@@ -1722,7 +1722,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
 }
 
 function ChatLive_LineAddCheckDelay(chat_number, messageObj) {
-    if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
+    if (!Play_ChatDelayPosition || messageObj.addToStart) ChatLive_LineAdd(messageObj);
     else ChatLive_LineAddDelay(chat_number, Chat_Id[chat_number], messageObj);
 }
 
