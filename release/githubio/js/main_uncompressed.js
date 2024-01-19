@@ -10458,7 +10458,7 @@
     }
 
     function ChatLive_LineAddCheckDelay(chat_number, messageObj) {
-        if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
+        if (!Play_ChatDelayPosition || messageObj.addToStart) ChatLive_LineAdd(messageObj);
         else ChatLive_LineAddDelay(chat_number, Chat_Id[chat_number], messageObj);
     }
 
@@ -20395,8 +20395,8 @@
 
         Play_controls[Play_controlsChatSend] = {
             ShowInLive: true,
-            ShowInVod: true,
-            ShowInClip: true,
+            ShowInVod: false,
+            ShowInClip: false,
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
@@ -20674,7 +20674,7 @@
                 240,
                 300
             ],
-            defaultValue: Play_ChatDelayPosition,
+            defaultValue: Play_ChatDelayValue,
             isChat: false,
             updown: function(adder) {
                 this.defaultValue += adder;
@@ -20685,7 +20685,8 @@
                 Play_ChatDelayPosition = this.defaultValue > 1 ? this.values[this.defaultValue] * 1000 : this.defaultValue;
 
                 ChatLive_UpdateLatency();
-                Main_setItem('Play_ChatDelayPosition', Play_ChatDelayPosition);
+
+                Main_setItem('Play_ChatDelayValue', this.defaultValue);
                 this.bottomArrows();
                 this.setLable();
             },
@@ -21456,6 +21457,7 @@
 
         Play_ResetLowlatency();
         Play_ResetSpeed();
+        Play_ChatDelayPosition = Play_ChatDelayValue > 1 ? Play_controls[Play_controlsChatDelay].values[Play_ChatDelayValue] * 1000 : Play_ChatDelayValue;
         //Play_ResetProxy();
     }
 
@@ -21929,7 +21931,8 @@
         Play_ChatEnable = Main_getItemBool('ChatEnable', false);
         Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
         Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
-        Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
+        Play_ChatDelayValue = Main_getItemInt('Play_ChatDelayValue', 0);
+
         Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 4);
         Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 2);
 
@@ -22968,6 +22971,7 @@
     var Play_EndFocus = false;
     var Play_DialogEndText = '';
     var Play_ChatDelayPosition = 0;
+    var Play_ChatDelayValue = 0;
     //var Play_4K_ModeEnable = false;
     var Play_TargetHost = '';
     var Play_chat_container;

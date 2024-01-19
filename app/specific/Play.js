@@ -67,6 +67,7 @@ var Play_EndTextID = null;
 var Play_EndFocus = false;
 var Play_DialogEndText = '';
 var Play_ChatDelayPosition = 0;
+var Play_ChatDelayValue = 0;
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_chat_container;
