@@ -2862,8 +2862,8 @@ function Play_MakeControls() {
 
     Play_controls[Play_controlsChatSend] = {
         ShowInLive: true,
-        ShowInVod: true,
-        ShowInClip: true,
+        ShowInVod: false,
+        ShowInClip: false,
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
