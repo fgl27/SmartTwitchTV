@@ -911,7 +911,9 @@ function UserLiveFeedobj_SetBottomText(pos) {
 
     var i = 0,
         len = UserLiveFeedobj_MAX - 1;
-    for (i; i < len; i++) Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
+    for (i; i < len; i++) {
+        Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
+    }
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
 
