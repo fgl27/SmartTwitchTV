@@ -1318,8 +1318,6 @@ function PlayVod_handleKeyDown(e) {
             }
             break;
         case KEY_C:
-        case KEY_NUMPAD_5:
-        case KEY_5:
             Play_showControlsDialog(PlayVod_handleKeyDown);
             break;
         default:
