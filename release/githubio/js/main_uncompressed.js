@@ -26096,13 +26096,22 @@
         return hours + 'h' + minutes + 'm' + seconds + 's'; // Return is 0h0m0s
     }
 
+    var PlayVod_ResumeTime = 0;
+
     function PlayVod_Resume() {
         UserLiveFeed_Hide();
         Play_showBufferDialog();
         Play_ResumeAfterOnlineCounter = 0;
 
         //Get the time from android as it can save it more reliably
+        //If it fails use the last know good from PlayVod_ResumeTime
         Main_vodOffset = OSInterface_getsavedtime() / 1000;
+
+        if (!Main_vodOffset || Main_vodOffset < 1) {
+            Main_vodOffset = PlayVod_ResumeTime;
+        }
+
+        PlayVod_ResumeTime = Main_vodOffset;
 
         if (navigator.onLine) PlayVod_ResumeAfterOnline();
         else Play_ResumeAfterOnlineId = Main_setInterval(PlayVod_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
@@ -26136,6 +26145,7 @@
             if (vodOffset > 0) {
                 Main_setItem('Main_vodOffset', vodOffset);
                 PlayVod_SaveVodIds(vodOffset);
+                PlayVod_ResumeTime = vodOffset;
             }
         }
     }
@@ -26299,6 +26309,7 @@
             Chat_offset = Main_vodOffset;
             Chat_Init();
             Main_setItem('Main_vodOffset', Main_vodOffset);
+            PlayVod_ResumeTime = Main_vodOffset;
             Main_vodOffset = 0;
         } else {
             PlayVod_onPlayerStartPlay(OSInterface_gettime());
@@ -26387,6 +26398,7 @@
         Main_removeEventListener('keyup', PlayVod_SeekClear);
         Main_vodOffset = 0;
         Play_DurationSeconds = 0;
+        PlayVod_ResumeTime = 0;
     }
 
     function PlayVod_ClearProgressJumptime(jumpCount) {
