@@ -1940,7 +1940,6 @@ function Screens_OpenSidePanel(forceFeed, key) {
     }
     Screens_ClearAnimation(key);
     Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-    Main_HideLoadDialog();
     Sidepannel_Start(ScreenObj[key].key_fun, forceFeed);
 }
 
