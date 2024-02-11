@@ -29546,7 +29546,6 @@
         }
         Screens_ClearAnimation(key);
         Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-        Main_HideLoadDialog();
         Sidepannel_Start(ScreenObj[key].key_fun, forceFeed);
     }
 
@@ -39267,8 +39266,9 @@
         Sidepannel_Callback = callback;
         Main_removeEventListener('keydown', Sidepannel_Callback);
         if (!Sidepannel_IsMain || forceFeed) {
-            if (AddUser_UserHasToken()) Sidepannel_StartFeed();
-            else {
+            if (AddUser_UserHasToken()) {
+                Sidepannel_StartFeed();
+            } else {
                 Sidepannel_ShowNoUserWarning();
                 Sidepannel_StartMain();
             }
@@ -39276,6 +39276,7 @@
     }
 
     function Sidepannel_StartFeed() {
+        Main_HideLoadDialog();
         Sidepannel_IsMain = false;
         Main_addEventListener('keydown', Sidepannel_handleKeyDown);
 
