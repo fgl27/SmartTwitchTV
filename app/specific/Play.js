@@ -1556,10 +1556,17 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     Play_BufferSize = parseFloat(value[7]);
 
-    if (Who_Called !== 2) Play_BufferSize = Math.ceil(Play_BufferSize);
-    else PlayVod_ChaptersSetGame(timeMs);
+    if (Who_Called !== 2) {
+        Play_BufferSize = Math.ceil(Play_BufferSize);
+    }
 
-    if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
+    if (Who_Called === 1) {
+        PlayVod_ChaptersSetGame(timeMs);
+    }
+
+    if (value[8] > 0) {
+        Play_UpdateDurationDiv(value[8]);
+    }
 
     PlayVod_ProgresBarrUpdate(timeMs / 1000, Play_DurationSeconds, !PlayVod_IsJumping || PlayVod_PanelY);
 }
@@ -1572,8 +1579,11 @@ function Play_getMbps(value) {
 
 function Play_ShowVideoQuality(who_called, value) {
     if (!value) {
-        if (!who_called) Play_SetHtmlQuality(Play_info_quality);
-        else PlayVod_SetHtmlQuality(Play_info_quality);
+        if (!who_called) {
+            Play_SetHtmlQuality(Play_info_quality);
+        } else {
+            PlayVod_SetHtmlQuality(Play_info_quality);
+        }
     } else Main_innerHTML('stream_quality', value);
 }
 

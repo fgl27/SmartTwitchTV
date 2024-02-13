@@ -655,6 +655,7 @@ function PlayVod_ClearVod() {
     Main_vodOffset = 0;
     Play_DurationSeconds = 0;
     PlayVod_ResumeTime = 0;
+    PlayVod_ChaptersArray = [];
 }
 
 function PlayVod_ClearProgressJumptime(jumpCount) {
