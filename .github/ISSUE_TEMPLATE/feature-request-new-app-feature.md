@@ -1,5 +1,5 @@
 ---
-name: Feature request new app feature
+name: Feature request
 about: Suggest an idea to improve this project
 
 ---

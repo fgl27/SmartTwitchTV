@@ -1,5 +1,5 @@
 ---
-name: Etc issue that doesn't applies to features or bugs
+name: Etc issue that doesn't apply to features or bugs
 about: I need something from the developer or the project (information related or not to this project)
 
 ---
