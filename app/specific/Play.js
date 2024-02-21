@@ -956,6 +956,15 @@ function Play_SetExternalQualities(array, startPos, name) {
     Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
 }
 
+function Play_FixQualities(input) {
+    var qualities = Play_extractQualities(input);
+
+    if (qualities[0].truebitrate) {
+        input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
+    }
+    return input;
+}
+
 function Play_extractQualities(input) {
     var result = [],
         addedresolution = {},
@@ -972,7 +981,8 @@ function Play_extractQualities(input) {
 
                 result.push({
                     id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                    url: marray2[4]
+                    url: marray2[4],
+                    bitrate: parseInt(marray2[2])
                 });
                 addedresolution[marray2[1].split(' | ')[0]] = 1;
             } else {
@@ -980,13 +990,19 @@ function Play_extractQualities(input) {
                 if (!addedresolution[marray2[1]]) {
                     result.push({
                         id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                        url: marray2[4]
+                        url: marray2[4],
+                        bitrate: parseInt(marray2[2])
                     });
                     addedresolution[marray2[1]] = 1;
                 }
             }
         }
     }
+
+    if (result[0].bitrate < result[1].bitrate) {
+        result[0].truebitrate = result[0].bitrate + result[1].bitrate;
+    }
+
     return result;
 }
 
