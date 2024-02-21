@@ -15387,6 +15387,10 @@
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Sets mediaSources and start the player
     function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player) {
+        if (who_called === 1) {
+            mainPlaylistString = Play_FixQualities(mainPlaylistString);
+        }
+
         Android.StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player);
     }
 
@@ -15399,6 +15403,10 @@
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Sets mediaSources and start the player
     function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
+        if (who_called === 1) {
+            mainPlaylistString = Play_FixQualities(mainPlaylistString);
+        }
+
         Android.ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player);
     }
 
@@ -15760,13 +15768,14 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartMultiStream(position, uri, mainPlaylistString, Restart) {
+        mainPlaylistString = Play_FixQualities(mainPlaylistString);
+
         Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
     }
 
     //public void EnableMultiStream(boolean MainBig, int offset)
     //MainBig = MainBig mode if true the main player is bigger
     //offset = is the player position offset on the screen, one can click left right to change with will be the main player, the offset determines the position of it player
-    //mainPlaylistString = main Playlist String
     //Android specific: true
     //Start MultiStream and allows to change its mode
     function OSInterface_EnableMultiStream(MainBig, offset) {
@@ -15824,6 +15833,10 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, isVod) {
+        if (!isVod) {
+            mainPlaylistString = Play_FixQualities(mainPlaylistString);
+        }
+
         Android.StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, Boolean(isVod));
     }
 
@@ -15833,6 +15846,8 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartSidePanelPlayer(uri, mainPlaylistString) {
+        mainPlaylistString = Play_FixQualities(mainPlaylistString);
+
         Android.StartSidePanelPlayer(uri, mainPlaylistString);
     }
 
@@ -15864,6 +15879,10 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
+        if (who_called === 1) {
+            mainPlaylistString = Play_FixQualities(mainPlaylistString);
+        }
+
         Android.StartScreensPlayer(
             uri,
             mainPlaylistString,
@@ -23863,6 +23882,15 @@
         Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
     }
 
+    function Play_FixQualities(input) {
+        var qualities = Play_extractQualities(input);
+
+        if (qualities[0].truebitrate) {
+            input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
+        }
+        return input;
+    }
+
     function Play_extractQualities(input) {
         var result = [],
             addedresolution = {},
@@ -23879,7 +23907,8 @@
 
                     result.push({
                         id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                        url: marray2[4]
+                        url: marray2[4],
+                        bitrate: parseInt(marray2[2])
                     });
                     addedresolution[marray2[1].split(' | ')[0]] = 1;
                 } else {
@@ -23887,13 +23916,19 @@
                     if (!addedresolution[marray2[1]]) {
                         result.push({
                             id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                            url: marray2[4]
+                            url: marray2[4],
+                            bitrate: parseInt(marray2[2])
                         });
                         addedresolution[marray2[1]] = 1;
                     }
                 }
             }
         }
+
+        if (result[0].bitrate < result[1].bitrate) {
+            result[0].truebitrate = result[0].bitrate + result[1].bitrate;
+        }
+
         return result;
     }
 
