@@ -4657,36 +4657,29 @@
         WebVersion: 'September 11 2023',
         WebTag: 671, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Version September 2023 to February 2024',
+                changes: [
+                    'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by the server with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
+                    'Fix VOD playback starting from 00:00, after changing the app while watching a VOD the app could lose the VOD time position',
+                    "Improve the chat delay option, sometimes the chosen option wasn't working as expected",
+                    'Improve player controls, sometime the player would show an option not available for that type of playback which causes control issues',
+                    'Add extra playback speeds (by Js41637)',
+                    'Fix the thumbnails option (hold left) not showing all options or showing and not allowing to move up/down',
+                    'Fix hiding blocked VODs in some of the VOD section',
+                    'Fix clip playback selecting the best quality, Twitch changed how they order clip options on the server, making necessary local ordering.',
+                    'General chat improvements',
+                    'General UI/UX improvements, make it easier to use or understand the app',
+                    'Other General improvements'
+                ]
+            },
+            {
                 title: 'Web Version September 11 2023 and Apk Version 3.0.349 and 3.0.350',
                 changes: [
                     'Add new user logging method that allows you to fully use yours privileged in the app',
                     'Note: after opening this update there will be no user, after adding a user history and blocked configuration will be restored',
                     'Add follow/unfollow buttons back',
-                    'General improves'
+                    'General improvements'
                 ]
-            },
-            {
-                title: 'Web Version August 08 2023',
-                changes: [
-                    'Add an option to block channels and games, use the thumbnail option to set by holding left above any thumbnail, then press enter above the channel or game to block',
-                    'Add "Show blocked" to the thumbnail option, setting this to YES allows you to see all blocked content without having to unblock it',
-                    'Add a new user section "Blocked", to manage blocked content',
-                    "Note about blocked: Blocked channels or games don't apply to followed channels",
-                    'Note about blocked: If you open a blocked game content, it will show all content minus blocked channels',
-                    'Note about blocked: If you open a blocked channel content, it will show all content',
-                    'Make highlighted messages in chat have the same background transparency as the chat',
-                    'Fix extra emotes (FFZ, BTTV, 7TV) not showing on one of the chats in 50/50 plus chats mode',
-                    'Add a new warning for users using the app without a user or authorization token: The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token, there is no workaround for this is just a Twitch API limitation',
-                    'General improves'
-                ]
-            },
-            {
-                title: 'Web Version June 27 2023',
-                changes: ['General improves']
-            },
-            {
-                title: 'Web Version June 17 2023',
-                changes: ['Add Screen off (Audio only) option to player', 'General improves']
             }
         ]
     };
@@ -23902,8 +23895,11 @@
         while ((marray = Regexp.exec(input))) {
             while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, '')))) {
                 if (!result.length) {
-                    if (!Main_A_includes_B(marray2[1], 'ource')) marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
-                    else if (marray2[1]) marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace('source', STR_SOURCE);
+                    if (!Main_A_includes_B(marray2[1], 'ource')) {
+                        marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
+                    } else if (marray2[1]) {
+                        marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace('source', STR_SOURCE);
+                    }
 
                     result.push({
                         id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),

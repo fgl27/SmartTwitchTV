@@ -9,13 +9,29 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version September 2023 to February 2024
+==============
+
+* Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by the server with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select
+* Fix VOD playback starting from 00:00, after changing the app while watching a VOD the app could lose the VOD time position
+* Improve the chat delay option, sometimes the chosen option wasn't working as expected
+* Improve player controls, sometime the player would show an option not available for that type of playback which causes control issues
+* Add extra playback speeds (by Js41637)
+* Fix the thumbnails option (hold left) not showing all options or showing and not allowing to move up/down
+* Fix hiding blocked VODs in some of the VOD section
+* Fix clip playback selecting the best quality, Twitch changed how they order clip options on the server, making necessary local ordering.
+* General chat improvements
+* General UI/UX improvements, make it easier to use or understand the app
+* Other General improvements
+
+
 Web Version September 11 2023 and Apk Version 3.0.349 and 3.0.350
 ==============
 
 * Add new user logging method that allows you to fully use yours privileged in the app
 * Note: after opening this update there will be no user, after adding a user history and blocked configuration will be restored
 * Add follow/unfollow buttons back
-* General improves
+* General improvements
 
 Web Version August 08 2023
 ==============

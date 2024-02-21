@@ -976,8 +976,11 @@ function Play_extractQualities(input) {
     while ((marray = Regexp.exec(input))) {
         while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, '')))) {
             if (!result.length) {
-                if (!Main_A_includes_B(marray2[1], 'ource')) marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
-                else if (marray2[1]) marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace('source', STR_SOURCE);
+                if (!Main_A_includes_B(marray2[1], 'ource')) {
+                    marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
+                } else if (marray2[1]) {
+                    marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace('source', STR_SOURCE);
+                }
 
                 result.push({
                     id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
