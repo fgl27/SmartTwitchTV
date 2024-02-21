@@ -29,8 +29,8 @@ var version = {
         {
             title: 'Version September 2023 to February 2024',
             changes: [
-                'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by the server with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
-                'Fix VOD playback starting from 00:00, after changing the app while watching a VOD the app could lose the VOD time position',
+                'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
+                'Fix VOD playback starting from 00:00, after switching apps during a VOD playback the app could lose the VOD time position when you come back to it',
                 "Improve the chat delay option, sometimes the chosen option wasn't working as expected",
                 'Improve player controls, sometime the player would show an option not available for that type of playback which causes control issues',
                 'Add extra playback speeds (by Js41637)',
