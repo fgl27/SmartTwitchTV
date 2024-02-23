@@ -959,7 +959,7 @@ function Play_SetExternalQualities(array, startPos, name) {
 function Play_FixQualities(input) {
     var qualities = Play_extractQualities(input);
 
-    if (qualities[0].truebitrate) {
+    if (qualities && qualities[0] && qualities[0].truebitrate) {
         input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
     }
     return input;
@@ -1002,7 +1002,7 @@ function Play_extractQualities(input) {
         }
     }
 
-    if (result[0].bitrate < result[1].bitrate) {
+    if (result && result[0] && result[1] && result[0].bitrate < result[1].bitrate) {
         result[0].truebitrate = result[0].bitrate + result[1].bitrate;
     }
 
