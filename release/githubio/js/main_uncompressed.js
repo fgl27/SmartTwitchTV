@@ -4655,10 +4655,11 @@
         publishVersionCode: 350, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/350/SmartTV_twitch_3_0_350.apk',
         WebVersion: 'February 2024',
-        WebTag: 671, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 672, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Version September 2023 to February 2024',
                 changes: [
+                    'Fix playing single quality streams',
                     'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
                     'Fix VOD playback starting from 00:00, after switching apps during a VOD playback the app could lose the VOD time position when you come back to it',
                     "Improve the chat delay option, sometimes the chosen option wasn't working as expected",
@@ -23878,7 +23879,7 @@
     function Play_FixQualities(input) {
         var qualities = Play_extractQualities(input);
 
-        if (qualities[0].truebitrate) {
+        if (qualities && qualities[0] && qualities[0].truebitrate) {
             input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
         }
         return input;
@@ -23921,7 +23922,7 @@
             }
         }
 
-        if (result[0].bitrate < result[1].bitrate) {
+        if (result && result[0] && result[1] && result[0].bitrate < result[1].bitrate) {
             result[0].truebitrate = result[0].bitrate + result[1].bitrate;
         }
 

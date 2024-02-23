@@ -12,6 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Version September 2023 to February 2024
 ==============
 
+* Fix playing single quality streams
 * Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select
 * Fix VOD playback starting from 00:00, after switching apps during a VOD playback the app could lose the VOD time position when you come back to it
 * Improve the chat delay option, sometimes the chosen option wasn't working as expected
@@ -23,8 +24,6 @@ Version September 2023 to February 2024
 * General chat improvements
 * General UI/UX improvements, make it easier to use or understand the app
 * Other General improvements
-
-
 
 Web Version September 11 2023 and Apk Version 3.0.349 and 3.0.350
 ==============
