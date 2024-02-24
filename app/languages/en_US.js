@@ -70,6 +70,8 @@ function en_USLang() {
     STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) Add User or User: Switch, add, key, press enter on the user';
     STR_REFRESH_PROBLEM = 'Connection failed or there is no content for this. Refresh to try again';
     STR_REFRESH_PROBLEM_ENTER = 'Connection failed or there is no content for this. Press enter to Refresh';
+    STR_REFRESH_PROBLEM_ENTER_LANG =
+        'Connection failed or there is no content for this language. Change content language (hold left) or Press enter to Refresh';
     STR_NO = 'No';
     STR_FOR_THIS = 'for this';
     STR_PLAYER_PROBLEM = 'Connection failed, unable to load video content, exiting ...';
