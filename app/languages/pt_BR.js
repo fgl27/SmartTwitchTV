@@ -65,6 +65,8 @@ function pt_BRLang() {
     STR_IS_SUB_ONLY_ERROR = 'é conteúdo apenas para sub.';
     STR_REFRESH_PROBLEM = 'A conexão falhou ou não há conteúdo para esse. Atualize para tentar novamente';
     STR_REFRESH_PROBLEM_ENTER = 'A conexão falhou ou não há conteúdo para esse. Pressione Enter para Atualizar';
+    STR_REFRESH_PROBLEM_ENTER_LANG =
+        'A conexão falhou ou não há conteúdo para este idioma. Altere o idioma do conteúdo (mantenha pressionado à tecla para esquerda) ou pressione Enter para atualizar';
     STR_NO = 'Não';
     STR_FOR_THIS = 'para este';
     STR_PLAYER_PROBLEM = 'Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...';
