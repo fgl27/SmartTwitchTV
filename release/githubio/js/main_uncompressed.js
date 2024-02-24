@@ -775,6 +775,7 @@
     var STR_ADD_USER_TEXT_COUNTER_NOW;
     var STR_ADD_ERROR;
     var STR_USER_TOKEN_ERROR;
+    var STR_REFRESH_PROBLEM_ENTER_LANG;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1335,6 +1336,8 @@
         STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) Add User or User: Switch, add, key, press enter on the user';
         STR_REFRESH_PROBLEM = 'Connection failed or there is no content for this. Refresh to try again';
         STR_REFRESH_PROBLEM_ENTER = 'Connection failed or there is no content for this. Press enter to Refresh';
+        STR_REFRESH_PROBLEM_ENTER_LANG =
+            'Connection failed or there is no content for this language. Change content language (hold left) or Press enter to Refresh';
         STR_NO = 'No';
         STR_FOR_THIS = 'for this';
         STR_PLAYER_PROBLEM = 'Connection failed, unable to load video content, exiting ...';
@@ -32040,7 +32043,8 @@
                 return null;
             },
             emptyBanner: function(forceAdd) {
-                var bannerString = this.enable_mature ? STR_REFRESH_PROBLEM_ENTER : STR_MATURE_DISABLED;
+                var refreshProblemString = this.CheckContentLang ? STR_REFRESH_PROBLEM_ENTER_LANG : STR_REFRESH_PROBLEM_ENTER;
+                var bannerString = this.enable_mature ? refreshProblemString : STR_MATURE_DISABLED;
                 ScreensObj_addBanner({
                         image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
                         text: this.emptyContent_STR ? this.emptyContent_STR() : bannerString,
