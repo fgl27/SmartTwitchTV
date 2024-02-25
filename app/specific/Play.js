@@ -959,7 +959,7 @@ function Play_SetExternalQualities(array, startPos, name) {
 function Play_FixQualities(input) {
     var qualities = Play_extractQualities(input);
 
-    if (qualities && qualities[0] && qualities[0].truebitrate) {
+    if (qualities.length && qualities[0].truebitrate) {
         input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
     }
     return input;
@@ -967,7 +967,7 @@ function Play_FixQualities(input) {
 
 function Play_extractQualities(input) {
     var result = [],
-        addedresolution = {},
+        addedResolution = {},
         marray,
         marray2,
         Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
@@ -987,22 +987,22 @@ function Play_extractQualities(input) {
                     url: marray2[4],
                     bitrate: parseInt(marray2[2])
                 });
-                addedresolution[marray2[1].split(' | ')[0]] = 1;
+                addedResolution[marray2[1].split(' | ')[0]] = 1;
             } else {
                 //Prevent duplicated resolution 720p60 source and 720p60
-                if (!addedresolution[marray2[1]]) {
+                if (!addedResolution[marray2[1]]) {
                     result.push({
                         id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
                         url: marray2[4],
                         bitrate: parseInt(marray2[2])
                     });
-                    addedresolution[marray2[1]] = 1;
+                    addedResolution[marray2[1]] = 1;
                 }
             }
         }
     }
 
-    if (result && result[0] && result[1] && result[0].bitrate < result[1].bitrate) {
+    if (result.length > 1 && result[0].bitrate < result[1].bitrate) {
         result[0].truebitrate = result[0].bitrate + result[1].bitrate;
     }
 
