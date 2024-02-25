@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/../../ExoPlayer/extensions/workmanager" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/all" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/common" />
+            <option value="$PROJECT_DIR$/../../ExoPlayer/library/container" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/core" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/dash" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/database" />
@@ -32,6 +33,7 @@
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/effect" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/extractor" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/hls" />
+            <option value="$PROJECT_DIR$/../../ExoPlayer/library/muxer" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/rtsp" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/smoothstreaming" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/transformer" />
