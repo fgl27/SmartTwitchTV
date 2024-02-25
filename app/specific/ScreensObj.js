@@ -2795,6 +2795,11 @@ function ScreensObj_VodGetPreview(preview, animated_preview_url) {
     //         console.log('Revise vod links');
     //     }
     // }
+
+    if (!preview) {
+        return null;
+    }
+
     return Main_A_includes_B(preview + '', '404_processing')
         ? ScreensObj_VodGetPreviewFromAnimated(animated_preview_url)
         : preview.replace('%{width}x%{height}', Main_VideoSize);
