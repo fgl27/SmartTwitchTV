@@ -180,6 +180,7 @@ function Play_SetQuality() {
 
 function Play_SetPlayQuality(quality) {
     Play_data.quality = quality;
+
     Play_data.qualityPlaying = Play_data.quality;
 
     Play_data_base.quality = Play_data.quality;
@@ -887,8 +888,12 @@ function Play_qualityChanged() {
     Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
 
     Play_SetHtmlQuality(Play_info_quality);
-    if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
-    else Play_onPlayer();
+
+    if (Main_IsOn_OSInterface) {
+        OSInterface_SetQuality(Play_data.qualityIndex - 1);
+    } else {
+        Play_onPlayer();
+    }
     //Play_PannelEndStart(1);
 }
 
@@ -903,15 +908,17 @@ function Play_getQualities(Who_Called, skipchange) {
         Play_getQualitiesFail = false;
         result = JSON.parse(baseQualities);
 
-        if (result.length > 1) result[1].id += ' | source';
+        if (result.length > 1) {
+            result[1].id += ' | source';
+        }
 
         if (Who_Called === 1) {
             Play_data.qualities = result;
 
             if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable) {
-                Play_ResetDefaultQuality();
-
-                if (!Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
+                if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
+                    Play_qualityChanged();
+                }
             }
 
             if (Play_data.playlist) {
@@ -924,7 +931,6 @@ function Play_getQualities(Who_Called, skipchange) {
             PlayVod_qualities = result;
 
             if (!skipchange) {
-                Play_ResetDefaultQuality();
                 if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
             }
 
@@ -934,7 +940,9 @@ function Play_getQualities(Who_Called, skipchange) {
             }
             PlayVod_qualityReset();
         }
-    } else Play_getQualitiesFail = true;
+    } else {
+        Play_getQualitiesFail = true;
+    }
 }
 
 var Play_ExternalUrls = [];
@@ -1049,6 +1057,7 @@ function Play_SetHtmlQuality(element) {
         return;
 
     Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
+
     Play_data_base.quality = Play_data.quality;
 
     var quality_string = '';
@@ -1756,7 +1765,9 @@ function Play_qualityIndexReset() {
         }
     }
 
-    if (Play_data.qualities[Play_data.qualityIndex]) Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+    if (Play_data.qualities[Play_data.qualityIndex]) {
+        Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+    }
 }
 
 function Play_qualityTitleReset(title) {

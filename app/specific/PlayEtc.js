@@ -2356,14 +2356,18 @@ function Play_MakeControls() {
             var oldQuality;
             if (PlayVodClip === 1) {
                 Play_data.quality = Play_data.qualityPlaying;
+
                 Play_data_base.quality = Play_data.quality;
 
                 oldQuality = Play_data.quality;
                 Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
                 Play_SetHtmlQuality(Play_info_quality);
 
-                if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
-                else OSInterface_RestartPlayer(1, 0, 0); //restart the player
+                if (oldQuality !== Play_data.quality) {
+                    OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
+                } else {
+                    OSInterface_RestartPlayer(1, 0, 0); //restart the player
+                }
 
                 Play_qualityIndexReset();
             } else if (PlayVodClip === 2) {
