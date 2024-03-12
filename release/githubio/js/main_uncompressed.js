@@ -4662,8 +4662,9 @@
         WebVersion: 'February 2024',
         WebTag: 672, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'Version September 2023 to February 2024',
+                title: 'Version September 2023 to March 2024',
                 changes: [
+                    'Fix unable to change quality during playback if the default quality in settings was different than AUTO',
                     'Fix playing single quality streams',
                     'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
                     'Fix VOD playback starting from 00:00, after switching apps during a VOD playback the app could lose the VOD time position when you come back to it',
@@ -19907,14 +19908,18 @@
                 var oldQuality;
                 if (PlayVodClip === 1) {
                     Play_data.quality = Play_data.qualityPlaying;
+
                     Play_data_base.quality = Play_data.quality;
 
                     oldQuality = Play_data.quality;
                     Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
                     Play_SetHtmlQuality(Play_info_quality);
 
-                    if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
-                    else OSInterface_RestartPlayer(1, 0, 0); //restart the player
+                    if (oldQuality !== Play_data.quality) {
+                        OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
+                    } else {
+                        OSInterface_RestartPlayer(1, 0, 0); //restart the player
+                    }
 
                     Play_qualityIndexReset();
                 } else if (PlayVodClip === 2) {
@@ -23085,11 +23090,11 @@
 
     //Variable initialization end
 
-    function Play_ResetDefaultQuality() {
-        if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
-            Play_SetQuality();
-        }
-    }
+    // function Play_ResetDefaultQuality() {
+    //     if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
+    //         Play_SetQuality();
+    //     }
+    // }
 
     function Play_SetQuality() {
         Play_SetPlayQuality(Settings_Obj_values('default_quality').replace(STR_SOURCE, 'source'));
@@ -23100,6 +23105,7 @@
 
     function Play_SetPlayQuality(quality) {
         Play_data.quality = quality;
+
         Play_data.qualityPlaying = Play_data.quality;
 
         Play_data_base.quality = Play_data.quality;
@@ -23810,8 +23816,12 @@
         Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
 
         Play_SetHtmlQuality(Play_info_quality);
-        if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
-        else Play_onPlayer();
+
+        if (Main_IsOn_OSInterface) {
+            OSInterface_SetQuality(Play_data.qualityIndex - 1);
+        } else {
+            Play_onPlayer();
+        }
         //Play_PannelEndStart(1);
     }
 
@@ -23827,15 +23837,17 @@
             Play_getQualitiesFail = false;
             result = JSON.parse(baseQualities);
 
-            if (result.length > 1) result[1].id += ' | source';
+            if (result.length > 1) {
+                result[1].id += ' | source';
+            }
 
             if (Who_Called === 1) {
                 Play_data.qualities = result;
 
                 if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable) {
-                    Play_ResetDefaultQuality();
-
-                    if (!Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
+                    if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
+                        Play_qualityChanged();
+                    }
                 }
 
                 if (Play_data.playlist) {
@@ -23848,7 +23860,6 @@
                 PlayVod_qualities = result;
 
                 if (!skipchange) {
-                    Play_ResetDefaultQuality();
                     if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
                 }
 
@@ -23858,7 +23869,9 @@
                 }
                 PlayVod_qualityReset();
             }
-        } else Play_getQualitiesFail = true;
+        } else {
+            Play_getQualitiesFail = true;
+        }
     }
 
     var Play_ExternalUrls = [];
@@ -23974,6 +23987,7 @@
             return;
 
         Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
+
         Play_data_base.quality = Play_data.quality;
 
         var quality_string = '';
@@ -24685,7 +24699,9 @@
             }
         }
 
-        if (Play_data.qualities[Play_data.qualityIndex]) Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+        if (Play_data.qualities[Play_data.qualityIndex]) {
+            Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+        }
     }
 
     function Play_qualityTitleReset(title) {
