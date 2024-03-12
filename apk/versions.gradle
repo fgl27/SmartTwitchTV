@@ -18,5 +18,5 @@ ext.versions = [
         //Crashlytics
         firebase_bom               : '32.7.2',
         firebase_crashlytics_gradle: '2.9.9',
-        google_services            : '4.4.1',
+        google_services            : '4.3.15',
 ]
