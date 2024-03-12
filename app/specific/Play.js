@@ -165,11 +165,11 @@ var Play_ChatFontObj = [];
 
 //Variable initialization end
 
-function Play_ResetDefaultQuality() {
-    if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
-        Play_SetQuality();
-    }
-}
+// function Play_ResetDefaultQuality() {
+//     if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
+//         Play_SetQuality();
+//     }
+// }
 
 function Play_SetQuality() {
     Play_SetPlayQuality(Settings_Obj_values('default_quality').replace(STR_SOURCE, 'source'));
