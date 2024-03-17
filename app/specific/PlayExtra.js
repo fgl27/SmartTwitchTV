@@ -411,7 +411,7 @@ function PlayExtra_UpdatePanel() {
     streamViewers2 = PlayExtra_data.data[13];
 }
 
-var PlayExtra_updateStreamLogoValuesId;
+var PlayExtra_updateStreamLogoValuesId = [];
 function PlayExtra_updateStreamLogo(channelId, pp) {
     if (!pp && Play_data.data[10] !== null && Play_data.data[9] !== null) {
         PlayExtra_updateLogo(pp);
@@ -419,16 +419,16 @@ function PlayExtra_updateStreamLogo(channelId, pp) {
         PlayExtra_updateLogo(pp);
     }
 
-    PlayExtra_updateStreamLogoValuesId = new Date().getTime();
+    PlayExtra_updateStreamLogoValuesId[pp] = new Date().getTime();
     var theUrl = Main_helix_api + 'users?id=' + channelId;
 
-    BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, pp, 0, true);
+    BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, pp, PlayExtra_updateStreamLogoValuesId[pp], true);
 }
 
-function PlayExtra_updateStreamLogoValues(responseText, pp) {
+function PlayExtra_updateStreamLogoValues(responseText, pp, ID) {
     var response = JSON.parse(responseText);
 
-    if (response.data && response.data.length) {
+    if (response.data && response.data.length && PlayExtra_updateStreamLogoValuesId[pp] === ID) {
         //TODO update this with a API that provides logo and is partner
         var objData = response.data[0];
 
