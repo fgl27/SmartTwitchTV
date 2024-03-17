@@ -1667,7 +1667,9 @@ function Play_handleKeyUp(e) {
         if (!Play_EndUpclear) {
             if (Play_MultiEnable) Play_MultiKeyDown();
             else {
-                if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
+                if (Main_IsOn_OSInterface) {
+                    OSInterface_mSwitchPlayer();
+                }
                 PlayExtra_SwitchPlayer();
             }
         }

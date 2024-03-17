@@ -202,6 +202,7 @@ function PlayExtra_SwitchPlayer() {
     Main_SaveValues();
 
     Play_UpdateMainStream(Play_isFullScreen, false);
+    PlayExtra_UpdatePanel();
 
     if (!Play_isFullScreen) {
         ChatLive_Switch();
