@@ -527,6 +527,10 @@ function Play_MultiUpdateInfoMainBig(extraText) {
 }
 
 function Play_MultiUpdateStreamLogo(channelId, pos) {
+    if (Play_MultiArray[pos].data[10] !== null && Play_MultiArray[pos].data[9] !== null) {
+        Play_MultiUpdateStreamLogoEnd(pos, Play_Multi_MainBig ? '_big' : '');
+    }
+
     var theUrl = Main_helix_api + 'users?id=' + channelId;
 
     BaseXmlHttpGet(theUrl, Play_MultiUpdateStreamLogoValues, noop_fun, pos, 0, true);
@@ -543,18 +547,21 @@ function Play_MultiUpdateStreamLogoValues(responseText, i) {
         Play_MultiArray[i].data[9] = objData.profile_image_url;
 
         Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-
-        Main_innerHTML(
-            'stream_info_multi_name' + extraText + i,
-            Play_partnerIcon(
-                Play_MultiArray[i].data[1],
-                Play_MultiArray[i].data[10],
-                0,
-                Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '',
-                Play_MultiArray[i].data[8]
-            )
-        );
+        Play_MultiUpdateStreamLogoEnd(i, extraText);
     }
+}
+
+function Play_MultiUpdateStreamLogoEnd(pos, extraText) {
+    Main_innerHTML(
+        'stream_info_multi_name' + extraText + pos,
+        Play_partnerIcon(
+            Play_MultiArray[pos].data[1],
+            Play_MultiArray[pos].data[10],
+            0,
+            Play_MultiArray[pos].data[5] ? '[' + Play_MultiArray[pos].data[5].split('[')[1] : '',
+            Play_MultiArray[pos].data[8]
+        )
+    );
 }
 
 function Play_MultiInfoReset(pos) {
