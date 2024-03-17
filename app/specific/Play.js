@@ -1052,7 +1052,10 @@ function Play_onPlayer() {
         }
     }
 
-    if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+    if (Play_ChatEnable && !Play_isChatShown()) {
+        Play_showChat();
+    }
+
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
     Play_SkipStartAuto = false;
@@ -1651,6 +1654,10 @@ function Play_showChat() {
     Play_chat_container.classList.remove('hide');
 
     Play_controls[Play_controlsChat].setLable();
+
+    if (Settings_value.show_chatters.defaultValue) {
+        ChatLive_loadChattersCheckTypeRun(0, 0);
+    }
 }
 
 function Play_hideChat() {

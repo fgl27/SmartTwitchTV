@@ -340,6 +340,10 @@ function Play_SetChatSideBySide() {
     if (!Main_IsOn_OSInterface) {
         BrowserTestSetVideoSize();
     }
+
+    if (Settings_value.show_chatters.defaultValue) {
+        ChatLive_loadChattersCheckTypeRun(0, 0);
+    }
 }
 
 var Play_ChatFullScreenObj = {

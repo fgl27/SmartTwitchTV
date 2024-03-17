@@ -359,7 +359,9 @@ function ChatLive_loadChatters(chat_number, id) {
 
         Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.9vh)';
 
-        if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
+        if (!chat_number) {
+            Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
+        }
 
         ChatLive_loadChattersCheckType(chat_number, id);
     }
@@ -371,12 +373,19 @@ function ChatLive_loadChattersCheckType(chat_number, id) {
 
     ChatLive_loadChattersId[chat_number] = Main_setInterval(
         function () {
-            if (Settings_value.show_chatters.defaultValue === 1) ChatLive_loadChattersLoad(chat_number, id);
-            else ChatLive_loadChattersViewers(chat_number, id);
+            ChatLive_loadChattersCheckTypeRun(chat_number, id);
         },
         5 * 60 * 1000, //5 min
         ChatLive_loadChattersId[chat_number]
     );
+}
+
+function ChatLive_loadChattersCheckTypeRun(chat_number, id) {
+    if (Settings_value.show_chatters.defaultValue === 1) {
+        ChatLive_loadChattersLoad(chat_number, id);
+    } else {
+        ChatLive_loadChattersViewers(chat_number, id);
+    }
 }
 
 function ChatLive_loadChattersViewers(chat_number, id) {
