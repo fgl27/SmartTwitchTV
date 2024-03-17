@@ -9095,7 +9095,9 @@
 
             Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.9vh)';
 
-            if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
+            if (!chat_number) {
+                Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
+            }
 
             ChatLive_loadChattersCheckType(chat_number, id);
         }
@@ -9107,12 +9109,19 @@
 
         ChatLive_loadChattersId[chat_number] = Main_setInterval(
             function() {
-                if (Settings_value.show_chatters.defaultValue === 1) ChatLive_loadChattersLoad(chat_number, id);
-                else ChatLive_loadChattersViewers(chat_number, id);
+                ChatLive_loadChattersCheckTypeRun(chat_number, id);
             },
             5 * 60 * 1000, //5 min
             ChatLive_loadChattersId[chat_number]
         );
+    }
+
+    function ChatLive_loadChattersCheckTypeRun(chat_number, id) {
+        if (Settings_value.show_chatters.defaultValue === 1) {
+            ChatLive_loadChattersLoad(chat_number, id);
+        } else {
+            ChatLive_loadChattersViewers(chat_number, id);
+        }
     }
 
     function ChatLive_loadChattersViewers(chat_number, id) {
@@ -14391,7 +14400,6 @@
         Settings_DisableAutoMinimizeTimeout();
 
         Main_clearInterval(Play_ResumeAfterOnlineId);
-        Main_clearInterval(Play_streamInfoTimerId);
         Main_clearInterval(Play_ShowPanelStatusId);
 
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
@@ -17890,6 +17898,10 @@
         if (!Main_IsOn_OSInterface) {
             BrowserTestSetVideoSize();
         }
+
+        if (Settings_value.show_chatters.defaultValue) {
+            ChatLive_loadChattersCheckTypeRun(0, 0);
+        }
     }
 
     var Play_ChatFullScreenObj = {
@@ -18011,7 +18023,9 @@
                 '</div>';
         } else if (live_vod_clip === 1) {
             div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
-        } else div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
+        } else {
+            div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
+        }
 
         return div + '<div class="lang_text">' + STR_SPACE_HTML + STR_SPACE_HTML + lang + '</div>';
     }
@@ -19163,7 +19177,7 @@
 
             Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
 
-            Play_MultiUpdateinfoMainBig('_big');
+            Play_MultiUpdateInfoMainBig('_big');
             Main_HideElement('stream_info_multi');
             Main_HideElement('dialog_multi_help');
             Main_ShowElement('stream_info_multi_big');
@@ -19180,7 +19194,7 @@
             Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI_BIG;
             Play_ResetQualityControls();
         } else {
-            Play_MultiUpdateinfoMainBig('');
+            Play_MultiUpdateInfoMainBig('');
             Main_ShowElement('stream_info_multi');
             Main_HideElement('stream_info_multi_big');
             Play_ResStoreChatPos();
@@ -19363,8 +19377,11 @@
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
                     Play_EndUpclearID = Main_setTimeout(Play_PP_Multi_KeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
-                } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
-                else Play_showPanel();
+                } else if (Play_isFullScreen) {
+                    Play_controls[Play_controlsChat].enterKey(1);
+                } else {
+                    Play_showPanel();
+                }
                 break;
             case KEY_ENTER:
                 //ChatLive_Playing = false;
@@ -19413,7 +19430,9 @@
                         UserLiveFeed_ResetFeedId();
                         PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, Screens_KeyUptimeout, PlayExtra_KeyEnterID);
                     }
-                } else Play_showPanel();
+                } else {
+                    Play_showPanel();
+                }
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
@@ -20238,26 +20257,28 @@
                     }
 
                     Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
-                    Play_MultiSetinfo(
+                    Play_MultiSetInfo(
                         0,
                         Play_MultiArray[0].data[3],
                         Play_MultiArray[0].data[13],
                         Play_MultiArray[0].data[1],
                         Play_MultiArray[0].data[8],
                         Play_MultiArray[0].data[9],
-                        twemoji.parse(Play_MultiArray[0].data[2])
+                        twemoji.parse(Play_MultiArray[0].data[2], false, true),
+                        Play_MultiArray[0].data[14]
                     );
 
                     if (PlayExtra_PicturePicture) {
                         Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
-                        Play_MultiSetinfo(
+                        Play_MultiSetInfo(
                             1,
                             Play_MultiArray[1].data[3],
                             Play_MultiArray[1].data[13],
                             Play_MultiArray[1].data[1],
                             Play_MultiArray[1].data[8],
                             Play_MultiArray[1].data[9],
-                            twemoji.parse(Play_MultiArray[1].data[2])
+                            twemoji.parse(Play_MultiArray[1].data[2], false, true),
+                            Play_MultiArray[1].data[14]
                         );
                     }
 
@@ -21989,7 +22010,7 @@
         }
         if (Main_values.Chat_font_size_new > Play_ChatFontObj.length - 1) Main_values.Chat_font_size_new = Play_ChatFontObj.length - 1;
 
-        Play_MultiSetpannelInfo();
+        Play_MultiSetPanelInfo();
 
         Play_MakeControls();
         Play_ChatSize(false);
@@ -22271,6 +22292,7 @@
 
         PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
         PlayExtra_updateStreamInfo();
+
         ChatLive_Playing = true;
 
         if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
@@ -22436,7 +22458,6 @@
 
         Play_SetControlsVisibility('ShowInPP');
 
-        PlayExtra_UpdatePanel();
         Main_HideElement('stream_info');
         Main_ShowElement('stream_info_pp');
     }
@@ -22462,74 +22483,85 @@
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
     }
 
+    var streamTitle1;
+    var streamGame1;
+    var streamViewers1;
+
+    var streamTitle2;
+    var streamGame2;
+    var streamViewers2;
+
     function PlayExtra_UpdatePanel() {
-        Main_innerHTML(
-            'stream_info_pp_name0',
-            Play_partnerIcon(
-                Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-                Play_data.data[10],
-                0,
-                Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-                Play_data.data[8]
-            )
-        );
+        //Main
         if (Play_data.data[9]) {
             Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
-        } else {
-            PlayExtra_updateStreamLogo(Play_data.data[14], 0);
         }
 
-        Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
-        Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
-        Main_innerHTML(
-            'stream_info_pp_viewers0',
-            STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
-        );
+        PlayExtra_updateStreamLogo(Play_data.data[14], 0);
 
-        Main_innerHTML(
-            'stream_info_pp_name1',
-            Play_partnerIcon(
-                PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
-                PlayExtra_data.data[10],
-                0,
-                PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
-                PlayExtra_data.data[8]
-            )
-        );
+        if (streamTitle1 !== Play_data.data[2]) {
+            Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
+        }
+        streamTitle1 = Play_data.data[2];
 
+        if (streamGame1 !== Play_data.data[3]) {
+            Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
+        }
+        streamGame1 = Play_data.data[3];
+
+        if (streamViewers1 !== Play_data.data[13]) {
+            Main_innerHTML(
+                'stream_info_pp_viewers0',
+                STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
+            );
+        }
+        streamViewers1 = Play_data.data[13];
+
+        //pp
         if (PlayExtra_data.data[9]) {
             Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
-        } else {
-            PlayExtra_updateStreamLogo(PlayExtra_data.data[14], 1);
         }
+        PlayExtra_updateStreamLogo(PlayExtra_data.data[14], 1);
 
-        Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
+        if (streamTitle2 !== PlayExtra_data.data[2]) {
+            Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
+        }
+        streamTitle2 = PlayExtra_data.data[2];
 
-        Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
-        Main_innerHTML(
-            'stream_info_pp_viewers1',
-            STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
-        );
+        if (streamGame2 !== PlayExtra_data.data[3]) {
+            Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
+        }
+        streamGame2 = PlayExtra_data.data[3];
+
+        if (streamViewers2 !== PlayExtra_data.data[13]) {
+            Main_innerHTML(
+                'stream_info_pp_viewers1',
+                STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
+            );
+        }
+        streamViewers2 = PlayExtra_data.data[13];
     }
 
     var PlayExtra_updateStreamLogoValuesId;
 
-    function PlayExtra_updateStreamLogo(channeiId, main) {
+    function PlayExtra_updateStreamLogo(channelId, main) {
         PlayExtra_updateStreamLogoValuesId = new Date().getTime();
-        var theUrl = Main_helix_api + 'users?id=' + channeiId;
+        var theUrl = Main_helix_api + 'users?id=' + channelId;
 
-        BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, PlayExtra_updateStreamLogoValuesId, true);
+        BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, 0, true);
     }
 
-    function PlayExtra_updateStreamLogoValues(responseText, key, id) {
+    function PlayExtra_updateStreamLogoValues(responseText, main) {
         var response = JSON.parse(responseText);
-        if (response.data && response.data.length && PlayExtra_updateStreamLogoValuesId === id) {
+
+        if (response.data && response.data.length) {
             //TODO update this with a API that provides logo and is partner
             var objData = response.data[0];
 
-            if (!key) {
+            if (!main) {
                 Play_data.data[10] = objData.broadcaster_type === 'partner';
                 Play_data.data[9] = objData.profile_image_url;
+
                 Main_innerHTML(
                     'stream_info_pp_name0',
                     Play_partnerIcon(
@@ -22976,8 +23008,6 @@
     var Play_VodObj;
     var Play_VodObjIndex;
 
-    var Play_streamInfoTimerId = null;
-
     var Play_ChatEnable = false;
     var Play_exitID = null;
 
@@ -23363,8 +23393,11 @@
         Play_showBufferDialog();
         Play_ResumeAfterOnlineCounter = 0;
 
-        if (navigator.onLine) Play_ResumeAfterOnline();
-        else Play_ResumeAfterOnlineId = Main_setInterval(Play_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
+        if (navigator.onLine) {
+            Play_ResumeAfterOnline();
+        } else {
+            Play_ResumeAfterOnlineId = Main_setInterval(Play_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
+        }
 
         Play_ShowPanelStatus(1);
     }
@@ -23382,7 +23415,6 @@
             Play_CheckIfIsLiveCleanEnd();
 
             if (Play_MultiEnable) {
-                Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 1000 * 60 * 3, Play_streamInfoTimerId);
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
                 Play_data.watching_time = new Date().getTime();
@@ -23404,7 +23436,9 @@
                 //PlayExtra_data.data[14] = 1234;
                 //Play_data.data[6] = 'testtt';
                 //Play_data.data[14] = 1234;
-                if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
+                if (PlayExtra_PicturePicture) {
+                    PlayExtra_Resume(true);
+                }
                 Play_loadData();
             }
         }
@@ -23415,44 +23449,49 @@
         return PlayHLS_GetPlayListSync(true, channel_name);
     }
 
-    function Play_UpdateMainStreamDiv() {
-        if (!Play_data.data.length) return;
+    var streamTitle;
+    var streamGame;
+    var streamViewers;
 
-        //Restore or set info panel
-        Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
-        Main_innerHTML(
-            'stream_info_name',
-            Play_partnerIcon(
-                Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-                Play_data.data[10],
-                0,
-                Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-                Play_data.data[8]
-            )
-        );
-        Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
-        Main_innerHTML(
-            'stream_live_viewers',
-            STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
-        );
+    function Play_UpdateMainStreamDiv() {
+        if (!Play_data.data.length) {
+            return;
+        }
+
+        if (streamTitle !== Play_data.data[2]) {
+            Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
+        }
+        streamTitle = Play_data.data[2];
+
+        if (streamGame !== Play_data.data[3]) {
+            Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
+        }
+        streamGame = Play_data.data[3];
+
+        if (streamViewers !== Play_data.data[13]) {
+            Main_innerHTML(
+                'stream_live_viewers',
+                STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
+            );
+        }
+        streamViewers = Play_data.data[13];
 
         if (Play_data.data[9]) {
             Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
-        } else {
-            Play_updateStreamLogo();
         }
+        Play_updateStreamLogo();
 
         Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
         Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
-        if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
-
         Play_SetAudioIcon();
     }
 
     function Play_UpdateMainStream(startChat, refreshInfo) {
-        if (startChat) ChatLive_Init(0);
+        if (startChat) {
+            ChatLive_Init(0);
+        }
 
         Play_CheckFollow(Play_data.data[14]);
         Play_UpdateMainStreamDiv();
@@ -23497,7 +23536,9 @@
 
             Play_UpdateMainStreamDiv();
 
-            if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+            if (!Play_StayDialogVisible()) {
+                Main_Set_history('live', Play_data.data);
+            }
         }
     }
 
@@ -23574,6 +23615,7 @@
             var objData = response.data[0];
 
             Play_data.data[10] = objData.broadcaster_type === 'partner';
+
             Main_innerHTML(
                 'stream_info_name',
                 Play_partnerIcon(
@@ -23692,11 +23734,13 @@
     }
 
     function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory) {
-        if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-        else if (Play_EndDialogEnter === 3) {
+        if (Play_EndDialogEnter === 2) {
+            PlayVod_PreshutdownStream(true);
+        } else if (Play_EndDialogEnter === 3) {
             PlayClip_PreshutdownStream(false);
             PlayClip_isOn = false;
         }
+
         Play_EndDialogEnter = 0;
 
         Play_HideEndDialog();
@@ -23716,7 +23760,7 @@
         UserLiveFeed_PreventHide = false;
 
         UserLiveFeed_SetFeedPicText();
-        Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 1000 * 60 * 3, Play_streamInfoTimerId);
+
         if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
 
         Main_Log('Play_data.playlist\n' + Play_data.playlist);
@@ -23970,7 +24014,10 @@
             }
         }
 
-        if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
+        if (Play_ChatEnable && !Play_isChatShown()) {
+            Play_showChat();
+        }
+
         Play_SetFullScreen(Play_isFullScreen);
         Play_Playing = true;
         Play_SkipStartAuto = false;
@@ -24191,7 +24238,7 @@
         Play_Playing = false;
         Main_removeEventListener('keydown', Play_handleKeyDown);
         if (clearChat) ChatLive_Clear(0);
-        Main_clearInterval(Play_streamInfoTimerId);
+
         Play_IsWarning = false;
     }
 
@@ -24300,7 +24347,9 @@
                     1000,
                     Play_ShowPanelStatusId
                 );
-            } else Play_VideoStatusTest();
+            } else {
+                Play_VideoStatusTest();
+            }
 
             Main_ShowElementWithEle(Play_side_info_div);
             Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
@@ -24328,8 +24377,11 @@
         Play_PanneInfoDoclId.style.opacity = 1;
 
         if (!Play_StayDialogVisible()) {
-            if (!Play_Status_Visible) Main_ShowElementWithEle(Play_side_info_div);
-            else if (Play_Status_Visible === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+            if (!Play_Status_Visible) {
+                Main_ShowElementWithEle(Play_side_info_div);
+            } else if (Play_Status_Visible === 1) {
+                Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+            }
         }
 
         Play_PanneInfoDoclId.style.pointerEvents = '';
@@ -24378,7 +24430,11 @@
     }
 
     function Play_showPanel() {
-        if (Play_getQualitiesFail) Play_getQualities(1, true);
+        Play_updateStreamInfo();
+
+        if (Play_getQualitiesFail) {
+            Play_getQualities(1, true);
+        }
 
         if (!Play_StayDialogVisible()) {
             PlayVod_RefreshProgressBarrStart(true, 0);
@@ -24564,6 +24620,10 @@
         Play_chat_container.classList.remove('hide');
 
         Play_controls[Play_controlsChat].setLable();
+
+        if (Settings_value.show_chatters.defaultValue) {
+            ChatLive_loadChattersCheckTypeRun(0, 0);
+        }
     }
 
     function Play_hideChat() {
@@ -24754,7 +24814,7 @@
 
         ChatLive_Clear(0);
         ChatLive_Clear(1);
-        Main_clearInterval(Play_streamInfoTimerId);
+
         Main_setTimeout(Play_loadDataCheckHost, 50);
     }
 
@@ -25048,7 +25108,7 @@
                     Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
                 }
 
-                Play_MultiUpdateinfo(
+                Play_MultiUpdateInfo(
                     pos,
                     obj.data[0].game_name,
                     obj.data[0].viewer_count,
@@ -25360,14 +25420,14 @@
 
         Play_MultiArray[pos].playlist = playlist;
 
-        Play_MultiSetinfo(
+        Play_MultiSetInfo(
             pos,
             Play_MultiArray[pos].data[3],
             Play_MultiArray[pos].data[13],
             Play_MultiArray[pos].data[1],
             Play_MultiArray[pos].data[8],
             Play_MultiArray[pos].data[9],
-            twemoji.parse(Play_MultiArray[pos].data[2]),
+            twemoji.parse(Play_MultiArray[pos].data[2], false, true),
             Play_MultiArray[pos].data[14]
         );
 
@@ -25419,7 +25479,7 @@
                 Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
                 Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
-                Play_MultiUpdateinfoMainBig('_big');
+                Play_MultiUpdateInfoMainBig('_big');
                 Play_MultiUpdateMain();
             } else {
                 Play_MultiEnableKeyRightLeft(adder);
@@ -25500,42 +25560,37 @@
         }
     }
 
-    function Play_MultiUpdateinfoMainBig(extraText) {
+    function Play_MultiUpdateInfoMainBig(extraText) {
         var i = 0;
 
         for (i; i < Play_MultiArray_length; i++) {
             if (Play_MultiArray[i].data.length > 0) {
-                Main_innerHTML(
-                    'stream_info_multi_name' + extraText + i,
-                    Play_partnerIcon(
-                        Play_MultiArray[i].data[1],
-                        Play_MultiArray[i].data[10],
-                        0,
-                        Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '',
-                        Play_MultiArray[i].data[8]
-                    )
+                Play_MultiUpdateInfo(
+                    i,
+                    Play_MultiArray[i].data[3],
+                    Play_MultiArray[i].data[13],
+                    twemoji.parse(Play_MultiArray[i].data[2], false, true),
+                    extraText
                 );
-
-                Play_MultiUpdateinfo(i, Play_MultiArray[i].data[3], Play_MultiArray[i].data[13], twemoji.parse(Play_MultiArray[i].data[2]), extraText);
 
                 if (Play_MultiArray[i].data[9]) {
                     Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-                } else {
-                    Play_MultiupdateStreamLogo(Play_MultiArray[i].data[14], i);
                 }
+
+                Play_MultiUpdateStreamLogo(Play_MultiArray[i].data[14], i);
             } else {
                 Play_MultiInfoReset(i);
             }
         }
     }
 
-    function Play_MultiupdateStreamLogo(channeiId, pos) {
-        var theUrl = Main_helix_api + 'users?id=' + channeiId;
+    function Play_MultiUpdateStreamLogo(channelId, pos) {
+        var theUrl = Main_helix_api + 'users?id=' + channelId;
 
-        BaseXmlHttpGet(theUrl, Play_MultiupdateStreamLogoValues, noop_fun, pos, 0, true);
+        BaseXmlHttpGet(theUrl, Play_MultiUpdateStreamLogoValues, noop_fun, pos, 0, true);
     }
 
-    function Play_MultiupdateStreamLogoValues(responseText, i) {
+    function Play_MultiUpdateStreamLogoValues(responseText, i) {
         var response = JSON.parse(responseText);
         if (response.data && response.data.length) {
             //TODO update this with a API that provides logo and is partner
@@ -25561,10 +25616,10 @@
     }
 
     function Play_MultiInfoReset(pos) {
-        Play_MultiSetinfo(pos, '', -1, '', false, IMG_404_LOGO, STR_MULTI_EMPTY);
+        Play_MultiSetInfo(pos, '', -1, '', false, IMG_404_LOGO, STR_MULTI_EMPTY);
     }
 
-    function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title, id) {
+    function Play_MultiSetInfo(pos, game, views, displayname, is_rerun, logo, title, id) {
         Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTED_BY);
 
         if (Play_MultiArray[pos].isHost) {
@@ -25573,37 +25628,52 @@
             displayname = Play_MultiArray[pos].data[1];
         }
 
-        var partner = Play_MultiArray[pos].data[10];
-        var lang = Play_MultiArray[pos].data[5] ? '[' + Play_MultiArray[pos].data[5].split('[')[1] : '';
-
         var extraText = Play_Multi_MainBig ? '_big' : '';
 
         if (logo) {
             Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
-        } else if (id) {
-            Play_MultiupdateStreamLogo(id, pos);
         }
 
-        Main_innerHTML(
-            'stream_info_multi_name' + extraText + pos,
-            displayname === '' ? STR_SPACE_HTML : Play_partnerIcon(displayname, partner, 0, lang, is_rerun)
-        );
-        Play_MultiUpdateinfo(pos, game, views, title, extraText);
+        if (id) {
+            Play_MultiUpdateStreamLogo(id, pos);
+        }
+
+        Play_MultiUpdateInfo(pos, game, views, title, extraText);
     }
 
-    function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
-        Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
-        Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
-        Main_innerHTML(
-            'stream_info_multi_views' + extraText + pos,
-            views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
-        );
+    var streamTitleMulti = [];
+    var streamGameMulti = [];
+    var streamViewersMulti = [];
+    var streamExtraMulti = [];
 
-        var icon = views > 0 ? Play_GetAudioIcon(pos) : '';
-        Main_innerHTML('stream_info_multi_audio_' + extraText + pos, STR_SPACE_HTML + icon);
+    function Play_MultiUpdateInfo(pos, game, views, title, extraText) {
+        var extraChanged = streamExtraMulti[pos] !== extraText;
+
+        if (extraChanged || streamTitleMulti[pos] !== title) {
+            Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
+        }
+        streamTitleMulti[pos] = title;
+
+        if (extraChanged || streamTitleMulti[pos] !== game) {
+            Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
+        }
+        streamGameMulti[pos] = game;
+
+        if (extraChanged || streamViewersMulti[pos] !== views) {
+            Main_innerHTML(
+                'stream_info_multi_views' + extraText + pos,
+                views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
+            );
+
+            var icon = views > 0 ? Play_GetAudioIcon(pos) : '';
+            Main_innerHTML('stream_info_multi_audio_' + extraText + pos, STR_SPACE_HTML + icon);
+        }
+        streamViewersMulti[pos] = views;
+
+        streamExtraMulti[pos] = extraText;
     }
 
-    function Play_MultiSetpannelInfo() {
+    function Play_MultiSetPanelInfo() {
         Main_textContent('stream_dialog_multi_title', STR_REPLACE_MULTI);
         Main_textContent('stream_dialog_multi_end', STR_REPLACE_MULTI_ENTER);
         for (var i = 0; i < 4; i++) {
@@ -25706,7 +25776,7 @@
             }
 
             Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE_HTML : Play_MultiArray[i].data[3]);
-            Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
+            Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2], false, true));
         }
 
         Main_textContent('stream_dialog_multi_name-1', Main_A_includes_B(obj[1], STR_USER_HOSTED_BY) ? obj[1].split(STR_USER_HOSTED_BY)[0] : obj[1]);
@@ -25718,7 +25788,7 @@
         }
 
         Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE_HTML : obj[3]);
-        Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
+        Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2], false, true));
 
         if (Play_PreviewId) {
             OSInterface_ReuseFeedPlayerPrepare(1);
@@ -36872,7 +36942,7 @@
         Main_SetStringsMain();
         Main_SetStringsSecondary();
         Play_MakeControls();
-        Play_MultiSetpannelInfo();
+        Play_MultiSetPanelInfo();
         Settings_inputFocus(Settings_cursorY);
         ScreensObj_SetTopLable(STR_SETTINGS);
         Main_updateclock();
