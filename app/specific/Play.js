@@ -665,20 +665,26 @@ function Play_updateStreamLogoValues(responseText, key, id) {
         Play_updateStreamLogoEnd();
     }
 }
-
+var updateStreamLogoValue;
+var updateStreamDivValue;
 function Play_updateStreamLogoEnd() {
-    Main_innerHTML(
-        'stream_info_name',
-        Play_partnerIcon(
-            Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-            Play_data.data[10],
-            0,
-            Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-            Play_data.data[8]
-        )
+    var div = Play_partnerIcon(
+        Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
+        Play_data.data[10],
+        0,
+        Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
+        Play_data.data[8]
     );
 
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+    if (updateStreamDivValue !== div) {
+        Main_innerHTML('stream_info_name', div);
+    }
+    updateStreamDivValue = div;
+
+    if (updateStreamLogoValue !== Play_data.data[9]) {
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+    }
+    updateStreamLogoValue = Play_data.data[9];
 }
 
 var Play_updateStreamInfoGetId;

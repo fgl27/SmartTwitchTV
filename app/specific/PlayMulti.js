@@ -546,22 +546,35 @@ function Play_MultiUpdateStreamLogoValues(responseText, i) {
         Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
         Play_MultiArray[i].data[9] = objData.profile_image_url;
 
-        Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
         Play_MultiUpdateStreamLogoEnd(i, extraText);
     }
 }
 
+var updateStreamLogoMultiValue = [];
+var updateStreamDivMultiValue = [];
+var updateStreamExtraValue = [];
 function Play_MultiUpdateStreamLogoEnd(pos, extraText) {
-    Main_innerHTML(
-        'stream_info_multi_name' + extraText + pos,
-        Play_partnerIcon(
-            Play_MultiArray[pos].data[1],
-            Play_MultiArray[pos].data[10],
-            0,
-            Play_MultiArray[pos].data[5] ? '[' + Play_MultiArray[pos].data[5].split('[')[1] : '',
-            Play_MultiArray[pos].data[8]
-        )
+    var extraChanged = updateStreamExtraValue[pos] !== extraText;
+
+    var div = Play_partnerIcon(
+        Play_MultiArray[pos].data[1],
+        Play_MultiArray[pos].data[10],
+        0,
+        Play_MultiArray[pos].data[5] ? '[' + Play_MultiArray[pos].data[5].split('[')[1] : '',
+        Play_MultiArray[pos].data[8]
     );
+
+    if (extraChanged || updateStreamDivMultiValue[pos] !== div) {
+        Main_innerHTML('stream_info_multi_name' + extraText + pos, div);
+    }
+    updateStreamDivMultiValue[pos] = div;
+
+    if (extraChanged || updateStreamLogoMultiValue[pos] !== Play_MultiArray[pos].data[9]) {
+        Main_getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[pos].data[9];
+    }
+    updateStreamLogoMultiValue[pos] = Play_MultiArray[pos].data[9];
+
+    updateStreamExtraValue[pos] = extraText;
 }
 
 function Play_MultiInfoReset(pos) {
