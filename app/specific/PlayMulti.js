@@ -612,8 +612,9 @@ function Play_MultiSetInfo(pos, game, views, displayname, is_rerun, logo, title,
         streamTitleMulti[pos] = null;
         streamGameMulti[pos] = null;
         streamViewersMulti[pos] = null;
+        streamAudioMulti[pos] = null;
         Main_textContent('stream_info_multi_name' + extraText + pos, '');
-        Main_innerHTML('stream_info_multi_audio_' + extraText + pos, STR_SPACE_HTML + '');
+        Main_innerHTML('stream_info_multi_audio' + extraText + pos, STR_SPACE_HTML + '');
     }
 
     Play_MultiUpdateInfo(pos, game, views, title, extraText);
@@ -622,6 +623,7 @@ function Play_MultiSetInfo(pos, game, views, displayname, is_rerun, logo, title,
 var streamTitleMulti = [];
 var streamGameMulti = [];
 var streamViewersMulti = [];
+var streamAudioMulti = [];
 var streamExtraMulti = [];
 
 function Play_MultiUpdateInfo(pos, game, views, title, extraText) {
@@ -642,11 +644,14 @@ function Play_MultiUpdateInfo(pos, game, views, title, extraText) {
             'stream_info_multi_views' + extraText + pos,
             views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
         );
-
-        var icon = views > 0 ? Play_GetAudioIcon(pos) : '';
-        Main_innerHTML('stream_info_multi_audio_' + extraText + pos, STR_SPACE_HTML + icon);
     }
     streamViewersMulti[pos] = views;
+
+    var icon = views > 0 ? Play_GetAudioIcon(pos) : '';
+    if (extraChanged || streamAudioMulti[pos] !== icon) {
+        Main_innerHTML('stream_info_multi_audio' + extraText + pos, STR_SPACE_HTML + icon);
+    }
+    streamAudioMulti[pos] = icon;
 
     streamExtraMulti[pos] = extraText;
 }
