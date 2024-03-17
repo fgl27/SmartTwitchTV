@@ -46,8 +46,8 @@ function Play_updateStreamInfoMultiValues(response, pos, ID) {
             Play_MultiArray[pos].data = tempData;
 
             if (!pos) {
-                Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
-                Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+                Play_controls[Play_controlsChanelCont].setLabel(Play_MultiArray[pos].data[1]);
+                Play_controls[Play_controlsGameCont].setLabel(Play_MultiArray[pos].data[3]);
             }
 
             Play_MultiUpdateInfo(
@@ -393,8 +393,8 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
 
 function Play_MultiUpdateMain() {
     ChatLive_Init(0);
-    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
-    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+    Play_controls[Play_controlsChanelCont].setLabel(Play_data.data[1]);
+    Play_controls[Play_controlsGameCont].setLabel(Play_data.data[3]);
     Play_CheckFollow(Play_data.data[14]);
     Main_SaveValues();
 }

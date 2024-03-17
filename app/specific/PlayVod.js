@@ -256,8 +256,8 @@ function PlayVod_PosStart() {
         PlayVod_SaveOffset();
     }
 
-    Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
-    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+    Play_controls[Play_controlsChanelCont].setLabel(Main_values.Main_selectedChannelDisplayname);
+    Play_controls[Play_controlsGameCont].setLabel(Play_data.data[3]);
 
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id, true);
 
@@ -1746,7 +1746,7 @@ function PlayVod_ProcessChapters(obj) {
 
     if (len) {
         Play_BottomShow(Play_controlsChapters);
-        Play_controls[Play_controlsChapters].setLable();
+        Play_controls[Play_controlsChapters].setLabel();
         Play_controls[Play_controlsChapters].bottomArrows();
         PlayVod_SetChapters();
     }
@@ -1769,7 +1769,7 @@ function PlayVod_ChaptersSetGame(timeMs) {
 
                     if (!Play_isPanelShowing() || Play_Panelcounter !== Play_controlsChapters) {
                         Play_controls[Play_controlsChapters].defaultValue = len;
-                        Play_controls[Play_controlsChapters].setLable();
+                        Play_controls[Play_controlsChapters].setLabel();
                         Play_controls[Play_controlsChapters].bottomArrows();
                     }
                 }
@@ -1786,7 +1786,7 @@ function PlayVod_UpdateGameInfoLabels(gameId, gameName) {
 
     Play_data.data[3] = gameName;
     if (gameName) {
-        Play_controls[Play_controlsGameCont].setLable(gameName);
+        Play_controls[Play_controlsGameCont].setLabel(gameName);
         Main_innerHTML('stream_info_game', STR_PLAYING + gameName);
     }
 }

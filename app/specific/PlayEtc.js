@@ -82,7 +82,7 @@ function Play_controlsAudioUpdateicons() {
     if (Play_MultiEnable) {
         for (i = Play_controlsAudioEna0, len = Play_controlsAudioVol3 + 1; i < len; i++) {
             Play_controls[i].bottomArrows();
-            Play_controls[i].setLable();
+            Play_controls[i].setLabel();
         }
 
         Play_SetControlsVisibility('ShowInAudioMulti');
@@ -97,15 +97,15 @@ function Play_controlsAudioUpdateicons() {
     } else if (PlayExtra_PicturePicture) {
         for (i = Play_controlsAudioEna0, len = Play_controlsAudioVol1 + 1; i < len; i++) {
             Play_controls[i].bottomArrows();
-            Play_controls[i].setLable();
+            Play_controls[i].setLabel();
         }
 
         Play_SetControlsVisibility('ShowInAudioPP');
     } else {
         Play_controls[Play_controlsAudioEna0].bottomArrows();
-        Play_controls[Play_controlsAudioEna0].setLable();
+        Play_controls[Play_controlsAudioEna0].setLabel();
         Play_controls[Play_controlsAudioVol0].bottomArrows();
-        Play_controls[Play_controlsAudioVol0].setLable();
+        Play_controls[Play_controlsAudioVol0].setLabel();
         Play_SetControlsVisibility('ShowInAudio');
     }
 }
@@ -117,7 +117,7 @@ function Play_controlsAudioEnaupdown(pos, adder, obj) {
     obj.defaultValue = Play_audio_enable[pos];
 
     obj.bottomArrows();
-    obj.setLable();
+    obj.setLabel();
 
     OSInterface_SetAudioEnabled();
     OSInterface_ApplyAudio();
@@ -125,7 +125,7 @@ function Play_controlsAudioEnaupdown(pos, adder, obj) {
     Play_SetAudioIcon();
 }
 
-function Play_controlsAudioEnasetLable(pos, data, obj) {
+function Play_controlsAudioEnasetLabel(pos, data, obj) {
     obj.defaultValue = Play_audio_enable[pos];
 
     Main_textContentWithEle(obj.doc_title, STR_AUDIO + data);
@@ -152,7 +152,7 @@ function Play_controlsAudioVolupdown(pos, adder, obj) {
     obj.defaultValue = Play_volumes[pos];
 
     obj.bottomArrows();
-    obj.setLable();
+    obj.setLabel();
 
     OSInterface_SetVolumes();
     OSInterface_ApplyAudio();
@@ -160,7 +160,7 @@ function Play_controlsAudioVolupdown(pos, adder, obj) {
     Play_SetAudioIcon();
 }
 
-function Play_controlsAudioVolupsetLable(pos, data, obj) {
+function Play_controlsAudioVolupsetLabel(pos, data, obj) {
     obj.defaultValue = Play_volumes[pos];
 
     Main_textContentWithEle(Play_controls[obj.position].doc_title, STR_VOLUME + data);
@@ -216,7 +216,7 @@ function Play_A_Control(value, control) {
     //After setting we only reset this if the app is close/re opened
     Play_controls[control].defaultValue = value;
     if (Play_controls[control].bottomArrows) Play_controls[control].bottomArrows();
-    Play_controls[control].setLable();
+    Play_controls[control].setLabel();
 }
 
 function Play_SetFullScreen(isFull) {
@@ -328,9 +328,9 @@ function Play_SetChatSideBySide() {
         Play_controls[Play_controlsChatPos].defaultValue = Play_FullScreenPosition;
         Play_controls[Play_controlsChatSize].defaultValue = Play_FullScreenSize;
 
-        Play_controls[Play_controlsChatPos].setLable();
+        Play_controls[Play_controlsChatPos].setLabel();
         Play_controls[Play_controlsChatPos].bottomArrows();
-        Play_controls[Play_controlsChatSize].setLable();
+        Play_controls[Play_controlsChatSize].setLabel();
         Play_BottomArrows(Play_controlsChatSize);
     }
 
@@ -377,9 +377,9 @@ function Play_ResStoreChatFullScreen() {
         Play_controls[Play_controlsChatSize].defaultValue = Play_ChatFullScreenObj.controlsPosDefault;
         Play_SetChatPosString();
         Play_controls[Play_controlsChatPos].defaultValue = Play_ChatFullScreenObj.controlsSizeDefault;
-        Play_controls[Play_controlsChatPos].setLable();
+        Play_controls[Play_controlsChatPos].setLabel();
         Play_controls[Play_controlsChatPos].bottomArrows();
-        Play_controls[Play_controlsChatSize].setLable();
+        Play_controls[Play_controlsChatSize].setLabel();
         Play_BottomArrows(Play_controlsChatSize);
 
         Play_ChatEnable = Play_ChatFullScreenObj.WasEnable;
@@ -2102,7 +2102,7 @@ function Play_MakeControls() {
             Play_ForceHidePannel();
             Play_OpenChannel(PlayVodClip);
         },
-        setLable: function (title) {
+        setLabel: function (title) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
@@ -2134,7 +2134,7 @@ function Play_MakeControls() {
             Play_ForceHidePannel();
             Play_OpenGame(PlayVodClip);
         },
-        setLable: function (title) {
+        setLabel: function (title) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
@@ -2168,7 +2168,7 @@ function Play_MakeControls() {
 
             Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel);
         },
-        setLable: function (title, name) {
+        setLabel: function (title, name) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
@@ -2202,7 +2202,7 @@ function Play_MakeControls() {
             Play_ForceHidePannel();
             PlayClip_OpenVod();
         },
-        setLable: function (title, name) {
+        setLabel: function (title, name) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
@@ -2238,7 +2238,7 @@ function Play_MakeControls() {
 
             Play_Resetpanel(PlayVodClip);
         },
-        setLable: function (string, AddCode_IsFollowing) {
+        setLabel: function (string, AddCode_IsFollowing) {
             Main_textContentWithEle(Play_controls[this.position].doc_title, string);
             this.setIcon(AddCode_IsFollowing);
             //Main_textContent('controls_text_summary_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
@@ -2287,9 +2287,9 @@ function Play_MakeControls() {
             if (this.defaultValue < 0) this.defaultValue = 0;
             else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
             this.bottomArrows();
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(
                 this.doc_name,
                 this.values[this.defaultValue] + (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x')
@@ -2334,9 +2334,9 @@ function Play_MakeControls() {
             if (this.defaultValue < 0) this.defaultValue = 0;
             else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
 
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             this.bottomArrows();
         },
@@ -2441,7 +2441,7 @@ function Play_MakeControls() {
             } else if (this.defaultValue) OSInterface_RestartPlayer(1, 0, 0); //main
             else OSInterface_RestartPlayer(1, 0, 1); //small
 
-            this.setLable();
+            this.setLabel();
             Play_Resetpanel(PlayVodClip);
         },
         updown: function (adder) {
@@ -2449,9 +2449,9 @@ function Play_MakeControls() {
             if (this.defaultValue < 0) this.defaultValue = this.values.length - 1;
             else if (this.defaultValue > this.values.length - 1) this.defaultValue = 0;
 
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             if (!PlayExtra_data.data || !Play_data.data) return;
 
             var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
@@ -2516,9 +2516,9 @@ function Play_MakeControls() {
                 return;
             }
 
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             var pos = Play_controls[this.position].defaultValue - 1;
 
             if (this.defaultValue && !Play_MultiArray[pos]) return;
@@ -2610,9 +2610,9 @@ function Play_MakeControls() {
             else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
 
             this.bottomArrows();
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function () {
@@ -2648,9 +2648,9 @@ function Play_MakeControls() {
             else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
 
             this.bottomArrows();
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function () {
@@ -2810,11 +2810,11 @@ function Play_MakeControls() {
                 }
             }
             Chat_SetHighlights();
-            this.setLable();
+            this.setLabel();
             this.setIcon();
             Play_Resetpanel(PlayVodClip);
         },
-        setLable: function () {
+        setLabel: function () {
             var title = Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE;
             if (PlayExtra_PicturePicture) title = Play_isFullScreen ? STR_CHAT_PP_SIDE_FULL : STR_CHAT_5050;
 
@@ -2825,7 +2825,7 @@ function Play_MakeControls() {
 
             Main_textContent('controls_text_summary_' + this.position, STR_PRESS_ENTER_TO_CHANGE + title);
 
-            if (Play_controls[Play_controlsChat].position) Play_controls[Play_controlsChat].setLable();
+            if (Play_controls[Play_controlsChat].position) Play_controls[Play_controlsChat].setLabel();
         },
         setIcon: function () {
             var icon = Play_isFullScreen ? 'resize-down' : 'resize-up';
@@ -2866,9 +2866,9 @@ function Play_MakeControls() {
                 Play_ChatEnable = false;
             }
             Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             var string = Play_isChatShown() ? STR_YES : STR_NO;
 
             if (!Play_isFullScreen && !Play_MultiEnable) {
@@ -3001,7 +3001,7 @@ function Play_MakeControls() {
     //     bottomArrows: function () {
     //         Play_BottomArrows(this.position);
     //     },
-    //     setLable: function () {
+    //     setLabel: function () {
     //         Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
     //     }
     // };
@@ -3106,10 +3106,10 @@ function Play_MakeControls() {
                 if (PlayExtra_PicturePicture && !Play_isFullScreen && !Play_MultiEnable) ChatLive_Init(1);
             } else Chat_Init();
 
-            this.setLable();
+            this.setLabel();
             Main_SaveValuesWithTimeout();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContent('controls_text_summary_' + this.position, '(' + (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         }
     };
@@ -3174,9 +3174,9 @@ function Play_MakeControls() {
 
             Main_setItem('Play_ChatDelayValue', this.defaultValue);
             this.bottomArrows();
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             var stringSec = '';
 
             if (this.defaultValue > 2) stringSec = STR_SECONDS;
@@ -3224,10 +3224,10 @@ function Play_MakeControls() {
                 Play_SetChatFullScreenKeyRight();
             }
 
-            this.setLable();
+            this.setLabel();
             this.bottomArrows();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
         },
         bottomArrows: function () {
@@ -3288,9 +3288,9 @@ function Play_MakeControls() {
                 Play_SetChatFullScreenKeyLeft();
             }
 
-            this.setLable();
+            this.setLabel();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(
                 Play_controls[Play_controlsChatPos].doc_name,
                 Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]
@@ -3355,11 +3355,11 @@ function Play_MakeControls() {
             Play_ChatBackground = (this.defaultValue * 0.05).toFixed(2);
             Play_ChatBackgroundChange(false);
 
-            this.setLable();
+            this.setLabel();
             this.bottomArrows();
             Main_SaveValuesWithTimeout();
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
         },
         bottomArrows: function () {
@@ -3399,7 +3399,7 @@ function Play_MakeControls() {
             }
             Main_values.Chat_font_size_new = this.defaultValue;
             this.bottomArrows();
-            this.setLable();
+            this.setLabel();
 
             this.timeoutID = Main_setTimeout(
                 function () {
@@ -3410,7 +3410,7 @@ function Play_MakeControls() {
                 this.timeoutID
             );
         },
-        setLable: function () {
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + '%');
         },
         bottomArrows: function () {
@@ -3500,13 +3500,13 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioEnaupdown(0, adder, this);
         },
-        setLable: function () {
+        setLabel: function () {
             var name = Play_data.data[1];
 
             if (PlayVod_isOn || PlayClip_isOn) name = Main_values.Main_selectedChannelDisplayname;
             else if (Play_MultiEnable) name = Play_MultiArray[0].data[1];
 
-            Play_controlsAudioEnasetLable(0, name, this);
+            Play_controlsAudioEnasetLabel(0, name, this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3533,13 +3533,13 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioVolupdown(0, adder, this);
         },
-        setLable: function () {
+        setLabel: function () {
             var name = Play_data.data[1];
 
             if (PlayVod_isOn || PlayClip_isOn) name = Main_values.Main_selectedChannelDisplayname;
             else if (Play_MultiEnable) name = Play_MultiArray[0].data[1];
 
-            Play_controlsAudioVolupsetLable(0, name, this);
+            Play_controlsAudioVolupsetLabel(0, name, this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3566,8 +3566,8 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioEnaupdown(1, adder, this);
         },
-        setLable: function () {
-            Play_controlsAudioEnasetLable(1, PlayExtra_PicturePicture ? PlayExtra_data.data[1] : Play_MultiArray[1].data[1], this);
+        setLabel: function () {
+            Play_controlsAudioEnasetLabel(1, PlayExtra_PicturePicture ? PlayExtra_data.data[1] : Play_MultiArray[1].data[1], this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3594,8 +3594,8 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioVolupdown(1, adder, this);
         },
-        setLable: function () {
-            Play_controlsAudioVolupsetLable(1, PlayExtra_PicturePicture ? PlayExtra_data.data[1] : Play_MultiArray[1].data[1], this);
+        setLabel: function () {
+            Play_controlsAudioVolupsetLabel(1, PlayExtra_PicturePicture ? PlayExtra_data.data[1] : Play_MultiArray[1].data[1], this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3622,8 +3622,8 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioEnaupdown(2, adder, this);
         },
-        setLable: function () {
-            Play_controlsAudioEnasetLable(2, Play_MultiArray[2].data[1], this);
+        setLabel: function () {
+            Play_controlsAudioEnasetLabel(2, Play_MultiArray[2].data[1], this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3650,8 +3650,8 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioVolupdown(2, adder, this);
         },
-        setLable: function () {
-            Play_controlsAudioVolupsetLable(2, Play_MultiArray[2].data[1], this);
+        setLabel: function () {
+            Play_controlsAudioVolupsetLabel(2, Play_MultiArray[2].data[1], this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3678,8 +3678,8 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioEnaupdown(3, adder, this);
         },
-        setLable: function () {
-            Play_controlsAudioEnasetLable(3, Play_MultiArray[3].data[1], this);
+        setLabel: function () {
+            Play_controlsAudioEnasetLabel(3, Play_MultiArray[3].data[1], this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3706,8 +3706,8 @@ function Play_MakeControls() {
         updown: function (adder) {
             Play_controlsAudioVolupdown(3, adder, this);
         },
-        setLable: function () {
-            Play_controlsAudioVolupsetLable(3, Play_MultiArray[3].data[1], this);
+        setLabel: function () {
+            Play_controlsAudioVolupsetLabel(3, Play_MultiArray[3].data[1], this);
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position, true);
@@ -3938,7 +3938,7 @@ function Play_MakeControls() {
         Play_controls[i].button_text = Main_getElementById('controls_text_holder' + i);
 
         if (Play_controls[i].bottomArrows) Play_BottomArrows(i);
-        if (Play_controls[i].setLable) Play_controls[i].setLable();
+        if (Play_controls[i].setLabel) Play_controls[i].setLabel();
     }
 
     Play_ResetLowlatency();
@@ -3983,14 +3983,14 @@ function Play_KeyChatSizeChage() {
     Play_ChatSize(true);
     Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
     Play_controls[Play_controlsChatSize].bottomArrows();
-    Play_controls[Play_controlsChatSize].setLable();
+    Play_controls[Play_controlsChatSize].setLabel();
 }
 
 function Play_KeyChatPosChage() {
     Play_ChatPositions++;
     Play_ChatPosition();
     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
-    Play_controls[Play_controlsChatPos].setLable();
+    Play_controls[Play_controlsChatPos].setLabel();
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {

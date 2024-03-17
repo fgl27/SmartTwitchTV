@@ -322,7 +322,7 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
 }
 
 function PlayExtra_SetPanel() {
-    Play_controls[Play_controlsChatSide].setLable();
+    Play_controls[Play_controlsChatSide].setLabel();
     Play_controls[Play_controlsChatSide].setIcon();
 
     Play_SetControlsVisibility('ShowInPP');
@@ -333,7 +333,7 @@ function PlayExtra_SetPanel() {
 
 function PlayExtra_UnSetPanel() {
     PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
-    Play_controls[Play_controlsChatSide].setLable();
+    Play_controls[Play_controlsChatSide].setLabel();
     Play_controls[Play_controlsChatSide].setIcon();
 
     Play_SetControlsVisibility('ShowInLive');

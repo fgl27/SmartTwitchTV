@@ -524,8 +524,8 @@ function Play_UpdateMainStreamDiv() {
     }
     Play_updateStreamLogo();
 
-    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
-    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+    Play_controls[Play_controlsChanelCont].setLabel(Play_data.data[1]);
+    Play_controls[Play_controlsGameCont].setLabel(Play_data.data[3]);
     Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
     Play_SetAudioIcon();
@@ -599,12 +599,12 @@ function Play_CheckFollow(id) {
 }
 
 function Play_hideFollow() {
-    Play_controls[Play_controlsFollow].setLable(STR_NOKEY);
+    Play_controls[Play_controlsFollow].setLabel(STR_NOKEY);
     AddCode_IsFollowing = false;
 }
 
 function Play_setFollow() {
-    Play_controls[Play_controlsFollow].setLable(
+    Play_controls[Play_controlsFollow].setLabel(
         (AddCode_IsFollowing ? STR_FOLLOWING : STR_FOLLOW) + ' - ' + (Play_isOn ? Play_data.data[1] : Main_values.Main_selectedChannelDisplayname),
         AddCode_IsFollowing
     );
@@ -983,7 +983,7 @@ function Play_SetExternalQualities(array, startPos, name) {
         Play_controls[Play_controlsExternal].values.push(array[i].id);
     }
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
-    Play_controls[Play_controlsExternal].setLable();
+    Play_controls[Play_controlsExternal].setLabel();
 
     Main_innerHTML('controls_text_title_' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE_HTML + '(' + name + ')' : ''));
 
@@ -1667,7 +1667,7 @@ function Play_showChat() {
     Play_ChatBackgroundChange(false);
     Play_chat_container.classList.remove('hide');
 
-    Play_controls[Play_controlsChat].setLable();
+    Play_controls[Play_controlsChat].setLabel();
 
     if (Settings_value.show_chatters.defaultValue) {
         ChatLive_loadChattersCheckTypeRun(0, 0);
@@ -1676,7 +1676,7 @@ function Play_showChat() {
 
 function Play_hideChat() {
     Play_chat_container.classList.add('hide');
-    Play_controls[Play_controlsChat].setLable();
+    Play_controls[Play_controlsChat].setLabel();
 
     //remove animation if chat not showing to prevent animations when it shows
     if (Settings_Obj_default('chat_line_animation')) {
@@ -1717,7 +1717,7 @@ function Play_SetChatPosString() {
     } else {
         Play_controls[Play_controlsChatPos].values = STR_CHAT_BASE_ARRAY;
     }
-    Play_controls[Play_controlsChatPos].setLable();
+    Play_controls[Play_controlsChatPos].setLabel();
     Play_controls[Play_controlsChatPos].bottomArrows();
 }
 

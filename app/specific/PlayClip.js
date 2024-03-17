@@ -134,12 +134,12 @@ function PlayClip_Start() {
         Main_textContent('end_vod_name_text_2', '');
         Main_innerHTML('end_vod_title_text_2', '');
 
-        Play_controls[Play_controlsOpenVod].setLable('');
+        Play_controls[Play_controlsOpenVod].setLabel('');
     }
 
     Play_CheckFollow(Main_values.Main_selectedChannel_id);
     Play_ShowPanelStatus(3);
-    Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
+    Play_controls[Play_controlsChanelCont].setLabel(Main_values.Main_selectedChannelDisplayname);
 
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
 }
@@ -166,7 +166,7 @@ function PlayClip_updateVodInfoSuccess(response) {
 
         ChannelVod_title = Main_ReplaceLargeFont(response.title);
         Main_innerHTML('end_vod_title_text_2', ChannelVod_title);
-        Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
+        Play_controls[Play_controlsOpenVod].setLabel(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
         PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomImg);
     }
 }
@@ -242,7 +242,7 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                     Main_innerHTML('stream_info_game', STR_PLAYING + clip.game.displayName);
                     ChannelClip_game = clip.game.displayName;
                     Play_data.data[3] = ChannelClip_game;
-                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+                    Play_controls[Play_controlsGameCont].setLabel(Play_data.data[3]);
                 }
 
                 if (clip.broadcaster) {
@@ -1001,7 +1001,7 @@ function PlayClip_SetOpenLive(response, key, ID) {
                 STR_SPACE_HTML +
                 Main_GetViewerStrings(tempData[13]);
 
-        Play_controls[Play_controlsOpenLive].setLable(playing, tempData[1]);
+        Play_controls[Play_controlsOpenLive].setLabel(playing, tempData[1]);
 
         Play_BottomShow(Play_controlsOpenLive);
 
