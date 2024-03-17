@@ -22547,52 +22547,87 @@
 
     var PlayExtra_updateStreamLogoValuesId;
 
-    function PlayExtra_updateStreamLogo(channelId, main) {
+    function PlayExtra_updateStreamLogo(channelId, pp) {
+        if (!pp && Play_data.data[10] !== null && Play_data.data[9] !== null) {
+            PlayExtra_updateLogo(pp);
+        } else if (pp && PlayExtra_data.data[10] !== null && PlayExtra_data.data[9] !== null) {
+            PlayExtra_updateLogo(pp);
+        }
+
         PlayExtra_updateStreamLogoValuesId = new Date().getTime();
         var theUrl = Main_helix_api + 'users?id=' + channelId;
 
-        BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, 0, true);
+        BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, pp, 0, true);
     }
 
-    function PlayExtra_updateStreamLogoValues(responseText, main) {
+    function PlayExtra_updateStreamLogoValues(responseText, pp) {
         var response = JSON.parse(responseText);
 
         if (response.data && response.data.length) {
             //TODO update this with a API that provides logo and is partner
             var objData = response.data[0];
 
-            if (!main) {
+            if (!pp) {
                 Play_data.data[10] = objData.broadcaster_type === 'partner';
                 Play_data.data[9] = objData.profile_image_url;
 
-                Main_innerHTML(
-                    'stream_info_pp_name0',
-                    Play_partnerIcon(
-                        Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-                        Play_data.data[10],
-                        0,
-                        Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-                        Play_data.data[8]
-                    )
-                );
-
-                Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
+                PlayExtra_updateLogo(pp);
             } else {
                 PlayExtra_data.data[10] = objData.broadcaster_type === 'partner';
                 PlayExtra_data.data[9] = objData.profile_image_url;
 
-                Main_innerHTML(
-                    'stream_info_pp_name1',
-                    Play_partnerIcon(
-                        PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
-                        PlayExtra_data.data[10],
-                        0,
-                        PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
-                        PlayExtra_data.data[8]
-                    )
-                );
+                PlayExtra_updateLogo(pp);
+            }
+        }
+    }
+
+    var updateLogoPPDiv;
+    var updateLogoMainDiv;
+
+    var updateLogoPPLogo;
+    var updateLogoMainLogo;
+
+    function PlayExtra_updateLogo(pp) {
+        var div;
+        if (!pp) {
+            div = Play_partnerIcon(
+                Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
+                Play_data.data[10],
+                0,
+                Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
+                Play_data.data[8]
+            );
+
+            if (updateLogoMainDiv !== div) {
+                Main_innerHTML('stream_info_pp_name0', div);
+            }
+
+            updateLogoMainDiv = div;
+
+            if (updateLogoMainLogo !== Play_data.data[9]) {
+                Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
+            }
+
+            updateLogoMainLogo = Play_data.data[9];
+        } else {
+            div = Play_partnerIcon(
+                PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
+                PlayExtra_data.data[10],
+                0,
+                PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
+                PlayExtra_data.data[8]
+            );
+
+            if (updateLogoPPDiv !== div) {
+                Main_innerHTML('stream_info_pp_name1', div);
+            }
+            updateLogoPPDiv = div;
+
+            if (updateLogoPPLogo !== Play_data.data[9]) {
                 Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
             }
+
+            updateLogoPPLogo = PlayExtra_data.data[9];
         }
     }
 
@@ -23605,6 +23640,10 @@
     var Play_updateStreamLogoValuesId;
 
     function Play_updateStreamLogo() {
+        if (Play_data.data[10] !== null && Play_data.data[9] !== null) {
+            Play_updateStreamLogoEnd();
+        }
+
         Play_updateStreamLogoValuesId = new Date().getTime();
         var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
@@ -23618,21 +23657,32 @@
             var objData = response.data[0];
 
             Play_data.data[10] = objData.broadcaster_type === 'partner';
-
-            Main_innerHTML(
-                'stream_info_name',
-                Play_partnerIcon(
-                    Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-                    Play_data.data[10],
-                    0,
-                    Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-                    Play_data.data[8]
-                )
-            );
-
             Play_data.data[9] = objData.profile_image_url;
+
+            Play_updateStreamLogoEnd();
+        }
+    }
+    var updateStreamLogoValue;
+    var updateStreamDivValue;
+
+    function Play_updateStreamLogoEnd() {
+        var div = Play_partnerIcon(
+            Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
+            Play_data.data[10],
+            0,
+            Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
+            Play_data.data[8]
+        );
+
+        if (updateStreamDivValue !== div) {
+            Main_innerHTML('stream_info_name', div);
+        }
+        updateStreamDivValue = div;
+
+        if (updateStreamLogoValue !== Play_data.data[9]) {
             Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
         }
+        updateStreamLogoValue = Play_data.data[9];
     }
 
     var Play_updateStreamInfoGetId;
@@ -25588,6 +25638,10 @@
     }
 
     function Play_MultiUpdateStreamLogo(channelId, pos) {
+        if (Play_MultiArray[pos].data[10] !== null && Play_MultiArray[pos].data[9] !== null) {
+            Play_MultiUpdateStreamLogoEnd(pos, Play_Multi_MainBig ? '_big' : '');
+        }
+
         var theUrl = Main_helix_api + 'users?id=' + channelId;
 
         BaseXmlHttpGet(theUrl, Play_MultiUpdateStreamLogoValues, noop_fun, pos, 0, true);
@@ -25603,19 +25657,36 @@
             Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
             Play_MultiArray[i].data[9] = objData.profile_image_url;
 
-            Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-
-            Main_innerHTML(
-                'stream_info_multi_name' + extraText + i,
-                Play_partnerIcon(
-                    Play_MultiArray[i].data[1],
-                    Play_MultiArray[i].data[10],
-                    0,
-                    Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '',
-                    Play_MultiArray[i].data[8]
-                )
-            );
+            Play_MultiUpdateStreamLogoEnd(i, extraText);
         }
+    }
+
+    var updateStreamLogoMultiValue = [];
+    var updateStreamDivMultiValue = [];
+    var updateStreamExtraValue = [];
+
+    function Play_MultiUpdateStreamLogoEnd(pos, extraText) {
+        var extraChanged = updateStreamExtraValue[pos] !== extraText;
+
+        var div = Play_partnerIcon(
+            Play_MultiArray[pos].data[1],
+            Play_MultiArray[pos].data[10],
+            0,
+            Play_MultiArray[pos].data[5] ? '[' + Play_MultiArray[pos].data[5].split('[')[1] : '',
+            Play_MultiArray[pos].data[8]
+        );
+
+        if (extraChanged || updateStreamDivMultiValue[pos] !== div) {
+            Main_innerHTML('stream_info_multi_name' + extraText + pos, div);
+        }
+        updateStreamDivMultiValue[pos] = div;
+
+        if (extraChanged || updateStreamLogoMultiValue[pos] !== Play_MultiArray[pos].data[9]) {
+            Main_getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[pos].data[9];
+        }
+        updateStreamLogoMultiValue[pos] = Play_MultiArray[pos].data[9];
+
+        updateStreamExtraValue[pos] = extraText;
     }
 
     function Play_MultiInfoReset(pos) {
