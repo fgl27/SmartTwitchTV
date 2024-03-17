@@ -1105,7 +1105,7 @@ function Settings_UpdateString() {
     Main_SetStringsMain();
     Main_SetStringsSecondary();
     Play_MakeControls();
-    Play_MultiSetpannelInfo();
+    Play_MultiSetPanelInfo();
     Settings_inputFocus(Settings_cursorY);
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_updateclock();

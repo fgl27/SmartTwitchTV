@@ -461,7 +461,9 @@ function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
             '</div>';
     } else if (live_vod_clip === 1) {
         div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
-    } else div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
+    } else {
+        div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
+    }
 
     return div + '<div class="lang_text">' + STR_SPACE_HTML + STR_SPACE_HTML + lang + '</div>';
 }
@@ -1611,7 +1613,7 @@ function Play_MultiKeyDown() {
 
         Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
 
-        Play_MultiUpdateinfoMainBig('_big');
+        Play_MultiUpdateInfoMainBig('_big');
         Main_HideElement('stream_info_multi');
         Main_HideElement('dialog_multi_help');
         Main_ShowElement('stream_info_multi_big');
@@ -1628,7 +1630,7 @@ function Play_MultiKeyDown() {
         Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI_BIG;
         Play_ResetQualityControls();
     } else {
-        Play_MultiUpdateinfoMainBig('');
+        Play_MultiUpdateInfoMainBig('');
         Main_ShowElement('stream_info_multi');
         Main_HideElement('stream_info_multi_big');
         Play_ResStoreChatPos();
@@ -1811,8 +1813,11 @@ function Play_handleKeyDown(e) {
                 Play_EndUpclear = false;
                 Play_EndUpclearCalback = Play_handleKeyDown;
                 Play_EndUpclearID = Main_setTimeout(Play_PP_Multi_KeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
-            } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
-            else Play_showPanel();
+            } else if (Play_isFullScreen) {
+                Play_controls[Play_controlsChat].enterKey(1);
+            } else {
+                Play_showPanel();
+            }
             break;
         case KEY_ENTER:
             //ChatLive_Playing = false;
@@ -1861,7 +1866,9 @@ function Play_handleKeyDown(e) {
                     UserLiveFeed_ResetFeedId();
                     PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, Screens_KeyUptimeout, PlayExtra_KeyEnterID);
                 }
-            } else Play_showPanel();
+            } else {
+                Play_showPanel();
+            }
             break;
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
@@ -2686,26 +2693,28 @@ function Play_MakeControls() {
                 }
 
                 Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
-                Play_MultiSetinfo(
+                Play_MultiSetInfo(
                     0,
                     Play_MultiArray[0].data[3],
                     Play_MultiArray[0].data[13],
                     Play_MultiArray[0].data[1],
                     Play_MultiArray[0].data[8],
                     Play_MultiArray[0].data[9],
-                    twemoji.parse(Play_MultiArray[0].data[2])
+                    twemoji.parse(Play_MultiArray[0].data[2], false, true),
+                    Play_MultiArray[0].data[14]
                 );
 
                 if (PlayExtra_PicturePicture) {
                     Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
-                    Play_MultiSetinfo(
+                    Play_MultiSetInfo(
                         1,
                         Play_MultiArray[1].data[3],
                         Play_MultiArray[1].data[13],
                         Play_MultiArray[1].data[1],
                         Play_MultiArray[1].data[8],
                         Play_MultiArray[1].data[9],
-                        twemoji.parse(Play_MultiArray[1].data[2])
+                        twemoji.parse(Play_MultiArray[1].data[2], false, true),
+                        Play_MultiArray[1].data[14]
                     );
                 }
 
@@ -4437,7 +4446,7 @@ function Play_PreStart() {
     }
     if (Main_values.Chat_font_size_new > Play_ChatFontObj.length - 1) Main_values.Chat_font_size_new = Play_ChatFontObj.length - 1;
 
-    Play_MultiSetpannelInfo();
+    Play_MultiSetPanelInfo();
 
     Play_MakeControls();
     Play_ChatSize(false);

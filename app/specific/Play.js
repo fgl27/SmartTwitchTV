@@ -49,8 +49,6 @@ var Play_HasVod;
 var Play_VodObj;
 var Play_VodObjIndex;
 
-var Play_streamInfoTimerId = null;
-
 var Play_ChatEnable = false;
 var Play_exitID = null;
 
@@ -438,8 +436,11 @@ function Play_Resume() {
     Play_showBufferDialog();
     Play_ResumeAfterOnlineCounter = 0;
 
-    if (navigator.onLine) Play_ResumeAfterOnline();
-    else Play_ResumeAfterOnlineId = Main_setInterval(Play_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
+    if (navigator.onLine) {
+        Play_ResumeAfterOnline();
+    } else {
+        Play_ResumeAfterOnlineId = Main_setInterval(Play_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
+    }
 
     Play_ShowPanelStatus(1);
 }
@@ -457,7 +458,6 @@ function Play_ResumeAfterOnline() {
         Play_CheckIfIsLiveCleanEnd();
 
         if (Play_MultiEnable) {
-            Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 1000 * 60 * 3, Play_streamInfoTimerId);
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
             Play_data.watching_time = new Date().getTime();
@@ -479,7 +479,9 @@ function Play_ResumeAfterOnline() {
             //PlayExtra_data.data[14] = 1234;
             //Play_data.data[6] = 'testtt';
             //Play_data.data[14] = 1234;
-            if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
+            if (PlayExtra_PicturePicture) {
+                PlayExtra_Resume(true);
+            }
             Play_loadData();
         }
     }
@@ -490,44 +492,49 @@ function Play_getStreamData(channel_name) {
     return PlayHLS_GetPlayListSync(true, channel_name);
 }
 
-function Play_UpdateMainStreamDiv() {
-    if (!Play_data.data.length) return;
+var streamTitle;
+var streamGame;
+var streamViewers;
 
-    //Restore or set info panel
-    Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
-    Main_innerHTML(
-        'stream_info_name',
-        Play_partnerIcon(
-            Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-            Play_data.data[10],
-            0,
-            Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-            Play_data.data[8]
-        )
-    );
-    Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
-    Main_innerHTML(
-        'stream_live_viewers',
-        STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
-    );
+function Play_UpdateMainStreamDiv() {
+    if (!Play_data.data.length) {
+        return;
+    }
+
+    if (streamTitle !== Play_data.data[2]) {
+        Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
+    }
+    streamTitle = Play_data.data[2];
+
+    if (streamGame !== Play_data.data[3]) {
+        Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
+    }
+    streamGame = Play_data.data[3];
+
+    if (streamViewers !== Play_data.data[13]) {
+        Main_innerHTML(
+            'stream_live_viewers',
+            STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
+        );
+    }
+    streamViewers = Play_data.data[13];
 
     if (Play_data.data[9]) {
         Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
-    } else {
-        Play_updateStreamLogo();
     }
+    Play_updateStreamLogo();
 
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
     Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
-    if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
-
     Play_SetAudioIcon();
 }
 
 function Play_UpdateMainStream(startChat, refreshInfo) {
-    if (startChat) ChatLive_Init(0);
+    if (startChat) {
+        ChatLive_Init(0);
+    }
 
     Play_CheckFollow(Play_data.data[14]);
     Play_UpdateMainStreamDiv();
@@ -571,7 +578,9 @@ function Play_updateStreamInfoEnd(response) {
 
         Play_UpdateMainStreamDiv();
 
-        if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+        if (!Play_StayDialogVisible()) {
+            Main_Set_history('live', Play_data.data);
+        }
     }
 }
 
@@ -647,6 +656,7 @@ function Play_updateStreamLogoValues(responseText, key, id) {
         var objData = response.data[0];
 
         Play_data.data[10] = objData.broadcaster_type === 'partner';
+
         Main_innerHTML(
             'stream_info_name',
             Play_partnerIcon(
@@ -763,11 +773,13 @@ function Play_loadDataResultEnd(responseObj) {
 }
 
 function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory) {
-    if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-    else if (Play_EndDialogEnter === 3) {
+    if (Play_EndDialogEnter === 2) {
+        PlayVod_PreshutdownStream(true);
+    } else if (Play_EndDialogEnter === 3) {
         PlayClip_PreshutdownStream(false);
         PlayClip_isOn = false;
     }
+
     Play_EndDialogEnter = 0;
 
     Play_HideEndDialog();
@@ -787,7 +799,7 @@ function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory) {
     UserLiveFeed_PreventHide = false;
 
     UserLiveFeed_SetFeedPicText();
-    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 1000 * 60 * 3, Play_streamInfoTimerId);
+
     if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
 
     Main_Log('Play_data.playlist\n' + Play_data.playlist);
@@ -1261,7 +1273,7 @@ function Play_ClearPlay(clearChat) {
     Play_Playing = false;
     Main_removeEventListener('keydown', Play_handleKeyDown);
     if (clearChat) ChatLive_Clear(0);
-    Main_clearInterval(Play_streamInfoTimerId);
+
     Play_IsWarning = false;
 }
 
@@ -1367,7 +1379,9 @@ function Play_ShowPanelStatus(mwhocall) {
                 1000,
                 Play_ShowPanelStatusId
             );
-        } else Play_VideoStatusTest();
+        } else {
+            Play_VideoStatusTest();
+        }
 
         Main_ShowElementWithEle(Play_side_info_div);
         Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
@@ -1395,8 +1409,11 @@ function Play_ForceShowPannel() {
     Play_PanneInfoDoclId.style.opacity = 1;
 
     if (!Play_StayDialogVisible()) {
-        if (!Play_Status_Visible) Main_ShowElementWithEle(Play_side_info_div);
-        else if (Play_Status_Visible === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+        if (!Play_Status_Visible) {
+            Main_ShowElementWithEle(Play_side_info_div);
+        } else if (Play_Status_Visible === 1) {
+            Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+        }
     }
 
     Play_PanneInfoDoclId.style.pointerEvents = '';
@@ -1445,7 +1462,11 @@ function Play_qualityReset() {
 }
 
 function Play_showPanel() {
-    if (Play_getQualitiesFail) Play_getQualities(1, true);
+    Play_updateStreamInfo();
+
+    if (Play_getQualitiesFail) {
+        Play_getQualities(1, true);
+    }
 
     if (!Play_StayDialogVisible()) {
         PlayVod_RefreshProgressBarrStart(true, 0);
@@ -1820,7 +1841,7 @@ function Play_CheckHostStart(error_410) {
 
     ChatLive_Clear(0);
     ChatLive_Clear(1);
-    Main_clearInterval(Play_streamInfoTimerId);
+
     Main_setTimeout(Play_loadDataCheckHost, 50);
 }
 

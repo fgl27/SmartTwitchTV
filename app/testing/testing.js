@@ -47,7 +47,7 @@ function Play_FakeMulti() {
         //     67094,
         //     213749122];
 
-        // Play_MultiSetinfo(
+        // Play_MultiSetInfo(
         //     i,
         //     Play_MultiArray[i].data[3],
         //     Play_MultiArray[i].data[13],
@@ -57,6 +57,15 @@ function Play_FakeMulti() {
         //     twemoji.parse(Play_MultiArray[i].data[2])
         // );
 
-        Play_MultiSetinfo(i, Play_data.data[3], Play_data.data[13], Play_data.data[1], Play_data.data[8], Play_data.data[9], twemoji.parse(Play_data.data[2]));
+        Play_MultiSetInfo(
+            i,
+            Play_data.data[3],
+            Play_data.data[13],
+            Play_data.data[1],
+            Play_data.data[8],
+            Play_data.data[9],
+            twemoji.parse(Play_data.data[2]),
+            Play_data.data[14]
+        );
     }
 }

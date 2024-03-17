@@ -2731,7 +2731,6 @@ function Main_CheckStop() {
     Settings_DisableAutoMinimizeTimeout();
 
     Main_clearInterval(Play_ResumeAfterOnlineId);
-    Main_clearInterval(Play_streamInfoTimerId);
     Main_clearInterval(Play_ShowPanelStatusId);
 
     Main_clearInterval(PlayVod_RefreshProgressBarrID);

@@ -161,6 +161,7 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventCleanQualities) {
 
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
     PlayExtra_updateStreamInfo();
+
     ChatLive_Playing = true;
 
     if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
@@ -325,7 +326,6 @@ function PlayExtra_SetPanel() {
 
     Play_SetControlsVisibility('ShowInPP');
 
-    PlayExtra_UpdatePanel();
     Main_HideElement('stream_info');
     Main_ShowElement('stream_info_pp');
 }
@@ -351,73 +351,84 @@ function PlayExtra_ClearExtra() {
     PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
 }
 
+var streamTitle1;
+var streamGame1;
+var streamViewers1;
+
+var streamTitle2;
+var streamGame2;
+var streamViewers2;
+
 function PlayExtra_UpdatePanel() {
-    Main_innerHTML(
-        'stream_info_pp_name0',
-        Play_partnerIcon(
-            Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
-            Play_data.data[10],
-            0,
-            Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
-            Play_data.data[8]
-        )
-    );
+    //Main
     if (Play_data.data[9]) {
         Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
-    } else {
-        PlayExtra_updateStreamLogo(Play_data.data[14], 0);
     }
 
-    Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
-    Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
-    Main_innerHTML(
-        'stream_info_pp_viewers0',
-        STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
-    );
+    PlayExtra_updateStreamLogo(Play_data.data[14], 0);
 
-    Main_innerHTML(
-        'stream_info_pp_name1',
-        Play_partnerIcon(
-            PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
-            PlayExtra_data.data[10],
-            0,
-            PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
-            PlayExtra_data.data[8]
-        )
-    );
+    if (streamTitle1 !== Play_data.data[2]) {
+        Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
+    }
+    streamTitle1 = Play_data.data[2];
 
+    if (streamGame1 !== Play_data.data[3]) {
+        Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
+    }
+    streamGame1 = Play_data.data[3];
+
+    if (streamViewers1 !== Play_data.data[13]) {
+        Main_innerHTML(
+            'stream_info_pp_viewers0',
+            STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
+        );
+    }
+    streamViewers1 = Play_data.data[13];
+
+    //pp
     if (PlayExtra_data.data[9]) {
         Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
-    } else {
-        PlayExtra_updateStreamLogo(PlayExtra_data.data[14], 1);
     }
+    PlayExtra_updateStreamLogo(PlayExtra_data.data[14], 1);
 
-    Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
+    if (streamTitle2 !== PlayExtra_data.data[2]) {
+        Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
+    }
+    streamTitle2 = PlayExtra_data.data[2];
 
-    Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
-    Main_innerHTML(
-        'stream_info_pp_viewers1',
-        STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
-    );
+    if (streamGame2 !== PlayExtra_data.data[3]) {
+        Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
+    }
+    streamGame2 = PlayExtra_data.data[3];
+
+    if (streamViewers2 !== PlayExtra_data.data[13]) {
+        Main_innerHTML(
+            'stream_info_pp_viewers1',
+            STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
+        );
+    }
+    streamViewers2 = PlayExtra_data.data[13];
 }
 
 var PlayExtra_updateStreamLogoValuesId;
-function PlayExtra_updateStreamLogo(channeiId, main) {
+function PlayExtra_updateStreamLogo(channelId, main) {
     PlayExtra_updateStreamLogoValuesId = new Date().getTime();
-    var theUrl = Main_helix_api + 'users?id=' + channeiId;
+    var theUrl = Main_helix_api + 'users?id=' + channelId;
 
-    BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, PlayExtra_updateStreamLogoValuesId, true);
+    BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, 0, true);
 }
 
-function PlayExtra_updateStreamLogoValues(responseText, key, id) {
+function PlayExtra_updateStreamLogoValues(responseText, main) {
     var response = JSON.parse(responseText);
-    if (response.data && response.data.length && PlayExtra_updateStreamLogoValuesId === id) {
+
+    if (response.data && response.data.length) {
         //TODO update this with a API that provides logo and is partner
         var objData = response.data[0];
 
-        if (!key) {
+        if (!main) {
             Play_data.data[10] = objData.broadcaster_type === 'partner';
             Play_data.data[9] = objData.profile_image_url;
+
             Main_innerHTML(
                 'stream_info_pp_name0',
                 Play_partnerIcon(
