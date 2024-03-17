@@ -58,6 +58,8 @@ function Play_updateStreamInfoMultiValues(response, pos, ID) {
                 Play_Multi_MainBig ? '_big' : ''
             );
 
+            Play_MultiUpdateStreamLogo(Play_MultiArray[pos].data[14], pos);
+
             Main_Set_history('live', Play_MultiArray[pos].data);
         }
     }
@@ -532,11 +534,17 @@ function Play_MultiUpdateStreamLogo(channelId, pos) {
     }
 
     var theUrl = Main_helix_api + 'users?id=' + channelId;
+    Play_MultiUpdateStreamLogoValuesID[pos] = new Date().getTime();
 
-    BaseXmlHttpGet(theUrl, Play_MultiUpdateStreamLogoValues, noop_fun, pos, 0, true);
+    BaseXmlHttpGet(theUrl, Play_MultiUpdateStreamLogoValues, noop_fun, pos, Play_MultiUpdateStreamLogoValuesID[pos], true);
 }
 
-function Play_MultiUpdateStreamLogoValues(responseText, i) {
+var Play_MultiUpdateStreamLogoValuesID = [];
+function Play_MultiUpdateStreamLogoValues(responseText, i, ID) {
+    if (Play_MultiUpdateStreamLogoValuesID[i] !== ID) {
+        return;
+    }
+
     var response = JSON.parse(responseText);
     if (response.data && response.data.length) {
         //TODO update this with a API that provides logo and is partner
@@ -598,6 +606,14 @@ function Play_MultiSetInfo(pos, game, views, displayname, is_rerun, logo, title,
 
     if (id) {
         Play_MultiUpdateStreamLogo(id, pos);
+    } else {
+        updateStreamLogoMultiValue[pos] = null;
+        updateStreamDivMultiValue[pos] = null;
+        streamTitleMulti[pos] = null;
+        streamGameMulti[pos] = null;
+        streamViewersMulti[pos] = null;
+        Main_textContent('stream_info_multi_name' + extraText + pos, '');
+        Main_innerHTML('stream_info_multi_audio_' + extraText + pos, STR_SPACE_HTML + '');
     }
 
     Play_MultiUpdateInfo(pos, game, views, title, extraText);
