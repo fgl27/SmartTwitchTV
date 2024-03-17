@@ -23685,6 +23685,39 @@
         updateStreamLogoValue = Play_data.data[9];
     }
 
+    function Play_ResetStreamInfo() {
+        updateStreamDivValue = null;
+        updateStreamLogoValue = null;
+        streamTitle = null;
+        streamGame = null;
+        streamViewers = null;
+
+        updateLogoMainDiv = null;
+        updateLogoMainLogo = null;
+
+        updateLogoPPDiv = null;
+        updateLogoPPLogo = null;
+
+        streamTitle1 = null;
+        streamGame1 = null;
+        streamViewers1 = null;
+        streamTitle2 = null;
+        streamGame2 = null;
+        streamViewers2 = null;
+
+        for (var i = 0; i < 4; i++) {
+            streamTitleMulti[i] = null;
+            streamGameMulti[i] = null;
+            streamViewersMulti[i] = null;
+            streamAudioMulti[i] = null;
+            streamExtraMulti[i] = null;
+
+            updateStreamLogoMultiValue[i] = null;
+            updateStreamDivMultiValue[i] = null;
+            updateStreamExtraValue[i] = null;
+        }
+    }
+
     var Play_updateStreamInfoGetId;
 
     function Play_updateStreamInfoGet(theUrl, Is_play) {
@@ -24231,7 +24264,9 @@
 
         if (closePlayer) {
             Play_isOn = false;
-            if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
+            if (Play_MultiEnable) {
+                Play_controls[Play_MultiStream].enterKey(false);
+            }
         }
 
         if (!Play_isEndDialogVisible() || closePlayer) {
@@ -24293,6 +24328,8 @@
         if (clearChat) ChatLive_Clear(0);
 
         Play_IsWarning = false;
+
+        Play_ResetStreamInfo();
     }
 
     function Play_showBufferDialog() {
