@@ -13282,7 +13282,11 @@
         Main_hideScene1DocAndCallBack(function() {
             Main_showScene2Doc();
             Main_addEventListener('keydown', Play_handleKeyDown);
-            if (!Play_EndDialogEnter) Play_HideEndDialog();
+
+            if (!Play_EndDialogEnter) {
+                Play_HideEndDialog();
+            }
+
             Play_Start();
         });
     }
@@ -22548,9 +22552,9 @@
     var PlayExtra_updateStreamLogoValuesId = [];
 
     function PlayExtra_updateStreamLogo(channelId, pp) {
-        if (!pp && Play_data.data[10] !== null && Play_data.data[9] !== null) {
+        if (!pp && Play_data.data && Play_data.data.length && Play_data.data[10] !== null && Play_data.data[9] !== null) {
             PlayExtra_updateLogo(pp);
-        } else if (pp && PlayExtra_data.data[10] !== null && PlayExtra_data.data[9] !== null) {
+        } else if (pp && PlayExtra_data.data && PlayExtra_data.data.length && PlayExtra_data.data[10] !== null && PlayExtra_data.data[9] !== null) {
             PlayExtra_updateLogo(pp);
         }
 
@@ -23640,7 +23644,7 @@
     var Play_updateStreamLogoValuesId;
 
     function Play_updateStreamLogo() {
-        if (Play_data.data[10] !== null && Play_data.data[9] !== null) {
+        if (Play_data.data && Play_data.data.length && Play_data.data[10] !== null && Play_data.data[9] !== null) {
             Play_updateStreamLogoEnd();
         }
 
@@ -25083,7 +25087,10 @@
     function Play_SavePlayData() {
         if (Play_data.data && Play_data.data.length > 0) {
             Play_data_old = JSON.parse(JSON.stringify(Play_data));
-            if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+
+            if (!Play_StayDialogVisible()) {
+                Main_Set_history('live', Play_data.data);
+            }
         }
     }
 
@@ -25677,7 +25684,13 @@
     }
 
     function Play_MultiUpdateStreamLogo(channelId, pos) {
-        if (Play_MultiArray[pos].data[10] !== null && Play_MultiArray[pos].data[9] !== null) {
+        if (
+            Play_MultiArray[pos] &&
+            Play_MultiArray[pos].data &&
+            Play_MultiArray[pos].data.length &&
+            Play_MultiArray[pos].data[10] !== null &&
+            Play_MultiArray[pos].data[9] !== null
+        ) {
             Play_MultiUpdateStreamLogoEnd(pos, Play_Multi_MainBig ? '_big' : '');
         }
 
@@ -28105,13 +28118,18 @@
             ScreenObj[Main_Users].init_fun();
         } else if (restore_playback && Main_values.Play_WasPlaying) {
             Main_values.Main_Go = Main_GoBefore;
-            if (Main_values.IsUpDating) Play_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
-            else if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+            if (Main_values.IsUpDating) {
+                Play_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+            } else if (!live_channel_call) {
+                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+            }
 
             if (Main_values.Play_WasPlaying === 1) {
                 if (Play_data.data.length > 0) {
                     Main_openStream();
-                } else ScreenObj[Main_values.Main_Go].init_fun();
+                } else {
+                    ScreenObj[Main_values.Main_Go].init_fun();
+                }
             } else {
                 Play_data.data[3] = tempGame;
                 Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
