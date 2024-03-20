@@ -413,9 +413,9 @@ function PlayExtra_UpdatePanel() {
 
 var PlayExtra_updateStreamLogoValuesId = [];
 function PlayExtra_updateStreamLogo(channelId, pp) {
-    if (!pp && Play_data.data[10] !== null && Play_data.data[9] !== null) {
+    if (!pp && Play_data.data && Play_data.data.length && Play_data.data[10] !== null && Play_data.data[9] !== null) {
         PlayExtra_updateLogo(pp);
-    } else if (pp && PlayExtra_data.data[10] !== null && PlayExtra_data.data[9] !== null) {
+    } else if (pp && PlayExtra_data.data && PlayExtra_data.data.length && PlayExtra_data.data[10] !== null && PlayExtra_data.data[9] !== null) {
         PlayExtra_updateLogo(pp);
     }
 

@@ -643,7 +643,7 @@ function Play_updateStreamInfo() {
 
 var Play_updateStreamLogoValuesId;
 function Play_updateStreamLogo() {
-    if (Play_data.data[10] !== null && Play_data.data[9] !== null) {
+    if (Play_data.data && Play_data.data.length && Play_data.data[10] !== null && Play_data.data[9] !== null) {
         Play_updateStreamLogoEnd();
     }
 
@@ -2077,7 +2077,10 @@ function Play_RestorePlayData(error_410, Isforbiden) {
 function Play_SavePlayData() {
     if (Play_data.data && Play_data.data.length > 0) {
         Play_data_old = JSON.parse(JSON.stringify(Play_data));
-        if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+
+        if (!Play_StayDialogVisible()) {
+            Main_Set_history('live', Play_data.data);
+        }
     }
 }
 

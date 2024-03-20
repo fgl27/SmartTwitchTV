@@ -529,7 +529,13 @@ function Play_MultiUpdateInfoMainBig(extraText) {
 }
 
 function Play_MultiUpdateStreamLogo(channelId, pos) {
-    if (Play_MultiArray[pos].data[10] !== null && Play_MultiArray[pos].data[9] !== null) {
+    if (
+        Play_MultiArray[pos] &&
+        Play_MultiArray[pos].data &&
+        Play_MultiArray[pos].data.length &&
+        Play_MultiArray[pos].data[10] !== null &&
+        Play_MultiArray[pos].data[9] !== null
+    ) {
         Play_MultiUpdateStreamLogoEnd(pos, Play_Multi_MainBig ? '_big' : '');
     }
 

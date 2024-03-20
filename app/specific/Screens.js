@@ -232,13 +232,18 @@ function Screens_first_init() {
         ScreenObj[Main_Users].init_fun();
     } else if (restore_playback && Main_values.Play_WasPlaying) {
         Main_values.Main_Go = Main_GoBefore;
-        if (Main_values.IsUpDating) Play_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
-        else if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+        if (Main_values.IsUpDating) {
+            Play_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+        } else if (!live_channel_call) {
+            Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+        }
 
         if (Main_values.Play_WasPlaying === 1) {
             if (Play_data.data.length > 0) {
                 Main_openStream();
-            } else ScreenObj[Main_values.Main_Go].init_fun();
+            } else {
+                ScreenObj[Main_values.Main_Go].init_fun();
+            }
         } else {
             Play_data.data[3] = tempGame;
             Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);

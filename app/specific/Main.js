@@ -1624,7 +1624,11 @@ function Main_openStream() {
     Main_hideScene1DocAndCallBack(function () {
         Main_showScene2Doc();
         Main_addEventListener('keydown', Play_handleKeyDown);
-        if (!Play_EndDialogEnter) Play_HideEndDialog();
+
+        if (!Play_EndDialogEnter) {
+            Play_HideEndDialog();
+        }
+
         Play_Start();
     });
 }
