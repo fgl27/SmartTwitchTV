@@ -224,15 +224,23 @@ function Play_SetFullScreen(isFull) {
     Play_isFullScreenOld = Play_isFullScreen;
 
     if (isFull) {
-        if (changed) Play_ResStoreChatFullScreen();
+        if (changed) {
+            Play_ResStoreChatFullScreen();
+        }
     } else {
-        if (changed) Play_StoreChatFullScreen();
+        if (changed) {
+            Play_StoreChatFullScreen();
+        }
+
         Play_SetChatSideBySide();
     }
 
     if (Main_IsOn_OSInterface) {
-        if (PlayExtra_PicturePicture) OSInterface_mupdatesizePP(Play_isFullScreen);
-        else OSInterface_mupdatesize(Play_isFullScreen);
+        if (PlayExtra_PicturePicture) {
+            OSInterface_mupdatesizePP(Play_isFullScreen);
+        } else {
+            OSInterface_mupdatesize(Play_isFullScreen);
+        }
     }
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
@@ -4383,6 +4391,8 @@ var seek_previews_carousel_img = [new Image(), new Image(), new Image(), new Ima
 var seek_previews_carousel_offset = [-3, -2, -1, 0, 1, 2, 3];
 
 function Play_PreStart() {
+    Play_SetUserHeader();
+
     Play_seek_previews_holder = Main_getElementById('seek_previews_holder');
 
     seek_previews_carousel_0 = Main_getElementById('seek_previews_carousel_0');
@@ -4456,12 +4466,13 @@ function Play_PreStart() {
 
     Play_MakeControls();
     Play_ChatSize(false);
-    Play_SetFullScreen(Play_isFullScreen);
 
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
     //set base strings that don't change
+}
 
+function Play_SetUserHeader() {
     //Check expires_in
     //curl -H 'Authorization: Bearer 7mbu7j6salqzlwgtp69r48numrc8ey' -X GET https://id.twitch.tv/oauth2/validate
 
