@@ -29,7 +29,7 @@ var version = {
         {
             title: 'Version September 2023 to March 2024',
             changes: [
-                "Fix App not able to start when Chat options 'Show viewers' and chat 'Side by Side, video and chat' was enabled",
+                "Fix App not able to start when Settings Chat options 'Show viewers' and player chat settings 'Side by Side, video and chat' was enabled",
                 'Fix unable to change quality during playback if the default quality in settings was different than AUTO',
                 'Fix playing single quality streams',
                 'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
