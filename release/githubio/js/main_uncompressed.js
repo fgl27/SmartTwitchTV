@@ -4660,10 +4660,11 @@
         publishVersionCode: 350, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/350/SmartTV_twitch_3_0_350.apk',
         WebVersion: 'March 2024',
-        WebTag: 673, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 675, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Version September 2023 to March 2024',
                 changes: [
+                    "Fix App not able to start when Chat options 'Show viewers' and chat 'Side by Side, video and chat' was enabled",
                     'Fix unable to change quality during playback if the default quality in settings was different than AUTO',
                     'Fix playing single quality streams',
                     'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
@@ -17786,15 +17787,23 @@
         Play_isFullScreenOld = Play_isFullScreen;
 
         if (isFull) {
-            if (changed) Play_ResStoreChatFullScreen();
+            if (changed) {
+                Play_ResStoreChatFullScreen();
+            }
         } else {
-            if (changed) Play_StoreChatFullScreen();
+            if (changed) {
+                Play_StoreChatFullScreen();
+            }
+
             Play_SetChatSideBySide();
         }
 
         if (Main_IsOn_OSInterface) {
-            if (PlayExtra_PicturePicture) OSInterface_mupdatesizePP(Play_isFullScreen);
-            else OSInterface_mupdatesize(Play_isFullScreen);
+            if (PlayExtra_PicturePicture) {
+                OSInterface_mupdatesizePP(Play_isFullScreen);
+            } else {
+                OSInterface_mupdatesize(Play_isFullScreen);
+            }
         }
 
         Main_setItem('Play_isFullScreen', Play_isFullScreen);
@@ -21947,6 +21956,8 @@
     var seek_previews_carousel_offset = [-3, -2, -1, 0, 1, 2, 3];
 
     function Play_PreStart() {
+        Play_SetUserHeader();
+
         Play_seek_previews_holder = Main_getElementById('seek_previews_holder');
 
         seek_previews_carousel_0 = Main_getElementById('seek_previews_carousel_0');
@@ -22020,12 +22031,13 @@
 
         Play_MakeControls();
         Play_ChatSize(false);
-        Play_SetFullScreen(Play_isFullScreen);
 
         Play_ChatBackgroundChange(false);
         Play_SetChatFont();
         //set base strings that don't change
+    }
 
+    function Play_SetUserHeader() {
         //Check expires_in
         //curl -H 'Authorization: Bearer 7mbu7j6salqzlwgtp69r48numrc8ey' -X GET https://id.twitch.tv/oauth2/validate
 

@@ -24,11 +24,12 @@ var version = {
     publishVersionCode: 350, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/350/SmartTV_twitch_3_0_350.apk',
     WebVersion: 'March 2024',
-    WebTag: 673, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 675, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
             title: 'Version September 2023 to March 2024',
             changes: [
+                "Fix App not able to start when Chat options 'Show viewers' and chat 'Side by Side, video and chat' was enabled",
                 'Fix unable to change quality during playback if the default quality in settings was different than AUTO',
                 'Fix playing single quality streams',
                 'Fix auto playback not selecting the best possible quality for Live streams, Twitch messed up their bitrate information provided by their servers, with caused issues as the app uses the bitrate and current available internet speed (bandwidth) to determinate what quality to select',
