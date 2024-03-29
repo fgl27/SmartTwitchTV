@@ -1,8 +1,8 @@
 ext.versions = [
         minSdk                     : 21,
-        targetSdk                  : 33,
-        compileSdk                 : 33,
-        buildTools                 : '33.0.0',
+        targetSdk                  : 34,
+        compileSdk                 : 34,
+        buildTools                 : '34.0.0',
         gradlePlugin               : '7.4.0',//update gradlew -> ./gradlew wrapper
 
         publishVersion             : '3.0.',
@@ -13,10 +13,10 @@ ext.versions = [
         tvprovider                 : '1.0.0',
         benmanes                   : '0.51.0',
         googlegson                 : '2.10.1',
-        webkit                     : '1.7.0',
+        webkit                     : '1.9.0',
 
         //Crashlytics
-        firebase_bom               : '32.7.2',
+        firebase_bom               : '32.7.4',
         firebase_crashlytics_gradle: '2.9.9',
         google_services            : '4.3.15',
 ]
