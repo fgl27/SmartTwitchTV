@@ -451,8 +451,9 @@ function ScreensObj_StartAllVars() {
         Vod_newImg: new Image(),
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
+            var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
             var isNotBlocked = Screens_isNotBlocked(
-                this.isQuery && cell.creator ? cell.creator.id : cell.user_id,
+                Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
                 this.screen !== Main_AGameVod ? cell.game_id : null, //skip game check if on game screen
                 this.screen !== Main_Vod && this.screen !== Main_AGameVod //skip all check if on channel screen
             );
@@ -512,7 +513,7 @@ function ScreensObj_StartAllVars() {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
             var isNotBlocked = Screens_isNotBlocked(
-                cell.user_id,
+                Main_values.Main_BeforeAgame === Main_Blocked ? null : cell.user_id,
                 this.screen === Main_aGame ? null : cell.game_id, //skip game check if on game screen
                 this.IsUser
             );
@@ -615,9 +616,10 @@ function ScreensObj_StartAllVars() {
         Cells: [],
         addCell: function (cell) {
             var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
+            var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
 
             var isNotBlocked = Screens_isNotBlocked(
-                this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id,
+                Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
                 this.screen !== Main_AGameClip ? cell.game_id : null, //skip game check if on game screen
                 this.IsUser || this.screen === Main_ChannelClip //skip all check if on channel screen
             );

@@ -260,14 +260,16 @@ function Screens_first_init() {
 
         if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
     } else {
-        //Values that need to be reset to prevent app odd behavier
+        //Values that need to be reset to prevent app odd behavior
         Main_values.Search_isSearching = false;
         Main_values.Main_BeforeChannelisSet = false;
         Main_values.Main_BeforeAgameisSet = false;
 
         ScreenObj[Main_Live].init_fun();
 
-        if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+        if (Main_values.IsUpDating) {
+            Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+        }
     }
 
     Main_ShowElement('topbar');
@@ -3241,6 +3243,7 @@ function Screens_BlockChannel(key) {
 
 function Screens_BlockCheckDeleteChannel(key) {
     if (
+        Main_values.Main_BeforeAgame !== Main_Blocked &&
         ScreenObj[key].screen !== Main_Blocked &&
         ScreenObj[key].screen !== Main_ChannelClip &&
         ScreenObj[key].screen !== Main_ChannelVod &&
