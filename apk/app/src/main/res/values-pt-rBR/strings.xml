@@ -37,7 +37,6 @@
     <string name="no_internet">Ping ao Twitch falhou nos últimos 30 segundos! \n \nSe o aplicativo não estiver funcionando corretamente, revise sua conexão de internet \n \nSegure a tecla Retornar para fechar o aplicativo caso ele congele ou pare de funcionar.\n\nEsta mensagem será ocultada automaticamente em 30 segundos ou se a conexão retornar \n \nEste aviso pode ser desativado nas configurações</string>
     <string name="external_player_fail">Nenhum aplicativo de player de vídeo externo disponível</string>
     <string name="webview_exception">O aplicativo falhou ao carregar porque o Webview não está presente (improvável) OU em processo de atualização, tente novamente em alguns segundos</string>
-    <string name="no_browser">Não há nenhum navegador da web instalado no dispositivo, não é possível abrir o link.</string>
 
     <!--Home screen channel-->
     <string name="channel_disable">Este canal estava desabilitado ou na última atualização falhou ao carregar o conteúdo. Pressione Enter para atualizar (a atualização só acontece quando o aplicativo está visível, então clique aqui para abrir o aplicativo)</string>
