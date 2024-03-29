@@ -3610,16 +3610,8 @@ function Screens_OpenScreen() {
         return;
     }
 
-    if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
-        Main_values.Main_BeforeAgame =
-            Main_values.Main_BeforeChannelisSet &&
-            Main_values.Main_Go !== Main_ChannelContent &&
-            Main_values.Main_Go !== Main_ChannelVod &&
-            Main_values.Main_Go !== Main_ChannelClip
-                ? Main_values.Main_BeforeChannel
-                : Main_values.Main_Go;
-        Main_values.Main_BeforeAgameisSet = true;
-    }
+    //reset before game to avoid issues with blocked content
+    Main_values.Main_BeforeAgame = Main_values.Main_Go;
 
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
