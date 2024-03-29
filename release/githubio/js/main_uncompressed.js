@@ -28158,14 +28158,16 @@
 
             if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
         } else {
-            //Values that need to be reset to prevent app odd behavier
+            //Values that need to be reset to prevent app odd behavior
             Main_values.Search_isSearching = false;
             Main_values.Main_BeforeChannelisSet = false;
             Main_values.Main_BeforeAgameisSet = false;
 
             ScreenObj[Main_Live].init_fun();
 
-            if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+            if (Main_values.IsUpDating) {
+                Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+            }
         }
 
         Main_ShowElement('topbar');
@@ -31141,6 +31143,7 @@
 
     function Screens_BlockCheckDeleteChannel(key) {
         if (
+            Main_values.Main_BeforeAgame !== Main_Blocked &&
             ScreenObj[key].screen !== Main_Blocked &&
             ScreenObj[key].screen !== Main_ChannelClip &&
             ScreenObj[key].screen !== Main_ChannelVod &&
@@ -32378,8 +32381,9 @@
             Vod_newImg: new Image(),
             AnimateThumb: ScreensObj_AnimateThumbId,
             addCell: function(cell) {
+                var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
                 var isNotBlocked = Screens_isNotBlocked(
-                    this.isQuery && cell.creator ? cell.creator.id : cell.user_id,
+                    Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
                     this.screen !== Main_AGameVod ? cell.game_id : null, //skip game check if on game screen
                     this.screen !== Main_Vod && this.screen !== Main_AGameVod //skip all check if on channel screen
                 );
@@ -32439,7 +32443,7 @@
                 var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
                 var isNotBlocked = Screens_isNotBlocked(
-                    cell.user_id,
+                    Main_values.Main_BeforeAgame === Main_Blocked ? null : cell.user_id,
                     this.screen === Main_aGame ? null : cell.game_id, //skip game check if on game screen
                     this.IsUser
                 );
@@ -32542,9 +32546,10 @@
             Cells: [],
             addCell: function(cell) {
                 var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
+                var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
 
                 var isNotBlocked = Screens_isNotBlocked(
-                    this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id,
+                    Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
                     this.screen !== Main_AGameClip ? cell.game_id : null, //skip game check if on game screen
                     this.IsUser || this.screen === Main_ChannelClip //skip all check if on channel screen
                 );
