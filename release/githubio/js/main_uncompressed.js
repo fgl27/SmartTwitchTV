@@ -31082,8 +31082,11 @@
                 }
 
                 Screens_LoadPreview(key);
-            } else if (Screens_ThumbOptionPosY === 7) Screens_SetLang(key);
-            else if (Screens_ThumbOptionPosY === 8) Screens_OpenScreen();
+            } else if (Screens_ThumbOptionPosY === 7) {
+                Screens_SetLang(key);
+            } else if (Screens_ThumbOptionPosY === 8) {
+                Screens_OpenScreen();
+            }
         } else Screens_LoadPreview(key);
 
         Screens_ThumbOptionPosY = 0;
@@ -31510,11 +31513,11 @@
             return;
         }
 
-        //reset before game to avoid issues with blocked content
-        Main_values.Main_BeforeAgame = Main_values.Main_Go;
-
         Main_ExitCurrent(Main_values.Main_Go);
         Main_values.Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
+
+        //reset before game to avoid issues with blocked content
+        Main_values.Main_BeforeAgame = Main_values.Main_Go;
 
         Main_ReStartScreens();
     }
