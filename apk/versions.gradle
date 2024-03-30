@@ -3,7 +3,7 @@ ext.versions = [
         targetSdk                  : 34,
         compileSdk                 : 34,
         buildTools                 : '34.0.0',
-        gradlePlugin               : '7.4.0',//update gradlew -> ./gradlew wrapper
+        gradlePlugin               : '8.3.0',//update gradlew -> ./gradlew wrapper
 
         publishVersion             : '3.0.',
         publishVersionCode         : 353,
