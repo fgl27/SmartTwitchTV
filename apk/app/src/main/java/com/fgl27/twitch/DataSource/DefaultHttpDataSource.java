@@ -20,27 +20,27 @@
  */
 package com.fgl27.twitch.DataSource;
 
-import static androidx.media3.exoplayer.upstream.HttpUtil.buildRangeRequestHeader;
 import static androidx.media3.common.util.Assertions.checkNotNull;
 import static androidx.media3.common.util.Util.castNonNull;
+import static androidx.media3.datasource.HttpUtil.buildRangeRequestHeader;
 import static java.lang.Math.min;
 
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
 import androidx.media3.common.C;
 import androidx.media3.common.PlaybackException;
-import androidx.media3.exoplayer.upstream.BaseDataSource;
-import androidx.media3.exoplayer.upstream.DataSource;
-import androidx.media3.exoplayer.upstream.DataSourceException;
-import androidx.media3.exoplayer.upstream.DataSpec;
-import androidx.media3.exoplayer.upstream.DataSpec.HttpMethod;
-import androidx.media3.exoplayer.upstream.HttpDataSource;
-import androidx.media3.exoplayer.upstream.HttpUtil;
-import androidx.media3.exoplayer.upstream.TransferListener;
 import androidx.media3.common.util.Util;
+import androidx.media3.datasource.BaseDataSource;
+import androidx.media3.datasource.DataSource;
+import androidx.media3.datasource.DataSourceException;
+import androidx.media3.datasource.DataSpec;
+import androidx.media3.datasource.DataSpec.HttpMethod;
+import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.HttpUtil;
+import androidx.media3.datasource.TransferListener;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;

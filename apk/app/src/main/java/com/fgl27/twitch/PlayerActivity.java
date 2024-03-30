@@ -486,7 +486,7 @@ public class PlayerActivity extends Activity {
         }
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
-            loadingView[i] = PlayerObj[i].playerView.findViewById(R.id.exo_buffering);
+            loadingView[i] = PlayerObj[i].playerView.findViewById(androidx.media3.ui.R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
             loadingView[i].setLayoutParams(DefaultLoadingLayout);
