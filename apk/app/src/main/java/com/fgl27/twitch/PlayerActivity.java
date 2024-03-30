@@ -105,6 +105,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
+@SuppressLint("UnsafeOptInUsageError")
 public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
     private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");

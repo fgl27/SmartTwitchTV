@@ -20,7 +20,10 @@
 
 package com.fgl27.twitch;
 
+import static androidx.media3.extractor.mp4.Mp4Extractor.FLAG_EMIT_RAW_SUBTITLE_DATA;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.Context;
@@ -66,6 +69,7 @@ import androidx.media3.exoplayer.upstream.DefaultAllocator;
 import androidx.media3.extractor.Extractor;
 import androidx.media3.extractor.ExtractorsFactory;
 import androidx.media3.extractor.mp4.Mp4Extractor;
+import androidx.media3.extractor.text.SubtitleParser;
 import androidx.webkit.WebViewCompat;
 
 import com.fgl27.twitch.DataSource.DefaultHttpDataSource;
@@ -97,6 +101,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+@SuppressLint("UnsafeOptInUsageError")
 public final class Tools {
 
     private static final String TAG = "STTV_Tools";
@@ -589,7 +594,7 @@ public final class Tools {
         @Override
         @NonNull
         public Extractor[] createExtractors() {
-            return new Extractor[]{new Mp4Extractor()};
+            return new Extractor[]{new Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, /* flags= */ FLAG_EMIT_RAW_SUBTITLE_DATA)};
         }
     }
 

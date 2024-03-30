@@ -25,6 +25,7 @@ import static androidx.media3.common.util.Util.castNonNull;
 import static androidx.media3.datasource.HttpUtil.buildRangeRequestHeader;
 import static java.lang.Math.min;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
@@ -72,6 +73,7 @@ import java.util.zip.GZIPInputStream;
  * priority) the {@code dataSpec}, {@link #setRequestProperty} and the default properties that can
  * be passed to {@link HttpDataSource.Factory#setDefaultRequestProperties(Map)}.
  */
+@SuppressLint("UnsafeOptInUsageError")
 public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
 
     /**
