@@ -3915,7 +3915,7 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the MediaSource this will be called before the new MediaSource is prepare
             //So tracks.getGroups().size() will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (lastSeenTracks != tracks && tracks.getGroups().size() > 0 && PlayerObj[position].Type < 3) {
+            if (lastSeenTracks != tracks && !tracks.getGroups().isEmpty() && PlayerObj[position].Type < 3) {
                 lastSeenTracks = tracks;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && PlayerObj[position].player != null) {
