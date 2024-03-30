@@ -66,28 +66,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.media3.common.C;
+import androidx.media3.common.Format;
+import androidx.media3.common.PlaybackException;
+import androidx.media3.common.PlaybackParameters;
+import androidx.media3.common.Player;
+import androidx.media3.common.TrackGroup;
+import androidx.media3.common.TrackSelectionOverride;
+import androidx.media3.common.TrackSelectionParameters;
+import androidx.media3.common.Tracks;
+import androidx.media3.common.util.Util;
+import androidx.media3.exoplayer.DefaultLivePlaybackSpeedControl;
+import androidx.media3.exoplayer.DefaultRenderersFactory;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.analytics.AnalyticsListener;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.source.TrackGroupArray;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.ui.PlayerView;
 
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLivePlaybackSpeedControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Tracks;
-import com.google.android.exoplayer2.analytics.AnalyticsListener;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionOverride;
-import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
-import com.google.android.exoplayer2.ui.StyledPlayerView;
-import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -105,6 +105,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("WeakerAccess")
+@SuppressLint("UnsafeOptInUsageError")
 public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
     private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
@@ -285,14 +286,14 @@ public class PlayerActivity extends Activity {
         MediaSource mediaSources;
 
         PlayerEventListener Listener;
-        StyledPlayerView playerView;
+        PlayerView playerView;
 
         ExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
                   int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter, float volume,
                   Handler CheckHandler, long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
-                  StyledPlayerView playerView, ExoPlayer player, long LatencyOffSet) {
+                  PlayerView playerView, ExoPlayer player, long LatencyOffSet) {
 
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
@@ -486,7 +487,7 @@ public class PlayerActivity extends Activity {
         }
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
-            loadingView[i] = PlayerObj[i].playerView.findViewById(R.id.exo_buffering);
+            loadingView[i] = PlayerObj[i].playerView.findViewById(androidx.media3.ui.R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
             loadingView[i].setLayoutParams(DefaultLoadingLayout);
@@ -693,8 +694,8 @@ public class PlayerActivity extends Activity {
         //Reset the Z position of the PP player so it show above the other
         if (IsUsingSurfaceView) {
 
-            StyledPlayerView ViewOnTop = PlayerObj[1].playerView;
-            StyledPlayerView ViewOnBottom = PlayerObj[0].playerView;
+            PlayerView ViewOnTop = PlayerObj[1].playerView;
+            PlayerView ViewOnBottom = PlayerObj[0].playerView;
 
             SurfaceView TopSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
             SurfaceView BottomSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
@@ -3914,7 +3915,7 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the MediaSource this will be called before the new MediaSource is prepare
             //So tracks.getGroups().size() will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (lastSeenTracks != tracks && tracks.getGroups().size() > 0 && PlayerObj[position].Type < 3) {
+            if (lastSeenTracks != tracks && !tracks.getGroups().isEmpty() && PlayerObj[position].Type < 3) {
                 lastSeenTracks = tracks;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && PlayerObj[position].player != null) {

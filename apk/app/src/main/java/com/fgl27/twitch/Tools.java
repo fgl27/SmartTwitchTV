@@ -20,7 +20,10 @@
 
 package com.fgl27.twitch;
 
+import static androidx.media3.extractor.mp4.Mp4Extractor.FLAG_EMIT_RAW_SUBTITLE_DATA;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.Context;
@@ -50,26 +53,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.media3.common.C;
+import androidx.media3.common.Format;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.TrackGroup;
+import androidx.media3.datasource.DefaultDataSource;
+import androidx.media3.exoplayer.DefaultLoadControl;
+import androidx.media3.exoplayer.hls.HlsMediaSource;
+import androidx.media3.exoplayer.source.MediaSource;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
+import androidx.media3.exoplayer.source.TrackGroupArray;
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
+import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
+import androidx.media3.exoplayer.upstream.DefaultAllocator;
+import androidx.media3.extractor.Extractor;
+import androidx.media3.extractor.ExtractorsFactory;
+import androidx.media3.extractor.mp4.Mp4Extractor;
+import androidx.media3.extractor.text.SubtitleParser;
 import androidx.webkit.WebViewCompat;
 
 import com.fgl27.twitch.DataSource.DefaultHttpDataSource;
 import com.fgl27.twitch.notification.NotificationService;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.extractor.Extractor;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.upstream.DefaultAllocator;
-import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -97,6 +101,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+@SuppressLint("UnsafeOptInUsageError")
 public final class Tools {
 
     private static final String TAG = "STTV_Tools";
@@ -589,7 +594,7 @@ public final class Tools {
         @Override
         @NonNull
         public Extractor[] createExtractors() {
-            return new Extractor[]{new Mp4Extractor()};
+            return new Extractor[]{new Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, /* flags= */ FLAG_EMIT_RAW_SUBTITLE_DATA)};
         }
     }
 

@@ -27,7 +27,7 @@
     -   [How to Build](#how-to-build)
     -   [Building The web app](#building-the-web-app)
     -   [Javascript building The web app](#javascript-building-the-web-app)
-    -   [Html building The web app](#html-building-the-web-app)
+    -   [HTML building The web app](#html-building-the-web-app)
     -   [CSS building The web app](#css-building-the-web-app)
     -   [Build The APK](#build-the-apk)
 -   [How to test the Web app](#how-to-test-the-web-app)
@@ -85,9 +85,10 @@ The web app is a web page [Click here to access it](https://fgl27.github.io/Smar
 ### The APK
 
 The APK holds two main views of the app:
-- the Webview the view that loads - the web app page
-- the [PlayerActivity](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java) - the main app activity and the activity that holds the app players and web UI
-The APK also handles the Android specific interactions that the app needs to make all to work.<br>
+
+-   the Webview the view that loads - the web app page
+-   the [PlayerActivity](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java) - the main app activity and the activity that holds the app players and web UI
+    The APK also handles the Android specific interactions that the app needs to make all to work.<br>
 
 ### The interactions between web app and APK
 
@@ -171,7 +172,7 @@ If you are using this on an Android TV device, install it from Google Play. If y
 
 ### APK Dependencies
 
--   [ExoPlayer: An extensible media player for Android](https://github.com/google/ExoPlayer)
+-   [AndroidX Media: An extensible media player for Android](https://github.com/androidx/media)
 -   [Gradle Versions Plugin: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
 -   [Gson: Gson is a Java library that can be used to convert Java Objects into their JSON representation.](https://github.com/google/gson)
 -   [Leanback v17: Support classes for building Leanback user experiences](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
@@ -256,14 +257,14 @@ If all the process finises OK, the script will inform which of those files have 
 
 ### Build The APK
 
-The APK files are located here [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk), because the app uses a modified version of **ExoPlayer** (the app player API) there is also [this fork of ExoPlayer](https://github.com/fgl27/ExoPlayer).<br>
+The APK files are located here [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk), because the app uses a modified version of **AndroidX Media** (the app player API) there is also [this fork of media](https://github.com/fgl27/media).<br>
 
 To build the APK:
 
 -   Create a `new folder` (the name is irrelevant) inside of that folder...
--   [Download and extract](https://github.com/fgl27/SmartTwitchTV/archive/master.zip) the app source or clone it (`git clone https://github.com/fgl27/SmartTwitchTV`), if you download it make sure you extract it to the `new folder`
--   [Download and extract](https://github.com/fgl27/ExoPlayer/archive/dev-v2.zip) ExoPlayer or clone it (`https://github.com/fgl27/ExoPlayer`), if download make sure you extract it to the `new folder`
--   Make sure your `new folder` contains these two folders `SmartTwitchTV` and `ExoPlayer` before proceeding to the next step
+-   [Download and extract](https://github.com/fgl27/SmartTwitchTV/archive/refs/heads/master.zip) the app source or clone it (`git clone https://github.com/fgl27/SmartTwitchTV`), if you download it make sure you extract it to the `new folder`
+-   [Download and extract](https://github.com/fgl27/media/archive/refs/heads/release.zip) media or clone it (`https://github.com/fgl27/media`), if download make sure you extract it to the `new folder`
+-   Make sure your `new folder` contains these two folders `SmartTwitchTV` and `media` before proceeding to the next step
 -   Install **Android Studio**, open it and add a new project ... File -> Open... Select the folder [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk)
 -   Wait for **Android Studio** to finish it's preparation, it will load and download all app dependencies and etc related needed for this app, if it asks to install extra dependencies/sdk/etc follow its instructions
 -   Comment out `Crashlytics` and related services, this app uses [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics) to be able to get crash reports from the app and use those to improve it, that process uses a file `google-services.json` in that file there are private keys that can't be published, so in order to build the app for testing you need to comment out a few lines - those lines start with `Crashlytics` and end `Crashlytics end` comment out all in between on this files [SmartTwitchTV/apk/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/build.gradle) and [SmartTwitchTV/apk/app/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/build.gradle)

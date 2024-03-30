@@ -20,27 +20,28 @@
  */
 package com.fgl27.twitch.DataSource;
 
-import static com.google.android.exoplayer2.upstream.HttpUtil.buildRangeRequestHeader;
-import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
-import static com.google.android.exoplayer2.util.Util.castNonNull;
+import static androidx.media3.common.util.Assertions.checkNotNull;
+import static androidx.media3.common.util.Util.castNonNull;
+import static androidx.media3.datasource.HttpUtil.buildRangeRequestHeader;
 import static java.lang.Math.min;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.media3.common.C;
+import androidx.media3.common.PlaybackException;
+import androidx.media3.common.util.Util;
+import androidx.media3.datasource.BaseDataSource;
+import androidx.media3.datasource.DataSource;
+import androidx.media3.datasource.DataSourceException;
+import androidx.media3.datasource.DataSpec;
+import androidx.media3.datasource.DataSpec.HttpMethod;
+import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.HttpUtil;
+import androidx.media3.datasource.TransferListener;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.upstream.BaseDataSource;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSourceException;
-import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.DataSpec.HttpMethod;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.google.android.exoplayer2.upstream.HttpUtil;
-import com.google.android.exoplayer2.upstream.TransferListener;
-import com.google.android.exoplayer2.util.Util;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ImmutableMap;
@@ -72,6 +73,7 @@ import java.util.zip.GZIPInputStream;
  * priority) the {@code dataSpec}, {@link #setRequestProperty} and the default properties that can
  * be passed to {@link HttpDataSource.Factory#setDefaultRequestProperties(Map)}.
  */
+@SuppressLint("UnsafeOptInUsageError")
 public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
 
     /**

@@ -5,6 +5,9 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="media-test-session-current">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
