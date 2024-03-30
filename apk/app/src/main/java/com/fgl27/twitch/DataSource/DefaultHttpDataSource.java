@@ -74,6 +74,7 @@ import java.util.zip.GZIPInputStream;
  * be passed to {@link HttpDataSource.Factory#setDefaultRequestProperties(Map)}.
  */
 @SuppressLint("UnsafeOptInUsageError")
+//Media3 issue TODO review and remove this when the problem is resolved
 public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
 
     /**

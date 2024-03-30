@@ -102,6 +102,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 @SuppressLint("UnsafeOptInUsageError")
+//Media3 issue TODO review and remove this when the problem is resolved
 public final class Tools {
 
     private static final String TAG = "STTV_Tools";
