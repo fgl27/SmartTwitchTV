@@ -8,8 +8,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     namespace "com.fgl27.twitch"
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    compileSdk 34
 
     buildFeatures {
         buildConfig = true
@@ -17,11 +16,16 @@ android {
 
     defaultConfig {
         applicationId "com.fgl27.twitch"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+
+        minSdkVersion 21
+        targetSdkVersion 34
+        compileSdk 34
+
         versionCode versions.publishVersionCode
         versionName versions.publishVersion + versions.publishVersionCode
+
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -35,22 +39,33 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
 
         coreLibraryDesugaringEnabled true
     }
+
     productFlavors {
     }
+
     lint {
         abortOnError false
         disable 'SetJavaScriptEnabled', 'GoogleAppIndexingWarning', 'IconMissingDensityFolder', 'IconLauncherShape', 'RtlHardcoded', 'ObsoleteLintCustomCheck'
         lintConfig file('lint.xml')
     }
+
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
+    }
+
     gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            }
         }
     }
 }
