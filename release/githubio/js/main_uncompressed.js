@@ -4661,7 +4661,12 @@
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/350/SmartTV_twitch_3_0_350.apk',
         WebVersion: 'March 2024',
         WebTag: 675, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
-        changelog: [{
+        changelog: [
+            // {
+            //     title: 'XXXX 2024 Apk Version 3.0.353',
+            //     changes: ['Update player dependencies to the latest version', 'General improvements']
+            // },
+            {
                 title: 'Version September 2023 to March 2024',
                 changes: [
                     "Fix App not able to start when Settings Chat options 'Show viewers' and player chat settings 'Side by Side, video and chat' was enabled",
