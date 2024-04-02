@@ -172,7 +172,7 @@ If you are using this on an Android TV device, install it from Google Play. If y
 
 ### APK Dependencies
 
--   [AndroidX Media: An extensible media player for Android](https://github.com/androidx/media)
+-   [AndroidX Media: An extensible media player for Android](https://github.com/androidx/media) The app uses a custom version of Media, the difference form the default dependencie are described here [AndroidX Media3 Modifications](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Media3%20changes.md)
 -   [Gradle Versions Plugin: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
 -   [Gson: Gson is a Java library that can be used to convert Java Objects into their JSON representation.](https://github.com/google/gson)
 -   [Leanback v17: Support classes for building Leanback user experiences](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
