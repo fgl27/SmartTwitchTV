@@ -11939,7 +11939,7 @@
                     Main_ShowElement('yes_no_dialog');
                     Main_values.Restore_Backup_Check = true;
                     Main_PreventCheckResume = true;
-                    Main_addEventListener('keydown', Main_BackupDialodKeyDown);
+                    Main_addEventListener('keydown', Main_BackupDialogKeyDown);
                 } catch (e) {
                     Main_ready(Main_initWindows);
                     return;
@@ -11961,7 +11961,7 @@
         OSInterface_initbodyClickSet();
     }
 
-    function Main_BackupDialodKeyDown(event) {
+    function Main_BackupDialogKeyDown(event) {
         switch (event.keyCode) {
             case KEY_LEFT:
                 Users_RemoveCursor--;
@@ -11977,7 +11977,7 @@
                 Main_PreventCheckResume = false;
                 Main_showLoadDialog();
                 Main_HideElement('yes_no_dialog');
-                Main_removeEventListener('keydown', Main_BackupDialodKeyDown);
+                Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
                 if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
                 else Main_initWindows();
                 break;
@@ -12622,7 +12622,9 @@
             ScreenObj[1].init_fun(); //live
         }
 
-        if (removekey) Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
+        if (removekey) {
+            Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
+        }
     }
 
     function Main_OpenSearch() {
@@ -13531,8 +13533,13 @@
         Screens_clear = true;
         ChannelContent_clear = true;
 
-        if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
-        if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
+        if (Main_values.Main_Go !== Main_ChannelContent) {
+            Main_values.Main_BeforeChannelisSet = false;
+        }
+
+        if (Main_values.Main_Go !== Main_aGame) {
+            Main_values.Main_BeforeAgameisSet = false;
+        }
 
         Main_CounterDialogRst();
 
@@ -18739,6 +18746,9 @@
                 Main_values.Main_Go;
             Main_values.Main_BeforeAgameisSet = true;
         }
+
+        //set BeforeAgame as is used to check for blocked content
+        ScreenObj[Main_values.Main_Go].BeforeAgame = Main_values.Main_BeforeAgame === Main_Blocked ? null : Main_values.Main_BeforeAgame;
 
         Main_ExitCurrent(Main_values.Main_Go);
         Main_values.Main_Go = Main_aGame;
@@ -29752,7 +29762,9 @@
                 Screens_ResetPlaybackTime(key, id);
             }
             Main_removeFocus(id, ScreenObj[key].ids);
-        } else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
+        } else if (ScreenObj[key].HasSwitches) {
+            Screens_removeFocusFollow(key);
+        }
     }
 
     function Screens_addFocusFollow(key) {
@@ -29870,7 +29882,9 @@
 
         if (e.keyCode === KEY_ENTER) {
             Screens_handleKeyUpClear(key);
-            if (!Screens_clear) ScreenObj[key].key_play();
+            if (!Screens_clear) {
+                ScreenObj[key].key_play();
+            }
         } else if (e.keyCode === KEY_LEFT) {
             Screens_ThumbOptionCanKeyLeft = true;
 
@@ -31519,10 +31533,12 @@
         }
 
         Main_ExitCurrent(Main_values.Main_Go);
-        Main_values.Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
+        var Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
 
         //reset before game to avoid issues with blocked content
-        Main_values.Main_BeforeAgame = Main_values.Main_Go;
+        ScreenObj[Main_Go].BeforeAgame = null;
+
+        Main_values.Main_Go = Main_Go;
 
         Main_ReStartScreens();
     }
@@ -32382,8 +32398,10 @@
             AnimateThumb: ScreensObj_AnimateThumbId,
             addCell: function(cell) {
                 var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
+                var skipBlockedCheck = this.screen === Main_AGameVod && this.BeforeAgame === Main_Blocked;
+
                 var isNotBlocked = Screens_isNotBlocked(
-                    Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
+                    skipBlockedCheck ? null : channelId,
                     this.screen !== Main_AGameVod ? cell.game_id : null, //skip game check if on game screen
                     this.screen !== Main_Vod && this.screen !== Main_AGameVod //skip all check if on channel screen
                 );
@@ -32441,9 +32459,10 @@
             },
             addCellTemp: function(cell) {
                 var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
+                var skipBlockedCheck = this.screen === Main_aGame && this.BeforeAgame === Main_Blocked;
 
                 var isNotBlocked = Screens_isNotBlocked(
-                    Main_values.Main_BeforeAgame === Main_Blocked ? null : cell.user_id,
+                    skipBlockedCheck ? null : cell.user_id,
                     this.screen === Main_aGame ? null : cell.game_id, //skip game check if on game screen
                     this.IsUser
                 );
@@ -32458,7 +32477,9 @@
                 }
             },
             key_play: function() {
-                if (this.is_a_Banner()) return;
+                if (this.is_a_Banner()) {
+                    return;
+                }
 
                 if (this.itemsCount) {
                     Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
@@ -32523,7 +32544,9 @@
                 }
             },
             key_play: function() {
-                if (this.is_a_Banner()) return;
+                if (this.is_a_Banner()) {
+                    return;
+                }
 
                 if (this.posY === -1) {
                     if (!this.loadingData) {
@@ -32547,9 +32570,10 @@
             addCell: function(cell) {
                 var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
                 var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
+                var skipBlockedCheck = this.screen === Main_AGameClip && this.BeforeAgame === Main_Blocked;
 
                 var isNotBlocked = Screens_isNotBlocked(
-                    Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
+                    skipBlockedCheck ? null : channelId,
                     this.screen !== Main_AGameClip ? cell.game_id : null, //skip game check if on game screen
                     this.IsUser || this.screen === Main_ChannelClip //skip all check if on channel screen
                 );
@@ -32595,6 +32619,8 @@
                 Main_addFocusVideoOffset = 0;
                 Main_removeEventListener('keydown', this.key_fun);
                 Main_HideElementWithEle(this.ScrollDoc);
+
+                ScreenObj[Main_values.Main_Go].BeforeAgame = Main_values.Main_BeforeAgame;
 
                 Main_SwitchScreen();
             },
@@ -33354,14 +33380,21 @@
             }
 
             if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
-                if (this.is_a_Banner()) return;
+                if (this.is_a_Banner()) {
+                    return;
+                }
 
                 if (this.itemsCount) {
                     Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
                     this.OpenLiveStream(false);
                 }
-            } else AGame_headerOptions(this.screen);
+            } else {
+                var BeforeAgame = this.BeforeAgame;
+                AGame_headerOptions(this.screen);
+                //set BeforeAgame as is used to check for blocked content
+                ScreenObj[Main_values.Main_Go].BeforeAgame = BeforeAgame;
+            }
 
             ScreenObj[this.screen].IsOpen = 0;
         };
