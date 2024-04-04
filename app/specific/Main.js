@@ -284,7 +284,7 @@ function Main_StartApp() {
                 Main_ShowElement('yes_no_dialog');
                 Main_values.Restore_Backup_Check = true;
                 Main_PreventCheckResume = true;
-                Main_addEventListener('keydown', Main_BackupDialodKeyDown);
+                Main_addEventListener('keydown', Main_BackupDialogKeyDown);
             } catch (e) {
                 Main_ready(Main_initWindows);
                 return;
@@ -306,7 +306,7 @@ function Main_initClick() {
     OSInterface_initbodyClickSet();
 }
 
-function Main_BackupDialodKeyDown(event) {
+function Main_BackupDialogKeyDown(event) {
     switch (event.keyCode) {
         case KEY_LEFT:
             Users_RemoveCursor--;
@@ -322,7 +322,7 @@ function Main_BackupDialodKeyDown(event) {
             Main_PreventCheckResume = false;
             Main_showLoadDialog();
             Main_HideElement('yes_no_dialog');
-            Main_removeEventListener('keydown', Main_BackupDialodKeyDown);
+            Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
             if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
             else Main_initWindows();
             break;
@@ -966,7 +966,9 @@ function Main_SwitchScreen(removekey, preventRefresh) {
         ScreenObj[1].init_fun(); //live
     }
 
-    if (removekey) Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
+    if (removekey) {
+        Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
+    }
 }
 
 function Main_OpenSearch() {
@@ -1865,8 +1867,13 @@ function Main_ReloadScreen() {
     Screens_clear = true;
     ChannelContent_clear = true;
 
-    if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
-    if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
+    if (Main_values.Main_Go !== Main_ChannelContent) {
+        Main_values.Main_BeforeChannelisSet = false;
+    }
+
+    if (Main_values.Main_Go !== Main_aGame) {
+        Main_values.Main_BeforeAgameisSet = false;
+    }
 
     Main_CounterDialogRst();
 

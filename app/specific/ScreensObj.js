@@ -452,8 +452,10 @@ function ScreensObj_StartAllVars() {
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
             var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
+            var skipBlockedCheck = this.screen === Main_AGameVod && this.BeforeAgame === Main_Blocked;
+
             var isNotBlocked = Screens_isNotBlocked(
-                Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
+                skipBlockedCheck ? null : channelId,
                 this.screen !== Main_AGameVod ? cell.game_id : null, //skip game check if on game screen
                 this.screen !== Main_Vod && this.screen !== Main_AGameVod //skip all check if on channel screen
             );
@@ -511,9 +513,10 @@ function ScreensObj_StartAllVars() {
         },
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
+            var skipBlockedCheck = this.screen === Main_aGame && this.BeforeAgame === Main_Blocked;
 
             var isNotBlocked = Screens_isNotBlocked(
-                Main_values.Main_BeforeAgame === Main_Blocked ? null : cell.user_id,
+                skipBlockedCheck ? null : cell.user_id,
                 this.screen === Main_aGame ? null : cell.game_id, //skip game check if on game screen
                 this.IsUser
             );
@@ -528,7 +531,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         key_play: function () {
-            if (this.is_a_Banner()) return;
+            if (this.is_a_Banner()) {
+                return;
+            }
 
             if (this.itemsCount) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
@@ -593,7 +598,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         key_play: function () {
-            if (this.is_a_Banner()) return;
+            if (this.is_a_Banner()) {
+                return;
+            }
 
             if (this.posY === -1) {
                 if (!this.loadingData) {
@@ -617,9 +624,10 @@ function ScreensObj_StartAllVars() {
         addCell: function (cell) {
             var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
             var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
+            var skipBlockedCheck = this.screen === Main_AGameClip && this.BeforeAgame === Main_Blocked;
 
             var isNotBlocked = Screens_isNotBlocked(
-                Main_values.Main_BeforeAgame === Main_Blocked ? null : channelId,
+                skipBlockedCheck ? null : channelId,
                 this.screen !== Main_AGameClip ? cell.game_id : null, //skip game check if on game screen
                 this.IsUser || this.screen === Main_ChannelClip //skip all check if on channel screen
             );
@@ -665,6 +673,8 @@ function ScreensObj_StartAllVars() {
             Main_addFocusVideoOffset = 0;
             Main_removeEventListener('keydown', this.key_fun);
             Main_HideElementWithEle(this.ScrollDoc);
+
+            ScreenObj[Main_values.Main_Go].BeforeAgame = Main_values.Main_BeforeAgame;
 
             Main_SwitchScreen();
         },
@@ -1432,14 +1442,21 @@ function ScreensObj_InitAGame() {
         }
 
         if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
-            if (this.is_a_Banner()) return;
+            if (this.is_a_Banner()) {
+                return;
+            }
 
             if (this.itemsCount) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
                 this.OpenLiveStream(false);
             }
-        } else AGame_headerOptions(this.screen);
+        } else {
+            var BeforeAgame = this.BeforeAgame;
+            AGame_headerOptions(this.screen);
+            //set BeforeAgame as is used to check for blocked content
+            ScreenObj[Main_values.Main_Go].BeforeAgame = BeforeAgame;
+        }
 
         ScreenObj[this.screen].IsOpen = 0;
     };

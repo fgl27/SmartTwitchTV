@@ -1171,6 +1171,9 @@ function Play_OpenGame(PlayVodClip) {
         Main_values.Main_BeforeAgameisSet = true;
     }
 
+    //set BeforeAgame as is used to check for blocked content
+    ScreenObj[Main_values.Main_Go].BeforeAgame = Main_values.Main_BeforeAgame === Main_Blocked ? null : Main_values.Main_BeforeAgame;
+
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
 

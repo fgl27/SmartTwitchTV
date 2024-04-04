@@ -1849,7 +1849,9 @@ function Screens_RemoveFocus(key) {
             Screens_ResetPlaybackTime(key, id);
         }
         Main_removeFocus(id, ScreenObj[key].ids);
-    } else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
+    } else if (ScreenObj[key].HasSwitches) {
+        Screens_removeFocusFollow(key);
+    }
 }
 
 function Screens_addFocusFollow(key) {
@@ -1967,7 +1969,9 @@ function Screens_handleKeyUp(key, e) {
 
     if (e.keyCode === KEY_ENTER) {
         Screens_handleKeyUpClear(key);
-        if (!Screens_clear) ScreenObj[key].key_play();
+        if (!Screens_clear) {
+            ScreenObj[key].key_play();
+        }
     } else if (e.keyCode === KEY_LEFT) {
         Screens_ThumbOptionCanKeyLeft = true;
 
@@ -3614,10 +3618,12 @@ function Screens_OpenScreen() {
     }
 
     Main_ExitCurrent(Main_values.Main_Go);
-    Main_values.Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
+    var Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
 
     //reset before game to avoid issues with blocked content
-    Main_values.Main_BeforeAgame = Main_values.Main_Go;
+    ScreenObj[Main_Go].BeforeAgame = null;
+
+    Main_values.Main_Go = Main_Go;
 
     Main_ReStartScreens();
 }
