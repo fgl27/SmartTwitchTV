@@ -31073,8 +31073,9 @@
                     key
                 );
             } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
-            else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
-            else if (Screens_ThumbOptionPosY === 3) {
+            else if (Screens_ThumbOptionPosY === 1) {
+                Screens_OpenGame();
+            } else if (Screens_ThumbOptionPosY === 3) {
                 Screens_BlockChannel(key);
             } else if (Screens_ThumbOptionPosY === 4) {
                 Screens_BlockGame(key);
@@ -31598,6 +31599,8 @@
 
         Main_ExitCurrent(Main_values.Main_Go);
         Main_values.Main_Go = Main_aGame;
+
+        ScreenObj[Main_values.Main_Go].BeforeAgame = Main_values.Main_BeforeAgame === Main_Blocked ? null : Main_values.Main_BeforeAgame;
 
         Main_ReStartScreens();
     }
