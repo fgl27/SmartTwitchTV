@@ -7198,12 +7198,12 @@
     }
 
     function ChannelContent_setFollow() {
-        if (AddCode_IsFollowing)
+        if (AddCode_IsFollowing) {
             Main_innerHTML(
                 'channel_content_titley_2',
                 '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOWING
             );
-        else
+        } else {
             Main_innerHTML(
                 'channel_content_titley_2',
                 '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' +
@@ -7211,6 +7211,7 @@
                 STR_SPACE_HTML +
                 (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY)
             );
+        }
     }
 
     function ChannelContent_loadDataSuccess() {
@@ -7362,8 +7363,7 @@
     }
 
     function ChannelContent_checkUser() {
-        if (ChannelContent_UserChannels) ChannelContent_setFollow();
-        else if (AddUser_UserIsSet()) {
+        if (AddUser_UserIsSet()) {
             AddCode_Channel_id = Main_values.Main_selectedChannel_id;
             AddCode_PlayRequest = false;
             AddCode_CheckFollow();
@@ -31029,7 +31029,9 @@
     function Screens_ThumbOptionDialogKeyEnter(key) {
         if (Screens_ThumbOptionPosY === 2) {
             Screens_FollowUnfollow(key);
-        } else Screens_ThumbOptionDialogHide(true, key);
+        } else {
+            Screens_ThumbOptionDialogHide(true, key);
+        }
     }
 
     function Screens_ThumbOptionDialogHide(Update, key) {
@@ -31490,6 +31492,10 @@
             Screens_ThumbOption_Follow_ID = new Date().getTime();
 
             var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
+
+            if (ScreenObj[key].screenType === 4) {
+                channel_id = Screens_values_Play_data[1];
+            }
 
             FullxmlHttpGet(
                 PlayClip_BaseUrl,
@@ -32768,7 +32774,6 @@
                 Main_values.Main_BeforeChannel = go_screen;
                 Main_values.Main_Go = Main_ChannelContent;
                 Main_values.Main_BeforeChannelisSet = true;
-                AddCode_IsFollowing = IsFollowing;
                 ChannelContent_UserChannels = IsFollowing;
                 Screens_exit(this.screen);
                 Main_SwitchScreen();
