@@ -819,7 +819,6 @@ function ScreensObj_StartAllVars() {
             Main_values.Main_BeforeChannel = go_screen;
             Main_values.Main_Go = Main_ChannelContent;
             Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFollowing = IsFollowing;
             ChannelContent_UserChannels = IsFollowing;
             Screens_exit(this.screen);
             Main_SwitchScreen();

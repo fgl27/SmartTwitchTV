@@ -237,12 +237,12 @@ function ChannelContent_GetStreamerInfoError() {
 }
 
 function ChannelContent_setFollow() {
-    if (AddCode_IsFollowing)
+    if (AddCode_IsFollowing) {
         Main_innerHTML(
             'channel_content_titley_2',
             '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOWING
         );
-    else
+    } else {
         Main_innerHTML(
             'channel_content_titley_2',
             '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' +
@@ -250,6 +250,7 @@ function ChannelContent_setFollow() {
                 STR_SPACE_HTML +
                 (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY)
         );
+    }
 }
 
 function ChannelContent_loadDataSuccess() {
@@ -401,8 +402,7 @@ function ChannelContent_loadDataSuccessFinish() {
 }
 
 function ChannelContent_checkUser() {
-    if (ChannelContent_UserChannels) ChannelContent_setFollow();
-    else if (AddUser_UserIsSet()) {
+    if (AddUser_UserIsSet()) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_PlayRequest = false;
         AddCode_CheckFollow();
