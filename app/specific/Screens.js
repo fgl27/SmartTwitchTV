@@ -3114,7 +3114,9 @@ function Screens_ThumbOptionDialogKeyUpDown(key, current, adder) {
 function Screens_ThumbOptionDialogKeyEnter(key) {
     if (Screens_ThumbOptionPosY === 2) {
         Screens_FollowUnfollow(key);
-    } else Screens_ThumbOptionDialogHide(true, key);
+    } else {
+        Screens_ThumbOptionDialogHide(true, key);
+    }
 }
 
 function Screens_ThumbOptionDialogHide(Update, key) {
@@ -3575,6 +3577,10 @@ function Screens_FollowUnfollow(key) {
         Screens_ThumbOption_Follow_ID = new Date().getTime();
 
         var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
+
+        if (ScreenObj[key].screenType === 4) {
+            channel_id = Screens_values_Play_data[1];
+        }
 
         FullxmlHttpGet(
             PlayClip_BaseUrl,
