@@ -9,7 +9,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.1'//update gradlew -> ./gradlew wrapper
+        classpath 'com.android.tools.build:gradle:8.3.2'//update gradlew -> ./gradlew wrapper
 
         //Crashlytics
         classpath 'com.google.gms:google-services:4.4.1'
