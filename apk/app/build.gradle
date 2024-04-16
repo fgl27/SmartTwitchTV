@@ -41,8 +41,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
 
         coreLibraryDesugaringEnabled true
     }
@@ -57,8 +57,8 @@ android {
     }
 
     dependenciesInfo {
-        includeInApk true
-        includeInBundle true
+        includeInApk false
+        includeInBundle false
     }
 
     gradle.projectsEvaluated {
@@ -81,7 +81,7 @@ dependencies {
     implementation project(':media-lib-exoplayer-hls')
 
     //Crashlytics
-    implementation platform('com.google.firebase:firebase-bom:32.8.0')
+    implementation platform('com.google.firebase:firebase-bom:32.8.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     //Crashlytics end
