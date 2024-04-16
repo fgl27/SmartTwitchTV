@@ -243,11 +243,14 @@ function Main_StartApp() {
             //Main_Log('Main_isDebug: ' + Main_isDebug);
             //Main_Log('Main_isBrowser: ' + !Main_IsOn_OSInterface);
             //If we add the class on the android app for some reason it prevents input from release the focus
-            Main_AddClass('scenefeed', 'feed_screen_input');
+
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
             KEY_RETURN = 27;
+
+            Main_AddClass('scenefeed', 'feed_screen_input');
             Main_HideElement('scene_keys');
         }
+
         Main_showLoadDialog();
 
         Main_initClick();

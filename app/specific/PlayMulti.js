@@ -79,7 +79,7 @@ function Play_Multi_SetPanel() {
     ChatLive_Clear(1);
     PlayExtra_HideChat();
     Play_IconsRemoveFocus();
-    Play_Panelcounter = Play_MultiStream;
+    Play_PanelCounter = Play_MultiStream;
     if (Play_isPanelShowing() && PlayVod_PanelY === 2) Play_IconsAddFocus();
     Main_HideElement('stream_info_pp');
     Main_HideElement('stream_info');
@@ -99,7 +99,7 @@ function Play_Multi_UnSetPanelDiv(checkChat) {
 
     Main_SaveValues();
     Play_IconsRemoveFocus();
-    Play_Panelcounter = Play_MultiStream;
+    Play_PanelCounter = Play_MultiStream;
 
     if (Play_isPanelShowing() && PlayVod_PanelY === 2) Play_IconsAddFocus();
     if (Play_Multi_MainBig) {

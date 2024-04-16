@@ -1767,7 +1767,7 @@ function PlayVod_ChaptersSetGame(timeMs) {
                 if (PlayVod_ChaptersArray[len].game) {
                     PlayVod_UpdateGameInfoLabels(PlayVod_ChaptersArray[len].gameId, PlayVod_ChaptersArray[len].game);
 
-                    if (!Play_isPanelShowing() || Play_Panelcounter !== Play_controlsChapters) {
+                    if (!Play_isPanelShowing() || Play_PanelCounter !== Play_controlsChapters) {
                         Play_controls[Play_controlsChapters].defaultValue = len;
                         Play_controls[Play_controlsChapters].setLabel();
                         Play_controls[Play_controlsChapters].bottomArrows();

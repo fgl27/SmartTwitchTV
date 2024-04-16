@@ -1533,7 +1533,7 @@ function Play_showPanel() {
 
     Play_CleanHideExit();
     Play_ForceShowPannel();
-    Play_Resetpanel(1);
+    Play_ResetPanel(1);
 }
 
 function Play_RefreshWatchingTime() {

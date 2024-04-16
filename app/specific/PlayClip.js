@@ -1024,7 +1024,7 @@ function PlayClip_SetOpenLiveError() {
     Play_HasLive = false;
     Play_BottomHide(Play_controlsOpenLive);
 
-    if (Play_Panelcounter === Play_controlsOpenLive) {
+    if (Play_PanelCounter === Play_controlsOpenLive) {
         Play_IconsResetFocus();
         Play_BottonIconsResetFocus(true);
     }

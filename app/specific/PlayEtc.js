@@ -482,7 +482,7 @@ function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
 
 function Play_IconsResetFocus() {
     Play_IconsRemoveFocus();
-    Play_Panelcounter = Play_controlsDefault;
+    Play_PanelCounter = Play_controlsDefault;
     if (Play_isPanelShowing() && PlayVod_PanelY === 2) Play_IconsAddFocus();
 }
 
@@ -2032,8 +2032,8 @@ var Play_controlsContentLang = temp_controls_pos++;
 var Play_controlsControls = temp_controls_pos++;
 
 var Play_controlsDefault = Play_controlsChat;
-var Play_Panelcounter = Play_controlsDefault;
-var Play_PanelcounterBefore = 0;
+var Play_PanelCounter = Play_controlsDefault;
+var Play_PanelCounterBefore = 0;
 
 function Play_MakeControls() {
     Play_controls[Play_controlsBack] = {
@@ -2055,11 +2055,11 @@ function Play_MakeControls() {
         values: null,
         defaultValue: null,
         enterKey: function (PlayVodClip, skipAddfocus) {
-            if (!Play_PanelcounterBefore) return;
+            if (!Play_PanelCounterBefore) return;
 
             Play_IconsRemoveFocus();
-            Play_Panelcounter = Play_PanelcounterBefore;
-            Play_PanelcounterBefore = 0;
+            Play_PanelCounter = Play_PanelCounterBefore;
+            Play_PanelCounterBefore = 0;
 
             Play_SetControlsVisibilityPlayer(PlayVodClip);
 
@@ -2247,7 +2247,7 @@ function Play_MakeControls() {
             AddCode_Channel_id = PlayVodClip === 1 ? Play_data.data[14] : Main_values.Main_selectedChannel_id;
             Play_FollowUnfollow();
 
-            Play_Resetpanel(PlayVodClip);
+            Play_ResetPanel(PlayVodClip);
         },
         setLabel: function (string, AddCode_IsFollowing) {
             Main_textContentWithEle(Play_controls[this.position].doc_title, string);
@@ -2417,7 +2417,7 @@ function Play_MakeControls() {
 
                 PlayClip_qualityIndexReset();
             }
-            Play_Resetpanel(PlayVodClip);
+            Play_ResetPanel(PlayVodClip);
         },
         updown: function (adder, PlayVodClip) {
             Play_updownquality(adder, PlayVodClip, Play_controlsQuality);
@@ -2453,7 +2453,7 @@ function Play_MakeControls() {
             else OSInterface_RestartPlayer(1, 0, 1); //small
 
             this.setLabel();
-            Play_Resetpanel(PlayVodClip);
+            Play_ResetPanel(PlayVodClip);
         },
         updown: function (adder) {
             this.defaultValue += adder;
@@ -2513,7 +2513,7 @@ function Play_MakeControls() {
                 OSInterface_StartMultiStream(pos, Play_MultiArray[pos].AutoUrl, Play_MultiArray[pos].playlist, true);
             }
 
-            Play_Resetpanel(PlayVodClip);
+            Play_ResetPanel(PlayVodClip);
         },
         updown: function (adder) {
             this.defaultValue += adder;
@@ -2613,7 +2613,7 @@ function Play_MakeControls() {
 
             Main_setItem('Play_LowLatency', Play_LowLatency);
             Play_ResetLowlatency();
-            Play_Resetpanel(PlayVodClip);
+            Play_ResetPanel(PlayVodClip);
         },
         updown: function (adder) {
             this.defaultValue += adder;
@@ -2779,10 +2779,10 @@ function Play_MakeControls() {
         values: null,
         defaultValue: null,
         enterKey: function () {
-            Play_PanelcounterBefore = Play_controlsAudio;
+            Play_PanelCounterBefore = Play_controlsAudio;
             Play_IconsRemoveFocus();
 
-            Play_Panelcounter = Play_controlsBack;
+            Play_PanelCounter = Play_controlsBack;
             Play_controlsAudioUpdateicons();
 
             Play_IconsAddFocus();
@@ -2823,7 +2823,7 @@ function Play_MakeControls() {
             Chat_SetHighlights();
             this.setLabel();
             this.setIcon();
-            Play_Resetpanel(PlayVodClip);
+            Play_ResetPanel(PlayVodClip);
         },
         setLabel: function () {
             var title = Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE;
@@ -2939,9 +2939,9 @@ function Play_MakeControls() {
         values: null,
         defaultValue: null,
         enterKey: function () {
-            Play_PanelcounterBefore = Play_controlsChatSettings;
+            Play_PanelCounterBefore = Play_controlsChatSettings;
             Play_IconsRemoveFocus();
-            Play_Panelcounter = Play_controlsBack;
+            Play_PanelCounter = Play_controlsBack;
             Play_SetControlsVisibility('ShowInChat');
             Play_IconsAddFocus();
         }
@@ -3070,9 +3070,9 @@ function Play_MakeControls() {
         values: null,
         defaultValue: null,
         enterKey: function () {
-            Play_PanelcounterBefore = Play_controlsPreview;
+            Play_PanelCounterBefore = Play_controlsPreview;
             Play_IconsRemoveFocus();
-            Play_Panelcounter = Play_controlsBack;
+            Play_PanelCounter = Play_controlsBack;
 
             Play_controls[Play_controlsPreviewEnable].defaultValue = Settings_Obj_default('show_feed_player');
             Play_controls[Play_controlsPreviewEnable].bottomArrows();
@@ -3980,7 +3980,7 @@ function Play_SetControlsVisibility(prop) {
         else Play_BottomHide(key);
     }
 
-    if (!Play_controls[Play_Panelcounter].visible) {
+    if (!Play_controls[Play_PanelCounter].visible) {
         Play_IconsResetFocus();
     }
 }
@@ -4005,14 +4005,14 @@ function Play_KeyChatPosChage() {
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {
-    if (Play_controls[Play_Panelcounter].enterKey) {
-        Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
+    if (Play_controls[Play_PanelCounter].enterKey) {
+        Play_controls[Play_PanelCounter].enterKey(PlayVodClip);
     } else {
-        Play_Resetpanel(PlayVodClip);
+        Play_ResetPanel(PlayVodClip);
     }
 }
 
-function Play_Resetpanel(PlayVodClip) {
+function Play_ResetPanel(PlayVodClip) {
     Play_clearHidePanel();
     if (PlayVodClip === 1) Play_setHidePanel();
     else if (PlayVodClip === 2) PlayVod_setHidePanel();
@@ -4020,8 +4020,8 @@ function Play_Resetpanel(PlayVodClip) {
 }
 
 function Play_BottomUpDown(PlayVodClip, adder) {
-    if (Play_controls[Play_Panelcounter].updown) {
-        Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
+    if (Play_controls[Play_PanelCounter].updown) {
+        Play_controls[Play_PanelCounter].updown(adder, PlayVodClip);
     } else if (adder === 1 && (PlayVodClip > 1 || !Play_StayDialogVisible())) {
         PlayVod_PanelY--;
         Play_BottonIconsFocus();
@@ -4029,20 +4029,20 @@ function Play_BottomUpDown(PlayVodClip, adder) {
 }
 
 function Play_IconsAddFocus() {
-    Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
+    Main_AddClassWitEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
 
-    Play_controls[Play_Panelcounter].button_text.style.opacity = '1';
+    Play_controls[Play_PanelCounter].button_text.style.opacity = '1';
 
-    if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
+    if (Play_controls[Play_PanelCounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
         Play_controls[Play_controlsChat].button_text.style.opacity = '1';
-    } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
+    } else if (Play_PanelCounter !== Play_controlsChat && !Play_controls[Play_PanelCounter].isChat) {
         Play_controls[Play_controlsChat].button_text.style.opacity = '0';
     }
 }
 
 function Play_IconsRemoveFocus() {
-    Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
-    Play_controls[Play_Panelcounter].button_text.style.opacity = '0';
+    Main_RemoveClassWithEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
+    Play_controls[Play_PanelCounter].button_text.style.opacity = '0';
     //in case chat is disable and the warning is showing because some chat option was selected
     Play_controls[Play_controlsChat].button_text.style.opacity = '0';
 }
@@ -4050,12 +4050,12 @@ function Play_IconsRemoveFocus() {
 function Play_BottomLeftRigt(PlayVodClip, adder, skipRemoveFocus) {
     if (!skipRemoveFocus) Play_IconsRemoveFocus();
 
-    Play_Panelcounter += adder;
+    Play_PanelCounter += adder;
 
-    if (Play_Panelcounter > Play_controlsSize) Play_Panelcounter = 0;
-    else if (Play_Panelcounter < 0) Play_Panelcounter = Play_controlsSize;
+    if (Play_PanelCounter > Play_controlsSize) Play_PanelCounter = 0;
+    else if (Play_PanelCounter < 0) Play_PanelCounter = Play_controlsSize;
 
-    if (!Play_controls[Play_Panelcounter].visible) {
+    if (!Play_controls[Play_PanelCounter].visible) {
         Play_BottomLeftRigt(PlayVodClip, adder, true);
         return;
     }
@@ -4238,7 +4238,7 @@ function Play_BottonIconsResetFocus(skipInfo) {
     Play_BottonIconsFocus(skipInfo);
 }
 
-function Play_BottonIconsFocusClear() {
+function Play_BottomIconsFocusClear() {
     Main_RemoveClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
     Main_RemoveClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
     Main_RemoveClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
@@ -4253,7 +4253,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump, skipHide) {
         return;
     }
 
-    Play_BottonIconsFocusClear();
+    Play_BottomIconsFocusClear();
 
     if (!PlayVod_PanelY) {
         //progress_bar
@@ -4534,7 +4534,9 @@ function Play_SetSceneBackground(url, reset) {
         return;
     }
 
-    if (!Play_isFullScreen) url = null;
+    if (!Play_isFullScreen) {
+        url = null;
+    }
 
     if (!Main_A_equals_B(Play_SetSceneBackgroundUrl, url)) {
         Main_Scene2Doc.style.backgroundRepeat = 'no-repeat';
