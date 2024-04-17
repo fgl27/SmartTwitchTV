@@ -1780,7 +1780,7 @@ function Play_handleKeyDown(e) {
 
                 if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY--;
-                    Play_BottonIconsFocus();
+                    Play_BottomIconsFocus();
                 } else Play_BottomUpDown(1, 1);
 
                 Play_setHidePanel();
@@ -1809,7 +1809,7 @@ function Play_handleKeyDown(e) {
 
                 if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY++;
-                    Play_BottonIconsFocus(false, true);
+                    Play_BottomIconsFocus(false, true);
                 } else Play_BottomUpDown(1, -1);
 
                 Play_setHidePanel();
@@ -4024,7 +4024,7 @@ function Play_BottomUpDown(PlayVodClip, adder) {
         Play_controls[Play_PanelCounter].updown(adder, PlayVodClip);
     } else if (adder === 1 && (PlayVodClip > 1 || !Play_StayDialogVisible())) {
         PlayVod_PanelY--;
-        Play_BottonIconsFocus();
+        Play_BottomIconsFocus();
     }
 }
 
@@ -4235,7 +4235,7 @@ function Play_BottomIconsSet() {
 function Play_BottonIconsResetFocus(skipInfo) {
     PlayVod_PanelY = 1;
     PlayClip_EnterPos = 0;
-    Play_BottonIconsFocus(skipInfo);
+    Play_BottomIconsFocus(skipInfo);
 }
 
 function Play_BottomIconsFocusClear() {
@@ -4247,7 +4247,7 @@ function Play_BottomIconsFocusClear() {
     Main_HideElementWithEle(Play_BottonIcons_Back_Img_holder);
 }
 
-function Play_BottonIconsFocus(skipInfo, checkjump, skipHide) {
+function Play_BottomIconsFocus(skipInfo, checkjump, skipHide) {
     if (PlayVod_PanelY < 0) {
         PlayVod_PanelY = 0;
         return;
@@ -4294,7 +4294,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump, skipHide) {
 
         Play_IconsRemoveFocus();
 
-        if (PlayVod_IsJumping && checkjump) Play_BottonIconsFocusResetProgress();
+        if (PlayVod_IsJumping && checkjump) Play_BottomIconsFocusResetProgress();
 
         Play_BottonIcons_Progress_Steps.style.display = 'none';
     } else if (PlayVod_PanelY === 2) {
@@ -4308,7 +4308,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump, skipHide) {
     }
 }
 
-function Play_BottonIconsFocusResetProgress() {
+function Play_BottomIconsFocusResetProgress() {
     var time = OSInterface_gettime() / 1000;
 
     PlayVod_ProgresBarrUpdateNoAnimation(time > 1.5 ? time + 1.5 : 0, Play_DurationSeconds, true);

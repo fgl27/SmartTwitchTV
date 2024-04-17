@@ -1526,7 +1526,7 @@ function Play_showPanel() {
         PlayVod_RefreshProgressBarrStart(true, 0);
     } else {
         PlayVod_PanelY = 2;
-        Play_BottonIconsFocus();
+        Play_BottomIconsFocus();
         Play_RefreshWatchingTime();
         PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingTime, 1000, PlayVod_RefreshProgressBarrID);
     }
@@ -2136,7 +2136,7 @@ function Play_FastBackForward(position) {
     if (!Play_isPanelShowing()) Play_showPanel();
     Play_clearHidePanel();
     PlayVod_PanelY = 0;
-    Play_BottonIconsFocus();
+    Play_BottomIconsFocus();
 
     PlayVod_jumpStart(position, Play_DurationSeconds);
     PlayVod_ProgressBaroffset = 2500;

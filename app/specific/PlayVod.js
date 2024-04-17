@@ -1220,7 +1220,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_ProgressBaroffset = 2500;
                 } else if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY--;
-                    Play_BottonIconsFocus();
+                    Play_BottomIconsFocus();
                 } else {
                     Play_BottomUpDown(2, 1);
                 }
@@ -1241,7 +1241,7 @@ function PlayVod_handleKeyDown(e) {
                 Play_clearHidePanel();
                 if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY++;
-                    Play_BottonIconsFocus(false, true);
+                    Play_BottomIconsFocus(false, true);
                     PlayVod_previews_clear_img();
                 } else Play_BottomUpDown(2, -1);
                 PlayVod_setHidePanel();
@@ -1405,7 +1405,7 @@ function PlayVod_FastBackForward(position) {
     if (!Play_isPanelShowing()) PlayVod_showPanel(true);
     Play_clearHidePanel();
     PlayVod_PanelY = 0;
-    Play_BottonIconsFocus();
+    Play_BottomIconsFocus();
 
     PlayVod_jumpStart(position, Play_DurationSeconds);
     PlayVod_ProgressBaroffset = 2500;

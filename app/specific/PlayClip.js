@@ -749,7 +749,7 @@ function PlayClip_handleKeyDown(e) {
                 } else if (PlayVod_PanelY === 1) {
                     if (PlayClip_EnterPos > -1) {
                         PlayClip_EnterPos--;
-                        if (PlayClip_HasBack || !PlayClip_EnterPos) Play_BottonIconsFocus();
+                        if (PlayClip_HasBack || !PlayClip_EnterPos) Play_BottomIconsFocus();
                         else PlayClip_EnterPos++;
                     }
                 }
@@ -778,7 +778,7 @@ function PlayClip_handleKeyDown(e) {
                 } else if (PlayVod_PanelY === 1) {
                     if (PlayClip_EnterPos < 1) {
                         PlayClip_EnterPos++;
-                        if (PlayClip_HasNext || !PlayClip_EnterPos) Play_BottonIconsFocus();
+                        if (PlayClip_HasNext || !PlayClip_EnterPos) Play_BottomIconsFocus();
                         else PlayClip_EnterPos--;
                     }
                 }
@@ -803,7 +803,7 @@ function PlayClip_handleKeyDown(e) {
                 Play_clearHidePanel();
                 if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY--;
-                    Play_BottonIconsFocus();
+                    Play_BottomIconsFocus();
                 } else Play_BottomUpDown(3, 1);
                 PlayClip_setHidePanel();
             } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
@@ -821,7 +821,7 @@ function PlayClip_handleKeyDown(e) {
                 Play_clearHidePanel();
                 if (PlayVod_PanelY < 2) {
                     PlayVod_PanelY++;
-                    Play_BottonIconsFocus(false, true);
+                    Play_BottomIconsFocus(false, true);
                 } else Play_BottomUpDown(3, -1);
                 PlayClip_setHidePanel();
             } else if (Play_isEndDialogVisible()) {
@@ -949,7 +949,7 @@ function PlayClip_FastBackForward(position) {
     if (!Play_isPanelShowing()) PlayClip_showPanel();
     Play_clearHidePanel();
     PlayVod_PanelY = 0;
-    Play_BottonIconsFocus();
+    Play_BottomIconsFocus();
 
     PlayVod_jumpStart(position, Play_DurationSeconds);
     PlayVod_ProgressBaroffset = 2500;

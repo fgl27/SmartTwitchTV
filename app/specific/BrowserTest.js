@@ -1257,9 +1257,9 @@ function BrowserTest_Scene1DocOnwheel(y) {
 }
 
 function progress_pause_holder_hover() {
-    progress_pause_holder_hover = Main_getElementById('progress_pause_holder');
+    var progress_pause_elm = Main_getElementById('progress_pause_holder');
 
-    progress_pause_holder_hover.onmousemove = function (event) {
+    progress_pause_elm.onmousemove = function (event) {
         if (Main_isScene2DocVisible() && Play_isPanelShowing()) {
             var id = event.target.id;
 
@@ -1270,19 +1270,19 @@ function progress_pause_holder_hover() {
             if (PlayClip_HasNext && Main_A_includes_B(id, 'next_button_')) {
                 PlayVod_PanelY = 1;
                 PlayClip_EnterPos = 1;
-                Play_BottonIconsFocus(null, null, true);
+                Play_BottomIconsFocus(null, null, true);
             } else if (PlayClip_HasBack && Main_A_includes_B(id, 'back_button_')) {
                 PlayVod_PanelY = 1;
                 PlayClip_EnterPos = -1;
-                Play_BottonIconsFocus(null, null, true);
+                Play_BottomIconsFocus(null, null, true);
             } else if (Main_A_includes_B(id, 'pause_button')) {
                 PlayVod_PanelY = 1;
                 PlayClip_EnterPos = 0;
-                Play_BottonIconsFocus();
+                Play_BottomIconsFocus();
             } else if (Main_A_includes_B(id, 'progress_bar')) {
                 PlayVod_PanelY = 1;
                 PlayClip_EnterPos = 0;
-                Play_BottonIconsFocus();
+                Play_BottomIconsFocus();
             }
         }
     };
