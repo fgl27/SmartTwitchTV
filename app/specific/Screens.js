@@ -3253,7 +3253,7 @@ function Screens_BlockChannel(key) {
 
 function Screens_BlockCheckDeleteChannel(key) {
     if (
-        Main_values.Main_BeforeAgame !== Main_Blocked &&
+        ScreenObj[key].BeforeAgame !== Main_Blocked &&
         ScreenObj[key].screen !== Main_Blocked &&
         ScreenObj[key].screen !== Main_ChannelClip &&
         ScreenObj[key].screen !== Main_ChannelVod &&
