@@ -31641,13 +31641,15 @@
                 Main_values.Main_Go !== Main_ChannelClip ?
                 Main_values.Main_BeforeChannel :
                 Main_values.Main_Go;
+
             Main_values.Main_BeforeAgameisSet = true;
         }
 
         Main_ExitCurrent(Main_values.Main_Go);
-        Main_values.Main_Go = Main_aGame;
 
-        ScreenObj[Main_values.Main_Go].BeforeAgame = Main_values.Main_BeforeAgame === Main_Blocked ? null : Main_values.Main_BeforeAgame;
+        ScreenObj[Main_aGame].BeforeAgame = Main_values.Main_Go;
+
+        Main_values.Main_Go = Main_aGame;
 
         Main_ReStartScreens();
     }
