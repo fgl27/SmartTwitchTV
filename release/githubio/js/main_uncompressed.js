@@ -2250,7 +2250,7 @@
         STR_UPDATE_CHECKING = 'Buscando actualizaciones...';
         STR_UPDATE_CHECKING_FAIL = 'Error de comprobación de actualización';
         STR_NO_UPDATES = 'La aplicación está actualizada';
-        STR_UPDATE_CHANGELOG = 'Actualización & Cambios';
+        //STR_UPDATE_CHANGELOG = 'Actualización & Cambios';
         STR_UPDATE_LATEST = 'Último cambio:';
         STR_UPDATE_FAIL = 'El proceso de actualización ha fallado, por favor, inténtelo manualmente!';
         STR_UPDATE_FAIL_DOWNLOAD = 'El proceso de actualización no logra descargar el APK, por favor inténtelo manualmente!';
@@ -2809,7 +2809,7 @@
         STR_UPDATE_CHECKING = 'Verificando atualizações ...';
         STR_UPDATE_CHECKING_FAIL = 'Falha na verificação da atualização';
         STR_NO_UPDATES = 'O aplicativo está atualizado';
-        STR_UPDATE_CHANGELOG = 'Atualizar & Changelog';
+        //STR_UPDATE_CHANGELOG = 'Atualizar & Changelog';
         STR_UPDATE_LATEST = 'Última alteração:';
         STR_UPDATE_FAIL = 'Falha no processo de atualização, tente manualmente!';
         STR_UPDATE_FAIL_DOWNLOAD = 'O processo de atualização falhou ao baixar o APK, tente manualmente!';
@@ -3680,7 +3680,7 @@
         STR_UPDATE_CHECKING = 'Проверка обновлений...';
         STR_UPDATE_CHECKING_FAIL = 'Ошибка проверки';
         STR_NO_UPDATES = 'У вас последняя версия';
-        STR_UPDATE_CHANGELOG = 'Обновление';
+        //STR_UPDATE_CHANGELOG = 'Обновление';
         STR_UPDATE_LATEST = 'Последнее обновление:';
         STR_UPDATE_FAIL = 'Ошибка обновления, попробуйте вручную!';
         STR_UPDATE_FAIL_DOWNLOAD = 'Не удалось загрузить APK-файл, попробуйте вручную!';
