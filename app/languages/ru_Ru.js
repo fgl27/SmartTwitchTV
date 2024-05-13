@@ -86,7 +86,7 @@ function ru_RULang() {
     STR_UPDATE_CHECKING = 'Проверка обновлений...';
     STR_UPDATE_CHECKING_FAIL = 'Ошибка проверки';
     STR_NO_UPDATES = 'У вас последняя версия';
-    STR_UPDATE_CHANGELOG = 'Обновление';
+    //STR_UPDATE_CHANGELOG = 'Обновление';
     STR_UPDATE_LATEST = 'Последнее обновление:';
     STR_UPDATE_FAIL = 'Ошибка обновления, попробуйте вручную!';
     STR_UPDATE_FAIL_DOWNLOAD = 'Не удалось загрузить APK-файл, попробуйте вручную!';

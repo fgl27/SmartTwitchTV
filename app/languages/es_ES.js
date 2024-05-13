@@ -89,7 +89,7 @@ function es_ESLang() {
     STR_UPDATE_CHECKING = 'Buscando actualizaciones...';
     STR_UPDATE_CHECKING_FAIL = 'Error de comprobación de actualización';
     STR_NO_UPDATES = 'La aplicación está actualizada';
-    STR_UPDATE_CHANGELOG = 'Actualización & Cambios';
+    //STR_UPDATE_CHANGELOG = 'Actualización & Cambios';
     STR_UPDATE_LATEST = 'Último cambio:';
     STR_UPDATE_FAIL = 'El proceso de actualización ha fallado, por favor, inténtelo manualmente!';
     STR_UPDATE_FAIL_DOWNLOAD = 'El proceso de actualización no logra descargar el APK, por favor inténtelo manualmente!';
