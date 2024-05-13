@@ -820,6 +820,7 @@
     var STR_CONTROLS_PLAY_0 = '';
     var STR_CONTACT;
     var STR_PAYPAL;
+    var STR_PIX;
     var STR_BITCOIN;
     var STR_BITCOIN_WALLET = '1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x';
     var STR_APP_LAG = 'https://tinyurl.com/applag';
@@ -962,14 +963,21 @@
         STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
         STR_GOBACK = STR_GOBACK_START;
         STR_PAYPAL =
-            '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+            '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png">' +
+            STR_SPACE_HTML +
             STR_PAYPAL_SUMMARY +
             STR_BR +
+            STR_SPACE_HTML +
+            '<img style="vertical-align: middle; display: inline-block; width: 10.5%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/donoqr.png">' +
             '<div style="display: inline-block; color: ' +
             LINK_COLOR +
-            ';font-size: 2vh;text-align: center; font-family: Roboto;">' +
-            DefaultMakeLink('  http://tiny.cc/donatetofgl27') +
+            ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' +
+            STR_SPACE_HTML +
+            STR_SPACE_HTML +
+            DefaultMakeLink('http://tiny.cc/help27') +
+            STR_SPACE_HTML +
             '</div></div></div>';
+
         STR_BITCOIN =
             '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png">' +
             STR_SPACE_HTML +
@@ -981,7 +989,17 @@
             ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' +
             STR_BITCOIN_WALLET +
             STR_SPACE_HTML +
-            '</div><img style="vertical-align: middle; display: inline-block; width: 17%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png"></div></div>';
+            '</div><img style="vertical-align: middle; display: inline-block; width: 10.5%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png"></div></div>';
+
+        STR_PIX =
+            '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+            'Pix donations key (For Brazilians only)' +
+            STR_BR +
+            '<div style="display: inline-block; color: ' +
+            LINK_COLOR +
+            ';font-size: 2vh;text-align: center; font-family: Roboto;">' +
+            DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') +
+            '</div></div></div>';
 
         STR_CONTROLS_PLAY_0 =
             STR_DIV_MIDLE_LEFT +
@@ -1364,7 +1382,7 @@
         STR_UPDATE_CHECKING = 'Checking for Updates ...';
         STR_UPDATE_CHECKING_FAIL = 'Update check failed';
         STR_NO_UPDATES = 'The app is up to date';
-        STR_UPDATE_CHANGELOG = 'Updates & Changelog';
+        STR_UPDATE_CHANGELOG = 'Please Help!'; //'Updates & Changelog';
         STR_UPDATE_LATEST = 'Latest change:';
         STR_UPDATE_FAIL = 'Update process failed, please try manually!';
         STR_UPDATE_FAIL_DOWNLOAD = 'Update process failed to download the APK, please try manually!';
@@ -1616,7 +1634,7 @@
         STR_THUMB_RESOLUTION = 'Thumbnail quality';
         STR_THUMB_RESOLUTION_SUMMARY =
             "Default thumbnail resolution for lives, videos and games (can't be applied for clips). A lower value will help the app load faster, but the thumbnail may look blurry.";
-        STR_PAYPAL_SUMMARY = 'Paypal donations, use the link below:';
+        STR_PAYPAL_SUMMARY = 'Paypal donations, use the link or QR code:';
         STR_BITCOIN_SUMMARY = 'Bitcoin donations, use the wallet address or read the QR Code:';
         STR_PLAYER_PROBLEM_2 = 'Connection failed, unable to load stream info';
         STR_PLAYER_RESYNC = 'Player restart';
@@ -11797,7 +11815,8 @@
         API_Change: true,
         Password_data: null,
         OverwriteBlock: 0,
-        BlockSort: false
+        BlockSort: false,
+        showHelp: true
     };
 
     var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -12730,60 +12749,68 @@
         return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
     }
 
+    var checkUpdates = false;
+
     function Main_checkVersion(skipCheck) {
-        var Main_versionTag;
+        if (Main_values.showHelp) {
+            Main_showHelpDialog();
+            Main_values.showHelp = false;
+        }
+        if (checkUpdates) {
+            var Main_versionTag;
 
-        if (Main_IsOn_OSInterface) {
-            var device = OSInterface_getDevice();
-            var Webviewversion = OSInterface_getWebviewVersion();
-            var Manufacturer = OSInterface_getManufacturer();
-            var Main_AndroidSDK = OSInterface_getSDK();
+            if (Main_IsOn_OSInterface) {
+                var device = OSInterface_getDevice();
+                var Webviewversion = OSInterface_getWebviewVersion();
+                var Manufacturer = OSInterface_getManufacturer();
+                var Main_AndroidSDK = OSInterface_getSDK();
 
-            Main_Log('Webviewversion ' + Webviewversion);
+                Main_Log('Webviewversion ' + Webviewversion);
 
-            Main_versionTag =
-                'Apk: ' +
-                Main_IsOn_OSInterfaceVersion +
-                ' Web: ' +
-                version.WebVersion +
-                (Webviewversion ? ' Webview: ' + Webviewversion : '') +
-                ' Device: ' +
-                Manufacturer +
-                ' - ' +
-                device +
-                ' Sdk: ' +
-                Main_AndroidSDK;
+                Main_versionTag =
+                    'Apk: ' +
+                    Main_IsOn_OSInterfaceVersion +
+                    ' Web: ' +
+                    version.WebVersion +
+                    (Webviewversion ? ' Webview: ' + Webviewversion : '') +
+                    ' Device: ' +
+                    Manufacturer +
+                    ' - ' +
+                    device +
+                    ' Sdk: ' +
+                    Main_AndroidSDK;
 
-            var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
+                var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
 
-            if (!Settings_value.update_background.defaultValue) {
-                if (needUpdate) {
-                    Main_HasUpdate = true;
-                    Main_WarnUpdate(false);
-                } else if (!skipCheck) Main_CheckUpdate();
+                if (!Settings_value.update_background.defaultValue) {
+                    if (needUpdate) {
+                        Main_HasUpdate = true;
+                        Main_WarnUpdate(false);
+                    } else if (!skipCheck) Main_CheckUpdate();
+                }
+
+                Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, Webviewversion, device, Main_AndroidSDK, Manufacturer);
+            } else {
+                Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
+
+                Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
             }
 
-            Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, Webviewversion, device, Main_AndroidSDK, Manufacturer);
-        } else {
-            Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
+            Main_innerHTML(
+                'dialog_about_text',
+                STR_ABOUT_INFO_HEADER +
+                Main_versionTag +
+                STR_BR +
+                STR_DIV_LINK +
+                AddCode_redirect_uri +
+                '</div>' +
+                STR_BR +
+                '<span id="about_runningtime"></span>' +
+                STR_ABOUT_INFO_0
+            );
 
-            Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
+            Main_RunningTime = new Date().getTime();
         }
-
-        Main_innerHTML(
-            'dialog_about_text',
-            STR_ABOUT_INFO_HEADER +
-            Main_versionTag +
-            STR_BR +
-            STR_DIV_LINK +
-            AddCode_redirect_uri +
-            '</div>' +
-            STR_BR +
-            '<span id="about_runningtime"></span>' +
-            STR_ABOUT_INFO_0
-        );
-
-        Main_RunningTime = new Date().getTime();
     }
 
     var Main_checkWebVersionId;
@@ -12792,16 +12819,22 @@
     var Main_Ischecking;
 
     function Main_CheckUpdate(forceUpdate) {
-        if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
+        if (checkUpdates) {
+            if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
 
-        if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
-            BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', Main_CheckUpdateResult, Main_CheckUpdateFail);
-        } else {
-            Main_setTimeout(function() {
-                Main_Ischecking = false;
-                Main_UpdateDialogTitle();
-                Main_UpdateDialogSetTitle();
-            }, 1000);
+            if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
+                BaseXmlHttpGet(
+                    'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
+                    Main_CheckUpdateResult,
+                    Main_CheckUpdateFail
+                );
+            } else {
+                Main_setTimeout(function() {
+                    Main_Ischecking = false;
+                    Main_UpdateDialogTitle();
+                    Main_UpdateDialogSetTitle();
+                }, 1000);
+            }
         }
     }
 
@@ -12932,14 +12965,14 @@
                 }
 
                 break;
-            case KEY_RIGHT:
-            case KEY_LEFT:
-                Main_UpdateCursor = Main_UpdateCursor ^ 1;
-                Main_UpdateDialogSet();
-                break;
-            case KEY_ENTER:
-                Main_UpdateDialogKeyEnter();
-                break;
+                // case KEY_RIGHT:
+                // case KEY_LEFT:
+                //     Main_UpdateCursor = Main_UpdateCursor ^ 1;
+                //     Main_UpdateDialogSet();
+                //     break;
+                // case KEY_ENTER:
+                //     Main_UpdateDialogKeyEnter();
+                //     break;
             default:
                 break;
         }
@@ -13016,9 +13049,55 @@
         Main_innerHTML('update_dialog_text', innerHtml);
     }
 
-    function Main_UpdateDialogShowCheck() {
-        Main_UpdateDialogStartCheck();
+    function Main_showHelpDialog() {
+        console.log('Main_showHelpDialog');
+        Main_HideElement('update_dialog_upbutton');
+        Main_HideElement('update_dialog_changebutton');
         Main_showUpdateDialog();
+    }
+
+    function Main_UpdateDialogShowCheck() {
+        Main_showHelpDialog();
+
+        // Main_UpdateDialogStartCheck();
+        // Main_showUpdateDialog();
+    }
+
+    function Main_UpdateDialogHelpTitle() {
+        var innerHtml =
+            '<div class="about_text_title" ' +
+            (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
+            '>' +
+            STR_UPDATE_CHANGELOG +
+            STR_BR +
+            '</div>' +
+            STR_BR;
+
+        var helpText =
+            'Dear Twitch Community,' +
+            STR_BR +
+            STR_BR +
+            'I hope this message finds you well. I am reaching out to share a personal hardship that has recently affected not only my life but also the lives of many in the south of Brazil. We have been caught in a severe flood, which has resulted in me leaving my home and most of my belongings behind.' +
+            STR_BR +
+            STR_BR +
+            "I want to reassure you that my family and I are safe. The losses we've suffered are material, but the emotional toll is significant. The devastation is overwhelming, and the process of rebuilding seems daunting. However, I believe in the strength of community and the kindness of people. Therefore, I am humbly asking for your support during this challenging time." +
+            STR_BR +
+            STR_BR +
+            'Any donation, no matter how small, would be greatly appreciated. These funds will go directly towards rebuilding efforts and replacing necessary items lost in the flood.' +
+            STR_BR +
+            STR_BR +
+            'Thank you for taking the time to read my message. Your support means more than words can express.' +
+            STR_BR +
+            STR_BR +
+            'Best regards, Felipe Leon (fgl27)' +
+            STR_BR +
+            STR_BR +
+            STR_PAYPAL +
+            STR_BITCOIN +
+            STR_PIX;
+        innerHtml += helpText + STR_DIV_MIDLE_LEFT;
+
+        Main_innerHTML('update_dialog_text', innerHtml);
     }
 
     function Main_UpdateDialogStartCheck() {
@@ -13029,7 +13108,8 @@
     }
 
     function Main_showUpdateDialog() {
-        Main_UpdateDialogTitle();
+        //Main_UpdateDialogTitle();
+        Main_UpdateDialogHelpTitle();
         Main_PreventClick(true, Main_UpdateDialogKeyFun, true);
         Main_UpdateDialogSet();
 
@@ -19578,6 +19658,7 @@
             case KEY_4:
                 Play_controls[Play_controlsChatSend].enterKey();
                 break;
+            case KEY_NUMPAD_0:
             case KEY_0:
             case KEY_U:
                 Main_UpdateDialogShowCheck();
