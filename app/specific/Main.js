@@ -106,7 +106,8 @@ var Main_values = {
     API_Change: true,
     Password_data: null,
     OverwriteBlock: 0,
-    BlockSort: false
+    BlockSort: false,
+    showHelp: true
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -1037,60 +1038,68 @@ function Main_videoCreatedAtWithHM(time) {
     return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
 }
 
+var checkUpdates = false;
+
 function Main_checkVersion(skipCheck) {
-    var Main_versionTag;
+    if (Main_values.showHelp) {
+        Main_showHelpDialog();
+        Main_values.showHelp = false;
+    }
+    if (checkUpdates) {
+        var Main_versionTag;
 
-    if (Main_IsOn_OSInterface) {
-        var device = OSInterface_getDevice();
-        var Webviewversion = OSInterface_getWebviewVersion();
-        var Manufacturer = OSInterface_getManufacturer();
-        var Main_AndroidSDK = OSInterface_getSDK();
+        if (Main_IsOn_OSInterface) {
+            var device = OSInterface_getDevice();
+            var Webviewversion = OSInterface_getWebviewVersion();
+            var Manufacturer = OSInterface_getManufacturer();
+            var Main_AndroidSDK = OSInterface_getSDK();
 
-        Main_Log('Webviewversion ' + Webviewversion);
+            Main_Log('Webviewversion ' + Webviewversion);
 
-        Main_versionTag =
-            'Apk: ' +
-            Main_IsOn_OSInterfaceVersion +
-            ' Web: ' +
-            version.WebVersion +
-            (Webviewversion ? ' Webview: ' + Webviewversion : '') +
-            ' Device: ' +
-            Manufacturer +
-            ' - ' +
-            device +
-            ' Sdk: ' +
-            Main_AndroidSDK;
+            Main_versionTag =
+                'Apk: ' +
+                Main_IsOn_OSInterfaceVersion +
+                ' Web: ' +
+                version.WebVersion +
+                (Webviewversion ? ' Webview: ' + Webviewversion : '') +
+                ' Device: ' +
+                Manufacturer +
+                ' - ' +
+                device +
+                ' Sdk: ' +
+                Main_AndroidSDK;
 
-        var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
+            var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
 
-        if (!Settings_value.update_background.defaultValue) {
-            if (needUpdate) {
-                Main_HasUpdate = true;
-                Main_WarnUpdate(false);
-            } else if (!skipCheck) Main_CheckUpdate();
+            if (!Settings_value.update_background.defaultValue) {
+                if (needUpdate) {
+                    Main_HasUpdate = true;
+                    Main_WarnUpdate(false);
+                } else if (!skipCheck) Main_CheckUpdate();
+            }
+
+            Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, Webviewversion, device, Main_AndroidSDK, Manufacturer);
+        } else {
+            Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
+
+            Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
         }
 
-        Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, Webviewversion, device, Main_AndroidSDK, Manufacturer);
-    } else {
-        Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
+        Main_innerHTML(
+            'dialog_about_text',
+            STR_ABOUT_INFO_HEADER +
+                Main_versionTag +
+                STR_BR +
+                STR_DIV_LINK +
+                AddCode_redirect_uri +
+                '</div>' +
+                STR_BR +
+                '<span id="about_runningtime"></span>' +
+                STR_ABOUT_INFO_0
+        );
 
-        Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
+        Main_RunningTime = new Date().getTime();
     }
-
-    Main_innerHTML(
-        'dialog_about_text',
-        STR_ABOUT_INFO_HEADER +
-            Main_versionTag +
-            STR_BR +
-            STR_DIV_LINK +
-            AddCode_redirect_uri +
-            '</div>' +
-            STR_BR +
-            '<span id="about_runningtime"></span>' +
-            STR_ABOUT_INFO_0
-    );
-
-    Main_RunningTime = new Date().getTime();
 }
 
 var Main_checkWebVersionId;
@@ -1098,16 +1107,22 @@ var Main_checkWebVersionResumeId;
 var Main_HasUpdate;
 var Main_Ischecking;
 function Main_CheckUpdate(forceUpdate) {
-    if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
+    if (checkUpdates) {
+        if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
 
-    if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
-        BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', Main_CheckUpdateResult, Main_CheckUpdateFail);
-    } else {
-        Main_setTimeout(function () {
-            Main_Ischecking = false;
-            Main_UpdateDialogTitle();
-            Main_UpdateDialogSetTitle();
-        }, 1000);
+        if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
+            BaseXmlHttpGet(
+                'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
+                Main_CheckUpdateResult,
+                Main_CheckUpdateFail
+            );
+        } else {
+            Main_setTimeout(function () {
+                Main_Ischecking = false;
+                Main_UpdateDialogTitle();
+                Main_UpdateDialogSetTitle();
+            }, 1000);
+        }
     }
 }
 
@@ -1235,14 +1250,14 @@ function Main_UpdateDialogKeyFun(event) {
             }
 
             break;
-        case KEY_RIGHT:
-        case KEY_LEFT:
-            Main_UpdateCursor = Main_UpdateCursor ^ 1;
-            Main_UpdateDialogSet();
-            break;
-        case KEY_ENTER:
-            Main_UpdateDialogKeyEnter();
-            break;
+        // case KEY_RIGHT:
+        // case KEY_LEFT:
+        //     Main_UpdateCursor = Main_UpdateCursor ^ 1;
+        //     Main_UpdateDialogSet();
+        //     break;
+        // case KEY_ENTER:
+        //     Main_UpdateDialogKeyEnter();
+        //     break;
         default:
             break;
     }
@@ -1318,9 +1333,55 @@ function Main_UpdateDialogTitle() {
     Main_innerHTML('update_dialog_text', innerHtml);
 }
 
-function Main_UpdateDialogShowCheck() {
-    Main_UpdateDialogStartCheck();
+function Main_showHelpDialog() {
+    console.log('Main_showHelpDialog');
+    Main_HideElement('update_dialog_upbutton');
+    Main_HideElement('update_dialog_changebutton');
     Main_showUpdateDialog();
+}
+
+function Main_UpdateDialogShowCheck() {
+    Main_showHelpDialog();
+
+    // Main_UpdateDialogStartCheck();
+    // Main_showUpdateDialog();
+}
+
+function Main_UpdateDialogHelpTitle() {
+    var innerHtml =
+        '<div class="about_text_title" ' +
+        (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
+        '>' +
+        STR_UPDATE_CHANGELOG +
+        STR_BR +
+        '</div>' +
+        STR_BR;
+
+    var helpText =
+        'Dear Twitch Community,' +
+        STR_BR +
+        STR_BR +
+        'I hope this message finds you well. I am reaching out to share a personal hardship that has recently affected not only my life but also the lives of many in the south of Brazil. We have been caught in a severe flood, which has resulted in me leaving my home and most of my belongings behind.' +
+        STR_BR +
+        STR_BR +
+        "I want to reassure you that my family and I are safe. The losses we've suffered are material, but the emotional toll is significant. The devastation is overwhelming, and the process of rebuilding seems daunting. However, I believe in the strength of community and the kindness of people. Therefore, I am humbly asking for your support during this challenging time." +
+        STR_BR +
+        STR_BR +
+        'Any donation, no matter how small, would be greatly appreciated. These funds will go directly towards rebuilding efforts and replacing necessary items lost in the flood.' +
+        STR_BR +
+        STR_BR +
+        'Thank you for taking the time to read my message. Your support means more than words can express.' +
+        STR_BR +
+        STR_BR +
+        'Best regards, Felipe Leon (fgl27)' +
+        STR_BR +
+        STR_BR +
+        STR_PAYPAL +
+        STR_BITCOIN +
+        STR_PIX;
+    innerHtml += helpText + STR_DIV_MIDLE_LEFT;
+
+    Main_innerHTML('update_dialog_text', innerHtml);
 }
 
 function Main_UpdateDialogStartCheck() {
@@ -1331,7 +1392,8 @@ function Main_UpdateDialogStartCheck() {
 }
 
 function Main_showUpdateDialog() {
-    Main_UpdateDialogTitle();
+    //Main_UpdateDialogTitle();
+    Main_UpdateDialogHelpTitle();
     Main_PreventClick(true, Main_UpdateDialogKeyFun, true);
     Main_UpdateDialogSet();
 

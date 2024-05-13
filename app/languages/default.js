@@ -42,6 +42,7 @@ var STR_ACCESSIBILITY_WARN_TEXT = '';
 var STR_CONTROLS_PLAY_0 = '';
 var STR_CONTACT;
 var STR_PAYPAL;
+var STR_PIX;
 var STR_BITCOIN;
 var STR_BITCOIN_WALLET = '1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x';
 var STR_APP_LAG = 'https://tinyurl.com/applag';
@@ -184,14 +185,21 @@ function DefaultLang() {
     STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
     STR_GOBACK = STR_GOBACK_START;
     STR_PAYPAL =
-        '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+        '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png">' +
+        STR_SPACE_HTML +
         STR_PAYPAL_SUMMARY +
         STR_BR +
+        STR_SPACE_HTML +
+        '<img style="vertical-align: middle; display: inline-block; width: 10.5%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/donoqr.png">' +
         '<div style="display: inline-block; color: ' +
         LINK_COLOR +
-        ';font-size: 2vh;text-align: center; font-family: Roboto;">' +
-        DefaultMakeLink('  http://tiny.cc/donatetofgl27') +
+        ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' +
+        STR_SPACE_HTML +
+        STR_SPACE_HTML +
+        DefaultMakeLink('http://tiny.cc/help27') +
+        STR_SPACE_HTML +
         '</div></div></div>';
+
     STR_BITCOIN =
         '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png">' +
         STR_SPACE_HTML +
@@ -203,7 +211,17 @@ function DefaultLang() {
         ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' +
         STR_BITCOIN_WALLET +
         STR_SPACE_HTML +
-        '</div><img style="vertical-align: middle; display: inline-block; width: 17%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png"></div></div>';
+        '</div><img style="vertical-align: middle; display: inline-block; width: 10.5%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png"></div></div>';
+
+    STR_PIX =
+        '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+        'Pix donations key (For Brazilians only)' +
+        STR_BR +
+        '<div style="display: inline-block; color: ' +
+        LINK_COLOR +
+        ';font-size: 2vh;text-align: center; font-family: Roboto;">' +
+        DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') +
+        '</div></div></div>';
 
     STR_CONTROLS_PLAY_0 =
         STR_DIV_MIDLE_LEFT +

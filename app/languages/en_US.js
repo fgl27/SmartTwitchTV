@@ -98,7 +98,7 @@ function en_USLang() {
     STR_UPDATE_CHECKING = 'Checking for Updates ...';
     STR_UPDATE_CHECKING_FAIL = 'Update check failed';
     STR_NO_UPDATES = 'The app is up to date';
-    STR_UPDATE_CHANGELOG = 'Updates & Changelog';
+    STR_UPDATE_CHANGELOG = 'Please Help!'; //'Updates & Changelog';
     STR_UPDATE_LATEST = 'Latest change:';
     STR_UPDATE_FAIL = 'Update process failed, please try manually!';
     STR_UPDATE_FAIL_DOWNLOAD = 'Update process failed to download the APK, please try manually!';
@@ -350,7 +350,7 @@ function en_USLang() {
     STR_THUMB_RESOLUTION = 'Thumbnail quality';
     STR_THUMB_RESOLUTION_SUMMARY =
         "Default thumbnail resolution for lives, videos and games (can't be applied for clips). A lower value will help the app load faster, but the thumbnail may look blurry.";
-    STR_PAYPAL_SUMMARY = 'Paypal donations, use the link below:';
+    STR_PAYPAL_SUMMARY = 'Paypal donations, use the link or QR code:';
     STR_BITCOIN_SUMMARY = 'Bitcoin donations, use the wallet address or read the QR Code:';
     STR_PLAYER_PROBLEM_2 = 'Connection failed, unable to load stream info';
     STR_PLAYER_RESYNC = 'Player restart';
