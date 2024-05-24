@@ -107,7 +107,7 @@ var Main_values = {
     Password_data: null,
     OverwriteBlock: 0,
     BlockSort: false,
-    showHelp: true
+    showHelpUpdate: true
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -1041,9 +1041,9 @@ function Main_videoCreatedAtWithHM(time) {
 var checkUpdates = false;
 
 function Main_checkVersion(skipCheck) {
-    if (Main_values.showHelp) {
+    if (Main_values.showHelpUpdate) {
         Main_showHelpDialog();
-        Main_values.showHelp = false;
+        Main_values.showHelpUpdate = false;
     }
     if (checkUpdates) {
         var Main_versionTag;
@@ -1338,6 +1338,8 @@ function Main_showHelpDialog() {
     Main_HideElement('update_dialog_upbutton');
     Main_HideElement('update_dialog_changebutton');
     Main_showUpdateDialog();
+
+    Main_Eventsimple('Help_Dialog_Shown');
 }
 
 function Main_UpdateDialogShowCheck() {
@@ -1353,6 +1355,7 @@ function Main_UpdateDialogHelpTitle() {
         (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
         '>' +
         STR_UPDATE_CHANGELOG +
+        ' Update.' +
         STR_BR +
         '</div>' +
         STR_BR;
@@ -1361,16 +1364,16 @@ function Main_UpdateDialogHelpTitle() {
         'Dear Twitch Community,' +
         STR_BR +
         STR_BR +
-        'I hope this message finds you well. I am reaching out to share a personal hardship that has recently affected not only my life but also the lives of many in the south of Brazil. We have been caught in a severe flood, which has resulted in me leaving my home and most of my belongings behind.' +
+        'I hope this message finds you well. I am reaching to share an update on the personal hardship related to the floods in the south of Brazil.' +
         STR_BR +
         STR_BR +
-        "I want to reassure you that my family and I are safe. The losses we've suffered are material, but the emotional toll is significant. The devastation is overwhelming, and the process of rebuilding seems daunting. However, I believe in the strength of community and the kindness of people. Therefore, I am humbly asking for your support during this challenging time." +
+        "We are over two weeks away from home, we still don't know when we will be able to come back as the house is still inside the water." +
         STR_BR +
         STR_BR +
-        'Any donation, no matter how small, would be greatly appreciated. These funds will go directly towards rebuilding efforts and replacing necessary items lost in the flood.' +
+        'From this community, we have received a lot of love. You have sent over 175 individual donations, and many have very warm messages, I will be replying all once I’m back at home.' +
         STR_BR +
         STR_BR +
-        'Thank you for taking the time to read my message. Your support means more than words can express.' +
+        'Thank you for taking the time to read my message and sending your support. Your support means more than words can express.' +
         STR_BR +
         STR_BR +
         'Best regards, Felipe Leon (fgl27)' +
