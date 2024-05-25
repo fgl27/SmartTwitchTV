@@ -15183,11 +15183,9 @@
             if (skipfirebase) return;
 
             try {
-                if (obj) {
-                    gtag('event', event, obj);
-                } else {
-                    firebase.analytics().logEvent(event);
-                }
+                gtag('event', event, obj ? obj : {
+                    app_name: 'sttv'
+                });
             } catch (e) {
                 console.log('Main_Eventsimple event ' + event + ' e ' + e);
             }
