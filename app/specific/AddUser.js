@@ -93,7 +93,7 @@ function AddUser_getCodeSuccess(resultObj) {
 
     if (resultObj.status === 200) {
         var data = JSON.parse(resultObj.responseText);
-        var codeDiv = STR_BR + STR_BR + AddUser_insertString(data.user_code, data.user_code.length / 2, '-') + STR_BR + STR_BR;
+        var codeDiv = STR_BR + STR_BR + data.user_code + STR_BR + STR_BR;
 
         var urlDiv;
         if (Main_IsOn_OSInterface) {
@@ -113,9 +113,9 @@ function AddUser_getCodeSuccess(resultObj) {
     }
 }
 
-function AddUser_insertString(str, index, value) {
-    return str.substr(0, index) + value + str.substr(index);
-}
+// function AddUser_insertString(str, index, value) {
+//     return str.substr(0, index) + value + str.substr(index);
+// }
 
 function AddUser_getCodeError() {
     Main_HideLoadDialog();
