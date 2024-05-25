@@ -3394,7 +3394,7 @@ function Main_EventVersion(apk, web, webview, device, sdk, manufacturer) {
                 });
             }, 15000);
 
-            //Te app willsend this from when the token is added just save a refrecen and use later
+            //The app will send this when the token is added just save a reference to use later
             if (Main_getItemInt('New_User_Token_Added', 0)) {
                 Main_setItem('New_User_Token_Added', 0);
                 Main_Eventsimple('New_User_Token_Added');
