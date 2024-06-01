@@ -2874,7 +2874,7 @@ function ScreensObj_AnimateThumbId(screen) {
     }
 }
 
-var ScreensObj_getVodAnimatedUrlPost = '{"query":"{video(id:%x){animatedPreviewURL}}"}';
+var ScreensObj_getVodAnimatedUrlPost = '{"query":"{video(id:\\"%x\\"){animatedPreviewURL}}"}';
 
 function ScreensObj_getVodAnimatedUrl(screen) {
     FullxmlHttpGet(
