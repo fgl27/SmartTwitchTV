@@ -27588,7 +27588,7 @@
         PlayVod_setHidePanel();
     }
 
-    var previewUrl = '{"query":"{video(id:%x){game{displayName, id},seekPreviewsURL}}"}';
+    var previewUrl = '{"query":"{video(id:\\"%x\\"){game{displayName, id},seekPreviewsURL}}"}';
 
     function PlayVod_get_vod_extra_info() {
         FullxmlHttpGet(
