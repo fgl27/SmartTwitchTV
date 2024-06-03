@@ -33,8 +33,8 @@
 
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
 
-    <!-- Android 8.0 updater fix only needed for github release version of the apk-->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- Android 8.0 updater fix only needed for github release version of the apk
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
 
     <uses-feature
         android:name="android.hardware.touchscreen"
