@@ -39,8 +39,8 @@
     <string name="webview_exception">La aplicación no se carga porque el sistema Webview no está presente (poco probable) o está en proceso de actualización, inténtelo de nuevo en unos segundos</string>
 
     <!--Home screen channel-->
-    <string name="channel_disable">Este canal estaba desactivado o en la última actualización no pudo cargar el contenido. Pulsa enter para actualizarlo (la actualización sólo se produce cuando la aplicación es visible, por lo que al pulsar aquí se abrirá la aplicación)</string>
-    <string name="channel_refresh">Presione enter para actualizar esto, una actualización manual sólo puede ocurrir cuando la aplicación es visible, por lo que al hacer clic aquí se abrirá la aplicación, este canal de auto refrescarse 30 minutos</string>
+    <string name="channel_disable">Esto se deshabilitó o no se pudo cargar el contenido en la última actualización. Presione Intro para actualizar ahora (la actualización solo ocurre cuando la aplicación está visible; al hacer clic se abrirá la aplicación)</string>
+    <string name="channel_refresh">Presione Intro para actualizar ahora (esto se actualiza automáticamente cada 30 minutos en segundo plano), la actualización manual solo ocurre cuando la aplicación está visible; al hacer clic, se abrirá la aplicación.</string>
     <string name="channel_no_user">Es necesario añadir un usuario primero para cargar este contenido</string>
     <string name="channel_empty">Lista vacía</string>
     <string name="channel_last_refresh">Última actualización - %s %s %02d:%02d</string> <!--Last refresh - Sunday May 2 12:35-->

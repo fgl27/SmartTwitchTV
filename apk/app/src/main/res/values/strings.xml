@@ -33,14 +33,14 @@
     <string name="notification_text">Without this background notifications will not show</string>
 
     <!--Warnings-->
-    <string name="no_network">No internet connection available!\n\nConnect to a network so the app finishes load\n\nor\n\nHold return key to close the app.</string>
+    <string name="no_network">No internet connection is available!\n\nConnect to a network so the app finishes load\n\nor\n\nAnd hold the return key to close the app.</string>
     <string name="no_internet">Ping to Twitch unsuccessful for the last 30 seconds!\n\nIf the app is not working properly revise your local internet connection\n\nHold return key to close the app in case it freezes or stops working.\n\nIf the connection returns, this will auto hide, otherwise it will hide in 30 seconds\n\nThis warning can be disabled in settings</string>
     <string name="external_player_fail">No external video player app available</string>
     <string name="webview_exception">App failed to load because system Webview is either not present (unlikely) OR in the process of being updated, try again in a few seconds</string>
 
     <!--Home screen channel-->
-    <string name="channel_disable">This channel was disabled or it failed to load content on last refresh. Press enter to refresh this (refresh only happens when the app is visible, so clicking here will open the app)</string>
-    <string name="channel_refresh">Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel auto refreshes it every 30 minutes</string>
+    <string name="channel_disable">This was disabled or failed to load content. Press enter to refresh now (refresh only happens when the app is visible)</string>
+    <string name="channel_refresh">Press enter to refresh (this auto-refreshes every 30 minutes in the background), manual refresh only happens when the app is visible</string>
     <string name="channel_no_user">Is necessary to add a user first to load this content</string>
     <string name="channel_empty">Empty list</string>
     <string name="channel_last_refresh">Last refresh - %s %s %02d:%02d</string> <!--Last refresh - Sunday May 2 12:35-->

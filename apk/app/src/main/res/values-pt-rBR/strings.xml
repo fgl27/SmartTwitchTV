@@ -39,8 +39,8 @@
     <string name="webview_exception">O aplicativo falhou ao carregar porque o Webview não está presente (improvável) OU em processo de atualização, tente novamente em alguns segundos</string>
 
     <!--Home screen channel-->
-    <string name="channel_disable">Este canal estava desabilitado ou na última atualização falhou ao carregar o conteúdo. Pressione Enter para atualizar (a atualização só acontece quando o aplicativo está visível, então clique aqui para abrir o aplicativo)</string>
-    <string name="channel_refresh">Pressione Enter para atualizar este, uma atualização manual só pode acontecer quando o aplicativo estiver visível, então clicar aqui irá abrir o aplicativo, este canal atualiza automaticamente a cada 30 minutos</string>
+    <string name="channel_disable">Este foi desativado ou falhou ao carregar o conteúdo na última atualização. Pressione enter para atualizar agora (a atualização só acontece quando o aplicativo está visível, clicar irá abrir o aplicativo)</string>
+    <string name="channel_refresh">Pressione Enter para atualizar agora (este é atualizado automaticamente a cada 30 minutos em segundo plano), a atualização manual só acontece quando o aplicativo está visível, clicar irá abrir o aplicativo</string>
     <string name="channel_no_user">É necessário adicionar um usuário primeiro para carregar este conteúdo</string>
     <string name="channel_empty">Lista vazia</string>
     <string name="channel_last_refresh">Atualizado em - %s %s %02d:%02d</string>
