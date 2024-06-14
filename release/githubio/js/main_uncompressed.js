@@ -11816,7 +11816,7 @@
         Password_data: null,
         OverwriteBlock: 0,
         BlockSort: false,
-        showHelpUpdate: true
+        showHelpUpdate2: true
     };
 
     var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -12752,9 +12752,9 @@
     var checkUpdates = false;
 
     function Main_checkVersion(skipCheck) {
-        if (Main_values.showHelpUpdate) {
+        if (Main_values.showHelpUpdate2) {
             Main_showHelpDialog();
-            Main_values.showHelpUpdate = false;
+            Main_values.showHelpUpdate2 = false;
         }
         if (checkUpdates) {
             var Main_versionTag;
@@ -13071,7 +13071,7 @@
             (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
             '>' +
             STR_UPDATE_CHANGELOG +
-            ' Update.' +
+            ' Update 2.' +
             STR_BR +
             '</div>' +
             STR_BR;
@@ -13083,13 +13083,13 @@
             'I hope this message finds you well. I am reaching to share an update on the personal hardship related to the floods in the south of Brazil.' +
             STR_BR +
             STR_BR +
-            "We are over two weeks away from home, we still don't know when we will be able to come back as the house is still inside the water." +
+            'After 30 days of flood, we managed to go back to the house, as expected almost all was ruined by the water.' +
             STR_BR +
             STR_BR +
-            'From this community, we have received a lot of love. You have sent over 175 individual donations, and many have very warm messages, I will be replying all once I’m back at home.' +
+            'Thanks to over 200 individual donations from this community, we can star the rebuild.' +
             STR_BR +
             STR_BR +
-            'Thank you for taking the time to read my message and sending your support. Your support means more than words can express.' +
+            'Is going to take a couple of months to get all back to a normal living situation, but thanks to you it will be possible. Your support means more than words can express, Thank you so much!' +
             STR_BR +
             STR_BR +
             'Best regards, Felipe Leon (fgl27)' +
