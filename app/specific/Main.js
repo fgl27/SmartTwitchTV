@@ -975,8 +975,18 @@ function Main_SwitchScreen(removekey, preventRefresh) {
     }
 }
 
+//var used to allow to search in a search result,
+//without looping over and over when using back
+var OpenSearchBefore;
+
 function Main_OpenSearch() {
-    if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
+    if (!Main_values.Search_isSearching) {
+        Main_values.Main_BeforeSearch = Main_values.Main_Go;
+        OpenSearchBefore = null;
+    } else {
+        OpenSearchBefore = Main_values.Main_Go;
+    }
+
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_Search;
     Main_HideWarningDialog();

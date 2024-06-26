@@ -494,6 +494,7 @@ function Sidepannel_Go(GoTo) {
         Main_addEventListener('keydown', Sidepannel_Callback);
         Main_SwitchScreen();
     } else {
+        Main_values.Search_isSearching = false;
         Main_values.Main_Before = Main_values.Main_Go;
         Main_values.Main_Go = GoTo;
         Main_ExitCurrent(Main_values.Main_Before);
