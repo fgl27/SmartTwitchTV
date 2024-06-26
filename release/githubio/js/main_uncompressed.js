@@ -12685,8 +12685,18 @@
         }
     }
 
+    //var used to allow to search in a search result,
+    //without looping over and over when using back
+    var OpenSearchBefore;
+
     function Main_OpenSearch() {
-        if (!Main_values.Search_isSearching) Main_values.Main_BeforeSearch = Main_values.Main_Go;
+        if (!Main_values.Search_isSearching) {
+            Main_values.Main_BeforeSearch = Main_values.Main_Go;
+            OpenSearchBefore = null;
+        } else {
+            OpenSearchBefore = Main_values.Main_Go;
+        }
+
         Main_ExitCurrent(Main_values.Main_Go);
         Main_values.Main_Go = Main_Search;
         Main_HideWarningDialog();
@@ -35233,7 +35243,10 @@
         Search_RemoveinputFocus(false);
         Main_removeEventListener('keydown', Search_handleKeyDown);
         Search_refreshInputFocusTools();
-        Main_values.Main_Go = Main_values.Main_BeforeSearch;
+
+        Main_values.Main_Go = OpenSearchBefore ? OpenSearchBefore : Main_values.Main_BeforeSearch;
+        OpenSearchBefore = null;
+
         Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
         Main_ShowElement('label_refresh');
         Main_SearchInput.value = '';
@@ -39725,6 +39738,7 @@
             Main_addEventListener('keydown', Sidepannel_Callback);
             Main_SwitchScreen();
         } else {
+            Main_values.Search_isSearching = false;
             Main_values.Main_Before = Main_values.Main_Go;
             Main_values.Main_Go = GoTo;
             Main_ExitCurrent(Main_values.Main_Before);
