@@ -256,7 +256,7 @@ function en_USLang() {
     STR_SETTINGS_PLAYER = 'Player related';
     STR_SETTINGS_BUFFER_SIZE = 'Start buffer size:';
     STR_SETTINGS_BUFFER_SIZE_SUMMARY =
-        'How much is needed to buffer before starting the playback. This is not related to the maximum size that the buffer can reach (the maximum buffer size is based on the amount of RAM on the device). A lower value here will cause the playback to start sooner and that is always recommended. Changing this value to a bigger value will in most cases not cause any improvents, but rather setbacks.';
+        'How much is needed to buffer before starting the playback. This is not related to the maximum size that the buffer can reach (the maximum buffer size is based on the amount of RAM on the device). A lower value here will cause the playback to start sooner and that is always recommended. Changing this value to a bigger value will in most cases not cause any improvements, but rather setbacks.';
     STR_SETTINGS_BUFFER_LIVE = 'Lives start buffer';
     STR_SETTINGS_BUFFER_VOD = 'Videos (past broadcasts and highlights) start buffer';
     STR_SETTINGS_BUFFER_CLIP = 'Clips start buffer';
@@ -285,7 +285,7 @@ function en_USLang() {
     STR_RESTORE_PLAYBACK_WARN = 'The app was closed while playing, restoring the playback';
     STR_RESTORE_PLAYBACK = 'Restore playback';
     STR_RESTORE_PLAYBACK_SUMMARY =
-        'The app saves what it was playing in case it gets closed unintentionally. Changing apps may cause the system to run out of memory and close it, in this case, on the next startup the app restores what was previously being played.';
+        'The app saves what it was playing in case it gets closed unintentionally. Changing apps may cause the system to run out of memory and close it, in this case, on the next startup, the app restores what was previously being played.';
     STR_CHAT_FONT = 'Chat font size';
     STR_VIDEOS_ANIMATION = 'Video animated thumbnails';
     STR_VIDEOS_ANIMATION_SUMMARY =
@@ -323,9 +323,9 @@ function en_USLang() {
     STR_LIVE_FEED = 'Live Feed';
     STR_VOD_DIALOG = 'VOD start dialog';
     STR_VOD_DIALOG_SUMMARY =
-        "Choose the default behavior, if the VOD info is present in user history when playing one, it can be played from where you last stopped watching. If you set this option to 'Always from start', this behavior will also be applied to the VOD preview.";
-    STR_VOD_DIALOG_START = 'Always from start';
-    STR_VOD_DIALOG_LAST = 'Always from last stop';
+        "Choose the default behavior, if the VOD info is present in user history when playing one, it can be played from where you last stopped watching. If you set this option to 'Always from the start', this behavior will also be applied to the VOD preview.";
+    STR_VOD_DIALOG_START = 'Always from the start';
+    STR_VOD_DIALOG_LAST = 'Always from the last stop';
     STR_VOD_DIALOG_SHOW = 'Always ask';
     STR_END_DIALOG_OPT = 'Player end dialog options';
     STR_END_DIALOG_SETTINGS = 'Player end dialog timeout';
@@ -361,9 +361,9 @@ function en_USLang() {
     STR_PLAYER_BITRATE_UNLIMITED = 'Unlimited';
     STR_PLAYER_BITRATE = 'Auto quality maximum allowed Resolution/Bitrate';
     STR_PLAYER_BITRATE_SUMMARY =
-        "This is used to prevent lag on low-end devices when playing multiple videos at the same time (most devices will lag by skipping frames on that situation, as they are only made to play a single video). Also helps limit the internet bandwidth use in case you need a limit that also sets the 'Default player quality' to auto quality. The recommended resolution/bitrate for all small players is 720p/3 Mbps, and unlimited for main or big players for most low-end devices.";
+        "This is used to prevent lag on low-end devices when playing multiple videos at the same time (most devices will lag by skipping frames in that situation, as they are only made to play a single video). Also helps limit the internet bandwidth use in case you need a limit that also sets the 'Default player quality' to auto quality. The recommended resolution/bitrate for all small players is 720p/3 Mbps and unlimited for main or big players for most low-end devices.";
     STR_PLAYER_BITRATE_SUMMARY_ETC =
-        'Different values here for main and small player resolution and or bitrate may cause a short buffering/loading when changing it with the main player in picture in picture mode (pressing down will change the players). To prevent this, set both values to the same at the cost of possible lag. The best indicative of too high of a bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.';
+        'Different values here for main and small player resolution and or bitrate may cause a short buffering/loading when changing it with the main player in picture-in-picture mode (pressing down will change the players). To prevent this, set both values to the same at the cost of possible lag. The best indication of too high of a bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.';
     STR_PLAYER_MAIN = 'Main player, for the big player of the picture in picture or the Top player 50/50';
     STR_PLAYER_RES_SMALL = 'Small players, for the small player of the picture in picture mode and all multistream players';
     STR_PLAYER_BITRATE_MAIN = 'Bitrate - ' + STR_PLAYER_MAIN;
@@ -374,7 +374,7 @@ function en_USLang() {
     STR_BLOCK_RES_SUMMARY =
         "When using auto quality, it's possible to block one or more resolutions from ever being used. This is useful for devices that lag playing at a particular resolution. As clips can't be played in auto mode, this will also block the automatic part of this resolution in a clip.";
     STR_BLOCK_RES_SUMMARY_EXTRA =
-        'The user can overwrite the selection manually during the playback.<br><br>XX means that all resolutions starting with some value before the XX will be denied from being used if that resolution is marked as blocked.';
+        'The user can overwrite the selection manually during the playback.<br><br>XX means that all resolutions starting with same value before the XX will be denied from being used if that resolution is marked as blocked.';
     STR_BLOCKED = 'Blocked';
     STR_BLOCKED_NOT = 'Not blocked';
     STR_AUDIO_SOURCE = 'Audio source';
@@ -387,7 +387,7 @@ function en_USLang() {
     STR_AUDIO = 'Audio -';
     STR_DEF_QUALITY = 'Default player quality';
     STR_DEF_QUALITY_SUMMARY =
-        "This option will always override others when playing a single video. In picture in picture or multistream mode, the playback needs to use the auto quality. The reason for why that is can be found under the settings option '" +
+        "This option will always override others when playing a single video. In picture-in-picture or multistream mode, the playback needs to use auto quality. The reason for why that can be found under the settings option '" +
         STR_PLAYER_BITRATE +
         "'.";
     STR_PICTURE_PICTURE = 'Picture in picture, 50/50 or multistream (for lives only):';
@@ -626,7 +626,7 @@ function en_USLang() {
         STR_MULTI_MAIN_WINDOW + ' bigger and chat: Press the down key and after that use the left/right keys to change the big video';
     STR_SOURCE_CHECK = 'Automatically change player quality from Source to Auto when the player lags';
     STR_SOURCE_CHECK_SUMMARY =
-        "When this option is enabled, and you aren't using auto quality, if the player is lagging, it will switch to auto quality and warn about it. A player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex than just time of course), after this, changing the player will automatically go back to the source when you open a new VOD stream.";
+        "When this option is enabled, and you aren't using auto quality, the player will switch to auto quality and warn about it if the player is lagging. A player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex than just time of course), after this, changing the player will automatically go back to the source when you open a new VOD stream.";
     STR_PLAYER_LAG = "Player is lagging, quality changed to 'Auto mode'";
     STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
     STR_TOO_ERRORS = 'or too many errors';
@@ -809,7 +809,7 @@ function en_USLang() {
 
     STR_DISABLE_EMBED = 'Enable Live and Vod Twitch player';
     STR_DISABLE_EMBED_SUMMARY =
-        "This is only needed to disable if you wanna see the Android player to check it's strings and layout for testing proposes";
+        'This is only needed to disable if you want to see the Android player to check its strings and layout for testing proposes';
 
     STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
     STR_FAIL_VOD_INFO = 'Fail to load VOD info';
@@ -850,7 +850,7 @@ function en_USLang() {
     STR_MATURE_DISABLED = 'Mature content is disabled';
     STR_ENABLE_MATURE = 'Mature content';
     STR_ENABLE_MATURE_SUMMARY =
-        'When disabled the app will block all content marked as mature included followed content, that include lives marked as mature, and all content from clip and VOD sections';
+        'When disabled the app will block all content marked as mature including followed content, that includes lives marked as mature, and all content from clip and VOD sections';
 
     STR_SCREEN_OFF = 'Screen off (Audio only)';
 
