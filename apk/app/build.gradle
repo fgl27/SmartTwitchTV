@@ -81,13 +81,13 @@ dependencies {
     implementation project(':media-lib-exoplayer-hls')
 
     //Crashlytics
-    implementation platform('com.google.firebase:firebase-bom:32.8.1')
+    implementation platform('com.google.firebase:firebase-bom:33.1.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     //Crashlytics end
 
     implementation 'androidx.leanback:leanback:1.0.0'
-    implementation 'androidx.webkit:webkit:1.10.0'
+    implementation 'androidx.webkit:webkit:1.11.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'net.grandcentrix.tray:tray:0.12.0'
     implementation 'androidx.tvprovider:tvprovider:1.0.0'
