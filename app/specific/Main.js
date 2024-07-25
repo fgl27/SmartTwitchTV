@@ -107,7 +107,7 @@ var Main_values = {
     Password_data: null,
     OverwriteBlock: 0,
     BlockSort: false,
-    showHelpUpdate2: true
+    showHelpUpdate3: true
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -1051,9 +1051,9 @@ function Main_videoCreatedAtWithHM(time) {
 var checkUpdates = false;
 
 function Main_checkVersion(skipCheck) {
-    if (Main_values.showHelpUpdate2) {
+    if (Main_values.showHelpUpdate3) {
         Main_showHelpDialog();
-        Main_values.showHelpUpdate2 = false;
+        Main_values.showHelpUpdate3 = false;
     }
     if (checkUpdates) {
         var Main_versionTag;
@@ -1365,7 +1365,7 @@ function Main_UpdateDialogHelpTitle() {
         (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
         '>' +
         STR_UPDATE_CHANGELOG +
-        ' Update 2.' +
+        ' Last Update.' +
         STR_BR +
         '</div>' +
         STR_BR;
@@ -1374,16 +1374,19 @@ function Main_UpdateDialogHelpTitle() {
         'Dear Twitch Community,' +
         STR_BR +
         STR_BR +
-        'I hope this message finds you well. I am reaching to share an update on the personal hardship related to the floods in the south of Brazil.' +
+        'I hope this message finds you well. I am reaching out to share an update on the personal hardship related to the floods in the south of Brazil.' +
         STR_BR +
         STR_BR +
-        'After 30 days of flood, we managed to go back to the house, as expected almost all was ruined by the water.' +
+        'After 30 days of flood and 45 of reconstruction, we managed to go back home' +
         STR_BR +
         STR_BR +
-        'Thanks to over 200 individual donations from this community, we can star the rebuild.' +
+        'We received over 227 individual donations from this community.' +
         STR_BR +
         STR_BR +
-        'Is going to take a couple of months to get all back to a normal living situation, but thanks to you it will be possible. Your support means more than words can express, Thank you so much!' +
+        "It helped so much, we now can go back to a normal living situation in a proper home, thanks to this app and it's community it was possible." +
+        STR_BR +
+        STR_BR +
+        'Your support means more than words can express, Thank you so much!' +
         STR_BR +
         STR_BR +
         'Best regards, Felipe Leon (fgl27)' +
