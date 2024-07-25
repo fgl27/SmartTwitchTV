@@ -98,7 +98,7 @@ function en_USLang() {
     STR_UPDATE_CHECKING = 'Checking for Updates ...';
     STR_UPDATE_CHECKING_FAIL = 'Update check failed';
     STR_NO_UPDATES = 'The app is up to date';
-    STR_UPDATE_CHANGELOG = 'Please Help!'; //'Updates & Changelog';
+    STR_UPDATE_CHANGELOG = 'Updates & Changelog';
     STR_UPDATE_LATEST = 'Latest change:';
     STR_UPDATE_FAIL = 'Update process failed, please try manually!';
     STR_UPDATE_FAIL_DOWNLOAD = 'Update process failed to download the APK, please try manually!';

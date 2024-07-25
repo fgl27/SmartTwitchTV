@@ -106,8 +106,7 @@ var Main_values = {
     API_Change: true,
     Password_data: null,
     OverwriteBlock: 0,
-    BlockSort: false,
-    showHelpUpdate3: true
+    BlockSort: false
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -1048,13 +1047,9 @@ function Main_videoCreatedAtWithHM(time) {
     return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
 }
 
-var checkUpdates = false;
+var checkUpdates = true;
 
 function Main_checkVersion(skipCheck) {
-    if (Main_values.showHelpUpdate3) {
-        Main_showHelpDialog();
-        Main_values.showHelpUpdate3 = false;
-    }
     if (checkUpdates) {
         var Main_versionTag;
 
@@ -1260,14 +1255,14 @@ function Main_UpdateDialogKeyFun(event) {
             }
 
             break;
-        // case KEY_RIGHT:
-        // case KEY_LEFT:
-        //     Main_UpdateCursor = Main_UpdateCursor ^ 1;
-        //     Main_UpdateDialogSet();
-        //     break;
-        // case KEY_ENTER:
-        //     Main_UpdateDialogKeyEnter();
-        //     break;
+        case KEY_RIGHT:
+        case KEY_LEFT:
+            Main_UpdateCursor = Main_UpdateCursor ^ 1;
+            Main_UpdateDialogSet();
+            break;
+        case KEY_ENTER:
+            Main_UpdateDialogKeyEnter();
+            break;
         default:
             break;
     }
@@ -1343,61 +1338,9 @@ function Main_UpdateDialogTitle() {
     Main_innerHTML('update_dialog_text', innerHtml);
 }
 
-function Main_showHelpDialog() {
-    console.log('Main_showHelpDialog');
-    Main_HideElement('update_dialog_upbutton');
-    Main_HideElement('update_dialog_changebutton');
-    Main_showUpdateDialog();
-
-    Main_Eventsimple('Help_Dialog_Shown');
-}
-
 function Main_UpdateDialogShowCheck() {
-    Main_showHelpDialog();
-
-    // Main_UpdateDialogStartCheck();
-    // Main_showUpdateDialog();
-}
-
-function Main_UpdateDialogHelpTitle() {
-    var innerHtml =
-        '<div class="about_text_title" ' +
-        (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
-        '>' +
-        STR_UPDATE_CHANGELOG +
-        ' Last Update.' +
-        STR_BR +
-        '</div>' +
-        STR_BR;
-
-    var helpText =
-        'Dear Twitch Community,' +
-        STR_BR +
-        STR_BR +
-        'I hope this message finds you well. I am reaching out to share an update on the personal hardship related to the floods in the south of Brazil.' +
-        STR_BR +
-        STR_BR +
-        'After 30 days of flood and 45 of reconstruction, we managed to go back home' +
-        STR_BR +
-        STR_BR +
-        'We received over 227 individual donations from this community.' +
-        STR_BR +
-        STR_BR +
-        "It helped so much, we now can go back to a normal living situation in a proper home, thanks to this app and it's community it was possible." +
-        STR_BR +
-        STR_BR +
-        'Your support means more than words can express, Thank you so much!' +
-        STR_BR +
-        STR_BR +
-        'Best regards, Felipe Leon (fgl27)' +
-        STR_BR +
-        STR_BR +
-        STR_PAYPAL +
-        STR_BITCOIN +
-        STR_PIX;
-    innerHtml += helpText + STR_DIV_MIDLE_LEFT;
-
-    Main_innerHTML('update_dialog_text', innerHtml);
+    Main_UpdateDialogStartCheck();
+    Main_showUpdateDialog();
 }
 
 function Main_UpdateDialogStartCheck() {
@@ -1408,8 +1351,7 @@ function Main_UpdateDialogStartCheck() {
 }
 
 function Main_showUpdateDialog() {
-    //Main_UpdateDialogTitle();
-    Main_UpdateDialogHelpTitle();
+    Main_UpdateDialogTitle();
     Main_PreventClick(true, Main_UpdateDialogKeyFun, true);
     Main_UpdateDialogSet();
 
@@ -2635,7 +2577,7 @@ function Main_SetHistoryworker() {
                 } else {
                     var vodInfo = event.data.updateobj.data[0];
 
-                    if (vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
+                    if (vodInfo && vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
                         Main_history_UpdateLiveVod(event.data.data, vodInfo.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
                     }
                 }
