@@ -168,6 +168,11 @@ function ScreensObj_StartAllVars() {
             } else Screens_OpenSidePanel(false, this.screen);
         },
         concatenate: function (responseObj) {
+            //Allow a method to overwrite part of the answer
+            this.concatenateAfter(responseObj);
+        },
+        concatenateAfter: function (responseObj) {
+            console.log(responseObj);
             if (this.data) {
                 if (responseObj[this.object]) {
                     this.data.push.apply(this.data, responseObj[this.object]);
@@ -2031,6 +2036,22 @@ function ScreensObj_InitSearchChannels() {
     ScreenObj[key].addrow = Screens_addrowChannel;
     ScreenObj[key].visiblerows = 5;
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var search = Main_values.Search_data.toLowerCase();
+
+        responseObj[this.object].sort(function (a, b) {
+            if (!a || !b) {
+                return 0;
+            }
+            return (
+                //Sort by search term first then alphabetical
+                (b.broadcaster_login === search) - (a.broadcaster_login === search) || a.display_name.localeCompare(b.display_name)
+            );
+        });
+
+        this.concatenateAfter(responseObj);
+    };
 }
 
 function ScreensObj_HistoryLive() {
