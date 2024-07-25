@@ -27,8 +27,15 @@ var version = {
     WebTag: 675, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         // {
-        //     title: 'XXXX 2024 Apk Version 3.0.353',
-        //     changes: ['Update player dependencies to the latest version', 'General improvements']
+        //     title: 'Version March to July 2024 Apk Version 3.0.363',
+        //     changes: [
+        //         'Player: Migrate from Exoplayer to Media3, the Exoplayer changed name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open github issue or send a email',
+        //         'Fix preview animated image not always showing',
+        //         'Fix VOD seek preview image not always showing',
+        //         'Improve going back and forward in a search, before the app sometimes exit a search on the wrong section',
+        //         'General UI/UX improvements, make it easier to use or understand the app',
+        //         'Other General improvements'
+        //     ]
         // },
         {
             title: 'Version September 2023 to March 2024',
@@ -47,15 +54,6 @@ var version = {
                 'General chat improvements',
                 'General UI/UX improvements, make it easier to use or understand the app',
                 'Other General improvements'
-            ]
-        },
-        {
-            title: 'Web Version September 11 2023 and Apk Version 3.0.349 and 3.0.350',
-            changes: [
-                'Add new user logging method that allows you to fully use yours privileged in the app',
-                'Note: after opening this update there will be no user, after adding a user history and blocked configuration will be restored',
-                'Add follow/unfollow buttons back',
-                'General improvements'
             ]
         }
     ]
