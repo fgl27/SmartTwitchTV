@@ -69,6 +69,8 @@ var topVodQuery =
     '{"query":"{games(first: 30) {edges{node{id,name,videos(first:20,types:%a%l,sort:VIEWS){edges{node{duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}}}"}';
 //,languages:"EN"
 
+var gamesQuery = '{"query":"{games(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
+
 var searchCannelQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
 var searchGamesQuery =
@@ -1711,18 +1713,17 @@ function ScreensObj_InitGame() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
             ids: Screens_ScreenIds('Game', key),
             ScreenName: 'Game',
             table: 'stream_table_games',
             screen: key,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
-            object: 'data',
-            base_url: Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax,
+            object: 'edges',
+            isQuery: true,
+            base_post: gamesQuery,
             set_url: function () {
-                if (!this.useHelix && this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-                this.url = this.base_url + (this.cursor ? '&after=' + this.cursor : '');
+                this.post = this.base_post.replace('%y', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
             },
             label_init: function () {
                 Sidepannel_SetDefaultLabels();
@@ -1740,6 +1741,33 @@ function ScreensObj_InitGame() {
 
     ScreenObj[key].init_fun = function (preventRefresh) {
         ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+    };
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.games && responseObj.data.games && responseObj.data.games.edges;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.games.pageInfo.hasNextPage;
+
+            responseObj = {
+                edges: responseObj.data.games.edges
+            };
+
+            this.cursor =
+                responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+            var i = 0,
+                len = responseObj.edges.length;
+
+            for (i; i < len; i++) {
+                responseObj.edges[i] = responseObj.edges[i].node;
+            }
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
     };
 }
 
