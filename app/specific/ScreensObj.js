@@ -60,7 +60,7 @@ var ScreensObj_banner_added_section = false;
 
 var AffiliatedTIme = 60 * 120 * 1000;
 
-var userGameQuery = '{"query":"{user(id:\\"%x\\"){followedGames(first:100,type:LIVE){nodes{id displayName boxArtURL viewersCount channelsCount}}}}"}';
+var userGameQuery = '{"query":"{user(id:\\"%x\\"){followedGames(first:100,type:LIVE){nodes{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 var featuredQuery =
     '{"query":"{featuredStreams(first:10,acceptedMature:%m%x){stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
 var topClipQuery =
@@ -70,7 +70,9 @@ var topVodQuery =
 //,languages:"EN"
 
 var searchCannelQuery =
-    '{"query":"{searchFor(userQuery: \\"%x\\", platform: \\"web\\", target: { %y index: USER, limit: 100}) { users { cursor pageInfo { hasNextPage } items { id, displayName, login , followers(){totalCount}, profileImageURL(width: 300), roles{isPartner}} }}}"}';
+    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
+var searchGamesQuery =
+    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -1810,7 +1812,6 @@ function ScreensObj_InitSearchGames() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
             ids: Screens_ScreenIds('SearchGames', key),
             ScreenName: 'SearchGames',
             table: 'stream_table_search_game',
@@ -1818,16 +1819,14 @@ function ScreensObj_InitSearchGames() {
             isSearch: true,
             isLive: false,
             OldUserName: '',
-            object: 'data',
             lastData: '',
-            base_url: Main_helix_api + 'search/categories?query=',
+            object: 'items',
+            isQuery: true,
+            base_post: searchGamesQuery,
             set_url: function () {
-                this.url =
-                    this.base_url +
-                    encodeURIComponent(Main_values.Search_data) +
-                    '&first=' +
-                    Main_ItemsLimitMax +
-                    (this.cursor ? '&after=' + this.cursor : '');
+                this.post = this.base_post
+                    .replace('%x', Main_values.Search_data)
+                    .replace('%y', this.cursor ? 'cursor: \\"' + this.cursor + '\\"' : '');
             },
             label_init: function () {
                 if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected_id;
@@ -1850,6 +1849,24 @@ function ScreensObj_InitSearchGames() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Game_obj);
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.searchFor && responseObj.data.searchFor.games && responseObj.data.searchFor.games.items;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.searchFor.games.pageInfo.hasNextPage;
+            this.cursor = responseObj.data.searchFor.games.cursor;
+
+            responseObj = {
+                items: responseObj.data.searchFor.games.items
+            };
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
+    };
 }
 
 function ScreensObj_InitUserChannels() {
@@ -2006,8 +2023,6 @@ function ScreensObj_InitSearchChannels() {
             isQuery: true,
             base_post: searchCannelQuery,
             set_url: function () {
-                //this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + (this.cursor ? '&after=' + this.cursor : '');
-
                 this.post = this.base_post
                     .replace('%x', Main_values.Search_data)
                     .replace('%y', this.cursor ? 'cursor: \\"' + this.cursor + '\\"' : '');
