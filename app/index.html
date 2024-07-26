@@ -1022,10 +1022,15 @@
                 padding: 0.08em;
                 outline: none;
             }
+            .button_search_container {
+                width: 100%;
+                display: flex;
+                justify-content: space-evenly;
+            }
 
             .button_dialog,
             .button_search {
-                width: 20%;
+                width: 19%;
                 height: 2.2em;
                 line-height: 2.2em;
                 border-radius: 0.75em;
@@ -2929,9 +2934,12 @@
                     <div id="search_scroll" class="screen_holder hide">
                         <div id="search" class="input_text_box" style="margin-top: 10%">
                             <input id="search_input" class="input_class" type="text" placeholder="" />
-                            <div id="chanel_button" class="button_search" style="margin-left: 27%"></div>
-                            <div id="game_button" class="button_search"></div>
-                            <div id="live_button" class="button_search hide"></div>
+                            <div id="search_button_holder" class="button_search_container">
+                                <div id="chanel_button" class="button_search"></div>
+                                <div id="game_button" class="button_search"></div>
+                                <div id="live_button" class="button_search"></div>
+                                <div id="vod_button" class="button_search"></div>
+                            </div>
                         </div>
                     </div>
                     <div id="password_scroll" class="screen_holder hide">

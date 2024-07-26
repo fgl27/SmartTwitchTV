@@ -552,6 +552,7 @@ function Main_SetStringsSecondary() {
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
     Main_textContent('live_button', STR_LIVE);
+    Main_textContent('vod_button', STR_VIDEOS);
     Main_textContent('exit_app_cancel', STR_CANCEL);
     Main_textContent('exit_app_close', STR_CLOSE);
     Main_textContent('yes_no_dialog_button_no', STR_CANCEL);
