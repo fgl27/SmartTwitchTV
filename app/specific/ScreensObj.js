@@ -1093,6 +1093,7 @@ function ScreensObj_InitSearchVod() {
     ScreenObj[key].HasSwitches = false;
 
     ScreenObj[key].concatenate = function (responseObj) {
+        console.log(responseObj);
         var hasData = responseObj.data && responseObj.data.searchFor && responseObj.data.searchFor.videos && responseObj.data.searchFor.videos.items;
 
         if (hasData) {
@@ -1107,8 +1108,8 @@ function ScreensObj_InitSearchVod() {
                 len = responseObj.items.length;
 
             for (i; i < len; i++) {
-                responseObj.items[i].game_name = responseObj.items[i].game.displayName;
-                responseObj.items[i].game_id = responseObj.items[i].game.id;
+                responseObj.items[i].game_name = responseObj.items[i].game ? responseObj.items[i].game.displayName : null;
+                responseObj.items[i].game_id = responseObj.items[i].game ? responseObj.items[i].game.id : null;
             }
         } else {
             this.dataEnded = true;
@@ -1389,8 +1390,8 @@ function ScreensObj_InitUserVod() {
 
             for (i; i < len; i++) {
                 responseObj.edges[i] = responseObj.edges[i].node;
-                responseObj.edges[i].game_name = responseObj.edges[i].game.displayName;
-                responseObj.edges[i].game_id = responseObj.edges[i].game.id;
+                responseObj.edges[i].game_name = responseObj.edges[i].game ? responseObj.edges[i].game.displayName : null;
+                responseObj.edges[i].game_id = responseObj.edges[i].game ? responseObj.edges[i].game.id : null;
             }
         } else {
             this.dataEnded = true;
