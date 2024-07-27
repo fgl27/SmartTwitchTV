@@ -30,10 +30,16 @@ var version = {
         //     title: 'Version March to July 2024 Apk Version 3.0.363',
         //     changes: [
         //         'Player: Migrate from Exoplayer to Media3, the Exoplayer changed name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open github issue or send a email',
+        //         'Change featured to front page (name change only)',
+        //         'Add User Videos section',
         //         'Improve channel search results order, Twitch provides no order on the result, do a local ordering to show a more constant result',
+        //         'Add search Live',
+        //         'Add Search Videos',
+        //         'Show all counters on all game screens',
+        //         'Fix sometimes opening the wrong VOD for "Open the Last VOD" (one of the options that shows when a live end)',
         //         'Fix preview animated image not always showing',
         //         'Fix VOD seek preview image not always showing',
-        //         'Improve going back and forward in a search, before the app sometimes exit a search on the wrong section',
+        //         'Improve exiting a search or search content as Channel content, before the app sometimes exit a search on the wrong section',
         //         'General UI/UX improvements, make it easier to use or understand the app',
         //         'Other General improvements'
         //     ]
