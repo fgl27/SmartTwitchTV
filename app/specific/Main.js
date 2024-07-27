@@ -1472,18 +1472,18 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
     Play_data.data = Main_values_Play_data;
 
     if (checkHistory) {
-        var index = Main_history_Exist('live', Main_values_Play_data[7]);
+        var historyPos = Main_history_GetById('live', Play_data.data[7]);
 
-        if (index > -1) {
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
-                Main_OPenAsVod(index);
+        if (historyPos) {
+            if (historyPos.forceVod) {
+                Main_OPenAsVod(historyPos);
                 return;
             } else {
                 //is live check if is the same BroadcastID
 
-                if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid)
-                    Main_CheckBroadcastID(index, idsArray[2] + id);
-                else {
+                if (!historyPos.vodid) {
+                    Main_CheckBroadcastID(Main_values_Play_data[7], idsArray[2] + id);
+                } else {
                     Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[15], screen);
 
                     Main_openStream();
@@ -1515,11 +1515,11 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
     }
 }
 
-var Main_CheckBroadcastIDex;
+var Main_CheckBroadcastID_Id;
 var Main_CheckBroadcastIDoc;
 
 function Main_CheckBroadcastID(index, doc) {
-    Main_CheckBroadcastIDex = index;
+    Main_CheckBroadcastID_Id = index;
     Main_CheckBroadcastIDoc = doc;
     Main_CheckBroadcastIDStart();
 }
@@ -1538,15 +1538,16 @@ function Main_CheckBroadcastIDStartSucess(response) {
             return;
         }
     }
+    var historyPos = Main_history_GetById('live', Main_CheckBroadcastID_Id);
 
     //force set as vod and set the div
-    Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex].forceVod = true;
+    historyPos.forceVod = true;
 
     var doc = Main_getElementById(Main_CheckBroadcastIDoc);
     doc.childNodes[0].classList.add('hideimp');
     doc.childNodes[2].classList.remove('hideimp');
 
-    Main_OPenAsVod(Main_CheckBroadcastIDex);
+    Main_OPenAsVod(historyPos);
 }
 
 function Main_getElementById(elemString) {
@@ -1595,8 +1596,8 @@ function Main_isScene2DocVisible() {
     return parseInt(Main_Scene2Doc.style.opacity);
 }
 
-function Main_OPenAsVod(index) {
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+function Main_OPenAsVod(historyPos) {
+    if (!historyPos.vodid) {
         Main_openStream();
         return;
     }
@@ -1608,8 +1609,8 @@ function Main_OPenAsVod(index) {
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Play_DurationSeconds = 0;
 
-    Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-    Main_vodOffset = (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - new Date(Main_values_Play_data[12]).getTime()) / 1000;
+    Main_values.ChannelVod_vodId = historyPos.vodid;
+    Main_vodOffset = (historyPos.date - new Date(Main_values_Play_data[12]).getTime()) / 1000;
 
     if (Main_vodOffset < 0) Main_vodOffset = 1;
 
@@ -2252,6 +2253,24 @@ function Main_history_Exist(type, id) {
     }
 
     return -1;
+}
+
+function Main_history_GetById(type, id) {
+    var index = 0,
+        len = Main_values_History_data[AddUser_UsernameArray[0].id][type].length,
+        arrayPos;
+
+    id = id.toString();
+
+    for (index; index < len; index++) {
+        arrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
+
+        if (arrayPos.id.toString() === id) {
+            return arrayPos;
+        }
+    }
+
+    return null;
 }
 
 function Main_history_Find_Vod_In_Live(id) {

@@ -700,8 +700,10 @@ function Play_EndTextClear() {
 
 function Play_EndDialogPressed(PlayVodClip) {
     var canHide = true;
-    if (Play_EndCounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
-    else if (!Play_EndCounter) {
+
+    if (Play_EndCounter === -1 && PlayClip_HasNext) {
+        PlayClip_PlayNext();
+    } else if (!Play_EndCounter) {
         if (PlayVodClip === 2) {
             if (!PlayVod_qualities.length) {
                 canHide = false;
@@ -724,9 +726,11 @@ function Play_EndDialogPressed(PlayVodClip) {
             }
         }
     } else if (Play_EndCounter === 1) {
-        if (Main_values.Play_isHost) Play_OpenHost();
-        else if (PlayVodClip === 1) Play_StartStay();
-        else if (PlayVodClip === 2 || PlayVodClip === 3) {
+        if (Main_values.Play_isHost) {
+            Play_OpenHost();
+        } else if (PlayVodClip === 1) {
+            Play_StartStay();
+        } else if (PlayVodClip === 2 || PlayVodClip === 3) {
             canHide = false;
             Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel);
         }
@@ -735,13 +739,14 @@ function Play_EndDialogPressed(PlayVodClip) {
             Main_values_Play_data = Play_VodObj.data;
             Play_ClearPP();
             PlayVod_PreshutdownStream();
-            Main_OPenAsVod(Play_VodObjIndex);
+            Main_OPenAsVod(Play_VodObj);
         } else if (PlayVodClip === 3) {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canHide = false;
         }
-    } else if (Play_EndCounter === 3) Play_OpenChannel(PlayVodClip);
-    else if (Play_EndCounter === 4) {
+    } else if (Play_EndCounter === 3) {
+        Play_OpenChannel(PlayVodClip);
+    } else if (Play_EndCounter === 4) {
         Play_OpenGame(PlayVodClip);
         if (Play_data.data[3] === '') canHide = false;
     }
@@ -785,10 +790,9 @@ function Play_EndSet(PlayVodClip) {
         Play_HasVod = false;
 
         if (AddUser_IsUserSet()) {
-            var index = Main_history_Exist('live', Play_data.data[7]);
-            if (index > -1) {
-                Play_VodObj = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
-                Play_VodObjIndex = index;
+            var historyPos = Main_history_GetById('live', Play_data.data[7]);
+            if (historyPos) {
+                Play_VodObj = historyPos;
 
                 if (Play_VodObj.vodid) {
                     Main_textContent('dialog_end_vod_text_2', STR_OPEN_LAST_BROADCAST);

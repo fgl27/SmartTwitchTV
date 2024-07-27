@@ -47,7 +47,6 @@ var Play_MaxInstances = 0;
 var Play_HasLive;
 var Play_HasVod;
 var Play_VodObj;
-var Play_VodObjIndex;
 
 var Play_ChatEnable = false;
 var Play_exitID = null;
@@ -868,8 +867,11 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
     } else if (Play_OlddataSet()) {
         Play_RestorePlayData(error_410, Isforbiden);
     } else if (!PlayExtra_PicturePicture) {
-        if (Isforbiden) Play_ForbiddenLive();
-        else Play_CheckHostStart(error_410);
+        if (Isforbiden) {
+            Play_ForbiddenLive();
+        } else {
+            Play_CheckHostStart(error_410);
+        }
     } else {
         Play_CloseBigAndSwich(error_410);
     }
