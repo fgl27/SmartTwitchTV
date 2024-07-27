@@ -219,7 +219,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].checkPreview = false;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].Screen = 'preview_games';
-    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].useHelix = true;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].isQuery = true;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor = null;
 
     //Live
