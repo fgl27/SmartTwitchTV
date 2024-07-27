@@ -216,7 +216,6 @@ function ru_RULang() {
     STR_REPLAY = 'Повтор';
     STR_STREAM_END = 'выход в';
     STR_STREAM_END_EXIT = 'нажмите назад для выхода';
-    STR_FEATURED = 'Избранное';
     STR_CREATED_AT = 'Создано';
     STR_OPEN_BROADCAST = 'Открыть трансляцию';
     STR_IS_LIVE = 'Онлайн';

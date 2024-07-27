@@ -196,7 +196,6 @@ function es_ESLang() {
     STR_REPLAY = 'Repetición';
     STR_STREAM_END = 'saliendo en';
     STR_STREAM_END_EXIT = 'pulse "Retorno" para salir';
-    STR_FEATURED = 'Destacado';
     STR_CREATED_AT = 'Creado';
 
     STR_SHOW_ISLIVE_WARNING = 'Mostrar Advertencia de "Streamer en directo"';

@@ -233,7 +233,7 @@ function en_USLang() {
     STR_REPLAY = 'Replay';
     STR_STREAM_END = 'exiting in';
     STR_STREAM_END_EXIT = "Press 'Return' to exit";
-    STR_FEATURED = 'Featured';
+    STR_FEATURED = 'Front Page';
     STR_CREATED_AT = 'Created';
     STR_OPEN_BROADCAST = 'Open the VOD';
     STR_OPEN_LAST_BROADCAST = 'Open the Last VOD';
@@ -456,7 +456,7 @@ function en_USLang() {
     STR_GAME_SORT = 'Games Preview sorting';
     STR_LIVE_FEED_SORT = 'Side panel or player preview sorting';
     STR_LIVE_FEED_SORT_SUMMARY =
-        "Sorts side panel live feed and player preview. On the preview, this only applies to the user's live and featured (all non-history are view based, history is last watched first, and VOD is the most recent).";
+        "Sorts side panel live feed and player preview. On the preview, this only applies to the user's live and front page (all non-history are view based, history is last watched first, and VOD is the most recent).";
     STR_A_Z = 'Alphabetical A - Z';
     STR_Z_A = 'Alphabetical Z - A';
     STR_APP_ANIMATIONS = 'Enable app animations';

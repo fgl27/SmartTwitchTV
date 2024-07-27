@@ -229,7 +229,6 @@ function pt_BRLang() {
     STR_REPLAY = 'Repetir';
     STR_STREAM_END = 'saindo em';
     STR_STREAM_END_EXIT = 'pressione "Retornar" para sair';
-    STR_FEATURED = 'Apresentado';
     STR_CREATED_AT = 'Criado';
     STR_OPEN_BROADCAST = 'Abra o Vídeo';
     STR_OPEN_LAST_BROADCAST = 'Abra o último Vídeo';
