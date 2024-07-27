@@ -2072,13 +2072,15 @@ function HttpGetSetMainHeader() {
 function HttpGetSetUserHeader() {
     Main_Bearer_User_Headers = [[clientIdHeader, AddCode_backup_client_id]];
     Main_OAuth_User_Headers = [[clientIdHeader, AddCode_backup_client_id]];
+    var header = [[clientIdHeader, AddCode_backup_client_id]];
 
     if (AddUser_UserIsSet()) {
         Main_Bearer_User_Headers.push([Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]);
         Main_OAuth_User_Headers.push([Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]);
+        header.push([Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]);
     }
 
-    Play_Headers = JSON.stringify(Main_OAuth_User_Headers);
+    Play_Headers = JSON.stringify(header);
 }
 
 function FullxmlHttpGet(theUrl, Headers, callbackSuccess, calbackError, key, checkResult, Method, postMessage) {
