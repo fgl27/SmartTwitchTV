@@ -1304,7 +1304,6 @@ function ScreensObj_InitUserVod() {
         {
             periodMaxPos: 2,
             UseToken: true,
-            object: 'videos',
             key_pgDown: Main_UserChannels,
             key_pgUp: Main_usergames,
             ids: Screens_ScreenIds('UserVod', key),
