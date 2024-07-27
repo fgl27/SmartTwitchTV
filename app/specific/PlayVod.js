@@ -116,7 +116,7 @@ function PlayVod_Start() {
                 Main_values.Main_selectedChannelDisplayname,
                 Main_values.Main_selectedChannelPartner,
                 1,
-                ' [' + ChannelVod_language.toUpperCase() + ']'
+                '[' + ChannelVod_language.toUpperCase() + ']'
             )
         );
         Main_innerHTML('stream_info_title', ChannelVod_title);
