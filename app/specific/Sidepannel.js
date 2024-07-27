@@ -699,7 +699,8 @@ var Sidepannel_Pos_Screens = [
     8, //Main_AGameClip 22
     8, //Main_AGameClip 23
     3, //Main_AGameClip 24
-    9 //Main_AGameClip 25
+    9, //Main_AGameClip 25
+    1 // Main_SearchVod 26
 ];
 
 function Sidepannel_UnSetTopOpacity() {

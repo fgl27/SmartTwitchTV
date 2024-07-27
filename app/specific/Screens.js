@@ -68,6 +68,7 @@ function Screens_InitScreens() {
     ScreensObj_InitSearchGames();
     ScreensObj_InitSearchLive();
     ScreensObj_InitSearchChannels();
+    ScreensObj_InitSearchVod();
 
     //History screen
     ScreensObj_HistoryLive();
@@ -997,10 +998,14 @@ function Screens_SetAutoRefresh(key) {
         Settings_Obj_default('auto_refresh_background') &&
         key !== Main_SearchGames &&
         key !== Main_SearchLive &&
+        key !== Main_SearchChannels &&
+        key !== Main_SearchVod &&
         ScreenObj[key].screenType !== 4
     ) {
         Screens_CheckAutoRefresh(key, Settings_GetAutoRefreshTimeout());
-    } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
+    } else {
+        Main_clearTimeout(ScreenObj[key].AutoRefreshId);
+    }
 }
 
 function Screens_CheckAutoRefresh(key, timeout) {
@@ -1042,6 +1047,8 @@ function Screens_CheckRefreshAfterResume() {
                 ScreenObj[i].lastRefresh &&
                 i !== Main_SearchGames &&
                 i !== Main_SearchLive &&
+                i !== Main_SearchChannels &&
+                i !== Main_SearchVod &&
                 ScreenObj[i].screenType !== 4 &&
                 (UserIsSet || !ScreenObj[i].IsUser) && //prevent check a user screen in case all users have be deleted
                 date > ScreenObj[i].lastRefresh + Settings_GetAutoRefreshTimeout()
@@ -3480,7 +3487,7 @@ function Screens_BlockGameUpdateInfoEnd(response) {
 
             if (blockedObj.blocked.game[data.id]) {
                 blockedObj.blocked.game[data.id].data = [
-                    data.box_art_url ? data.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
+                    data.box_art_url ? data.box_art_url.replace('{width}x{height}', Main_GameSize) : '', //0
                     data.name, //1
                     '', //2
                     data.id //3

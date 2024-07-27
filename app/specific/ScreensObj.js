@@ -80,6 +80,8 @@ var searchGamesQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{ index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 var searchLiveQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:LIVE,limit:100}){liveChannels{cursor,pageInfo{hasNextPage}items{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}"}';
+var searchVodQuery =
+    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:VOD,limit:100}){videos{cursor,pageInfo{hasNextPage}items{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -167,7 +169,13 @@ function ScreensObj_StartAllVars() {
 
                 Screens_BasicExit(Main_values.Main_Go, this.screen);
                 Main_SwitchScreen();
-            } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames || this.screen === Main_SearchChannels) && !goSidepanel) {
+            } else if (
+                (this.screen === Main_SearchLive ||
+                    this.screen === Main_SearchGames ||
+                    this.screen === Main_SearchChannels ||
+                    this.screen === Main_SearchVod) &&
+                !goSidepanel
+            ) {
                 if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                 else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                 Main_values.Search_isSearching = false;
@@ -1035,6 +1043,79 @@ function ScreensObj_InitVod() {
         }
 
         this.loadingData = false;
+    };
+}
+
+function ScreensObj_InitSearchVod() {
+    var key = Main_SearchVod;
+
+    ScreenObj[key] = Screens_assign(
+        {
+            HeadersArray: Main_base_array_header,
+            ids: Screens_ScreenIds('SearchVod', key),
+            ScreenName: 'SearchVod',
+            table: 'stream_table_search_vod',
+            screen: key,
+            object: 'items',
+            isQuery: true,
+            base_post: searchVodQuery,
+            set_url: function () {
+                this.post = this.base_post
+                    .replace('%x', Main_values.Search_data)
+                    .replace('%y', this.cursor ? 'cursor: \\"' + this.cursor + '\\"' : '');
+            },
+            label_init: function () {
+                Main_values.Search_isSearching = true;
+                Main_cleanTopLabel();
+                if (this.lastData !== Main_values.Search_data) this.status = false;
+                this.lastData = Main_values.Search_data;
+                Sidepannel_SetTopOpacity(this.screen);
+
+                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_VIDEOS, "'" + Main_values.Search_data + "'");
+            },
+            label_exit: function () {
+                if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
+            },
+            key_play: function () {
+                if (this.is_a_Banner()) return;
+
+                this.OpenVodStart();
+            },
+            addCell: function (cell) {
+                this.addCellTemp(cell);
+            }
+        },
+        Base_obj
+    );
+
+    ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Vod_obj);
+    ScreenObj[key].Set_Scroll();
+    ScreenObj[key].HasSwitches = false;
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.searchFor && responseObj.data.searchFor.videos && responseObj.data.searchFor.videos.items;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.searchFor.videos.pageInfo.hasNextPage;
+            this.cursor = responseObj.data.searchFor.videos.cursor;
+
+            responseObj = {
+                items: responseObj.data.searchFor.videos.items
+            };
+
+            var i = 0,
+                len = responseObj.items.length;
+
+            for (i; i < len; i++) {
+                responseObj.items[i].game_name = responseObj.items[i].game.displayName;
+                responseObj.items[i].game_id = responseObj.items[i].game.id;
+            }
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
     };
 }
 

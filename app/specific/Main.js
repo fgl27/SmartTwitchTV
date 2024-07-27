@@ -51,6 +51,7 @@ var Main_HistoryVod = 22;
 var Main_HistoryClip = 23;
 var Main_Password = 24;
 var Main_Blocked = 25;
+var Main_SearchVod = 26;
 
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
 var Main_HistoryPos = 0;

@@ -61,6 +61,8 @@ function Search_loadData() {
             Screens_init(Main_SearchGames);
         } else if (Search_cursorX === 2) {
             Screens_init(Main_SearchLive);
+        } else if (Search_cursorX === 3) {
+            Screens_init(Main_SearchVod);
         }
     });
 }
@@ -136,8 +138,9 @@ function Search_handleKeyDown(event) {
 }
 
 function Search_KeyEnter() {
-    if (!Search_cursorY) Search_inputFocus();
-    else {
+    if (!Search_cursorY) {
+        Search_inputFocus();
+    } else {
         if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
             Main_values.Search_data = Main_SearchInput.value;
             Main_SearchInput.value = '';
