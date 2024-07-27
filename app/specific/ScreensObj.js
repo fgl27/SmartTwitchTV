@@ -1093,7 +1093,6 @@ function ScreensObj_InitSearchVod() {
     ScreenObj[key].HasSwitches = false;
 
     ScreenObj[key].concatenate = function (responseObj) {
-        console.log(responseObj);
         var hasData = responseObj.data && responseObj.data.searchFor && responseObj.data.searchFor.videos && responseObj.data.searchFor.videos.items;
 
         if (hasData) {
@@ -1369,6 +1368,7 @@ function ScreensObj_InitUserVod() {
     ScreenObj[key].Set_Scroll();
 
     ScreenObj[key].concatenate = function (responseObj) {
+        console.log(responseObj);
         var hasData =
             responseObj.data &&
             responseObj.data.currentUser &&
@@ -2905,7 +2905,7 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
 function ScreensObj_VodCellArray(cell, isQuery) {
     if (isQuery) {
         return [
-            ScreensObj_VodGetPreview(cell.thumbnailURLs[0], null), //0
+            ScreensObj_VodGetPreview(cell.thumbnailURLs[0], cell.animatedPreviewURL), //0
             cell.creator ? cell.creator.displayName : '', //1
             Main_videoCreatedAt(cell.createdAt), //2
             cell.game_name, //3
