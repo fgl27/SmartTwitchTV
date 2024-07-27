@@ -72,12 +72,14 @@ var topVodQuery =
 var gamesQuery = '{"query":"{games(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 
 var userVodQuery =
-    '{"operationName": "FollowedVideos_CurrentUser", "query": "query FollowedVideos_CurrentUser {currentUser {followedVideos(%y first: 100, types:%x, sort:%t) {pageInfo { hasNextPage }, edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}" }';
+    '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
 
 var searchCannelQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
 var searchGamesQuery =
-    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
+    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{ index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
+var searchLiveQuery =
+    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:LIVE,limit:100}){liveChannels{cursor,pageInfo{hasNextPage}items{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -520,12 +522,16 @@ function ScreensObj_StartAllVars() {
             }
             Main_textContent(Screens_ThumbFollowHistory, STR_HISTORY_LIVE_DIS);
         },
-        addCell: function (cell) {
-            this.addCellTemp(cell);
-        },
         check_offset: function () {
             if (this.offset >= 900 || (typeof this.MaxOffset !== 'undefined' && this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset))
                 this.dataEnded = true;
+        },
+        addCell: function (cell) {
+            if (this.isQuery) {
+                this.addCellQuery(cell);
+            } else {
+                this.addCellTemp(cell);
+            }
         },
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
@@ -542,6 +548,24 @@ function ScreensObj_StartAllVars() {
                 this.idObject[id_cell] = 1;
 
                 this.tempHtml.push(Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen));
+
+                this.column_id++;
+            }
+        },
+        addCellQuery: function (cell) {
+            if (!cell || !cell.stream) {
+                return;
+            }
+            var id_cell = cell.stream.broadcaster.id;
+            var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
+
+            if (!this.idObject[id_cell] && isNotBlocked) {
+                this.itemsCount++;
+                this.idObject[id_cell] = 1;
+
+                this.tempHtml.push(
+                    Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveQueryCellArray(cell), this.screen)
+                );
 
                 this.column_id++;
             }
@@ -1338,17 +1362,18 @@ function ScreensObj_InitSearchLive() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
             HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('SearchLive', key),
             ScreenName: 'SearchLive',
             table: 'stream_table_search_live',
             screen: key,
-            object: 'streams',
-            base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
+            object: 'items',
+            isQuery: true,
+            base_post: searchLiveQuery,
             set_url: function () {
-                this.check_offset();
-                this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + '&offset=' + this.offset;
+                this.post = this.base_post
+                    .replace('%x', Main_values.Search_data)
+                    .replace('%y', this.cursor ? 'cursor: \\"' + this.cursor + '\\"' : '');
             },
             label_init: function () {
                 Main_values.Search_isSearching = true;
@@ -1369,6 +1394,28 @@ function ScreensObj_InitSearchLive() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData =
+            responseObj.data &&
+            responseObj.data.searchFor &&
+            responseObj.data.searchFor.liveChannels &&
+            responseObj.data.searchFor.liveChannels.items;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.searchFor.liveChannels.pageInfo.hasNextPage;
+            this.cursor = responseObj.data.searchFor.liveChannels.cursor;
+
+            responseObj = {
+                items: responseObj.data.searchFor.liveChannels.items
+            };
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
+    };
 }
 
 function ScreensObj_InitUserLive() {
@@ -1539,10 +1586,6 @@ function ScreensObj_InitFeatured() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
 
-    ScreenObj[key].addCell = function (cell) {
-        cell = cell.stream;
-        this.addCellTemp(cell);
-    };
     ScreenObj[key].Set_Scroll();
 
     ScreenObj[key].concatenate = function (responseObj) {
@@ -1557,23 +1600,6 @@ function ScreensObj_InitFeatured() {
 
         if (this.hasBackupData) {
             this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
-        }
-    };
-
-    ScreenObj[key].addCell = function (cell) {
-        if (!cell || !cell.stream) {
-            return;
-        }
-        var id_cell = cell.stream.broadcaster.id;
-        var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
-
-        if (!this.idObject[id_cell] && isNotBlocked) {
-            this.itemsCount++;
-            this.idObject[id_cell] = 1;
-
-            this.tempHtml.push(Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_FeaturedCellArray(cell), this.screen));
-
-            this.column_id++;
         }
     };
 }
@@ -2744,7 +2770,7 @@ function ScreensObj_SetTopLable(text, small_text) {
     );
 }
 
-function ScreensObj_FeaturedCellArray(cell) {
+function ScreensObj_LiveQueryCellArray(cell) {
     var game = cell.stream.game,
         broadcaster = cell.stream.broadcaster;
 

@@ -65,15 +65,17 @@ function Search_loadData() {
     });
 }
 
+var Search_buttonIds = ['chanel_button', 'game_button', 'live_button', 'vod_button'];
 function Search_refreshInputFocusTools() {
-    Main_RemoveClass('chanel_button', 'button_search_focused');
-    Main_RemoveClass('game_button', 'button_search_focused');
-    Main_RemoveClass('live_button', 'button_search_focused');
+    var i = 0,
+        len = Search_buttonIds.length;
+
+    for (i; i < len; i++) {
+        Main_RemoveClass(Search_buttonIds[i], 'button_search_focused');
+    }
 
     if (Search_cursorY) {
-        if (!Search_cursorX) Main_AddClass('chanel_button', 'button_search_focused');
-        else if (Search_cursorX === 1) Main_AddClass('game_button', 'button_search_focused');
-        else if (Search_cursorX === 2) Main_AddClass('live_button', 'button_search_focused');
+        Main_AddClass(Search_buttonIds[Search_cursorX], 'button_search_focused');
     }
 }
 
@@ -93,14 +95,14 @@ function Search_handleKeyDown(event) {
         case KEY_LEFT:
             if (Search_cursorY === 1) {
                 Search_cursorX--;
-                if (Search_cursorX < 0) Search_cursorX = 1;
+                if (Search_cursorX < 0) Search_cursorX = 3;
                 Search_refreshInputFocusTools();
             }
             break;
         case KEY_RIGHT:
             if (Search_cursorY === 1) {
                 Search_cursorX++;
-                if (Search_cursorX > 1) Search_cursorX = 0;
+                if (Search_cursorX > 3) Search_cursorX = 0;
                 Search_refreshInputFocusTools();
             }
             break;
