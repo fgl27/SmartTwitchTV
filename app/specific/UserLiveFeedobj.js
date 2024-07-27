@@ -1784,14 +1784,15 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     var responseObj = JSON.parse(responseText),
         itemsCount = UserLiveFeed_itemsCount[pos],
         response = responseObj[type],
-        total;
+        total,
+        hasData;
 
     if (pos === UserLiveFeedobj_UserGamesPos) {
-        var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
+        hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
 
         response = hasData ? response.user.followedGames.nodes : [];
     } else if (UserLiveFeed_obj[pos].isQuery) {
-        var hasData = responseObj.data && responseObj.data.games && responseObj.data.games.edges;
+        hasData = responseObj.data && responseObj.data.games && responseObj.data.games.edges;
 
         if (hasData) {
             UserLiveFeed_obj[pos].dataEnded = !responseObj.data.games.pageInfo.hasNextPage;
@@ -1820,7 +1821,6 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
         cell,
         game,
         i = 0,
-        useHelix,
         isUserGames = pos === UserLiveFeedobj_UserGamesPos;
 
     if (response_items) {
