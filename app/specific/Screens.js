@@ -427,12 +427,13 @@ function Screens_loadDataRequest(key) {
         var PostString = null;
 
         if (ScreenObj[key].isQuery) {
-            HeadersArray = Play_base_backup_headers_Array;
+            HeadersArray = ScreenObj[key].useUserToken ? Main_OAuth_User_Headers : Play_base_backup_headers_Array;
             Method = 'POST';
             PostString = ScreenObj[key].post;
         } else if (!ScreenObj[key].useHelix) {
             HeadersArray = ScreenObj[key].HeadersArray;
         }
+
         FullxmlHttpGet(
             ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwitchV5Flag),
             HeadersArray,

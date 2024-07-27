@@ -138,6 +138,7 @@ var Main_PreventCheckResume = false;
 var Main_base_string_header;
 var Main_base_array_header;
 var Main_Bearer_Headers = [];
+var Main_OAuth_User_Headers = [];
 var Main_Bearer_User_Headers = [];
 var Main_Headers = [];
 var Main_Headers_Backup = [];
@@ -2069,14 +2070,14 @@ function HttpGetSetMainHeader() {
 
 function HttpGetSetUserHeader() {
     Main_Bearer_User_Headers = [[clientIdHeader, AddCode_backup_client_id]];
-    var header = [[clientIdHeader, AddCode_backup_client_id]];
+    Main_OAuth_User_Headers = [[clientIdHeader, AddCode_backup_client_id]];
 
     if (AddUser_UserIsSet()) {
         Main_Bearer_User_Headers.push([Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]);
-        header.push([Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]);
+        Main_OAuth_User_Headers.push([Bearer_Header, Main_OAuth + AddUser_UsernameArray[0].access_token]);
     }
 
-    Play_Headers = JSON.stringify(header);
+    Play_Headers = JSON.stringify(Main_OAuth_User_Headers);
 }
 
 function FullxmlHttpGet(theUrl, Headers, callbackSuccess, calbackError, key, checkResult, Method, postMessage) {
@@ -2169,7 +2170,7 @@ function Main_Set_history(type, Data, skipUpdateDate) {
 
     var ArrayPos = Main_history_GetById(type, Data[7]);
 
-    if (arrayPos) {
+    if (ArrayPos) {
         ArrayPos.data = Main_Slice(Data);
         ArrayPos.date = !skipUpdateDate ? new Date().getTime() : ArrayPos.date;
         ArrayPos.game = Data[3];

@@ -71,6 +71,9 @@ var topVodQuery =
 
 var gamesQuery = '{"query":"{games(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 
+var userVodQuery =
+    '{"operationName": "FollowedVideos_CurrentUser", "query": "query FollowedVideos_CurrentUser {currentUser {followedVideos(%y first: 100, types:%x, sort:%t) {pageInfo { hasNextPage }, edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}" }';
+
 var searchCannelQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
 var searchGamesQuery =
@@ -1204,24 +1207,19 @@ function ScreensObj_InitUserVod() {
             table: 'stream_table_user_vod',
             screen: key,
             IsUser: true,
-            time: ['time', 'views'],
+            time: ['TIME', 'VIEWS'],
             highlightSTR: 'UserVod_highlight',
             highlight: Main_getItemBool('UserVod_highlight', false),
             periodPos: Main_getItemInt('UserVod_periodPos', 1),
-            base_url: Main_kraken_api + 'videos/followed?limit=' + Main_ItemsLimitMax,
+            object: 'edges',
+            isQuery: true,
+            useUserToken: true,
+            base_post: userVodQuery,
             set_url: function () {
-                this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
-                Main_Headers[2][1] = this.token;
-                this.HeadersArray = Main_Headers;
-
-                this.url =
-                    this.base_url +
-                    '&broadcast_type=' +
-                    (this.highlight ? 'highlight' : 'archive') +
-                    '&sort=' +
-                    this.time[this.periodPos - 1] +
-                    '&offset=' +
-                    this.offset;
+                this.post = this.base_post
+                    .replace('%x', this.highlight ? 'HIGHLIGHT' : 'ARCHIVE')
+                    .replace('%t', this.time[this.periodPos - 1])
+                    .replace('%y', this.cursor ? 'after: \\"' + this.cursor + '\\",' : '');
             },
             key_play: function () {
                 if (this.is_a_Banner()) return;
@@ -1264,6 +1262,39 @@ function ScreensObj_InitUserVod() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Vod_obj);
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData =
+            responseObj.data &&
+            responseObj.data.currentUser &&
+            responseObj.data.currentUser.followedVideos &&
+            responseObj.data.currentUser.followedVideos.edges;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.currentUser.followedVideos.pageInfo.hasNextPage;
+
+            responseObj = {
+                edges: responseObj.data.currentUser.followedVideos.edges
+            };
+
+            this.cursor =
+                responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+            var i = 0,
+                len = responseObj.edges.length;
+
+            for (i; i < len; i++) {
+                responseObj.edges[i] = responseObj.edges[i].node;
+                responseObj.edges[i].game_name = responseObj.edges[i].game.displayName;
+                responseObj.edges[i].game_id = responseObj.edges[i].game.id;
+            }
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
+    };
 }
 
 function ScreensObj_InitLive() {
@@ -1780,7 +1811,7 @@ function ScreensObj_InitUserGames() {
             ScreenName: 'UserGames',
             table: 'stream_table_user_games',
             screen: key,
-            key_pgDown: Main_UserChannels,
+            key_pgDown: Main_UserVod,
             key_pgUp: Main_UserLive,
             isLive: false,
             hasGameProp: true,
@@ -1911,7 +1942,7 @@ function ScreensObj_InitUserChannels() {
             object: 'data',
             IsUser: true,
             key_pgDown: Main_History[Main_HistoryPos],
-            key_pgUp: Main_usergames,
+            key_pgUp: Main_UserVod,
             getFollowed: true,
             channelData: null,
             channelDataPos: 0,

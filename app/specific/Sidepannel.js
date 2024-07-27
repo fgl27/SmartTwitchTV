@@ -709,10 +709,6 @@ function Sidepannel_UnSetTopOpacity() {
 function Sidepannel_SetUserLabels() {
     Main_values.Sidepannel_IsUser = true;
 
-    //No longer supported
-    Main_HideElement('side_panel_movel_new_5');
-    Main_HideElement('side_panel_new_5');
-
     Main_innerHTML('side_panel_movel_user_text', STR_SPACE_HTML + STR_USER_MENU + STR_SPACE_HTML);
     Main_ShowElement('side_panel_movel_user_text_holder');
     Main_ShowElement('side_panel_movel_new_8');
@@ -727,7 +723,7 @@ function Sidepannel_SetUserLabels() {
 
     Main_innerHTML('side_panel_movel_new_2', STR_MAIN_MENU);
     Main_innerHTML('side_panel_movel_new_4', STR_GAMES);
-    //Main_innerHTML('side_panel_movel_new_5', STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_5', STR_VIDEOS);
     Main_innerHTML('side_panel_movel_new_6', STR_CHANNELS);
     Main_innerHTML('side_panel_movel_new_7', STR_USER_MY_CHANNEL);
     Main_innerHTML('side_panel_movel_new_8', STR_HISTORY);
@@ -852,6 +848,7 @@ function Sidepannel_userLiveKeyEnter() {
     }
 }
 
+//followed controls
 function Sidepannel_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -937,17 +934,13 @@ function Sidepannel_ShowNoUserWarning() {
 }
 
 function Sidepannel_handleMainKey(Down) {
-    if (Main_values.Sidepannel_IsUser) {
-        if (Sidepannel_Sidepannel_Pos === 5) {
-            Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
-        }
-    } else {
-        if (Sidepannel_Sidepannel_Pos === 9) {
-            Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
-        }
+    if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 9) {
+        //click down to settings on none user menu
+        Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
     }
 }
 
+//menu controls
 function Sidepannel_handleKeyDownMain(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
