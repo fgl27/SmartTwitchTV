@@ -2167,11 +2167,9 @@ function Main_Set_history(type, Data, skipUpdateDate) {
         return;
     }
 
-    var index = Main_history_Exist(type, Data[7]);
+    var ArrayPos = Main_history_GetById(type, Data[7]);
 
-    if (index > -1) {
-        var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
-
+    if (arrayPos) {
         ArrayPos.data = Main_Slice(Data);
         ArrayPos.date = !skipUpdateDate ? new Date().getTime() : ArrayPos.date;
         ArrayPos.game = Data[3];
