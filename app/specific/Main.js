@@ -1084,7 +1084,9 @@ function Main_checkVersion(skipCheck) {
                 if (needUpdate) {
                     Main_HasUpdate = true;
                     Main_WarnUpdate(false);
-                } else if (!skipCheck) Main_CheckUpdate();
+                } else if (!skipCheck) {
+                    Main_CheckUpdate();
+                }
             }
 
             Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, Webviewversion, device, Main_AndroidSDK, Manufacturer);
