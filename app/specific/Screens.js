@@ -3499,8 +3499,8 @@ function Screens_BlockGameUpdateInfoEnd(response) {
     }
 }
 
-function Screens_isNotBlocked(channelId, gameId, IsUser) {
-    if (IsUser || Main_values.OverwriteBlock || !AddUser_IsUserSet()) {
+function Screens_isNotBlocked(channelId, gameId, skip) {
+    if (skip || Main_values.OverwriteBlock || !AddUser_IsUserSet()) {
         return 1;
     }
 
