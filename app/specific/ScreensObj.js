@@ -483,7 +483,7 @@ function ScreensObj_StartAllVars() {
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : channelId,
                 this.screen !== Main_AGameVod ? cell.game_id : null, //skip game check if on game screen
-                this.screen !== Main_Vod && this.screen !== Main_AGameVod //skip all check if on channel screen
+                this.screen === Main_ChannelVod //skip all check if on channel screen
             );
 
             if (!this.idObject[cell.id] && isNotBlocked) {
