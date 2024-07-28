@@ -246,7 +246,7 @@ function BrowserTestFun() {
         pos = Settings_value_keys.indexOf(key);
 
         if (pos > -1) {
-            Settings_RemoveinputFocus();
+            Settings_RemoveInputFocus();
             Settings_cursorY = pos;
             Settings_inputFocus(Settings_cursorY);
         }
@@ -281,7 +281,7 @@ function BrowserTestFun() {
 
         if (elemArray.length) {
             var elem = elemArray[0].id.split('_')[0];
-            Settings_RemoveinputFocusKey(elem);
+            Settings_RemoveInputFocusKey(elem);
         }
 
         if (Main_A_includes_B(id, '.')) Settings_CodecsUpDownAfter(key);
@@ -334,7 +334,7 @@ function BrowserTestFun() {
         pos = Settings_DialogValue.indexOf(key);
 
         if (pos > -1) {
-            Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+            Settings_RemoveInputFocusKey(Settings_DialogValue[Settings_DialogPos]);
             Settings_DialogPos = pos;
             Settings_DialogUpDownAfter();
         }

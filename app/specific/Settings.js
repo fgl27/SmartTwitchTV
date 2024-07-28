@@ -791,7 +791,7 @@ function Settings_exit() {
     Main_removeEventListener('keydown', Settings_handleKeyDown);
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     Main_ShowElement('label_refresh');
-    Settings_RemoveinputFocus();
+    Settings_RemoveInputFocus();
     Main_HideElement('settings_holder');
 }
 
@@ -1198,11 +1198,11 @@ function Settings_inputFocus(position) {
     Settings_ScrollTable();
 }
 
-function Settings_RemoveinputFocus() {
-    Settings_RemoveinputFocusKey(Settings_value_keys[Settings_cursorY]);
+function Settings_RemoveInputFocus() {
+    Settings_RemoveInputFocusKey(Settings_value_keys[Settings_cursorY]);
 }
 
-function Settings_RemoveinputFocusKey(key) {
+function Settings_RemoveInputFocusKey(key) {
     Main_getElementById(key + '_arrow_left').style.opacity = '0';
     Main_getElementById(key + '_arrow_right').style.opacity = '0';
     Main_RemoveClass(key, 'settings_value_focus');
@@ -1883,14 +1883,14 @@ function Settings_handleKeyDown(event) {
             break;
         case KEY_UP:
             if (Settings_cursorY > 0) {
-                Settings_RemoveinputFocus();
+                Settings_RemoveInputFocus();
                 Settings_cursorY--;
                 Settings_inputFocus(Settings_cursorY);
             }
             break;
         case KEY_DOWN:
             if (Settings_cursorY < Settings_positions_length - 1) {
-                Settings_RemoveinputFocus();
+                Settings_RemoveInputFocus();
                 Settings_cursorY++;
                 Settings_inputFocus(Settings_cursorY);
             }
@@ -1981,7 +1981,7 @@ function Settings_CodecsShow(click) {
 }
 
 function Settings_handleKeyDownReturn() {
-    Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+    Settings_RemoveInputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
     Main_HideElement('dialog_codecs');
     Main_removeEventListener('keydown', Settings_handleKeyDownCodecs);
     Main_addEventListener('keydown', Settings_handleKeyDown);
@@ -2027,7 +2027,7 @@ function Settings_Codecs_isVisible() {
 }
 
 function Settings_CodecsUpDown(offset) {
-    Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+    Settings_RemoveInputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
     Settings_CodecsPos += offset;
     Settings_CodecsUpDownAfter(Settings_CodecsValue[Settings_CodecsPos].name);
 }
@@ -2978,7 +2978,7 @@ function Settings_DialogShow(obj, title, click) {
 }
 
 function Settings_DialoghandleKeyReturn() {
-    Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+    Settings_RemoveInputFocusKey(Settings_DialogValue[Settings_DialogPos]);
     Main_HideElement('dialog_settings');
     Main_removeEventListener('keydown', Settings_DialoghandleKeyDown);
     Main_addEventListener('keydown', Settings_handleKeyDown);
@@ -3024,7 +3024,7 @@ function Settings_DialoghandleKeyDown(event) {
 }
 
 function Settings_DialogUpDown(offset) {
-    Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+    Settings_RemoveInputFocusKey(Settings_DialogValue[Settings_DialogPos]);
     Settings_DialogPos += offset;
     Settings_DialogUpDownAfter();
 }

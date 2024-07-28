@@ -45,15 +45,12 @@ function Password_init() {
 
 function Password_exitWarning() {
     Password_exit();
-    Main_showWarningDialog(STR_MATURE_NO_CHANGES);
 
-    Main_setTimeout(function () {
-        Main_HideWarningDialog();
-    }, 2000);
+    Password_showWarning(STR_MATURE_NO_CHANGES, 2000);
 }
 
 function Password_exit() {
-    Password_RemoveinputFocus(false);
+    Password_RemoveInputFocus(false);
     Main_removeEventListener('keydown', Password_handleKeyDown);
     Password_refreshInputFocusTools();
     Main_values.Main_Go = Main_values.Main_BeforePassword;
@@ -64,7 +61,7 @@ function Password_exit() {
     Main_PasswordInput.type = 'password';
 
     Main_showSettings();
-    Settings_RemoveinputFocus();
+    Settings_RemoveInputFocus();
     Settings_cursorY = Settings_cursorYBackup;
     Settings_inputFocus(Settings_cursorY);
 }
@@ -74,8 +71,11 @@ function Password_refreshInputFocusTools() {
     Main_RemoveClass('password_save', 'button_search_focused');
 
     if (Password_cursorY) {
-        if (!Password_cursorX) Main_AddClass('password_view', 'button_search_focused');
-        else if (Password_cursorX === 1) Main_AddClass('password_save', 'button_search_focused');
+        if (!Password_cursorX) {
+            Main_AddClass('password_view', 'button_search_focused');
+        } else if (Password_cursorX === 1) {
+            Main_AddClass('password_save', 'button_search_focused');
+        }
     }
 }
 
@@ -114,7 +114,7 @@ function Password_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             if (!Password_cursorY) {
-                Password_RemoveinputFocus(false);
+                Password_RemoveInputFocus(false);
                 Password_cursorY = 1;
                 Password_refreshInputFocusTools();
             } else if (Password_cursorY === 1) {
@@ -135,24 +135,25 @@ function Password_handleKeyDown(event) {
 }
 
 function Password_KeyEnter() {
-    if (!Password_cursorY) Password_inputFocus();
-    else {
+    if (!Password_cursorY) {
+        Password_inputFocus();
+    } else {
         if (!Password_cursorX) {
             Main_PasswordInput.type = Main_PasswordInput.type === 'password' ? 'text' : 'password';
         } else {
             if (Main_PasswordInput.value !== '' && Main_PasswordInput.value !== null) {
+                var showRemoveWarn = false;
                 if (Settings_enable_matureBackup) {
                     //password enabled
 
                     if (Main_values.Password_data !== Main_PasswordInput.value) {
-                        Main_showWarningDialog('worng pass');
-
-                        Main_setTimeout(function () {
-                            Main_HideWarningDialog();
-                        }, 1000);
+                        Password_showWarning(STR_WRONG_PASS, 1500);
 
                         return;
                     }
+
+                    Main_values.Password_data = null;
+                    showRemoveWarn = true;
                 } else {
                     //password disabled
 
@@ -166,15 +167,25 @@ function Password_KeyEnter() {
 
                 Settings_setMature(Settings_enable_matureBackup);
                 Password_exit();
-            } else {
-                Main_showWarningDialog(STR_SEARCH_EMPTY);
+                Main_SaveValues();
 
-                Main_setTimeout(function () {
-                    Main_HideWarningDialog();
-                }, 1000);
+                if (showRemoveWarn) {
+                    //Password_exit will hide the warning show after exit
+                    Password_showWarning(STR_PASS_MATURE_ENABLED, 5000);
+                }
+            } else {
+                Password_showWarning(STR_SEARCH_EMPTY, 1000);
             }
         }
     }
+}
+
+function Password_showWarning(warning, time) {
+    Main_showWarningDialog(warning);
+
+    Main_setTimeout(function () {
+        Main_HideWarningDialog();
+    }, time);
 }
 
 function Password_CheckIfStrong(password) {
@@ -192,11 +203,7 @@ function Password_CheckIfStrong(password) {
     }
 
     if (warning) {
-        Main_showWarningDialog(warning);
-
-        Main_setTimeout(function () {
-            Main_HideWarningDialog();
-        }, 2000);
+        Password_showWarning(warning, 2000);
 
         return false;
     }
@@ -223,7 +230,7 @@ function Password_inputFocus() {
     );
 }
 
-function Password_RemoveinputFocus(EnaKeydown) {
+function Password_RemoveInputFocus(EnaKeydown) {
     Main_clearTimeout(Password_inputFocusId);
     if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
@@ -266,7 +273,7 @@ function Password_KeyboardEvent(event) {
 
 function Password_KeyboardDismiss() {
     Main_clearTimeout(Password_inputFocusId);
-    Password_RemoveinputFocus(true);
+    Password_RemoveInputFocus(true);
     Password_cursorY = 1;
     Password_refreshInputFocusTools();
 }

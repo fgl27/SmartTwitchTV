@@ -2840,7 +2840,7 @@ function Main_CheckStop() {
     //Hide setting if showing
     if (Settings_isVisible()) {
         if (Settings_Codecs_isVisible()) {
-            if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+            if (Settings_CodecsDialogSet) Settings_RemoveInputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
             Main_removeEventListener('keydown', Settings_handleKeyDownCodecs);
         } else if (Settings_Dialog_isVisible()) {

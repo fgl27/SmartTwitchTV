@@ -874,4 +874,7 @@ function en_USLang() {
     STR_ADD_USER_TEXT_COUNTER_NOW = 'Checking now!';
     STR_ADD_ERROR = "Can't access the add user service";
     STR_USER_TOKEN_ERROR = 'Lost access to current user, please revise the user section';
+
+    STR_WRONG_PASS = 'Wrong password!';
+    STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 }
