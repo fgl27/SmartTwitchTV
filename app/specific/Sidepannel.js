@@ -431,7 +431,9 @@ function Sidepannel_KeyEnterUser() {
         Sidepannel_Go(Main_History[Main_HistoryPos]);
     } else if (Sidepannel_Sidepannel_Pos === 9) {
         Sidepannel_Go(Main_Blocked);
-    } else Sidepannel_KeyEnterBase();
+    } else {
+        Sidepannel_KeyEnterBase();
+    }
 }
 
 function Sidepannel_KeyEnterBase() {
@@ -472,7 +474,9 @@ function Sidepannel_KeyEnter() {
         return;
     }
 
-    if (Sidepannel_Sidepannel_Pos !== 2 && Sidepannel_Sidepannel_Pos !== 13) Sidepannel_Hide();
+    if (Sidepannel_Sidepannel_Pos !== 2) {
+        Sidepannel_Hide();
+    }
 
     if (Sidepannel_Sidepannel_Pos === 2) {
         if (AddUser_IsUserSet()) {

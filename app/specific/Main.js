@@ -757,11 +757,12 @@ function Main_setExitDialog() {
 function Main_showExitDialog() {
     Main_setExitDialog();
     Main_ShowElement('main_dialog_exit');
-    Main_addEventListener('keydown', Main_ExitDialog);
+    Main_PreventClick(true, Main_ExitDialog, true);
 }
 
 function Main_HideExitDialog() {
-    Main_removeEventListener('keydown', Main_ExitDialog);
+    Main_PreventClick(false, Main_ExitDialog);
+
     Main_SwitchScreen();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
@@ -1213,7 +1214,10 @@ function Main_needUpdate(check_version) {
 }
 
 function Main_UpdateDialogSet() {
-    if (!Main_Ischecking) Main_UpdateDialogSetTitle();
+    if (!Main_Ischecking) {
+        Main_UpdateDialogSetTitle();
+    }
+
     Main_RemoveClass('update_dialog_upbutton', 'button_dialog_focused');
     Main_RemoveClass('update_dialog_changebutton', 'button_dialog_focused');
     Main_AddClass(!Main_UpdateCursor ? 'update_dialog_upbutton' : 'update_dialog_changebutton', 'button_dialog_focused');
@@ -1858,6 +1862,8 @@ function Main_updateUserFeed() {
 }
 
 function Main_ExitDialog(event) {
+    event.stopPropagation();
+
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
