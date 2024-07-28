@@ -1368,7 +1368,6 @@ function ScreensObj_InitUserVod() {
     ScreenObj[key].Set_Scroll();
 
     ScreenObj[key].concatenate = function (responseObj) {
-        console.log(responseObj);
         var hasData =
             responseObj.data &&
             responseObj.data.currentUser &&
