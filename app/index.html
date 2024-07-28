@@ -1023,7 +1023,8 @@
                 outline: none;
             }
             .button_search_container {
-                width: 100%;
+                /* 101 to acount for the boarder of the input */
+                width: 101%;
                 display: flex;
                 justify-content: space-evenly;
             }
@@ -1035,7 +1036,7 @@
                 line-height: 2.2em;
                 border-radius: 0.75em;
                 margin-top: 1%;
-                margin-left: 4.5%;
+                /* margin-left: 4.5%; */
                 color: #ffffff;
                 font-family: 'Roboto-Bold';
                 font-size: 150%;
@@ -2946,8 +2947,10 @@
                         <div id="password_" class="input_text_box" style="margin-top: 8%">
                             <div id="password_help" class="stream_user_icon"></div>
                             <input id="password_input" type="password" class="input_class" type="text" placeholder="" />
-                            <div id="password_view" class="button_search" style="margin-left: 27%"></div>
-                            <div id="password_save" class="button_search"></div>
+                            <div id="pass_button_holder" class="button_search_container">
+                                <div id="password_view" class="button_search"></div>
+                                <div id="password_save" class="button_search"></div>
+                            </div>
                         </div>
                     </div>
 
