@@ -77,6 +77,9 @@ var userLiveQuery =
 var userVodQuery =
     '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
 
+var userChannelQuery =
+    '{"operationName":"ChannelFollows","query":"query,ChannelFollows{currentUser{follows(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}}"}';
+
 var searchCannelQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
 var searchGamesQuery =
@@ -2042,42 +2045,20 @@ function ScreensObj_InitUserChannels() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
-            HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('UserChannels', key),
             ScreenName: 'UserChannels',
             table: 'stream_table_user_channels',
             screen: key,
-            object: 'data',
             IsUser: true,
             key_pgDown: Main_History[Main_HistoryPos],
             key_pgUp: Main_UserVod,
             getFollowed: true,
-            channelData: null,
-            channelDataPos: 0,
-            base_url: Main_helix_api + 'channels/followed?first=' + Main_ItemsLimitMax + '&user_id=',
-            base_url_channels: Main_helix_api + 'users?',
+            object: 'edges',
+            isQuery: true,
+            useUserToken: true,
+            base_post: userChannelQuery,
             set_url: function () {
-                if (this.getFollowed) {
-                    this.url = this.base_url + AddUser_UsernameArray[0].id + (this.cursor ? '&after=' + this.cursor : '');
-                } else {
-                    this.channels = 'id=' + this.channelData[this.channelDataPos].broadcaster_id;
-                    var i = this.channelDataPos + 1,
-                        dataLen = this.channelData.length,
-                        len = Math.min(dataLen, i + 99);
-
-                    this.channelDataPos++;
-                    for (i; i < len; i++) {
-                        this.channels += '&id=' + this.channelData[i].broadcaster_id;
-                        this.channelDataPos++;
-                    }
-
-                    this.url = this.base_url_channels + this.channels;
-
-                    if (dataLen <= i) {
-                        this.dataEnded = true;
-                    }
-                }
+                this.post = this.base_post.replace('%y', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
             },
             label_init: function () {
                 ScreensObj_TopLableUserInit(this.screen);
@@ -2090,21 +2071,7 @@ function ScreensObj_InitUserChannels() {
                 this.base_key_play(key, true);
             },
             addCell: function (cell) {
-                if (!this.idObject[cell.id]) {
-                    this.itemsCount++;
-                    this.idObject[cell.id] = 1;
-
-                    this.tempHtml.push(
-                        Screens_createCellChannel(
-                            this.row_id + '_' + this.column_id,
-                            this.ids,
-                            [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
-                            this.screen
-                        )
-                    );
-
-                    this.column_id++;
-                }
+                this.addCellTemp(cell);
             }
         },
         Base_obj
@@ -2116,17 +2083,22 @@ function ScreensObj_InitUserChannels() {
     ScreenObj[key].Set_Scroll();
 
     ScreenObj[key].concatenate = function (responseObj) {
-        if (this.getFollowed) {
-            var data = responseObj[this.object];
-            this.cursor = responseObj.pagination.cursor;
+        var hasData =
+            responseObj.data && responseObj.data.currentUser && responseObj.data.currentUser.follows && responseObj.data.currentUser.follows.edges;
+
+        if (hasData) {
+            var data = responseObj.data.currentUser.follows.edges;
+            this.dataEnded = !responseObj.data.currentUser.follows.pageInfo.hasNextPage;
+
+            this.cursor = data && data.length ? data[data.length - 1].cursor : null;
 
             if (data.length) {
-                if (!this.channelData) {
-                    this.channelData = data;
+                if (!this.data) {
+                    this.data = data;
                 } else {
-                    this.channelData.push.apply(this.channelData, responseObj[this.object]);
+                    this.data.push.apply(this.data, data);
                 }
-            } else if (!this.channelData) {
+            } else if (!this.data) {
                 this.dataEnded = true;
                 this.data = [];
                 this.loadDataSuccess();
@@ -2134,45 +2106,31 @@ function ScreensObj_InitUserChannels() {
                 return;
             }
 
-            if (this.cursor && this.cursor !== '') {
+            if (!this.dataEnded) {
                 Screens_loadDataRequest(this.screen);
             } else {
                 //sort
-                this.channelData.sort(function (a, b) {
+                this.data.sort(function (a, b) {
                     if (!a || !b) {
                         return 0;
                     }
-                    return a.broadcaster_login < b.broadcaster_login ? -1 : a.broadcaster_login > b.broadcaster_login ? 1 : 0;
+                    return a.node.login < b.node.login ? -1 : a.node.login > b.node.login ? 1 : 0;
                 });
-                this.getFollowed = false;
-                Screens_loadDataRequest(this.screen);
-            }
-        } else {
-            var tempData = responseObj[this.object];
-            if (tempData) {
-                tempData.sort(function (a, b) {
-                    if (!a || !b) {
-                        return 0;
-                    }
-                    return a.login < b.login ? -1 : a.login > b.login ? 1 : 0;
-                });
-            }
 
-            if (this.data) {
-                if (tempData) {
-                    this.data.push.apply(this.data, tempData);
-                    this.offset = this.data.length;
+                var i = 0,
+                    len = this.data.length;
+
+                for (i; i < len; i++) {
+                    this.data[i] = this.data[i].node;
                 }
-            } else {
-                this.data = tempData;
-                if (this.data) {
-                    this.offset = this.data.length;
-                } else this.data = [];
+
+                this.loadingData = false;
 
                 this.loadDataSuccess();
             }
-
-            this.loadingData = false;
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
         }
     };
 }
