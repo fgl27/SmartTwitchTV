@@ -71,6 +71,9 @@ var topVodQuery =
 
 var gamesQuery = '{"query":"{games(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 
+var userLiveQuery =
+    '{"operationName":"FollowingLive_CurrentUser","query":"query,FollowingLive_CurrentUser{currentUser{followedLiveUsers(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}}"}';
+
 var userVodQuery =
     '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
 
@@ -3188,7 +3191,7 @@ function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {
 }
 
 function ScreensObj_CheckIsMature(cell) {
-    return Settings_value.enable_mature.defaultValue || !cell.is_mature;
+    return Settings_value.enable_mature.defaultValue || (!cell.is_mature && !cell.isMature);
 }
 
 function ScreensObj_updateThumbInfo(key) {

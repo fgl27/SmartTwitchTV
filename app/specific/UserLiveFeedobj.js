@@ -33,14 +33,14 @@ var UserLiveFeedobj_UserVodPos = 9;
 var UserLiveFeedobj_UserVodHistoryPos = 10;
 
 var UserLiveFeedobj_FeedSort = [
-    [null, 'viewer_count', 0], //0
-    [null, 'viewer_count', 1], //1
-    [null, 'user_login', 1], //2
-    [null, 'user_login', 0], //3
-    [null, 'game_name', 1], //4
-    [null, 'game_name', 0], //5
-    [null, 'started_at', 0], //6
-    [null, 'started_at', 1] //7
+    [null, 'viewersCount', 0], //0
+    [null, 'viewersCount', 1], //1
+    ['broadcaster', 'login', 1], //2
+    ['broadcaster', 'login', 0], //3
+    ['game', 'displayName', 1], //4
+    ['game', 'displayName', 0], //5
+    [null, 'createdAt', 0], //6
+    [null, 'createdAt', 1] //7
 ];
 
 var UserLiveFeedobj_FeedFeatureSort = [
@@ -201,56 +201,6 @@ function UserLiveFeedobj_HolderDiv(pos, text) {
             '</div>'
     );
 }
-
-function UserLiveFeedobj_loadChannelUserLive() {
-    //Main_Log('UserLiveFeedobj_loadChannelUserLive');
-    var theUrl = Main_helix_api + 'streams/followed?user_id=' + AddUser_UsernameArray[0].id + '&first=100';
-
-    UserLiveFeedobj_loadChannelUserLiveGet(theUrl);
-}
-
-function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-    if (AddUser_UserHasToken()) {
-        Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
-    }
-
-    FullxmlHttpGet(
-        theUrl,
-        Main_Bearer_User_Headers,
-        UserLiveFeedobj_loadChannelUserLiveGetEnd,
-        noop_fun,
-        UserLiveFeedobj_UserLivePos,
-        UserLiveFeedobj_UserLivePos,
-        null,
-        null
-    );
-}
-
-function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
-    if (xmlHttp.status === 200) {
-        UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
-    } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) {
-        //token expired
-
-        //Token has change or because is new or because it is invalid because user delete in twitch settings
-        // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-
-        if (AddUser_UserHasToken()) {
-            AddCode_validateToken(0);
-        }
-
-        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-    } else {
-        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-    }
-}
-
-// function UserLiveFeedobj_loadDataRefreshTokenError() {
-//     //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
-
-//     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
-//     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-// }
 
 var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed() {
@@ -1200,65 +1150,69 @@ function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
     return div;
 }
 
-var UserLiveFeed_loadDataSuccessResponse = [];
-var UserLiveFeed_loadDataSuccessUrl;
-var UserLiveFeedobj_loadDataSuccessId;
-
-function UserLiveFeedobj_loadDataSuccess(responseText) {
-    UserLiveFeedobj_loadDataSuccessId = new Date().getTime();
-
-    UserLiveFeed_loadDataSuccessResponse = JSON.parse(responseText).data;
-    var userids;
-
-    for (var i = 0; i < UserLiveFeed_loadDataSuccessResponse.length; i++) {
-        if (userids) {
-            userids += '&id=' + UserLiveFeed_loadDataSuccessResponse[i].user_id;
-        } else {
-            userids = '?id=' + UserLiveFeed_loadDataSuccessResponse[i].user_id;
-        }
-    }
-
-    UserLiveFeed_loadDataSuccessUrl = Main_helix_api + 'users' + userids;
-    UserLiveFeed_loadDataSuccessHttpRequest();
-}
-
-function UserLiveFeed_loadDataSuccessHttpRequest() {
-    BaseXmlHttpGet(
-        UserLiveFeed_loadDataSuccessUrl,
-        UserLiveFeed_loadDataSuccessUpdateMap,
-        UserLiveFeed_loadDataSuccessError,
-        0,
-        UserLiveFeedobj_loadDataSuccessId,
-        true
+function UserLiveFeedobj_loadChannelUserLive() {
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        Main_OAuth_User_Headers,
+        UserLiveFeedobj_loadChannelUserLiveGetEnd,
+        noop_fun,
+        UserLiveFeedobj_UserLivePos,
+        UserLiveFeedobj_UserLivePos, //checkResult
+        'POST', //Method, null for get
+        userLiveQuery.replace(
+            '%y',
+            UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].cursor ? ', after: \\"' + UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].cursor + '\\"' : ''
+        )
     );
 }
 
-function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
-    response = JSON.parse(response);
-    if (response.data && response.data.length && UserLiveFeedobj_loadDataSuccessId === ID) {
-        var data = response.data;
+function UserLiveFeedobj_loadChannelUserLiveGetEnd(resultObj) {
+    if (resultObj.status === 200) {
+        UserLiveFeedobj_loadDataSuccess(resultObj.responseText);
+    } else {
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+    }
+}
 
-        var mapLogoPartner = {};
+// function UserLiveFeedobj_loadDataRefreshTokenError() {
+//     //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
 
-        for (var i = 0; i < data.length; i++) {
-            mapLogoPartner[data[i].id] = {
-                partner: data[i].broadcaster_type === 'partner',
-                logo: data[i].profile_image_url,
-                display_name: data[i].display_name
-            };
+//     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
+//     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+// }
+
+function UserLiveFeedobj_loadDataSuccess(responseText) {
+    var pos = UserLiveFeedobj_UserLivePos,
+        responseObj = JSON.parse(responseText),
+        response = [],
+        hasData =
+            responseObj.data &&
+            responseObj.data.currentUser &&
+            responseObj.data.currentUser.followedLiveUsers &&
+            responseObj.data.currentUser.followedLiveUsers.edges;
+
+    if (hasData) {
+        UserLiveFeed_obj[pos].dataEnded = !responseObj.data.currentUser.followedLiveUsers.pageInfo.hasNextPage;
+
+        response = responseObj.data.currentUser.followedLiveUsers.edges;
+
+        UserLiveFeed_obj[pos].cursor = response && response && response.length ? response[response.length - 1].cursor : null;
+
+        var i = 0,
+            len = response.length;
+
+        for (i; i < len; i++) {
+            response[i] = response[i].node;
         }
-
-        UserLiveFeed_loadDataSuccessEnd(UserLiveFeed_loadDataSuccessResponse, mapLogoPartner);
+    } else {
+        UserLiveFeed_obj[pos].dataEnded = true;
+        UserLiveFeed_obj[pos].cursor = null;
     }
+
+    UserLiveFeed_loadDataSuccessEnd(response);
 }
 
-function UserLiveFeed_loadDataSuccessError(key, ID) {
-    if (UserLiveFeedobj_loadDataSuccessId === ID) {
-        UserLiveFeed_loadDataSuccessEnd(UserLiveFeed_loadDataSuccessResponse, {});
-    }
-}
-
-function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
+function UserLiveFeed_loadDataSuccessEnd(response) {
     //Main_Log('UserLiveFeedobj_loadDataSuccess');
 
     var response_items,
@@ -1280,44 +1234,44 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
             //A-Z
             if (sorting_type1) {
                 response.sort(function (a, b) {
-                    return a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2]
+                    return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
                         ? -1
-                        : a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2]
+                        : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
                         ? 1
                         : 0;
                 });
             } else {
+                //views
                 response.sort(function (a, b) {
-                    return a[sorting_type2] < b[sorting_type2] ? -1 : a[sorting_type2] > b[sorting_type2] ? 1 : 0;
+                    return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
                 });
             }
         } else {
             //Z-A
             if (sorting_type1) {
                 response.sort(function (a, b) {
-                    return a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2]
+                    return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
                         ? -1
-                        : a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2]
+                        : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
                         ? 1
                         : 0;
                 });
             } else {
                 response.sort(function (a, b) {
-                    return a[sorting_type2] > b[sorting_type2] ? -1 : a[sorting_type2] < b[sorting_type2] ? 1 : 0;
+                    return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
                 });
             }
         }
 
         for (i; i < response_items; i++) {
             stream = response[i];
-            id = stream.user_id;
+            id = stream.stream.broadcaster.id;
 
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream)) {
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream.stream)) {
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                if (!stream.user_name) {
-                    stream.user_name = mapLogoPartner[id].display_name;
-                }
-                mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
+
+                mArray = ScreensObj_LiveQueryCellArray(stream);
+
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(
