@@ -631,6 +631,7 @@ function Screens_createCellChannel(id, idArray, valuesArray, key) {
         idArray[2] +
         id +
         '" class="stream_info_channel_name">' +
+        (valuesArray[5] ? '<i class="icon-circle channel_live_icon strokedeline" style="color: red;"></i>' : '') +
         valuesArray[3] +
         (valuesArray[4]
             ? STR_SPACE_HTML +

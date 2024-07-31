@@ -78,10 +78,10 @@ var userVodQuery =
     '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
 
 var userChannelQuery =
-    '{"operationName":"ChannelFollows","query":"query,ChannelFollows{currentUser{follows(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}}"}';
+    '{"operationName":"ChannelFollows","query":"query,ChannelFollows{currentUser{follows(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner},stream{id}}}}}}"}';
 
 var searchCannelQuery =
-    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
+    '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner},stream{id}}}}}"}';
 var searchGamesQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{ index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 var searchLiveQuery =
@@ -2955,7 +2955,7 @@ function ScreensObj_ClipCellArray(cell, isQuery) {
 
 function ScreensObj_ChannelCellArray(cell, isQuery) {
     if (isQuery) {
-        return [cell.login, cell.id, cell.profileImageURL, cell.displayName, cell.roles.isPartner];
+        return [cell.login, cell.id, cell.profileImageURL, cell.displayName, cell.roles.isPartner, cell.stream];
     }
 
     return [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null];
