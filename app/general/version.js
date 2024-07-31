@@ -24,26 +24,28 @@ var version = {
     publishVersionCode: 363, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/363/SmartTV_twitch_3_0_363.apk',
     WebVersion: 'July 2024',
-    WebTag: 677, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
             title: 'Version March to July 2024 Apk Version 3.0.363',
             changes: [
-                'Player: Migrate from Exoplayer to Media3, the Exoplayer changed name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open github issue or send a email',
-                'Change featured to front page (name change only)',
+                'Add a red icon when the channel is live for the User channel and channel search screen',
+                'Improve User live side panel loading',
+                'Improve User channel screen loading',
+                'Player: Migrate from Exoplayer to Media3, the Exoplayer changed its name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open a GitHub issue or send an email',
+                'Change Featured to Front Page (name change only)',
                 'Add User Videos section',
                 'Improve channel search results order, Twitch provides no order on the result, do a local ordering to show a more constant result',
                 'Add search Live',
                 'Add Search Videos',
                 'Show all counters on all game screens',
-                'Fix sometimes opening the wrong VOD for "Open the Last VOD" (one of the options that shows when a live end)',
+                'Fix sometimes opening the wrong VOD for "Open the Last VOD" (the one of the options that show when a live end)',
                 'Fix preview animated image not always showing',
                 'Fix VOD seek preview image not always showing',
                 'Improve exiting a search or search content as Channel content you enter after a search, before the app sometimes exit a search on the wrong section',
                 'Improve app exit functionality',
                 'Improve disable mature content with a password, now after enabling mature the old pass will be deleted, add a new one if disable again',
-                'General app text improves, this is a open source app anyone that wanna to improve app text or add translations can the process is simple',
-                'General UI/UX improvements, make it easier to use or understand the app',
+                'General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple',
                 'Other General improvements'
             ]
         }

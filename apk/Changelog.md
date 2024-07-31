@@ -9,6 +9,27 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version March to July 2024 Apk Version 3.0.363
+==============
+
+* Add a red icon when the channel is live for the User channel and channel search screen
+* Improve User live side panel loading
+* Improve User channel screen loading
+* Player: Migrate from Exoplayer to Media3, the Exoplayer changed its name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open a GitHub issue or send an email
+* Change Featured to Front Page (name change only)
+* Add User Videos section
+* Improve channel search results order, Twitch provides no order on the result, do a local ordering to show a more constant result
+* Add search Live
+* Add Search Videos
+* Show all counters on all game screens
+* Fix sometimes opening the wrong VOD for "Open the Last VOD" (the one of the options that show when a live end)
+* Fix preview animated image not always showing
+* Fix VOD seek preview image not always showing
+* Improve exiting a search or search content as Channel content you enter after a search, before the app sometimes exit a search on the wrong section
+* Improve app exit functionality
+* Improve disable mature content with a password, now after enabling mature the old pass will be deleted, add a new one if disable again
+* General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple
+* Other General improvements
 
 Version September 2023 to March 2024
 ==============

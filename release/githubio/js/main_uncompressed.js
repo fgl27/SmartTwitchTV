@@ -4680,25 +4680,27 @@
         publishVersionCode: 363, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/363/SmartTV_twitch_3_0_363.apk',
         WebVersion: 'July 2024',
-        WebTag: 677, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
             title: 'Version March to July 2024 Apk Version 3.0.363',
             changes: [
-                'Player: Migrate from Exoplayer to Media3, the Exoplayer changed name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open github issue or send a email',
-                'Change featured to front page (name change only)',
+                'Add a red icon when the channel is live for the User channel and channel search screen',
+                'Improve User live side panel loading',
+                'Improve User channel screen loading',
+                'Player: Migrate from Exoplayer to Media3, the Exoplayer changed its name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open a GitHub issue or send an email',
+                'Change Featured to Front Page (name change only)',
                 'Add User Videos section',
                 'Improve channel search results order, Twitch provides no order on the result, do a local ordering to show a more constant result',
                 'Add search Live',
                 'Add Search Videos',
                 'Show all counters on all game screens',
-                'Fix sometimes opening the wrong VOD for "Open the Last VOD" (one of the options that shows when a live end)',
+                'Fix sometimes opening the wrong VOD for "Open the Last VOD" (the one of the options that show when a live end)',
                 'Fix preview animated image not always showing',
                 'Fix VOD seek preview image not always showing',
                 'Improve exiting a search or search content as Channel content you enter after a search, before the app sometimes exit a search on the wrong section',
                 'Improve app exit functionality',
                 'Improve disable mature content with a password, now after enabling mature the old pass will be deleted, add a new one if disable again',
-                'General app text improves, this is a open source app anyone that wanna to improve app text or add translations can the process is simple',
-                'General UI/UX improvements, make it easier to use or understand the app',
+                'General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple',
                 'Other General improvements'
             ]
         }]
@@ -28401,10 +28403,8 @@
         ScreenObj[key].followerChannels = [];
         ScreenObj[key].followerChannelsDone = false;
         ScreenObj[key].column_id = 0;
-        ScreenObj[key].channelDataPos = 0;
         ScreenObj[key].getFollowed = true;
         ScreenObj[key].data = null;
-        ScreenObj[key].channelData = null;
         ScreenObj[key].data_cursor = 0;
         ScreenObj[key].dataEnded = false;
         ScreenObj[key].ContentLang = Main_ContentLang;
@@ -28656,6 +28656,7 @@
             idArray[2] +
             id +
             '" class="stream_info_channel_name">' +
+            (valuesArray[5] ? '<i class="icon-circle channel_live_icon strokedeline" style="color: red;"></i>' : '') +
             valuesArray[3] +
             (valuesArray[4] ?
                 STR_SPACE_HTML +
@@ -32151,11 +32152,17 @@
 
     var gamesQuery = '{"query":"{games(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
 
+    var userLiveQuery =
+        '{"operationName":"FollowingLive_CurrentUser","query":"query,FollowingLive_CurrentUser{currentUser{followedLiveUsers(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}}"}';
+
     var userVodQuery =
         '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
 
+    var userChannelQuery =
+        '{"operationName":"ChannelFollows","query":"query,ChannelFollows{currentUser{follows(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner},stream{id}}}}}}"}';
+
     var searchCannelQuery =
-        '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner}}}}}"}';
+        '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner},stream{id}}}}}"}';
     var searchGamesQuery =
         '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{ index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
     var searchLiveQuery =
@@ -34101,42 +34108,20 @@
         var key = Main_UserChannels;
 
         ScreenObj[key] = Screens_assign({
-                useHelix: true,
-                HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('UserChannels', key),
                 ScreenName: 'UserChannels',
                 table: 'stream_table_user_channels',
                 screen: key,
-                object: 'data',
                 IsUser: true,
                 key_pgDown: Main_History[Main_HistoryPos],
                 key_pgUp: Main_UserVod,
                 getFollowed: true,
-                channelData: null,
-                channelDataPos: 0,
-                base_url: Main_helix_api + 'channels/followed?first=' + Main_ItemsLimitMax + '&user_id=',
-                base_url_channels: Main_helix_api + 'users?',
+                object: 'edges',
+                isQuery: true,
+                useUserToken: true,
+                base_post: userChannelQuery,
                 set_url: function() {
-                    if (this.getFollowed) {
-                        this.url = this.base_url + AddUser_UsernameArray[0].id + (this.cursor ? '&after=' + this.cursor : '');
-                    } else {
-                        this.channels = 'id=' + this.channelData[this.channelDataPos].broadcaster_id;
-                        var i = this.channelDataPos + 1,
-                            dataLen = this.channelData.length,
-                            len = Math.min(dataLen, i + 99);
-
-                        this.channelDataPos++;
-                        for (i; i < len; i++) {
-                            this.channels += '&id=' + this.channelData[i].broadcaster_id;
-                            this.channelDataPos++;
-                        }
-
-                        this.url = this.base_url_channels + this.channels;
-
-                        if (dataLen <= i) {
-                            this.dataEnded = true;
-                        }
-                    }
+                    this.post = this.base_post.replace('%y', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
                 },
                 label_init: function() {
                     ScreensObj_TopLableUserInit(this.screen);
@@ -34149,21 +34134,7 @@
                     this.base_key_play(key, true);
                 },
                 addCell: function(cell) {
-                    if (!this.idObject[cell.id]) {
-                        this.itemsCount++;
-                        this.idObject[cell.id] = 1;
-
-                        this.tempHtml.push(
-                            Screens_createCellChannel(
-                                this.row_id + '_' + this.column_id,
-                                this.ids,
-                                [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
-                                this.screen
-                            )
-                        );
-
-                        this.column_id++;
-                    }
+                    this.addCellTemp(cell);
                 }
             },
             Base_obj
@@ -34175,17 +34146,22 @@
         ScreenObj[key].Set_Scroll();
 
         ScreenObj[key].concatenate = function(responseObj) {
-            if (this.getFollowed) {
-                var data = responseObj[this.object];
-                this.cursor = responseObj.pagination.cursor;
+            var hasData =
+                responseObj.data && responseObj.data.currentUser && responseObj.data.currentUser.follows && responseObj.data.currentUser.follows.edges;
+
+            if (hasData) {
+                var data = responseObj.data.currentUser.follows.edges;
+                this.dataEnded = !responseObj.data.currentUser.follows.pageInfo.hasNextPage;
+
+                this.cursor = data && data.length ? data[data.length - 1].cursor : null;
 
                 if (data.length) {
-                    if (!this.channelData) {
-                        this.channelData = data;
+                    if (!this.data) {
+                        this.data = data;
                     } else {
-                        this.channelData.push.apply(this.channelData, responseObj[this.object]);
+                        this.data.push.apply(this.data, data);
                     }
-                } else if (!this.channelData) {
+                } else if (!this.data) {
                     this.dataEnded = true;
                     this.data = [];
                     this.loadDataSuccess();
@@ -34193,45 +34169,31 @@
                     return;
                 }
 
-                if (this.cursor && this.cursor !== '') {
+                if (!this.dataEnded) {
                     Screens_loadDataRequest(this.screen);
                 } else {
                     //sort
-                    this.channelData.sort(function(a, b) {
+                    this.data.sort(function(a, b) {
                         if (!a || !b) {
                             return 0;
                         }
-                        return a.broadcaster_login < b.broadcaster_login ? -1 : a.broadcaster_login > b.broadcaster_login ? 1 : 0;
+                        return a.node.login < b.node.login ? -1 : a.node.login > b.node.login ? 1 : 0;
                     });
-                    this.getFollowed = false;
-                    Screens_loadDataRequest(this.screen);
-                }
-            } else {
-                var tempData = responseObj[this.object];
-                if (tempData) {
-                    tempData.sort(function(a, b) {
-                        if (!a || !b) {
-                            return 0;
-                        }
-                        return a.login < b.login ? -1 : a.login > b.login ? 1 : 0;
-                    });
-                }
 
-                if (this.data) {
-                    if (tempData) {
-                        this.data.push.apply(this.data, tempData);
-                        this.offset = this.data.length;
+                    var i = 0,
+                        len = this.data.length;
+
+                    for (i; i < len; i++) {
+                        this.data[i] = this.data[i].node;
                     }
-                } else {
-                    this.data = tempData;
-                    if (this.data) {
-                        this.offset = this.data.length;
-                    } else this.data = [];
+
+                    this.loadingData = false;
 
                     this.loadDataSuccess();
                 }
-
-                this.loadingData = false;
+            } else {
+                this.dataEnded = true;
+                this.cursor = null;
             }
         };
     }
@@ -35051,7 +35013,7 @@
 
     function ScreensObj_ChannelCellArray(cell, isQuery) {
         if (isQuery) {
-            return [cell.login, cell.id, cell.profileImageURL, cell.displayName, cell.roles.isPartner];
+            return [cell.login, cell.id, cell.profileImageURL, cell.displayName, cell.roles.isPartner, cell.stream];
         }
 
         return [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null];
@@ -35245,7 +35207,7 @@
     }
 
     function ScreensObj_CheckIsMature(cell) {
-        return Settings_value.enable_mature.defaultValue || !cell.is_mature;
+        return Settings_value.enable_mature.defaultValue || (!cell.is_mature && !cell.isMature);
     }
 
     function ScreensObj_updateThumbInfo(key) {
@@ -41901,14 +41863,14 @@
     var UserLiveFeedobj_UserVodHistoryPos = 10;
 
     var UserLiveFeedobj_FeedSort = [
-        [null, 'viewer_count', 0], //0
-        [null, 'viewer_count', 1], //1
-        [null, 'user_login', 1], //2
-        [null, 'user_login', 0], //3
-        [null, 'game_name', 1], //4
-        [null, 'game_name', 0], //5
-        [null, 'started_at', 0], //6
-        [null, 'started_at', 1] //7
+        [null, 'viewersCount', 0], //0
+        [null, 'viewersCount', 1], //1
+        ['broadcaster', 'login', 1], //2
+        ['broadcaster', 'login', 0], //3
+        ['game', 'displayName', 1], //4
+        ['game', 'displayName', 0], //5
+        [null, 'createdAt', 0], //6
+        [null, 'createdAt', 1] //7
     ];
 
     var UserLiveFeedobj_FeedFeatureSort = [
@@ -42069,56 +42031,6 @@
             '</div>'
         );
     }
-
-    function UserLiveFeedobj_loadChannelUserLive() {
-        //Main_Log('UserLiveFeedobj_loadChannelUserLive');
-        var theUrl = Main_helix_api + 'streams/followed?user_id=' + AddUser_UsernameArray[0].id + '&first=100';
-
-        UserLiveFeedobj_loadChannelUserLiveGet(theUrl);
-    }
-
-    function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-        if (AddUser_UserHasToken()) {
-            Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
-        }
-
-        FullxmlHttpGet(
-            theUrl,
-            Main_Bearer_User_Headers,
-            UserLiveFeedobj_loadChannelUserLiveGetEnd,
-            noop_fun,
-            UserLiveFeedobj_UserLivePos,
-            UserLiveFeedobj_UserLivePos,
-            null,
-            null
-        );
-    }
-
-    function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
-        if (xmlHttp.status === 200) {
-            UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
-        } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) {
-            //token expired
-
-            //Token has change or because is new or because it is invalid because user delete in twitch settings
-            // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-
-            if (AddUser_UserHasToken()) {
-                AddCode_validateToken(0);
-            }
-
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-        } else {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-        }
-    }
-
-    // function UserLiveFeedobj_loadDataRefreshTokenError() {
-    //     //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
-
-    //     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
-    //     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
-    // }
 
     var UserLiveFeedobj_LiveFeedOldUserName = '';
 
@@ -43076,65 +42988,69 @@
         return div;
     }
 
-    var UserLiveFeed_loadDataSuccessResponse = [];
-    var UserLiveFeed_loadDataSuccessUrl;
-    var UserLiveFeedobj_loadDataSuccessId;
-
-    function UserLiveFeedobj_loadDataSuccess(responseText) {
-        UserLiveFeedobj_loadDataSuccessId = new Date().getTime();
-
-        UserLiveFeed_loadDataSuccessResponse = JSON.parse(responseText).data;
-        var userids;
-
-        for (var i = 0; i < UserLiveFeed_loadDataSuccessResponse.length; i++) {
-            if (userids) {
-                userids += '&id=' + UserLiveFeed_loadDataSuccessResponse[i].user_id;
-            } else {
-                userids = '?id=' + UserLiveFeed_loadDataSuccessResponse[i].user_id;
-            }
-        }
-
-        UserLiveFeed_loadDataSuccessUrl = Main_helix_api + 'users' + userids;
-        UserLiveFeed_loadDataSuccessHttpRequest();
-    }
-
-    function UserLiveFeed_loadDataSuccessHttpRequest() {
-        BaseXmlHttpGet(
-            UserLiveFeed_loadDataSuccessUrl,
-            UserLiveFeed_loadDataSuccessUpdateMap,
-            UserLiveFeed_loadDataSuccessError,
-            0,
-            UserLiveFeedobj_loadDataSuccessId,
-            true
+    function UserLiveFeedobj_loadChannelUserLive() {
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Main_OAuth_User_Headers,
+            UserLiveFeedobj_loadChannelUserLiveGetEnd,
+            noop_fun,
+            UserLiveFeedobj_UserLivePos,
+            UserLiveFeedobj_UserLivePos, //checkResult
+            'POST', //Method, null for get
+            userLiveQuery.replace(
+                '%y',
+                UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].cursor ? ', after: \\"' + UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].cursor + '\\"' : ''
+            )
         );
     }
 
-    function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
-        response = JSON.parse(response);
-        if (response.data && response.data.length && UserLiveFeedobj_loadDataSuccessId === ID) {
-            var data = response.data;
+    function UserLiveFeedobj_loadChannelUserLiveGetEnd(resultObj) {
+        if (resultObj.status === 200) {
+            UserLiveFeedobj_loadDataSuccess(resultObj.responseText);
+        } else {
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+        }
+    }
 
-            var mapLogoPartner = {};
+    // function UserLiveFeedobj_loadDataRefreshTokenError() {
+    //     //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
 
-            for (var i = 0; i < data.length; i++) {
-                mapLogoPartner[data[i].id] = {
-                    partner: data[i].broadcaster_type === 'partner',
-                    logo: data[i].profile_image_url,
-                    display_name: data[i].display_name
-                };
+    //     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
+    //     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+    // }
+
+    function UserLiveFeedobj_loadDataSuccess(responseText) {
+        var pos = UserLiveFeedobj_UserLivePos,
+            responseObj = JSON.parse(responseText),
+            response = [],
+            hasData =
+            responseObj.data &&
+            responseObj.data.currentUser &&
+            responseObj.data.currentUser.followedLiveUsers &&
+            responseObj.data.currentUser.followedLiveUsers.edges;
+
+        if (hasData) {
+            UserLiveFeed_obj[pos].dataEnded = !responseObj.data.currentUser.followedLiveUsers.pageInfo.hasNextPage;
+
+            response = responseObj.data.currentUser.followedLiveUsers.edges;
+
+            UserLiveFeed_obj[pos].cursor = response && response && response.length ? response[response.length - 1].cursor : null;
+
+            var i = 0,
+                len = response.length;
+
+            for (i; i < len; i++) {
+                response[i] = response[i].node;
             }
-
-            UserLiveFeed_loadDataSuccessEnd(UserLiveFeed_loadDataSuccessResponse, mapLogoPartner);
+        } else {
+            UserLiveFeed_obj[pos].dataEnded = true;
+            UserLiveFeed_obj[pos].cursor = null;
         }
+
+        UserLiveFeed_loadDataSuccessEnd(response);
     }
 
-    function UserLiveFeed_loadDataSuccessError(key, ID) {
-        if (UserLiveFeedobj_loadDataSuccessId === ID) {
-            UserLiveFeed_loadDataSuccessEnd(UserLiveFeed_loadDataSuccessResponse, {});
-        }
-    }
-
-    function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
+    function UserLiveFeed_loadDataSuccessEnd(response) {
         //Main_Log('UserLiveFeedobj_loadDataSuccess');
 
         var response_items,
@@ -43156,44 +43072,44 @@
                 //A-Z
                 if (sorting_type1) {
                     response.sort(function(a, b) {
-                        return a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ?
+                        return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ?
                             -1 :
-                            a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ?
+                            a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ?
                             1 :
                             0;
                     });
                 } else {
+                    //views
                     response.sort(function(a, b) {
-                        return a[sorting_type2] < b[sorting_type2] ? -1 : a[sorting_type2] > b[sorting_type2] ? 1 : 0;
+                        return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
                     });
                 }
             } else {
                 //Z-A
                 if (sorting_type1) {
                     response.sort(function(a, b) {
-                        return a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ?
+                        return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ?
                             -1 :
-                            a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ?
+                            a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ?
                             1 :
                             0;
                     });
                 } else {
                     response.sort(function(a, b) {
-                        return a[sorting_type2] > b[sorting_type2] ? -1 : a[sorting_type2] < b[sorting_type2] ? 1 : 0;
+                        return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
                     });
                 }
             }
 
             for (i; i < response_items; i++) {
                 stream = response[i];
-                id = stream.user_id;
+                id = stream.stream.broadcaster.id;
 
-                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream)) {
+                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream.stream)) {
                     UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                    if (!stream.user_name) {
-                        stream.user_name = mapLogoPartner[id].display_name;
-                    }
-                    mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
+
+                    mArray = ScreensObj_LiveQueryCellArray(stream);
+
                     UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                     UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(
