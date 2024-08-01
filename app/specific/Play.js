@@ -1673,7 +1673,14 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
         Play_UpdateDurationDiv(value[8]);
     }
 
-    PlayVod_ProgresBarrUpdate(timeMs / 1000, Play_DurationSeconds, !PlayVod_IsJumping || PlayVod_PanelY);
+    var current_time_seconds = timeMs / 1000;
+
+    if (Play_BufferSize > current_time_seconds) {
+        //playback was paused
+        current_time_seconds = Play_BufferSize + 5;
+    }
+
+    PlayVod_ProgresBarrUpdate(current_time_seconds, Play_DurationSeconds, !PlayVod_IsJumping || PlayVod_PanelY);
 }
 
 function Play_getMbps(value) {
