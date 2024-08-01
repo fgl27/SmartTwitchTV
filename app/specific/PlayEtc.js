@@ -4316,7 +4316,7 @@ function Play_BottomIconsFocus(skipInfo, checkjump, skipHide) {
 function Play_BottomIconsFocusResetProgress() {
     var time = OSInterface_gettime() / 1000;
 
-    PlayVod_ProgresBarrUpdateNoAnimation(time > 1.5 ? time + 1.5 : 0, Play_DurationSeconds, true);
+    PlayVod_ProgressBarrUpdateNoAnimation(time > 1.5 ? time + 1.5 : 0, Play_DurationSeconds, true);
 }
 
 function Play_BottonIconsHide(hideType) {

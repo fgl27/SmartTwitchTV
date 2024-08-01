@@ -62,7 +62,7 @@ function PlayVod_Start() {
     PlayVod_previewsId = 0;
     PlayVod_updateChaptersId = 0;
     PlayVod_ChaptersArray = [];
-    PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
+    PlayVod_ProgressBarrUpdateNoAnimation(0, 1, true);
 
     Play_AudioReset(0);
 
@@ -314,7 +314,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
 
         PlayVod_currentTime = Main_vodOffset * 1000;
-        PlayVod_ProgresBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
+        PlayVod_ProgressBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
 
         Main_values.Main_selectedChannelDisplayname = response.user_name;
 
@@ -664,7 +664,7 @@ function PlayVod_ClearProgressJumptime(jumpCount) {
     PlayVod_IsJumping = false;
 
     if (Main_IsOn_OSInterface) {
-        PlayVod_ProgresBarrUpdate(OSInterface_gettime() / 1000, Play_DurationSeconds, true);
+        PlayVod_ProgressBarrUpdate(OSInterface_gettime() / 1000, Play_DurationSeconds, true);
     }
 
     PlayVod_addToJump = 0;
@@ -718,7 +718,7 @@ function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
 
     if (Play_isOn) Play_RefreshWatchingTime();
 
-    PlayVod_ProgresBarrUpdateNoAnimation(
+    PlayVod_ProgressBarrUpdateNoAnimation(
         OSInterface_gettime() / 1000,
         Play_DurationSeconds,
         !PlayVod_IsJumping || PlayVod_PanelY,
@@ -749,7 +749,7 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
     ) {
         OSInterface_getVideoQuality(who_called);
     } else if (!Main_IsOn_OSInterface && (PlayVod_PanelY || !PlayVod_IsJumping)) {
-        PlayVod_ProgresBarrUpdate(OSInterface_gettime() / 1000, Play_DurationSeconds, true);
+        PlayVod_ProgressBarrUpdate(OSInterface_gettime() / 1000, Play_DurationSeconds, true);
     }
 
     PlayVod_getVideoQualityRate++;
@@ -763,19 +763,19 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
     if (Play_isOn) Play_RefreshWatchingTime();
 }
 
-function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar, callVideoQuality, showVideoQuality, who_called) {
+function PlayVod_ProgressBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar, callVideoQuality, showVideoQuality, who_called) {
     Play_ProgresBarrElm.style.transition = 'none';
     Play_ProgresBarrBufferElm.style.transition = 'none';
 
     if (Settings_Obj_default('app_animations')) {
         //Sends a minus one to set the progress bar before show
-        PlayVod_ProgresBarrUpdate(current_time_seconds > 1.5 ? current_time_seconds - 1.5 : 0, duration_seconds, update_bar);
+        PlayVod_ProgressBarrUpdate(current_time_seconds > 1.5 ? current_time_seconds - 1.5 : 0, duration_seconds, update_bar);
 
         Main_setTimeout(function () {
             Play_ProgresBarrElm.style.transition = '';
             Play_ProgresBarrBufferElm.style.transition = '';
 
-            //This will update PlayVod_ProgresBarrUpdate with animation to the correct value
+            //This will update PlayVod_ProgressBarrUpdate with animation to the correct value
             if (callVideoQuality) {
                 Main_setTimeout(function () {
                     PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
@@ -783,7 +783,7 @@ function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_sec
             }
         }, 25);
     } else {
-        PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
+        PlayVod_ProgressBarrUpdate(current_time_seconds, duration_seconds, update_bar);
 
         if (callVideoQuality) {
             PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
@@ -795,7 +795,7 @@ var PlayVod_ProgresMaxSize = -98.9;
 var PlayVod_ProgresMinSize = -0.5;
 var PlayVod_ProgresYoffset = '%, -27%)';
 
-function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
+function PlayVod_ProgressBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
     Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(current_time_seconds));
 
     //Prevent divider by null or zero
@@ -914,7 +914,7 @@ function PlayVod_jump() {
     Play_BufferSize = Play_BufferSize - PlayVod_addToJump;
     PlayVod_addToJump = 0;
     Play_ProgresBarrElm.style.transition = '';
-    if (PlayVod_isOn) PlayVod_ProgresBarrUpdate(PlayVod_TimeToJump, Play_DurationSeconds, true);
+    if (PlayVod_isOn) PlayVod_ProgressBarrUpdate(PlayVod_TimeToJump, Play_DurationSeconds, true);
     PlayVod_TimeToJump = 0;
 }
 
@@ -1071,7 +1071,7 @@ function PlayVod_DialogPressed(fromStart) {
 function PlayVod_DialogPressedClick(time) {
     Main_vodOffset = time;
     PlayVod_currentTime = Main_vodOffset * 1000;
-    PlayVod_ProgresBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
+    PlayVod_ProgressBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
     PlayVod_PosStart();
 }
 

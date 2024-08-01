@@ -1680,7 +1680,7 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
         current_time_seconds = Play_BufferSize + 5;
     }
 
-    PlayVod_ProgresBarrUpdate(current_time_seconds, Play_DurationSeconds, !PlayVod_IsJumping || PlayVod_PanelY);
+    PlayVod_ProgressBarrUpdate(current_time_seconds, Play_DurationSeconds, !PlayVod_IsJumping || PlayVod_PanelY);
 }
 
 function Play_getMbps(value) {

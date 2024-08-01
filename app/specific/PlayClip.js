@@ -55,7 +55,7 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
-    PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
+    PlayVod_ProgressBarrUpdateNoAnimation(0, 1, true);
 
     Play_BottonIcons_Next_img.src = IMG_404_VIDEO;
     Play_BottonIcons_Back_img.src = IMG_404_VIDEO;

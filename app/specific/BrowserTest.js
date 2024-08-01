@@ -890,7 +890,7 @@ function BrowserTestFun() {
                     }
 
                     Play_ProgresBarrElm.style.transition = '';
-                    PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, duration, true);
+                    PlayVod_ProgressBarrUpdateNoAnimation(Chat_fakeClock, duration, true);
                 }
             }
         }
