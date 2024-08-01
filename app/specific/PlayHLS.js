@@ -28,7 +28,7 @@ var Play_live_token =
     ' videoPlaybackAccessToken(id: $vodID, params: {platform: $platform, playerBackend: \\"mediaplayer\\", playerType: $playerType}) @include(if: $isVod) {    value    signature    __typename  }}",' +
     '"variables":{"isLive":true,"login":"%x","isVod":false,"vodID":"","playerType":"pulsar","platform":"switch_web_tv"}}';
 var Play_base_live_links =
-    'player_backend=mediaplayer&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
+    'player_backend=mediaplayer&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0&supported_codecs=av1,h265,h264';
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
@@ -55,7 +55,7 @@ var proxy_fail_counter_checker = 0;
 var Play_vod_token_prop = 'videoPlaybackAccessToken';
 var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_vod_links =
-    'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%t&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
+    'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%t&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d&supported_codecs=av1,h265,h264';
 
 function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess) {
     // console.log('isLive', isLive);

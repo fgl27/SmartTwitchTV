@@ -323,7 +323,7 @@ function OSInterface_RestartPlayer(who_called, ResumePosition, player) {
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player) {
-    if (who_called === 1) {
+    if (who_called === 1 || who_called === 2) {
         mainPlaylistString = Play_FixQualities(mainPlaylistString);
     }
 
@@ -339,7 +339,7 @@ function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePositi
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
-    if (who_called === 1) {
+    if (who_called === 1 || who_called === 2) {
         mainPlaylistString = Play_FixQualities(mainPlaylistString);
     }
 
@@ -769,9 +769,7 @@ function OSInterface_SetPreviewOthersAudio(volume) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, isVod) {
-    if (!isVod) {
-        mainPlaylistString = Play_FixQualities(mainPlaylistString);
-    }
+    mainPlaylistString = Play_FixQualities(mainPlaylistString);
 
     Android.StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, Boolean(isVod));
 }
@@ -815,7 +813,7 @@ function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
-    if (who_called === 1) {
+    if (who_called === 1 || who_called === 2) {
         mainPlaylistString = Play_FixQualities(mainPlaylistString);
     }
 

@@ -965,11 +965,19 @@ function Play_getQualities(Who_Called, skipchange) {
     if (!Main_IsOn_OSInterface) return;
 
     var baseQualities = OSInterface_getQualities();
+
     var result;
 
     if (baseQualities) {
         Play_getQualitiesFail = false;
         result = JSON.parse(baseQualities);
+
+        result.sort(function (a, b) {
+            if (!a || !b) {
+                return 0;
+            }
+            return parseInt(b.id.split('p')[0]) - parseInt(a.id.split('p')[0]);
+        });
 
         if (result.length > 1) {
             result[1].id += ' | source';
@@ -1033,6 +1041,7 @@ function Play_FixQualities(input) {
     if (qualities.length && qualities[0].truebitrate) {
         input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
     }
+
     return input;
 }
 
@@ -1042,37 +1051,59 @@ function Play_extractQualities(input) {
         marray,
         marray2,
         Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
-        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*(http(.*))/g;
+        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*(http(.*))/g,
+        id;
 
     while ((marray = Regexp.exec(input))) {
         while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, '')))) {
+            id = marray2[1];
+
             if (!result.length) {
-                if (!Main_A_includes_B(marray2[1], 'ource')) {
-                    marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
-                } else if (marray2[1]) {
+                //Live stream may have source word in it
+                if (Main_A_includes_B(marray2[1], 'ource')) {
                     marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace('source', STR_SOURCE);
                 }
+            }
 
+            //Prevent duplicated resolution 720p60 source and 720p60
+            if (!addedResolution[id]) {
                 result.push({
-                    id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
+                    id: marray2[1],
                     url: marray2[4],
-                    bitrate: parseInt(marray2[2])
+                    bitrate: parseInt(marray2[2]),
+                    resolution: parseInt(id.split('p')[0]),
+                    band: Play_extractBand(marray2[2]),
+                    codec: Play_extractCodec(marray2[3])
                 });
-                addedResolution[marray2[1].split(' | ')[0]] = 1;
-            } else {
-                //Prevent duplicated resolution 720p60 source and 720p60
-                if (!addedResolution[marray2[1]]) {
-                    result.push({
-                        id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                        url: marray2[4],
-                        bitrate: parseInt(marray2[2])
-                    });
-                    addedResolution[marray2[1]] = 1;
-                }
+
+                addedResolution[id] = 1;
             }
         }
     }
 
+    //sort base on resolution as it may not come sorted
+    result.sort(function (a, b) {
+        if (!a || !b) {
+            return 0;
+        }
+        return b.resolution - a.resolution;
+    });
+
+    //some vods dont have the source option
+    if (!Main_A_includes_B(result[0].id, 'ource')) {
+        result[0].id += ' | ' + STR_SOURCE;
+    }
+
+    var i = 0,
+        len = result.length;
+
+    //remove not needed info from ID
+    for (i; i < len; i++) {
+        result[i].id = result[i].id.replace('av1', '');
+        result[i].id = result[i].id + result[i].band + result[i].codec;
+    }
+
+    //Some stream have the wrong bitrate set what causes issue when selecting the best quality on auto playback
     if (result.length > 1 && result[0].bitrate < result[1].bitrate) {
         result[0].truebitrate = result[0].bitrate + result[1].bitrate;
     }
@@ -1086,9 +1117,12 @@ function Play_extractBand(input) {
 }
 
 function Play_extractCodec(input) {
-    if (Main_A_includes_B(input, 'avc')) return ' | avc';
-    else if (Main_A_includes_B(input, 'vp9')) return ' | vp9';
-    else if (Main_A_includes_B(input, 'mp4')) return ' | mp4';
+    if (Main_A_includes_B(input, 'avc')) return ' | AVC';
+    else if (Main_A_includes_B(input, 'vp9')) return ' | VP9';
+    else if (Main_A_includes_B(input, 'hvc')) return ' | HEVC';
+    else if (Main_A_includes_B(input, 'av01')) return ' | AV1';
+    else if (Main_A_includes_B(input, 'mp4')) return ' | MP4';
+
     return '';
 }
 

@@ -1189,9 +1189,14 @@ public class PlayerActivity extends Activity {
                 .setAllowVideoNonSeamlessAdaptiveness(true)
                 .setExceedAudioConstraintsIfNecessary(true)
                 .setExceedVideoConstraintsIfNecessary(true)
+                .setAllowVideoMixedMimeTypeAdaptiveness(true)
+                .setAllowVideoMixedDecoderSupportAdaptiveness(true)
+                .setViewportSize(//set this to play resolution bigger then current screen resolution
+                        Integer.MAX_VALUE,
+                        Integer.MAX_VALUE,
+                        false)
                 .setExceedRendererCapabilitiesIfNecessary(true)
                 .build();
-
     }
 
     public void PlayerObjUpdateTrackSelector(int PlayerObjPos, int ParametersPos) {

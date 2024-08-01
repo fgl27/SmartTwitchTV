@@ -649,7 +649,7 @@ public final class Tools {
                             Format format;
                             TrackGroup groupIndex = trackGroupArray.get(0);
 
-                            result.add(new QualitiesObj("Auto", 0, "avc"));
+                            result.add(new QualitiesObj("Auto", 0, "Auto"));
 
                             for (int trackIndex = 0; trackIndex < groupIndex.length; trackIndex++) {
                                 format = groupIndex.getFormat(trackIndex);
@@ -712,9 +712,11 @@ public final class Tools {
     private static String extractCodec(String codec) {
 
         if (codec == null) return "";
-        else if (codec.contains("avc")) return " | avc";
-        else if (codec.contains("vp9")) return " | vp9";
-        else if (codec.contains("mp4a")) return " | mp4";
+        else if (codec.contains("avc")) return " | AVC";
+        else if (codec.contains("vp9")) return " | VP9";
+        else if (codec.contains("hvc")) return " | HECV";
+        else if (codec.contains("av01")) return " | AV1";
+        else if (codec.contains("mp4a")) return " | MP4";
 
         return "";
     }
