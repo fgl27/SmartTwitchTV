@@ -34874,7 +34874,7 @@
             broadcaster = cell.stream.broadcaster;
 
         return [
-            cell.stream.previewImageURL ? cell.stream.previewImageURL.replace('{width}x{height}', Main_VideoSize) : '', //0
+            cell.stream.previewImageURL, //0
             broadcaster ? broadcaster.displayName : '', //1
             cell.stream.title, //2
             game ? game.displayName : '', //3
