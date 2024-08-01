@@ -23352,6 +23352,8 @@
         Play_StayCheckHostId = 0;
         Play_HasLive = false;
 
+        Play_BufferSize = 0;
+
         Play_data.watching_time = new Date().getTime();
         Main_textContentWithEle(Play_infoWatchingTime, ', ' + STR_WATCHING + Play_timeS(0));
         PlayClip_SetProgressBarJumpers();
@@ -24821,14 +24823,21 @@
             Play_UpdateDurationDiv(value[8]);
         }
 
-        var current_time_seconds = timeMs / 1000;
+        var current_time_seconds = timeMs / 1000,
+            duration = Play_DurationSeconds;
 
-        if (Play_BufferSize > current_time_seconds) {
-            //playback was paused
-            current_time_seconds = Play_BufferSize + 5;
+        if (current_time_seconds < 0) {
+            //playback was paused, buffer is bigger then duration
+            duration = Play_DurationSeconds + Math.abs(current_time_seconds);
+            if (duration !== Play_DurationSeconds) {
+                Play_DurationSeconds = duration;
+                Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
+            }
+
+            current_time_seconds = 1;
         }
 
-        PlayVod_ProgressBarrUpdate(current_time_seconds, Play_DurationSeconds, !PlayVod_IsJumping || PlayVod_PanelY);
+        PlayVod_ProgressBarrUpdate(current_time_seconds, duration, !PlayVod_IsJumping || PlayVod_PanelY);
     }
 
     function Play_getMbps(value) {
@@ -25093,7 +25102,10 @@
         } else if (duration > 0) {
             Play_UpdateDurationDiv(duration);
 
-            if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true); //duration may have changed update the positions
+            if (PlayVod_isOn) {
+                //duration may have changed update the positions
+                PlayVod_muted_segments(PlayVod_muted_segments_value, true);
+            }
         }
     }
 
