@@ -608,7 +608,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_CODECS != null)
                 renderersFactory.setMediaCodecSelector(BLACKLISTED_CODECS);
 
-            PlayerObj[PlayerObjPosition].player = new ExoPlayer.Builder(this, renderersFactory.setEnableDecoderFallback(true).setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON))
+            PlayerObj[PlayerObjPosition].player = new ExoPlayer.Builder(this, renderersFactory)
                     .setTrackSelector(PlayerObj[PlayerObjPosition].trackSelector)
                     .setLoadControl(
                             Tools.getLoadControl(
