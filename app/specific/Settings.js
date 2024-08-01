@@ -103,6 +103,16 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
+    av1_codec: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    hevc_codec: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
     ttv_lolProxy: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -442,6 +452,11 @@ var Settings_value = {
         defaultValue: 1
     },
     proxy_settings: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    player_extracodecs: {
         values: ['None'],
         set_values: [''],
         defaultValue: 1
@@ -859,6 +874,7 @@ function Settings_SetSettings() {
 
     //Dialog settings
     //div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
+    div += Settings_Content('player_extracodecs', [STR_ENTER_TO_OPEN], STR_PLAYER_EXTRA_CODEC, STR_PLAYER_EXTRA_CODEC_SUMMARY);
     div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -993,6 +1009,7 @@ function Settings_SetDefaults() {
     }
 
     Settings_SetBuffers(0);
+    Settings_ExtraCodecs(0);
     Settings_SetClock();
     Settings_HideMainClock();
     Settings_HidePlayerClock();
@@ -1257,6 +1274,8 @@ function Settings_SetDefault(position) {
     else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
     else if (position === 'buffer_vod') Settings_SetBuffers(2);
     else if (position === 'buffer_clip') Settings_SetBuffers(3);
+    else if (position === 'av1_codec') Settings_ExtraCodecs();
+    else if (position === 'hevc_codec') Settings_ExtraCodecs();
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
     else if (position === 'seek_preview') PlayVod_SetPreviewType();
@@ -1703,6 +1722,21 @@ function Settings_SetResBitRateMin() {
     OSInterface_SetSmallPlayerBitrate(bitrate, resolution);
 }
 
+function Settings_ExtraCodecs() {
+    var ExtraCodecsValuesArray = [];
+
+    if (Settings_Obj_default('av1_codec')) {
+        ExtraCodecsValuesArray.push('av1');
+    }
+    if (Settings_Obj_default('hevc_codec')) {
+        ExtraCodecsValuesArray.push('h265');
+    }
+
+    ExtraCodecsValuesArray.push('h264');
+
+    play_ExtraCodecsValues = ExtraCodecsValuesArray.join(',');
+}
+
 function Settings_SetBuffers(whocall) {
     if (!whocall) {
         Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
@@ -1907,6 +1941,7 @@ function Settings_KeyEnter(click) {
     if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'playerend_opt')) Settings_PlayerEnd(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
+    else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_extracodecs')) Settings_DialogShowExtraCodecs(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'proxy_settings')) Settings_DialogShowProxy(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek(click);
@@ -2254,6 +2289,27 @@ function Settings_DialogShowProxy(click) {
     };
 
     Settings_DialogShow(obj, PROXY_SETTINGS + STR_BR + STR_BR + PROXY_SETTINGS_SUMMARY, click);
+}
+
+function Settings_DialogShowExtraCodecs(click) {
+    var array_no_yes = [STR_NO, STR_YES];
+    Settings_value.av1_codec.values = array_no_yes;
+    Settings_value.hevc_codec.values = array_no_yes;
+
+    var obj = {
+        av1_codec: {
+            defaultValue: Settings_value.av1_codec.defaultValue,
+            values: Settings_value.av1_codec.values,
+            title: STR_PLAYER_CODEC_AV1
+        },
+        hevc_codec: {
+            defaultValue: Settings_value.hevc_codec.defaultValue,
+            values: Settings_value.hevc_codec.values,
+            title: STR_PLAYER_CODEC_HEVC
+        }
+    };
+
+    Settings_DialogShow(obj, STR_PLAYER_EXTRA_CODEC + STR_BR + STR_BR + STR_PLAYER_EXTRA_CODEC_SUMMARY, click);
 }
 
 function Settings_DialogShowBitrate(click) {

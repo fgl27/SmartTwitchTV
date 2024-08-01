@@ -714,7 +714,7 @@ public final class Tools {
         if (codec == null) return "";
         else if (codec.contains("avc")) return " | AVC";
         else if (codec.contains("vp9")) return " | VP9";
-        else if (codec.contains("hvc")) return " | HECV";
+        else if (codec.contains("hvc")) return " | HEVC";
         else if (codec.contains("av01")) return " | AV1";
         else if (codec.contains("mp4a")) return " | MP4";
 
