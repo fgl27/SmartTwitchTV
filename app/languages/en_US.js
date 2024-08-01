@@ -879,7 +879,7 @@ function en_USLang() {
     STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
     STR_PLAYER_EXTRA_CODEC = 'Extra codec support';
-    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Beta codec support that are is being tested by Twitch';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Beta codec support that are being tested by Twitch';
 
     STR_PLAYER_CODEC_AV1 = 'AV1 support';
     STR_PLAYER_CODEC_HEVC = 'HEVC support';
