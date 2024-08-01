@@ -1009,7 +1009,7 @@ function Settings_SetDefaults() {
     }
 
     Settings_SetBuffers(0);
-    Settings_ExtraCodecs(0);
+    Settings_ExtraCodecs();
     Settings_SetClock();
     Settings_HideMainClock();
     Settings_HidePlayerClock();
