@@ -384,7 +384,7 @@ var Settings_value = {
         defaultValue: 3
     },
     default_quality: {
-        values: ['Auto', 'source', '1080p60', '1080p30', '720p60', '720p30', '480p30', '360p30', '160p30'],
+        values: ['Auto', 'source', '2160p60', '1440p60', '1080p60', '1080p30', '720p60', '720p30', '480p30', '360p30', '160p30'],
         defaultValue: 1
     },
     check_source: {
@@ -878,9 +878,11 @@ function Settings_SetSettings() {
     //Dialog settings
     //div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
     div += Settings_Content('player_extracodecs', [STR_ENTER_TO_OPEN], STR_PLAYER_EXTRA_CODEC, STR_PLAYER_EXTRA_CODEC_SUMMARY);
-    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
-    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+
+    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
+    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+
     div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
     div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
@@ -2415,9 +2417,9 @@ function Settings_DialogShowProxy(click) {
 }
 
 function Settings_DialogShowExtraCodecs(click) {
-    var array_no_yes = [STR_NO, STR_YES];
-    Settings_value.av1_codec.values = array_no_yes;
-    Settings_value.hevc_codec.values = array_no_yes;
+    var dis_ena = [STR_DISABLED, STR_ENABLED];
+    Settings_value.av1_codec.values = dis_ena;
+    Settings_value.hevc_codec.values = dis_ena;
 
     var obj = {
         av1_codec: {
@@ -2445,6 +2447,9 @@ function Settings_DialogShowExtraCodecs(click) {
             STR_BR +
             STR_BR +
             STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 +
             STR_BR +
             STR_BR +
             STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 +

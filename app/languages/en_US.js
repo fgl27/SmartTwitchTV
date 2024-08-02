@@ -488,7 +488,7 @@ function en_USLang() {
     STR_DPAD_POSTION = 'D-pad screen position';
     STR_DPAD_OPACITY = 'D-pad opacity';
     STR_DPAD_OPT = 'D-pad options';
-    STR_BLOCKED_CODEC = 'Blocked codecs';
+    STR_BLOCKED_CODEC = 'Codec capability & Blocked codecs';
     STR_BLOCKED_CODEC_SUMMARY = 'List used codec capabilities and allow blocking a codec from being used.';
     STR_CODEC_DIALOG_TITLE =
         "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style='color: #FF0000;'>by default, the OMX.google decoders are disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.";
@@ -891,4 +891,6 @@ function en_USLang() {
 
     STR_PLAYER_CODEC_SUPPORTED = 'supported';
     STR_PLAYER_CODEC_NOT_SUPPORTED = 'Not supported! Enabling this codec can cause playback errors and no playback.';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'To better understand the device capability check the settings option: ' + STR_BLOCKED_CODEC;
 }
