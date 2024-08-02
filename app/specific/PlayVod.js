@@ -552,8 +552,12 @@ function PlayVod_qualityChanged() {
     PlayVod_qualityPlaying = PlayVod_quality;
 
     PlayVod_SetHtmlQuality(Play_info_quality);
-    if (Main_IsOn_OSInterface) OSInterface_SetQuality(PlayVod_qualityIndex - 1);
-    else PlayVod_onPlayer();
+
+    if (Main_IsOn_OSInterface) {
+        OSInterface_SetQuality(PlayVod_qualities[PlayVod_qualityIndex].position);
+    } else {
+        PlayVod_onPlayer();
+    }
 }
 
 function PlayVod_onPlayer() {

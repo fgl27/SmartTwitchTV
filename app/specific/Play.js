@@ -954,7 +954,7 @@ function Play_qualityChanged() {
     Play_SetHtmlQuality(Play_info_quality);
 
     if (Main_IsOn_OSInterface) {
-        OSInterface_SetQuality(Play_data.qualityIndex - 1);
+        OSInterface_SetQuality(Play_data.qualities[Play_data.qualityIndex].position);
     } else {
         Play_onPlayer();
     }
@@ -973,6 +973,15 @@ function Play_getQualities(Who_Called, skipchange) {
         Play_getQualitiesFail = false;
         result = JSON.parse(baseQualities);
 
+        var i = 0,
+            len = result.length;
+
+        //add the position to the obj, as we may change the order and need the position to use in Play_controls[Play_controlsQuality]
+        for (i; i < len; i++) {
+            result[i].position = i - 1;
+        }
+
+        //sort by resolution
         result.sort(function (a, b) {
             if (!a || !b) {
                 return 0;
