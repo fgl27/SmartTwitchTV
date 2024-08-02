@@ -121,7 +121,6 @@
 	STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get video link";
 	STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
-	STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
 	STR_WATCHED = "Watched on";
     STR_UNTIL = "until";

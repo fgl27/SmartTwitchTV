@@ -488,19 +488,14 @@ function en_USLang() {
     STR_DPAD_POSTION = 'D-pad screen position';
     STR_DPAD_OPACITY = 'D-pad opacity';
     STR_DPAD_OPT = 'D-pad options';
-    STR_BLOCKED_CODEC = 'Codec capability & Blocked codecs';
-    STR_BLOCKED_CODEC_SUMMARY = 'List used codec capabilities and allow blocking a codec from being used.';
-    STR_CODEC_DIALOG_TITLE =
-        "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style='color: #FF0000;'>by default, the OMX.google decoders are disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.";
-    STR_SUPPORTED_CODEC = 'Supported codecs:';
+
     STR_MAX_RES = 'Max resolution:';
     STR_MAX_BIT = 'Max bitrate:';
     STR_MAX_LEVEL = 'Max level:';
     STR_MAX_FPS = 'Max fps per resolution:';
     STR_MAX_INSTANCES = 'Max instances:';
     STR_UNKNOWN = 'Unknown';
-    STR_ONE_CODEC_ENA = 'At least one codec must be enabled at all times.';
-    STR_USER_LIVE = 'User live side pannel: Left D-pad from the side panel or key 3 from anywhere';
+    STR_USER_LIVE = 'User live side panel: Left D-pad from the side panel or key 3 from anywhere';
     STR_PP_WORKAROUND = 'Multiplayer, PP and preview mode workaround';
     STR_PP_WORKAROUND_SUMMARY =
         "For some devices usually running old versions of Android, it is necessary to enable this to have multiplayer mode working properly. Usually, the issue is that the player (PP or preview) will not be visible, or even when not in use it is visible as a black box over the main player. Don't enable this if you don't have issues, as it will result in lower image quality and possible loss of performance";
@@ -892,5 +887,15 @@ function en_USLang() {
     STR_PLAYER_CODEC_SUPPORTED = 'supported';
     STR_PLAYER_CODEC_NOT_SUPPORTED = 'Not supported! Enabling this codec can cause playback errors and no playback.';
 
-    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'To better understand the device capability check the settings option: ' + STR_BLOCKED_CODEC;
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'To better understand the device capability check the settings option: ';
+
+    STR_BLOCKED_CODEC = 'Codec capability & Blocked codecs';
+    STR_BLOCKED_CODEC_SUMMARY = 'List used codec capabilities and allow blocking codecs from being used.';
+
+    STR_CODEC_DIALOG_SUMMARY_1 = 'This section lists all device-supported codec types AVC H.264, HEVC H.265, and AV1  used by this app.';
+
+    STR_CODEC_DIALOG_SUMMARY_2 =
+        'Software codecs (OMX.google) are disabled by default if a hardware codec is available, if you have a playback problem try to disable the hardware codec and enable the software or vice versa (A constant accumulation of skipped frames is indicative of a codec issue).';
+
+    STR_CODEC_DIALOG_SUMMARY_3 = 'At least one codec of each type must be enabled at all times.';
 }

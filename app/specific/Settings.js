@@ -2003,11 +2003,14 @@ function Settings_CodecsShow(click) {
                 STR_BLOCKED_CODEC +
                 '</div>' +
                 STR_BR +
-                STR_CODEC_DIALOG_TITLE +
+                STR_CODEC_DIALOG_SUMMARY_1 +
                 STR_BR +
-                STR_DIV_TITLE +
-                STR_SUPPORTED_CODEC +
-                '</div>' +
+                STR_BR +
+                STR_CODEC_DIALOG_SUMMARY_2 +
+                STR_BR +
+                STR_BR +
+                STR_CODEC_DIALOG_SUMMARY_3 +
+                STR_BR +
                 STR_BR;
 
             var i = 0,
@@ -2069,12 +2072,18 @@ function Settings_handleKeyDownReturn() {
 
 function Settings_handleKeyDownCodecsLeft() {
     var key = Settings_CodecsValue[Settings_CodecsPos].name;
-    if (Settings_Obj_default(key) > 0) Settings_CodecsRightLeft(-1);
+
+    if (Settings_Obj_default(key) > 0) {
+        Settings_CodecsRightLeft(-1);
+    }
 }
 
 function Settings_handleKeyDownCodecsRight() {
     var key = Settings_CodecsValue[Settings_CodecsPos].name;
-    if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRightLeft(1);
+
+    if (Settings_Obj_default(key) < Settings_Obj_length(key)) {
+        Settings_CodecsRightLeft(1);
+    }
 }
 
 function Settings_handleKeyDownCodecs(event) {
@@ -2139,19 +2148,16 @@ function Settings_CodecsUpDownAfter(key) {
 }
 
 function Settings_CodecsRightLeft(offset) {
-    if (Settings_CodecsValue.length < 2) {
-        Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
+    if (Settings_CodecsValue.length === 1) {
+        Main_showWarningDialog(STR_CODEC_DIALOG_SUMMARY_3, 2000);
         return;
     }
 
     var key = Settings_CodecsValue[Settings_CodecsPos].name,
+        type = Settings_CodecsValue[Settings_CodecsPos].type,
         index;
 
     Settings_value[key].defaultValue += offset;
-
-    Main_setItem(key, Settings_Obj_default(key));
-    Main_textContent(key, Settings_Obj_values(key));
-    Settings_SetarrowsKey(key);
 
     if (Settings_value[key].defaultValue) {
         Settings_DisableCodecsNames.push(key);
@@ -2162,34 +2168,34 @@ function Settings_CodecsRightLeft(offset) {
             len = Settings_CodecsValue.length;
 
         for (i; i < len; i++) {
-            if (!Settings_value[Settings_CodecsValue[i].name].defaultValue) {
+            if (type === Settings_CodecsValue[i].type && !Settings_value[Settings_CodecsValue[i].name].defaultValue) {
                 oneEnable = true;
                 break;
             }
         }
 
         if (!oneEnable) {
-            Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
+            Main_showWarningDialog(STR_CODEC_DIALOG_SUMMARY_3, 2000);
 
-            i = 0;
-            len = Settings_CodecsValue.length;
-            for (i; i < len; i++) {
-                if (Settings_CodecsPos !== i) {
-                    key = Settings_CodecsValue[i].name;
-                    Settings_value[key].defaultValue += -1;
-                    Main_setItem(key, Settings_Obj_default(key));
-                    Main_textContent(key, Settings_Obj_values(key));
-                    index = Settings_DisableCodecsNames.indexOf(Settings_CodecsValue[i].name);
-                    if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
+            key = Settings_CodecsValue[Settings_CodecsPos].name;
+            Settings_value[key].defaultValue += -1;
+            index = Settings_DisableCodecsNames.indexOf(Settings_CodecsValue[Settings_CodecsPos].name);
 
-                    break;
-                }
+            if (index > -1) {
+                Settings_DisableCodecsNames.splice(index, 1);
             }
         }
     } else {
         index = Settings_DisableCodecsNames.indexOf(key);
-        if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
+
+        if (index > -1) {
+            Settings_DisableCodecsNames.splice(index, 1);
+        }
     }
+
+    Main_setItem(key, Settings_Obj_default(key));
+    Main_textContent(key, Settings_Obj_values(key));
+    Settings_SetarrowsKey(key);
 
     Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
     Settings_CodecsSet();
@@ -2422,15 +2428,16 @@ function Settings_DialogShowExtraCodecs(click) {
     Settings_value.hevc_codec.values = dis_ena;
 
     var obj = {
-        av1_codec: {
-            defaultValue: Settings_value.av1_codec.defaultValue,
-            values: Settings_value.av1_codec.values,
-            title: STR_PLAYER_CODEC_AV1
-        },
         hevc_codec: {
             defaultValue: Settings_value.hevc_codec.defaultValue,
             values: Settings_value.hevc_codec.values,
-            title: STR_PLAYER_CODEC_HEVC
+            title: STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_PLAYER_CODEC_HEVC
+        },
+
+        av1_codec: {
+            defaultValue: Settings_value.av1_codec.defaultValue,
+            values: Settings_value.av1_codec.values,
+            title: STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_PLAYER_CODEC_AV1
         }
     };
 
@@ -2457,17 +2464,17 @@ function Settings_DialogShowExtraCodecs(click) {
             STR_BR +
             '<div class="about_text_title" ' +
             '<span style="color: ' +
-            (Settings_AV1Supported ? green : red) +
-            ';"> AV1 -' +
-            STR_SPACE_HTML +
-            (Settings_AV1Supported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
-            STR_BR +
-            STR_BR +
-            '</span><span style="color: ' +
             (Settings_HEVCSupported ? green : red) +
             ';"> HEVC -' +
             STR_SPACE_HTML +
             (Settings_HEVCSupported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
+            STR_BR +
+            STR_BR +
+            '</span><span style="color: ' +
+            (Settings_AV1Supported ? green : red) +
+            ';"> AV1 -' +
+            STR_SPACE_HTML +
+            (Settings_AV1Supported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
             '</span></div>',
         click
     );

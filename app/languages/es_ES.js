@@ -376,9 +376,7 @@ function es_ESLang() {
     STR_DPAD_OPT = 'Opciones del D-pad';
     STR_BLOCKED_CODEC = 'Codecs bloqueados';
     STR_BLOCKED_CODEC_SUMMARY = 'Lista de los códecs utilizados y permite bloquear el uso de un códec';
-    STR_CODEC_DIALOG_TITLE =
-        'Los códecs de software (OMX.google) suelen tener un peor rendimiento, pero en algún dispositivo pueden tener preferencia sobre los códecs de hardware, usando este se pueden bloquear y ver si el rendimiento de la reproducción mejora, <span style="color: #FF0000;">por defecto el decodificador OMX.google está desactivado</span> (si hay otro códec disponible) una acumulación constante de fotogramas omitidos es un indicativo de un problema de códec.<br>El contenido de la aplicación sólo utiliza decodificadores avc/h264 no hay otro en la lista.';
-    STR_SUPPORTED_CODEC = 'Códecs soportados:';
+
     STR_MAX_RES = 'Resolución máxima:';
     STR_MAX_BIT = 'Tasa de bits máxima:';
     STR_MAX_LEVEL = 'Nivel máximo:';
