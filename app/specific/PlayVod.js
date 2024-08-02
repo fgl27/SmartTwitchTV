@@ -868,8 +868,9 @@ function PlayVod_SetHtmlQuality(element) {
         if (Main_IsOn_OSInterface) {
             quality_string = PlayVod_quality.replace('Auto', STR_AUTO);
         } else {
-            if (Play_info_quality !== element) quality_string = PlayVod_quality.replace('Auto', STR_AUTO);
-            else {
+            if (Play_info_quality !== element) {
+                quality_string = PlayVod_quality.replace('Auto', STR_AUTO);
+            } else {
                 quality_string = PlayVod_qualities[1].id.replace('source', STR_AUTO) + PlayVod_qualities[1].band + PlayVod_qualities[1].codec;
             }
         }

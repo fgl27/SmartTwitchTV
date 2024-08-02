@@ -1210,8 +1210,9 @@ function Play_SetHtmlQuality(element) {
         if (Main_IsOn_OSInterface) {
             quality_string = Play_data.quality.replace('Auto', STR_AUTO);
         } else {
-            if (Play_info_quality !== element) quality_string = Play_data.quality.replace('Auto', STR_AUTO);
-            else {
+            if (Play_info_quality !== element) {
+                quality_string = Play_data.quality.replace('Auto', STR_AUTO);
+            } else {
                 quality_string = Play_data.qualities[1].id.replace('source', STR_AUTO) + Play_data.qualities[1].band + Play_data.qualities[1].codec;
             }
         }
@@ -1782,7 +1783,9 @@ function Play_ShowVideoQuality(who_called, value) {
         } else {
             PlayVod_SetHtmlQuality(Play_info_quality);
         }
-    } else Main_innerHTML('stream_quality', value);
+    } else {
+        Main_innerHTML('stream_quality', value);
+    }
 }
 
 function Play_clearHidePanel() {
