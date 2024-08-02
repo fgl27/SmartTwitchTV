@@ -384,7 +384,7 @@ public final class Tools {
 
                             maxlevel = AvcLevelsMap.containsKey(position) ? AvcLevelsMap.get(position) : "Unknown level " + profile[profile.length - 1].level;
 
-                        } else if (CodecType.contains("av1")) {
+                        } else if (CodecType.contains("av01")) {
 
                             maxlevel = Av1LevelsMap.containsKey(position) ? Av1LevelsMap.get(position) : "Unknown level " + profile[profile.length - 1].level;
 
