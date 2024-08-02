@@ -262,6 +262,7 @@ function Play_Start(offline_chat) {
             Chat_Disable();
             BrowserTestStartLive(Play_data.data[6]);
         }
+        Play_extractQualitiesTest();
     }
 
     //Play_ResetProxy();
@@ -1027,6 +1028,7 @@ function Play_SetExternalQualities(array, startPos, name) {
         Play_ExternalUrls.push(array[i].url);
         Play_controls[Play_controlsExternal].values.push(array[i].id);
     }
+
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
     Play_controls[Play_controlsExternal].setLabel();
 
@@ -1045,14 +1047,42 @@ function Play_FixQualities(input) {
     return input;
 }
 
+function Play_extractQualitiesTest() {
+    /* jshint ignore:start */
+    var testString = `
+#EXTM3U
+#EXT-X-TWITCH-INFO:NODE="video-edge-6205c6.sao03",MANIFEST-NODE-TYPE="weaver_cluster",MANIFEST-NODE="video-weaver.sao03",SUPPRESS="true",SERVER-TIME="1722602179.79",TRANSCODESTACK="2023-Transcode-Gen2-V1",TRANSCODEMODE="cbr_v1",USER-IP="177.22.171.246",SERVING-ID="f",CLUSTER="sao03",ABS="true",VIDEO-SESSION-ID="2118154500142300273",BROADCAST-ID="40914639541",STREAM-TIME="18032.793634",B="false",USER-COUNTRY="BR",MANIFEST-CLUSTER="sao03",ORIGIN="muc03",C="a",D="false"
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="chunked",NAME="1080p60 (source)",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=6857175,RESOLUTION=1920x1080,CODECS="avc1.64002A,mp4a.40.2",VIDEO="chunked",FRAME-RATE=59.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="720p60",NAME="720p60",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=3422999,RESOLUTION=1280x720,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="720p60",FRAME-RATE=60.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="480p30",NAME="480p",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=1427999,RESOLUTION=852x480,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="480p30",FRAME-RATE=30.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="360p30",NAME="360p",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=630000,RESOLUTION=640x360,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="360p30",FRAME-RATE=30.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="160p30",NAME="160p",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=230000,RESOLUTION=284x160,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="160p30",FRAME-RATE=27.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
+        `;
+
+    console.log('Play_extractQualitiesTest', Play_extractQualities(testString));
+    /* jshint ignore:end */
+}
+
 function Play_extractQualities(input) {
     var result = [],
         addedResolution = {},
         marray,
         marray2,
         Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
-        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*(http(.*))/g,
-        id;
+        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*FRAME-RATE=(\d+).*(http(.*))/g,
+        id,
+        res,
+        frame;
 
     while ((marray = Regexp.exec(input))) {
         while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, '')))) {
@@ -1067,13 +1097,17 @@ function Play_extractQualities(input) {
 
             //Prevent duplicated resolution 720p60 source and 720p60
             if (!addedResolution[id]) {
+                res = parseInt(id.split('p')[0]);
+                frame = Math.ceil(parseInt(marray2[4]) / 10) * 10;
+
                 result.push({
-                    id: marray2[1],
-                    url: marray2[4],
+                    id: res + 'p' + frame,
+                    url: marray2[5],
                     bitrate: parseInt(marray2[2]),
-                    resolution: parseInt(id.split('p')[0]),
+                    resolution: res,
                     band: Play_extractBand(marray2[2]),
-                    codec: Play_extractCodec(marray2[3])
+                    codec: Play_extractCodec(marray2[3]),
+                    frame: frame
                 });
 
                 addedResolution[id] = 1;
