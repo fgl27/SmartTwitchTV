@@ -1181,7 +1181,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerObjUpdateTrackSelectorParameters(int ParametersPos, Context context, int width) {
-
+        //https://developer.android.com/reference/kotlin/androidx/media3/exoplayer/trackselection/DefaultTrackSelector.ParametersBuilder
         trackSelectorParameters[ParametersPos] = DefaultTrackSelector.Parameters.getDefaults(context)
                 .buildUpon()
                 .setMaxVideoBitrate(PlayerBitrate[ParametersPos])
