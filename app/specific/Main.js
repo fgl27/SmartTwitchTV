@@ -90,7 +90,7 @@ var Main_values = {
     DeviceCheck2: false,
     MiboxRevertCheck: false,
     Never_run_phone: true,
-    Codec_is_Check: false,
+    Codec_is_Check_new: false,
     OS_is_Check: false,
     Restore_Backup_Check: false,
     UserSidePannel_LastPositionId: null,
@@ -476,14 +476,18 @@ function Main_CheckDevice() {
         }
 
         //Disable googles OMX.google.h264.decoder and c2.android.avc.decoder if another codec is available
-        if (!Main_values.Codec_is_Check) {
+        if (!Main_values.Codec_is_Check_new) {
             var codecs = null;
             try {
-                if (Main_IsOn_OSInterface) codecs = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+                if (Main_IsOn_OSInterface) {
+                    codecs = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+                    codecs.push.apply(codecs, JSON.parse(OSInterface_getcodecCapabilities('hevc')));
+                    codecs.push.apply(codecs, JSON.parse(OSInterface_getcodecCapabilities('av01')));
+                }
             } catch (e) {}
 
             if (codecs) {
-                Main_values.Codec_is_Check = true;
+                Main_values.Codec_is_Check_new = true;
 
                 if (codecs.length > 1) {
                     var codecsNames = [];

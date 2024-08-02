@@ -34,6 +34,9 @@ var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 // };
 var Settings_VolumeScale = 5;
 
+var Settings_AV1Supported = 0;
+var Settings_HEVCSupported = 0;
+
 var Settings_value = {
     content_lang: {
         values: [
@@ -1723,13 +1726,24 @@ function Settings_SetResBitRateMin() {
 }
 
 function Settings_ExtraCodecs() {
-    var ExtraCodecsValuesArray = [];
+    var ExtraCodecsValuesArray = [],
+        av1Enabled = Settings_Obj_default('av1_codec'),
+        hevcEnabled = Settings_Obj_default('hevc_codec');
 
-    if (Settings_Obj_default('av1_codec')) {
+    if (av1Enabled) {
         ExtraCodecsValuesArray.push('av1');
+
+        if (!Settings_AV1Supported) {
+            Main_showWarningDialog(STR_PLAYER_CODEC_NOT_SUPPORTED, 3000);
+        }
     }
-    if (Settings_Obj_default('hevc_codec')) {
+
+    if (hevcEnabled) {
         ExtraCodecsValuesArray.push('h265');
+
+        if (!Settings_HEVCSupported) {
+            Main_showWarningDialog(STR_PLAYER_CODEC_NOT_SUPPORTED, 3000);
+        }
     }
 
     ExtraCodecsValuesArray.push('h264');
@@ -1823,7 +1837,15 @@ function Settings_HideElem(elem, hide) {
 var Settings_CurY = 0;
 
 function Settings_ScrollDown() {
-    var doc = Main_getElementById('settings_scroll');
+    Settings_Do_ScrollDown('settings_scroll');
+}
+
+function Settings_ScrollUp() {
+    Settings_Do_ScrollUp('settings_scroll');
+}
+
+function Settings_Do_ScrollDown(docId) {
+    var doc = Main_getElementById(docId);
     doc.scrollTop = doc.scrollHeight;
     if (Settings_Obj_default('app_animations')) {
         var position = doc.scrollTop;
@@ -1832,8 +1854,8 @@ function Settings_ScrollDown() {
     }
 }
 
-function Settings_ScrollUp() {
-    var doc = Main_getElementById('settings_scroll');
+function Settings_Do_ScrollUp(docId) {
+    var doc = Main_getElementById(docId);
     if (Settings_Obj_default('app_animations')) scrollTo(doc, 0, 200);
     else doc.scrollTop = 0;
 }
@@ -1974,10 +1996,22 @@ function Settings_CodecsShow(click) {
                 DivContent,
                 spacer = ' | ';
 
-            dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR + STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
+            dialogContent +=
+                STR_DIV_TITLE +
+                STR_BLOCKED_CODEC +
+                '</div>' +
+                STR_BR +
+                STR_CODEC_DIALOG_TITLE +
+                STR_BR +
+                STR_DIV_TITLE +
+                STR_SUPPORTED_CODEC +
+                '</div>' +
+                STR_BR;
 
             var i = 0,
                 len = Settings_CodecsValue.length;
+
+            dialogContent += '<div id="settings_codec_container" class="settings_codec_container">';
             for (i; i < len; i++) {
                 Settings_value[Settings_CodecsValue[i].name] = {
                     values: [STR_ENABLED, STR_DISABLED],
@@ -1993,11 +2027,12 @@ function Settings_CodecsShow(click) {
 
                 dialogContent += Settings_DivOptionWithSummary(
                     Settings_CodecsValue[i].name,
-                    Settings_CodecsValue[i].name,
+                    Settings_CodecsValue[i].name + Settings_decoderType(Settings_CodecsValue[i].type),
                     DivContent + STR_BR + STR_BR,
                     73
                 );
             }
+            dialogContent += '</div>';
 
             Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
             Settings_CodecsDialogSet = true;
@@ -2013,6 +2048,14 @@ function Settings_CodecsShow(click) {
 
     Main_ShowElement('dialog_codecs');
     Main_addEventListener('keydown', Settings_handleKeyDownCodecs);
+}
+
+function Settings_decoderType(codec) {
+    if (Main_A_includes_B(codec, 'avc')) return ' - AVC H.264';
+    else if (Main_A_includes_B(codec, 'hevc')) return ' - HEVC H.265';
+    else if (Main_A_includes_B(codec, 'av01')) return ' - AV1';
+
+    return '';
 }
 
 function Settings_handleKeyDownReturn() {
@@ -2047,13 +2090,33 @@ function Settings_handleKeyDownCodecs(event) {
             Settings_handleKeyDownCodecsRight();
             break;
         case KEY_UP:
-            if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
+            if (Settings_CodecsPos > 0) {
+                Settings_CodecsUpDown(-1);
+                if (Settings_CodecsPos === 3) {
+                    Settings_ScrollCodecs();
+                }
+            }
             break;
         case KEY_DOWN:
-            if (Settings_CodecsPos < Settings_CodecsValue.length - 1) Settings_CodecsUpDown(1);
+            if (Settings_CodecsPos < Settings_CodecsValue.length - 1) {
+                Settings_CodecsUpDown(1);
+                if (Settings_CodecsPos === 4) {
+                    Settings_ScrollCodecs(true);
+                }
+            }
             break;
         default:
             break;
+    }
+}
+
+function Settings_ScrollCodecs(down) {
+    var docId = 'settings_codec_container';
+
+    if (down) {
+        Settings_Do_ScrollDown(docId);
+    } else {
+        Settings_Do_ScrollUp(docId);
     }
 }
 
@@ -2163,40 +2226,100 @@ function Settings_SetCodecsValue() {
     if (!Main_IsOn_OSInterface) {
         // Settings_CodecsValue = [
         //     {
-        //         "instances": 32,
-        //         "maxbitrate": "120 Mbps",
-        //         "maxlevel": "5.2",
-        //         "maxresolution": "3840x2176",
-        //         "name": "OMX.Nvidia.h264.decode",
-        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps",
-        //         "type": "video/avc"
+        //         instances: 32,
+        //         maxbitrate: '120 Mbps',
+        //         maxlevel: '5.2',
+        //         maxresolution: '3840x2176',
+        //         name: 'OMX.Nvidia.h264.decode',
+        //         resolutions: '160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps',
+        //         type: 'video/avc'
         //     },
         //     {
-        //         "instances": 32, "maxbitrate": "48 Mbps",
-        //         "maxlevel": "5.2",
-        //         "maxresolution": "4080x4080",
-        //         "name": "OMX.google.h264.decoder",
-        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
-        //         "type": "video/avc"
+        //         instances: 32,
+        //         maxbitrate: '48 Mbps',
+        //         maxlevel: '5.2',
+        //         maxresolution: '4080x4080',
+        //         name: 'OMX.google.h264.decoder',
+        //         resolutions: '160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps',
+        //         type: 'video/avc'
         //     },
         //     {
-        //         "instances": -1, "maxbitrate": "48 Mbps",
-        //         "maxlevel": "5.2",
-        //         "maxresolution": "4080x4080",
-        //         "name": "OMX.chico.h264.decoder",
-        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
-        //         "type": "video/avc"
+        //         instances: -1,
+        //         maxbitrate: '48 Mbps',
+        //         maxlevel: '5.2',
+        //         maxresolution: '4080x4080',
+        //         name: 'OMX.chico.h264.decoder',
+        //         resolutions: '160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps',
+        //         type: 'video/avc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '120 Mbps',
+        //         maxlevel: 'High 5.2',
+        //         maxresolution: '4096x4096',
+        //         name: 'c2.goldfish.hevc.decoder',
+        //         resolutions:
+        //             '160p : 480 fps | 360p : 480 fps | 480p : 480 fps | 720p : 480 fps | 900p : 364 fps | 1080p : 254 fps | 1440p : 144 fps | 2160p : 64 fps',
+        //         type: 'video/hevc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '10 Mbps',
+        //         maxlevel: 'High 5.2',
+        //         maxresolution: '4096x4096',
+        //         name: 'c2.android.hevc.decoder',
+        //         resolutions:
+        //             '160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps',
+        //         type: 'video/hevc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '10 Mbps',
+        //         maxlevel: 'High 5.2',
+        //         maxresolution: '4096x4096',
+        //         name: 'OMX.google.hevc.decoder',
+        //         resolutions:
+        //             '160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps',
+        //         type: 'video/hevc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '40 Mbps',
+        //         maxlevel: '32768',
+        //         maxresolution: '2048x2048',
+        //         name: 'c2.android.av1.decoder',
+        //         resolutions: '160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps',
+        //         type: 'video/av01'
         //     }
         // ];
 
         Settings_CodecsValue = JSON.parse(
-            '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"}]'
+            '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.goldfish.hevc.decoder","resolutions":"160p : 480 fps | 360p : 480 fps | 480p : 480 fps | 720p : 480 fps | 900p : 364 fps | 1080p : 254 fps | 1440p : 144 fps | 2160p : 64 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.android.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"OMX.google.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.android.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"}]'
         );
     } else {
         try {
             Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+
+            Settings_CodecsValue.push.apply(Settings_CodecsValue, JSON.parse(OSInterface_getcodecCapabilities('hevc')));
+            Settings_CodecsValue.push.apply(Settings_CodecsValue, JSON.parse(OSInterface_getcodecCapabilities('av01')));
         } catch (e) {
             Settings_CodecsValue = [];
+        }
+    }
+
+    Settings_SetSuportedCodecs(Settings_CodecsValue);
+}
+
+function Settings_SetSuportedCodecs(codecs) {
+    var i = 0,
+        len = codecs.length;
+
+    for (i; i < len; i++) {
+        if (Main_A_includes_B(codecs[i].type, 'hevc')) Settings_HEVCSupported = true;
+        if (Main_A_includes_B(codecs[i].type, 'av01')) Settings_AV1Supported = true;
+
+        if (Settings_HEVCSupported && Settings_AV1Supported) {
+            break;
         }
     }
 }
@@ -2309,7 +2432,40 @@ function Settings_DialogShowExtraCodecs(click) {
         }
     };
 
-    Settings_DialogShow(obj, STR_PLAYER_EXTRA_CODEC + STR_BR + STR_BR + STR_PLAYER_EXTRA_CODEC_SUMMARY, click);
+    var red = '#ec0000',
+        green = '#00c900';
+
+    Settings_DialogShow(
+        obj,
+        STR_DIV_TITLE +
+            STR_PLAYER_EXTRA_CODEC +
+            '</div>' +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 +
+            STR_BR +
+            STR_BR +
+            '<div class="about_text_title" ' +
+            '<span style="color: ' +
+            (Settings_AV1Supported ? green : red) +
+            ';"> AV1 -' +
+            STR_SPACE_HTML +
+            (Settings_AV1Supported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
+            STR_BR +
+            STR_BR +
+            '</span><span style="color: ' +
+            (Settings_HEVCSupported ? green : red) +
+            ';"> HEVC -' +
+            STR_SPACE_HTML +
+            (Settings_HEVCSupported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
+            '</span></div>',
+        click
+    );
 }
 
 function Settings_DialogShowBitrate(click) {
@@ -3069,10 +3225,14 @@ function Settings_DialoghandleKeyDown(event) {
             Settings_DialoghandleKeyRight();
             break;
         case KEY_UP:
-            if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
+            if (Settings_DialogPos > 0) {
+                Settings_DialogUpDown(-1);
+            }
             break;
         case KEY_DOWN:
-            if (Settings_DialogPos < Settings_DialogValue.length - 1) Settings_DialogUpDown(1);
+            if (Settings_DialogPos < Settings_DialogValue.length - 1) {
+                Settings_DialogUpDown(1);
+            }
             break;
         default:
             break;

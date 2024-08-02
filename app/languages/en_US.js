@@ -491,7 +491,7 @@ function en_USLang() {
     STR_BLOCKED_CODEC = 'Blocked codecs';
     STR_BLOCKED_CODEC_SUMMARY = 'List used codec capabilities and allow blocking a codec from being used.';
     STR_CODEC_DIALOG_TITLE =
-        "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style='color: #FF0000;'>by default, the OMX.google decoder is disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.<br>The app content only uses avc/h264 decoders, no others are listed.";
+        "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style='color: #FF0000;'>by default, the OMX.google decoders are disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.";
     STR_SUPPORTED_CODEC = 'Supported codecs:';
     STR_MAX_RES = 'Max resolution:';
     STR_MAX_BIT = 'Max bitrate:';
@@ -881,6 +881,14 @@ function en_USLang() {
     STR_PLAYER_EXTRA_CODEC = 'Extra codec support';
     STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Beta codec support that are being tested by Twitch';
 
-    STR_PLAYER_CODEC_AV1 = 'AV1 support';
-    STR_PLAYER_CODEC_HEVC = 'HEVC support';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Most streams only have AVC H.264 support ';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
+        'For the codec to work the device must be capable, check the capability below (must be green), and the stream must be using the codec.';
+
+    STR_PLAYER_CODEC_AV1 = 'AV1';
+    STR_PLAYER_CODEC_HEVC = 'HEVC';
+
+    STR_PLAYER_CODEC_SUPPORTED = 'supported';
+    STR_PLAYER_CODEC_NOT_SUPPORTED = 'Not supported! Enabling this codec can cause playback errors and no playback.';
 }
