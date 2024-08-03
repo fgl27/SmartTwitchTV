@@ -880,13 +880,13 @@ function Settings_SetSettings() {
     div += Settings_Content('player_extracodecs', [STR_ENTER_TO_OPEN], STR_PLAYER_EXTRA_CODEC, STR_PLAYER_EXTRA_CODEC_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
 
-    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
-    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SHORT_SUMMARY);
+    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SHORT_SUMMARY);
 
     div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
     div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
-    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY);
 
     Main_innerHTML('settings_main', div);
     Settings_positions_length = Settings_value_keys.length;
@@ -1864,7 +1864,7 @@ function Settings_Do_ScrollUp(docId) {
 
 function Settings_ScrollTable() {
     var scroolPos = 14,
-        offset = !Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
+        offset = 0; //!Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
         Settings_ScrollDown();
@@ -2342,7 +2342,9 @@ function Settings_QualitiesCheck() {
         len = array_values.length;
 
     for (i; i < len; i++) {
-        if (Settings_Obj_default('block_qualities_' + array_values[i])) Settings_DisableQualities.push(array_values[i]);
+        if (Settings_Obj_default('block_qualities_' + array_values[i])) {
+            Settings_DisableQualities.push(array_values[i]);
+        }
     }
 
     Settings_DisableQualitiesLen = Settings_DisableQualities.length;
@@ -2355,7 +2357,9 @@ function Settings_QualitiesCheck() {
 }
 
 function Settings_Qualities() {
-    if (Main_IsOn_OSInterface) OSInterface_setBlackListQualities(Settings_DisableQualities.join());
+    if (Main_IsOn_OSInterface) {
+        OSInterface_setBlackListQualities(Settings_DisableQualities.join());
+    }
 }
 
 function Settings_ForceEnableAnimations() {
