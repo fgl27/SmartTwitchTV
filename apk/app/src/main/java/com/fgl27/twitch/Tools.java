@@ -221,7 +221,20 @@ public final class Tools {
             8192
     };
 
-    private static final Integer[] resolutionsHeight = {
+    private static final String[] resolutionsHeight = {
+            "160p",
+            "360p",
+            "480p",
+            "720p",
+            "900p",
+            "1080p",
+            "1440p",
+            "4k",
+            "8k",
+            "8k"
+    };
+
+    private static final Integer[] resolutionsHeightInt = {
             160,
             360,
             480,
@@ -409,7 +422,7 @@ public final class Tools {
 
                         StringBuilder values = new StringBuilder();
                         for (int i = 0; i < resolutionsWidth.length; i++) {
-                            resolutions = codecframeRate(videoCapabilities, resolutionsWidth[i], resolutionsHeight[i], lowerWidth, UperWidth);
+                            resolutions = codecframeRate(videoCapabilities, resolutionsWidth[i], resolutionsHeight[i], resolutionsHeightInt[i], lowerWidth, UperWidth);
                             if (resolutions != null) values.append(resolutions);
                         }
 
@@ -447,15 +460,15 @@ public final class Tools {
         return new Gson().toJson(result);
     }
 
-    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
+    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, String height, int heightInt, int lowerWidth, int UperWidth) {
         try {
             //Check if is bigger then smallest and smaller then the biggest
             return (width >= lowerWidth && width <= UperWidth) ?
                     String.format(
                             Locale.US,
-                            "%dp : %d fps | ",
+                            "%s : %d fps | ",
                             height,
-                            Math.round(videoCapabilities.getSupportedFrameRatesFor(width, height).getUpper())
+                            Math.round(videoCapabilities.getSupportedFrameRatesFor(width, heightInt).getUpper())
                     )
                     : null;
         } catch (Exception e) {
