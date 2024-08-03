@@ -216,7 +216,9 @@ public final class Tools {
             1600,
             1920,
             2560,
-            3840
+            3840,
+            7680,
+            8192
     };
 
     private static final Integer[] resolutionsHeight = {
@@ -227,7 +229,9 @@ public final class Tools {
             900,
             1080,
             1440,
-            2160
+            2160,
+            4320,
+            4608
     };
 
     static String ResponseObjToString(long checkResult) {
