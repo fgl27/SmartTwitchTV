@@ -2724,16 +2724,26 @@ public class PlayerActivity extends Activity {
             appPreferences.put(Constants.PREF_CLIENT_TOKEN, token);
         }
 
+        @JavascriptInterface
         public void UpdateBlockedChannels(String channelsJson) {
-            appPreferences.put(Constants.BLOCKED_CHANNEL, channelsJson);
+            String savedChannels = Tools.getString(Constants.BLOCKED_CHANNEL, null, appPreferences);
 
-            RefreshChannel(Constants.CHANNEL_TYPE_LIVE, true, mWebViewContext);
+            if (!Objects.equals(savedChannels, channelsJson)) {
+                appPreferences.put(Constants.BLOCKED_CHANNEL, channelsJson);
+                RefreshChannel(Constants.CHANNEL_TYPE_LIVE, true, mWebViewContext);
+            }
+
         }
 
+        @JavascriptInterface
         public void UpdateBlockedGames(String gamesJson) {
-            appPreferences.put(Constants.BLOCKED_GAMES, gamesJson);
+            String savedGames = Tools.getString(Constants.BLOCKED_GAMES, null, appPreferences);
 
-            RefreshChannel(Constants.CHANNEL_TYPE_GAMES, true, mWebViewContext);
+            if (!Objects.equals(savedGames, gamesJson)) {
+
+                appPreferences.put(Constants.BLOCKED_GAMES, gamesJson);
+                RefreshChannel(Constants.CHANNEL_TYPE_GAMES, true, mWebViewContext);
+            }
         }
 
         @JavascriptInterface

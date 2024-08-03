@@ -595,7 +595,8 @@ public final class ChannelsUtils {
                                     Streams,//Get the follows array
                                     true,
                                     Constants.CHANNEL_TYPE_USER_LIVE,
-                                    context
+                                    context,
+                                    new HashSet<String>()
                             ),
                             channelId,
                             CHANNELS_NAMES
@@ -734,6 +735,7 @@ public final class ChannelsUtils {
                 {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
         };
         int status;
+        Set<String> blockedChannels = Tools.getBlockedByType(Constants.BLOCKED_CHANNEL, appPreferences);
 
         try {
             Tools.ResponseObj response;
@@ -762,7 +764,8 @@ public final class ChannelsUtils {
                                     obj.get(object).getAsJsonArray(),//Get the follows array
                                     sort,
                                     screen,
-                                    context
+                                    context,
+                                    blockedChannels
                             );
                         }
 
@@ -790,12 +793,16 @@ public final class ChannelsUtils {
 
     }
 
-    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, boolean sort, int screen, Context context) {
+    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, boolean sort, int screen, Context context, Set<String> blockedChannels) {
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Streams.size();
-        if (objSize < 1) return null;
-        else content.add(getRefreshContent(context));
+
+        if (objSize < 1) {
+            return null;
+        } else {
+            content.add(getRefreshContent(context));
+        }
 
         Set<String> TempArray = new HashSet<>();
 
@@ -830,8 +837,7 @@ public final class ChannelsUtils {
 
                     channelId = obj.get("user_id").getAsString();
 
-                    if (!TempArray.contains(channelId)) {//Prevent add duplicated
-
+                    if (!TempArray.contains(channelId) && !blockedChannels.contains(channelId)) {//Prevent add duplicated
                         TempArray.add(channelId);
 
                         preview = !obj.get("thumbnail_url").isJsonNull() ? obj.get("thumbnail_url").getAsString() : null;
@@ -901,8 +907,9 @@ public final class ChannelsUtils {
     }
 
     private static List<ChannelContentObj> GetGamesContent(Context context, String UserId, AppPreferences appPreferences) {
+        Set<String> blockedGames = Tools.getBlockedByType(Constants.BLOCKED_GAMES, appPreferences);
 
-        JsonArray Games = GetLiveGames(UserId, appPreferences, true);//Get the Games array
+        JsonArray Games = GetLiveGames(UserId, appPreferences, true, blockedGames);//Get the Games array
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Games != null ? Games.size() : 0;
@@ -948,7 +955,7 @@ public final class ChannelsUtils {
 
     }
 
-    private static JsonArray GetLiveGames(String UserId, AppPreferences appPreferences, Boolean tryAgain) {
+    private static JsonArray GetLiveGames(String UserId, AppPreferences appPreferences, Boolean tryAgain, Set<String> blockedGames) {
         JsonArray Result = new JsonArray();
         int status = 0;
 
@@ -1002,7 +1009,7 @@ public final class ChannelsUtils {
 
                                     gameId = !obj.get("id").isJsonNull() ? obj.get("id").getAsString() : null;
 
-                                    if (gameId != null && !TempArray.contains(gameId)) {//Prevent add duplicated
+                                    if (gameId != null && !TempArray.contains(gameId) && !blockedGames.contains(gameId)) {//Prevent add duplicated
 
                                         TempArray.add(gameId);
                                         Result.add(obj);
@@ -1018,7 +1025,7 @@ public final class ChannelsUtils {
 
                         if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
 
-                            return GetLiveGames(UserId, appPreferences, false);
+                            return GetLiveGames(UserId, appPreferences, false, blockedGames);
 
                         } else if (!tryAgain) {
                             break;

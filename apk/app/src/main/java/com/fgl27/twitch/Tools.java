@@ -101,6 +101,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 @SuppressLint("UnsafeOptInUsageError")
@@ -110,6 +111,9 @@ public final class Tools {
     private static final String TAG = "STTV_Tools";
 
     private static final Type ArrayType = new TypeToken<String[][]>() {
+    }.getType();
+
+    private static final Type setType = new TypeToken<Set<String>>() {
     }.getType();
 
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
@@ -933,7 +937,7 @@ public final class Tools {
     }
 
     public static boolean hasTokens(String UserId, AppPreferences appPreferences) {
-        return Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null;
+        return getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null;
     }
 
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
@@ -1291,6 +1295,10 @@ public final class Tools {
         return new Locale(lang, country);
     }
 
+    public static Set<String> getBlockedByType(String type, AppPreferences appPreferences) {
+        return new Gson().fromJson(getString(type, "[]", appPreferences), setType);
+    }
+
     public static class ResponseObj {
         public final int status;
         public final String responseText;
@@ -1349,4 +1357,5 @@ public final class Tools {
         }
 
     }
+
 }
