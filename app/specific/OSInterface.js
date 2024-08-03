@@ -373,14 +373,34 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
+//public void OSInterface_UpdateBlockedChannels(String channelsJson)
+//channelsJson = channelsJson map with all blocked channels
+//Sets the map of blocked channels used by home screen content
+function OSInterface_UpdateBlockedChannels() {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.UpdateBlockedChannels(Main_GetBlockedJson('channel'));
+        } catch (e) {}
+    }
+}
+
+//public void UpdateBlockedGames(String gamesJson)
+//gamesJson = gamesJson map with all blocked games
+//Sets the map of blocked games used by home screen content
+function OSInterface_UpdateBlockedGames() {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.UpdateBlockedGames(Main_GetBlockedJson('game'));
+        } catch (e) {}
+    }
+}
+
 //public void setAppToken(String token)
 //token =  token to save
 //Sets the app token when value is updated from JS
 function OSInterface_setAppToken() {
     if (Main_IsOn_OSInterface) {
-        try {
-            Android.setAppToken(AddCode_main_token ? AddCode_main_token : null);
-        } catch (e) {}
+        Android.setAppToken(AddCode_main_token ? AddCode_main_token : null);
     }
 }
 

@@ -2342,6 +2342,7 @@ function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
 
     Main_history_SetVod_Watched();
+    Main_UpdateBlockedHomeScreen();
 }
 
 function Main_History_Sort(array, msort, direction) {
@@ -2366,7 +2367,21 @@ function Main_setHistoryItem(time) {
 function Main_SaveHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
-    if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
+
+    if (Main_CanBackup) {
+        OSInterface_BackupFile(Main_HistoryBackupFile, string);
+    }
+    Main_UpdateBlockedHomeScreen();
+}
+
+function Main_UpdateBlockedHomeScreen() {
+    OSInterface_UpdateBlockedChannels();
+    OSInterface_UpdateBlockedGames();
+}
+
+function Main_GetBlockedJson(type) {
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type];
+    return JSON.stringify(Object.keys(blockedObj));
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references

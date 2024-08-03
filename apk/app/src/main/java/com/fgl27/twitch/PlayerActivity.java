@@ -2724,6 +2724,18 @@ public class PlayerActivity extends Activity {
             appPreferences.put(Constants.PREF_CLIENT_TOKEN, token);
         }
 
+        public void UpdateBlockedChannels(String channelsJson) {
+            appPreferences.put(Constants.BLOCKED_CHANNEL, channelsJson);
+
+            RefreshChannel(Constants.CHANNEL_TYPE_LIVE, true, mWebViewContext);
+        }
+
+        public void UpdateBlockedGames(String gamesJson) {
+            appPreferences.put(Constants.BLOCKED_GAMES, gamesJson);
+
+            RefreshChannel(Constants.CHANNEL_TYPE_GAMES, true, mWebViewContext);
+        }
+
         @JavascriptInterface
         public void UpdateUserId(String id, String name, String access_token) {
 
