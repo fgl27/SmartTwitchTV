@@ -2264,6 +2264,7 @@ public class PlayerActivity extends Activity {
                             TrackGroup groupIndex = trackGroupArray.get(0);
                             int groupIndex_len = groupIndex.length;
                             boolean add;
+                            String[] BLACKLISTED_QUALITIES_LOWER_UPER = null;
 
                             for (int trackIndex = 0; trackIndex < groupIndex_len; trackIndex++) {
                                 format = groupIndex.getFormat(trackIndex);
@@ -2272,7 +2273,10 @@ public class PlayerActivity extends Activity {
                                 if (format.bitrate <= MaxBitrate && format.height <= MaxResolution) {
 
                                     for (String value : BLACKLISTED_QUALITIES) {
-                                        if (Integer.toString(format.height).startsWith(value)) {
+                                        BLACKLISTED_QUALITIES_LOWER_UPER = value.split("-");//'4200-4600', '1700-2200', '1500-1700', '1400-1500', '1000-1100', '900-1000', '700-800', '400-500', '300-400'
+
+                                        if (format.height > Integer.parseInt(BLACKLISTED_QUALITIES_LOWER_UPER[0]) &&
+                                                format.height < Integer.parseInt(BLACKLISTED_QUALITIES_LOWER_UPER[1])) {
                                             add = false;
                                             break;
                                         }

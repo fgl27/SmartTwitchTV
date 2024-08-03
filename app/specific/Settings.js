@@ -631,6 +631,11 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 1
     },
+    block_qualities_43: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
     block_qualities_21: {
         //Migrated to dialog
         values: ['enabled', 'disabled'],
@@ -1323,6 +1328,7 @@ function Settings_SetDefault(position) {
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
     else if (
+        position === 'block_qualities_43' ||
         position === 'block_qualities_21' ||
         position === 'block_qualities_16' ||
         position === 'block_qualities_14' ||
@@ -2337,13 +2343,14 @@ function Settings_SetSuportedCodecs(codecs) {
 
 function Settings_QualitiesCheck() {
     Settings_DisableQualities = [];
-    var array_values = ['21', '16', '14', '10', '9', '7', '4', '3'],
+    var array_values = ['43', '21', '16', '14', '10', '9', '7', '4', '3'],
+        array_blocked_values = ['4200-4600', '1700-2200', '1500-1700', '1400-1500', '1000-1100', '900-1000', '700-800', '400-500', '300-400'],
         i = 0,
         len = array_values.length;
 
     for (i; i < len; i++) {
         if (Settings_Obj_default('block_qualities_' + array_values[i])) {
-            Settings_DisableQualities.push(array_values[i]);
+            Settings_DisableQualities.push(array_blocked_values[i]);
         }
     }
 
@@ -3110,6 +3117,7 @@ function Settings_DialogShowChat(click) {
 
 function Settings_block_qualities(click) {
     var array_ena_dis = [STR_BLOCKED_NOT, STR_BLOCKED];
+    Settings_value.block_qualities_43.values = array_ena_dis;
     Settings_value.block_qualities_21.values = array_ena_dis;
     Settings_value.block_qualities_16.values = array_ena_dis;
     Settings_value.block_qualities_14.values = array_ena_dis;
@@ -3120,22 +3128,28 @@ function Settings_block_qualities(click) {
     Settings_value.block_qualities_3.values = array_ena_dis;
 
     var obj = {
+        block_qualities_43: {
+            defaultValue: Settings_value.block_qualities_43.defaultValue,
+            values: Settings_value.block_qualities_43.values,
+            title: '42XXp to 46XXp 8k',
+            summary: null
+        },
         block_qualities_21: {
             defaultValue: Settings_value.block_qualities_21.defaultValue,
             values: Settings_value.block_qualities_21.values,
-            title: '21XXp',
+            title: '17XXp to 22XXp 4k',
             summary: null
         },
         block_qualities_16: {
             defaultValue: Settings_value.block_qualities_16.defaultValue,
             values: Settings_value.block_qualities_16.values,
-            title: '16XXp',
+            title: '15XXp to 17XXp 2.5k',
             summary: null
         },
         block_qualities_14: {
             defaultValue: Settings_value.block_qualities_14.defaultValue,
             values: Settings_value.block_qualities_14.values,
-            title: '14XXp',
+            title: '14XXp 2k',
             summary: null
         },
         block_qualities_10: {
