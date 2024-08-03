@@ -2380,6 +2380,10 @@ function Main_UpdateBlockedHomeScreen() {
 }
 
 function Main_GetBlockedJson(type) {
+    if (!AddUser_IsUserSet()) {
+        return '[]';
+    }
+
     var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type];
     return JSON.stringify(Object.keys(blockedObj));
 }
