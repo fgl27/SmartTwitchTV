@@ -187,6 +187,7 @@ public class PlayerActivity extends Activity {
     private long NetCounter = 0L;
     private long SpeedCounter = 0L;
     private int mLowLatency = 0;
+    private boolean speedAdjustment = false;
     private boolean AlreadyStarted;
     private boolean onCreateReady;
     private boolean IsStopped;
@@ -2943,6 +2944,7 @@ public class PlayerActivity extends Activity {
                                 mWebViewContext,
                                 Type,
                                 mLowLatency,
+                                speedAdjustment,
                                 mainPlaylistString,
                                 userAgent
                         );
@@ -2986,6 +2988,7 @@ public class PlayerActivity extends Activity {
                             mWebViewContext,
                             Type,
                             mLowLatency,
+                            speedAdjustment,
                             mainPlaylistString,
                             userAgent
                     );
@@ -3239,6 +3242,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         isVod ? 2 : 1,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );
@@ -3286,6 +3290,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         1,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );
@@ -3316,6 +3321,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         Type,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );
@@ -3377,6 +3383,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetlatency(int LowLatency) {
             mLowLatency = LowLatency;
+        }
+
+        @JavascriptInterface
+        public void setSpeedAdjustment(boolean pSpeedAdjustment) {
+            speedAdjustment = pSpeedAdjustment;
         }
 
         @JavascriptInterface
@@ -3809,6 +3820,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         1,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );

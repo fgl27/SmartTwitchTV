@@ -395,6 +395,17 @@ function OSInterface_UpdateBlockedGames() {
     }
 }
 
+//public void setSpeedAdjustment(boolean speedAdjustment)
+//speedAdjustment = boolean to enable auto adjustment of latency base on speed
+//Sets speedAdjustment
+function OSInterface_setSpeedAdjustment(speedAdjustment) {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.setSpeedAdjustment(Boolean(speedAdjustment));
+        } catch (e) {}
+    }
+}
+
 //public void setAppToken(String token)
 //token =  token to save
 //Sets the app token when value is updated from JS

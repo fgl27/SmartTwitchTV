@@ -324,7 +324,7 @@ function en_USLang() {
     STR_LIVE_FEED = 'Live Feed';
     STR_VOD_DIALOG = 'VOD start dialog';
     STR_VOD_DIALOG_SUMMARY =
-        "Choose the default behavior, if the VOD info is present in user history when playing one, it can be played from where you last stopped watching. If you set this option to 'Always from the start', this behavior will also be applied to the VOD preview.";
+        "When playing a VOD saved on the user history, you can choose the default behavior of the VOD dialog. Setting it to 'Always from the start' also applies to the VOD preview.";
     STR_VOD_DIALOG_START = 'Always from the start';
     STR_VOD_DIALOG_LAST = 'Always from the last stop';
     STR_VOD_DIALOG_SHOW = 'Always ask';
@@ -901,4 +901,8 @@ function en_USLang() {
         'Software codecs (OMX.google) are disabled by default if a hardware codec is available, if you have a playback problem try to disable the hardware codec and enable the software or vice versa (A constant accumulation of skipped frames is indicative of a codec issue).';
 
     STR_CODEC_DIALOG_SUMMARY_3 = 'At least one codec of each type must be enabled at all times.';
+
+    STR_SPEED_ADJUST = 'Catch-up with low latency';
+    STR_SPEED_ADJUST_SUMMARY =
+        'When low latency is enabled, auto-adjust the latency if it is off the expected target, by slowing or speeding the stream by 1%, the speed change can cause minor audio noise when the latency is being adjusted.';
 }

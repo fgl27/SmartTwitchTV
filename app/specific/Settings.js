@@ -116,6 +116,10 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 1
     },
+    speed_adjust: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
     ttv_lolProxy: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -880,6 +884,11 @@ function Settings_SetSettings() {
     Settings_value[key].values[1] = STR_SOURCE;
     div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
+    key = 'speed_adjust';
+    Settings_value[key].values[0] = STR_AUTO;
+    Settings_value[key].values[1] = STR_SOURCE;
+    div += Settings_Content('speed_adjust', dis_ena, STR_SPEED_ADJUST, STR_SPEED_ADJUST_SUMMARY);
+
     //Dialog settings
     //div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
     div += Settings_Content('player_extracodecs', [STR_ENTER_TO_OPEN], STR_PLAYER_EXTRA_CODEC, STR_PLAYER_EXTRA_CODEC_SUMMARY);
@@ -1053,6 +1062,7 @@ function Settings_SetDefaults() {
     Settings_set_proxy_timeout();
     Settings_set_all_notification();
     Settings_SetLang();
+    Settings_SetSpeed_adjust();
 
     Settings_SetResBitRate(0);
 
@@ -1288,6 +1298,7 @@ function Settings_SetDefault(position) {
     else if (position === 'hevc_codec') Settings_ExtraCodecs();
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
+    else if (position === 'speed_adjust') Settings_SetSpeed_adjust();
     else if (position === 'seek_preview') PlayVod_SetPreviewType();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     else if (position === 'thumb_quality') Main_SetThumb();
@@ -1731,6 +1742,10 @@ function Settings_SetResBitRateMin() {
     if (Settings_Obj_default('res_min') > 0) resolution = parseInt(Settings_Obj_values('res_min').split('p')[0]);
 
     OSInterface_SetSmallPlayerBitrate(bitrate, resolution);
+}
+
+function Settings_SetSpeed_adjust() {
+    OSInterface_setSpeedAdjustment(Settings_Obj_default('speed_adjust'));
 }
 
 function Settings_ExtraCodecs() {

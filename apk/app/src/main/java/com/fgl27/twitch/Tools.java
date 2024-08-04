@@ -529,11 +529,12 @@ public final class Tools {
                 .build();
     }
 
-    static MediaSource buildMediaSource(Uri uri, Context context, int Type, int LowLatency, String mainPlaylist, String userAgent) {
+    static MediaSource buildMediaSource(Uri uri, Context context, int Type, int LowLatency, boolean speedAdjustment, String mainPlaylist, String userAgent) {
         if (Type == 1) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency)
+                    .setspeedAdjustment(speedAdjustment)
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (Type == 2) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
