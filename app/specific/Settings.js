@@ -1028,7 +1028,7 @@ function Settings_SetDefaults() {
     }
 
     Settings_SetBuffers(0);
-    Settings_ExtraCodecs();
+    Settings_ExtraCodecs(false);
     Settings_SetClock();
     Settings_HideMainClock();
     Settings_HidePlayerClock();
@@ -1294,8 +1294,7 @@ function Settings_SetDefault(position) {
     else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
     else if (position === 'buffer_vod') Settings_SetBuffers(2);
     else if (position === 'buffer_clip') Settings_SetBuffers(3);
-    else if (position === 'av1_codec') Settings_ExtraCodecs();
-    else if (position === 'hevc_codec') Settings_ExtraCodecs();
+    else if (position === 'av1_codec' || position === 'hevc_codec') Settings_ExtraCodecs(true);
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
     else if (position === 'speed_adjust') Settings_SetSpeed_adjust();
@@ -1748,7 +1747,7 @@ function Settings_SetSpeed_adjust() {
     OSInterface_setSpeedAdjustment(Settings_Obj_default('speed_adjust'));
 }
 
-function Settings_ExtraCodecs() {
+function Settings_ExtraCodecs(showWarning) {
     var ExtraCodecsValuesArray = [],
         av1Enabled = Settings_Obj_default('av1_codec'),
         hevcEnabled = Settings_Obj_default('hevc_codec');
@@ -1756,7 +1755,7 @@ function Settings_ExtraCodecs() {
     if (av1Enabled) {
         ExtraCodecsValuesArray.push('av1');
 
-        if (!Settings_AV1Supported) {
+        if (!Settings_AV1Supported && showWarning) {
             Main_showWarningDialog(STR_PLAYER_CODEC_NOT_SUPPORTED, 3000);
         }
     }
@@ -1764,7 +1763,7 @@ function Settings_ExtraCodecs() {
     if (hevcEnabled) {
         ExtraCodecsValuesArray.push('h265');
 
-        if (!Settings_HEVCSupported) {
+        if (!Settings_HEVCSupported && showWarning) {
             Main_showWarningDialog(STR_PLAYER_CODEC_NOT_SUPPORTED, 3000);
         }
     }
