@@ -21,30 +21,21 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 363, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/363/SmartTV_twitch_3_0_363.apk',
-    WebVersion: 'July 2024',
-    WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 365, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/365/SmartTV_twitch_3_0_365.apk',
+    WebVersion: 'August 2024',
+    WebTag: 671, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'Version March to July 2024 Apk Version 3.0.363',
+            title: 'Version August 2024 Apk Version 3.0.365',
             changes: [
-                'Add a red icon when the channel is live for the User channel and channel search screen',
-                'Improve User live side panel loading',
-                'Improve User channel screen loading',
-                'Player: Migrate from Exoplayer to Media3, the Exoplayer changed its name to Media3 and stop received updates on the old project, if anyone has any issue regarding playback please open a GitHub issue or send an email',
-                'Change Featured to Front Page (name change only)',
-                'Add User Videos section',
-                'Improve channel search results order, Twitch provides no order on the result, do a local ordering to show a more constant result',
-                'Add search Live',
-                'Add Search Videos',
-                'Show all counters on all game screens',
-                'Fix sometimes opening the wrong VOD for "Open the Last VOD" (the one of the options that show when a live end)',
-                'Fix preview animated image not always showing',
-                'Fix VOD seek preview image not always showing',
-                'Improve exiting a search or search content as Channel content you enter after a search, before the app sometimes exit a search on the wrong section',
-                'Improve app exit functionality',
-                'Improve disable mature content with a password, now after enabling mature the old pass will be deleted, add a new one if disable again',
+                'Add support for HEVC H.265 and AV1 Live and VOD (Settings Extra codec support), it still depends on the streamer to use and is on beta testing only some can',
+                'Update Codec capability & Blocked codecs settings section to support new codecs and to show better information',
+                'Improve display and section for player quality, sometimes it can come out of order from the server or have missing information',
+                "Fix Auto quality not playing stream with a resolution bigger than the device's current resolution",
+                'Home screen content will no longer show blocked content',
+                'Add new settings option "Catch-up with low latency" auto-adjust the latency if it is off the expected target, by slowing or speeding the stream by 1%',
+                'Improve progress bar for lives',
                 'General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple',
                 'Other General improvements'
             ]
