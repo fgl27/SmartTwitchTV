@@ -898,7 +898,7 @@ function en_USLang() {
     STR_CODEC_DIALOG_SUMMARY_1 = 'This section lists all device-supported codec types AVC H.264, HEVC H.265, and AV1  used by this app.';
 
     STR_CODEC_DIALOG_SUMMARY_2 =
-        'Software codecs (OMX.google) are disabled by default if a hardware codec is available, if you have a playback problem try to disable the hardware codec and enable the software or vice versa (A constant accumulation of skipped frames is indicative of a codec issue).';
+        'Software codecs (OMX.google) are disabled by default if a hardware codec is available, if you have a playback problem try to disable the software codec and enable the hardware or vice versa (A constant accumulation of skipped frames is indicative of a codec issue).';
 
     STR_CODEC_DIALOG_SUMMARY_3 = 'At least one codec of each type must be enabled at all times.';
 
