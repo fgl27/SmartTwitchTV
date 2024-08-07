@@ -31,11 +31,11 @@ var version = {
             changes: [
                 'Add support for HEVC H.265 and AV1 Live and VOD (Settings Extra codec support), it still depends on the streamer to use and is on beta testing only some can',
                 'Update Codec capability & Blocked codecs settings section to support new codecs and to show better information',
-                'Improve display and section for player quality, sometimes it can come out of order from the server or have missing information',
+                'Improve display and sorting for player quality, sometimes it can come out of order from the server or have missing information',
                 "Fix Auto quality not playing stream with a resolution bigger than the device's current resolution",
                 'Home screen content will no longer show blocked content',
-                'Add new settings option "Catch-up with low latency" auto-adjust the latency if it is off the expected target, by slowing or speeding the stream by 1%',
-                'Improve progress bar for lives',
+                'Add new settings option "Catch-up with low latency" auto-adjust the latency if it is behind the expected target, by slowing or speeding the stream by 1%',
+                'Improve progress bar for lives playback, show proper duration if paused for too long',
                 'General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple',
                 'Other General improvements'
             ]
