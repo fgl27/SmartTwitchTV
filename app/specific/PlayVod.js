@@ -552,8 +552,12 @@ function PlayVod_qualityChanged() {
     PlayVod_qualityPlaying = PlayVod_quality;
 
     PlayVod_SetHtmlQuality(Play_info_quality);
-    if (Main_IsOn_OSInterface) OSInterface_SetQuality(PlayVod_qualityIndex - 1);
-    else PlayVod_onPlayer();
+
+    if (Main_IsOn_OSInterface) {
+        OSInterface_SetQuality(PlayVod_qualities[PlayVod_qualityIndex].position);
+    } else {
+        PlayVod_onPlayer();
+    }
 }
 
 function PlayVod_onPlayer() {
@@ -846,7 +850,9 @@ function PlayVod_qualityIndexReset() {
         }
     }
 
-    if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
+    if (PlayVod_qualities[PlayVod_qualityIndex]) {
+        Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
+    }
 }
 
 function PlayVod_SetHtmlQuality(element) {
@@ -862,8 +868,9 @@ function PlayVod_SetHtmlQuality(element) {
         if (Main_IsOn_OSInterface) {
             quality_string = PlayVod_quality.replace('Auto', STR_AUTO);
         } else {
-            if (Play_info_quality !== element) quality_string = PlayVod_quality.replace('Auto', STR_AUTO);
-            else {
+            if (Play_info_quality !== element) {
+                quality_string = PlayVod_quality.replace('Auto', STR_AUTO);
+            } else {
                 quality_string = PlayVod_qualities[1].id.replace('source', STR_AUTO) + PlayVod_qualities[1].band + PlayVod_qualities[1].codec;
             }
         }

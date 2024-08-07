@@ -21,6 +21,8 @@
 //To pass to Java
 var Play_Headers;
 //Live
+var play_ExtraCodecsValues;
+
 var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token =
     '{"operationName":"PlaybackAccessToken_Template","query":"query PlaybackAccessToken_Template($login: String!, $isLive: Boolean!, $vodID: ID!, $isVod: Boolean!, $playerType: String!, $platform: String!) ' +
@@ -28,7 +30,7 @@ var Play_live_token =
     ' videoPlaybackAccessToken(id: $vodID, params: {platform: $platform, playerBackend: \\"mediaplayer\\", playerType: $playerType}) @include(if: $isVod) {    value    signature    __typename  }}",' +
     '"variables":{"isLive":true,"login":"%x","isVod":false,"vodID":"","playerType":"pulsar","platform":"switch_web_tv"}}';
 var Play_base_live_links =
-    'player_backend=mediaplayer&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0';
+    'player_backend=mediaplayer&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=false&cdm=wv&acmb=e30%3D&p=%p&play_session_id=%i&player_version=1.13.0&supported_codecs=%c';
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
@@ -55,7 +57,7 @@ var proxy_fail_counter_checker = 0;
 var Play_vod_token_prop = 'videoPlaybackAccessToken';
 var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_vod_links =
-    'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%t&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
+    'https://usher.ttvnw.net/vod/%x.m3u8?nauth=%t&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d&supported_codecs=%c';
 
 function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess) {
     // console.log('isLive', isLive);
@@ -153,7 +155,9 @@ function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy)
     if (isLive) {
         var randomId = parseInt(Math.random() * 10000000000000000);
         var randomInt = parseInt(Math.random() * 100000000);
-        var URL_parameters = Play_base_live_links.replace('%p', randomInt).replace('%i', randomId + '' + randomId);
+        var URL_parameters = Play_base_live_links.replace('%p', randomInt)
+            .replace('%i', randomId + '' + randomId)
+            .replace('%c', play_ExtraCodecsValues);
 
         if (useProxy) {
             headers = proxy_headers;
@@ -170,7 +174,8 @@ function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy)
         url = Play_vod_links.replace('%x', Channel_or_VOD_Id)
             .replace('%t', encodeURIComponent(Token))
             .replace('%s', Sig)
-            .replace('%d', Math.random() * 100000);
+            .replace('%d', Math.random() * 100000)
+            .replace('%c', play_ExtraCodecsValues);
     }
 
     return {url: url, headers: headers};

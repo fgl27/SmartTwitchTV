@@ -484,16 +484,13 @@ function pt_BRLang() {
     STR_DPAD_OPT = 'Opções do D-pad';
     STR_BLOCKED_CODEC = 'Codecs bloqueados';
     STR_BLOCKED_CODEC_SUMMARY = 'Lista as capacidades dos codecs usados ​​e permite bloquear o uso de um codec';
-    STR_CODEC_DIALOG_TITLE =
-        'Codecs de software (OMX.google) geralmente têm pior desempenho, mas em alguns dispositivos eles podem ter precedência sobre codecs de hardware, usando este pode bloqueá-los e ver se o desempenho da reprodução melhora, <span style = "color: # FF0000; "> por padrão, o decodificador OMX.google está desabilitado </span> (se outro codec estiver disponível) um acúmulo constante de quadros ignorados é um indicativo de um problema de codec. <br> O conteúdo do aplicativo usa apenas decodificadores avc/h264 nenhum outro está listado.';
-    STR_SUPPORTED_CODEC = 'Codecs suportados:';
+
     STR_MAX_RES = 'Resolução máxima:';
     STR_MAX_BIT = 'Taxa de bits máxima:';
     STR_MAX_LEVEL = 'Nível máximo:';
     STR_MAX_FPS = 'Max fps por resolução:';
     STR_MAX_INSTANCES = 'Máximo de instâncias:';
     STR_UNKNOWN = 'Desconhecido';
-    STR_ONE_CODEC_ENA = 'Pelo menos um codec deve estar habilitado o tempo todo';
     STR_USER_LIVE = 'Painel lateral ao vivo: do painel lateral direcional esquerdo ou de qualquer lugar, pressione 3';
     STR_PP_WORKAROUND = 'Solução alternativa modo multiplayer, PP e preview';
     STR_PP_WORKAROUND_SUMMARY =

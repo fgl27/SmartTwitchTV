@@ -187,6 +187,7 @@ public class PlayerActivity extends Activity {
     private long NetCounter = 0L;
     private long SpeedCounter = 0L;
     private int mLowLatency = 0;
+    private boolean speedAdjustment = false;
     private boolean AlreadyStarted;
     private boolean onCreateReady;
     private boolean IsStopped;
@@ -1181,7 +1182,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerObjUpdateTrackSelectorParameters(int ParametersPos, Context context, int width) {
-
+        //https://developer.android.com/reference/kotlin/androidx/media3/exoplayer/trackselection/DefaultTrackSelector.ParametersBuilder
         trackSelectorParameters[ParametersPos] = DefaultTrackSelector.Parameters.getDefaults(context)
                 .buildUpon()
                 .setMaxVideoBitrate(PlayerBitrate[ParametersPos])
@@ -1189,9 +1190,14 @@ public class PlayerActivity extends Activity {
                 .setAllowVideoNonSeamlessAdaptiveness(true)
                 .setExceedAudioConstraintsIfNecessary(true)
                 .setExceedVideoConstraintsIfNecessary(true)
+                .setAllowVideoMixedMimeTypeAdaptiveness(true)
+                .setAllowVideoMixedDecoderSupportAdaptiveness(true)
+                .setViewportSize(//set this to play resolution bigger then current screen resolution
+                        Integer.MAX_VALUE,
+                        Integer.MAX_VALUE,
+                        false)
                 .setExceedRendererCapabilitiesIfNecessary(true)
                 .build();
-
     }
 
     public void PlayerObjUpdateTrackSelector(int PlayerObjPos, int ParametersPos) {
@@ -2259,6 +2265,7 @@ public class PlayerActivity extends Activity {
                             TrackGroup groupIndex = trackGroupArray.get(0);
                             int groupIndex_len = groupIndex.length;
                             boolean add;
+                            String[] BLACKLISTED_QUALITIES_LOWER_UPER = null;
 
                             for (int trackIndex = 0; trackIndex < groupIndex_len; trackIndex++) {
                                 format = groupIndex.getFormat(trackIndex);
@@ -2267,7 +2274,10 @@ public class PlayerActivity extends Activity {
                                 if (format.bitrate <= MaxBitrate && format.height <= MaxResolution) {
 
                                     for (String value : BLACKLISTED_QUALITIES) {
-                                        if (Integer.toString(format.height).startsWith(value)) {
+                                        BLACKLISTED_QUALITIES_LOWER_UPER = value.split("-");//'4200-4600', '1700-2200', '1500-1700', '1400-1500', '1000-1100', '900-1000', '700-800', '400-500', '300-400'
+
+                                        if (format.height > Integer.parseInt(BLACKLISTED_QUALITIES_LOWER_UPER[0]) &&
+                                                format.height < Integer.parseInt(BLACKLISTED_QUALITIES_LOWER_UPER[1])) {
                                             add = false;
                                             break;
                                         }
@@ -2716,6 +2726,28 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void UpdateBlockedChannels(String channelsJson) {
+            String savedChannels = Tools.getString(Constants.BLOCKED_CHANNEL, null, appPreferences);
+
+            if (!Objects.equals(savedChannels, channelsJson)) {
+                appPreferences.put(Constants.BLOCKED_CHANNEL, channelsJson);
+                RefreshChannel(Constants.CHANNEL_TYPE_LIVE, true, mWebViewContext);
+            }
+
+        }
+
+        @JavascriptInterface
+        public void UpdateBlockedGames(String gamesJson) {
+            String savedGames = Tools.getString(Constants.BLOCKED_GAMES, null, appPreferences);
+
+            if (!Objects.equals(savedGames, gamesJson)) {
+
+                appPreferences.put(Constants.BLOCKED_GAMES, gamesJson);
+                RefreshChannel(Constants.CHANNEL_TYPE_GAMES, true, mWebViewContext);
+            }
+        }
+
+        @JavascriptInterface
         public void UpdateUserId(String id, String name, String access_token) {
 
             appPreferences.put(Constants.PREF_USER_ID, id);
@@ -2912,6 +2944,7 @@ public class PlayerActivity extends Activity {
                                 mWebViewContext,
                                 Type,
                                 mLowLatency,
+                                speedAdjustment,
                                 mainPlaylistString,
                                 userAgent
                         );
@@ -2955,6 +2988,7 @@ public class PlayerActivity extends Activity {
                             mWebViewContext,
                             Type,
                             mLowLatency,
+                            speedAdjustment,
                             mainPlaylistString,
                             userAgent
                     );
@@ -3208,6 +3242,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         isVod ? 2 : 1,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );
@@ -3255,6 +3290,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         1,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );
@@ -3285,6 +3321,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         Type,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );
@@ -3346,6 +3383,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetlatency(int LowLatency) {
             mLowLatency = LowLatency;
+        }
+
+        @JavascriptInterface
+        public void setSpeedAdjustment(boolean pSpeedAdjustment) {
+            speedAdjustment = pSpeedAdjustment;
         }
 
         @JavascriptInterface
@@ -3778,6 +3820,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         1,
                         mLowLatency,
+                        speedAdjustment,
                         mainPlaylistString,
                         userAgent
                 );

@@ -90,7 +90,7 @@ var Main_values = {
     DeviceCheck2: false,
     MiboxRevertCheck: false,
     Never_run_phone: true,
-    Codec_is_Check: false,
+    Codec_is_Check_new: false,
     OS_is_Check: false,
     Restore_Backup_Check: false,
     UserSidePannel_LastPositionId: null,
@@ -475,48 +475,126 @@ function Main_CheckDevice() {
             }
         }
 
-        //Disable googles OMX.google.h264.decoder and c2.android.avc.decoder if another codec is available
-        if (!Main_values.Codec_is_Check) {
-            var codecs = null;
-            try {
-                if (Main_IsOn_OSInterface) codecs = JSON.parse(OSInterface_getcodecCapabilities('avc'));
-            } catch (e) {}
-
-            if (codecs) {
-                Main_values.Codec_is_Check = true;
-
-                if (codecs.length > 1) {
-                    var codecsNames = [];
-
-                    var i = 0,
-                        len = codecs.length;
-
-                    for (i; i < len; i++) {
-                        var codec = codecs[i].name ? codecs[i].name.toLowerCase() : '';
-
-                        if (Main_A_includes_B(codec, 'google') || Main_A_includes_B(codec, 'c2.android')) {
-                            codecsNames.push(codecs[i].name);
-                        }
-                    }
-
-                    if (codecsNames.length && codecsNames.length < codecs.length) {
-                        i = 0;
-                        len = codecsNames.length;
-
-                        for (i; i < len; i++) {
-                            Main_setItem(codecsNames[i], 1);
-                        }
-
-                        Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsNames));
-
-                        OSInterface_setBlackListMediaCodec(codecsNames.join());
-                    }
-                }
-            }
+        if (!Main_values.Codec_is_Check_new) {
+            Main_SetBlockedFirstRun();
         }
-    } else if (Main_values.Never_run_new) {
-        Settings_ForceEnableAnimations();
+    } else {
+        if (Main_values.Never_run_new) Settings_ForceEnableAnimations();
+
+        //Main_TestSetBlockedFirstRun();
     }
+}
+
+// function Main_TestSetBlockedFirstRun() {
+//     var codecs = Main_SetBlockedGetCodecs();
+//     console.log('Main_SetBlockedGetCodecs', codecs);
+
+//     console.log(Main_SetBlockedGetToBlock(codecs));
+//     console.log(
+//         //only one av1 google
+//         Main_SetBlockedGetToBlock(
+//             JSON.parse(
+//                 '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.goldfish.hevc.decoder","resolutions":"160p : 480 fps | 360p : 480 fps | 480p : 480 fps | 720p : 480 fps | 900p : 364 fps | 1080p : 254 fps | 1440p : 144 fps | 2160p : 64 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.android.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"OMX.google.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.android.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.google.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"}]'
+//             )
+//         )
+//     );
+// }
+
+function Main_SetBlockedFirstRun() {
+    //Disable googles OMX.google.h264.decoder and c2.android.avc.decoder if another codec is available
+
+    var codecs = Main_SetBlockedGetCodecs();
+
+    if (codecs && codecs.length > 1) {
+        var codecsToBlock = Main_SetBlockedGetToBlock(codecs);
+        //only save if we received codecs
+        Main_values.Codec_is_Check_new = true;
+
+        if (codecsToBlock.length) {
+            var i = 0,
+                len = codecsToBlock.length;
+
+            for (i; i < len; i++) {
+                Main_setItem(codecsToBlock[i], 1);
+            }
+
+            Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsToBlock));
+
+            OSInterface_setBlackListMediaCodec(codecsToBlock.join());
+        }
+    }
+}
+
+function Main_SetBlockedGetCodecs() {
+    var codecs = null;
+    try {
+        if (Main_IsOn_OSInterface) {
+            codecs = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+            codecs.push.apply(codecs, JSON.parse(OSInterface_getcodecCapabilities('hevc')));
+            codecs.push.apply(codecs, JSON.parse(OSInterface_getcodecCapabilities('av01')));
+        } else {
+            codecs = JSON.parse(
+                '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.goldfish.hevc.decoder","resolutions":"160p : 480 fps | 360p : 480 fps | 480p : 480 fps | 720p : 480 fps | 900p : 364 fps | 1080p : 254 fps | 1440p : 144 fps | 2160p : 64 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.android.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"OMX.google.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.android.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.google.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.test.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c.test2.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"}]'
+            );
+        }
+    } catch (e) {}
+
+    return codecs;
+}
+
+function Main_SetBlockedGetToBlock(codecs) {
+    //creates a map of to block codecs and normal
+    var codecsMap = {
+            ToBlock: {},
+            Normal: {
+                av1: [],
+                avc: [],
+                hevc: []
+            }
+        },
+        codecsToBlock = [],
+        codec;
+
+    var i = 0,
+        len = codecs.length,
+        type;
+
+    for (i; i < len; i++) {
+        codec = codecs[i].name ? codecs[i].name.toLowerCase() : '';
+
+        type = codecs[i].type;
+        codecs[i].type = Main_CodecGetType(type);
+
+        if (Main_A_includes_B(codec, 'google') || Main_A_includes_B(codec, 'c2.android')) {
+            codecsMap.ToBlock[codecs[i].name] = codecs[i];
+        } else if (codecsMap.Normal[codecs[i].type]) {
+            codecsMap.Normal[codecs[i].type].push(codecs[i]);
+        }
+    }
+
+    var ToBlockKeys = Object.keys(codecsMap.ToBlock);
+
+    i = 0;
+    len = ToBlockKeys.length;
+
+    //only block if normals codecs are available for the type
+    for (i; i < len; i++) {
+        codec = codecsMap.ToBlock[ToBlockKeys[i]];
+
+        if (codecsMap.Normal[codec.type].length) {
+            codecsToBlock.push(codec.name);
+        }
+    }
+
+    return codecsToBlock;
+}
+
+function Main_CodecGetType(type) {
+    if (Main_A_includes_B(type, 'avc')) return 'avc';
+    else if (Main_A_includes_B(type, 'hevc')) return 'hevc';
+    else if (Main_A_includes_B(type, 'av01')) return 'av1';
+
+    return null;
 }
 
 function Main_SetStringsMain() {
@@ -2338,6 +2416,7 @@ function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
 
     Main_history_SetVod_Watched();
+    Main_UpdateBlockedHomeScreen();
 }
 
 function Main_History_Sort(array, msort, direction) {
@@ -2362,7 +2441,25 @@ function Main_setHistoryItem(time) {
 function Main_SaveHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
-    if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
+
+    if (Main_CanBackup) {
+        OSInterface_BackupFile(Main_HistoryBackupFile, string);
+    }
+    Main_UpdateBlockedHomeScreen();
+}
+
+function Main_UpdateBlockedHomeScreen() {
+    OSInterface_UpdateBlockedChannels();
+    OSInterface_UpdateBlockedGames();
+}
+
+function Main_GetBlockedJson(type) {
+    if (!AddUser_IsUserSet()) {
+        return '[]';
+    }
+
+    var blockedObj = Main_values_History_data[AddUser_UsernameArray[0].id].blocked[type];
+    return JSON.stringify(Object.keys(blockedObj));
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references

@@ -96,9 +96,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 @SuppressLint("UnsafeOptInUsageError")
@@ -110,22 +113,104 @@ public final class Tools {
     private static final Type ArrayType = new TypeToken<String[][]>() {
     }.getType();
 
-    //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
-    private static final String[] AvcLevels = {
-            "1", "1.1", "1.2", "1.3", "1.b",
-            "2", "2.1", "2.2",
-            "3", "3.1", "3.2",
-            "4", "4.1", "4.2",
-            "5", "5.1", "5.2",
-            "6", "6.1", "6.2"};
+    private static final Type setType = new TypeToken<Set<String>>() {
+    }.getType();
 
-    private static final Integer[] AvcLevelsEx = {
-            1, 4, 8, 16, 2,
-            32, 64, 128,
-            256, 512, 1024,
-            2048, 4096, 8192,
-            16384, 32768, 65536,
-            131072, 262144, 524288};
+    //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
+    private static final Map<Integer, String> AvcLevelsMap = new HashMap<Integer, String>() {{
+        put(1, "1");
+        put(4, "1.1");
+        put(8, "1.2");
+        put(16, "1.3");
+        put(2, "1.b");
+
+        put(32, "2");
+        put(64, "2.1");
+        put(128, "2.2");
+
+        put(256, "3");
+        put(512, "3.1");
+        put(1024, "3.2");
+
+        put(2048, "4");
+        put(4096, "4.1");
+        put(8192, "4.2");
+
+        put(16384, "5");
+        put(32768, "5.1");
+        put(65536, "5.2");
+
+        put(131072, "6");
+        put(262144, "6.1");
+        put(524288, "6.2");
+    }};
+
+    private static final Map<Integer, String> Av1LevelsMap = new HashMap<Integer, String>() {{
+        put(1, "2");
+        put(2, "2.1");
+        put(4, "2.2");
+        put(8, "2.2");
+
+        put(16, "3");
+        put(32, "3.1");
+        put(64, "3.2");
+        put(128, "3.3");
+
+        put(256, "4");
+        put(512, "4.1");
+        put(1024, "4.2");
+        put(2048, "4.3");
+
+        put(4096, "5");
+        put(8192, "5.1");
+        put(16384, "5.2");
+        put(32768, "5.3");
+
+        put(65536, "6");
+        put(131072, "6.1");
+        put(262144, "6.2");
+        put(524288, "6.3");
+
+        put(1048576, "7");
+        put(2097152, "7.1");
+        put(4194304, "7.2");
+        put(8388608, "7.3");
+    }};
+
+    private static final Map<Integer, String> HEVCLevelsMap = new HashMap<Integer, String>() {{
+        put(1, "Main 1");
+        put(2, "High 1");
+        put(4, "Main 2");
+        put(8, "High 2");
+
+        put(16, "Main 1 2.1");
+        put(32, "High 2.1");
+        put(64, "Main 3");
+        put(128, "High 3");
+
+        put(256, "Main 3.1");
+        put(512, "High 3.1");
+        put(1024, "Main 4");
+        put(2048, "High 4");
+
+        put(4096, "Main 4.1");
+        put(8192, "High 4.1");
+        put(16384, "Main 5");
+        put(32768, "High 5");
+
+        put(65536, "Main 5.1");
+        put(131072, "High 5.1");
+        put(262144, "Main 5.2");
+        put(524288, "High 5.2");
+
+        put(1048576, "Main 6");
+        put(2097152, "High 6");
+        put(4194304, "Main 6.1");
+        put(8388608, "High 6.1");
+
+        put(16777216, "Main 6.2");
+        put(33554432, "High 6.2");
+    }};
 
     private static final Integer[] resolutionsWidth = {
             240,
@@ -135,10 +220,25 @@ public final class Tools {
             1600,
             1920,
             2560,
-            3840
+            3840,
+            7680,
+            8192
     };
 
-    private static final Integer[] resolutionsHeight = {
+    private static final String[] resolutionsHeight = {
+            "160p",
+            "360p",
+            "480p",
+            "720p",
+            "900p",
+            "1080p",
+            "1440p",
+            "4k",
+            "8k",
+            "8k"
+    };
+
+    private static final Integer[] resolutionsHeightInt = {
             160,
             360,
             480,
@@ -146,23 +246,10 @@ public final class Tools {
             900,
             1080,
             1440,
-            2160
+            2160,
+            4320,
+            4608
     };
-
-    public static class ResponseObj {
-        public final int status;
-        public final String responseText;
-        final long checkResult;
-        final String url;
-
-        ResponseObj(int status, String responseText, long checkResult) {
-            this.status = status;
-            this.responseText = responseText;
-            this.checkResult = checkResult;
-            this.url = null;
-        }
-
-    }
 
     static String ResponseObjToString(long checkResult) {
         return new Gson().toJson(
@@ -284,33 +371,14 @@ public final class Tools {
         }
     }
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
-    private static class CodecList {
-        private final String type;
-        private final String name;
-        private final String maxresolution;
-        private final String maxbitrate;
-        private final String maxlevel;
-        private final int instances;
-        private final String resolutions;
-
-        CodecList(String type, String name, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions) {
-            this.type = type;
-            this.name = name;
-            this.maxresolution = maxresolution;
-            this.maxbitrate = maxbitrate;
-            this.maxlevel = maxlevel;
-            this.instances = instances;
-            this.resolutions = resolutions;
-        }
-    }
-
     //Returns a stringify json obj contain
     //[{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}]
     static String codecCapabilities(String CodecType) {
         int lowerWidth;
         int UperWidth;
         int instances;
+
+        int position;
 
         String maxlevel;
         String resolutions;
@@ -324,16 +392,26 @@ public final class Tools {
                         MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
                         MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             instances = codecCapabilities.getMaxSupportedInstances();
-                        else instances = -1;
+                        } else {
+                            instances = -1;
+                        }
 
                         MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
+                        position = profile[profile.length - 1].level;
 
-                        if (CodecType.contains("avc")) { //check avc arrays others codecs current not used
+                        if (CodecType.contains("avc")) {
 
-                            int position = Arrays.asList(AvcLevelsEx).indexOf(profile[profile.length - 1].level);
-                            maxlevel = (position > 0) ? AvcLevels[position] : "Unknown level " + profile[profile.length - 1].level;
+                            maxlevel = AvcLevelsMap.containsKey(position) ? AvcLevelsMap.get(position) : "Unknown level " + profile[profile.length - 1].level;
+
+                        } else if (CodecType.contains("av01")) {
+
+                            maxlevel = Av1LevelsMap.containsKey(position) ? Av1LevelsMap.get(position) : "Unknown level " + profile[profile.length - 1].level;
+
+                        } else if (CodecType.contains("hevc")) {
+
+                            maxlevel = HEVCLevelsMap.containsKey(position) ? HEVCLevelsMap.get(position) : "Unknown level " + profile[profile.length - 1].level;
 
                         } else {
                             maxlevel = String.format(
@@ -348,7 +426,7 @@ public final class Tools {
 
                         StringBuilder values = new StringBuilder();
                         for (int i = 0; i < resolutionsWidth.length; i++) {
-                            resolutions = codecframeRate(videoCapabilities, resolutionsWidth[i], resolutionsHeight[i], lowerWidth, UperWidth);
+                            resolutions = codecframeRate(videoCapabilities, resolutionsWidth[i], resolutionsHeight[i], resolutionsHeightInt[i], lowerWidth, UperWidth);
                             if (resolutions != null) values.append(resolutions);
                         }
 
@@ -386,15 +464,15 @@ public final class Tools {
         return new Gson().toJson(result);
     }
 
-    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
+    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, String height, int heightInt, int lowerWidth, int UperWidth) {
         try {
             //Check if is bigger then smallest and smaller then the biggest
             return (width >= lowerWidth && width <= UperWidth) ?
                     String.format(
                             Locale.US,
-                            "%dp : %d fps | ",
+                            "%s : %d fps | ",
                             height,
-                            Math.round(videoCapabilities.getSupportedFrameRatesFor(width, height).getUpper())
+                            Math.round(videoCapabilities.getSupportedFrameRatesFor(width, heightInt).getUpper())
                     )
                     : null;
         } catch (Exception e) {
@@ -451,11 +529,12 @@ public final class Tools {
                 .build();
     }
 
-    static MediaSource buildMediaSource(Uri uri, Context context, int Type, int LowLatency, String mainPlaylist, String userAgent) {
+    static MediaSource buildMediaSource(Uri uri, Context context, int Type, int LowLatency, boolean speedAdjustment, String mainPlaylist, String userAgent) {
         if (Type == 1) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency)
+                    .setspeedAdjustment(speedAdjustment)
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (Type == 2) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
@@ -590,15 +669,6 @@ public final class Tools {
         } else return true;
     }
 
-    //https://exoplayer.dev/shrinking.html
-    private static class Mp4ExtractorsFactory implements ExtractorsFactory {
-        @Override
-        @NonNull
-        public Extractor[] createExtractors() {
-            return new Extractor[]{new Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, /* flags= */ FLAG_EMIT_RAW_SUBTITLE_DATA)};
-        }
-    }
-
     private static MediaItem MediaItemBuilder(Uri uri) {
         return new MediaItem.Builder().setUri(uri).build();
     }
@@ -649,7 +719,7 @@ public final class Tools {
                             Format format;
                             TrackGroup groupIndex = trackGroupArray.get(0);
 
-                            result.add(new QualitiesObj("Auto", 0, "avc"));
+                            result.add(new QualitiesObj("Auto", 0, "Auto"));
 
                             for (int trackIndex = 0; trackIndex < groupIndex.length; trackIndex++) {
                                 format = groupIndex.getFormat(trackIndex);
@@ -675,20 +745,6 @@ public final class Tools {
         return null;
     }
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
-    private static class QualitiesObj {
-        private final String id;
-        private final String band;
-        private final String codec;
-
-        QualitiesObj(String id, int band, String codec) {
-            this.id = id;
-            this.band = extractBand(band);
-            this.codec = extractCodec(codec);
-        }
-
-    }
-
     private static String extractBand(int band) {
         return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000)) : "";
     }
@@ -712,9 +768,11 @@ public final class Tools {
     private static String extractCodec(String codec) {
 
         if (codec == null) return "";
-        else if (codec.contains("avc")) return " | avc";
-        else if (codec.contains("vp9")) return " | vp9";
-        else if (codec.contains("mp4a")) return " | mp4";
+        else if (codec.contains("avc")) return " | AVC";
+        else if (codec.contains("vp9")) return " | VP9";
+        else if (codec.contains("hvc")) return " | HEVC";
+        else if (codec.contains("av01")) return " | AV1";
+        else if (codec.contains("mp4a")) return " | MP4";
 
         return "";
     }
@@ -879,67 +937,8 @@ public final class Tools {
         }
     }
 
-//    static void checkTokens(String UserId, AppPreferences appPreferences) {
-//        String token = getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences);
-//
-//        try {
-//            String urlString = "https://id.twitch.tv/oauth2/validate";
-//
-//            String[][] HEADERS = {
-//                    {Constants.BASE_HEADERS[1][0], token}
-//            };
-//
-//            JsonObject obj;
-//            int status;
-//            ResponseObj response;
-//
-//            for (int i = 0; i < 3; i++) {
-//
-//                response =
-//                        Internal_MethodUrl(
-//                                urlString,
-//                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-//                                null,
-//                                null,
-//                                0,
-//                                HEADERS
-//                        );
-//
-//                if (response != null) {
-//
-//                    status = response.status;
-//
-//                    if (status == 200) {
-//                        obj = parseString(response.responseText).getAsJsonObject();
-//
-//                        if (obj.has("expires_in") && obj.get("expires_in").isJsonNull()) {
-//
-//                            appPreferences.put(
-//                                    UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
-//                                    (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000))
-//                            );
-//
-//                        }
-//                        break;
-//                    } else if (status == 401 || status == 403) {
-//
-//                        refreshTokens(
-//                                UserId,
-//                                appPreferences
-//                        );
-//                        break;
-//                    }
-//
-//                }
-//
-//            }
-//        } catch (Exception e) {
-//            recordException(TAG, "checkTokens e ", e);
-//        }
-//    }
-
     public static boolean hasTokens(String UserId, AppPreferences appPreferences) {
-        return Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null;
+        return getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null;
     }
 
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
@@ -1059,6 +1058,65 @@ public final class Tools {
         }
 
     }
+
+//    static void checkTokens(String UserId, AppPreferences appPreferences) {
+//        String token = getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences);
+//
+//        try {
+//            String urlString = "https://id.twitch.tv/oauth2/validate";
+//
+//            String[][] HEADERS = {
+//                    {Constants.BASE_HEADERS[1][0], token}
+//            };
+//
+//            JsonObject obj;
+//            int status;
+//            ResponseObj response;
+//
+//            for (int i = 0; i < 3; i++) {
+//
+//                response =
+//                        Internal_MethodUrl(
+//                                urlString,
+//                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+//                                null,
+//                                null,
+//                                0,
+//                                HEADERS
+//                        );
+//
+//                if (response != null) {
+//
+//                    status = response.status;
+//
+//                    if (status == 200) {
+//                        obj = parseString(response.responseText).getAsJsonObject();
+//
+//                        if (obj.has("expires_in") && obj.get("expires_in").isJsonNull()) {
+//
+//                            appPreferences.put(
+//                                    UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
+//                                    (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000))
+//                            );
+//
+//                        }
+//                        break;
+//                    } else if (status == 401 || status == 403) {
+//
+//                        refreshTokens(
+//                                UserId,
+//                                appPreferences
+//                        );
+//                        break;
+//                    }
+//
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            recordException(TAG, "checkTokens e ", e);
+//        }
+//    }
 
     //TODO check deprecation
     static boolean InstallFromPLay(Context context) {
@@ -1237,4 +1295,68 @@ public final class Tools {
 
         return new Locale(lang, country);
     }
+
+    public static Set<String> getBlockedByType(String type, AppPreferences appPreferences) {
+        return new Gson().fromJson(getString(type, "[]", appPreferences), setType);
+    }
+
+    public static class ResponseObj {
+        public final int status;
+        public final String responseText;
+        final long checkResult;
+        final String url;
+
+        ResponseObj(int status, String responseText, long checkResult) {
+            this.status = status;
+            this.responseText = responseText;
+            this.checkResult = checkResult;
+            this.url = null;
+        }
+
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
+    private static class CodecList {
+        private final String type;
+        private final String name;
+        private final String maxresolution;
+        private final String maxbitrate;
+        private final String maxlevel;
+        private final int instances;
+        private final String resolutions;
+
+        CodecList(String type, String name, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions) {
+            this.type = type;
+            this.name = name;
+            this.maxresolution = maxresolution;
+            this.maxbitrate = maxbitrate;
+            this.maxlevel = maxlevel;
+            this.instances = instances;
+            this.resolutions = resolutions;
+        }
+    }
+
+    //https://exoplayer.dev/shrinking.html
+    private static class Mp4ExtractorsFactory implements ExtractorsFactory {
+        @Override
+        @NonNull
+        public Extractor[] createExtractors() {
+            return new Extractor[]{new Mp4Extractor(SubtitleParser.Factory.UNSUPPORTED, /* flags= */ FLAG_EMIT_RAW_SUBTITLE_DATA)};
+        }
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
+    private static class QualitiesObj {
+        private final String id;
+        private final String band;
+        private final String codec;
+
+        QualitiesObj(String id, int band, String codec) {
+            this.id = id;
+            this.band = extractBand(band);
+            this.codec = extractCodec(codec);
+        }
+
+    }
+
 }

@@ -63,7 +63,10 @@ function PlayExtra_KeyEnter() {
 
         if (Main_IsOn_OSInterface) {
             //Not on auto mode for change to auto before start picture in picture
-            if (!Main_A_includes_B(Play_data.quality, 'Auto')) OSInterface_SetQuality(-1);
+            if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
+                OSInterface_SetQuality(-1);
+            }
+
             Play_SetPlayQuality('Auto');
             Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
             PlayExtra_data.quality = 'Auto';

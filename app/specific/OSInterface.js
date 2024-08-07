@@ -323,7 +323,7 @@ function OSInterface_RestartPlayer(who_called, ResumePosition, player) {
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player) {
-    if (who_called === 1) {
+    if (who_called === 1 || who_called === 2) {
         mainPlaylistString = Play_FixQualities(mainPlaylistString);
     }
 
@@ -339,7 +339,7 @@ function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePositi
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
-    if (who_called === 1) {
+    if (who_called === 1 || who_called === 2) {
         mainPlaylistString = Play_FixQualities(mainPlaylistString);
     }
 
@@ -373,14 +373,45 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
+//public void OSInterface_UpdateBlockedChannels(String channelsJson)
+//channelsJson = channelsJson map with all blocked channels
+//Sets the map of blocked channels used by home screen content
+function OSInterface_UpdateBlockedChannels() {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.UpdateBlockedChannels(Main_GetBlockedJson('channel'));
+        } catch (e) {}
+    }
+}
+
+//public void UpdateBlockedGames(String gamesJson)
+//gamesJson = gamesJson map with all blocked games
+//Sets the map of blocked games used by home screen content
+function OSInterface_UpdateBlockedGames() {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.UpdateBlockedGames(Main_GetBlockedJson('game'));
+        } catch (e) {}
+    }
+}
+
+//public void setSpeedAdjustment(boolean speedAdjustment)
+//speedAdjustment = boolean to enable auto adjustment of latency base on speed
+//Sets speedAdjustment
+function OSInterface_setSpeedAdjustment(speedAdjustment) {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.setSpeedAdjustment(Boolean(speedAdjustment));
+        } catch (e) {}
+    }
+}
+
 //public void setAppToken(String token)
 //token =  token to save
 //Sets the app token when value is updated from JS
 function OSInterface_setAppToken() {
     if (Main_IsOn_OSInterface) {
-        try {
-            Android.setAppToken(AddCode_main_token ? AddCode_main_token : null);
-        } catch (e) {}
+        Android.setAppToken(AddCode_main_token ? AddCode_main_token : null);
     }
 }
 
@@ -769,9 +800,7 @@ function OSInterface_SetPreviewOthersAudio(volume) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, isVod) {
-    if (!isVod) {
-        mainPlaylistString = Play_FixQualities(mainPlaylistString);
-    }
+    mainPlaylistString = Play_FixQualities(mainPlaylistString);
 
     Android.StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, Boolean(isVod));
 }
@@ -815,7 +844,7 @@ function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
-    if (who_called === 1) {
+    if (who_called === 1 || who_called === 2) {
         mainPlaylistString = Play_FixQualities(mainPlaylistString);
     }
 

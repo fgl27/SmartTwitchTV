@@ -262,6 +262,7 @@ function Play_Start(offline_chat) {
             Chat_Disable();
             BrowserTestStartLive(Play_data.data[6]);
         }
+        Play_extractQualitiesTest();
     }
 
     //Play_ResetProxy();
@@ -953,7 +954,7 @@ function Play_qualityChanged() {
     Play_SetHtmlQuality(Play_info_quality);
 
     if (Main_IsOn_OSInterface) {
-        OSInterface_SetQuality(Play_data.qualityIndex - 1);
+        OSInterface_SetQuality(Play_data.qualities[Play_data.qualityIndex].position);
     } else {
         Play_onPlayer();
     }
@@ -965,11 +966,28 @@ function Play_getQualities(Who_Called, skipchange) {
     if (!Main_IsOn_OSInterface) return;
 
     var baseQualities = OSInterface_getQualities();
+
     var result;
 
     if (baseQualities) {
         Play_getQualitiesFail = false;
         result = JSON.parse(baseQualities);
+
+        var i = 0,
+            len = result.length;
+
+        //add the position to the obj, as we may change the order and need the position to use in Play_controls[Play_controlsQuality]
+        for (i; i < len; i++) {
+            result[i].position = i - 1;
+        }
+
+        //sort by resolution
+        result.sort(function (a, b) {
+            if (!a || !b) {
+                return 0;
+            }
+            return parseInt(b.id.split('p')[0]) - parseInt(a.id.split('p')[0]);
+        });
 
         if (result.length > 1) {
             result[1].id += ' | source';
@@ -1019,6 +1037,7 @@ function Play_SetExternalQualities(array, startPos, name) {
         Play_ExternalUrls.push(array[i].url);
         Play_controls[Play_controlsExternal].values.push(array[i].id);
     }
+
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
     Play_controls[Play_controlsExternal].setLabel();
 
@@ -1033,7 +1052,34 @@ function Play_FixQualities(input) {
     if (qualities.length && qualities[0].truebitrate) {
         input = input.replace(qualities[0].bitrate, qualities[0].truebitrate);
     }
+
     return input;
+}
+
+function Play_extractQualitiesTest() {
+    /* jshint ignore:start */
+    var testString = `
+#EXTM3U
+#EXT-X-TWITCH-INFO:NODE="video-edge-6205c6.sao03",MANIFEST-NODE-TYPE="weaver_cluster",MANIFEST-NODE="video-weaver.sao03",SUPPRESS="true",SERVER-TIME="1722602179.79",TRANSCODESTACK="2023-Transcode-Gen2-V1",TRANSCODEMODE="cbr_v1",USER-IP="177.22.171.246",SERVING-ID="f",CLUSTER="sao03",ABS="true",VIDEO-SESSION-ID="2118154500142300273",BROADCAST-ID="40914639541",STREAM-TIME="18032.793634",B="false",USER-COUNTRY="BR",MANIFEST-CLUSTER="sao03",ORIGIN="muc03",C="a",D="false"
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="chunked",NAME="1080p60 (source)",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=6857175,RESOLUTION=1920x1080,CODECS="avc1.64002A,mp4a.40.2",VIDEO="chunked",FRAME-RATE=59.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="720p60",NAME="720p60",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=3422999,RESOLUTION=1280x720,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="720p60",FRAME-RATE=60.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="480p30",NAME="480p",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=1427999,RESOLUTION=852x480,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="480p30",FRAME-RATE=30.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="360p30",NAME="360p",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=630000,RESOLUTION=640x360,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="360p30",FRAME-RATE=30.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8
+#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="160p30",NAME="160p",AUTOSELECT=YES,DEFAULT=YES
+#EXT-X-STREAM-INF:BANDWIDTH=230000,RESOLUTION=284x160,CODECS="avc1.4D401F,mp4a.40.2",VIDEO="160p30",FRAME-RATE=27.000
+https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
+        `;
+
+    console.log('Play_extractQualitiesTest', Play_extractQualities(testString));
+    /* jshint ignore:end */
 }
 
 function Play_extractQualities(input) {
@@ -1042,37 +1088,65 @@ function Play_extractQualities(input) {
         marray,
         marray2,
         Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
-        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*(http(.*))/g;
+        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*FRAME-RATE=(\d+).*(http(.*))/g,
+        id,
+        res,
+        frame;
 
     while ((marray = Regexp.exec(input))) {
         while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, '')))) {
+            id = marray2[1];
+
             if (!result.length) {
-                if (!Main_A_includes_B(marray2[1], 'ource')) {
-                    marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
-                } else if (marray2[1]) {
+                //Live stream may have source word in it
+                if (Main_A_includes_B(marray2[1], 'ource')) {
                     marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace('source', STR_SOURCE);
                 }
+            }
+
+            //Prevent duplicated resolution 720p60 source and 720p60
+            if (!addedResolution[id]) {
+                res = parseInt(id.split('p')[0]);
+                frame = Math.ceil(parseInt(marray2[4]) / 10) * 10;
 
                 result.push({
-                    id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                    url: marray2[4],
-                    bitrate: parseInt(marray2[2])
+                    id: res + 'p' + frame,
+                    url: marray2[5],
+                    bitrate: parseInt(marray2[2]),
+                    resolution: res,
+                    band: Play_extractBand(marray2[2]),
+                    codec: Play_extractCodec(marray2[3]),
+                    frame: frame
                 });
-                addedResolution[marray2[1].split(' | ')[0]] = 1;
-            } else {
-                //Prevent duplicated resolution 720p60 source and 720p60
-                if (!addedResolution[marray2[1]]) {
-                    result.push({
-                        id: marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
-                        url: marray2[4],
-                        bitrate: parseInt(marray2[2])
-                    });
-                    addedResolution[marray2[1]] = 1;
-                }
+
+                addedResolution[id] = 1;
             }
         }
     }
 
+    //sort base on resolution as it may not come sorted
+    result.sort(function (a, b) {
+        if (!a || !b) {
+            return 0;
+        }
+        return b.resolution - a.resolution;
+    });
+
+    //some vods dont have the source option
+    if (!Main_A_includes_B(result[0].id, 'ource')) {
+        result[0].id += ' | ' + STR_SOURCE;
+    }
+
+    var i = 0,
+        len = result.length;
+
+    //remove not needed info from ID
+    for (i; i < len; i++) {
+        result[i].id = result[i].id.replace('av1', '');
+        result[i].id = result[i].id + result[i].band + result[i].codec;
+    }
+
+    //Some stream have the wrong bitrate set what causes issue when selecting the best quality on auto playback
     if (result.length > 1 && result[0].bitrate < result[1].bitrate) {
         result[0].truebitrate = result[0].bitrate + result[1].bitrate;
     }
@@ -1086,9 +1160,12 @@ function Play_extractBand(input) {
 }
 
 function Play_extractCodec(input) {
-    if (Main_A_includes_B(input, 'avc')) return ' | avc';
-    else if (Main_A_includes_B(input, 'vp9')) return ' | vp9';
-    else if (Main_A_includes_B(input, 'mp4')) return ' | mp4';
+    if (Main_A_includes_B(input, 'avc')) return ' | AVC';
+    else if (Main_A_includes_B(input, 'vp9')) return ' | VP9';
+    else if (Main_A_includes_B(input, 'hvc')) return ' | HEVC';
+    else if (Main_A_includes_B(input, 'av01')) return ' | AV1';
+    else if (Main_A_includes_B(input, 'mp4')) return ' | MP4';
+
     return '';
 }
 
@@ -1133,8 +1210,9 @@ function Play_SetHtmlQuality(element) {
         if (Main_IsOn_OSInterface) {
             quality_string = Play_data.quality.replace('Auto', STR_AUTO);
         } else {
-            if (Play_info_quality !== element) quality_string = Play_data.quality.replace('Auto', STR_AUTO);
-            else {
+            if (Play_info_quality !== element) {
+                quality_string = Play_data.quality.replace('Auto', STR_AUTO);
+            } else {
                 quality_string = Play_data.qualities[1].id.replace('source', STR_AUTO) + Play_data.qualities[1].band + Play_data.qualities[1].codec;
             }
         }
@@ -1705,7 +1783,9 @@ function Play_ShowVideoQuality(who_called, value) {
         } else {
             PlayVod_SetHtmlQuality(Play_info_quality);
         }
-    } else Main_innerHTML('stream_quality', value);
+    } else {
+        Main_innerHTML('stream_quality', value);
+    }
 }
 
 function Play_clearHidePanel() {

@@ -34,6 +34,9 @@ var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 // };
 var Settings_VolumeScale = 5;
 
+var Settings_AV1Supported = 0;
+var Settings_HEVCSupported = 0;
+
 var Settings_value = {
     content_lang: {
         values: [
@@ -102,6 +105,20 @@ var Settings_value = {
     show_banner: {
         values: ['no', 'yes'],
         defaultValue: 2
+    },
+    av1_codec: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    hevc_codec: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    speed_adjust: {
+        values: ['no', 'yes'],
+        defaultValue: 1
     },
     ttv_lolProxy: {
         //Migrated to dialog
@@ -371,7 +388,7 @@ var Settings_value = {
         defaultValue: 3
     },
     default_quality: {
-        values: ['Auto', 'source', '1080p60', '1080p30', '720p60', '720p30', '480p30', '360p30', '160p30'],
+        values: ['Auto', 'source', '2160p60', '1440p60', '1080p60', '1080p30', '720p60', '720p30', '480p30', '360p30', '160p30'],
         defaultValue: 1
     },
     check_source: {
@@ -442,6 +459,11 @@ var Settings_value = {
         defaultValue: 1
     },
     proxy_settings: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    player_extracodecs: {
         values: ['None'],
         set_values: [''],
         defaultValue: 1
@@ -611,6 +633,11 @@ var Settings_value = {
     chat_timestamp: {
         //Migrated to dialog
         values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    block_qualities_43: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
         defaultValue: 1
     },
     block_qualities_21: {
@@ -857,15 +884,23 @@ function Settings_SetSettings() {
     Settings_value[key].values[1] = STR_SOURCE;
     div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
+    key = 'speed_adjust';
+    Settings_value[key].values[0] = STR_AUTO;
+    Settings_value[key].values[1] = STR_SOURCE;
+    div += Settings_Content('speed_adjust', dis_ena, STR_SPEED_ADJUST, STR_SPEED_ADJUST_SUMMARY);
+
     //Dialog settings
     //div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
-    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
-    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
+    div += Settings_Content('player_extracodecs', [STR_ENTER_TO_OPEN], STR_PLAYER_EXTRA_CODEC, STR_PLAYER_EXTRA_CODEC_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+
+    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SHORT_SUMMARY);
+    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SHORT_SUMMARY);
+
     div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
     div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
-    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY);
 
     Main_innerHTML('settings_main', div);
     Settings_positions_length = Settings_value_keys.length;
@@ -993,6 +1028,7 @@ function Settings_SetDefaults() {
     }
 
     Settings_SetBuffers(0);
+    Settings_ExtraCodecs(false);
     Settings_SetClock();
     Settings_HideMainClock();
     Settings_HidePlayerClock();
@@ -1026,6 +1062,7 @@ function Settings_SetDefaults() {
     Settings_set_proxy_timeout();
     Settings_set_all_notification();
     Settings_SetLang();
+    Settings_SetSpeed_adjust();
 
     Settings_SetResBitRate(0);
 
@@ -1257,8 +1294,10 @@ function Settings_SetDefault(position) {
     else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
     else if (position === 'buffer_vod') Settings_SetBuffers(2);
     else if (position === 'buffer_clip') Settings_SetBuffers(3);
+    else if (position === 'av1_codec' || position === 'hevc_codec') Settings_ExtraCodecs(true);
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
+    else if (position === 'speed_adjust') Settings_SetSpeed_adjust();
     else if (position === 'seek_preview') PlayVod_SetPreviewType();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     else if (position === 'thumb_quality') Main_SetThumb();
@@ -1299,6 +1338,7 @@ function Settings_SetDefault(position) {
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
     else if (
+        position === 'block_qualities_43' ||
         position === 'block_qualities_21' ||
         position === 'block_qualities_16' ||
         position === 'block_qualities_14' ||
@@ -1703,6 +1743,36 @@ function Settings_SetResBitRateMin() {
     OSInterface_SetSmallPlayerBitrate(bitrate, resolution);
 }
 
+function Settings_SetSpeed_adjust() {
+    OSInterface_setSpeedAdjustment(Settings_Obj_default('speed_adjust'));
+}
+
+function Settings_ExtraCodecs(showWarning) {
+    var ExtraCodecsValuesArray = [],
+        av1Enabled = Settings_Obj_default('av1_codec'),
+        hevcEnabled = Settings_Obj_default('hevc_codec');
+
+    if (av1Enabled) {
+        ExtraCodecsValuesArray.push('av1');
+
+        if (!Settings_AV1Supported && showWarning) {
+            Main_showWarningDialog(STR_PLAYER_CODEC_NOT_SUPPORTED, 3000);
+        }
+    }
+
+    if (hevcEnabled) {
+        ExtraCodecsValuesArray.push('h265');
+
+        if (!Settings_HEVCSupported && showWarning) {
+            Main_showWarningDialog(STR_PLAYER_CODEC_NOT_SUPPORTED, 3000);
+        }
+    }
+
+    ExtraCodecsValuesArray.push('h264');
+
+    play_ExtraCodecsValues = ExtraCodecsValuesArray.join(',');
+}
+
 function Settings_SetBuffers(whocall) {
     if (!whocall) {
         Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
@@ -1789,7 +1859,15 @@ function Settings_HideElem(elem, hide) {
 var Settings_CurY = 0;
 
 function Settings_ScrollDown() {
-    var doc = Main_getElementById('settings_scroll');
+    Settings_Do_ScrollDown('settings_scroll');
+}
+
+function Settings_ScrollUp() {
+    Settings_Do_ScrollUp('settings_scroll');
+}
+
+function Settings_Do_ScrollDown(docId) {
+    var doc = Main_getElementById(docId);
     doc.scrollTop = doc.scrollHeight;
     if (Settings_Obj_default('app_animations')) {
         var position = doc.scrollTop;
@@ -1798,15 +1876,15 @@ function Settings_ScrollDown() {
     }
 }
 
-function Settings_ScrollUp() {
-    var doc = Main_getElementById('settings_scroll');
+function Settings_Do_ScrollUp(docId) {
+    var doc = Main_getElementById(docId);
     if (Settings_Obj_default('app_animations')) scrollTo(doc, 0, 200);
     else doc.scrollTop = 0;
 }
 
 function Settings_ScrollTable() {
     var scroolPos = 14,
-        offset = !Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
+        offset = 0; //!Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
         Settings_ScrollDown();
@@ -1907,6 +1985,7 @@ function Settings_KeyEnter(click) {
     if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'playerend_opt')) Settings_PlayerEnd(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
+    else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_extracodecs')) Settings_DialogShowExtraCodecs(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'proxy_settings')) Settings_DialogShowProxy(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek(click);
@@ -1939,10 +2018,26 @@ function Settings_CodecsShow(click) {
                 DivContent,
                 spacer = ' | ';
 
-            dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR + STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
+            dialogContent +=
+                STR_DIV_TITLE +
+                STR_BLOCKED_CODEC +
+                '</div>' +
+                STR_BR +
+                STR_CODEC_DIALOG_SUMMARY_1 +
+                STR_BR +
+                STR_BR +
+                STR_CODEC_DIALOG_SUMMARY_2 +
+                STR_BR +
+                STR_BR +
+                STR_CODEC_DIALOG_SUMMARY_3 +
+                STR_BR +
+                STR_BR;
 
             var i = 0,
                 len = Settings_CodecsValue.length;
+
+            dialogContent +=
+                '<div id="settings_codec_container" class="settings_codec_container"><div id="settings_codec_container_scroll" class="side_panel_holder_ani">';
             for (i; i < len; i++) {
                 Settings_value[Settings_CodecsValue[i].name] = {
                     values: [STR_ENABLED, STR_DISABLED],
@@ -1958,11 +2053,12 @@ function Settings_CodecsShow(click) {
 
                 dialogContent += Settings_DivOptionWithSummary(
                     Settings_CodecsValue[i].name,
-                    Settings_CodecsValue[i].name,
+                    Settings_CodecsValue[i].name + Settings_decoderType(Settings_CodecsValue[i].type),
                     DivContent + STR_BR + STR_BR,
                     73
                 );
             }
+            dialogContent += '</div></div>';
 
             Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
             Settings_CodecsDialogSet = true;
@@ -1980,21 +2076,36 @@ function Settings_CodecsShow(click) {
     Main_addEventListener('keydown', Settings_handleKeyDownCodecs);
 }
 
+function Settings_decoderType(codec) {
+    if (Main_A_includes_B(codec, 'avc')) return ' - AVC H.264';
+    else if (Main_A_includes_B(codec, 'hevc')) return ' - HEVC H.265';
+    else if (Main_A_includes_B(codec, 'av01')) return ' - AV1';
+
+    return '';
+}
+
 function Settings_handleKeyDownReturn() {
     Settings_RemoveInputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
     Main_HideElement('dialog_codecs');
     Main_removeEventListener('keydown', Settings_handleKeyDownCodecs);
     Main_addEventListener('keydown', Settings_handleKeyDown);
+    Main_getElementById('settings_codec_container_scroll').style.transform = '';
 }
 
 function Settings_handleKeyDownCodecsLeft() {
     var key = Settings_CodecsValue[Settings_CodecsPos].name;
-    if (Settings_Obj_default(key) > 0) Settings_CodecsRightLeft(-1);
+
+    if (Settings_Obj_default(key) > 0) {
+        Settings_CodecsRightLeft(-1);
+    }
 }
 
 function Settings_handleKeyDownCodecsRight() {
     var key = Settings_CodecsValue[Settings_CodecsPos].name;
-    if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRightLeft(1);
+
+    if (Settings_Obj_default(key) < Settings_Obj_length(key)) {
+        Settings_CodecsRightLeft(1);
+    }
 }
 
 function Settings_handleKeyDownCodecs(event) {
@@ -2012,14 +2123,35 @@ function Settings_handleKeyDownCodecs(event) {
             Settings_handleKeyDownCodecsRight();
             break;
         case KEY_UP:
-            if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
+            if (Settings_CodecsPos > 0) {
+                Settings_CodecsUpDown(-1);
+
+                Settings_ScrollCodecs(Settings_CodecsPos);
+            }
             break;
         case KEY_DOWN:
-            if (Settings_CodecsPos < Settings_CodecsValue.length - 1) Settings_CodecsUpDown(1);
+            if (Settings_CodecsPos < Settings_CodecsValue.length - 1) {
+                Settings_CodecsUpDown(1);
+
+                Settings_ScrollCodecs(Settings_CodecsPos);
+            }
             break;
         default:
             break;
     }
+}
+
+function Settings_ScrollCodecs(pos) {
+    var center = 3,
+        doc = Main_getElementById('settings_codec_container_scroll'),
+        value = 0,
+        offset = 0;
+
+    if (pos > center) {
+        value = Main_getElementById(Settings_CodecsValue[pos - center - offset].name).offsetTop;
+    }
+
+    doc.style.transform = 'translateY(-' + value / BodyfontSize + 'em)';
 }
 
 function Settings_Codecs_isVisible() {
@@ -2039,19 +2171,16 @@ function Settings_CodecsUpDownAfter(key) {
 }
 
 function Settings_CodecsRightLeft(offset) {
-    if (Settings_CodecsValue.length < 2) {
-        Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
+    if (Settings_CodecsValue.length === 1) {
+        Main_showWarningDialog(STR_CODEC_DIALOG_SUMMARY_3, 2000);
         return;
     }
 
     var key = Settings_CodecsValue[Settings_CodecsPos].name,
+        type = Settings_CodecsValue[Settings_CodecsPos].type,
         index;
 
     Settings_value[key].defaultValue += offset;
-
-    Main_setItem(key, Settings_Obj_default(key));
-    Main_textContent(key, Settings_Obj_values(key));
-    Settings_SetarrowsKey(key);
 
     if (Settings_value[key].defaultValue) {
         Settings_DisableCodecsNames.push(key);
@@ -2062,34 +2191,34 @@ function Settings_CodecsRightLeft(offset) {
             len = Settings_CodecsValue.length;
 
         for (i; i < len; i++) {
-            if (!Settings_value[Settings_CodecsValue[i].name].defaultValue) {
+            if (type === Settings_CodecsValue[i].type && !Settings_value[Settings_CodecsValue[i].name].defaultValue) {
                 oneEnable = true;
                 break;
             }
         }
 
         if (!oneEnable) {
-            Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
+            Main_showWarningDialog(STR_CODEC_DIALOG_SUMMARY_3, 2000);
 
-            i = 0;
-            len = Settings_CodecsValue.length;
-            for (i; i < len; i++) {
-                if (Settings_CodecsPos !== i) {
-                    key = Settings_CodecsValue[i].name;
-                    Settings_value[key].defaultValue += -1;
-                    Main_setItem(key, Settings_Obj_default(key));
-                    Main_textContent(key, Settings_Obj_values(key));
-                    index = Settings_DisableCodecsNames.indexOf(Settings_CodecsValue[i].name);
-                    if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
+            key = Settings_CodecsValue[Settings_CodecsPos].name;
+            Settings_value[key].defaultValue += -1;
+            index = Settings_DisableCodecsNames.indexOf(Settings_CodecsValue[Settings_CodecsPos].name);
 
-                    break;
-                }
+            if (index > -1) {
+                Settings_DisableCodecsNames.splice(index, 1);
             }
         }
     } else {
         index = Settings_DisableCodecsNames.indexOf(key);
-        if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
+
+        if (index > -1) {
+            Settings_DisableCodecsNames.splice(index, 1);
+        }
     }
+
+    Main_setItem(key, Settings_Obj_default(key));
+    Main_textContent(key, Settings_Obj_values(key));
+    Settings_SetarrowsKey(key);
 
     Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
     Settings_CodecsSet();
@@ -2128,52 +2257,115 @@ function Settings_SetCodecsValue() {
     if (!Main_IsOn_OSInterface) {
         // Settings_CodecsValue = [
         //     {
-        //         "instances": 32,
-        //         "maxbitrate": "120 Mbps",
-        //         "maxlevel": "5.2",
-        //         "maxresolution": "3840x2176",
-        //         "name": "OMX.Nvidia.h264.decode",
-        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps",
-        //         "type": "video/avc"
+        //         instances: 32,
+        //         maxbitrate: '120 Mbps',
+        //         maxlevel: '5.2',
+        //         maxresolution: '3840x2176',
+        //         name: 'OMX.Nvidia.h264.decode',
+        //         resolutions: '160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps',
+        //         type: 'video/avc'
         //     },
         //     {
-        //         "instances": 32, "maxbitrate": "48 Mbps",
-        //         "maxlevel": "5.2",
-        //         "maxresolution": "4080x4080",
-        //         "name": "OMX.google.h264.decoder",
-        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
-        //         "type": "video/avc"
+        //         instances: 32,
+        //         maxbitrate: '48 Mbps',
+        //         maxlevel: '5.2',
+        //         maxresolution: '4080x4080',
+        //         name: 'OMX.google.h264.decoder',
+        //         resolutions: '160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps',
+        //         type: 'video/avc'
         //     },
         //     {
-        //         "instances": -1, "maxbitrate": "48 Mbps",
-        //         "maxlevel": "5.2",
-        //         "maxresolution": "4080x4080",
-        //         "name": "OMX.chico.h264.decoder",
-        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
-        //         "type": "video/avc"
+        //         instances: -1,
+        //         maxbitrate: '48 Mbps',
+        //         maxlevel: '5.2',
+        //         maxresolution: '4080x4080',
+        //         name: 'OMX.chico.h264.decoder',
+        //         resolutions: '160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps',
+        //         type: 'video/avc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '120 Mbps',
+        //         maxlevel: 'High 5.2',
+        //         maxresolution: '4096x4096',
+        //         name: 'c2.goldfish.hevc.decoder',
+        //         resolutions:
+        //             '160p : 480 fps | 360p : 480 fps | 480p : 480 fps | 720p : 480 fps | 900p : 364 fps | 1080p : 254 fps | 1440p : 144 fps | 2160p : 64 fps',
+        //         type: 'video/hevc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '10 Mbps',
+        //         maxlevel: 'High 5.2',
+        //         maxresolution: '4096x4096',
+        //         name: 'c2.android.hevc.decoder',
+        //         resolutions:
+        //             '160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps',
+        //         type: 'video/hevc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '10 Mbps',
+        //         maxlevel: 'High 5.2',
+        //         maxresolution: '4096x4096',
+        //         name: 'OMX.google.hevc.decoder',
+        //         resolutions:
+        //             '160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps',
+        //         type: 'video/hevc'
+        //     },
+        //     {
+        //         instances: 32,
+        //         maxbitrate: '40 Mbps',
+        //         maxlevel: '32768',
+        //         maxresolution: '2048x2048',
+        //         name: 'c2.android.av1.decoder',
+        //         resolutions: '160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps',
+        //         type: 'video/av01'
         //     }
         // ];
 
         Settings_CodecsValue = JSON.parse(
-            '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"}]'
+            '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.goldfish.hevc.decoder","resolutions":"160p : 480 fps | 360p : 480 fps | 480p : 480 fps | 720p : 480 fps | 900p : 364 fps | 1080p : 254 fps | 1440p : 144 fps | 2160p : 64 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"c2.android.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"10 Mbps","maxlevel":"High 5.2","maxresolution":"4096x4096","name":"OMX.google.hevc.decoder","resolutions":"160p : 960 fps | 360p : 741 fps | 480p : 417 fps | 720p : 139 fps | 900p : 88 fps | 1080p : 62 fps | 1440p : 35 fps | 2160p : 15 fps","type":"video/hevc"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.android.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.google.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c2.test.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"},{"instances":32,"maxbitrate":"40 Mbps","maxlevel":"32768","maxresolution":"2048x2048","name":"c.test2.av1.decoder","resolutions":"160p : 960 fps | 360p : 356 fps | 480p : 205 fps | 720p : 68 fps | 900p : 43 fps | 1080p : 30 fps","type":"video/av01"}]'
         );
     } else {
         try {
             Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+
+            Settings_CodecsValue.push.apply(Settings_CodecsValue, JSON.parse(OSInterface_getcodecCapabilities('hevc')));
+            Settings_CodecsValue.push.apply(Settings_CodecsValue, JSON.parse(OSInterface_getcodecCapabilities('av01')));
         } catch (e) {
             Settings_CodecsValue = [];
+        }
+    }
+
+    Settings_SetSuportedCodecs(Settings_CodecsValue);
+}
+
+function Settings_SetSuportedCodecs(codecs) {
+    var i = 0,
+        len = codecs.length;
+
+    for (i; i < len; i++) {
+        if (Main_A_includes_B(codecs[i].type, 'hevc')) Settings_HEVCSupported = true;
+        if (Main_A_includes_B(codecs[i].type, 'av01')) Settings_AV1Supported = true;
+
+        if (Settings_HEVCSupported && Settings_AV1Supported) {
+            break;
         }
     }
 }
 
 function Settings_QualitiesCheck() {
     Settings_DisableQualities = [];
-    var array_values = ['21', '16', '14', '10', '9', '7', '4', '3'],
+    var array_values = ['43', '21', '16', '14', '10', '9', '7', '4', '3'],
+        array_blocked_values = ['4200-4600', '1700-2200', '1500-1700', '1400-1500', '1000-1100', '900-1000', '700-800', '400-500', '300-400'],
         i = 0,
         len = array_values.length;
 
     for (i; i < len; i++) {
-        if (Settings_Obj_default('block_qualities_' + array_values[i])) Settings_DisableQualities.push(array_values[i]);
+        if (Settings_Obj_default('block_qualities_' + array_values[i])) {
+            Settings_DisableQualities.push(array_blocked_values[i]);
+        }
     }
 
     Settings_DisableQualitiesLen = Settings_DisableQualities.length;
@@ -2186,7 +2378,9 @@ function Settings_QualitiesCheck() {
 }
 
 function Settings_Qualities() {
-    if (Main_IsOn_OSInterface) OSInterface_setBlackListQualities(Settings_DisableQualities.join());
+    if (Main_IsOn_OSInterface) {
+        OSInterface_setBlackListQualities(Settings_DisableQualities.join());
+    }
 }
 
 function Settings_ForceEnableAnimations() {
@@ -2254,6 +2448,64 @@ function Settings_DialogShowProxy(click) {
     };
 
     Settings_DialogShow(obj, PROXY_SETTINGS + STR_BR + STR_BR + PROXY_SETTINGS_SUMMARY, click);
+}
+
+function Settings_DialogShowExtraCodecs(click) {
+    var dis_ena = [STR_DISABLED, STR_ENABLED];
+    Settings_value.av1_codec.values = dis_ena;
+    Settings_value.hevc_codec.values = dis_ena;
+
+    var obj = {
+        hevc_codec: {
+            defaultValue: Settings_value.hevc_codec.defaultValue,
+            values: Settings_value.hevc_codec.values,
+            title: STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_PLAYER_CODEC_HEVC
+        },
+
+        av1_codec: {
+            defaultValue: Settings_value.av1_codec.defaultValue,
+            values: Settings_value.av1_codec.values,
+            title: STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_PLAYER_CODEC_AV1
+        }
+    };
+
+    var red = '#ec0000',
+        green = '#00c900';
+
+    Settings_DialogShow(
+        obj,
+        STR_DIV_TITLE +
+            STR_PLAYER_EXTRA_CODEC +
+            '</div>' +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 +
+            STR_BR +
+            STR_BR +
+            '<div class="about_text_title" ' +
+            '<span style="color: ' +
+            (Settings_HEVCSupported ? green : red) +
+            ';"> HEVC -' +
+            STR_SPACE_HTML +
+            (Settings_HEVCSupported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
+            STR_BR +
+            STR_BR +
+            '</span><span style="color: ' +
+            (Settings_AV1Supported ? green : red) +
+            ';"> AV1 -' +
+            STR_SPACE_HTML +
+            (Settings_AV1Supported ? STR_PLAYER_CODEC_SUPPORTED : STR_PLAYER_CODEC_NOT_SUPPORTED) +
+            '</span></div>',
+        click
+    );
 }
 
 function Settings_DialogShowBitrate(click) {
@@ -2879,6 +3131,7 @@ function Settings_DialogShowChat(click) {
 
 function Settings_block_qualities(click) {
     var array_ena_dis = [STR_BLOCKED_NOT, STR_BLOCKED];
+    Settings_value.block_qualities_43.values = array_ena_dis;
     Settings_value.block_qualities_21.values = array_ena_dis;
     Settings_value.block_qualities_16.values = array_ena_dis;
     Settings_value.block_qualities_14.values = array_ena_dis;
@@ -2889,22 +3142,28 @@ function Settings_block_qualities(click) {
     Settings_value.block_qualities_3.values = array_ena_dis;
 
     var obj = {
+        block_qualities_43: {
+            defaultValue: Settings_value.block_qualities_43.defaultValue,
+            values: Settings_value.block_qualities_43.values,
+            title: '42XXp to 46XXp 8k',
+            summary: null
+        },
         block_qualities_21: {
             defaultValue: Settings_value.block_qualities_21.defaultValue,
             values: Settings_value.block_qualities_21.values,
-            title: '21XXp',
+            title: '17XXp to 22XXp 4k',
             summary: null
         },
         block_qualities_16: {
             defaultValue: Settings_value.block_qualities_16.defaultValue,
             values: Settings_value.block_qualities_16.values,
-            title: '16XXp',
+            title: '15XXp to 17XXp 2.5k',
             summary: null
         },
         block_qualities_14: {
             defaultValue: Settings_value.block_qualities_14.defaultValue,
             values: Settings_value.block_qualities_14.values,
-            title: '14XXp',
+            title: '14XXp 2k',
             summary: null
         },
         block_qualities_10: {
@@ -3013,10 +3272,14 @@ function Settings_DialoghandleKeyDown(event) {
             Settings_DialoghandleKeyRight();
             break;
         case KEY_UP:
-            if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
+            if (Settings_DialogPos > 0) {
+                Settings_DialogUpDown(-1);
+            }
             break;
         case KEY_DOWN:
-            if (Settings_DialogPos < Settings_DialogValue.length - 1) Settings_DialogUpDown(1);
+            if (Settings_DialogPos < Settings_DialogValue.length - 1) {
+                Settings_DialogUpDown(1);
+            }
             break;
         default:
             break;

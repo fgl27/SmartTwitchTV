@@ -2393,7 +2393,7 @@ function Play_MakeControls() {
                 Play_SetHtmlQuality(Play_info_quality);
 
                 if (oldQuality !== Play_data.quality) {
-                    OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
+                    OSInterface_SetQuality(Play_data.qualities[Play_data.qualityIndex].position); //just quality change
                 } else {
                     OSInterface_RestartPlayer(1, 0, 0); //restart the player
                 }
@@ -2407,8 +2407,11 @@ function Play_MakeControls() {
                 PlayVod_qualityPlaying = PlayVod_quality;
                 PlayVod_SetHtmlQuality(Play_info_quality);
 
-                if (oldQuality !== PlayVod_quality) OSInterface_SetQuality(PlayVod_qualityIndex - 1); //just quality change
-                else OSInterface_RestartPlayer(2, OSInterface_gettime(), 0); //resetart the player
+                if (oldQuality !== PlayVod_quality) {
+                    OSInterface_SetQuality(PlayVod_qualities[PlayVod_qualityIndex].position); //just quality change
+                } else {
+                    OSInterface_RestartPlayer(2, OSInterface_gettime(), 0); //resetart the player
+                }
 
                 PlayVod_qualityIndexReset();
             } else if (PlayVodClip === 3) {

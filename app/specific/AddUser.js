@@ -440,6 +440,8 @@ function AddUser_removeUser(position, skipInitUser) {
 
         OSInterface_UpdateUserId(null);
     }
+
+    Main_UpdateBlockedHomeScreen();
 }
 
 function AddUser_SaveUserArray() {
@@ -476,6 +478,7 @@ function AddUser_UserMakeOne(position) {
 
     //Reset history obj and check for deleted vod/clips
     Main_history_SetVod_Watched();
+    Main_UpdateBlockedHomeScreen();
     Main_setTimeout(Main_RunVODWorker, 10000);
     Main_setTimeout(Main_RunClipWorker, 30000);
 

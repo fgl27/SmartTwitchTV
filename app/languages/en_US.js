@@ -255,6 +255,7 @@ function en_USLang() {
     STR_OPEN_HOST = 'Open the Hosting';
     STR_SETTINGS_PLAYER = 'Player related';
     STR_SETTINGS_BUFFER_SIZE = 'Start buffer size:';
+    STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY = 'Controls start buffer size';
     STR_SETTINGS_BUFFER_SIZE_SUMMARY =
         'How much is needed to buffer before starting the playback. This is not related to the maximum size that the buffer can reach (the maximum buffer size is based on the amount of RAM on the device). A lower value here will cause the playback to start sooner and that is always recommended. Changing this value to a bigger value will in most cases not cause any improvements, but rather setbacks.';
     STR_SETTINGS_BUFFER_LIVE = 'Lives start buffer';
@@ -323,7 +324,7 @@ function en_USLang() {
     STR_LIVE_FEED = 'Live Feed';
     STR_VOD_DIALOG = 'VOD start dialog';
     STR_VOD_DIALOG_SUMMARY =
-        "Choose the default behavior, if the VOD info is present in user history when playing one, it can be played from where you last stopped watching. If you set this option to 'Always from the start', this behavior will also be applied to the VOD preview.";
+        "When playing a VOD saved on the user history, you can choose the default behavior of the VOD dialog. Setting it to 'Always from the start' also applies to the VOD preview.";
     STR_VOD_DIALOG_START = 'Always from the start';
     STR_VOD_DIALOG_LAST = 'Always from the last stop';
     STR_VOD_DIALOG_SHOW = 'Always ask';
@@ -360,6 +361,7 @@ function en_USLang() {
     STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, 'Top', 'Bottom left', 'Bottom center', 'Bottom right'];
     STR_PLAYER_BITRATE_UNLIMITED = 'Unlimited';
     STR_PLAYER_BITRATE = 'Auto quality maximum allowed Resolution/Bitrate';
+    STR_PLAYER_BITRATE_SHORT_SUMMARY = 'Allows to set max Resolution/Bitrate used by Auto quality playback';
     STR_PLAYER_BITRATE_SUMMARY =
         "This is used to prevent lag on low-end devices when playing multiple videos at the same time (most devices will lag by skipping frames in that situation, as they are only made to play a single video). Also helps limit the internet bandwidth use in case you need a limit that also sets the 'Default player quality' to auto quality. The recommended resolution/bitrate for all small players is 720p/3 Mbps and unlimited for main or big players for most low-end devices.";
     STR_PLAYER_BITRATE_SUMMARY_ETC =
@@ -371,6 +373,7 @@ function en_USLang() {
     STR_PLAYER_RES_MAIN = 'Resolution - ' + STR_PLAYER_MAIN;
     STR_PLAYER_RES_SMALL = 'Resolution - ' + STR_PLAYER_RES_SMALL;
     STR_BLOCK_RES = 'Blocked resolutions';
+    STR_BLOCK_RES_SHORT_SUMMARY = 'Allows to block one or more resolutions from ever being used';
     STR_BLOCK_RES_SUMMARY =
         "When using auto quality, it's possible to block one or more resolutions from ever being used. This is useful for devices that lag playing at a particular resolution. As clips can't be played in auto mode, this will also block the automatic part of this resolution in a clip.";
     STR_BLOCK_RES_SUMMARY_EXTRA =
@@ -387,7 +390,7 @@ function en_USLang() {
     STR_AUDIO = 'Audio -';
     STR_DEF_QUALITY = 'Default player quality';
     STR_DEF_QUALITY_SUMMARY =
-        "This option will always override others when playing a single video. In picture-in-picture or multistream mode, the playback needs to use auto quality. The reason for why that can be found under the settings option '" +
+        "This option will override all others when playing a single video. In multi-player modes, the playback needs to use auto quality. The reason for this can be found under the settings option '" +
         STR_PLAYER_BITRATE +
         "'.";
     STR_PICTURE_PICTURE = 'Picture in picture, 50/50 or multistream (for lives only):';
@@ -488,22 +491,17 @@ function en_USLang() {
     STR_DPAD_POSTION = 'D-pad screen position';
     STR_DPAD_OPACITY = 'D-pad opacity';
     STR_DPAD_OPT = 'D-pad options';
-    STR_BLOCKED_CODEC = 'Blocked codecs';
-    STR_BLOCKED_CODEC_SUMMARY = 'List used codec capabilities and allow blocking a codec from being used.';
-    STR_CODEC_DIALOG_TITLE =
-        "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style='color: #FF0000;'>by default, the OMX.google decoder is disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.<br>The app content only uses avc/h264 decoders, no others are listed.";
-    STR_SUPPORTED_CODEC = 'Supported codecs:';
+
     STR_MAX_RES = 'Max resolution:';
     STR_MAX_BIT = 'Max bitrate:';
     STR_MAX_LEVEL = 'Max level:';
     STR_MAX_FPS = 'Max fps per resolution:';
     STR_MAX_INSTANCES = 'Max instances:';
     STR_UNKNOWN = 'Unknown';
-    STR_ONE_CODEC_ENA = 'At least one codec must be enabled at all times.';
-    STR_USER_LIVE = 'User live side pannel: Left D-pad from the side panel or key 3 from anywhere';
+    STR_USER_LIVE = 'User live side panel: Left D-pad from the side panel or key 3 from anywhere';
     STR_PP_WORKAROUND = 'Multiplayer, PP and preview mode workaround';
     STR_PP_WORKAROUND_SUMMARY =
-        "For some devices usually running old versions of Android, it is necessary to enable this to have multiplayer mode working properly. Usually, the issue is that the player (PP or preview) will not be visible, or even when not in use it is visible as a black box over the main player. Don't enable this if you don't have issues, as it will result in lower image quality and possible loss of performance";
+        "For some devices, it is necessary to enable this to have multiplayer mode working properly. The issue is usually that one of the two players becomes a black screen. Don't enable it if you don't have issues, as it will cause lower image quality and poor performance.";
     STR_HISTORY = 'History';
     STR_WATCHED = 'Watched on';
     STR_UNTIL = 'until';
@@ -626,7 +624,7 @@ function en_USLang() {
         STR_MULTI_MAIN_WINDOW + ' bigger and chat: Press the down key and after that use the left/right keys to change the big video';
     STR_SOURCE_CHECK = 'Automatically change player quality from Source to Auto when the player lags';
     STR_SOURCE_CHECK_SUMMARY =
-        "When this option is enabled, and you aren't using auto quality, the player will switch to auto quality and warn about it if the player is lagging. A player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex than just time of course), after this, changing the player will automatically go back to the source when you open a new VOD stream.";
+        'When enabled, and not using auto quality, the player will switch to auto quality and warn about it if the player is lagging. A Player lag is when the player is unable to play for a few seconds (the algorithm is more complex than just time), if you play something else it will go back to the original quality.';
     STR_PLAYER_LAG = "Player is lagging, quality changed to 'Auto mode'";
     STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
     STR_TOO_ERRORS = 'or too many errors';
@@ -877,4 +875,34 @@ function en_USLang() {
 
     STR_WRONG_PASS = 'Wrong password!';
     STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
+
+    STR_PLAYER_EXTRA_CODEC = 'Extra codec support';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Beta codec support that are being tested by Twitch';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Most streams only have AVC H.264 support ';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
+        'For the codec to work the device must be capable, check the capability below (must be green), and the stream must be using the codec.';
+
+    STR_PLAYER_CODEC_AV1 = 'AV1';
+    STR_PLAYER_CODEC_HEVC = 'HEVC';
+
+    STR_PLAYER_CODEC_SUPPORTED = 'supported';
+    STR_PLAYER_CODEC_NOT_SUPPORTED = 'Not supported! Enabling this codec can cause playback errors and no playback.';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'To better understand the device capability check the settings option: ';
+
+    STR_BLOCKED_CODEC = 'Codec capability & Blocked codecs';
+    STR_BLOCKED_CODEC_SUMMARY = 'List used codec capabilities and allow blocking codecs from being used.';
+
+    STR_CODEC_DIALOG_SUMMARY_1 = 'This section lists all device-supported codec types AVC H.264, HEVC H.265, and AV1  used by this app.';
+
+    STR_CODEC_DIALOG_SUMMARY_2 =
+        'Software codecs (OMX.google) are disabled by default if a hardware codec is available, if you have a playback problem try to disable the software codec and enable the hardware or vice versa (A constant accumulation of skipped frames is indicative of a codec issue).';
+
+    STR_CODEC_DIALOG_SUMMARY_3 = 'At least one codec of each type must be enabled at all times.';
+
+    STR_SPEED_ADJUST = 'Catch-up with low latency';
+    STR_SPEED_ADJUST_SUMMARY =
+        'When low latency is enabled, auto-adjust the latency if it is off the expected target, by slowing or speeding the stream by 1%, the speed change can cause minor audio noise when the latency is being adjusted.';
 }
