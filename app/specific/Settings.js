@@ -1047,7 +1047,6 @@ function Settings_SetDefaults() {
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Settings_CodecsSet();
 
-    Settings_DisableQualities = Main_getItemJson('Settings_DisableQualities', []);
     Settings_QualitiesCheck();
 
     Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
