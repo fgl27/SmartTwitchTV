@@ -37685,7 +37685,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
         Settings_CodecsSet();
 
-        Settings_DisableQualities = Main_getItemJson('Settings_DisableQualities', []);
         Settings_QualitiesCheck();
 
         Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
