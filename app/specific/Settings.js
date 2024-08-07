@@ -1048,7 +1048,7 @@ function Settings_SetDefaults() {
     Settings_CodecsSet();
 
     Settings_DisableQualities = Main_getItemJson('Settings_DisableQualities', []);
-    Settings_Qualities();
+    Settings_QualitiesCheck();
 
     Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
     OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
