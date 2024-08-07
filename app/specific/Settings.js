@@ -2338,7 +2338,12 @@ function Settings_SetCodecsValue() {
         }
     }
 
-    Settings_SetSuportedCodecs(Settings_CodecsValue);
+    try {
+        //keep inside a try to avoid any device issues crashing the app
+        Settings_SetSuportedCodecs(Settings_CodecsValue);
+    } catch (e) {
+        Settings_CodecsValue = [];
+    }
 }
 
 function Settings_SetSuportedCodecs(codecs) {

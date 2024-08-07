@@ -476,7 +476,10 @@ function Main_CheckDevice() {
         }
 
         if (!Main_values.Codec_is_Check_new) {
-            Main_SetBlockedFirstRun();
+            try {
+                //keep inside a try to avoid any device issues crashing the app
+                Main_SetBlockedFirstRun();
+            } catch (e) {}
         }
     } else {
         if (Main_values.Never_run_new) Settings_ForceEnableAnimations();
