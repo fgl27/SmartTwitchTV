@@ -338,3 +338,11 @@
 .icon-blocked:before {
   content: "\59";
 }
+
+.icon-remote-control:before {
+  content: "\31";
+}
+
+.icon-control:before {
+  content: "\33";
+}
