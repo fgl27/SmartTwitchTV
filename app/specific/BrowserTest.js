@@ -303,7 +303,7 @@ function BrowserTestFun() {
             key = id.split('_')[0];
 
             for (i; i < len; i++) {
-                if (Main_A_includes_B(Settings_CodecsValue[i].name, key)) {
+                if (Main_A_includes_B(Settings_CodecsValue[i].nameType, key)) {
                     Settings_CodecsPos = i;
                     break;
                 }

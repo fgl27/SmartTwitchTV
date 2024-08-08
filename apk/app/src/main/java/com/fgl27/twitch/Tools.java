@@ -382,6 +382,7 @@ public final class Tools {
 
         String maxlevel;
         String resolutions;
+        boolean supportsIsHw = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
 
         ArrayList<CodecList> result = new ArrayList<>();
 
@@ -439,6 +440,8 @@ public final class Tools {
                                 new CodecList(
                                         type, //type
                                         codec.getName(), //name
+                                        codec.getName() + type, //nameType
+                                        supportsIsHw ? codec.getCanonicalName() : null, //name
                                         String.format(
                                                 Locale.US,
                                                 "%dx%d",
@@ -452,7 +455,10 @@ public final class Tools {
                                         ), //maxbitrate
                                         maxlevel, //maxlevel
                                         instances, //instances
-                                        resolutions //resolutions
+                                        resolutions, //resolutions
+                                        supportsIsHw && codec.isHardwareAccelerated(),
+                                        supportsIsHw && codec.isSoftwareOnly(),
+                                        supportsIsHw
                                 )
                         );
 
@@ -1319,20 +1325,30 @@ public final class Tools {
     private static class CodecList {
         private final String type;
         private final String name;
+        private final String nameType;
+        private final String CanonicalName;
         private final String maxresolution;
         private final String maxbitrate;
         private final String maxlevel;
         private final int instances;
         private final String resolutions;
+        private final boolean isHardwareAccelerated;
+        private final boolean isSoftwareOnly;
+        private final boolean supportsIsHw;
 
-        CodecList(String type, String name, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions) {
+        CodecList(String type, String name, String nameType, String CanonicalName, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions, boolean isHardwareAccelerated, boolean isSoftwareOnly, boolean supportsIsHw) {
             this.type = type;
             this.name = name;
+            this.nameType = nameType;
+            this.CanonicalName = CanonicalName;
             this.maxresolution = maxresolution;
             this.maxbitrate = maxbitrate;
             this.maxlevel = maxlevel;
             this.instances = instances;
             this.resolutions = resolutions;
+            this.isHardwareAccelerated = isHardwareAccelerated;
+            this.isSoftwareOnly = isSoftwareOnly;
+            this.supportsIsHw = supportsIsHw;
         }
     }
 

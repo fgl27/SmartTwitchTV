@@ -24,7 +24,6 @@
 package com.fgl27.twitch;
 
 import androidx.annotation.NonNull;
-
 import androidx.media3.exoplayer.mediacodec.MediaCodecInfo;
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector;
 import androidx.media3.exoplayer.mediacodec.MediaCodecUtil;
@@ -57,7 +56,7 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
         List<MediaCodecInfo> filteredCodecInfo = new ArrayList<>();
 
         for (MediaCodecInfo codecInfo : codecInfoList) {
-            if (codecInfo != null && !blacklistedCodec(codecInfo.name.toLowerCase(Locale.US))) {
+            if (codecInfo != null && !blacklistedCodec(codecInfo.name.toLowerCase(Locale.US) + codecInfo.mimeType)) {
 
                 filteredCodecInfo.add(codecInfo);
 
@@ -66,11 +65,11 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
         return filteredCodecInfo;
     }
 
-    private boolean blacklistedCodec(String codecName) {
+    private boolean blacklistedCodec(String codecNameMimeType) {
 
         for (String blackListedCodec : BLACKLISTEDCODECS) {
 
-            if (codecName.contains(blackListedCodec)) {
+            if (codecNameMimeType.contains(blackListedCodec)) {
                 return true;
             }
 

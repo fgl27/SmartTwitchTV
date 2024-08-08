@@ -90,7 +90,7 @@ var Main_values = {
     DeviceCheck2: false,
     MiboxRevertCheck: false,
     Never_run_phone: true,
-    Codec_is_Check_new: false,
+    Codec_is_Check_new2: false,
     OS_is_Check: false,
     Restore_Backup_Check: false,
     UserSidePannel_LastPositionId: null,
@@ -475,7 +475,7 @@ function Main_CheckDevice() {
             }
         }
 
-        if (!Main_values.Codec_is_Check_new) {
+        if (!Main_values.Codec_is_Check_new2) {
             try {
                 //keep inside a try to avoid any device issues crashing the app
                 Main_SetBlockedFirstRun();
@@ -511,7 +511,7 @@ function Main_SetBlockedFirstRun() {
     if (codecs && codecs.length > 1) {
         var codecsToBlock = Main_SetBlockedGetToBlock(codecs);
         //only save if we received codecs
-        Main_values.Codec_is_Check_new = true;
+        Main_values.Codec_is_Check_new2 = true;
 
         if (codecsToBlock.length) {
             var i = 0,
@@ -521,7 +521,7 @@ function Main_SetBlockedFirstRun() {
                 Main_setItem(codecsToBlock[i], 1);
             }
 
-            Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsToBlock));
+            Main_setItem('Settings_DisableCodecs', JSON.stringify(codecsToBlock));
 
             OSInterface_setBlackListMediaCodec(codecsToBlock.join());
         }
@@ -563,13 +563,16 @@ function Main_SetBlockedGetToBlock(codecs) {
         type;
 
     for (i; i < len; i++) {
-        codec = codecs[i].name ? codecs[i].name.toLowerCase() : '';
+        codec = codecs[i].nameType ? codecs[i].nameType.toLowerCase() : '';
 
         type = codecs[i].type;
         codecs[i].type = Main_CodecGetType(type);
 
-        if (Main_A_includes_B(codec, 'google') || Main_A_includes_B(codec, 'c2.android')) {
-            codecsMap.ToBlock[codecs[i].name] = codecs[i];
+        if (
+            (codecs[i].supportsIsHw && (codecs[i].isSoftwareOnly || !codecs[i].isHardwareAccelerated)) ||
+            (!codecs[i].supportsIsHw && (Main_A_includes_B(codec, 'google') || Main_A_includes_B(codec, 'c2.android')))
+        ) {
+            codecsMap.ToBlock[codecs[i].nameType] = codecs[i];
         } else if (codecsMap.Normal[codecs[i].type]) {
             codecsMap.Normal[codecs[i].type].push(codecs[i]);
         }
@@ -585,7 +588,7 @@ function Main_SetBlockedGetToBlock(codecs) {
         codec = codecsMap.ToBlock[ToBlockKeys[i]];
 
         if (codecsMap.Normal[codec.type].length) {
-            codecsToBlock.push(codec.name);
+            codecsToBlock.push(codec.nameType);
         }
     }
 
@@ -2948,7 +2951,7 @@ function Main_CheckStop() {
     //Hide setting if showing
     if (Settings_isVisible()) {
         if (Settings_Codecs_isVisible()) {
-            if (Settings_CodecsDialogSet) Settings_RemoveInputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+            if (Settings_CodecsDialogSet) Settings_RemoveInputFocusKey(Settings_CodecsValue[Settings_CodecsPos].nameType);
             Main_HideElement('dialog_codecs');
             Main_removeEventListener('keydown', Settings_handleKeyDownCodecs);
         } else if (Settings_Dialog_isVisible()) {

@@ -905,4 +905,7 @@ function en_USLang() {
     STR_SPEED_ADJUST = 'Catch-up with low latency';
     STR_SPEED_ADJUST_SUMMARY =
         'When low latency is enabled, auto-adjust the latency if it is off the expected target, by slowing or speeding the stream by 1%, the speed change can cause minor audio noise when the latency is being adjusted.';
+
+    STR_SW_CODEC = 'Software codec';
+    STR_HW_CODEC = 'Hardware codec';
 }
