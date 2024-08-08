@@ -3849,7 +3849,7 @@ function Play_MakeControls() {
         ShowInAudioMulti: false,
         ShowInPreview: false,
         ShowInStay: true,
-        icons: 'feed',
+        icons: 'remote-control',
         offsetY: -4,
         string: STR_CONTROLS,
         values: null,
