@@ -90,7 +90,7 @@ var Main_values = {
     DeviceCheck2: false,
     MiboxRevertCheck: false,
     Never_run_phone: true,
-    Codec_is_Check_new3: false,
+    Codec_is_Check_1: false,
     OS_is_Check: false,
     Restore_Backup_Check: false,
     UserSidePannel_LastPositionId: null,
@@ -475,7 +475,7 @@ function Main_CheckDevice() {
             }
         }
 
-        if (!Main_values.Codec_is_Check_new3) {
+        if (!Main_values.Codec_is_Check_1) {
             try {
                 //keep inside a try to avoid any device issues crashing the app
                 Main_SetBlockedFirstRun();
@@ -511,14 +511,16 @@ function Main_SetBlockedFirstRun() {
     if (codecs && codecs.length > 1) {
         var codecsToBlock = Main_SetBlockedGetToBlock(codecs);
         //only save if we received codecs
-        Main_values.Codec_is_Check_new3 = true;
+        Main_values.Codec_is_Check_1 = codecsToBlock.length && codecsToBlock[0];
 
         if (codecsToBlock.length) {
             var i = 0,
                 len = codecsToBlock.length;
 
             for (i; i < len; i++) {
-                Main_setItem(codecsToBlock[i], 1);
+                if (codecsToBlock[i]) {
+                    Main_setItem(codecsToBlock[i], 1);
+                }
             }
 
             Main_setItem('Settings_DisableCodecs', JSON.stringify(codecsToBlock));
@@ -587,7 +589,7 @@ function Main_SetBlockedGetToBlock(codecs) {
     for (i; i < len; i++) {
         codec = codecsMap.ToBlock[ToBlockKeys[i]];
 
-        if (codecsMap.Normal[codec.type].length) {
+        if (codecsMap.Normal[codec.type].length && codec.nameType) {
             codecsToBlock.push(codec.nameType);
         }
     }
