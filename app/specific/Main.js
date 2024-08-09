@@ -90,7 +90,7 @@ var Main_values = {
     DeviceCheck2: false,
     MiboxRevertCheck: false,
     Never_run_phone: true,
-    Codec_is_Check_new2: false,
+    Codec_is_Check_new3: false,
     OS_is_Check: false,
     Restore_Backup_Check: false,
     UserSidePannel_LastPositionId: null,
@@ -475,7 +475,7 @@ function Main_CheckDevice() {
             }
         }
 
-        if (!Main_values.Codec_is_Check_new2) {
+        if (!Main_values.Codec_is_Check_new3) {
             try {
                 //keep inside a try to avoid any device issues crashing the app
                 Main_SetBlockedFirstRun();
@@ -511,7 +511,7 @@ function Main_SetBlockedFirstRun() {
     if (codecs && codecs.length > 1) {
         var codecsToBlock = Main_SetBlockedGetToBlock(codecs);
         //only save if we received codecs
-        Main_values.Codec_is_Check_new2 = true;
+        Main_values.Codec_is_Check_new3 = true;
 
         if (codecsToBlock.length) {
             var i = 0,
