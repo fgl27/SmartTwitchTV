@@ -29,7 +29,7 @@ var version = {
         {
             title: 'WebVersion August 17',
             changes: [
-                "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are treble optimized, for example, 7TV"
+                "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are terribly optimized, for example, 7TV"
             ]
         },
         {
