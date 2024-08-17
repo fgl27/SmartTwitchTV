@@ -431,14 +431,16 @@ function ChatLiveControls_CreateEmoteDiv(array, pos, create_elements, prop, div_
     ChatLiveControls_EmotesArray.push(array[pos].id);
 
     if (create_elements || !array[pos].div) {
-        array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code, array[pos].srcset);
+        array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code, array[pos].srcset, pos);
     }
 
     div_holder.appendChild(array[pos].div);
 }
 
-function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset) {
-    var div = document.createElement('div');
+function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset, pos) {
+    var div = document.createElement('div'),
+        showElement = pos < ChatLiveControls_divider * 3;
+
     div.setAttribute('id', 'chat_emotes' + id);
     div.setAttribute(Main_DataAttribute, code);
     div.classList.add('chat_emotes_img_holder');
@@ -446,15 +448,24 @@ function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset) {
     div.innerHTML =
         '<div id="chat_emotes_img' +
         id +
-        '" class="chat_emotes_img_div" ><img alt="' +
+        '" class="chat_emotes_img_div" ><div class="chat_emotes_img_container"><img id="chat_emotes_img_hide' +
+        id +
+        '" alt="' +
         name +
-        '" class="chat_emotes_img" ' +
-        (srcset ? ' srcset="' + srcset + '"' : '') +
+        '" class="chat_emotes_img ' +
+        (showElement ? '' : 'hide') +
+        '" ' +
+        (srcset ? ' srcset="' + (showElement ? srcset : IMG_404_BANNER) + '"  data-srcset="' + srcset + '"' : '') +
         ' src="' +
+        '="' +
+        (showElement ? url : IMG_404_BANNER) +
+        '"' +
+        ' data-src="' +
+        '="' +
         url +
-        '" onerror="this.onerror=null;this.src=\'' +
+        ' onerror="this.onerror=null;this.src=\'' +
         url +
-        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' +
+        '\';"></div></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' +
         id +
         '" class="chat_emotes_name opacity_zero">' +
         name +
@@ -466,7 +477,7 @@ function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset) {
 function ChatLiveControls_SetEmojisObj() {
     emojis = JSON.parse(emojis_string);
 
-    //gen the array in canse is needed
+    //gen the array in case is needed
     // for (i = 0; i < emojis.length; i++) {
 
     //     emojis[i]['4x'] = twemoji.parseIcon(emojis[i].unicode);
@@ -577,6 +588,7 @@ function ChatLiveControls_EmotesUpdateCounter(position) {
 
 function ChatLiveControls_EmotesScroll(position) {
     var scroll_pos = ChatLiveControls_divider * 2;
+    ChatLiveControls_EmotesShowHide(position);
 
     if (position > scroll_pos - 1) {
         var position_now = parseInt(position / ChatLiveControls_divider),
@@ -590,6 +602,42 @@ function ChatLiveControls_EmotesScroll(position) {
         }
     } else {
         Main_getElementById('chat_emotes').style.transform = '';
+    }
+}
+
+function ChatLiveControls_EmotesShowHide(position) {
+    var element,
+        i,
+        len = ChatLiveControls_EmotesArray.length,
+        position_now = parseInt(position / ChatLiveControls_divider),
+        start = 0,
+        end = 0,
+        isLast = position + ChatLiveControls_divider + 1 > len,
+        loopLen;
+
+    if (position_now < 2) {
+        start = 0;
+        end = ChatLiveControls_divider * 3;
+    } else {
+        start = (position_now - (isLast ? 2 : 1)) * ChatLiveControls_divider;
+        end = (position_now + 2) * ChatLiveControls_divider;
+    }
+
+    i = Math.max(0, start - ChatLiveControls_divider);
+    loopLen = Math.min(len, end + ChatLiveControls_divider + 1);
+
+    for (i; i < loopLen; i++) {
+        element = Main_getElementById('chat_emotes_img_hide' + ChatLiveControls_EmotesArray[i]);
+
+        if (i >= start && i < end) {
+            Main_ShowElementWithEle(element);
+            element.src = element.getAttribute('data-src');
+            element.srcset = element.getAttribute('data-srcset');
+        } else {
+            Main_HideElementWithEle(element);
+            element.src = IMG_404_BANNER;
+            element.srcset = IMG_404_BANNER;
+        }
     }
 }
 
