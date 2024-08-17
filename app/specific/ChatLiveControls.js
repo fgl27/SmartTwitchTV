@@ -26,6 +26,7 @@ var ChatLiveControls_cursor_half_size = parseInt((ChatLiveControls_cursor_size +
 var ChatLiveControls_cursor = ChatLiveControls_cursor_default;
 var ChatLiveControls_Channel = 0;
 var ChatLiveControls_LastChannel = '';
+var ChatLiveControls_divider = 12;
 
 var ChatLiveControls_Cursor_Options;
 var ChatLiveControls_Cursor_Delete;
@@ -414,7 +415,7 @@ function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
 }
 
 function ChatLiveControls_CreateEmotes(total, array, i, create_elements, prop, div_holder) {
-    var len = Math.min(total, i + 20);
+    var len = Math.min(total, i + ChatLiveControls_divider);
 
     if (i < total) {
         Main_setTimeout(function () {
@@ -511,18 +512,23 @@ function ChatLiveControls_EmotesEvent(event) {
             ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 1);
             break;
         case KEY_UP:
-            if (ChatLiveControls_EmotesPos < 20) ChatLiveControls_HideEmotes();
-            else ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -20);
+            if (ChatLiveControls_EmotesPos < ChatLiveControls_divider) {
+                ChatLiveControls_HideEmotes();
+            } else {
+                ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -1 * ChatLiveControls_divider);
+            }
+
             break;
         case KEY_DOWN:
-            ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
+            ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, ChatLiveControls_divider);
             break;
         case KEY_ENTER:
             if (
                 (ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) &&
                 ChatLiveControls_CanSend()
-            )
+            ) {
                 ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
+            }
             break;
         default:
             break;
@@ -553,10 +559,10 @@ function ChatLiveControls_EmotesChangeFocus(position, adder) {
         ChatLiveControls_EmotesScroll(ChatLiveControls_EmotesPos);
     } else if (adder > 0) {
         //go to last of next line
-        var postion_now = parseInt(position / 20);
-        var postion_down = (postion_now + 1) * 20;
+        var position_now = parseInt(position / ChatLiveControls_divider);
+        var position_down = (position_now + 1) * ChatLiveControls_divider;
 
-        if (ChatLiveControls_EmotesArray[postion_down]) {
+        if (ChatLiveControls_EmotesArray[position_down]) {
             ChatLiveControls_EmotesRemoveFocus(position);
             ChatLiveControls_EmotesPos = ChatLiveControls_EmotesTotal - 1;
             ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
@@ -570,17 +576,21 @@ function ChatLiveControls_EmotesUpdateCounter(position) {
 }
 
 function ChatLiveControls_EmotesScroll(position) {
-    if (position > 39) {
-        var postion_now = parseInt(position / 20);
-        var postion_down = (postion_now + 2) * 20;
-        var postion_up = (postion_now - 1) * 20;
+    var scroll_pos = ChatLiveControls_divider * 2;
 
-        var how_much = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
+    if (position > scroll_pos - 1) {
+        var position_now = parseInt(position / ChatLiveControls_divider),
+            position_down = (position_now + 1) * ChatLiveControls_divider,
+            position_up = (position_now - 1) * ChatLiveControls_divider;
 
-        if (ChatLiveControls_EmotesArray[postion_down]) {
-            Main_getElementById('chat_emotes').style.transform = 'translateY(-' + how_much * (postion_now - 1) + 'px)';
+        var how_much = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position_up]).getBoundingClientRect().height;
+
+        if (ChatLiveControls_EmotesArray[position_down]) {
+            Main_getElementById('chat_emotes').style.transform = 'translateY(-' + how_much * (position_now - 1) + 'px)';
         }
-    } else Main_getElementById('chat_emotes').style.transform = '';
+    } else {
+        Main_getElementById('chat_emotes').style.transform = '';
+    }
 }
 
 function ChatLiveControls_UpdateTextInput(text) {
