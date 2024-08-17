@@ -4721,11 +4721,11 @@
         publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
         WebVersion: 'August 17 2024',
-        WebTag: 673, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 675, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'WebVersion August 17',
                 changes: [
-                    "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are treble optimized, for example, 7TV"
+                    "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are terribly optimized, for example, 7TV"
                 ]
             },
             {
@@ -8324,14 +8324,13 @@
             '" class="chat_emotes_img ' +
             (showElement ? '' : 'hide') +
             '" ' +
-            (srcset ? ' srcset="' + (showElement ? srcset : IMG_404_BANNER) + '"  data-srcset="' + srcset + '"' : '') +
+            (srcset ? ' srcset="' + (showElement ? srcset : IMG_404_BANNER) + '" data-srcset="' + srcset + '"' : '') +
             ' src="' +
-            '="' +
             (showElement ? url : IMG_404_BANNER) +
             '"' +
             ' data-src="' +
-            '="' +
             url +
+            '"' +
             ' onerror="this.onerror=null;this.src=\'' +
             url +
             '\';"></div></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' +
@@ -8368,6 +8367,7 @@
             ChatLiveControls_EmotesUpdateCounter(0);
             Main_ShowElement('chat_emotes_holder');
             ChatLiveControls_EmotesAddFocus(0);
+            ChatLiveControls_EmotesShowHide(0);
         });
     }
 
@@ -8417,7 +8417,9 @@
 
     function ChatLiveControls_AddToChat(position) {
         var doc = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position]);
-        if (doc) ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
+        if (doc) {
+            ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
+        }
     }
 
     function ChatLiveControls_EmotesAddFocus(position) {
@@ -8482,7 +8484,8 @@
             start = 0,
             end = 0,
             isLast = position + ChatLiveControls_divider + 1 > len,
-            loopLen;
+            loopLen,
+            data_srcset;
 
         if (position_now < 2) {
             start = 0;
@@ -8497,15 +8500,21 @@
 
         for (i; i < loopLen; i++) {
             element = Main_getElementById('chat_emotes_img_hide' + ChatLiveControls_EmotesArray[i]);
+            data_srcset = element.getAttribute('data-srcset');
 
             if (i >= start && i < end) {
                 Main_ShowElementWithEle(element);
                 element.src = element.getAttribute('data-src');
-                element.srcset = element.getAttribute('data-srcset');
+
+                if (data_srcset) {
+                    element.srcset = data_srcset;
+                }
             } else {
                 Main_HideElementWithEle(element);
                 element.src = IMG_404_BANNER;
-                element.srcset = IMG_404_BANNER;
+                if (data_srcset) {
+                    element.srcset = IMG_404_BANNER;
+                }
             }
         }
     }
