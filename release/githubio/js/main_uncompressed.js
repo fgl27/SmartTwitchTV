@@ -4720,14 +4720,20 @@
         VersionBase: '3.0',
         publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
-        WebVersion: 'August 2024',
-        WebTag: 672, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'August 17 2024',
+        WebTag: 673, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'WebVersion August 17',
+                changes: [
+                    "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are treble optimized, for example, 7TV"
+                ]
+            },
+            {
                 title: 'Version August 2024 Apk Version 3.0.367',
                 changes: [
                     'Update Codec capability & Blocked codecs settings section to support devices that have the same name for multiple codecs',
                     'Android 10 and up now can see with codecs are hardware or software',
-                    'Due to changes above the codec section was resehed if you make changes to it please redo yours changes',
+                    'Due to changes above the codec section was reseted if you make changes to it please redo yours changes',
                     'General visual improvements',
                     'Other General improvements'
                 ]
@@ -7888,6 +7894,7 @@
     var ChatLiveControls_cursor = ChatLiveControls_cursor_default;
     var ChatLiveControls_Channel = 0;
     var ChatLiveControls_LastChannel = '';
+    var ChatLiveControls_divider = 12;
 
     var ChatLiveControls_Cursor_Options;
     var ChatLiveControls_Cursor_Delete;
@@ -8277,7 +8284,7 @@
     }
 
     function ChatLiveControls_CreateEmotes(total, array, i, create_elements, prop, div_holder) {
-        var len = Math.min(total, i + 20);
+        var len = Math.min(total, i + ChatLiveControls_divider);
 
         if (i < total) {
             Main_setTimeout(function() {
@@ -8293,14 +8300,16 @@
         ChatLiveControls_EmotesArray.push(array[pos].id);
 
         if (create_elements || !array[pos].div) {
-            array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code, array[pos].srcset);
+            array[pos].div = ChatLiveControls_SetEmoteDiv(array[pos]['4x'], array[pos].id, array[pos][prop], array[pos].code, array[pos].srcset, pos);
         }
 
         div_holder.appendChild(array[pos].div);
     }
 
-    function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset) {
-        var div = document.createElement('div');
+    function ChatLiveControls_SetEmoteDiv(url, id, code, name, srcset, pos) {
+        var div = document.createElement('div'),
+            showElement = pos < ChatLiveControls_divider * 3;
+
         div.setAttribute('id', 'chat_emotes' + id);
         div.setAttribute(Main_DataAttribute, code);
         div.classList.add('chat_emotes_img_holder');
@@ -8308,15 +8317,24 @@
         div.innerHTML =
             '<div id="chat_emotes_img' +
             id +
-            '" class="chat_emotes_img_div" ><img alt="' +
+            '" class="chat_emotes_img_div" ><div class="chat_emotes_img_container"><img id="chat_emotes_img_hide' +
+            id +
+            '" alt="' +
             name +
-            '" class="chat_emotes_img" ' +
-            (srcset ? ' srcset="' + srcset + '"' : '') +
+            '" class="chat_emotes_img ' +
+            (showElement ? '' : 'hide') +
+            '" ' +
+            (srcset ? ' srcset="' + (showElement ? srcset : IMG_404_BANNER) + '"  data-srcset="' + srcset + '"' : '') +
             ' src="' +
+            '="' +
+            (showElement ? url : IMG_404_BANNER) +
+            '"' +
+            ' data-src="' +
+            '="' +
             url +
-            '" onerror="this.onerror=null;this.src=\'' +
+            ' onerror="this.onerror=null;this.src=\'' +
             url +
-            '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' +
+            '\';"></div></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' +
             id +
             '" class="chat_emotes_name opacity_zero">' +
             name +
@@ -8328,7 +8346,7 @@
     function ChatLiveControls_SetEmojisObj() {
         emojis = JSON.parse(emojis_string);
 
-        //gen the array in canse is needed
+        //gen the array in case is needed
         // for (i = 0; i < emojis.length; i++) {
 
         //     emojis[i]['4x'] = twemoji.parseIcon(emojis[i].unicode);
@@ -8374,18 +8392,23 @@
                 ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 1);
                 break;
             case KEY_UP:
-                if (ChatLiveControls_EmotesPos < 20) ChatLiveControls_HideEmotes();
-                else ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -20);
+                if (ChatLiveControls_EmotesPos < ChatLiveControls_divider) {
+                    ChatLiveControls_HideEmotes();
+                } else {
+                    ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -1 * ChatLiveControls_divider);
+                }
+
                 break;
             case KEY_DOWN:
-                ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
+                ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, ChatLiveControls_divider);
                 break;
             case KEY_ENTER:
                 if (
                     (ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) &&
                     ChatLiveControls_CanSend()
-                )
+                ) {
                     ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
+                }
                 break;
             default:
                 break;
@@ -8416,10 +8439,10 @@
             ChatLiveControls_EmotesScroll(ChatLiveControls_EmotesPos);
         } else if (adder > 0) {
             //go to last of next line
-            var postion_now = parseInt(position / 20);
-            var postion_down = (postion_now + 1) * 20;
+            var position_now = parseInt(position / ChatLiveControls_divider);
+            var position_down = (position_now + 1) * ChatLiveControls_divider;
 
-            if (ChatLiveControls_EmotesArray[postion_down]) {
+            if (ChatLiveControls_EmotesArray[position_down]) {
                 ChatLiveControls_EmotesRemoveFocus(position);
                 ChatLiveControls_EmotesPos = ChatLiveControls_EmotesTotal - 1;
                 ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
@@ -8433,17 +8456,58 @@
     }
 
     function ChatLiveControls_EmotesScroll(position) {
-        if (position > 39) {
-            var postion_now = parseInt(position / 20);
-            var postion_down = (postion_now + 2) * 20;
-            var postion_up = (postion_now - 1) * 20;
+        var scroll_pos = ChatLiveControls_divider * 2;
+        ChatLiveControls_EmotesShowHide(position);
 
-            var how_much = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
+        if (position > scroll_pos - 1) {
+            var position_now = parseInt(position / ChatLiveControls_divider),
+                position_down = (position_now + 1) * ChatLiveControls_divider,
+                position_up = (position_now - 1) * ChatLiveControls_divider;
 
-            if (ChatLiveControls_EmotesArray[postion_down]) {
-                Main_getElementById('chat_emotes').style.transform = 'translateY(-' + how_much * (postion_now - 1) + 'px)';
+            var how_much = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position_up]).getBoundingClientRect().height;
+
+            if (ChatLiveControls_EmotesArray[position_down]) {
+                Main_getElementById('chat_emotes').style.transform = 'translateY(-' + how_much * (position_now - 1) + 'px)';
             }
-        } else Main_getElementById('chat_emotes').style.transform = '';
+        } else {
+            Main_getElementById('chat_emotes').style.transform = '';
+        }
+    }
+
+    function ChatLiveControls_EmotesShowHide(position) {
+        var element,
+            i,
+            len = ChatLiveControls_EmotesArray.length,
+            position_now = parseInt(position / ChatLiveControls_divider),
+            start = 0,
+            end = 0,
+            isLast = position + ChatLiveControls_divider + 1 > len,
+            loopLen;
+
+        if (position_now < 2) {
+            start = 0;
+            end = ChatLiveControls_divider * 3;
+        } else {
+            start = (position_now - (isLast ? 2 : 1)) * ChatLiveControls_divider;
+            end = (position_now + 2) * ChatLiveControls_divider;
+        }
+
+        i = Math.max(0, start - ChatLiveControls_divider);
+        loopLen = Math.min(len, end + ChatLiveControls_divider + 1);
+
+        for (i; i < loopLen; i++) {
+            element = Main_getElementById('chat_emotes_img_hide' + ChatLiveControls_EmotesArray[i]);
+
+            if (i >= start && i < end) {
+                Main_ShowElementWithEle(element);
+                element.src = element.getAttribute('data-src');
+                element.srcset = element.getAttribute('data-srcset');
+            } else {
+                Main_HideElementWithEle(element);
+                element.src = IMG_404_BANNER;
+                element.srcset = IMG_404_BANNER;
+            }
+        }
     }
 
     function ChatLiveControls_UpdateTextInput(text) {

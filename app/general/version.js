@@ -23,15 +23,21 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
-    WebVersion: 'August 2024',
-    WebTag: 672, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'August 17 2024',
+    WebTag: 673, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'WebVersion August 17',
+            changes: [
+                "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are treble optimized, for example, 7TV"
+            ]
+        },
         {
             title: 'Version August 2024 Apk Version 3.0.367',
             changes: [
                 'Update Codec capability & Blocked codecs settings section to support devices that have the same name for multiple codecs',
                 'Android 10 and up now can see with codecs are hardware or software',
-                'Due to changes above the codec section was resehed if you make changes to it please redo yours changes',
+                'Due to changes above the codec section was reseted if you make changes to it please redo yours changes',
                 'General visual improvements',
                 'Other General improvements'
             ]

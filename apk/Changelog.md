@@ -9,12 +9,18 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+WebVersion August 17
+==============
+
+* Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are treble optimized, for example, 7TV
+
+
 Version August 2024 Apk Version 3.0.367
 ==============
 
 * Update Codec capability & Blocked codecs settings section to support devices that have the same name for multiple codecs
 * Android 10 and up now can see with codecs are hardware or software
-* Due to changes above the codec section was resehed if you make changes to it please redo yours changes
+* Due to changes above the codec section was reseted if you make changes to it please redo yours changes
 * General visual improvements
 * Other General improvements
 
