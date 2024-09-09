@@ -577,11 +577,12 @@ function ScreensObj_StartAllVars() {
             }
 
             var id_cell = cell.stream.broadcaster.id;
+            var id = cell.stream.id;
             var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
 
-            if (!this.idObject[id_cell] && isNotBlocked) {
+            if (!this.idObject[id] && isNotBlocked) {
                 this.itemsCount++;
-                this.idObject[id_cell] = 1;
+                this.idObject[id] = 1;
 
                 this.tempHtml.push(
                     Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveQueryCellArray(cell), this.screen)
@@ -1436,8 +1437,6 @@ function ScreensObj_InitLive() {
                 this.post = this.base_post
                     .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
                     .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
-
-                console.log(this.post);
             },
             label_init: function () {
                 Sidepannel_SetDefaultLabels();
