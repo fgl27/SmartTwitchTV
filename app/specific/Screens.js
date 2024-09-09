@@ -494,7 +494,10 @@ function Screens_loadDataFail(key) {
         } //else the user has already exited the screen
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
-    } else ScreenObj[key].dataEnded = true;
+    } else {
+        console.log('ddsd');
+        ScreenObj[key].dataEnded = true;
+    }
 }
 
 function Screens_concatenate(responseObj, key) {
@@ -514,8 +517,11 @@ function Screens_loadDataSuccess(key) {
 
     //var appendDiv = !ScreenObj[key].column_id;
 
-    if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
-    else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
+    if (response_items > ScreenObj[key].ItemsLimit) {
+        response_items = ScreenObj[key].ItemsLimit;
+    } else if (!ScreenObj[key].loadingData) {
+        ScreenObj[key].dataEnded = true;
+    }
 
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
         ScreenObj[key].addSwitches();
@@ -1132,9 +1138,10 @@ function Screens_addFocus(forceScroll, key) {
 
     //Load more as the data is getting used
     if (ScreenObj[key].data) {
+        var ItemsLimitMax = ScreenObj[key].ItemsLimitMax ? ScreenObj[key].ItemsLimitMax : Main_ItemsLimitMax;
         if (
-            ScreenObj[key].posY > 2 &&
-            ScreenObj[key].data_cursor + Main_ItemsLimitMax > ScreenObj[key].data.length &&
+            ScreenObj[key].posY &&
+            ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
             !ScreenObj[key].dataEnded &&
             !ScreenObj[key].loadingData
         ) {

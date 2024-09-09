@@ -88,6 +88,8 @@ var searchLiveQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:LIVE,limit:100}){liveChannels{cursor,pageInfo{hasNextPage}items{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}"}';
 var searchVodQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:VOD,limit:100}){videos{cursor,pageInfo{hasNextPage}items{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}"}';
+var liveQuery =
+    '{"query":"{streams(first: 30, options:{sort:VIEWER_COUNT %l} %c) {pageInfo { hasNextPage },edges{cursor, node{ type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)} }}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -518,12 +520,15 @@ function ScreensObj_StartAllVars() {
             if (this.useHelix) {
                 this.cursor = tempObj.pagination.cursor;
 
-                if (!this.cursor || this.cursor === '') this.dataEnded = true;
-            } else {
+                if (!this.cursor || this.cursor === '') {
+                    this.dataEnded = true;
+                }
+            } else if (!this.skipSetMax) {
                 this.MaxOffset = tempObj._total;
 
-                if (!tempObj[this.object]) this.dataEnded = true;
-                else if (typeof this.MaxOffset === 'undefined') {
+                if (!tempObj[this.object]) {
+                    this.dataEnded = true;
+                } else if (typeof this.MaxOffset === 'undefined') {
                     if (tempObj[this.object].length < 90) this.dataEnded = true;
                 } else {
                     if (this.data.length >= this.MaxOffset) this.dataEnded = true;
@@ -570,6 +575,7 @@ function ScreensObj_StartAllVars() {
             if (!cell || !cell.stream) {
                 return;
             }
+
             var id_cell = cell.stream.broadcaster.id;
             var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
 
@@ -1412,21 +1418,26 @@ function ScreensObj_InitLive() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
+            isQuery: true,
             HeadersArray: Main_Bearer_Headers,
             ids: Screens_ScreenIds('Live', key),
             table: 'stream_table_live',
             screen: key,
-            object: 'data',
+            object: 'edges',
             ScreenName: 'Live',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
             CheckContentLang: 1,
             ContentLang: '',
-            base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
+            base_post: liveQuery,
+            skipSetMax: true,
+            ItemsLimitMax: 30,
             set_url: function () {
-                this.url =
-                    this.base_url + (this.cursor ? '&after=' + this.cursor : '') + (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                this.post = this.base_post
+                    .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
+                    .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
+
+                console.log(this.post);
             },
             label_init: function () {
                 Sidepannel_SetDefaultLabels();
@@ -1441,6 +1452,34 @@ function ScreensObj_InitLive() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
     ScreenObj[key].Set_Scroll();
+    ScreenObj[key].ItemsLimit = ScreenObj[key].ItemsLimitMax / 2;
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.streams && responseObj.data.streams && responseObj.data.streams.edges;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.streams.pageInfo.hasNextPage;
+
+            responseObj = {
+                edges: responseObj.data.streams.edges
+            };
+
+            this.cursor =
+                responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+            var i = 0,
+                len = responseObj.edges.length;
+
+            for (i; i < len; i++) {
+                responseObj.edges[i].stream = responseObj.edges[i].node;
+            }
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
+    };
 }
 
 function ScreensObj_InitSearchLive() {
