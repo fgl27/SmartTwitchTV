@@ -1745,7 +1745,6 @@ function ScreensObj_InitClip() {
             ContentLang: '',
             periodPos: Main_getItemInt('Clip_periodPos', 2),
             base_post: topClipQuery,
-            periods: [topClipQuery],
             set_url: function () {
                 this.dataEnded = true;
                 this.post = this.base_post
@@ -2962,7 +2961,7 @@ function ScreensObj_ClipCellArray(cell, isQuery) {
             cell.created_at, //12
             cell.viewCount, //13
             Main_addCommas(cell.viewCount), //14
-            cell.thumbnailURL, //15
+            cell.thumbnailURL ? cell.thumbnailURL.replace('/preview.jpg', '/preview-' + Main_VideoSize + '.jpg') : cell.thumbnailURL, //15
             Main_videoCreatedAt(cell.createdAt), //16
             cell.language, //17
             cell.game_id //18
