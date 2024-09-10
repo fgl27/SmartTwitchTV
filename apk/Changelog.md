@@ -9,6 +9,12 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+WebVersion September 09
+==============
+
+* Fix animation lag in the Clip section, Twitch was sending images that were too big causing lags
+* General performance improvements
+
 WebVersion August 17
 ==============
 

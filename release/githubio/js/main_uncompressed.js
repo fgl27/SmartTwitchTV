@@ -4720,9 +4720,16 @@
         VersionBase: '3.0',
         publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
-        WebVersion: 'August 17 2024',
-        WebTag: 675, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'September 09 2024',
+        WebTag: 677, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'WebVersion September 09',
+                changes: [
+                    'Fix animation lag in the Clip section, Twitch was sending images that were too big causing lags',
+                    'General performance improvements'
+                ]
+            },
+            {
                 title: 'WebVersion August 17',
                 changes: [
                     "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are terribly optimized, for example, 7TV"
@@ -28891,7 +28898,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             } //else the user has already exited the screen
 
             if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
-        } else ScreenObj[key].dataEnded = true;
+        } else {
+            console.log('ddsd');
+            ScreenObj[key].dataEnded = true;
+        }
     }
 
     function Screens_concatenate(responseObj, key) {
@@ -28911,8 +28921,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         //var appendDiv = !ScreenObj[key].column_id;
 
-        if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
-        else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
+        if (response_items > ScreenObj[key].ItemsLimit) {
+            response_items = ScreenObj[key].ItemsLimit;
+        } else if (!ScreenObj[key].loadingData) {
+            ScreenObj[key].dataEnded = true;
+        }
 
         if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
             ScreenObj[key].addSwitches();
@@ -29528,9 +29541,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         //Load more as the data is getting used
         if (ScreenObj[key].data) {
+            var ItemsLimitMax = ScreenObj[key].ItemsLimitMax ? ScreenObj[key].ItemsLimitMax : Main_ItemsLimitMax;
             if (
-                ScreenObj[key].posY > 2 &&
-                ScreenObj[key].data_cursor + Main_ItemsLimitMax > ScreenObj[key].data.length &&
+                ScreenObj[key].posY &&
+                ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
                 !ScreenObj[key].dataEnded &&
                 !ScreenObj[key].loadingData
             ) {
@@ -32476,15 +32490,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var Main_ReloadLimitOffsetGames = 1.35;
     var Main_ReloadLimitOffsetVideos = 1.5;
 
-    var Main_ItemsLimitVideo = 45;
+    var Main_ItemsLimitVideo = 30;
     var Main_ColumnsCountVideo = 3;
     var Main_ItemsReloadLimitVideo = Math.floor(Main_ItemsLimitVideo / Main_ColumnsCountVideo / Main_ReloadLimitOffsetVideos);
 
-    var Main_ItemsLimitGame = 45;
+    var Main_ItemsLimitGame = 30;
     var Main_ColumnsCountGame = 5;
     var Main_ItemsReloadLimitGame = Math.floor(Main_ItemsLimitGame / Main_ColumnsCountGame / Main_ReloadLimitOffsetGames);
 
-    var Main_ItemsLimitChannel = 48;
+    var Main_ItemsLimitChannel = 36;
     var Main_ColumnsCountChannel = 6;
     var Main_ItemsReloadLimitChannel = Math.floor(Main_ItemsLimitChannel / Main_ColumnsCountChannel / Main_ReloadLimitOffsetVideos);
 
@@ -32539,6 +32553,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:LIVE,limit:100}){liveChannels{cursor,pageInfo{hasNextPage}items{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}"}';
     var searchVodQuery =
         '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:VOD,limit:100}){videos{cursor,pageInfo{hasNextPage}items{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}"}';
+    var liveQuery =
+        '{"query":"{streams(first: 30, options:{sort:VIEWER_COUNT %l} %c) {pageInfo { hasNextPage },edges{cursor, node{ type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)} }}}}"}';
 
     var Base_obj;
     var Base_Vod_obj;
@@ -32968,12 +32984,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (this.useHelix) {
                     this.cursor = tempObj.pagination.cursor;
 
-                    if (!this.cursor || this.cursor === '') this.dataEnded = true;
-                } else {
+                    if (!this.cursor || this.cursor === '') {
+                        this.dataEnded = true;
+                    }
+                } else if (!this.skipSetMax) {
                     this.MaxOffset = tempObj._total;
 
-                    if (!tempObj[this.object]) this.dataEnded = true;
-                    else if (typeof this.MaxOffset === 'undefined') {
+                    if (!tempObj[this.object]) {
+                        this.dataEnded = true;
+                    } else if (typeof this.MaxOffset === 'undefined') {
                         if (tempObj[this.object].length < 90) this.dataEnded = true;
                     } else {
                         if (this.data.length >= this.MaxOffset) this.dataEnded = true;
@@ -33020,12 +33039,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (!cell || !cell.stream) {
                     return;
                 }
+
                 var id_cell = cell.stream.broadcaster.id;
+                var id = cell.stream.id;
                 var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
 
-                if (!this.idObject[id_cell] && isNotBlocked) {
+                if (!this.idObject[id] && isNotBlocked) {
                     this.itemsCount++;
-                    this.idObject[id_cell] = 1;
+                    this.idObject[id] = 1;
 
                     this.tempHtml.push(
                         Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveQueryCellArray(cell), this.screen)
@@ -33856,21 +33877,24 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var key = Main_Live;
 
         ScreenObj[key] = Screens_assign({
-                useHelix: true,
+                isQuery: true,
                 HeadersArray: Main_Bearer_Headers,
                 ids: Screens_ScreenIds('Live', key),
                 table: 'stream_table_live',
                 screen: key,
-                object: 'data',
+                object: 'edges',
                 ScreenName: 'Live',
                 key_pgDown: Main_Featured,
                 key_pgUp: Main_Clip,
                 CheckContentLang: 1,
                 ContentLang: '',
-                base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
+                base_post: liveQuery,
+                skipSetMax: true,
+                ItemsLimitMax: 30,
                 set_url: function() {
-                    this.url =
-                        this.base_url + (this.cursor ? '&after=' + this.cursor : '') + (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                    this.post = this.base_post
+                        .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
+                        .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
                 },
                 label_init: function() {
                     Sidepannel_SetDefaultLabels();
@@ -33885,6 +33909,34 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
         ScreenObj[key].Set_Scroll();
+        ScreenObj[key].ItemsLimit = ScreenObj[key].ItemsLimitMax / 2;
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.streams && responseObj.data.streams && responseObj.data.streams.edges;
+
+            if (hasData) {
+                this.dataEnded = !responseObj.data.streams.pageInfo.hasNextPage;
+
+                responseObj = {
+                    edges: responseObj.data.streams.edges
+                };
+
+                this.cursor =
+                    responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+                var i = 0,
+                    len = responseObj.edges.length;
+
+                for (i; i < len; i++) {
+                    responseObj.edges[i].stream = responseObj.edges[i].node;
+                }
+            } else {
+                this.dataEnded = true;
+                this.cursor = null;
+            }
+
+            this.concatenateAfter(responseObj);
+        };
     }
 
     function ScreensObj_InitSearchLive() {
@@ -34145,7 +34197,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 ContentLang: '',
                 periodPos: Main_getItemInt('Clip_periodPos', 2),
                 base_post: topClipQuery,
-                periods: [topClipQuery],
                 set_url: function() {
                     this.dataEnded = true;
                     this.post = this.base_post
@@ -35351,7 +35402,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 cell.created_at, //12
                 cell.viewCount, //13
                 Main_addCommas(cell.viewCount), //14
-                cell.thumbnailURL, //15
+                cell.thumbnailURL ? cell.thumbnailURL.replace('/preview.jpg', '/preview-' + Main_VideoSize + '.jpg') : cell.thumbnailURL, //15
                 Main_videoCreatedAt(cell.createdAt), //16
                 cell.language, //17
                 cell.game_id //18
