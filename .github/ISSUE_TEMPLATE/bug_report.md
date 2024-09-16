@@ -22,7 +22,7 @@ Whenever you can add screenshots/picture to help explain/show your problem.
  
  **Device:**
  - TV Manufacture Device: Nvidia Shield, Xiaomi Mi box I II III IV, etc...
- - Os version [e.g. Tizen 2.3, Tizen 2.4, Tizen 5...]
+ - Os version [e.g. Android 9, 10 etc...]
 
 **Additional context**
 Add any other context about the problem here.
