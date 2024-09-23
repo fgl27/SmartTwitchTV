@@ -89,7 +89,7 @@ import androidx.media3.ui.PlayerView;
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.firebase.FirebaseApp;
-//import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -339,8 +339,8 @@ public class PlayerActivity extends Activity {
             intent.setAction(null);
             setIntent(intent);
 
-            //FirebaseApp.initializeApp(this);
-            //FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+            FirebaseApp.initializeApp(this);
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
             try {
                 setContentView(R.layout.activity_player);
@@ -434,7 +434,7 @@ public class PlayerActivity extends Activity {
             initializeWebview();
 
             StopNotificationService();
-            //FirebaseCrashlytics.getInstance().sendUnsentReports();
+            FirebaseCrashlytics.getInstance().sendUnsentReports();
 
             DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
 
