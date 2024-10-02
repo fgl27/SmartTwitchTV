@@ -69,6 +69,7 @@ public final class Constants {
     public static final String CHANNEL_INTENT = "channel_intent";//f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
     public static final String CHANNEL_TYPE = "channel_type";
 
+    public static final String DEEPLINK_SCHEME = "smarttvtwitch";
     public static final String BLOCKED_CHANNEL = "blocked_channel";
     public static final String BLOCKED_GAMES = "blocked_games";
 

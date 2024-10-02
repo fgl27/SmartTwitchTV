@@ -89,7 +89,7 @@ public final class ChannelsUtils {
         private final String type;
         private final int screen;
 
-        PreviewObj(JsonObject obj, String type, int screen) {
+        public PreviewObj(JsonObject obj, String type, int screen) {
             this.obj = obj;
             this.type = type;
             this.screen = screen;
