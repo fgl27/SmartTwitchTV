@@ -397,6 +397,7 @@ function Screens_loadDataRequestStart(key) {
         Screens_loadDataFail(key);
     } else {
         if (
+            Main_values.Main_gameSelected_id &&
             !ScreenObj[key].itemsCount &&
             !ScreenObj[key].isReloadScreen &&
             ScreenObj[key].hasBackupData &&

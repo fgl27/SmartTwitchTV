@@ -1721,10 +1721,6 @@ function ScreensObj_InitFeatured() {
         }
 
         this.loadingData = false;
-
-        if (this.hasBackupData) {
-            this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
-        }
     };
 }
 

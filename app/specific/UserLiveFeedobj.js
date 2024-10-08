@@ -456,6 +456,7 @@ function UserLiveFeedobj_loadCurrentGame() {
         pos = UserLiveFeedobj_CurrentGamePos;
 
     if (
+        game &&
         ScreenObj[key].hasBackupData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
@@ -624,6 +625,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         pos = UserLiveFeedobj_UserAGamesPos;
 
     if (
+        game &&
         ScreenObj[key].hasBackupData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
@@ -762,6 +764,7 @@ function UserLiveFeedobj_loadCurrentAGame() {
         pos = UserLiveFeedobj_AGamesPos;
 
     if (
+        game &&
         ScreenObj[key].hasBackupData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
