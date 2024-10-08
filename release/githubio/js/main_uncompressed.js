@@ -13606,6 +13606,10 @@
         ChannelClip_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_PLAYING + Play_data.data[3] : '';
         ChannelClip_game_Id = Main_values_Play_data[18];
 
+        if (ChannelClip_game_Id) {
+            Play_data.data[18] = ChannelClip_game_Id;
+        }
+
         Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
         Main_values.Main_selectedChannelLogo = Main_values_Play_data[5];
         ChannelClip_Id = Main_values_Play_data[7];
@@ -13637,7 +13641,6 @@
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         Main_removeEventListener('keydown', handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
-
         Main_values_Play_data = data;
 
         Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
@@ -13646,8 +13649,11 @@
         Play_data.data[3] = Main_values_Play_data[3];
         if (Play_data.data[3] === null) Play_data.data[3] = '';
         ChannelVod_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : '';
-
         ChannelVod_views = Main_values_Play_data[4];
+
+        if (Main_values_Play_data[16]) {
+            Play_data.data[18] = Main_values_Play_data[16];
+        }
 
         Main_values.Main_selectedChannel = Main_values_Play_data[6];
         Main_values.ChannelVod_vodId = Main_values_Play_data[7];
@@ -13658,7 +13664,6 @@
 
         Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
         Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
-        Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
 
         Main_openVod();
 
@@ -28801,6 +28806,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Screens_loadDataFail(key);
         } else {
             if (
+                Main_values.Main_gameSelected_id &&
                 !ScreenObj[key].itemsCount &&
                 !ScreenObj[key].isReloadScreen &&
                 ScreenObj[key].hasBackupData &&
@@ -34175,10 +34181,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
 
             this.loadingData = false;
-
-            if (this.hasBackupData) {
-                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
-            }
         };
     }
 
@@ -43065,6 +43067,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             pos = UserLiveFeedobj_CurrentGamePos;
 
         if (
+            game &&
             ScreenObj[key].hasBackupData &&
             !UserLiveFeed_itemsCount[pos] &&
             !UserLiveFeed_obj[pos].isReloadScreen &&
@@ -43236,6 +43239,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             pos = UserLiveFeedobj_UserAGamesPos;
 
         if (
+            game &&
             ScreenObj[key].hasBackupData &&
             !UserLiveFeed_itemsCount[pos] &&
             !UserLiveFeed_obj[pos].isReloadScreen &&
@@ -43376,6 +43380,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             pos = UserLiveFeedobj_AGamesPos;
 
         if (
+            game &&
             ScreenObj[key].hasBackupData &&
             !UserLiveFeed_itemsCount[pos] &&
             !UserLiveFeed_obj[pos].isReloadScreen &&
