@@ -13539,7 +13539,7 @@
 
         Play_data.data[3] = Main_values_Play_data[3];
         if (Play_data.data[3] === null) Play_data.data[3] = '';
-        ChannelVod_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : '';
+        ChannelVod_game = Play_data.data[3] ? STR_PLAYING + Play_data.data[3] : '';
 
         Play_DurationSeconds = 0;
 
@@ -26667,6 +26667,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Main_textContentWithEle(Play_infoWatchingTime, '');
 
             Main_replaceClassEmoji('stream_info_title');
+        } else {
+            if (Play_data.data[3]) {
+                Main_textContent('stream_info_game', STR_PLAYING + Play_data.data[3]);
+            }
         }
 
         PlayVod_SetStart();
@@ -26840,6 +26844,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             );
 
             Main_innerHTML('stream_info_title', ChannelVod_title);
+
             //Main_innerHTML('stream_info_game', response.game && response.game !== '' ? STR_STARTED + STR_PLAYING + response.game : '');
 
             Main_innerHTMLWithEle(
@@ -28309,6 +28314,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Play_controls[Play_controlsChapters].setLabel();
             Play_controls[Play_controlsChapters].bottomArrows();
             PlayVod_SetChapters();
+        } else if (ChannelVod_game) {
+            Main_textContent('stream_info_game', ChannelVod_game);
         }
     }
 
