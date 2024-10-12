@@ -13536,6 +13536,11 @@
         Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
         Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
         Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+
+        Play_data.data[3] = Main_values_Play_data[3];
+        if (Play_data.data[3] === null) Play_data.data[3] = '';
+        ChannelVod_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : '';
+
         Play_DurationSeconds = 0;
 
         Main_values.ChannelVod_vodId = historyPos.vodid;
@@ -28248,8 +28253,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function PlayVod_updateChaptersResult(responseObj, key, id) {
-        if (PlayVod_isOn && PlayVod_updateChaptersId === id && responseObj.status === 200) {
-            PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
+        if (PlayVod_isOn && PlayVod_updateChaptersId === id) {
+            if (responseObj.status === 200) {
+                PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
+            } else if (ChannelVod_game) {
+                Main_textContent('stream_info_game', ChannelVod_game);
+            }
         }
     }
 
