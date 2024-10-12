@@ -1704,7 +1704,7 @@ function Main_OPenAsVod(historyPos) {
 
     Play_data.data[3] = Main_values_Play_data[3];
     if (Play_data.data[3] === null) Play_data.data[3] = '';
-    ChannelVod_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : '';
+    ChannelVod_game = Play_data.data[3] ? STR_PLAYING + Play_data.data[3] : '';
 
     Play_DurationSeconds = 0;
 

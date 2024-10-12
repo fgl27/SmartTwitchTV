@@ -126,6 +126,10 @@ function PlayVod_Start() {
         Main_textContentWithEle(Play_infoWatchingTime, '');
 
         Main_replaceClassEmoji('stream_info_title');
+    } else {
+        if (Play_data.data[3]) {
+            Main_textContent('stream_info_game', STR_PLAYING + Play_data.data[3]);
+        }
     }
 
     PlayVod_SetStart();
@@ -297,6 +301,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         );
 
         Main_innerHTML('stream_info_title', ChannelVod_title);
+
         //Main_innerHTML('stream_info_game', response.game && response.game !== '' ? STR_STARTED + STR_PLAYING + response.game : '');
 
         Main_innerHTMLWithEle(
@@ -1760,6 +1765,8 @@ function PlayVod_ProcessChapters(obj) {
         Play_controls[Play_controlsChapters].setLabel();
         Play_controls[Play_controlsChapters].bottomArrows();
         PlayVod_SetChapters();
+    } else if (ChannelVod_game) {
+        Main_textContent('stream_info_game', ChannelVod_game);
     }
 }
 
