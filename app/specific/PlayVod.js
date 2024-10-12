@@ -1704,8 +1704,12 @@ function PlayVod_updateChapters() {
 }
 
 function PlayVod_updateChaptersResult(responseObj, key, id) {
-    if (PlayVod_isOn && PlayVod_updateChaptersId === id && responseObj.status === 200) {
-        PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
+    if (PlayVod_isOn && PlayVod_updateChaptersId === id) {
+        if (responseObj.status === 200) {
+            PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
+        } else if (ChannelVod_game) {
+            Main_textContent('stream_info_game', ChannelVod_game);
+        }
     }
 }
 
