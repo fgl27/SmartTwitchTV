@@ -31603,7 +31603,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 );
             } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
             else if (Screens_ThumbOptionPosY === 1) {
-                Screens_OpenGame();
+                if (ScreenObj[key].screenType === 1 && Screens_values_Play_data[16]) {
+                    Screens_values_Play_data[18] = Screens_values_Play_data[16];
+                }
+                Screens_OpenGame(key);
             } else if (Screens_ThumbOptionPosY === 3) {
                 Screens_BlockChannel(key);
             } else if (Screens_ThumbOptionPosY === 4) {
@@ -32577,6 +32580,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:VOD,limit:100}){videos{cursor,pageInfo{hasNextPage}items{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}"}';
     var liveQuery =
         '{"query":"{streams(first: 30, options:{sort:VIEWER_COUNT %l} %c) {pageInfo { hasNextPage },edges{cursor, node{ type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)} }}}}"}';
+    var channelVodQuery =
+        '{"query":"{user(id: \\"%c\\") { videos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}"}';
+    var channelClipQuery =
+        '{"query":"{user(id: \\"%c\\") { clips(%y first:100,criteria:{period:%t}){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName}}}}}}"}';
 
     var Base_obj;
     var Base_Vod_obj;
@@ -33139,9 +33146,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (this.useHelix) {
                     this.cursor = tempObj.pagination.cursor;
                     if (!this.cursor) this.dataEnded = true;
-                } else {
-                    this.cursor = tempObj._cursor;
-                    if (this.cursor === '') this.dataEnded = true;
                 }
             },
             key_play: function() {
@@ -33620,31 +33624,29 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var key = Main_ChannelVod;
 
         ScreenObj[key] = Screens_assign({
-                useHelix: true,
                 periodMaxPos: 2,
                 HeadersArray: Main_base_array_header,
                 key_pgDown: Main_ChannelClip,
-                object: 'data',
+                object: 'edges',
                 ids: Screens_ScreenIds('ChannelVod', key),
                 ScreenName: 'ChannelVod',
                 table: 'stream_table_channel_vod',
                 screen: key,
-                time: ['time', 'views'],
+                time: ['TIME', 'VIEWS'],
                 extraoffset: 0,
                 OffSetPos: 0,
                 highlightSTR: 'ChannelVod_highlight',
                 highlight: Main_getItemBool('ChannelVod_highlight', false),
                 periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-                base_url: Main_helix_api + 'videos?first=' + Main_ItemsLimitMax + '&user_id=',
+                useUserToken: true,
+                base_post: channelVodQuery,
+                isQuery: true,
                 set_url: function() {
-                    this.url =
-                        this.base_url +
-                        this.lastselectedChannel +
-                        '&type=' +
-                        (this.highlight ? 'highlight' : 'archive') +
-                        '&sort=' +
-                        this.time[this.periodPos - 1] +
-                        (this.cursor ? '&after=' + this.cursor : '');
+                    this.post = this.base_post
+                        .replace('%c', this.lastselectedChannel)
+                        .replace('%x', this.highlight ? 'HIGHLIGHT' : 'ARCHIVE')
+                        .replace('%t', this.time[this.periodPos - 1])
+                        .replace('%y', this.cursor ? 'after: \\"' + this.cursor + '\\",' : '');
                 },
                 key_play: function() {
                     if (this.is_a_Banner()) return;
@@ -33707,6 +33709,35 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Vod_obj);
         ScreenObj[key].Set_Scroll();
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.videos && responseObj.data.user.videos.edges;
+
+            if (hasData) {
+                this.dataEnded = !responseObj.data.user.videos.pageInfo.hasNextPage;
+
+                responseObj = {
+                    edges: responseObj.data.user.videos.edges
+                };
+
+                this.cursor =
+                    responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+                var i = 0,
+                    len = responseObj.edges.length;
+
+                for (i; i < len; i++) {
+                    responseObj.edges[i] = responseObj.edges[i].node;
+                    responseObj.edges[i].game_name = responseObj.edges[i].game ? responseObj.edges[i].game.displayName : null;
+                    responseObj.edges[i].game_id = responseObj.edges[i].game ? responseObj.edges[i].game.id : null;
+                }
+            } else {
+                this.dataEnded = true;
+                this.cursor = null;
+            }
+
+            this.concatenateAfter(responseObj);
+        };
     }
 
     function ScreensObj_InitAGameVod() {
@@ -34263,7 +34294,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var key = Main_ChannelClip;
 
         ScreenObj[key] = Screens_assign({
-                useHelix: true,
                 ids: Screens_ScreenIds('ChannelClip', key),
                 ScreenName: 'ChannelClip',
                 table: 'stream_table_channel_clip',
@@ -34271,15 +34301,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 key_pgUp: Main_ChannelVod,
                 periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
                 base_url: Main_helix_api + 'clips?broadcaster_id=',
+                useUserToken: true,
+                base_post: channelClipQuery,
+                isQuery: true,
+
                 set_url: function() {
-                    this.url =
-                        this.base_url +
-                        this.lastselectedChannel +
-                        '&first=' +
-                        Main_ItemsLimitMax +
-                        ScreensObj_ClipGetPeriod(this.periodPos) +
-                        (this.cursor ? '&after=' + this.cursor : '') +
-                        Main_TwitchV5Flag;
+                    this.post = this.base_post
+                        .replace('%c', this.lastselectedChannel)
+                        .replace('%t', this.period[this.periodPos - 1])
+                        .replace('%y', this.cursor ? 'after: \\"' + this.cursor + '\\",' : '');
                 },
                 SetPeriod: function() {
                     Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -34304,6 +34334,38 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Clip_obj);
         ScreenObj[key].Set_Scroll();
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.clips && responseObj.data.user.clips.edges;
+
+            if (hasData) {
+                this.dataEnded = !responseObj.data.user.clips.pageInfo.hasNextPage;
+
+                responseObj = {
+                    edges: responseObj.data.user.clips.edges
+                };
+
+                this.cursor =
+                    responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+                var i = 0,
+                    len = responseObj.edges.length;
+
+                for (i; i < len; i++) {
+                    responseObj.edges[i] = responseObj.edges[i].node;
+                    responseObj.edges[i].game_name = responseObj.edges[i].game ? responseObj.edges[i].game.displayName : null;
+                    responseObj.edges[i].game_id = responseObj.edges[i].game ? responseObj.edges[i].game.id : null;
+                }
+            } else {
+                this.dataEnded = true;
+                this.cursor = null;
+            }
+
+            this.concatenateAfter(responseObj);
+        };
+
+        ScreenObj[key].period = ['LAST_DAY', 'LAST_WEEK', 'LAST_MONTH', 'ALL_TIME'];
+        ScreenObj[key].object = 'edges';
     }
 
     function ScreensObj_InitAGameClip() {
@@ -35323,7 +35385,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cell.stream.id.toString(), //7 broadcast id
             Main_is_rerun(cell.stream.type), //8
             broadcaster ? broadcaster.profileImageURL : '', //9
-            broadcaster ? broadcaster.roles.isPartner : '', //10
+            broadcaster && broadcaster.roles ? broadcaster.roles.isPartner : '', //10
             Play_streamLiveAt(cell.stream.createdAt), //11
             cell.stream.createdAt, //12
             cell.stream.viewersCount, //13
@@ -43902,9 +43964,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
             for (i; i < response_items; i++) {
                 stream = response[i];
-                id = stream.stream.broadcaster.id;
+                if (!stream || !stream.stream) {
+                    continue;
+                }
+                id = stream.stream.broadcaster ? stream.stream.broadcaster.id : null;
 
-                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream.stream)) {
+                if (id && !UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream.stream)) {
                     UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
 
                     mArray = ScreensObj_LiveQueryCellArray(stream);
