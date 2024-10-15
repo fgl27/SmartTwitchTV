@@ -92,6 +92,8 @@ var liveQuery =
     '{"query":"{streams(first: 30, options:{sort:VIEWER_COUNT %l} %c) {pageInfo { hasNextPage },edges{cursor, node{ type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)} }}}}"}';
 var channelVodQuery =
     '{"query":"{user(id: \\"%c\\") { videos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}"}';
+var channelClipQuery =
+    '{"query":"{user(id: \\"%c\\") { clips(%y first:100,criteria:{period:%t}){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName}}}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -655,9 +657,6 @@ function ScreensObj_StartAllVars() {
             if (this.useHelix) {
                 this.cursor = tempObj.pagination.cursor;
                 if (!this.cursor) this.dataEnded = true;
-            } else {
-                this.cursor = tempObj._cursor;
-                if (this.cursor === '') this.dataEnded = true;
             }
         },
         key_play: function () {
@@ -1818,7 +1817,6 @@ function ScreensObj_InitChannelClip() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
             ids: Screens_ScreenIds('ChannelClip', key),
             ScreenName: 'ChannelClip',
             table: 'stream_table_channel_clip',
@@ -1826,15 +1824,15 @@ function ScreensObj_InitChannelClip() {
             key_pgUp: Main_ChannelVod,
             periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
             base_url: Main_helix_api + 'clips?broadcaster_id=',
+            useUserToken: true,
+            base_post: channelClipQuery,
+            isQuery: true,
+
             set_url: function () {
-                this.url =
-                    this.base_url +
-                    this.lastselectedChannel +
-                    '&first=' +
-                    Main_ItemsLimitMax +
-                    ScreensObj_ClipGetPeriod(this.periodPos) +
-                    (this.cursor ? '&after=' + this.cursor : '') +
-                    Main_TwitchV5Flag;
+                this.post = this.base_post
+                    .replace('%c', this.lastselectedChannel)
+                    .replace('%t', this.period[this.periodPos - 1])
+                    .replace('%y', this.cursor ? 'after: \\"' + this.cursor + '\\",' : '');
             },
             SetPeriod: function () {
                 Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -1859,6 +1857,38 @@ function ScreensObj_InitChannelClip() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Clip_obj);
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.clips && responseObj.data.user.clips.edges;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.user.clips.pageInfo.hasNextPage;
+
+            responseObj = {
+                edges: responseObj.data.user.clips.edges
+            };
+
+            this.cursor =
+                responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+            var i = 0,
+                len = responseObj.edges.length;
+
+            for (i; i < len; i++) {
+                responseObj.edges[i] = responseObj.edges[i].node;
+                responseObj.edges[i].game_name = responseObj.edges[i].game ? responseObj.edges[i].game.displayName : null;
+                responseObj.edges[i].game_id = responseObj.edges[i].game ? responseObj.edges[i].game.id : null;
+            }
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
+    };
+
+    ScreenObj[key].period = ['LAST_DAY', 'LAST_WEEK', 'LAST_MONTH', 'ALL_TIME'];
+    ScreenObj[key].object = 'edges';
 }
 
 function ScreensObj_InitAGameClip() {
