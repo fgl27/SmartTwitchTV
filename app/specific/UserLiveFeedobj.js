@@ -1268,9 +1268,12 @@ function UserLiveFeed_loadDataSuccessEnd(response) {
 
         for (i; i < response_items; i++) {
             stream = response[i];
-            id = stream.stream.broadcaster.id;
+            if (!stream || !stream.stream) {
+                continue;
+            }
+            id = stream.stream.broadcaster ? stream.stream.broadcaster.id : null;
 
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream.stream)) {
+            if (id && !UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id) && ScreensObj_CheckIsMature(stream.stream)) {
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
 
                 mArray = ScreensObj_LiveQueryCellArray(stream);
