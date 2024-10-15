@@ -3176,7 +3176,10 @@ function Screens_ThumbOptionDialogHide(Update, key) {
             );
         } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
         else if (Screens_ThumbOptionPosY === 1) {
-            Screens_OpenGame();
+            if (ScreenObj[key].screenType === 1 && Screens_values_Play_data[16]) {
+                Screens_values_Play_data[18] = Screens_values_Play_data[16];
+            }
+            Screens_OpenGame(key);
         } else if (Screens_ThumbOptionPosY === 3) {
             Screens_BlockChannel(key);
         } else if (Screens_ThumbOptionPosY === 4) {

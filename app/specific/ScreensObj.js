@@ -90,6 +90,8 @@ var searchVodQuery =
     '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:VOD,limit:100}){videos{cursor,pageInfo{hasNextPage}items{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}"}';
 var liveQuery =
     '{"query":"{streams(first: 30, options:{sort:VIEWER_COUNT %l} %c) {pageInfo { hasNextPage },edges{cursor, node{ type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)} }}}}"}';
+var channelVodQuery =
+    '{"query":"{user(id: \\"%c\\") { videos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -1137,31 +1139,29 @@ function ScreensObj_InitChannelVod() {
 
     ScreenObj[key] = Screens_assign(
         {
-            useHelix: true,
             periodMaxPos: 2,
             HeadersArray: Main_base_array_header,
             key_pgDown: Main_ChannelClip,
-            object: 'data',
+            object: 'edges',
             ids: Screens_ScreenIds('ChannelVod', key),
             ScreenName: 'ChannelVod',
             table: 'stream_table_channel_vod',
             screen: key,
-            time: ['time', 'views'],
+            time: ['TIME', 'VIEWS'],
             extraoffset: 0,
             OffSetPos: 0,
             highlightSTR: 'ChannelVod_highlight',
             highlight: Main_getItemBool('ChannelVod_highlight', false),
             periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-            base_url: Main_helix_api + 'videos?first=' + Main_ItemsLimitMax + '&user_id=',
+            useUserToken: true,
+            base_post: channelVodQuery,
+            isQuery: true,
             set_url: function () {
-                this.url =
-                    this.base_url +
-                    this.lastselectedChannel +
-                    '&type=' +
-                    (this.highlight ? 'highlight' : 'archive') +
-                    '&sort=' +
-                    this.time[this.periodPos - 1] +
-                    (this.cursor ? '&after=' + this.cursor : '');
+                this.post = this.base_post
+                    .replace('%c', this.lastselectedChannel)
+                    .replace('%x', this.highlight ? 'HIGHLIGHT' : 'ARCHIVE')
+                    .replace('%t', this.time[this.periodPos - 1])
+                    .replace('%y', this.cursor ? 'after: \\"' + this.cursor + '\\",' : '');
             },
             key_play: function () {
                 if (this.is_a_Banner()) return;
@@ -1224,6 +1224,35 @@ function ScreensObj_InitChannelVod() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Vod_obj);
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.videos && responseObj.data.user.videos.edges;
+
+        if (hasData) {
+            this.dataEnded = !responseObj.data.user.videos.pageInfo.hasNextPage;
+
+            responseObj = {
+                edges: responseObj.data.user.videos.edges
+            };
+
+            this.cursor =
+                responseObj && responseObj.edges && responseObj.edges.length ? responseObj.edges[responseObj.edges.length - 1].cursor : null;
+
+            var i = 0,
+                len = responseObj.edges.length;
+
+            for (i; i < len; i++) {
+                responseObj.edges[i] = responseObj.edges[i].node;
+                responseObj.edges[i].game_name = responseObj.edges[i].game ? responseObj.edges[i].game.displayName : null;
+                responseObj.edges[i].game_id = responseObj.edges[i].game ? responseObj.edges[i].game.id : null;
+            }
+        } else {
+            this.dataEnded = true;
+            this.cursor = null;
+        }
+
+        this.concatenateAfter(responseObj);
+    };
 }
 
 function ScreensObj_InitAGameVod() {
