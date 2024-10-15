@@ -2918,7 +2918,7 @@ function ScreensObj_LiveQueryCellArray(cell) {
         cell.stream.id.toString(), //7 broadcast id
         Main_is_rerun(cell.stream.type), //8
         broadcaster ? broadcaster.profileImageURL : '', //9
-        broadcaster ? broadcaster.roles.isPartner : '', //10
+        broadcaster && broadcaster.roles ? broadcaster.roles.isPartner : '', //10
         Play_streamLiveAt(cell.stream.createdAt), //11
         cell.stream.createdAt, //12
         cell.stream.viewersCount, //13
