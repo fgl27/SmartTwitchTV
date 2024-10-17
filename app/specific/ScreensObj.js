@@ -1152,7 +1152,6 @@ function ScreensObj_InitChannelVod() {
             highlightSTR: 'ChannelVod_highlight',
             highlight: Main_getItemBool('ChannelVod_highlight', false),
             periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-            useUserToken: true,
             base_post: channelVodQuery,
             isQuery: true,
             set_url: function () {
@@ -1824,10 +1823,8 @@ function ScreensObj_InitChannelClip() {
             key_pgUp: Main_ChannelVod,
             periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
             base_url: Main_helix_api + 'clips?broadcaster_id=',
-            useUserToken: true,
             base_post: channelClipQuery,
             isQuery: true,
-
             set_url: function () {
                 this.post = this.base_post
                     .replace('%c', this.lastselectedChannel)
