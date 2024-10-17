@@ -33638,7 +33638,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 highlightSTR: 'ChannelVod_highlight',
                 highlight: Main_getItemBool('ChannelVod_highlight', false),
                 periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-                useUserToken: true,
                 base_post: channelVodQuery,
                 isQuery: true,
                 set_url: function() {
@@ -34301,10 +34300,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 key_pgUp: Main_ChannelVod,
                 periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
                 base_url: Main_helix_api + 'clips?broadcaster_id=',
-                useUserToken: true,
                 base_post: channelClipQuery,
                 isQuery: true,
-
                 set_url: function() {
                     this.post = this.base_post
                         .replace('%c', this.lastselectedChannel)
