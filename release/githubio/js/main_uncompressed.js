@@ -7255,7 +7255,7 @@
             //ChannelContent_selectedChannelFollower = channel.followers;
             ChannelContent_description = channel.description;
             Main_values.Main_selectedChannelLogo = channel.profile_image_url;
-            Main_values.Main_selectedChannelPartner = channel.broadcaster_type;
+            Main_values.Main_selectedChannelPartner = channel.broadcaster_type === 'partner';
 
             ChannelContent_BannerFollowers();
         } else {
