@@ -82,13 +82,13 @@ dependencies {
     //implementation project(':media-lib-decoder-av1')
 
     //Crashlytics
-    implementation platform('com.google.firebase:firebase-bom:33.3.0')
+    implementation platform('com.google.firebase:firebase-bom:33.4.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     //Crashlytics end
 
     implementation 'androidx.leanback:leanback:1.0.0'
-    implementation 'androidx.webkit:webkit:1.12.0'
+    implementation 'androidx.webkit:webkit:1.12.1'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.github.GCX-HCI:tray:v0.12.0'
     implementation 'androidx.tvprovider:tvprovider:1.0.0'
