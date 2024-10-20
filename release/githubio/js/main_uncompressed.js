@@ -7112,9 +7112,15 @@
     function ChannelContent_init() {
         Main_values.Main_CenterLablesVectorPos = 1;
         Main_values.Main_Go = Main_ChannelContent;
-        if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
+
+        if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) {
             ChannelContent_RestoreChannelValue();
-        if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
+        }
+
+        if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) {
+            ChannelContent_status = false;
+        }
+
         Main_cleanTopLabel();
         Main_CounterDialogRst();
         Main_innerHTML('label_last_refresh', '');
@@ -28719,8 +28725,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (Main_CheckAccessibilityVisible()) {
             Main_CheckAccessibilitySet();
         } else if (Screens_needsRefresh(key, preventRefresh)) {
-            if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
-            else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
+            if (!ScreenObj[key].isRefreshing) {
+                Screens_StartLoad(key);
+            } else {
+                Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
+            }
         } else {
             ScreenObj[key].SetPreviewEnable();
 
@@ -29451,8 +29460,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                         //the screen is not selected
 
                         if (!Screens_Some_Screen_Is_Refreshing) {
+                            ScreenObj[key].isReloadScreen = true;
                             Screens_StartLoad(key);
-                        } else Screens_CheckAutoRefresh(key, 5000);
+                        } else {
+                            Screens_CheckAutoRefresh(key, 5000);
+                        }
                     } else Screens_SetAutoRefresh(key);
                 }
             },
@@ -32583,7 +32595,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var channelVodQuery =
         '{"query":"{user(id: \\"%c\\") { videos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}"}';
     var channelClipQuery =
-        '{"query":"{user(id: \\"%c\\") { clips(%y first:100,criteria:{period:%t}){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName}}}}}}"}';
+        '{"query":"{user(id: \\"%c\\") { clips(%y first:100,criteria:{period:%t}){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,login,displayName}}}}}}"}';
 
     var Base_obj;
     var Base_Vod_obj;
