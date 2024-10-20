@@ -294,8 +294,11 @@ function Screens_init(key, preventRefresh) {
     if (Main_CheckAccessibilityVisible()) {
         Main_CheckAccessibilitySet();
     } else if (Screens_needsRefresh(key, preventRefresh)) {
-        if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
-        else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
+        if (!ScreenObj[key].isRefreshing) {
+            Screens_StartLoad(key);
+        } else {
+            Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
+        }
     } else {
         ScreenObj[key].SetPreviewEnable();
 
@@ -1028,8 +1031,11 @@ function Screens_CheckAutoRefresh(key, timeout) {
                     //the screen is not selected
 
                     if (!Screens_Some_Screen_Is_Refreshing) {
+                        ScreenObj[key].isReloadScreen = true;
                         Screens_StartLoad(key);
-                    } else Screens_CheckAutoRefresh(key, 5000);
+                    } else {
+                        Screens_CheckAutoRefresh(key, 5000);
+                    }
                 } else Screens_SetAutoRefresh(key);
             }
         },
