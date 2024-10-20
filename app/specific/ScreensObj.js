@@ -93,7 +93,7 @@ var liveQuery =
 var channelVodQuery =
     '{"query":"{user(id: \\"%c\\") { videos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id,duration,viewCount,language,title,animatedPreviewURL,createdAt,id, thumbnailURLs(width: 640, height: 360),creator{id,displayName,login}}}}}}"}';
 var channelClipQuery =
-    '{"query":"{user(id: \\"%c\\") { clips(%y first:100,criteria:{period:%t}){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,displayName}}}}}}"}';
+    '{"query":"{user(id: \\"%c\\") { clips(%y first:100,criteria:{period:%t}){pageInfo{hasNextPage},edges{cursor,node{game{id, displayName}, id, title,videoOffsetSeconds,viewCount,slug,language,durationSeconds,createdAt,video{id}, thumbnailURL(width: 480, height: 272),broadcaster{id,login,displayName}}}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;

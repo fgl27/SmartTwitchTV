@@ -49,9 +49,15 @@ var ChannelContent_allowMature;
 function ChannelContent_init() {
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_ChannelContent;
-    if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
+
+    if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) {
         ChannelContent_RestoreChannelValue();
-    if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
+    }
+
+    if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) {
+        ChannelContent_status = false;
+    }
+
     Main_cleanTopLabel();
     Main_CounterDialogRst();
     Main_innerHTML('label_last_refresh', '');
