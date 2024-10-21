@@ -213,12 +213,20 @@ function ScreensObj_StartAllVars() {
                 }
 
                 this.setMax(responseObj);
+
+                if (this.LoadOneMoreTimeForced) {
+                    this.LoadOneMoreTimeForced = false;
+                    this.loadDataSuccess();
+                    return;
+                }
             } else {
                 this.data = responseObj[this.object];
                 if (this.data) {
                     this.offset = this.data.length;
                     this.setMax(responseObj);
-                } else this.data = [];
+                } else {
+                    this.data = [];
+                }
 
                 this.loadDataSuccess();
             }
@@ -228,8 +236,6 @@ function ScreensObj_StartAllVars() {
             if (this.hasBackupData) {
                 this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
             }
-
-            //console.log(this.data);
         },
         setBackupData: function (responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
             if (!this.BackupData) {
@@ -593,6 +599,8 @@ function ScreensObj_StartAllVars() {
                 );
 
                 this.column_id++;
+            } else {
+                this.skipCell = true;
             }
         },
         key_play: function () {
@@ -614,11 +622,13 @@ function ScreensObj_StartAllVars() {
             var url = this.DataObj[id][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
             var div = Main_getElementById(this.ids[1] + id);
 
-            Play_seek_previews_img.onload = function () {
-                div.src = url;
-            };
+            if (div) {
+                Play_seek_previews_img.onload = function () {
+                    div.src = url;
+                };
 
-            Play_seek_previews_img.src = url;
+                Play_seek_previews_img.src = url;
+            }
         },
         addFocus: function (forceScroll, key) {
             this.refreshThumb(this);

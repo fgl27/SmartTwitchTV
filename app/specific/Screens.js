@@ -480,6 +480,7 @@ function Screens_HttpResultStatus(resultObj, key) {
 function Screens_loadDataFail(key) {
     ScreenObj[key].loadingData = false;
     ScreenObj[key].FirstRunEnd = true;
+    ScreenObj[key].LoadOneMoreTimeForced = false;
 
     if (!ScreenObj[key].itemsCount) {
         ScreenObj[key].isRefreshing = false;
@@ -499,7 +500,6 @@ function Screens_loadDataFail(key) {
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
     } else {
-        console.log('ddsd');
         ScreenObj[key].dataEnded = true;
     }
 }
@@ -510,7 +510,8 @@ function Screens_concatenate(responseObj, key) {
 
 function Screens_loadDataSuccess(key) {
     var data_length = ScreenObj[key].data.length,
-        response_items = data_length - ScreenObj[key].data_cursor;
+        response_items = data_length - ScreenObj[key].data_cursor,
+        currentRowId = ScreenObj[key].row_id;
 
     //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColumnsCount,
     //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
@@ -523,9 +524,10 @@ function Screens_loadDataSuccess(key) {
 
     if (response_items > ScreenObj[key].ItemsLimit) {
         response_items = ScreenObj[key].ItemsLimit;
-    } else if (!ScreenObj[key].loadingData) {
-        ScreenObj[key].dataEnded = true;
     }
+    // else if (!ScreenObj[key].loadingData) {
+    //     ScreenObj[key].dataEnded = true;
+    // }
 
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
         ScreenObj[key].addSwitches();
@@ -593,7 +595,14 @@ function Screens_loadDataSuccess(key) {
     }
     ScreenObj[key].emptyContent = (!response_items || !ScreenObj[key].itemsCount) && !ScreenObj[key].status;
 
-    if (ScreenObj[key].emptyContent) {
+    if (((ScreenObj[key].emptyContent && response_items) || ScreenObj[key].row_id - currentRowId < 2) && !ScreenObj[key].dataEnded) {
+        ScreenObj[key].loadingData = true;
+        ScreenObj[key].emptyContent = false;
+
+        ScreenObj[key].LoadOneMoreTimeForced = true;
+        Screens_loadDataRequestStart(key);
+        return;
+    } else if (ScreenObj[key].emptyContent) {
         if (!ScreenObj[key].BannerCreated) {
             ScreenObj[key].addEmptyContentBanner(true);
         } else {
@@ -1146,12 +1155,15 @@ function Screens_addFocus(forceScroll, key) {
     //Load more as the data is getting used
     if (ScreenObj[key].data) {
         var ItemsLimitMax = ScreenObj[key].ItemsLimitMax ? ScreenObj[key].ItemsLimitMax : Main_ItemsLimitMax;
+
         if (
-            ScreenObj[key].posY &&
-            ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
-            !ScreenObj[key].dataEnded &&
-            !ScreenObj[key].loadingData
+            (ScreenObj[key].posY &&
+                ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
+                !ScreenObj[key].dataEnded &&
+                !ScreenObj[key].loadingData) ||
+            (!ScreenObj[key].dataEnded && ScreenObj[key].skipCell)
         ) {
+            ScreenObj[key].skipCell = false;
             Screens_loadDataRequestStart(key);
         } else if (
             ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColumnsCount &&

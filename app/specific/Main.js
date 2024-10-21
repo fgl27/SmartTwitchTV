@@ -776,7 +776,7 @@ function Main_AddClass(element, mclass) {
 }
 
 function Main_AddClassWitEle(element, mclass) {
-    element.classList.add(mclass);
+    if (element) element.classList.add(mclass);
 }
 
 function Main_RemoveClass(element, mclass) {
