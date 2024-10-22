@@ -1463,6 +1463,10 @@ function PlayVod_NumberKey_QuickJumpClear() {
 }
 
 function PlayVod_QuickJump(time) {
+    //hard covert to string to avoid addition braking the value
+    var timeToJump = time + '';
+    Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + timeToJump + STR_SPACE_HTML + STR_SECONDS, 1000);
+
     PlayVod_TimeToJump = OSInterface_gettime() / 1000 + time;
     PlayVod_jump();
 }
