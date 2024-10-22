@@ -323,7 +323,7 @@ function AddUser_UserIsSet() {
 }
 
 function AddUser_UserHasToken() {
-    return AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+    return Boolean(AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token);
 }
 
 function AddUser_UpdateUserAllUsers() {

@@ -1471,19 +1471,45 @@ function ScreensObj_InitLive() {
             ids: Screens_ScreenIds('Live', key),
             table: 'stream_table_live',
             screen: key,
-            object: 'edges',
             ScreenName: 'Live',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
             CheckContentLang: 1,
             ContentLang: '',
             base_post: liveQuery,
-            skipSetMax: true,
-            ItemsLimitMax: 30,
+            base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
             set_url: function () {
-                this.post = this.base_post
-                    .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
-                    .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
+                //Hybrid query helix
+                //If use Helix without a user it can fail as the app token has limited request
+                //too many user using it fail to show content
+                //but the query is limited to show only 30 results with can cause issue when the user blocks too many channels
+
+                if (!this.data) {
+                    var useUserToken = AddUser_UserHasToken();
+                    this.isQuery = !useUserToken;
+                    this.useHelix = useUserToken;
+                }
+
+                if (this.isQuery) {
+                    this.object = 'edges';
+                    this.skipSetMax = true;
+                    this.ItemsLimitMax = 30;
+                    this.ItemsLimit = this.ItemsLimitMax / 2;
+
+                    this.post = this.base_post
+                        .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
+                        .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
+                } else {
+                    this.object = 'data';
+                    this.skipSetMax = false;
+                    this.ItemsLimitMax = Main_ItemsLimitMax;
+                    this.ItemsLimit = Main_ItemsLimitVideo;
+
+                    this.url =
+                        this.base_url +
+                        (this.cursor ? '&after=' + this.cursor : '') +
+                        (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                }
             },
             label_init: function () {
                 Sidepannel_SetDefaultLabels();
@@ -1498,9 +1524,13 @@ function ScreensObj_InitLive() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
     ScreenObj[key].Set_Scroll();
-    ScreenObj[key].ItemsLimit = ScreenObj[key].ItemsLimitMax / 2;
 
     ScreenObj[key].concatenate = function (responseObj) {
+        if (!this.isQuery) {
+            this.concatenateAfter(responseObj);
+            return;
+        }
+
         var hasData = responseObj.data && responseObj.data.streams && responseObj.data.streams && responseObj.data.streams.edges;
 
         if (hasData) {

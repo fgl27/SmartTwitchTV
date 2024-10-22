@@ -527,6 +527,7 @@ function Screens_loadDataSuccess(key) {
     if (response_items > ScreenObj[key].ItemsLimit) {
         response_items = ScreenObj[key].ItemsLimit;
     }
+    //TODO check when this if in needed
     // else if (!ScreenObj[key].loadingData) {
     //     ScreenObj[key].dataEnded = true;
     // }
