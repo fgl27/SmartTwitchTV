@@ -410,9 +410,11 @@ function Screens_loadDataRequestStart(key) {
         ) {
             ScreenObj[key].restoreBackup();
         } else {
-            Screens_loadDataRequest(key);
+            if (ScreenObj[key].hasBackupData) {
+                ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+            }
 
-            if (ScreenObj[key].hasBackupData) ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+            Screens_loadDataRequest(key);
         }
     }
 
@@ -1048,7 +1050,9 @@ function Screens_CheckAutoRefresh(key, timeout) {
                     } else {
                         Screens_CheckAutoRefresh(key, 5000);
                     }
-                } else Screens_SetAutoRefresh(key);
+                } else {
+                    Screens_SetAutoRefresh(key);
+                }
             }
         },
         timeout,
