@@ -1474,7 +1474,9 @@ function Play_showWarningMiddleDialog(text, timeout, IsLiveWarning) {
             timeout,
             Play_showWarningMiddleDialogId
         );
-    } else Main_clearTimeout(Play_showWarningMiddleDialogId);
+    } else {
+        Main_clearTimeout(Play_showWarningMiddleDialogId);
+    }
 }
 
 function Play_HideWarningMidleDialog() {

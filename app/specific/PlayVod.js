@@ -1351,10 +1351,14 @@ function PlayVod_handleKeyDown(e) {
     }
 }
 
-function PlayVod_NumberKey_QuickJump(key) {
-    if (!Main_IsOn_OSInterface || Play_isEndDialogVisible() || Play_isVodDialogVisible()) return;
+var PlayVod_NumberKeyId;
+var PlayVod_NumberKeyOldKey;
 
-    var position = null;
+function PlayVod_NumberKey_QuickJump(key) {
+    if (Play_isEndDialogVisible() || Play_isVodDialogVisible()) return;
+
+    var position = null,
+        defaultTimeout = 2500;
 
     switch (key) {
         case KEY_NUMPAD_0:
@@ -1401,11 +1405,61 @@ function PlayVod_NumberKey_QuickJump(key) {
             break;
     }
 
-    if (position !== null) {
+    if (position !== null && PlayVod_NumberKeyId && PlayVod_NumberKeyOldKey === key) {
+        PlayVod_NumberKey_QuickJumpClear();
+
         PlayVod_TimeToJump = (Play_DurationSeconds / 10) * position;
-        Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + STR_JUMP_T0 + STR_SPACE_HTML + position * 10 + '%', 2000);
+
+        PlayVod_TimeToJump = (Play_DurationSeconds / 10) * position;
+        Play_showWarningDialog(
+            STR_JUMP_TIME +
+                STR_SPACE_HTML +
+                STR_JUMP_T0 +
+                STR_SPACE_HTML +
+                position * 10 +
+                '% (' +
+                Play_timeS(PlayVod_TimeToJump) +
+                ')' +
+                STR_BR +
+                STR_FROM +
+                Play_timeMs(OSInterface_gettime()),
+            defaultTimeout
+        );
+
         PlayVod_jump();
+    } else if (position !== null) {
+        //show warning then jump if click again
+        PlayVod_NumberKeyOldKey = key;
+
+        Play_showWarningDialog(
+            STR_JUMP_TIME_CLICK_AGAIN +
+                STR_SPACE_HTML +
+                STR_JUMP_T0 +
+                STR_SPACE_HTML +
+                position * 10 +
+                '% (' +
+                Play_timeS((Play_DurationSeconds / 10) * position) +
+                ')' +
+                STR_BR +
+                STR_FROM +
+                Play_timeMs(OSInterface_gettime()),
+            defaultTimeout
+        );
+
+        PlayVod_NumberKeyId = Main_setTimeout(
+            function () {
+                PlayVod_NumberKey_QuickJumpClear();
+            },
+            defaultTimeout,
+            PlayVod_NumberKeyId
+        );
     }
+}
+
+function PlayVod_NumberKey_QuickJumpClear() {
+    Main_clearTimeout(PlayVod_NumberKeyId);
+    PlayVod_NumberKeyId = null;
+    PlayVod_NumberKeyOldKey = null;
 }
 
 function PlayVod_QuickJump(time) {

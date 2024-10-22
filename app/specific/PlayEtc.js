@@ -1398,17 +1398,22 @@ function Play_KeyReturn(is_vod) {
             UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
         } else UserLiveFeed_Hide();
     } else if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
-        if (is_vod) PlayVod_hidePanel();
-        else Play_hidePanel();
+        if (is_vod) {
+            PlayVod_hidePanel();
+        } else {
+            Play_hidePanel();
+        }
     } else {
         if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
             Play_HideVodDialog();
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
         } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
-            if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
-            else if (PlayExtra_PicturePicture) Play_CloseSmall();
-            else {
+            if (Play_MultiEnable) {
+                Play_controls[Play_MultiStream].enterKey();
+            } else if (PlayExtra_PicturePicture) {
+                Play_CloseSmall();
+            } else {
                 Play_CleanHideExit();
                 Play_hideChat();
 
@@ -1426,7 +1431,9 @@ function Play_KeyReturn(is_vod) {
             Play_HideWarningDialog();
             Play_HideWarningMidleDialog();
             Play_KeyReturnSetExit();
-        } else Play_KeyReturnSetExit();
+        } else {
+            Play_KeyReturnSetExit();
+        }
     }
 }
 

@@ -137,6 +137,7 @@ function en_USLang() {
     STR_CLIP_MONTH = '30d';
     STR_CLIP_ALL = 'all';
     STR_JUMP_TIME = 'Jumping';
+    STR_JUMP_TIME_CLICK_AGAIN = 'Click again to jump';
     STR_JUMP_T0 = 'to';
     STR_JUMP_CANCEL = 'Jump Canceled';
     STR_JUMP_TIME_BIG = ', jump time bigger than duration';
