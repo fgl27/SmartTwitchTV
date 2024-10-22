@@ -793,7 +793,8 @@
         STR_SPEED_ADJUST,
         STR_SPEED_ADJUST_SUMMARY,
         STR_SW_CODEC,
-        STR_HW_CODEC;
+        STR_HW_CODEC,
+        STR_JUMP_TIME_CLICK_AGAIN;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1441,6 +1442,7 @@
         STR_CLIP_MONTH = '30d';
         STR_CLIP_ALL = 'all';
         STR_JUMP_TIME = 'Jumping';
+        STR_JUMP_TIME_CLICK_AGAIN = 'Click again to jump';
         STR_JUMP_T0 = 'to';
         STR_JUMP_CANCEL = 'Jump Canceled';
         STR_JUMP_TIME_BIG = ', jump time bigger than duration';
@@ -4730,6 +4732,8 @@
                     'Fix not be able to open the game for some scenarios in the thumbnail options',
                     'Fix current game in player content not always showing current game',
                     'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
+                    'Improve numeric VODs jump to % function',
+                    'Improve media keys Live/VODs jump to 5/30 seconds function',
                     'General etc improvements'
                 ]
             },
@@ -19352,17 +19356,22 @@
                 UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
             } else UserLiveFeed_Hide();
         } else if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
-            if (is_vod) PlayVod_hidePanel();
-            else Play_hidePanel();
+            if (is_vod) {
+                PlayVod_hidePanel();
+            } else {
+                Play_hidePanel();
+            }
         } else {
             if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
                 Play_HideVodDialog();
                 PlayVod_PreshutdownStream(false);
                 Play_exitMain();
             } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
-                if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
-                else if (PlayExtra_PicturePicture) Play_CloseSmall();
-                else {
+                if (Play_MultiEnable) {
+                    Play_controls[Play_MultiStream].enterKey();
+                } else if (PlayExtra_PicturePicture) {
+                    Play_CloseSmall();
+                } else {
                     Play_CleanHideExit();
                     Play_hideChat();
 
@@ -19380,7 +19389,9 @@
                 Play_HideWarningDialog();
                 Play_HideWarningMidleDialog();
                 Play_KeyReturnSetExit();
-            } else Play_KeyReturnSetExit();
+            } else {
+                Play_KeyReturnSetExit();
+            }
         }
     }
 
@@ -24904,7 +24915,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 timeout,
                 Play_showWarningMiddleDialogId
             );
-        } else Main_clearTimeout(Play_showWarningMiddleDialogId);
+        } else {
+            Main_clearTimeout(Play_showWarningMiddleDialogId);
+        }
     }
 
     function Play_HideWarningMidleDialog() {
@@ -27901,10 +27914,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
 
-    function PlayVod_NumberKey_QuickJump(key) {
-        if (!Main_IsOn_OSInterface || Play_isEndDialogVisible() || Play_isVodDialogVisible()) return;
+    var PlayVod_NumberKeyId;
+    var PlayVod_NumberKeyOldKey;
 
-        var position = null;
+    function PlayVod_NumberKey_QuickJump(key) {
+        if (Play_isEndDialogVisible() || Play_isVodDialogVisible()) return;
+
+        var position = null,
+            defaultTimeout = 2500;
 
         switch (key) {
             case KEY_NUMPAD_0:
@@ -27951,14 +27968,68 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 break;
         }
 
-        if (position !== null) {
+        if (position !== null && PlayVod_NumberKeyId && PlayVod_NumberKeyOldKey === key) {
+            PlayVod_NumberKey_QuickJumpClear();
+
             PlayVod_TimeToJump = (Play_DurationSeconds / 10) * position;
-            Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + STR_JUMP_T0 + STR_SPACE_HTML + position * 10 + '%', 2000);
+
+            PlayVod_TimeToJump = (Play_DurationSeconds / 10) * position;
+            Play_showWarningDialog(
+                STR_JUMP_TIME +
+                STR_SPACE_HTML +
+                STR_JUMP_T0 +
+                STR_SPACE_HTML +
+                position * 10 +
+                '% (' +
+                Play_timeS(PlayVod_TimeToJump) +
+                ')' +
+                STR_BR +
+                STR_FROM +
+                Play_timeMs(OSInterface_gettime()),
+                defaultTimeout
+            );
+
             PlayVod_jump();
+        } else if (position !== null) {
+            //show warning then jump if click again
+            PlayVod_NumberKeyOldKey = key;
+
+            Play_showWarningDialog(
+                STR_JUMP_TIME_CLICK_AGAIN +
+                STR_SPACE_HTML +
+                STR_JUMP_T0 +
+                STR_SPACE_HTML +
+                position * 10 +
+                '% (' +
+                Play_timeS((Play_DurationSeconds / 10) * position) +
+                ')' +
+                STR_BR +
+                STR_FROM +
+                Play_timeMs(OSInterface_gettime()),
+                defaultTimeout
+            );
+
+            PlayVod_NumberKeyId = Main_setTimeout(
+                function() {
+                    PlayVod_NumberKey_QuickJumpClear();
+                },
+                defaultTimeout,
+                PlayVod_NumberKeyId
+            );
         }
     }
 
+    function PlayVod_NumberKey_QuickJumpClear() {
+        Main_clearTimeout(PlayVod_NumberKeyId);
+        PlayVod_NumberKeyId = null;
+        PlayVod_NumberKeyOldKey = null;
+    }
+
     function PlayVod_QuickJump(time) {
+        //hard covert to string to avoid addition braking the value
+        var timeToJump = time + '';
+        Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + timeToJump + STR_SPACE_HTML + STR_SECONDS, 1000);
+
         PlayVod_TimeToJump = OSInterface_gettime() / 1000 + time;
         PlayVod_jump();
     }
