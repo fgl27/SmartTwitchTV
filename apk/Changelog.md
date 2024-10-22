@@ -9,6 +9,17 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+WebVersion September / October 21
+==============
+
+* Fix missing information on player top info for some scenarios
+* Fix missing information on channel content screens
+* Fix not be able to open the game for some scenarios in the thumbnail options
+* Fix current game in player content not always showing current game
+* Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content
+* General etc improvements
+
+
 WebVersion September 09
 ==============
 

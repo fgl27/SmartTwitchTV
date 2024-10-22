@@ -23,9 +23,20 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
-    WebVersion: 'September 09 2024',
-    WebTag: 677, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'October 21 2024',
+    WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'WebVersion September / October 21',
+            changes: [
+                'Fix missing information on player top info for some scenarios',
+                'Fix missing information on channel content screens',
+                'Fix not be able to open the game for some scenarios in the thumbnail options',
+                'Fix current game in player content not always showing current game',
+                'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
+                'General etc improvements'
+            ]
+        },
         {
             title: 'WebVersion September 09',
             changes: [
@@ -46,20 +57,6 @@ var version = {
                 'Android 10 and up now can see with codecs are hardware or software',
                 'Due to changes above the codec section was reseted if you make changes to it please redo yours changes',
                 'General visual improvements',
-                'Other General improvements'
-            ]
-        },
-        {
-            title: 'Version August 2024 Apk Version 3.0.365',
-            changes: [
-                'Add support for HEVC H.265 and AV1 Live and VOD (Settings Extra codec support), it still depends on the streamer to use and is on beta testing only some can',
-                'Update Codec capability & Blocked codecs settings section to support new codecs and to show better information',
-                'Improve display and sorting for player quality, sometimes it can come out of order from the server or have missing information',
-                "Fix Auto quality not playing stream with a resolution bigger than the device's current resolution",
-                'Home screen content will no longer show blocked content',
-                'Add new settings option "Catch-up with low latency" auto-adjust the latency if it is behind the expected target, by slowing or speeding the stream by 1%',
-                'Improve progress bar for lives playback, show proper duration if paused for too long',
-                'General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple',
                 'Other General improvements'
             ]
         }

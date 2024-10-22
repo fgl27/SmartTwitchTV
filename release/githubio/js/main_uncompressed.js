@@ -4720,9 +4720,20 @@
         VersionBase: '3.0',
         publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
-        WebVersion: 'September 09 2024',
-        WebTag: 677, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'October 21 2024',
+        WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'WebVersion September / October 21',
+                changes: [
+                    'Fix missing information on player top info for some scenarios',
+                    'Fix missing information on channel content screens',
+                    'Fix not be able to open the game for some scenarios in the thumbnail options',
+                    'Fix current game in player content not always showing current game',
+                    'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
+                    'General etc improvements'
+                ]
+            },
+            {
                 title: 'WebVersion September 09',
                 changes: [
                     'Fix animation lag in the Clip section, Twitch was sending images that were too big causing lags',
@@ -4742,20 +4753,6 @@
                     'Android 10 and up now can see with codecs are hardware or software',
                     'Due to changes above the codec section was reseted if you make changes to it please redo yours changes',
                     'General visual improvements',
-                    'Other General improvements'
-                ]
-            },
-            {
-                title: 'Version August 2024 Apk Version 3.0.365',
-                changes: [
-                    'Add support for HEVC H.265 and AV1 Live and VOD (Settings Extra codec support), it still depends on the streamer to use and is on beta testing only some can',
-                    'Update Codec capability & Blocked codecs settings section to support new codecs and to show better information',
-                    'Improve display and sorting for player quality, sometimes it can come out of order from the server or have missing information',
-                    "Fix Auto quality not playing stream with a resolution bigger than the device's current resolution",
-                    'Home screen content will no longer show blocked content',
-                    'Add new settings option "Catch-up with low latency" auto-adjust the latency if it is behind the expected target, by slowing or speeding the stream by 1%',
-                    'Improve progress bar for lives playback, show proper duration if paused for too long',
-                    'General app text improves, this is an open source app anyone that wanna improve app text or add translations can the process is simple',
                     'Other General improvements'
                 ]
             }
@@ -5507,7 +5504,7 @@
     }
 
     function AddUser_UserHasToken() {
-        return AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+        return Boolean(AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token);
     }
 
     function AddUser_UpdateUserAllUsers() {
@@ -12608,7 +12605,7 @@
     }
 
     function Main_AddClassWitEle(element, mclass) {
-        element.classList.add(mclass);
+        if (element) element.classList.add(mclass);
     }
 
     function Main_RemoveClass(element, mclass) {
@@ -28817,6 +28814,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreenObj[key].ContentLang = Main_ContentLang;
         ScreenObj[key].Lang = Settings_AppLang;
         ScreenObj[key].BannerCreated = false;
+        ScreenObj[key].skippedCellLoadMore = false;
+        ScreenObj[key].LoadOneMoreTimeForced = false;
 
         if (key === Main_values.Main_Go) {
             Main_CounterDialogRst();
@@ -28839,9 +28838,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             ) {
                 ScreenObj[key].restoreBackup();
             } else {
-                Screens_loadDataRequest(key);
+                if (ScreenObj[key].hasBackupData) {
+                    ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+                }
 
-                if (ScreenObj[key].hasBackupData) ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
+                Screens_loadDataRequest(key);
             }
         }
 
@@ -28911,6 +28912,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Screens_loadDataFail(key) {
         ScreenObj[key].loadingData = false;
         ScreenObj[key].FirstRunEnd = true;
+        ScreenObj[key].LoadOneMoreTimeForced = false;
 
         if (!ScreenObj[key].itemsCount) {
             ScreenObj[key].isRefreshing = false;
@@ -28930,7 +28932,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
             if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
         } else {
-            console.log('ddsd');
             ScreenObj[key].dataEnded = true;
         }
     }
@@ -28941,7 +28942,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Screens_loadDataSuccess(key) {
         var data_length = ScreenObj[key].data.length,
-            response_items = data_length - ScreenObj[key].data_cursor;
+            response_items = data_length - ScreenObj[key].data_cursor,
+            currentRowId = ScreenObj[key].row_id;
 
         //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColumnsCount,
         //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
@@ -28954,9 +28956,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         if (response_items > ScreenObj[key].ItemsLimit) {
             response_items = ScreenObj[key].ItemsLimit;
-        } else if (!ScreenObj[key].loadingData) {
-            ScreenObj[key].dataEnded = true;
         }
+        //TODO check when this if in needed
+        // else if (!ScreenObj[key].loadingData) {
+        //     ScreenObj[key].dataEnded = true;
+        // }
 
         if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) {
             ScreenObj[key].addSwitches();
@@ -29022,7 +29026,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
         ScreenObj[key].emptyContent = (!response_items || !ScreenObj[key].itemsCount) && !ScreenObj[key].status;
 
-        if (ScreenObj[key].emptyContent) {
+        if (((ScreenObj[key].emptyContent && response_items) || ScreenObj[key].row_id - currentRowId < 2) && !ScreenObj[key].dataEnded) {
+            ScreenObj[key].loadingData = true;
+            ScreenObj[key].emptyContent = false;
+
+            ScreenObj[key].LoadOneMoreTimeForced = true;
+            Screens_loadDataRequestStart(key);
+            return;
+        } else if (ScreenObj[key].emptyContent) {
             if (!ScreenObj[key].BannerCreated) {
                 ScreenObj[key].addEmptyContentBanner(true);
             } else {
@@ -29465,7 +29476,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                         } else {
                             Screens_CheckAutoRefresh(key, 5000);
                         }
-                    } else Screens_SetAutoRefresh(key);
+                    } else {
+                        Screens_SetAutoRefresh(key);
+                    }
                 }
             },
             timeout,
@@ -29576,12 +29589,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         //Load more as the data is getting used
         if (ScreenObj[key].data) {
             var ItemsLimitMax = ScreenObj[key].ItemsLimitMax ? ScreenObj[key].ItemsLimitMax : Main_ItemsLimitMax;
+
             if (
-                ScreenObj[key].posY &&
-                ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
-                !ScreenObj[key].dataEnded &&
-                !ScreenObj[key].loadingData
+                (ScreenObj[key].posY &&
+                    ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
+                    !ScreenObj[key].dataEnded &&
+                    !ScreenObj[key].loadingData) ||
+                (!ScreenObj[key].dataEnded && ScreenObj[key].skippedCellLoadMore)
             ) {
+                ScreenObj[key].skippedCellLoadMore = false;
                 Screens_loadDataRequestStart(key);
             } else if (
                 ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColumnsCount &&
@@ -32715,12 +32731,20 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     }
 
                     this.setMax(responseObj);
+
+                    if (this.LoadOneMoreTimeForced) {
+                        this.LoadOneMoreTimeForced = false;
+                        this.loadDataSuccess();
+                        return;
+                    }
                 } else {
                     this.data = responseObj[this.object];
                     if (this.data) {
                         this.offset = this.data.length;
                         this.setMax(responseObj);
-                    } else this.data = [];
+                    } else {
+                        this.data = [];
+                    }
 
                     this.loadDataSuccess();
                 }
@@ -32730,8 +32754,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (this.hasBackupData) {
                     this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
                 }
-
-                //console.log(this.data);
             },
             setBackupData: function(responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
                 if (!this.BackupData) {
@@ -33008,6 +33030,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     );
 
                     this.column_id++;
+                } else {
+                    this.skippedCellLoadMore = true;
                 }
             }
         };
@@ -33074,6 +33098,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     this.tempHtml.push(Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen));
 
                     this.column_id++;
+                } else {
+                    this.skippedCellLoadMore = true;
                 }
             },
             addCellQuery: function(cell) {
@@ -33094,6 +33120,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     );
 
                     this.column_id++;
+                } else {
+                    this.skippedCellLoadMore = true;
                 }
             },
             key_play: function() {
@@ -33115,11 +33143,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 var url = this.DataObj[id][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
                 var div = Main_getElementById(this.ids[1] + id);
 
-                Play_seek_previews_img.onload = function() {
-                    div.src = url;
-                };
+                if (div) {
+                    Play_seek_previews_img.onload = function() {
+                        div.src = url;
+                    };
 
-                Play_seek_previews_img.src = url;
+                    Play_seek_previews_img.src = url;
+                }
             },
             addFocus: function(forceScroll, key) {
                 this.refreshThumb(this);
@@ -33204,6 +33234,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     );
 
                     this.column_id++;
+                } else {
+                    this.skippedCellLoadMore = true;
                 }
             }
         };
@@ -33325,6 +33357,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     }
 
                     this.column_id++;
+                } else {
+                    this.skippedCellLoadMore = true;
                 }
             }
         };
@@ -33364,6 +33398,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     );
 
                     this.column_id++;
+                } else {
+                    this.skippedCellLoadMore = true;
                 }
             },
             base_key_play: function(go_screen, IsFollowing) {
@@ -33946,19 +33982,45 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 ids: Screens_ScreenIds('Live', key),
                 table: 'stream_table_live',
                 screen: key,
-                object: 'edges',
                 ScreenName: 'Live',
                 key_pgDown: Main_Featured,
                 key_pgUp: Main_Clip,
                 CheckContentLang: 1,
                 ContentLang: '',
                 base_post: liveQuery,
-                skipSetMax: true,
-                ItemsLimitMax: 30,
+                base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
                 set_url: function() {
-                    this.post = this.base_post
-                        .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
-                        .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
+                    //Hybrid query helix
+                    //If use Helix without a user it can fail as the app token has limited request
+                    //too many user using it fail to show content
+                    //but the query is limited to show only 30 results with can cause issue when the user blocks too many channels
+
+                    if (!this.data) {
+                        var useUserToken = AddUser_UserHasToken();
+                        this.isQuery = !useUserToken;
+                        this.useHelix = useUserToken;
+                    }
+
+                    if (this.isQuery) {
+                        this.object = 'edges';
+                        this.skipSetMax = true;
+                        this.ItemsLimitMax = 30;
+                        this.ItemsLimit = this.ItemsLimitMax / 2;
+
+                        this.post = this.base_post
+                            .replace('%l', Main_ContentLang === '' ? '' : ',languages:' + Languages_Selected)
+                            .replace('%c', this.cursor ? ', after: \\"' + this.cursor + '\\"' : '');
+                    } else {
+                        this.object = 'data';
+                        this.skipSetMax = false;
+                        this.ItemsLimitMax = Main_ItemsLimitMax;
+                        this.ItemsLimit = Main_ItemsLimitVideo;
+
+                        this.url =
+                            this.base_url +
+                            (this.cursor ? '&after=' + this.cursor : '') +
+                            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                    }
                 },
                 label_init: function() {
                     Sidepannel_SetDefaultLabels();
@@ -33973,9 +34035,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
         ScreenObj[key].Set_Scroll();
-        ScreenObj[key].ItemsLimit = ScreenObj[key].ItemsLimitMax / 2;
 
         ScreenObj[key].concatenate = function(responseObj) {
+            if (!this.isQuery) {
+                this.concatenateAfter(responseObj);
+                return;
+            }
+
             var hasData = responseObj.data && responseObj.data.streams && responseObj.data.streams && responseObj.data.streams.edges;
 
             if (hasData) {
