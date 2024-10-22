@@ -386,6 +386,8 @@ function Screens_StartLoad(key) {
     ScreenObj[key].ContentLang = Main_ContentLang;
     ScreenObj[key].Lang = Settings_AppLang;
     ScreenObj[key].BannerCreated = false;
+    ScreenObj[key].skippedCellLoadMore = false;
+    ScreenObj[key].LoadOneMoreTimeForced = false;
 
     if (key === Main_values.Main_Go) {
         Main_CounterDialogRst();
@@ -1161,9 +1163,9 @@ function Screens_addFocus(forceScroll, key) {
                 ScreenObj[key].data_cursor + ItemsLimitMax > ScreenObj[key].data.length &&
                 !ScreenObj[key].dataEnded &&
                 !ScreenObj[key].loadingData) ||
-            (!ScreenObj[key].dataEnded && ScreenObj[key].skipCell)
+            (!ScreenObj[key].dataEnded && ScreenObj[key].skippedCellLoadMore)
         ) {
-            ScreenObj[key].skipCell = false;
+            ScreenObj[key].skippedCellLoadMore = false;
             Screens_loadDataRequestStart(key);
         } else if (
             ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColumnsCount &&

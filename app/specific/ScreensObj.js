@@ -513,6 +513,8 @@ function ScreensObj_StartAllVars() {
                 );
 
                 this.column_id++;
+            } else {
+                this.skippedCellLoadMore = true;
             }
         }
     };
@@ -579,6 +581,8 @@ function ScreensObj_StartAllVars() {
                 this.tempHtml.push(Screens_createCellLive(this.row_id + '_' + this.column_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen));
 
                 this.column_id++;
+            } else {
+                this.skippedCellLoadMore = true;
             }
         },
         addCellQuery: function (cell) {
@@ -600,7 +604,7 @@ function ScreensObj_StartAllVars() {
 
                 this.column_id++;
             } else {
-                this.skipCell = true;
+                this.skippedCellLoadMore = true;
             }
         },
         key_play: function () {
@@ -713,6 +717,8 @@ function ScreensObj_StartAllVars() {
                 );
 
                 this.column_id++;
+            } else {
+                this.skippedCellLoadMore = true;
             }
         }
     };
@@ -834,6 +840,8 @@ function ScreensObj_StartAllVars() {
                 }
 
                 this.column_id++;
+            } else {
+                this.skippedCellLoadMore = true;
             }
         }
     };
@@ -873,6 +881,8 @@ function ScreensObj_StartAllVars() {
                 );
 
                 this.column_id++;
+            } else {
+                this.skippedCellLoadMore = true;
             }
         },
         base_key_play: function (go_screen, IsFollowing) {
