@@ -2624,6 +2624,16 @@ function Main_SetHistoryworker() {
                                         updateobj: JSON.parse(obj.responseText),
                                         delete: false
                                     });
+                                } else {
+                                    var response = JSON.parse(obj.responseText);
+
+                                    if (response.data && !response.data[0]) {
+                                        this.postMessage({
+                                            data: obj.mData.obj.data[7],
+                                            type: obj.mData.type,
+                                            delete: true
+                                        });
+                                    }
                                 }
                             };
                         } else if (event.data.type === 'clip') {
