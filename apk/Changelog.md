@@ -17,9 +17,11 @@ WebVersion September / October 21
 * Fix not be able to open the game for some scenarios in the thumbnail options
 * Fix current game in player content not always showing current game
 * Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content
+* Fix old deleted vod not being deleted from live history
 * Improve numeric VODs jump to % function
 * Improve media keys Live/VODs jump to 5/30 seconds function
 * General etc improvements
+
 
 
 WebVersion September 09

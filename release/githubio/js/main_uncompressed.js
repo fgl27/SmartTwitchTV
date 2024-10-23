@@ -4732,6 +4732,7 @@
                     'Fix not be able to open the game for some scenarios in the thumbnail options',
                     'Fix current game in player content not always showing current game',
                     'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
+                    'Fix old deleted vod not being deleted from live history',
                     'Improve numeric VODs jump to % function',
                     'Improve media keys Live/VODs jump to 5/30 seconds function',
                     'General etc improvements'
@@ -14567,7 +14568,9 @@
                         Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
                     }
                 } else if (event.data.type === 'live') {
-                    if (event.data.delete) {
+                    var vodInfo = event.data.updateobj && event.data.updateobj.data ? event.data.updateobj.data[0] : null;
+
+                    if (!vodInfo || event.data.delete) {
                         index = Main_history_Exist(event.data.type, event.data.data);
 
                         if (index > -1) {
@@ -14575,8 +14578,6 @@
                             Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
                         }
                     } else {
-                        var vodInfo = event.data.updateobj.data[0];
-
                         if (vodInfo && vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
                             Main_history_UpdateLiveVod(event.data.data, vodInfo.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
                         }
