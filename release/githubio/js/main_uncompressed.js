@@ -4725,7 +4725,7 @@
         WebVersion: 'October 21 2024',
         WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'WebVersion September / October 21',
+                title: 'WebVersion September / October',
                 changes: [
                     'Fix missing information on player top info for some scenarios',
                     'Fix missing information on channel content screens',
@@ -4733,6 +4733,9 @@
                     'Fix current game in player content not always showing current game',
                     'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
                     'Fix old deleted vod not being deleted from live history',
+                    'Fix old deleted Lives not being deleted from live history',
+                    'Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content',
+                    'Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens',
                     'Improve numeric VODs jump to % function',
                     'Improve media keys Live/VODs jump to 5/30 seconds function',
                     'General etc improvements'
@@ -28920,10 +28923,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             ) {
                 ScreenObj[key].restoreBackup();
             } else {
-                if (ScreenObj[key].hasBackupData) {
-                    ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
-                }
-
                 Screens_loadDataRequest(key);
             }
         }
@@ -32882,6 +32881,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     this.BackupData.Lang[game] = null;
                     this.BackupData.lastScreenRefresh[game] = 0;
                 }
+
+                if (this.ScreenBackup) {
+                    this.ScreenBackup[game] = null;
+                }
             },
             CheckBackupData: function(game) {
                 return (
@@ -32897,7 +32900,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 );
             },
             restoreBackup: function() {
-                var game = Main_values.Main_gameSelected_id;
+                var game = this.gameSelected_Id;
 
                 this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
                 this.offset = this.data.length;
@@ -32915,6 +32918,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 }
 
                 this.loadingData = false;
+                Screens_SetLastRefresh(this.screen);
             },
             BackupScreen: function(game) {
                 if (!this.ScreenBackup) {
@@ -32925,7 +32929,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 }
 
                 if (!this.data || !this.data.length) {
-                    this.ScreenBackup[game].style = null;
+                    this.ScreenBackup[game] = null;
                     return;
                 }
 
@@ -33095,7 +33099,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             AnimateThumb: ScreensObj_AnimateThumbId,
             addCell: function(cell) {
                 var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
-                var skipBlockedCheck = this.screen === Main_AGameVod && this.BeforeAgame === Main_Blocked;
+
+                //skip check if game is blocked as we are on the blocked game section
+                var skipBlockedCheck = this.screen === Main_AGameVod && Screens_getGameIsBlocked(this.gameSelected_Id);
 
                 var isNotBlocked = Screens_isNotBlocked(
                     skipBlockedCheck ? null : channelId,
@@ -33165,7 +33171,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             },
             addCellTemp: function(cell) {
                 var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
-                var skipBlockedCheck = this.screen === Main_aGame && this.BeforeAgame === Main_Blocked;
+
+                //skip check if game is blocked as we are on the blocked game section
+                var skipBlockedCheck = this.screen === Main_aGame && Screens_getGameIsBlocked(this.gameSelected_Id);
 
                 var isNotBlocked = Screens_isNotBlocked(
                     skipBlockedCheck ? null : cell.user_id,
@@ -33294,12 +33302,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 }
 
                 this.OpenClip();
+                ScreensObj_gameCheckAndBackup(this.screen);
             },
             Cells: [],
             addCell: function(cell) {
                 var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
                 var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
-                var skipBlockedCheck = this.screen === Main_AGameClip && this.BeforeAgame === Main_Blocked;
+
+                //skip check if game is blocked as we are on the blocked game section
+                var skipBlockedCheck = this.screen === Main_AGameClip && Screens_getGameIsBlocked(this.gameSelected_Id);
 
                 var isNotBlocked = Screens_isNotBlocked(
                     skipBlockedCheck ? null : channelId,
@@ -33874,6 +33885,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign({
                 useHelix: true,
+                isGameScreen: true,
                 periodMaxPos: 4,
                 HeadersArray: Main_base_array_header,
                 object: 'data',
@@ -33913,7 +33925,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                             Screens_StartLoad(this.screen);
                             Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                         } else Screens_PeriodStart(this.screen);
-                    } else this.OpenVodStart();
+                    } else {
+                        this.OpenVodStart();
+                    }
+                    ScreensObj_gameCheckAndBackup(this.screen);
                 },
                 SwitchesIcons: ['movie-play', 'history'],
                 addSwitches: function() {
@@ -34256,6 +34271,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign({
                 useHelix: true,
+                isGameScreen: true,
                 HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('AGame', key),
                 ScreenName: 'AGame',
@@ -34339,6 +34355,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
 
             ScreenObj[this.screen].IsOpen = 0;
+            ScreensObj_gameCheckAndBackup(this.screen);
         };
     }
 
@@ -34530,6 +34547,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign({
                 useHelix: true,
+                isGameScreen: true,
                 ids: Screens_ScreenIds('AGameClip', key),
                 ScreenName: 'AGameClip',
                 table: 'stream_table_a_game_clip',
@@ -35475,10 +35493,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected_Id, Main_values.Main_gameSelected_id)
         ) {
             ScreenObj[key].status = false;
-
-            if (ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
-                ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
-            }
         }
 
         ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
@@ -35501,7 +35515,16 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_EventAgame(Main_values.Main_gameSelected);
     }
 
+    function ScreensObj_gameCheckAndBackup(key) {
+        if (ScreenObj[key].isGameScreen && ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
+            ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
+        }
+    }
+
     function ScreensObj_TopLableAgameExit(key) {
+        ScreenObj[key].BeforeAgame = null;
+        ScreensObj_gameCheckAndBackup(key);
+
         ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
         Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     }
