@@ -2925,6 +2925,8 @@ function ScreensObj_TopLableAgameInit(key) {
 }
 
 function ScreensObj_TopLableAgameExit(key) {
+    ScreenObj[key].BeforeAgame = null;
+
     ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
     if (ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
         ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
