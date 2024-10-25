@@ -682,11 +682,20 @@ public final class Tools {
     static int DeviceRam(Context context) {
         ActivityManager actManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        int maxRamSize = 196000000;
+
         if (actManager != null) {
             actManager.getMemoryInfo(memInfo);
-        } else return 500000000;
+        } else {
+            return maxRamSize / 20;
+        }
+        int ramSize = (int) memInfo.totalMem;
 
-        return (int) (memInfo.totalMem / 20);
+        //Prevent Ram too big bigger then max int value
+        //Or just too big even on devices with a lot of RAM it can't be too large
+        ramSize = ramSize > maxRamSize || ramSize < 0 ? maxRamSize : ramSize;
+
+        return ramSize / 20;
     }
 
     static String getWebviewVersion(Context context) {
