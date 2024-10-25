@@ -410,10 +410,6 @@ function Screens_loadDataRequestStart(key) {
         ) {
             ScreenObj[key].restoreBackup();
         } else {
-            if (ScreenObj[key].hasBackupData) {
-                ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
-            }
-
             Screens_loadDataRequest(key);
         }
     }

@@ -282,6 +282,10 @@ function ScreensObj_StartAllVars() {
                 this.BackupData.Lang[game] = null;
                 this.BackupData.lastScreenRefresh[game] = 0;
             }
+
+            if (this.ScreenBackup) {
+                this.ScreenBackup[game] = null;
+            }
         },
         CheckBackupData: function (game) {
             return (
@@ -297,7 +301,7 @@ function ScreensObj_StartAllVars() {
             );
         },
         restoreBackup: function () {
-            var game = Main_values.Main_gameSelected_id;
+            var game = this.gameSelected_Id;
 
             this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
             this.offset = this.data.length;
@@ -325,7 +329,7 @@ function ScreensObj_StartAllVars() {
             }
 
             if (!this.data || !this.data.length) {
-                this.ScreenBackup[game].style = null;
+                this.ScreenBackup[game] = null;
                 return;
             }
 
@@ -2898,10 +2902,6 @@ function ScreensObj_TopLableAgameInit(key) {
         !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected_Id, Main_values.Main_gameSelected_id)
     ) {
         ScreenObj[key].status = false;
-
-        if (ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
-            ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
-        }
     }
 
     ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
@@ -2926,6 +2926,9 @@ function ScreensObj_TopLableAgameInit(key) {
 
 function ScreensObj_TopLableAgameExit(key) {
     ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
+    if (ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
+        ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
+    }
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
