@@ -9,6 +9,18 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version October 25 2024 Apk Version 3.0.369
+==============
+
+* Fix crashes for devices with bigger RAM (4+GB) when playing VOD, even that teh device has a large amount of RAM if the app uses it for buffer the app will crash
+* Fix old deleted vod not being deleted from live history
+* Fix old deleted Lives not being deleted from live history
+* Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content
+* Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens
+* Improve numeric VODs jump to % function
+* Improve media keys Live/VODs jump to 5/30 seconds function
+* Other General improvements
+
 WebVersion September / October
 ==============
 
@@ -17,12 +29,6 @@ WebVersion September / October
 * Fix not be able to open the game for some scenarios in the thumbnail options
 * Fix current game in player content not always showing current game
 * Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content
-* Fix old deleted vod not being deleted from live history
-* Fix old deleted Lives not being deleted from live history
-* Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content
-* Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens
-* Improve numeric VODs jump to % function
-* Improve media keys Live/VODs jump to 5/30 seconds function
 * General etc improvements
 
 WebVersion September 09

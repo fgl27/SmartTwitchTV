@@ -1,4 +1,4 @@
 ext.versions = [
         publishVersion    : '3.0.',
-        publishVersionCode: 367
+        publishVersionCode: 369
 ]

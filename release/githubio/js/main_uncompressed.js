@@ -4720,24 +4720,32 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 367, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/367/SmartTV_twitch_3_0_367.apk',
-        WebVersion: 'October 21 2024',
-        WebTag: 679, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 369, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/369/SmartTV_twitch_3_0_369.apk',
+        WebVersion: 'October 25 2024',
+        WebTag: 681, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'WebVersion September / October',
+                title: 'Version October 25 2024 Apk Version 3.0.369',
                 changes: [
-                    'Fix missing information on player top info for some scenarios',
-                    'Fix missing information on channel content screens',
-                    'Fix not be able to open the game for some scenarios in the thumbnail options',
-                    'Fix current game in player content not always showing current game',
-                    'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
+                    'Fix crashes for devices with bigger RAM (4+GB) when playing VOD, even that teh device has a large amount of RAM if the app uses it for buffer the app will crash',
                     'Fix old deleted vod not being deleted from live history',
                     'Fix old deleted Lives not being deleted from live history',
                     'Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content',
                     'Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens',
                     'Improve numeric VODs jump to % function',
                     'Improve media keys Live/VODs jump to 5/30 seconds function',
+                    'Other General improvements'
+                ]
+            },
+            {
+                title: 'WebVersion September / October 21',
+                changes: [
+                    'Fix missing information on player top info for some scenarios',
+                    'Fix missing information on channel content screens',
+                    'Fix not be able to open the game for some scenarios in the thumbnail options',
+                    'Fix current game in player content not always showing current game',
+                    'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
+
                     'General etc improvements'
                 ]
             },
@@ -4752,16 +4760,6 @@
                 title: 'WebVersion August 17',
                 changes: [
                     "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are terribly optimized, for example, 7TV"
-                ]
-            },
-            {
-                title: 'Version August 2024 Apk Version 3.0.367',
-                changes: [
-                    'Update Codec capability & Blocked codecs settings section to support devices that have the same name for multiple codecs',
-                    'Android 10 and up now can see with codecs are hardware or software',
-                    'Due to changes above the codec section was reseted if you make changes to it please redo yours changes',
-                    'General visual improvements',
-                    'Other General improvements'
                 ]
             }
         ]
