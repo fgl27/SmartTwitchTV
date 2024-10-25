@@ -500,7 +500,9 @@ function ScreensObj_StartAllVars() {
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
             var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
-            var skipBlockedCheck = this.screen === Main_AGameVod && this.BeforeAgame === Main_Blocked;
+
+            //skip check if game is blocked as we are on the blocked game section
+            var skipBlockedCheck = this.screen === Main_AGameVod && Screens_getGameIsBlocked(this.gameSelected_Id);
 
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : channelId,
@@ -570,7 +572,9 @@ function ScreensObj_StartAllVars() {
         },
         addCellTemp: function (cell) {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
-            var skipBlockedCheck = this.screen === Main_aGame && this.BeforeAgame === Main_Blocked;
+
+            //skip check if game is blocked as we are on the blocked game section
+            var skipBlockedCheck = this.screen === Main_aGame && Screens_getGameIsBlocked(this.gameSelected_Id);
 
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : cell.user_id,
@@ -705,7 +709,9 @@ function ScreensObj_StartAllVars() {
         addCell: function (cell) {
             var idValue = this.useHelix || this.isQuery ? cell.id : cell.tracking_id;
             var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
-            var skipBlockedCheck = this.screen === Main_AGameClip && this.BeforeAgame === Main_Blocked;
+
+            //skip check if game is blocked as we are on the blocked game section
+            var skipBlockedCheck = this.screen === Main_AGameClip && Screens_getGameIsBlocked(this.gameSelected_Id);
 
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : channelId,
