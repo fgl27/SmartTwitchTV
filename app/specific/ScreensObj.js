@@ -319,6 +319,7 @@ function ScreensObj_StartAllVars() {
             }
 
             this.loadingData = false;
+            Screens_SetLastRefresh(this.screen);
         },
         BackupScreen: function (game) {
             if (!this.ScreenBackup) {
