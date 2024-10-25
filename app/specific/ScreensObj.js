@@ -699,6 +699,7 @@ function ScreensObj_StartAllVars() {
             }
 
             this.OpenClip();
+            ScreensObj_gameCheckAndBackup(this.screen);
         },
         Cells: [],
         addCell: function (cell) {
@@ -1283,6 +1284,7 @@ function ScreensObj_InitAGameVod() {
     ScreenObj[key] = Screens_assign(
         {
             useHelix: true,
+            isGameScreen: true,
             periodMaxPos: 4,
             HeadersArray: Main_base_array_header,
             object: 'data',
@@ -1322,7 +1324,10 @@ function ScreensObj_InitAGameVod() {
                         Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart(this.screen);
-                } else this.OpenVodStart();
+                } else {
+                    this.OpenVodStart();
+                }
+                ScreensObj_gameCheckAndBackup(this.screen);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function () {
@@ -1670,6 +1675,7 @@ function ScreensObj_InitAGame() {
     ScreenObj[key] = Screens_assign(
         {
             useHelix: true,
+            isGameScreen: true,
             HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('AGame', key),
             ScreenName: 'AGame',
@@ -1753,6 +1759,7 @@ function ScreensObj_InitAGame() {
         }
 
         ScreenObj[this.screen].IsOpen = 0;
+        ScreensObj_gameCheckAndBackup(this.screen);
     };
 }
 
@@ -1948,6 +1955,7 @@ function ScreensObj_InitAGameClip() {
     ScreenObj[key] = Screens_assign(
         {
             useHelix: true,
+            isGameScreen: true,
             ids: Screens_ScreenIds('AGameClip', key),
             ScreenName: 'AGameClip',
             table: 'stream_table_a_game_clip',
@@ -2924,13 +2932,17 @@ function ScreensObj_TopLableAgameInit(key) {
     Main_EventAgame(Main_values.Main_gameSelected);
 }
 
-function ScreensObj_TopLableAgameExit(key) {
-    ScreenObj[key].BeforeAgame = null;
-
-    ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
-    if (ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
+function ScreensObj_gameCheckAndBackup(key) {
+    if (ScreenObj[key].isGameScreen && ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
         ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
     }
+}
+
+function ScreensObj_TopLableAgameExit(key) {
+    ScreenObj[key].BeforeAgame = null;
+    ScreensObj_gameCheckAndBackup(key);
+
+    ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
