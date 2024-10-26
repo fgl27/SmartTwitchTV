@@ -4723,7 +4723,7 @@
         publishVersionCode: 369, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/369/SmartTV_twitch_3_0_369.apk',
         WebVersion: 'October 25 2024',
-        WebTag: 681, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 683, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Version October 25 2024 Apk Version 3.0.369',
                 changes: [
@@ -7570,7 +7570,7 @@
                 Main_values.Play_isHost = false;
 
                 Main_hideScene1Doc();
-                Main_addEventListener('keydown', Play_handleKeyDown);
+                Main_PlayHandleKeyDown();
                 Main_showScene2Doc();
                 Play_hidePanel();
                 Play_Start(true);
@@ -7976,13 +7976,7 @@
     function ChatLiveControls_Hide() {
         ChatLiveControls_Channel = 0;
         ChatLiveControls_PreventInputClear();
-        Main_removeEventListener('keydown', ChatLiveControls_KeyboardEvent);
-        Main_removeEventListener('keydown', ChatLiveControls_handleKeyDown);
-        Main_removeEventListener('keydown', ChatLiveControls_EmotesEvent);
-        Main_removeEventListener('keydown', ChatLiveControls_ChooseChat);
-        Main_removeEventListener('keydown', ChatLiveControls_OptionsKeyDown);
-
-        Main_addEventListener('keydown', Play_handleKeyDown);
+        Main_PlayHandleKeyDown();
 
         Main_HideElement('chat_send');
         Main_HideElement('chat_emotes_holder');
@@ -13593,7 +13587,7 @@
     function Main_openStream() {
         Main_hideScene1DocAndCallBack(function() {
             Main_showScene2Doc();
-            Main_addEventListener('keydown', Play_handleKeyDown);
+            Main_PlayHandleKeyDown();
 
             if (!Play_EndDialogEnter) {
                 Play_HideEndDialog();
@@ -13640,7 +13634,7 @@
         Main_hideScene1DocAndCallBack(function() {
             Main_showScene2Doc();
 
-            Main_addEventListener('keydown', PlayClip_handleKeyDown);
+            Main_PlayClipHandleKeyDown();
             PlayClip_Start();
 
             Main_EventPlay('clip', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[17], screen);
@@ -13691,11 +13685,42 @@
     function Main_openVod() {
         Main_hideScene1DocAndCallBack(function() {
             Main_showScene2Doc();
-
-            Main_addEventListener('keydown', PlayVod_handleKeyDown);
+            Main_PlayVodHandleKeyDown();
             Play_hideChat();
             PlayVod_Start();
         });
+    }
+
+    //center all player key events in one place to prevent key leaks
+    function Main_PlayVodHandleKeyDown() {
+        Main_clearAllPlayerEvents();
+        Main_addEventListener('keydown', PlayVod_handleKeyDown);
+    }
+
+    function Main_PlayClipHandleKeyDown() {
+        Main_clearAllPlayerEvents();
+        Main_addEventListener('keydown', PlayClip_handleKeyDown);
+    }
+
+    function Main_PlayHandleKeyDown() {
+        Main_clearAllPlayerEvents();
+        Main_addEventListener('keydown', Play_handleKeyDown);
+    }
+
+    function Main_clearAllPlayerEvents() {
+        Main_removeEventListener('keydown', Play_handleKeyDown);
+        Main_removeEventListener('keydown', PlayVod_handleKeyDown);
+        Main_removeEventListener('keydown', PlayClip_handleKeyDown);
+        Main_removeEventListener('keydown', ChatLiveControls_handleKeyDown);
+        Main_removeEventListener('keydown', ChatLiveControls_KeyboardEvent);
+        Main_removeEventListener('keydown', ChatLiveControls_EmotesEvent);
+        Main_removeEventListener('keydown', ChatLiveControls_ChooseChat);
+        Main_removeEventListener('keydown', ChatLiveControls_OptionsKeyDown);
+
+        Main_removeEventListener('keydown', Play_EndUpclearCalback);
+
+        Main_removeEventListener('keyup', PlayVod_SeekClear);
+        Main_removeEventListener('keyup', Play_handleKeyUp);
     }
 
     function Main_removeFocus(id, idArray) {
@@ -15040,10 +15065,7 @@
 
     function Main_onNewIntentClearPlay() {
         Play_ClearPlayer();
-        Main_removeEventListener('keydown', Play_handleKeyDown);
-        Main_removeEventListener('keydown', PlayVod_handleKeyDown);
-        Main_removeEventListener('keyup', PlayVod_SeekClear);
-        Main_removeEventListener('keydown', PlayClip_handleKeyDown);
+        Main_clearAllPlayerEvents();
         Play_isOn = false;
         PlayVod_isOn = false;
         PlayClip_isOn = false;
@@ -17558,7 +17580,7 @@
         Main_vodOffset = ChannelVod_vodOffset;
         PlayClip_OpenAVodOffset = Main_vodOffset;
         PlayClip_PreshutdownStream(true);
-        Main_addEventListener('keydown', PlayVod_handleKeyDown);
+        Main_PlayVodHandleKeyDown();
         PlayClip_OpenAVod = true;
         PlayVod_Start();
     }
@@ -17617,6 +17639,12 @@
     }
 
     function PlayClip_handleKeyDown(e) {
+        //console.log('PlayClip_handleKeyDown', e.keyCode);
+
+        if (!PlayClip_isOn || !Main_isScene2DocVisible()) {
+            return;
+        }
+
         Play_screeOn();
 
         switch (e.keyCode) {
@@ -17688,7 +17716,7 @@
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();
-                    Main_removeEventListener('keydown', PlayClip_handleKeyDown);
+                    Main_clearAllPlayerEvents();
                     Main_addEventListener('keyup', Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayClip_handleKeyDown;
@@ -18852,7 +18880,7 @@
         Play_data.data[1] = Play_TargetHost.displayName;
         Play_PreshutdownStream(false);
 
-        Main_addEventListener('keydown', Play_handleKeyDown);
+        Main_PlayHandleKeyDown();
 
         Play_data.data[14] = Play_TargetHost.id;
 
@@ -19681,6 +19709,12 @@
     }
 
     function Play_handleKeyDown(e) {
+        //console.log('Play_handleKeyDown', e.keyCode);
+
+        if (!Play_isOn || !Main_isScene2DocVisible()) {
+            return;
+        }
+
         Play_screeOn();
 
         switch (e.keyCode) {
@@ -19778,7 +19812,7 @@
                 } else if (!UserLiveFeed_isPreviewShowing()) UserLiveFeed_ShowFeed();
                 else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();
-                    Main_removeEventListener('keydown', Play_handleKeyDown);
+                    Main_clearAllPlayerEvents();
                     Main_addEventListener('keyup', Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
@@ -19807,7 +19841,7 @@
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                 else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
                 else if (PlayExtra_PicturePicture || Play_MultiEnable) {
-                    Main_removeEventListener('keydown', Play_handleKeyDown);
+                    Main_clearAllPlayerEvents();
                     Main_addEventListener('keyup', Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
@@ -19859,7 +19893,7 @@
                     } else if (Play_StayDialogVisible()) {
                         Play_OpenLiveFeedCheck();
                     } else {
-                        Main_removeEventListener('keydown', Play_handleKeyDown);
+                        Main_clearAllPlayerEvents();
                         Main_addEventListener('keyup', Play_handleKeyUp);
                         PlayExtra_clear = false;
                         UserLiveFeed_ResetFeedId();
@@ -25656,8 +25690,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Play_handleKeyUpClear() {
         Main_clearTimeout(PlayExtra_KeyEnterID);
-        Main_removeEventListener('keyup', Play_handleKeyUp);
-        Main_addEventListener('keydown', Play_handleKeyDown);
+        Main_PlayHandleKeyDown();
     }
 
     function Play_Exit() {
@@ -27739,6 +27772,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function PlayVod_handleKeyDown(e) {
+        //console.log('PlayVod_handleKeyDown', e.keyCode);
+
+        if (!PlayVod_isOn || !Main_isScene2DocVisible()) {
+            return;
+        }
+
         Play_screeOn();
 
         switch (e.keyCode) {
@@ -27815,7 +27854,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     PlayVod_setHidePanel();
                 } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();
-                    Main_removeEventListener('keydown', PlayVod_handleKeyDown);
+                    Main_clearAllPlayerEvents();
                     Main_addEventListener('keyup', Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayVod_handleKeyDown;
@@ -29103,7 +29142,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 }
             }
         }
-        ScreenObj[key].emptyContent = (!response_items || !ScreenObj[key].itemsCount) && !ScreenObj[key].status;
+        ScreenObj[key].emptyContent = !ScreenObj[key].itemsCount && !ScreenObj[key].status;
 
         if (((ScreenObj[key].emptyContent && response_items) || ScreenObj[key].row_id - currentRowId < 2) && !ScreenObj[key].dataEnded) {
             ScreenObj[key].loadingData = true;
@@ -32680,7 +32719,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var searchCannelQuery =
         '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:USER,limit:100}){users{cursor,pageInfo{hasNextPage}items{id,displayName,login,followers(){totalCount},profileImageURL(width:300),roles{isPartner},stream{id}}}}}"}';
     var searchGamesQuery =
-        '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{ index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
+        '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:GAME,limit:100}){games{cursor,pageInfo{hasNextPage}items{id,displayName,boxArtURL,viewersCount,channelsCount}}}}"}';
     var searchLiveQuery =
         '{"query":"{searchFor(userQuery:\\"%x\\",platform:\\"web\\",target:{%y index:LIVE,limit:100}){liveChannels{cursor,pageInfo{hasNextPage}items{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}"}';
     var searchVodQuery =
