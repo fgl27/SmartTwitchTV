@@ -687,15 +687,15 @@ public final class Tools {
         if (actManager != null) {
             actManager.getMemoryInfo(memInfo);
         } else {
-            return maxRamSize / 20;
+            return maxRamSize;
         }
-        int ramSize = (int) memInfo.totalMem;
+        int ramSize = (int) (memInfo.totalMem / 20);
 
         //Prevent Ram too big bigger then max int value
         //Or just too big even on devices with a lot of RAM it can't be too large
         ramSize = ramSize > maxRamSize || ramSize < 0 ? maxRamSize : ramSize;
 
-        return ramSize / 20;
+        return ramSize;
     }
 
     static String getWebviewVersion(Context context) {
