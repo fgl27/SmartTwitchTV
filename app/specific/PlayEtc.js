@@ -883,7 +883,7 @@ function Play_OpenHost() {
     Play_data.data[1] = Play_TargetHost.displayName;
     Play_PreshutdownStream(false);
 
-    Main_addEventListener('keydown', Play_handleKeyDown);
+    Main_PlayHandleKeyDown();
 
     Play_data.data[14] = Play_TargetHost.id;
 
@@ -1710,6 +1710,12 @@ function Play_handleKeyUpEndClear() {
 }
 
 function Play_handleKeyDown(e) {
+    //console.log('Play_handleKeyDown', e.keyCode);
+
+    if (!Play_isOn || !Main_isScene2DocVisible()) {
+        return;
+    }
+
     Play_screeOn();
 
     switch (e.keyCode) {
@@ -1807,7 +1813,7 @@ function Play_handleKeyDown(e) {
             } else if (!UserLiveFeed_isPreviewShowing()) UserLiveFeed_ShowFeed();
             else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                 Play_EndTextClear();
-                Main_removeEventListener('keydown', Play_handleKeyDown);
+                Main_clearAllPlayerEvents();
                 Main_addEventListener('keyup', Play_handleKeyUp);
                 Play_EndUpclear = false;
                 Play_EndUpclearCalback = Play_handleKeyDown;
@@ -1836,7 +1842,7 @@ function Play_handleKeyDown(e) {
             } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
             else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
             else if (PlayExtra_PicturePicture || Play_MultiEnable) {
-                Main_removeEventListener('keydown', Play_handleKeyDown);
+                Main_clearAllPlayerEvents();
                 Main_addEventListener('keyup', Play_handleKeyUp);
                 Play_EndUpclear = false;
                 Play_EndUpclearCalback = Play_handleKeyDown;
@@ -1888,7 +1894,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_StayDialogVisible()) {
                     Play_OpenLiveFeedCheck();
                 } else {
-                    Main_removeEventListener('keydown', Play_handleKeyDown);
+                    Main_clearAllPlayerEvents();
                     Main_addEventListener('keyup', Play_handleKeyUp);
                     PlayExtra_clear = false;
                     UserLiveFeed_ResetFeedId();

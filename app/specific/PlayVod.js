@@ -1164,6 +1164,12 @@ function PlayVod_SetPreview() {
 }
 
 function PlayVod_handleKeyDown(e) {
+    //console.log('PlayVod_handleKeyDown', e.keyCode);
+
+    if (!PlayVod_isOn || !Main_isScene2DocVisible()) {
+        return;
+    }
+
     Play_screeOn();
 
     switch (e.keyCode) {
@@ -1240,7 +1246,7 @@ function PlayVod_handleKeyDown(e) {
                 PlayVod_setHidePanel();
             } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                 Play_EndTextClear();
-                Main_removeEventListener('keydown', PlayVod_handleKeyDown);
+                Main_clearAllPlayerEvents();
                 Main_addEventListener('keyup', Play_handleKeyUp);
                 Play_EndUpclear = false;
                 Play_EndUpclearCalback = PlayVod_handleKeyDown;

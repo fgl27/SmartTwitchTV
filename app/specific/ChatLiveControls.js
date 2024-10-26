@@ -92,13 +92,7 @@ function ChatLiveControls_Show() {
 function ChatLiveControls_Hide() {
     ChatLiveControls_Channel = 0;
     ChatLiveControls_PreventInputClear();
-    Main_removeEventListener('keydown', ChatLiveControls_KeyboardEvent);
-    Main_removeEventListener('keydown', ChatLiveControls_handleKeyDown);
-    Main_removeEventListener('keydown', ChatLiveControls_EmotesEvent);
-    Main_removeEventListener('keydown', ChatLiveControls_ChooseChat);
-    Main_removeEventListener('keydown', ChatLiveControls_OptionsKeyDown);
-
-    Main_addEventListener('keydown', Play_handleKeyDown);
+    Main_PlayHandleKeyDown();
 
     Main_HideElement('chat_send');
     Main_HideElement('chat_emotes_holder');

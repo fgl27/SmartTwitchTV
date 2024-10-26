@@ -502,7 +502,7 @@ function ChannelContent_keyEnter() {
             Main_values.Play_isHost = false;
 
             Main_hideScene1Doc();
-            Main_addEventListener('keydown', Play_handleKeyDown);
+            Main_PlayHandleKeyDown();
             Main_showScene2Doc();
             Play_hidePanel();
             Play_Start(true);

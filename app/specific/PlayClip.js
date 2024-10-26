@@ -678,7 +678,7 @@ function PlayClip_OpenVodEnd() {
     Main_vodOffset = ChannelVod_vodOffset;
     PlayClip_OpenAVodOffset = Main_vodOffset;
     PlayClip_PreshutdownStream(true);
-    Main_addEventListener('keydown', PlayVod_handleKeyDown);
+    Main_PlayVodHandleKeyDown();
     PlayClip_OpenAVod = true;
     PlayVod_Start();
 }
@@ -737,6 +737,12 @@ function PlayClip_CheckPreviewClip() {
 }
 
 function PlayClip_handleKeyDown(e) {
+    //console.log('PlayClip_handleKeyDown', e.keyCode);
+
+    if (!PlayClip_isOn || !Main_isScene2DocVisible()) {
+        return;
+    }
+
     Play_screeOn();
 
     switch (e.keyCode) {
@@ -808,7 +814,7 @@ function PlayClip_handleKeyDown(e) {
                 PlayClip_setHidePanel();
             } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                 Play_EndTextClear();
-                Main_removeEventListener('keydown', PlayClip_handleKeyDown);
+                Main_clearAllPlayerEvents();
                 Main_addEventListener('keyup', Play_handleKeyUp);
                 Play_EndUpclear = false;
                 Play_EndUpclearCalback = PlayClip_handleKeyDown;

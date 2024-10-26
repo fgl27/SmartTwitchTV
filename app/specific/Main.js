@@ -1749,7 +1749,7 @@ function Main_OPenAsVod_PreshutdownStream() {
 function Main_openStream() {
     Main_hideScene1DocAndCallBack(function () {
         Main_showScene2Doc();
-        Main_addEventListener('keydown', Play_handleKeyDown);
+        Main_PlayHandleKeyDown();
 
         if (!Play_EndDialogEnter) {
             Play_HideEndDialog();
@@ -1796,7 +1796,7 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
     Main_hideScene1DocAndCallBack(function () {
         Main_showScene2Doc();
 
-        Main_addEventListener('keydown', PlayClip_handleKeyDown);
+        Main_PlayClipHandleKeyDown();
         PlayClip_Start();
 
         Main_EventPlay('clip', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[17], screen);
@@ -1847,11 +1847,42 @@ function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
 function Main_openVod() {
     Main_hideScene1DocAndCallBack(function () {
         Main_showScene2Doc();
-
-        Main_addEventListener('keydown', PlayVod_handleKeyDown);
+        Main_PlayVodHandleKeyDown();
         Play_hideChat();
         PlayVod_Start();
     });
+}
+
+//center all player key events in one place to prevent key leaks
+function Main_PlayVodHandleKeyDown() {
+    Main_clearAllPlayerEvents();
+    Main_addEventListener('keydown', PlayVod_handleKeyDown);
+}
+
+function Main_PlayClipHandleKeyDown() {
+    Main_clearAllPlayerEvents();
+    Main_addEventListener('keydown', PlayClip_handleKeyDown);
+}
+
+function Main_PlayHandleKeyDown() {
+    Main_clearAllPlayerEvents();
+    Main_addEventListener('keydown', Play_handleKeyDown);
+}
+
+function Main_clearAllPlayerEvents() {
+    Main_removeEventListener('keydown', Play_handleKeyDown);
+    Main_removeEventListener('keydown', PlayVod_handleKeyDown);
+    Main_removeEventListener('keydown', PlayClip_handleKeyDown);
+    Main_removeEventListener('keydown', ChatLiveControls_handleKeyDown);
+    Main_removeEventListener('keydown', ChatLiveControls_KeyboardEvent);
+    Main_removeEventListener('keydown', ChatLiveControls_EmotesEvent);
+    Main_removeEventListener('keydown', ChatLiveControls_ChooseChat);
+    Main_removeEventListener('keydown', ChatLiveControls_OptionsKeyDown);
+
+    Main_removeEventListener('keydown', Play_EndUpclearCalback);
+
+    Main_removeEventListener('keyup', PlayVod_SeekClear);
+    Main_removeEventListener('keyup', Play_handleKeyUp);
 }
 
 function Main_removeFocus(id, idArray) {
@@ -3180,10 +3211,7 @@ function Main_clearInterval(id) {
 
 function Main_onNewIntentClearPlay() {
     Play_ClearPlayer();
-    Main_removeEventListener('keydown', Play_handleKeyDown);
-    Main_removeEventListener('keydown', PlayVod_handleKeyDown);
-    Main_removeEventListener('keyup', PlayVod_SeekClear);
-    Main_removeEventListener('keydown', PlayClip_handleKeyDown);
+    Main_clearAllPlayerEvents();
     Play_isOn = false;
     PlayVod_isOn = false;
     PlayClip_isOn = false;
