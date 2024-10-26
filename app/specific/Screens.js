@@ -594,7 +594,7 @@ function Screens_loadDataSuccess(key) {
             }
         }
     }
-    ScreenObj[key].emptyContent = (!response_items || !ScreenObj[key].itemsCount) && !ScreenObj[key].status;
+    ScreenObj[key].emptyContent = !ScreenObj[key].itemsCount && !ScreenObj[key].status;
 
     if (((ScreenObj[key].emptyContent && response_items) || ScreenObj[key].row_id - currentRowId < 2) && !ScreenObj[key].dataEnded) {
         ScreenObj[key].loadingData = true;
