@@ -4732,6 +4732,8 @@
                     'Fix old deleted Lives not being deleted from live history',
                     'Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content',
                     'Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens',
+                    'Fix player controls miss behaving randomly',
+                    'Fix screen with a single content not allowing to open the content, issue introduced in last version',
                     'Improve numeric VODs jump to % function',
                     'Improve media keys Live/VODs jump to 5/30 seconds function',
                     'Other General improvements'
@@ -4745,7 +4747,6 @@
                     'Fix not be able to open the game for some scenarios in the thumbnail options',
                     'Fix current game in player content not always showing current game',
                     'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
-
                     'General etc improvements'
                 ]
             },
@@ -29144,6 +29145,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
         ScreenObj[key].emptyContent = !ScreenObj[key].itemsCount && !ScreenObj[key].status;
 
+        //TODO  improve this it may cause loops in case API bugs out
         if (((ScreenObj[key].emptyContent && response_items) || ScreenObj[key].row_id - currentRowId < 2) && !ScreenObj[key].dataEnded) {
             ScreenObj[key].loadingData = true;
             ScreenObj[key].emptyContent = false;
