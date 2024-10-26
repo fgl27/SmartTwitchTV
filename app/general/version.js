@@ -21,13 +21,13 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 369, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/369/SmartTV_twitch_3_0_369.apk',
+    publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
     WebVersion: 'October 25 2024',
     WebTag: 683, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'Version October 25 2024 Apk Version 3.0.369',
+            title: 'Version October 25 2024 Apk Version 3.0.369 and up',
             changes: [
                 'Fix crashes for devices with bigger RAM (4+GB) when playing VOD, even that teh device has a large amount of RAM if the app uses it for buffer the app will crash',
                 'Fix old deleted vod not being deleted from live history',
@@ -57,12 +57,6 @@ var version = {
             changes: [
                 'Fix animation lag in the Clip section, Twitch was sending images that were too big causing lags',
                 'General performance improvements'
-            ]
-        },
-        {
-            title: 'WebVersion August 17',
-            changes: [
-                "Update the emotes selection screen to improve performance, no magic can improve the performance here more than what is, simply some devices are capable of playing 8k but they can't handle multiple animated images, also some emotes servers are terribly optimized, for example, 7TV"
             ]
         }
     ]
