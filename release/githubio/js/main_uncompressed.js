@@ -4719,12 +4719,12 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
+        publishVersionCode: 369, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/369/SmartTV_twitch_3_0_369.apk',
         WebVersion: 'October 25 2024',
         WebTag: 683, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'Version October 25 2024 Apk Version 3.0.369 and up',
+                title: 'Version October 25 2024 Apk Version 3.0.369',
                 changes: [
                     'Fix crashes for devices with bigger RAM (4+GB) when playing VOD, even that teh device has a large amount of RAM if the app uses it for buffer the app will crash',
                     'Fix old deleted vod not being deleted from live history',
@@ -33138,7 +33138,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
 
                 //skip check if game is blocked as we are on the blocked game section
-                var skipBlockedCheck = this.screen === Main_AGameVod && Screens_getGameIsBlocked(this.gameSelected_Id);
+                var skipBlockedCheck = this.screen === Main_AGameVod && AddUser_IsUserSet() && Screens_getGameIsBlocked(this.gameSelected_Id);
 
                 var isNotBlocked = Screens_isNotBlocked(
                     skipBlockedCheck ? null : channelId,
@@ -33210,7 +33210,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
                 //skip check if game is blocked as we are on the blocked game section
-                var skipBlockedCheck = this.screen === Main_aGame && Screens_getGameIsBlocked(this.gameSelected_Id);
+                var skipBlockedCheck = this.screen === Main_aGame && AddUser_IsUserSet() && Screens_getGameIsBlocked(this.gameSelected_Id);
 
                 var isNotBlocked = Screens_isNotBlocked(
                     skipBlockedCheck ? null : cell.user_id,
@@ -33347,7 +33347,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
 
                 //skip check if game is blocked as we are on the blocked game section
-                var skipBlockedCheck = this.screen === Main_AGameClip && Screens_getGameIsBlocked(this.gameSelected_Id);
+                var skipBlockedCheck = this.screen === Main_AGameClip && AddUser_IsUserSet() && Screens_getGameIsBlocked(this.gameSelected_Id);
 
                 var isNotBlocked = Screens_isNotBlocked(
                     skipBlockedCheck ? null : channelId,
