@@ -21,11 +21,19 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 369, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/369/SmartTV_twitch_3_0_369.apk',
+    publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
     WebVersion: 'October 25 2024',
-    WebTag: 683, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 685, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version October 27 2024 Apk Version 3.0.371',
+            changes: [
+                'Fix issues for devices with a very low RAM size, last version fix for high RAM size cause a issue for low 😑',
+                'Fix issues opening a game content without a user',
+                'Other General improvements'
+            ]
+        },
         {
             title: 'Version October 25 2024 Apk Version 3.0.369',
             changes: [
@@ -50,13 +58,6 @@ var version = {
                 'Fix current game in player content not always showing current game',
                 'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
                 'General etc improvements'
-            ]
-        },
-        {
-            title: 'WebVersion September 09',
-            changes: [
-                'Fix animation lag in the Clip section, Twitch was sending images that were too big causing lags',
-                'General performance improvements'
             ]
         }
     ]
