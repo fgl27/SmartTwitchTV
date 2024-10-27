@@ -503,7 +503,7 @@ function ScreensObj_StartAllVars() {
             var channelId = this.isQuery && cell.creator ? cell.creator.id : cell.user_id;
 
             //skip check if game is blocked as we are on the blocked game section
-            var skipBlockedCheck = this.screen === Main_AGameVod && Screens_getGameIsBlocked(this.gameSelected_Id);
+            var skipBlockedCheck = this.screen === Main_AGameVod && AddUser_IsUserSet() && Screens_getGameIsBlocked(this.gameSelected_Id);
 
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : channelId,
@@ -575,7 +575,7 @@ function ScreensObj_StartAllVars() {
             var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
 
             //skip check if game is blocked as we are on the blocked game section
-            var skipBlockedCheck = this.screen === Main_aGame && Screens_getGameIsBlocked(this.gameSelected_Id);
+            var skipBlockedCheck = this.screen === Main_aGame && AddUser_IsUserSet() && Screens_getGameIsBlocked(this.gameSelected_Id);
 
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : cell.user_id,
@@ -712,7 +712,7 @@ function ScreensObj_StartAllVars() {
             var channelId = this.isQuery && cell.broadcaster ? cell.broadcaster.id : cell.broadcaster_id;
 
             //skip check if game is blocked as we are on the blocked game section
-            var skipBlockedCheck = this.screen === Main_AGameClip && Screens_getGameIsBlocked(this.gameSelected_Id);
+            var skipBlockedCheck = this.screen === Main_AGameClip && AddUser_IsUserSet() && Screens_getGameIsBlocked(this.gameSelected_Id);
 
             var isNotBlocked = Screens_isNotBlocked(
                 skipBlockedCheck ? null : channelId,
