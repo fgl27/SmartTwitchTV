@@ -29140,7 +29140,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreenObj[key].emptyContent = !ScreenObj[key].itemsCount && !ScreenObj[key].status;
 
         //TODO  improve this it may cause loops in case API bugs out
-        if (((ScreenObj[key].emptyContent && response_items) || ScreenObj[key].row_id - currentRowId < 2) && !ScreenObj[key].dataEnded) {
+        if ((ScreenObj[key].emptyContent || ScreenObj[key].row_id - currentRowId < 2) && response_items && !ScreenObj[key].dataEnded) {
             ScreenObj[key].loadingData = true;
             ScreenObj[key].emptyContent = false;
 
