@@ -29,7 +29,7 @@ var version = {
         {
             title: 'Version October 27 2024 Apk Version 3.0.371',
             changes: [
-                'Fix issues for devices with a very low RAM size, last version fix for high RAM size cause a issue for low 😑',
+                'Fix issues for devices with a very low RAM size during playback, last version fix for high RAM size cause a issue for low 😑',
                 'Fix issues opening a game content without a user',
                 'Other General improvements'
             ]
