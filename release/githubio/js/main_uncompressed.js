@@ -2169,9 +2169,8 @@
         STR_BLOCK_SORT_NAME = 'Sorted by name A to Z';
         STR_BLOCK_EMPTY_CONTENT = 'There is no blocked content of this type';
 
-        STR_NO_TOKEN_WARNING = 'Without adding a user and authorization token the app, may fail to load the content, this is a Twitch API limitation';
-        STR_NO_TOKEN_WARNING_429 =
-            'The app is failing to load the content due to a Twitch API limitation, to fix this add a user and authorization token.';
+        STR_NO_TOKEN_WARNING = 'Without adding a user the app, may fail to load the content, this is a Twitch API limitation';
+        STR_NO_TOKEN_WARNING_429 = 'The app is failing to load the content due to a Twitch API limitation, to fix this add a user.';
 
         STR_ADD_USER_TEXT = 'Visit %site on another device and enter the code: %code';
         STR_ADD_USER_TEXT_COUNTER = 'Checking access confirmation in %d...';
@@ -29140,7 +29139,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreenObj[key].emptyContent = !ScreenObj[key].itemsCount && !ScreenObj[key].status;
 
         //TODO  improve this it may cause loops in case API bugs out
-        if ((ScreenObj[key].emptyContent || ScreenObj[key].row_id - currentRowId < 2) && response_items && !ScreenObj[key].dataEnded) {
+        if (
+            (ScreenObj[key].emptyContent || ScreenObj[key].row_id - currentRowId < 2) &&
+            ScreenObj[key].skippedCellLoadMore &&
+            response_items &&
+            !ScreenObj[key].dataEnded
+        ) {
             ScreenObj[key].loadingData = true;
             ScreenObj[key].emptyContent = false;
 
