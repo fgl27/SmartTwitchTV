@@ -1144,6 +1144,6 @@ function OSInterface_SetLanguage(lang) {
 //public boolean getPlaybackState()
 //Android specific: true
 //return the playback state
-// function OSInterface_getPlaybackState() {//Not be used
-//     return Android.getPlaybackState();
-// }
+function OSInterface_getPlaybackState() {
+    return Main_IsOn_OSInterface ? Android.getPlaybackState() : true;
+}
