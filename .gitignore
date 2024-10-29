@@ -42,3 +42,4 @@ release/scripts/testing.sh
 .firebase/*
 firebase-debug.log
 node_modules/*
+package-lock.json
