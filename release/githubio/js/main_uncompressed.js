@@ -16608,9 +16608,9 @@
     //public boolean getPlaybackState()
     //Android specific: true
     //return the playback state
-    // function OSInterface_getPlaybackState() {//Not be used
-    //     return Android.getPlaybackState();
-    // }
+    function OSInterface_getPlaybackState() {
+        return Main_IsOn_OSInterface ? Android.getPlaybackState() : true;
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -19439,7 +19439,10 @@
 
     function Play_CheckPreview() {
         if (Play_isOn && Play_data.data.length > 0 && !Play_isEndDialogVisible() && !Play_StayDialogVisible()) {
-            if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+            if (!Play_StayDialogVisible()) {
+                //skip update the date if not playing, this can an scenario the live has ended during Java onStop
+                Main_Set_history('live', Play_data.data, !OSInterface_getPlaybackState());
+            }
 
             if (Main_IsOn_OSInterface && Play_CheckPreviewLive()) {
                 Play_PreviewURL = Play_data.AutoUrl;
