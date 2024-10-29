@@ -1,17 +1,21 @@
 fs = require('fs');
 
-function writeFileSync(path, text, LogMsg) {
-    fs.writeFileSync(path, text, function (err) {
-        if (err) {
-            return console.log(err);
-        } else if (LogMsg) {
-            console.log(LogMsg);
-        }
-    });
+function writeFileSync(path, text) {
+    fs.writeFileSync(path, text);
 }
 
 function readFileSync(path) {
     return fs.readFileSync(path, 'utf8');
+}
+
+function mkdirSync(path) {
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path);
+    }
+}
+
+function copyFileSync(srcPath, destPath) {
+    fs.copyFileSync(srcPath, destPath);
 }
 
 function runNodeJsSync(path) {
@@ -22,4 +26,4 @@ function deleteFileSync(path) {
     fs.unlinkSync(path);
 }
 
-module.exports = {writeFileSync, readFileSync, runNodeJsSync, deleteFileSync};
+module.exports = {writeFileSync, readFileSync, runNodeJsSync, deleteFileSync, mkdirSync, copyFileSync};
