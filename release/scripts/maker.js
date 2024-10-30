@@ -1,7 +1,11 @@
 console.log('Start');
 
-minify = require('html-minifier').minify;
+const minify = require('html-minifier').minify;
+const jshint = require('jshint').JSHINT;
+
 const tools = require('./tools');
+const temp_maker_folder = 'release/temp_maker/';
+const mainJSFile = temp_maker_folder + 'main.js';
 
 //This will update the version JSON file and the temp Changelog_Up.md file
 function version_up() {
@@ -38,7 +42,7 @@ function cleanMinifyHTML(filePath, singleJSPath, writePath) {
     tools.writeFileASync(writePath.replace('index', 'index_uncompressed').replace('release/', 'release/temp_maker/'), htmlFile);
 
     //minify and clean
-    htmlFile = minify(htmlFile, {
+    const options = {
         collapseWhitespace: true,
         removeComments: true,
         removeOptionalTags: true,
@@ -47,7 +51,8 @@ function cleanMinifyHTML(filePath, singleJSPath, writePath) {
         useShortDoctype: true,
         minifyCSS: true,
         minifyJS: true
-    });
+    };
+    htmlFile = minify(htmlFile, options);
 
     //write to main folder
     tools.writeFileASync(writePath, htmlFile);
@@ -55,18 +60,77 @@ function cleanMinifyHTML(filePath, singleJSPath, writePath) {
     console.log('cleanMinifyHTML ' + filePath + ' end');
 }
 
-function prepareHTML() {
+function make_HTML() {
     cleanMinifyHTML('app/index.html', 'githubio/js/main.js', 'release/index.html');
     cleanMinifyHTML('app/Extrapage/index.html', 'githubio/js/Extrapage.js', 'release/extrapageindex.html');
 
-    console.log('prepareHTMLs end');
+    console.log('make_HTML end');
+}
+
+function make_JS() {
+    const allJSFiles = tools.getFilesFromArrayByType(['app/languages/', 'app/general/', 'app/specific/', 'app/thirdparty/'], '.js');
+    let mainJSContent = '';
+
+    for (const file of allJSFiles) {
+        mainJSContent += tools.readFileSync(file);
+    }
+
+    tools.writeFileSync(mainJSFile, mainJSContent);
+
+    if (js_jshint(mainJSContent)) {
+        console.log('\njshint fail for file ' + mainJSFile);
+        return false;
+    }
+
+    console.log('make_mainJS end');
+
+    return true;
+}
+
+function js_jshint(source) {
+    const options = {
+        eqeqeq: true,
+        laxbreak: true,
+        undef: true,
+        unused: true,
+        browser: true,
+        node: true
+    };
+
+    const predef = {
+        Android: true,
+        punycode: true,
+        smartTwitchTV: true,
+        firebase: true,
+        dataLayer: true,
+        firebase: true,
+        ActiveXObject: true,
+        Twitch: true,
+        global: true
+    };
+
+    jshint(source, options, predef);
+    const errors = jshint.data().errors;
+
+    if (errors) {
+        for (const error of errors) {
+            console.log('Line ' + error.line + ' reason ' + error.reason + ' code ' + error.code + ' evidence ' + error.evidence);
+        }
+
+        console.log('\nFound jshint errors total = ' + errors.length);
+    }
+
+    return Boolean(errors && errors.length);
 }
 
 function run_all() {
-    const temp_maker_folder = 'release/temp_maker/';
     tools.mkdirSync(temp_maker_folder);
 
-    prepareHTML();
+    //make main js file if doesn't pass jshint validation exit.
+    if (!make_JS()) return;
+
+    make_HTML();
+
     version_up();
 }
 
