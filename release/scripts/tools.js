@@ -1,7 +1,17 @@
 fs = require('fs');
+const errorFun = function (e) {
+    if (e) {
+        console.log(e);
+        throw e;
+    }
+};
 
 function writeFileSync(path, text) {
     fs.writeFileSync(path, text);
+}
+
+function writeFileASync(path, text) {
+    fs.writeFile(path, text, errorFun);
 }
 
 function readFileSync(path) {
@@ -22,8 +32,12 @@ function runNodeJsSync(path) {
     require('child_process').execSync('node ' + path);
 }
 
+function runNodeJsASync(path) {
+    require('child_process').fork(path);
+}
+
 function deleteFileSync(path) {
     fs.unlinkSync(path);
 }
 
-module.exports = {writeFileSync, readFileSync, runNodeJsSync, deleteFileSync, mkdirSync, copyFileSync};
+module.exports = {writeFileSync, writeFileASync, readFileSync, runNodeJsSync, runNodeJsASync, deleteFileSync, mkdirSync, copyFileSync};

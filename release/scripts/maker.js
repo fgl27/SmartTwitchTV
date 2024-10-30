@@ -9,15 +9,13 @@ function version_up() {
 
     //create a temp file with the content of versions file (./app/general/version.js and ./release/scripts/version.js)
     const version = tools.readFileSync('./app/general/version.js') + tools.readFileSync('./release/scripts/version.js');
-    const scripPath = './release/version.js';
+    const scripPath = './release/temp_maker/version.js';
 
+    //write in sync as we will execute it
     tools.writeFileSync(scripPath, version);
 
     // execute
-    tools.runNodeJsSync(scripPath);
-
-    // delete the temp file
-    tools.deleteFileSync(scripPath);
+    tools.runNodeJsASync(scripPath);
 
     console.log('version_up end');
 }
@@ -36,6 +34,9 @@ function cleanMinifyHTML(filePath, singleJSPath, writePath) {
     //add .min reference to css files
     htmlFile = htmlFile.replaceAll('css/icons.css', 'css/icons.min.css');
 
+    //write a uncompressed copy to temp folder for visual debug proposes
+    tools.writeFileASync(writePath.replace('index', 'index_uncompressed').replace('release/', 'release/temp_maker/'), htmlFile);
+
     //minify and clean
     htmlFile = minify(htmlFile, {
         collapseWhitespace: true,
@@ -49,7 +50,7 @@ function cleanMinifyHTML(filePath, singleJSPath, writePath) {
     });
 
     //write to main folder
-    tools.writeFileSync(writePath, htmlFile);
+    tools.writeFileASync(writePath, htmlFile);
 
     console.log('cleanMinifyHTML ' + filePath + ' end');
 }
