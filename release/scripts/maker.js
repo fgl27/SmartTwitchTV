@@ -3,9 +3,11 @@ console.log('Start');
 const minify = require('html-minifier').minify;
 const jshint = require('jshint').JSHINT;
 
+const prettier = require('prettier');
+
 const tools = require('./tools');
 const temp_maker_folder = 'release/temp_maker/';
-const mainJSFile = temp_maker_folder + 'main.js';
+const mainJSFile = temp_maker_folder + 'main_temp.js';
 
 //This will update the version JSON file and the temp Changelog_Up.md file
 function version_up() {
@@ -75,7 +77,7 @@ function make_JS() {
         mainJSContent += tools.readFileSync(file);
     }
 
-    tools.writeFileSync(mainJSFile, mainJSContent);
+    tools.writeFileASync(mainJSFile, mainJSContent);
 
     if (js_jshint(mainJSContent)) {
         console.log('\nFile ' + mainJSFile);
@@ -91,11 +93,28 @@ function make_JS() {
         return false;
     }
 
-    tools.writeFileSync(temp_maker_folder + 'Extrapage.js', extraJSContent);
+    tools.writeFileASync(temp_maker_folder + 'Extrapage.js', extraJSContent);
 
     console.log('make_mainJS end');
 
+    makeMainJS(mainJSContent);
+
     return true;
+}
+
+async function makeMainJS(mainJSContent) {
+    const releaseAPI = tools.readFileSync('release/api.js');
+
+    const releaseAPIStart = releaseAPI.split('APISPLITSTART')[1].split('//APIMID')[0];
+    const releaseAPIEnd = releaseAPI.split('APISPLITCENTER')[1].split('//APIEND')[0];
+
+    mainJSContent = mainJSContent.replace('Main_Start();', '');
+
+    const options = await prettier.resolveConfig('.prettierrc');
+    const formattedHTML = await prettier.format(releaseAPIStart + mainJSContent + releaseAPIEnd, options);
+
+    tools.writeFileASync(temp_maker_folder + 'main_uncompressed.js', formattedHTML);
+    tools.writeFileASync('release/githubio/js/main_uncompressed.js', formattedHTML);
 }
 
 function js_jshint(source) {
@@ -147,4 +166,5 @@ function run_all() {
 }
 
 run_all();
+
 console.log('End');

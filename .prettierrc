@@ -4,5 +4,6 @@
     "printWidth": 150,
     "bracketSpacing": false,
     "singleQuote": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "parser": "babel"
 }
