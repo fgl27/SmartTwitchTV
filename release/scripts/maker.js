@@ -78,9 +78,20 @@ function make_JS() {
     tools.writeFileSync(mainJSFile, mainJSContent);
 
     if (js_jshint(mainJSContent)) {
-        console.log('\njshint fail for file ' + mainJSFile);
+        console.log('\nFile ' + mainJSFile);
+        console.log('');
         return false;
     }
+
+    const extraJSContent = tools.readFileSync('app/Extrapage/Extrapage.js');
+
+    if (js_jshint(extraJSContent)) {
+        console.log('\nFile ' + 'app/Extrapage/Extrapage.js');
+        console.log('');
+        return false;
+    }
+
+    tools.writeFileSync(temp_maker_folder + 'Extrapage.js', extraJSContent);
 
     console.log('make_mainJS end');
 
@@ -113,11 +124,12 @@ function js_jshint(source) {
     const errors = jshint.data().errors;
 
     if (errors) {
+        console.log('\njshint fail:\n');
         for (const error of errors) {
             console.log('Line ' + error.line + ' reason ' + error.reason + ' code ' + error.code + ' evidence ' + error.evidence);
         }
 
-        console.log('\nFound jshint errors total = ' + errors.length);
+        console.log('\nTotal errors = ' + errors.length);
     }
 
     return Boolean(errors && errors.length);
