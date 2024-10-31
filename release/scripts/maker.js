@@ -3,6 +3,8 @@ console.log('Start');
 const minify = require('html-minifier').minify;
 const jshint = require('jshint').JSHINT;
 
+const crass = require('crass');
+
 const prettier = require('prettier');
 
 const tools = require('./tools');
@@ -67,6 +69,18 @@ function make_HTML() {
     cleanMinifyHTML('app/Extrapage/index.html', 'githubio/js/Extrapage.js', 'release/extrapageindex.html');
 
     console.log('make_HTML end');
+}
+
+function make_CSS() {
+    const iconCSS = tools.readFileSync('release/githubio/css/icons.css');
+
+    //compress the stylesheet
+    let parsed = crass.parse(iconCSS);
+    // Optimize the stylesheet:
+    parsed = parsed.optimize();
+
+    // Save the stylesheet:
+    tools.writeFileASync('release/githubio/css/icons.min.css', parsed.toString());
 }
 
 function make_JS() {
@@ -161,7 +175,7 @@ function run_all() {
     if (!make_JS()) return;
 
     make_HTML();
-
+    make_CSS();
     version_up();
 }
 
