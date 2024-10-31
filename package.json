@@ -4,6 +4,6 @@
     "html-minifier": "^4.0.0",
     "jshint": "^2.13.6",
     "prettier": "^3.3.3",
-    "uglify-js": "^3.19.3"
+    "uglify-js": "3.18.0"
   }
 }

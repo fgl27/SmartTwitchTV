@@ -4,6 +4,7 @@ const minify = require('html-minifier').minify;
 const jshint = require('jshint').JSHINT;
 
 const crass = require('crass');
+const UglifyJS = require('uglify-js');
 
 const prettier = require('prettier');
 
@@ -113,6 +114,8 @@ function make_JS() {
 
     makeMainJS(mainJSContent);
 
+    make_uglifyjs(mainJSContent, extraJSContent);
+
     return true;
 }
 
@@ -129,6 +132,19 @@ async function makeMainJS(mainJSContent) {
 
     tools.writeFileASync(temp_maker_folder + 'main_uncompressed.js', formattedHTML);
     tools.writeFileASync('release/githubio/js/main_uncompressed.js', formattedHTML);
+}
+
+function make_uglifyjs(mainJSContent, extraJSContent) {
+    const options = {
+        compress: true,
+        mangle: {
+            toplevel: true,
+            eval: true
+        }
+    };
+
+    tools.writeFileASync('release/githubio/js/main.js', UglifyJS.minify(mainJSContent, options).code);
+    tools.writeFileASync('release/githubio/js/Extrapage.js', UglifyJS.minify(extraJSContent, options).code);
 }
 
 function js_jshint(source) {
