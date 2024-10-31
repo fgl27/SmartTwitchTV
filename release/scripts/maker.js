@@ -86,7 +86,7 @@ function make_CSS() {
 
 function make_JS() {
     const options = {
-        compress: true,
+        compress: {arrows: false}, //prevent devices with old browser implementation not supporting arrows
         mangle: true
     };
 
@@ -147,7 +147,7 @@ async function makeMainJS(mainJSContentCompressed, mainJSContent, extraJSContent
 
 function make_uglifyjs(finalMainJSContentCompressed, extraJSContent) {
     const options = {
-        compress: true,
+        compress: {arrows: false}, //prevent devices with old browser implementation not supporting arrows
         mangle: {
             toplevel: true,
             eval: true
