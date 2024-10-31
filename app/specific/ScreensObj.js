@@ -1547,7 +1547,7 @@ function ScreensObj_InitLive() {
             return;
         }
 
-        var hasData = responseObj.data && responseObj.data.streams && responseObj.data.streams && responseObj.data.streams.edges;
+        var hasData = responseObj.data && responseObj.data.streams && responseObj.data.streams.edges;
 
         if (hasData) {
             this.dataEnded = !responseObj.data.streams.pageInfo.hasNextPage;
@@ -2045,7 +2045,7 @@ function ScreensObj_InitGame() {
     };
 
     ScreenObj[key].concatenate = function (responseObj) {
-        var hasData = responseObj.data && responseObj.data.games && responseObj.data.games && responseObj.data.games.edges;
+        var hasData = responseObj.data && responseObj.data.games && responseObj.data.games.edges;
 
         if (hasData) {
             this.dataEnded = !responseObj.data.games.pageInfo.hasNextPage;
