@@ -85,11 +85,20 @@ function make_CSS() {
 }
 
 function make_JS() {
+    const options = {
+        compress: true,
+        mangle: true
+    };
+
     const allJSFiles = tools.getFilesFromArrayByType(['app/languages/', 'app/general/', 'app/specific/', 'app/thirdparty/'], '.js');
     let mainJSContent = '';
+    let mainJSContentCompressed = '';
+    let fileContent = '';
 
     for (const file of allJSFiles) {
-        mainJSContent += tools.readFileSync(file);
+        fileContent = tools.readFileSync(file);
+        mainJSContent += fileContent;
+        mainJSContentCompressed += UglifyJS.minify(fileContent, options).code;
     }
 
     tools.writeFileASync(mainJSFile, mainJSContent);
@@ -112,14 +121,12 @@ function make_JS() {
 
     console.log('make_mainJS end');
 
-    makeMainJS(mainJSContent);
-
-    make_uglifyjs(mainJSContent, extraJSContent);
+    makeMainJS(mainJSContentCompressed, mainJSContent, extraJSContent);
 
     return true;
 }
 
-async function makeMainJS(mainJSContent) {
+async function makeMainJS(mainJSContentCompressed, mainJSContent, extraJSContent) {
     const releaseAPI = tools.readFileSync('release/api.js');
 
     const releaseAPIStart = releaseAPI.split('APISPLITSTART')[1].split('//APIMID')[0];
@@ -128,13 +135,17 @@ async function makeMainJS(mainJSContent) {
     mainJSContent = mainJSContent.replace('Main_Start();', '');
 
     const options = await prettier.resolveConfig('.prettierrc');
-    const formattedHTML = await prettier.format(releaseAPIStart + mainJSContent + releaseAPIEnd, options);
 
-    tools.writeFileASync(temp_maker_folder + 'main_uncompressed.js', formattedHTML);
-    tools.writeFileASync('release/githubio/js/main_uncompressed.js', formattedHTML);
+    const finalMainJSContent = await prettier.format(releaseAPIStart + mainJSContent + releaseAPIEnd, options);
+    const finalMainJSContentCompressed = await prettier.format(releaseAPIStart + mainJSContentCompressed + releaseAPIEnd, options);
+
+    tools.writeFileASync(temp_maker_folder + 'main_uncompressed.js', finalMainJSContent);
+    tools.writeFileASync('release/githubio/js/main_uncompressed.js', finalMainJSContent);
+
+    make_uglifyjs(finalMainJSContentCompressed, extraJSContent);
 }
 
-function make_uglifyjs(mainJSContent, extraJSContent) {
+function make_uglifyjs(finalMainJSContentCompressed, extraJSContent) {
     const options = {
         compress: true,
         mangle: {
@@ -143,7 +154,7 @@ function make_uglifyjs(mainJSContent, extraJSContent) {
         }
     };
 
-    tools.writeFileASync('release/githubio/js/main.js', UglifyJS.minify(mainJSContent, options).code);
+    tools.writeFileASync('release/githubio/js/main.js', UglifyJS.minify(finalMainJSContentCompressed, options).code);
     tools.writeFileASync('release/githubio/js/Extrapage.js', UglifyJS.minify(extraJSContent, options).code);
 }
 
