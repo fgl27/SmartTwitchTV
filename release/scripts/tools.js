@@ -41,7 +41,7 @@ function getFilesFromPathByType(folderPath, type) {
 
 function mkdirSync(path) {
     if (!fs.existsSync(path)) {
-        fs.mkdirSync(path);
+        fs.mkdirSync(path, {recursive: true});
     }
 }
 
@@ -58,7 +58,19 @@ function runNodeJsASync(path) {
 }
 
 function deleteFileSync(path) {
-    fs.unlinkSync(path);
+    if (fs.existsSync(path)) {
+        fs.unlinkSync(path);
+    }
+}
+
+function deleteFolderSync(path) {
+    if (fs.existsSync(path)) {
+        fs.rmSync(path, {recursive: true});
+    }
+}
+
+function copySync(source, dest) {
+    fs.cpSync(source, dest, {recursive: true});
 }
 
 module.exports = {
@@ -71,5 +83,7 @@ module.exports = {
     runNodeJsASync,
     deleteFileSync,
     mkdirSync,
-    copyFileSync
+    copyFileSync,
+    copySync,
+    deleteFolderSync
 };
