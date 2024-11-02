@@ -12,7 +12,6 @@ function clean() {
 }
 
 function set() {
-    console.log('set');
     sed('-i', 'LoadFromAssets = false', 'LoadFromAssets = true', 'apk/app/src/main/java/com/fgl27/twitch/Constants.java');
 
     //prepare folders
