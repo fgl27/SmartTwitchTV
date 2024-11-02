@@ -19,3 +19,5 @@
     - Auto Markdown TOC https://marketplace.visualstudio.com/items?itemName=huntertran.auto-markdown-toc
     - Code Spell Checker https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
     - Brazilian Portuguese - Code Spell Checker https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian
+    - adb download https://dl.google.com/android/repository/platform-tools-latest-windows.zip
+     - studio https://developer.android.com/studio
