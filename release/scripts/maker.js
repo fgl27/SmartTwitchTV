@@ -1,5 +1,3 @@
-console.log('Start');
-
 const minify = require('html-minifier').minify;
 const jshint = require('jshint').JSHINT;
 
@@ -14,7 +12,7 @@ const mainJSFile = temp_maker_folder + 'main_temp.js';
 
 //This will update the version JSON file and the temp Changelog_Up.md file
 function version_up() {
-    console.log('version_up start');
+    console.log('\nCreating Version files...');
 
     //create a temp file with the content of versions file (./app/general/version.js and ./release/scripts/version.js)
     const version = tools.readFileSync('./app/general/version.js') + tools.readFileSync('./release/scripts/version.js');
@@ -25,8 +23,6 @@ function version_up() {
 
     // execute
     tools.runNodeJsASync(scripPath);
-
-    console.log('version_up end');
 }
 
 //Clean up HTML files, replace all local reference and minify
@@ -61,18 +57,18 @@ function cleanMinifyHTML(filePath, singleJSPath, writePath) {
 
     //write to main folder
     tools.writeFileASync(writePath, htmlFile);
-
-    console.log('cleanMinifyHTML ' + filePath + ' end');
 }
 
 function make_HTML() {
+    console.log('\nCreating HTML files...');
+
     cleanMinifyHTML('app/index.html', 'githubio/js/main.js', 'release/index.html');
     cleanMinifyHTML('app/Extrapage/index.html', 'githubio/js/Extrapage.js', 'release/extrapageindex.html');
-
-    console.log('make_HTML end');
 }
 
 function make_CSS() {
+    console.log('\nCreating CSS files...');
+
     const iconCSS = tools.readFileSync('release/githubio/css/icons.css');
 
     //compress the stylesheet
@@ -85,6 +81,8 @@ function make_CSS() {
 }
 
 function make_JS() {
+    console.log('\nCreating js files...');
+
     const options = {
         compress: {arrows: false}, //prevent devices with old browser implementation not supporting arrows
         mangle: true
@@ -118,8 +116,6 @@ function make_JS() {
     }
 
     tools.writeFileASync(temp_maker_folder + 'Extrapage.js', extraJSContent);
-
-    console.log('make_mainJS end');
 
     makeMainJS(mainJSContentCompressed, mainJSContent, extraJSContent);
 
@@ -196,6 +192,8 @@ function js_jshint(source) {
 }
 
 function run_all() {
+    console.log('Started release maker...');
+
     tools.mkdirSync(temp_maker_folder);
 
     //make main js file if doesn't pass jshint validation exit.
@@ -204,8 +202,8 @@ function run_all() {
     make_HTML();
     make_CSS();
     version_up();
+
+    console.log('\nFinishing release maker...');
 }
 
 run_all();
-
-console.log('End');

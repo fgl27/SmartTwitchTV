@@ -24,5 +24,3 @@ for (i; i < len; i++) {
 }
 
 mWriteFile('./apk/Changelog_Up.md', text + newLine);
-
-console.log('Version run');
