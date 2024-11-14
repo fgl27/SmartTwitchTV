@@ -289,7 +289,6 @@ function UserLiveFeed_Prepare() {
     Sidepannel_UpdateThumbDivThumb = Main_getElementById('feed_thumb_icon');
 
     Sidepannel_SetLastRefreshUpDiv(0);
-    Settings_check_sidePannelFade();
 }
 
 function UserLiveFeed_RefreshLive() {

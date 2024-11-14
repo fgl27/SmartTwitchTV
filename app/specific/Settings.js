@@ -395,10 +395,6 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
-    fade_sidepannel: {
-        values: ['no', 'yes'],
-        defaultValue: 1
-    },
     enable_mature: {
         values: ['no', 'yes'],
         defaultValue: 2
@@ -1318,7 +1314,6 @@ function Settings_SetDefault(position) {
     else if (position === 'burn_in_protection') Settings_burn_in_protection_start();
     else if (position === 'hide_main_screen_title') Settings_HideScreenTitle();
     else if (position === 'hide_etc_help_text') Settings_HideEtcHelp();
-    else if (position === 'fade_sidepannel') Settings_check_sidePannelFade();
     else if (position === 'clock_offset') {
         Settings_SetClock();
         Main_updateclock();
@@ -1485,14 +1480,6 @@ function Settings_get_enabled_Proxy() {
     }
 
     return 3;
-}
-
-function Settings_check_sidePannelFade() {
-    if (Settings_Obj_default('fade_sidepannel')) {
-        Sidepannel_FadeStart();
-    } else {
-        Sidepannel_UnFade();
-    }
 }
 
 function Settings_check_min_seek() {
@@ -2854,7 +2841,6 @@ function Settings_DialogShowUIOpt(click) {
     Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
     Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
     Settings_value.round_images.values = [STR_NO, STR_YES];
-    Settings_value.fade_sidepannel.values = [STR_NO, STR_YES];
 
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
@@ -2895,12 +2881,6 @@ function Settings_DialogShowUIOpt(click) {
             values: Settings_value.round_images.values,
             title: STR_ROUND_IMAGES,
             summary: STR_ROUND_IMAGES_SUMMARY
-        },
-        fade_sidepannel: {
-            defaultValue: Settings_value.fade_sidepannel.defaultValue,
-            values: Settings_value.fade_sidepannel.values,
-            title: STR_FADE_SIDEPANNEL,
-            summary: null
         },
         clock_offset: {
             defaultValue: Settings_value.clock_offset.defaultValue,
