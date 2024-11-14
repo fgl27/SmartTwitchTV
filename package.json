@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "crass": "^0.12.3",
+    "firebase": "^11.0.2",
     "html-minifier": "^4.0.0",
     "jshint": "^2.13.6",
     "prettier": "^3.3.3",
