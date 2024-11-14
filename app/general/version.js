@@ -28,7 +28,7 @@ var version = {
     changelog: [
         {
             title: 'Version November 13 2024',
-            changes: ['Other General improvements']
+            changes: ['General improvements']
         },
         {
             title: 'Version October 27 2024 Apk Version 3.0.371',
