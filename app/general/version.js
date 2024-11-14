@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
-    WebVersion: 'October 25 2024',
+    WebVersion: 'November 13 2024',
     WebTag: 685, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version November 13 2024',
+            changes: ['Other General improvements']
+        },
         {
             title: 'Version October 27 2024 Apk Version 3.0.371',
             changes: [
@@ -47,17 +51,6 @@ var version = {
                 'Improve numeric VODs jump to % function',
                 'Improve media keys Live/VODs jump to 5/30 seconds function',
                 'Other General improvements'
-            ]
-        },
-        {
-            title: 'WebVersion September / October 21',
-            changes: [
-                'Fix missing information on player top info for some scenarios',
-                'Fix missing information on channel content screens',
-                'Fix not be able to open the game for some scenarios in the thumbnail options',
-                'Fix current game in player content not always showing current game',
-                'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
-                'General etc improvements'
             ]
         }
     ]

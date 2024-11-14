@@ -61,7 +61,6 @@
         STR_IS_SUB_ONLY,
         STR_REFRESH_PROBLEM,
         STR_REFRESH_PROBLEM_ENTER,
-        STR_FADE_SIDEPANNEL,
         STR_NO,
         STR_FOR_THIS,
         STR_PLAYER_PROBLEM,
@@ -1781,7 +1780,6 @@
         STR_APP_ANIMATIONS_SUMMARY = 'Enables side panel, scroll and related animations.';
         STR_UI_SETTINGS = 'Customize interface, color style, animations and related';
         STR_GENERAL_CUSTOM = 'Customize content, sorting, auto refresh, timeouts and related';
-        STR_FADE_SIDEPANNEL = 'Hide the side panel after 5 seconds of not using it';
         STR_RUNNINGTIME = 'App running for:';
         STR_410_ERROR = 'Unable to get video link';
         STR_PRESS_ENTER_TO_CHANGE = 'Press enter to change to -';
@@ -3245,7 +3243,6 @@
         STR_APP_ANIMATIONS_SUMMARY = 'Habilita animações no painel lateral e de rolagem';
         STR_UI_SETTINGS = 'Personalização da interface, estilo de cor, animações e afins';
         STR_GENERAL_CUSTOM = 'Personalização de conteúdo, classificação, atualização automática, tempos limite e relacionados';
-        STR_FADE_SIDEPANNEL = 'Esconder o painel lateral após 5 segundos sem usá-lo';
         STR_RUNNINGTIME = 'Aplicativo em execução por:';
         STR_410_ERROR = 'Não foi possível obter o link do vídeo';
         STR_PRESS_ENTER_TO_CHANGE = 'Pressione enter para mudar para -';
@@ -4112,7 +4109,6 @@
         STR_APP_ANIMATIONS_SUMMARY = 'Управляет боковой панелью, прокруткой, уведомлениями и связанными анимациями';
         STR_UI_SETTINGS = 'Настройка интерфейса,цветовой стиль,анимация и т.п.';
         STR_GENERAL_CUSTOM = 'Настройка контента,сортировка,автообновление,тайм-ауты и т.п.';
-        STR_FADE_SIDEPANNEL = 'Скрыть боковую панель после 5 секунд неиспользования';
         STR_RUNNINGTIME = 'Приложение работает:';
         STR_410_ERROR = 'Невозможно получить ссылку на видео';
         STR_PRESS_ENTER_TO_CHANGE = 'Нажмите ОК, чтобы сменить на -';
@@ -4751,9 +4747,13 @@
         VersionBase: '3.0',
         publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
-        WebVersion: 'October 25 2024',
+        WebVersion: 'November 13 2024',
         WebTag: 685, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version November 13 2024',
+                changes: ['Other General improvements']
+            },
             {
                 title: 'Version October 27 2024 Apk Version 3.0.371',
                 changes: [
@@ -4775,17 +4775,6 @@
                     'Improve numeric VODs jump to % function',
                     'Improve media keys Live/VODs jump to 5/30 seconds function',
                     'Other General improvements'
-                ]
-            },
-            {
-                title: 'WebVersion September / October 21',
-                changes: [
-                    'Fix missing information on player top info for some scenarios',
-                    'Fix missing information on channel content screens',
-                    'Fix not be able to open the game for some scenarios in the thumbnail options',
-                    'Fix current game in player content not always showing current game',
-                    'Fix scenario where not enough content load on the screen even when it is available preventing scrolling to get more content',
-                    'General etc improvements'
                 ]
             }
         ]
