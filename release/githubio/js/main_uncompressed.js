@@ -36801,10 +36801,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             values: ['no', 'yes'],
             defaultValue: 2
         },
-        fade_sidepannel: {
-            values: ['no', 'yes'],
-            defaultValue: 1
-        },
         enable_mature: {
             values: ['no', 'yes'],
             defaultValue: 2
@@ -37729,7 +37725,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         else if (position === 'burn_in_protection') Settings_burn_in_protection_start();
         else if (position === 'hide_main_screen_title') Settings_HideScreenTitle();
         else if (position === 'hide_etc_help_text') Settings_HideEtcHelp();
-        else if (position === 'fade_sidepannel') Settings_check_sidePannelFade();
         else if (position === 'clock_offset') {
             Settings_SetClock();
             Main_updateclock();
@@ -37896,14 +37891,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         return 3;
-    }
-
-    function Settings_check_sidePannelFade() {
-        if (Settings_Obj_default('fade_sidepannel')) {
-            Sidepannel_FadeStart();
-        } else {
-            Sidepannel_UnFade();
-        }
     }
 
     function Settings_check_min_seek() {
@@ -39274,7 +39261,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
         Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
         Settings_value.round_images.values = [STR_NO, STR_YES];
-        Settings_value.fade_sidepannel.values = [STR_NO, STR_YES];
 
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
@@ -39315,12 +39301,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 values: Settings_value.round_images.values,
                 title: STR_ROUND_IMAGES,
                 summary: STR_ROUND_IMAGES_SUMMARY
-            },
-            fade_sidepannel: {
-                defaultValue: Settings_value.fade_sidepannel.defaultValue,
-                values: Settings_value.fade_sidepannel.values,
-                title: STR_FADE_SIDEPANNEL,
-                summary: null
             },
             clock_offset: {
                 defaultValue: Settings_value.clock_offset.defaultValue,
@@ -41109,10 +41089,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Sidepannel_Start(callback, forceFeed) {
-        if (Settings_Obj_default('fade_sidepannel')) {
-            Sidepannel_UnFade();
-        }
-
         Sidepannel_Callback = callback;
         Main_removeEventListener('keydown', Sidepannel_Callback);
         if (!Sidepannel_IsMain || forceFeed) {
@@ -41227,33 +41203,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         Main_removeEventListener('keydown', Sidepannel_handleKeyDown);
         Main_removeEventListener('keydown', Sidepannel_handleKeyDownMain);
-
-        if (Settings_Obj_default('fade_sidepannel')) {
-            Sidepannel_FadeStart();
-        }
-    }
-
-    var Sidepannel_FadeStartID;
-    function Sidepannel_FadeStart() {
-        Main_setTimeout(Sidepannel_Fade, 5000);
-    }
-
-    function Sidepannel_Fade() {
-        Sidepannel_Opt_holder.style.transition = Sidepannel_IsMain ? '' : 'none';
-        Sidepannel_scenefeed.style.transition = '';
-
-        Sidepannel_Opt_holder.style.opacity = 0;
-        Sidepannel_scenefeed.style.opacity = 0;
-    }
-
-    function Sidepannel_UnFade() {
-        Main_clearTimeout(Sidepannel_FadeStartID);
-
-        Sidepannel_Opt_holder.style.transition = 'none';
-        Sidepannel_scenefeed.style.transition = 'none';
-
-        Sidepannel_Opt_holder.style.opacity = '';
-        Sidepannel_scenefeed.style.opacity = '';
     }
 
     function Sidepannel_HideEle(PreventCleanQualities, full) {
@@ -41907,7 +41856,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Sidepannel_UpdateThumbDivThumb = Main_getElementById('feed_thumb_icon');
 
         Sidepannel_SetLastRefreshUpDiv(0);
-        Settings_check_sidePannelFade();
     }
 
     function UserLiveFeed_RefreshLive() {
