@@ -6,6 +6,7 @@
       "**/.*",
       "**/node_modules/**",
       "**/scripts/**",
+      "**/temp_maker/**",
       "api.js",
       "main.js",
       "**/githubio/README.md",
