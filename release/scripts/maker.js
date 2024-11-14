@@ -10,6 +10,8 @@ const tools = require('./tools');
 const temp_maker_folder = 'release/temp_maker/';
 const mainJSFile = temp_maker_folder + 'main_temp.js';
 
+const UglifyJS_compress = {arrows: false}; //prevent devices with old browser implementation may not supporting arrows
+
 //This will update the version JSON file and the temp Changelog_Up.md file
 function version_up() {
     console.log('\nCreating Version files...');
@@ -84,7 +86,7 @@ function make_JS() {
     console.log('\nCreating js files...');
 
     const options = {
-        compress: {arrows: false}, //prevent devices with old browser implementation not supporting arrows
+        compress: UglifyJS_compress,
         mangle: true
     };
 
@@ -95,6 +97,10 @@ function make_JS() {
 
     for (const file of allJSFiles) {
         fileContent = tools.readFileSync(file);
+
+        if (file.includes('Main.js')) {
+            fileContent = fileContent.replace('Main_Start();', '');
+        }
         mainJSContent += fileContent;
         mainJSContentCompressed += UglifyJS.minify(fileContent, options).code;
     }
@@ -128,8 +134,6 @@ async function makeMainJS(mainJSContentCompressed, mainJSContent, extraJSContent
     const releaseAPIStart = releaseAPI.split('APISPLITSTART')[1].split('//APIMID')[0];
     const releaseAPIEnd = releaseAPI.split('APISPLITCENTER')[1].split('//APIEND')[0];
 
-    mainJSContent = mainJSContent.replace('Main_Start();', '');
-
     const options = await prettier.resolveConfig('.prettierrc');
 
     const finalMainJSContent = await prettier.format(releaseAPIStart + mainJSContent + releaseAPIEnd, options);
@@ -143,7 +147,7 @@ async function makeMainJS(mainJSContentCompressed, mainJSContent, extraJSContent
 
 function make_uglifyjs(finalMainJSContentCompressed, extraJSContent) {
     const options = {
-        compress: {arrows: false}, //prevent devices with old browser implementation not supporting arrows
+        compress: UglifyJS_compress,
         mangle: {
             toplevel: true,
             eval: true
