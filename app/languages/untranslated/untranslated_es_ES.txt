@@ -248,7 +248,6 @@
     STR_VIEWER = "Viewer";
     STR_VIEW = "View";
     STR_FOLLOWER = "Follower";
-    STR_FADE_SIDEPANNEL = "Hide the side panel after 5 seconds of not using it";
 
     STR_BITCOIN_SUMMARY = "Bitcoin donations, use the wallet address or read the QR Code:";
 
