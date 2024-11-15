@@ -82,8 +82,8 @@ function make_CSS() {
     tools.writeFileASync('release/githubio/css/icons.min.css', parsed.toString());
 }
 
-function make_JS() {
-    console.log('\nCreating js files...');
+function make_JS(jshOnly) {
+    console.log(jshOnly ? '\nVerifying js files...' : '\nCreating js files...');
 
     const options = {
         compress: UglifyJS_compress,
@@ -118,6 +118,11 @@ function make_JS() {
     if (js_jshint(extraJSContent)) {
         console.log('\nFile ' + 'app/Extrapage/Extrapage.js');
         console.log('');
+        return false;
+    }
+
+    if (jshOnly) {
+        console.log('\nVerifying complete no issues found...\n');
         return false;
     }
 
@@ -196,12 +201,16 @@ function js_jshint(source) {
 }
 
 function run_all() {
-    console.log('Started release maker...');
+    const args = process.argv.slice(2);
+    const jshOnly = args[0] === 'jsh';
+
+    if (!jshOnly) console.log('Started release maker...');
 
     tools.mkdirSync(temp_maker_folder);
 
     //make main js file if doesn't pass jshint validation exit.
-    if (!make_JS()) return;
+    //Or if on jshint only mode also exit
+    if (!make_JS(jshOnly)) return;
 
     make_HTML();
     make_CSS();
