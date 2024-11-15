@@ -613,8 +613,7 @@ function en_USLang() {
     STR_ACCESSIBILITY_WARN_EXTRA2 =
         'If you have freezes or lag related issues, close this app and disable all accessibility services, after that, all issues will be gone.<br>To not show this warning ever again, disable it in settings.';
     STR_AUTO_REFRESH = 'Auto refresh timeout';
-    STR_AUTO_REFRESH_SUMMARY =
-        'When this is enabled, the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected. If you want a refresh in the background, enable the below option.';
+    STR_AUTO_REFRESH_SUMMARY = 'When this is enabled, the app will auto-refresh the content in the background.';
     STR_AUTO_REFRESH_BACKGROUND = 'Auto refresh in the background';
     STR_AUTO_REFRESH_BACKGROUND_SUMMARY =
         "When 'Auto refresh timeout' is set and this is enabled, the auto refresh will happen in the background (but with the app visible, android doesn't allow to run unrestrictedly in the background in order to avoid lagging other apps). When the screen is not visible or when you go back to a screen that the refresh didn't run before, be careful, because if the app has too many screens when this option is enabled, the auto refresh may cause random lag on some low-end devices.";
