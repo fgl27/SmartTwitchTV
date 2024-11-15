@@ -9,9 +9,10 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Version November 13 2024
+Version November 15 2024
 ==============
 
+* Add extra languages to the Content language, this may change your previously selected language after the update set the language again
 * General improvements
 
 Version October 25 2024 Apk Version 3.0.369

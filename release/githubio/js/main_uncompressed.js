@@ -1928,8 +1928,7 @@
         STR_ACCESSIBILITY_WARN_EXTRA2 =
             'If you have freezes or lag related issues, close this app and disable all accessibility services, after that, all issues will be gone.<br>To not show this warning ever again, disable it in settings.';
         STR_AUTO_REFRESH = 'Auto refresh timeout';
-        STR_AUTO_REFRESH_SUMMARY =
-            'When this is enabled, the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected. If you want a refresh in the background, enable the below option.';
+        STR_AUTO_REFRESH_SUMMARY = 'When this is enabled, the app will auto-refresh the content in the background.';
         STR_AUTO_REFRESH_BACKGROUND = 'Auto refresh in the background';
         STR_AUTO_REFRESH_BACKGROUND_SUMMARY =
             "When 'Auto refresh timeout' is set and this is enabled, the auto refresh will happen in the background (but with the app visible, android doesn't allow to run unrestrictedly in the background in order to avoid lagging other apps). When the screen is not visible or when you go back to a screen that the refresh didn't run before, be careful, because if the app has too many screens when this option is enabled, the auto refresh may cause random lag on some low-end devices.";
@@ -4747,12 +4746,15 @@
         VersionBase: '3.0',
         publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
-        WebVersion: 'November 13 2024',
-        WebTag: 685, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'November 15 2024',
+        WebTag: 687, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
             {
-                title: 'Version November 13 2024',
-                changes: ['General improvements']
+                title: 'Version November 15 2024',
+                changes: [
+                    'Add extra languages to the Content language, this may change your previously selected language after the update set the language again',
+                    'General improvements'
+                ]
             },
             {
                 title: 'Version October 27 2024 Apk Version 3.0.371',
@@ -36436,35 +36438,48 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         content_lang: {
             values: [
                 'All',
-                'Bulgarian [BG]',
-                'Čeština [CS]',
-                'Dansk [DA]',
+                'American Sign Language [ASL]',
+                'العربية - Al Arabiya [AR]',
+                'Bahasa Indonesia [ID]',
+                'Български - Bulgarian [BG]',
+                'Català - Catalan [CA]',
+                'Čeština - Czech [CS]',
+                'Dansk - Danish [DA]',
                 'Deutsch [DE]',
-                'Ελληνικά [EL]',
+                'Ελληνικά - Griechisch [EL]',
                 'English [EN]',
-                'Español [ES]',
-                'Suomi [FI]',
-                'Français [FR]',
-                'Italiano [IT]',
-                'Magyar [HU]',
-                '日本語 [JA]',
-                '한국어 [KO]',
-                'Nederlands [NL]',
-                'Norsk [NO]',
-                'Polski [PL]',
-                'Português [PT]',
-                'Română [RO]',
-                'Русский [RU]',
-                'Slovenčina [SK]',
-                'Svenska [SV]',
-                'ภาษาไทย [TH]',
-                'Türkçe [TR]',
-                'Tiếng Việt [VI]',
-                '中文 [ZH]'
+                'Español - Spanisch [ES]',
+                'Suomi - Finnisch [FI]',
+                'Français - French [FR]',
+                'Italiano - Italian [IT]',
+                'मानक हिन्दी - Hindi [HI]',
+                'Magyar - Hungarian [HU]',
+                '日本語 - Japanese [JA]',
+                '한국어 - Korean [KO]',
+                'بهاس ملايو - Malay [MS]',
+                'Nederlands - Dutch [NL]',
+                'Norsk - Norwegian [NO]',
+                'Polski - Polish [PL]',
+                'Português - Portuguese [PT]',
+                'Română - Romanian  [RO]',
+                'Русский - Russian [RU]',
+                'Slovenčina - Slovak [SK]',
+                'Svenska - Swedish [SV]',
+                'ภาษาไทย - Tai [TH]',
+                'Türkçe - Turkish [TR]',
+                'Tiếng Việt - Vietnamese [VI]',
+                'Tagalog [TL]',
+                'Українська - Ukrainian [UK]',
+                '中文 - Chinese [ZH]',
+                'Other'
             ],
             apply_values: [
                 '',
+                'asl',
+                'ar',
+                'id',
                 'bg',
+                'ca',
                 'cs',
                 'da',
                 'de',
@@ -36474,9 +36489,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 'fi',
                 'fr',
                 'it',
+                'hi',
                 'hu',
                 'ja',
                 'ko',
+                'ms',
                 'nl',
                 'no',
                 'pl',
@@ -36488,7 +36505,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 'th',
                 'tr',
                 'vi',
-                'zh'
+                'tl',
+                'uk',
+                'zh',
+                'other'
             ],
             defaultValue: 1
         },
