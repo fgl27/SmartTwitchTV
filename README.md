@@ -2,46 +2,46 @@
 
 <!-- TOC -->
 
--   [About the project](#about-the-project)
--   [About this fork](#about-this-fork)
--   [How the application works](#how-the-application-works)
-    -   [The web app](#the-web-app)
-    -   [The APK](#the-apk)
-    -   [The interactions between web app and APK](#the-interactions-between-web-app-and-apk)
--   [How the application looks](#how-the-application-looks)
--   [How to translate this](#how-to-translate-this)
-    -   [How to translate and test?](#how-to-translate-and-test)
-    -   [Translate](#translate)
-    -   [Testing app/languages/en_US.js](#testing-applanguagesen_usjs)
-    -   [Testing apk/app/src/main/res/values/strings.xml](#testing-apkappsrcmainresvaluesstringsxml)
-    -   [How to send the files](#how-to-send-the-files)
--   [Download](#download)
--   [Dependencies](#dependencies)
-    -   [Web Dependencies](#web-dependencies)
-    -   [APK Dependencies](#apk-dependencies)
--   [Are phones and tablets supported?](#are-phones-and-tablets-supported)
--   [Authorization](#authorization)
-    -   [when accessing Twitch authorization site after adding yours credential User and password you will see the below information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-below-information)
--   [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
-    -   [Code Languages used by the project](#code-languages-used-by-the-project)
-    -   [How to Build](#how-to-build)
-    -   [Building The web app](#building-the-web-app)
-    -   [Javascript building The web app](#javascript-building-the-web-app)
-    -   [HTML building The web app](#html-building-the-web-app)
-    -   [CSS building The web app](#css-building-the-web-app)
-    -   [Build The APK](#build-the-apk)
--   [How to test the Web app](#how-to-test-the-web-app)
-    -   [In an browser](#in-an-browser)
-    -   [Inside the APK](#inside-the-apk)
--   [Contributing instructions](#contributing-instructions)
--   [How to make changes and test it](#how-to-make-changes-and-test-it)
--   [Changelog](#changelog)
--   [TODO list](#todo-list)
--   [Donations](#donations)
-    -   [PayPal](#paypal)
-    -   [BitCoin](#bitcoin)
-    -   [Pix](#pix)
--   [In doubt open a issue](#in-doubt-open-a-issue)
+- [About the project](#about-the-project)
+- [About this fork](#about-this-fork)
+- [How the application works](#how-the-application-works)
+    - [The web app](#the-web-app)
+    - [The APK](#the-apk)
+    - [The interactions between web app and APK](#the-interactions-between-web-app-and-apk)
+- [How the application looks](#how-the-application-looks)
+- [How to translate this](#how-to-translate-this)
+    - [How to translate and test?](#how-to-translate-and-test)
+    - [Translate](#translate)
+    - [Testing app/languages/en_US.js](#testing-applanguagesen_usjs)
+    - [Testing apk/app/src/main/res/values/strings.xml](#testing-apkappsrcmainresvaluesstringsxml)
+    - [How to send the files](#how-to-send-the-files)
+- [Download](#download)
+- [Dependencies](#dependencies)
+    - [Web Dependencies](#web-dependencies)
+    - [APK Dependencies](#apk-dependencies)
+- [Are phones and tablets supported?](#are-phones-and-tablets-supported)
+- [Authorization](#authorization)
+    - [when accessing Twitch authorization site after adding yours credential User and password you will see the below information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-below-information)
+- [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
+    - [Code Languages used by the project](#code-languages-used-by-the-project)
+    - [How to Build](#how-to-build)
+    - [Building The web app](#building-the-web-app)
+    - [Javascript building The web app](#javascript-building-the-web-app)
+    - [HTML building The web app](#html-building-the-web-app)
+    - [CSS building The web app](#css-building-the-web-app)
+    - [Build The APK](#build-the-apk)
+- [How to test the Web app](#how-to-test-the-web-app)
+    - [In an browser](#in-an-browser)
+    - [Inside the APK](#inside-the-apk)
+- [Contributing instructions](#contributing-instructions)
+- [How to make changes and test it](#how-to-make-changes-and-test-it)
+- [Changelog](#changelog)
+- [TODO list](#todo-list)
+- [Donations](#donations)
+    - [PayPal](#paypal)
+    - [BitCoin](#bitcoin)
+    - [Pix](#pix)
+- [In doubt open a issue](#in-doubt-open-a-issue)
 
 <!-- /TOC -->
 
@@ -233,7 +233,7 @@ The web app and the APK need to be build/generated. Here is a simple explanation
 
 ### Building The web app
 
-The web app files are located here [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) but that is not the code that the end user runs. To generate the final code, first those files need to be processed. To do that, this script [release_maker.sh](https://github.com/fgl27/SmartTwitchTV/blob/master/release/scripts/release_maker.sh) can be used.
+The web app files are located here [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) but that is not the code that the end user runs. To generate the final code, first those files need to be processed. To do that, this script [release_maker.sh](https://github.com/fgl27/SmartTwitchTV/blob/master/release/scripts/maker.js) can be used, this is node script, a [help on how to setup Node and etc here](https://github.com/fgl27/SmartTwitchTV/blob/master/release/scripts/HELP.md).
 
 How that process works is divided on each language of the web app...
 
@@ -267,9 +267,9 @@ To build the APK:
 -   Make sure your `new folder` contains these two folders `SmartTwitchTV` and `media` before proceeding to the next step
 -   Install **Android Studio**, open it and add a new project ... File -> Open... Select the folder [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk)
 -   Wait for **Android Studio** to finish it's preparation, it will load and download all app dependencies and etc related needed for this app, if it asks to install extra dependencies/sdk/etc follow its instructions
--   Comment out [Crashlytics and related services](https://github.com/fgl27/SmartTwitchTV/commit/b421b6a504a922da1e0bfd53a29610801c84ff29), this app uses [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics) to be able to get crash reports from the app and use those to improve it, that process uses a file `google-services.json` in that file there are private keys that can't be published, so in order to build the app for testing you need to comment out a few lines - those lines start with `Crashlytics` and end `Crashlytics end` comment out all in between on this files [SmartTwitchTV/apk/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/build.gradle) and [SmartTwitchTV/apk/app/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/build.gradle)
+-   [Use this commit as example on how to Comment out Crashlytics and related services](https://github.com/fgl27/SmartTwitchTV/commit/b421b6a504a922da1e0bfd53a29610801c84ff29), this app uses [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics) to be able to get crash reports from the app and use those to improve it, that process uses a file `google-services.json` in that file there are private keys that can't be published, so in order to build the app for testing you need to comment out a few lines use the commit as example.
 -   Building the APK, in **Android Studio**, Build -> Build Bundle(s) / APK(s) -> Build APK(s)... if all OK after a few moments an app will be generated, a popup notification inside **Android Studio** will show and let you click to see where that APK is generated to.
--   If you have any problem using **Android Studio** just try to google as the project is solely built using **Android Studio** it must work for you, if it doesn't it's because you did something wrong, **Android Studio** APK build is a very common thing one can find any type of help about it just by "googling it", but if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or [send a email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com)
+-   If you have any problem using **Android Studio** just try to google for help, as the project is solely built using **Android Studio** it must work for anyone, but sometimes doesn't if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or [send a email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com)
 
 ## How to test the Web app
 
@@ -277,9 +277,9 @@ To build the APK:
 
 You can just open the [SmartTwitchTV/app/index.html](https://github.com/fgl27/SmartTwitchTV/tree/master/app/index.html) in a browser, but that will not allow you to, for example, add a user and authorization key.
 
-To be able to do that, you need to run this html from the https link https://127.0.0.1:5000/app/, to do that you can just use Node.js extension `http-server` to create a web server and call the link https://127.0.0.1:5000/app/.
+To be able to do that, you need to run this html from the https link https://127.0.0.1:5000/app/, to do that you can just use Node.js extension `http-server` (npm install http-server -g) to create a web server and call the link https://127.0.0.1:5000/app/.
 
-I have made a simple script that starts the server at the correct URL just call this if you are on Linux [SmartTwitchTV/release/scripts/up_assets.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/up_assets.sh), or [use this command](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/release/scripts/http-server.sh#L23) from root project directory.
+I have made a simple script that starts the server at the correct URL just call this if you are on Linux [SmartTwitchTV/release/scripts/http-server.sh](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/http-server.sh) or Windows (CMD or powerShell) [SmartTwitchTV/release/scripts/http-server_windows.cmd](https://github.com/fgl27/SmartTwitchTV/tree/master/release/scripts/http-server_windows.cmd), or [use this command](https://github.com/fgl27/SmartTwitchTV/blob/9c157c457751525f84e19126190389c498a4876a/release/scripts/http-server.sh#L23) from root project directory.
 
 ### Inside the APK
 
