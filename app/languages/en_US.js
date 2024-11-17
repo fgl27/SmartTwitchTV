@@ -39,8 +39,8 @@ function en_USLang() {
     STR_CONTROLS = 'Controls';
     STR_ABOUT = 'About';
     STR_HIDE = 'Hide';
-    STR_SEARCH_EMPTY = 'The text you entered is empty';
-    STR_SEARCH_RESULT_EMPTY = 'The search result is empty';
+    STR_SEARCH_EMPTY = 'You entered an empty search term';
+    STR_SEARCH_RESULT_EMPTY = 'No search results found';
     STR_SWITCH = 'Switch screen';
     STR_SWITCH_USER = 'Switch user screen';
     STR_SWITCH_VOD = 'Switch: VODs or highlights';
@@ -55,21 +55,21 @@ function en_USLang() {
     STR_WAITING = 'Wait time';
     STR_SINCE = 'Since';
     STR_AGAME = 'A Game';
-    STR_PLACEHOLDER_PASS = 'Type your password...';
-    STR_PLACEHOLDER_SEARCH = 'Type your search ...';
-    STR_PLACEHOLDER_OAUTH = 'Type your authorization key ...';
-    STR_PLACEHOLDER_USER = 'Type your username and press Enter ...';
+    STR_PLACEHOLDER_PASS = 'Enter your password...';
+    STR_PLACEHOLDER_SEARCH = 'Enter your search ...';
+    STR_PLACEHOLDER_OAUTH = 'Enter your authorization key ...';
+    STR_PLACEHOLDER_USER = 'Enter your username and press Enter ...';
     STR_PLACEHOLDER_PRESS = 'Press Enter or Select key to,';
     STR_CHANNELS = 'Channels';
     STR_CHANNEL = 'Channel';
     STR_GOBACK_START = 'Back to the previous screen: Press return';
     STR_IS_OFFLINE = 'has ended';
     STR_CHECK_HOST = ', checking host';
-    STR_IS_SUB_ONLY = 'This video is only available to subs';
+    STR_IS_SUB_ONLY = 'This video is only available to subscribers';
     STR_IS_SUB_ONLY_ERROR = 'is sub-only content.';
     STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) Add User or User: Switch, add, key, press enter on the user';
-    STR_REFRESH_PROBLEM = 'Connection failed or there is no content for this. Refresh to try again';
-    STR_REFRESH_PROBLEM_ENTER = 'Connection failed or there is no content for this. Press enter to Refresh';
+    STR_REFRESH_PROBLEM = 'Connection failed or no content available. Try refreshing';
+    STR_REFRESH_PROBLEM_ENTER = 'Failed to connect or no content available. Try refreshing.';
     STR_REFRESH_PROBLEM_ENTER_LANG =
         'Connection failed or there is no content for this language. Change content language (hold left) or Press enter to Refresh';
     STR_NO = 'No';
@@ -86,13 +86,13 @@ function en_USLang() {
     STR_VIEWER = 'Viewer';
     STR_VIEWERS = 'Viewers';
     STR_EXIT_AGAIN = 'Click again to exit';
-    STR_EXIT_AGAIN_PICTURE = 'Click again to exit picture in picture';
-    STR_EXIT_AGAIN_MULTI = 'Click again to exit multistream';
-    STR_EXIT_MESSAGE = 'Do you want to exit SmartTV Client for Twitch?';
+    STR_EXIT_AGAIN_PICTURE = 'Click again to exit picture-in-picture mode';
+    STR_EXIT_AGAIN_MULTI = 'Click again to exit multistream mode';
+    STR_EXIT_MESSAGE = 'Are you sure you want to exit the SmartTV Client for Twitch?';
     STR_EXIT = 'Exit';
     STR_CHANGELOG = 'Changelog';
     STR_FULL_CHANGELOG = 'Full changelog';
-    STR_CHANGELOG_SUMMARY = 'These are just the latest changes, to read the full changes, check out the link below:';
+    STR_CHANGELOG_SUMMARY = 'These are the latest changes. For the full list, check out the link below:';
     STR_UPDATE = 'Click to Update';
     STR_UPDATE_CHECK = 'Check for Updates';
     STR_UPDATE_CHECKING = 'Checking for Updates ...';
@@ -101,7 +101,7 @@ function en_USLang() {
     STR_UPDATE_CHANGELOG = 'Updates & Changelog';
     STR_UPDATE_LATEST = 'Latest change:';
     STR_UPDATE_FAIL = 'Update process failed, please try manually!';
-    STR_UPDATE_FAIL_DOWNLOAD = 'Update process failed to download the APK, please try manually!';
+    STR_UPDATE_FAIL_DOWNLOAD = 'Failed to download update. Please try manually';
     STR_UPDATE_AVAILABLE = 'APK Update available';
     STR_WEB_UPDATE_AVAILABLE = 'Web Update available';
     STR_UPDATE_CHECK_SIDE = ', check the side panel for updates';
@@ -130,8 +130,8 @@ function en_USLang() {
     STR_USER_HOSTED_BY = 'hosted by';
     STR_USER_SET = 'already set';
     STR_USER_MAKE_ONE = 'Switch to';
-    STR_USER_NUMBER_ONE = 'First user can (when providing a key) follow and see live channels feed outside of the user screen';
-    STR_ADD_USER_SH = 'Add a Twitch user to display its Followed Channels content here';
+    STR_USER_NUMBER_ONE = 'The first user can see the live channels feed and follow/unfollow';
+    STR_ADD_USER_SH = 'Add a Twitch user to display their followed content here';
     STR_CLIP_DAY = '24h';
     STR_CLIP_WEEK = '7d';
     STR_CLIP_MONTH = '30d';
@@ -209,14 +209,15 @@ function en_USLang() {
     STR_OAUTH_FAIL = 'Failed authorization check with the provided key, please check and try again';
     STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
     STR_NOKEY = 'No user';
-    STR_NOKEY_WARN = 'Set user and an authorization key to be able to follow/unfollow';
-    STR_FOLLOW_ISSUE = 'Third party apps can no longer follow/unfollow channels (The button can only show if you follow)';
-    STR_NOKUSER_WARN = 'Set a user and authentication key to be able to see the followed content';
+    STR_NOKEY_WARN = 'You must set a user to follow or unfollow channels.';
+    STR_FOLLOW_ISSUE =
+        'Third-party apps can no longer follow or unfollow channels. The button will only appear if you are already following a channel.';
+    STR_NOKUSER_WARN = 'You need to set a user to view followed content.';
     STR_RESET = 'Restart the';
     STR_CLIP = 'Clip';
     STR_CHANNEL_CONT = 'Channel content';
-    STR_NET_DOWN = "Network is disconnected. The application can't work without INTERNET.";
-    STR_NET_UP = 'Network connection reestablished';
+    STR_NET_DOWN = 'No network connection. The app requires an internet connection to function.';
+    STR_NET_UP = 'Network connection restored';
     STR_FOLLOWERS = 'Followers';
     STR_FOLLOWER = 'Follower';
     STR_CANT_FOLLOW = ", Can't follow or unfollow";
@@ -241,10 +242,10 @@ function en_USLang() {
     STR_IS_LIVE = 'Is now live';
     STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
-        'When watching a clip or a VOD, the app can check when a streamer is live. If this is set to YES, a warning will show. To open the live, just use the controls at the bottom of the player.';
-    STR_OPEN_CHAT = 'Click to open chat and/or wait to be back live';
+        'While watching a clip or VOD, the app can check if the streamer is live. If enabled, a warning will appear. To watch the live stream, use the controls at the bottom of the player.';
+    STR_OPEN_CHAT = 'Click to open the chat or wait for the stream to return live.';
     STR_STAY_OPEN = 'Stay on the stream';
-    STR_STAY_OPEN_SUMMARY = 'Stay on and recheck to see if it comes back live';
+    STR_STAY_OPEN_SUMMARY = 'Remain on the stream and the app will check periodically to see if it returns live.';
     STR_STAY_CHECK = 'Check if stream is live in:';
     STR_STAY_CHECKING = 'Checking if is live ...';
     STR_STAY_CHECK_LAST = 'Last result:';
@@ -258,7 +259,7 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_SIZE = 'Start buffer size:';
     STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY = 'Controls start buffer size';
     STR_SETTINGS_BUFFER_SIZE_SUMMARY =
-        'How much is needed to buffer before starting the playback. This is not related to the maximum size that the buffer can reach (the maximum buffer size is based on the amount of RAM on the device). A lower value here will cause the playback to start sooner and that is always recommended. Changing this value to a bigger value will in most cases not cause any improvements, but rather setbacks.';
+        'Specifies the amount of data needed to buffer before starting playback. This value is unrelated to the maximum buffer size, which depends on the device’s available RAM. A lower setting will start playback sooner, which is generally recommended. Increasing this value rarely improves performance and may cause delays.';
     STR_SETTINGS_BUFFER_LIVE = 'Lives start buffer';
     STR_SETTINGS_BUFFER_VOD = 'Videos (past broadcasts and highlights) start buffer';
     STR_SETTINGS_BUFFER_CLIP = 'Clips start buffer';
@@ -266,9 +267,9 @@ function en_USLang() {
     STR_LOADING_CHAT = 'Chat: Connecting to';
     STR_LOADING_FAIL = 'Connecting timeout, Failed to log ...';
     STR_CHAT_CONNECTED = 'Chat: Connected';
-    STR_CHAT_SEND_DELAY = 'Message sent, but chat delay is enabled, so the message will show up in chat after.';
+    STR_CHAT_SEND_DELAY = 'Message sent. Due to chat delay settings, it will appear in the chat shortly.';
     STR_CHAT_DELAY = 'Chat: delay';
-    STR_VOD_HISTORY_BASE = 'Play from the start or from where you stopped watching the';
+    STR_VOD_HISTORY_BASE = 'Start playback from the beginning or resume from where you last stopped watching.';
     STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + ' VOD?';
     STR_VOD_HISTORY_FORM_LIVE = STR_VOD_HISTORY_BASE + ' LIVE?';
     STR_FROM = 'From:' + STR_BR;
@@ -276,7 +277,7 @@ function en_USLang() {
     STR_CHAT_END = 'Chat: The Chat has ended!';
     STR_RECENT = ', Most recent';
     STR_VIWES = ', Most views';
-    STR_NOKEY_VIDEO_WARN = 'Add a user authorization key to be able to see followed videos';
+    STR_NOKEY_VIDEO_WARN = 'Add a user to access followed videos.';
     STR_SWITCH_TYPE = 'Switch: Most recent or views';
     STR_ENABLE = 'Enable';
     STR_ENABLED = 'Enabled';
@@ -284,25 +285,25 @@ function en_USLang() {
     STR_DISABLED = 'Disabled';
     STR_DARK_MODE = 'Dark mode';
     STR_BRIGHT_MODE = 'Bright mode';
-    STR_RESTORE_PLAYBACK_WARN = 'The app was closed while playing, restoring the playback';
-    STR_RESTORE_PLAYBACK = 'Restore playback';
+    STR_RESTORE_PLAYBACK_WARN = 'The app was closed during playback. Restoring previous session...';
+    STR_RESTORE_PLAYBACK = 'Restore Previous Playback';
     STR_RESTORE_PLAYBACK_SUMMARY =
-        'The app saves what it was playing in case it gets closed unintentionally. Changing apps may cause the system to run out of memory and close it, in this case, on the next startup, the app restores what was previously being played.';
-    STR_CHAT_FONT = 'Chat font size';
-    STR_VIDEOS_ANIMATION = 'Video animated thumbnails';
+        'The app saves playback progress in case it’s closed unintentionally. Switching apps may lead to system out of memory issues that close the app. When reopened, it will resume the previous playback.';
+    STR_CHAT_FONT = 'Chat Font Size';
+    STR_VIDEOS_ANIMATION = 'Animated Video Thumbnails';
     STR_VIDEOS_ANIMATION_SUMMARY =
-        'When a VOD or a highlight is selected, animate the thumbnail if an animated thumbnail is available for that video (not all videos have one).';
+        'When a VOD or highlight is selected, animate the thumbnail if an animated version is available (note: not all videos have one).';
     STR_SIDE_PANEL = 'Side panel: Press left D-pad or return';
     STR_SIZE = 'Size';
     STR_BRIGHTNESS = 'Brightness';
-    STR_FORBIDDEN = 'Forbidden content, this is restricted in your region or restrained to the official Twitch app.';
+    STR_FORBIDDEN = 'This content is restricted in your region or only accessible via the official Twitch app.';
     STR_JUMPING_STEP = 'Jump step';
     STR_SECOND = 'second';
     STR_SECONDS = 'seconds';
     STR_MINUTE = 'minute';
     STR_MINUTES = 'minutes';
     STR_CLOCK_OFFSET = 'Clock offset';
-    STR_CLOCK_OFFSET_SUMMARY = 'Adjust main app clock in relation to your choosing.';
+    STR_CLOCK_OFFSET_SUMMARY = 'Adjust the app’s main clock based on your preferred time offset.';
     STR_CONTENT_LANG = 'Content language';
     STR_CONTENT_LANG_SUMMARY = 'The language of the content on the screen, lives, VODs, clips.';
     STR_APP_LANG = 'Application language';
@@ -312,7 +313,7 @@ function en_USLang() {
     STR_NO_GAME = "Can't get game from this";
     STR_EMPTY = 'Empty';
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
-    STR_CHAT_DISABLE = "Chat is force disabled, enable it with the 'Chat force disable' option at the bottom of the player";
+    STR_CHAT_DISABLE = "Chat is currently disabled. You can enable it with the 'Chat force disable' option at the bottom of the player.";
     STR_CLIP_FAIL = "This clip/video failed to load. Can't replay";
     STR_CHAT_BRIGHTNESS = 'Chat background brightness';
     STR_PLAY_NEXT = 'Play Next';
@@ -325,14 +326,15 @@ function en_USLang() {
     STR_LIVE_FEED = 'Live Feed';
     STR_VOD_DIALOG = 'VOD start dialog';
     STR_VOD_DIALOG_SUMMARY =
-        "When playing a VOD saved on the user history, you can choose the default behavior of the VOD dialog. Setting it to 'Always from the start' also applies to the VOD preview.";
+        "Set the default behavior for playing VODs saved in your history. Choosing 'Always from the start' will also apply to VOD previews.";
     STR_VOD_DIALOG_START = 'Always from the start';
     STR_VOD_DIALOG_LAST = 'Always from the last stop';
     STR_VOD_DIALOG_SHOW = 'Always ask';
     STR_END_DIALOG_OPT = 'Player end dialog options';
     STR_END_DIALOG_SETTINGS = 'Player end dialog timeout';
     STR_END_DIALOG_SETTINGS_SUMMARY =
-        "When a live/VOD/clip ends, a dialog shows with an option for what to do next. Set the time (in seconds) that it'll take for the default option to take action.";
+        'When a live stream, VOD, or clip ends, a dialog appears with options for what to do next. Set the time (in seconds) for the default option to take action.';
+    //TODO improve more after this
     STR_END_DIALOG_DISABLE = 'Disable the timer';
     STR_CHAT_SIZE = 'Chat size';
     STR_CHAT_POS = 'Chat position';
