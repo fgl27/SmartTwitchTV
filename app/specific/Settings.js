@@ -116,8 +116,8 @@ var Settings_value = {
         defaultValue: 1
     },
     app_lang: {
-        values: ['English [EN]', 'Español [ES]', 'Português [PT-BR]'],
-        apply_values: ['en_US', 'es_Us', 'pt_BR'],
+        values: ['English [EN]', 'Español [ES]', 'Português [PT-BR]', 'Русский [RU]'],
+        apply_values: ['en_US', 'es_Us', 'pt_BR', 'ru_RU'],
         defaultValue: 1
     },
     show_banner: {
@@ -1137,6 +1137,7 @@ function Settings_SetAppLang() {
     en_USLang();
 
     if (Main_A_includes_B(app_lang, 'pt_')) pt_BRLang();
+    else if (Main_A_includes_B(app_lang, 'ru_')) ru_RULang();
     else if (Main_A_includes_B(app_lang, 'es_')) es_ESLang();
 
     OSInterface_SetLanguage(app_lang);
@@ -1887,7 +1888,7 @@ function Settings_Do_ScrollUp(docId) {
 
 function Settings_ScrollTable() {
     var scroolPos = 14,
-        offset = 0; //!Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
+        offset = 1; //!Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
         Settings_ScrollDown();
