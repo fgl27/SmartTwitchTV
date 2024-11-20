@@ -1160,7 +1160,7 @@ function Settings_UpdateString() {
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_updateclock();
     Main_checkVersion(true);
-    AddUser_UpdateSidepanel();
+    AddUser_UpdateSidepanelAfterShow();
     BrowserTestSetStrings();
 
     Main_SaveValues();
