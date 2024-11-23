@@ -10,6 +10,7 @@
     ```
     npm install
     npm install http-server -g
+    npm install -g firebase-tools -f
     ```
 
 # personal steps
