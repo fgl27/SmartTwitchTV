@@ -19982,6 +19982,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_OpenFeed(PlayClip_handleKeyDown);
     }
 
+    function PlayClip_Exit() {
+        PlayClip_CheckPreview();
+        Play_CleanHideExit();
+        PlayClip_shutdownStream();
+    }
+
     function PlayClip_CheckPreview() {
         if (
             PlayClip_isOn &&
@@ -20145,13 +20151,16 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 } else PlayClip_showPanel();
                 break;
             case KEY_STOP:
-                PlayClip_CheckPreview();
-                Play_CleanHideExit();
-                PlayClip_shutdownStream();
+                PlayClip_Exit();
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+                    if (Settings_Obj_default('single_clickExit') && Play_EndFocus) {
+                        PlayClip_Exit();
+                        return;
+                    }
+
                     Play_EndTextClear();
 
                     if (!Play_EndFocus) {
@@ -20167,16 +20176,17 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                         Play_EndIconsAddFocus();
                         Play_showExitDialog();
                     }
-                } else if (Play_isPanelShowing()) PlayClip_hidePanel();
-                else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
+                } else if (Play_isPanelShowing()) {
+                    PlayClip_hidePanel();
+                } else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
                     if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos || UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos)
                         UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else UserLiveFeed_Hide();
+                    else {
+                        UserLiveFeed_Hide();
+                    }
                 } else {
                     if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
-                        PlayClip_CheckPreview();
-                        Play_CleanHideExit();
-                        PlayClip_shutdownStream();
+                        PlayClip_Exit();
                     } else {
                         Play_showExitDialog();
                     }
@@ -21758,6 +21768,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Play_KeyReturn(is_vod) {
         if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+            if (Settings_Obj_default('single_clickExit') && Play_EndFocus) {
+                Play_KeyReturnExit(is_vod);
+                return;
+            }
+
             Play_EndTextClear();
 
             if (!Play_EndFocus) {
@@ -21786,36 +21801,40 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 Play_hidePanel();
             }
         } else {
-            if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
-                Play_HideVodDialog();
-                PlayVod_PreshutdownStream(false);
-                Play_exitMain();
-            } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
-                if (Play_MultiEnable) {
-                    Play_controls[Play_MultiStream].enterKey();
-                } else if (PlayExtra_PicturePicture) {
-                    Play_CloseSmall();
-                } else {
-                    Play_CleanHideExit();
-                    Play_hideChat();
+            Play_KeyReturnExit(is_vod);
+        }
+    }
 
-                    if (is_vod) {
-                        PlayVod_CheckPreview();
-                        PlayVod_shutdownStream();
-                    } else {
-                        Play_CheckPreview();
-                        Play_shutdownStream();
-                    }
-                }
-            } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
-                Main_clearTimeout(Play_showWarningMiddleDialogId);
-                Main_clearTimeout(Play_showWarningDialogId);
-                Play_HideWarningDialog();
-                Play_HideWarningMidleDialog();
-                Play_KeyReturnSetExit();
+    function Play_KeyReturnExit(is_vod) {
+        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
+            Play_HideVodDialog();
+            PlayVod_PreshutdownStream(false);
+            Play_exitMain();
+        } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
+            if (Play_MultiEnable) {
+                Play_controls[Play_MultiStream].enterKey();
+            } else if (PlayExtra_PicturePicture) {
+                Play_CloseSmall();
             } else {
-                Play_KeyReturnSetExit();
+                Play_CleanHideExit();
+                Play_hideChat();
+
+                if (is_vod) {
+                    PlayVod_CheckPreview();
+                    PlayVod_shutdownStream();
+                } else {
+                    Play_CheckPreview();
+                    Play_shutdownStream();
+                }
             }
+        } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
+            Main_clearTimeout(Play_showWarningMiddleDialogId);
+            Main_clearTimeout(Play_showWarningDialogId);
+            Play_HideWarningDialog();
+            Play_HideWarningMidleDialog();
+            Play_KeyReturnSetExit();
+        } else {
+            Play_KeyReturnSetExit();
         }
     }
 
