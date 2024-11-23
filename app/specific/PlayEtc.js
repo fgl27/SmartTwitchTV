@@ -176,9 +176,12 @@ function Play_controlsAudioVolupsetLabel(pos, data, obj) {
 function Play_GetVolLevel(pos) {
     var icon = 'vol-level-4'; // 100%
 
-    if (!Play_volumes[pos]) icon = 'vol-level-0'; // 0%
-    else if (Play_volumes[pos] && Play_volumes[pos] < 30) icon = 'vol-level-1'; // 0% - 29%
-    else if (Play_volumes[pos] && Play_volumes[pos] < 60) icon = 'vol-level-2'; // 30% - 59%
+    if (!Play_volumes[pos])
+        icon = 'vol-level-0'; // 0%
+    else if (Play_volumes[pos] && Play_volumes[pos] < 30)
+        icon = 'vol-level-1'; // 0% - 29%
+    else if (Play_volumes[pos] && Play_volumes[pos] < 60)
+        icon = 'vol-level-2'; // 30% - 59%
     else if (Play_volumes[pos] && Play_volumes[pos] < 100) icon = 'vol-level-3'; // 60% - 99%
 
     return icon;
@@ -1376,6 +1379,11 @@ function Play_GetPlayPauseIcon(not_playing) {
 
 function Play_KeyReturn(is_vod) {
     if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+        if (Settings_Obj_default('single_clickExit') && Play_EndFocus) {
+            Play_KeyReturnExit(is_vod);
+            return;
+        }
+
         Play_EndTextClear();
 
         if (!Play_EndFocus) {
@@ -1404,36 +1412,40 @@ function Play_KeyReturn(is_vod) {
             Play_hidePanel();
         }
     } else {
-        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
-            Play_HideVodDialog();
-            PlayVod_PreshutdownStream(false);
-            Play_exitMain();
-        } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
-            if (Play_MultiEnable) {
-                Play_controls[Play_MultiStream].enterKey();
-            } else if (PlayExtra_PicturePicture) {
-                Play_CloseSmall();
-            } else {
-                Play_CleanHideExit();
-                Play_hideChat();
+        Play_KeyReturnExit(is_vod);
+    }
+}
 
-                if (is_vod) {
-                    PlayVod_CheckPreview();
-                    PlayVod_shutdownStream();
-                } else {
-                    Play_CheckPreview();
-                    Play_shutdownStream();
-                }
-            }
-        } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
-            Main_clearTimeout(Play_showWarningMiddleDialogId);
-            Main_clearTimeout(Play_showWarningDialogId);
-            Play_HideWarningDialog();
-            Play_HideWarningMidleDialog();
-            Play_KeyReturnSetExit();
+function Play_KeyReturnExit(is_vod) {
+    if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
+        Play_HideVodDialog();
+        PlayVod_PreshutdownStream(false);
+        Play_exitMain();
+    } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
+        if (Play_MultiEnable) {
+            Play_controls[Play_MultiStream].enterKey();
+        } else if (PlayExtra_PicturePicture) {
+            Play_CloseSmall();
         } else {
-            Play_KeyReturnSetExit();
+            Play_CleanHideExit();
+            Play_hideChat();
+
+            if (is_vod) {
+                PlayVod_CheckPreview();
+                PlayVod_shutdownStream();
+            } else {
+                Play_CheckPreview();
+                Play_shutdownStream();
+            }
         }
+    } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
+        Main_clearTimeout(Play_showWarningMiddleDialogId);
+        Main_clearTimeout(Play_showWarningDialogId);
+        Play_HideWarningDialog();
+        Play_HideWarningMidleDialog();
+        Play_KeyReturnSetExit();
+    } else {
+        Play_KeyReturnSetExit();
     }
 }
 
@@ -2473,7 +2485,8 @@ function Play_MakeControls() {
                 //both
                 OSInterface_RestartPlayer(1, 0, 0);
                 OSInterface_RestartPlayer(1, 0, 1);
-            } else if (this.defaultValue) OSInterface_RestartPlayer(1, 0, 0); //main
+            } else if (this.defaultValue)
+                OSInterface_RestartPlayer(1, 0, 0); //main
             else OSInterface_RestartPlayer(1, 0, 1); //small
 
             this.setLabel();

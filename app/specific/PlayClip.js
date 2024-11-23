@@ -112,7 +112,8 @@ function PlayClip_Start() {
     PlayClip_isOn = true;
 
     if (!Play_PreviewId) {
-        if (!PlayClip_replay) PlayClip_loadDataRequest(); //Play_PlayEndStart(3);
+        if (!PlayClip_replay)
+            PlayClip_loadDataRequest(); //Play_PlayEndStart(3);
         else PlayClip_qualityChanged();
     } else {
         PlayClip_QualityStart(Play_PreviewResponseText);
@@ -703,6 +704,12 @@ function PlayClip_OpenLiveStream() {
     Play_OpenFeed(PlayClip_handleKeyDown);
 }
 
+function PlayClip_Exit() {
+    PlayClip_CheckPreview();
+    Play_CleanHideExit();
+    PlayClip_shutdownStream();
+}
+
 function PlayClip_CheckPreview() {
     if (
         PlayClip_isOn &&
@@ -863,13 +870,16 @@ function PlayClip_handleKeyDown(e) {
             } else PlayClip_showPanel();
             break;
         case KEY_STOP:
-            PlayClip_CheckPreview();
-            Play_CleanHideExit();
-            PlayClip_shutdownStream();
+            PlayClip_Exit();
             break;
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+                if (Settings_Obj_default('single_clickExit') && Play_EndFocus) {
+                    PlayClip_Exit();
+                    return;
+                }
+
                 Play_EndTextClear();
 
                 if (!Play_EndFocus) {
@@ -885,16 +895,17 @@ function PlayClip_handleKeyDown(e) {
                     Play_EndIconsAddFocus();
                     Play_showExitDialog();
                 }
-            } else if (Play_isPanelShowing()) PlayClip_hidePanel();
-            else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
+            } else if (Play_isPanelShowing()) {
+                PlayClip_hidePanel();
+            } else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
                 if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos || UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos)
                     UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                else UserLiveFeed_Hide();
+                else {
+                    UserLiveFeed_Hide();
+                }
             } else {
                 if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
-                    PlayClip_CheckPreview();
-                    Play_CleanHideExit();
-                    PlayClip_shutdownStream();
+                    PlayClip_Exit();
                 } else {
                     Play_showExitDialog();
                 }
