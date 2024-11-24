@@ -78,6 +78,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="smarttvtwitch" />
+                <data android:host="screen" />
                 <data android:host="channel" />
                 <data android:host="livestream" />
                 <data android:host="video" />
