@@ -160,7 +160,7 @@ function Screens_first_init() {
         screen_channel_call,
         tempGame;
 
-    if (Last_obj) {
+    if (Last_obj && !Main_A_equals_B(obj.type, 'DEEPLINK')) {
         obj = JSON.parse(Last_obj);
         live_channel_call = Main_A_equals_B(obj.type, 'LIVE');
 
@@ -1227,8 +1227,11 @@ function Screens_LoadPreview(key) {
         var id = 0, //Clip
             obj = Screens_GetObj(key);
 
-        if (ScreenObj[key].screenType === 0) id = 14; //live
-        else if (ScreenObj[key].screenType === 1) id = 7; //vod
+        if (ScreenObj[key].screenType === 0) {
+            id = 14; //live
+        } else if (ScreenObj[key].screenType === 1) {
+            id = 7; //vod
+        }
 
         var ThumbId = obj[id]; //streamer id
 

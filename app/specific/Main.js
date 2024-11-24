@@ -1530,7 +1530,8 @@ function Main_YRst(y) {
 function Main_YchangeAddFocus(y) {
     var position = 0;
 
-    if (Main_cursorYAddFocus < y) position = -1; //going down
+    if (Main_cursorYAddFocus < y)
+        position = -1; //going down
     else if (Main_cursorYAddFocus > y) position = 1; //going up
 
     Main_cursorYAddFocus = y;
@@ -3229,12 +3230,36 @@ function Main_onNewIntentClearPlay() {
     }
 }
 
+function Main_HandleDeeplinkIntent(obj) {
+    console.log('Main_HandleDeeplinkIntent', obj);
+
+    var objContent = Main_GetDeeplinkObj(obj);
+
+    console.log('objContent', objContent);
+
+    //TODO make the handle for the objContent
+
+    Main_EventDEEPLINK(obj);
+}
+
+function Main_GetDeeplinkObj(obj) {
+    //obj = {URL: 'smarttvtwitch://channel/CHANNEL', screen: 0, type: 'DEEPLINK'}
+    var urlArray = obj.URL.split('/'),
+        type = urlArray[2],
+        content = urlArray[3];
+
+    return {type: type, content: content};
+}
+
 function Main_onNewIntent(mobj) {
     var obj = JSON.parse(mobj),
-        isLive = Main_A_equals_B(obj.type, 'LIVE');
+        isLive = Main_A_equals_B(obj.type, 'LIVE'),
+        isDEEPLINK = Main_A_equals_B(obj.type, 'DEEPLINK');
 
     //TODO check more cases for problems
-    if (isLive) {
+    if (isDEEPLINK) {
+        Main_HandleDeeplinkIntent(obj);
+    } else if (isLive) {
         Play_showBufferDialog();
         Main_CheckResume(true);
 
@@ -3331,9 +3356,11 @@ function Main_onNewIntent(mobj) {
         Main_values.Main_Go = goTo;
 
         Main_ReStartScreens();
-    } else Main_CheckResume();
+    } else {
+        Main_CheckResume();
+    }
 
-    Main_EventChannel(obj);
+    if (!isDEEPLINK) Main_EventChannel(obj);
 }
 
 function Main_onNewIntentGetScreen(obj) {
@@ -3560,6 +3587,21 @@ function Main_EventChannel(obj) {
             gtag('event', 'channel', {
                 type: obj.type,
                 screen: Main_EventGetChannelScreen(obj)
+            });
+        } catch (e) {
+            console.log('Main_EventChannel e ' + e);
+        }
+    });
+}
+
+function Main_EventDEEPLINK(type, value) {
+    Main_ready(function () {
+        if (skipfirebase) return;
+
+        try {
+            gtag('event', 'deeplink', {
+                type: type,
+                value: value
             });
         } catch (e) {
             console.log('Main_EventChannel e ' + e);
