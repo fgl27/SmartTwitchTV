@@ -81,6 +81,7 @@
                 <data android:host="channel" />
                 <data android:host="livestream" />
                 <data android:host="video" />
+                <data android:host="clip" />
             </intent-filter>
         </activity>
 
