@@ -88,17 +88,28 @@ public final class ChannelsUtils {
         private final JsonObject obj;
         private final String type;
         private final int screen;
+        private final String URL;
 
         public PreviewObj(JsonObject obj, String type, int screen) {
             this.obj = obj;
             this.type = type;
             this.screen = screen;
+            this.URL = null;
+        }
+
+        public PreviewObj(String URL, String type) {
+            this.obj = null;
+            this.type = type;
+            this.screen = 0;
+            this.URL = URL;
+
         }
 
         PreviewObj(int screen, String type) {
             this.obj = null;
             this.type = type;
             this.screen = screen;
+            this.URL = null;
         }
     }
 

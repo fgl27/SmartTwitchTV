@@ -91,14 +91,12 @@ import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -327,6 +325,15 @@ public class PlayerActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+
+        //if stopped onResume will be called next let it handle the intent
+        //if WebViewLoaded didn't loaded can't call WebView action
+        //If didn't started save and let onCreate handle the intent
+        if (IsStopped || !WebViewLoaded || !AlreadyStarted) {
+            return;
+        }
+
+        //This is only handled when the app is open and visible
         boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
         if (isDeeplinkIntent) HandleDeeplinkIntent(intent);
     }
@@ -422,8 +429,12 @@ public class PlayerActivity extends Activity {
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
             appPreferences = new AppPreferences(this);
-            if (canRunChannel && isChannelIntent) SaveChannelIntent(intent);
-            if (isDeeplinkIntent) HandleDeeplinkIntent(intent);
+
+            if (canRunChannel && isChannelIntent) {
+                SaveChannelIntent(intent);
+            } else if (isDeeplinkIntent) {
+                SaveDeeplinkIntent(intent);
+            }
 
             userAgent = Util.getUserAgent(this, TAG);
 
@@ -1514,12 +1525,21 @@ public class PlayerActivity extends Activity {
 
         Intent intent = getIntent();
         boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
+        boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
+
         intent.setAction(null);
         setIntent(intent);
 
         if (Tools.isConnected(this)) {
 
-            if (isChannelIntent && AlreadyStarted) CheckIntent(intent);
+            if (AlreadyStarted){
+                if (isChannelIntent) {
+                    HandleChannelIntent(intent);
+                } else if (isDeeplinkIntent) {
+                    HandleDeeplinkIntent(intent);
+                }
+            }
+
             DoResume(isChannelIntent);
 
         } else if (AlreadyStarted) {
@@ -1545,31 +1565,30 @@ public class PlayerActivity extends Activity {
         LastIntent = IntentObj != null ? IntentObj : String.valueOf(intent.getIntExtra(Constants.CHANNEL_TYPE, 0));
     }
 
+    private void SaveDeeplinkIntent(Intent intent) {
+        LastIntent = GetDeeplinkIntent(intent);
+    }
+
     private void HandleDeeplinkIntent(Intent intent) {
-        Gson gson = new Gson();
-        Uri data = intent.getData();
-
-        if (data == null) {
-            return;
-        }
-
-        // PreviewObj needs a JsonObject so we need to construct a minimal "object" aka map with
-        // the url to satisfy this contraint
-        Map<String,String> fakeObj = Map.of("URL", data.toString());
-        JsonObject jsonUrl = gson.toJsonTree(fakeObj).getAsJsonObject();
-
-        ChannelsUtils.PreviewObj previewObj = new ChannelsUtils.PreviewObj(jsonUrl, "DEEPLINK", 0);
-        IntentObj = gson.toJson(previewObj);
+        IntentObj = GetDeeplinkIntent(intent);
+        Log.i(TAG, "HandleDeeplinkIntent IntentObj " + IntentObj);
 
         if (IntentObj != null) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_onNewIntent(Android.GetIntentObj())");
-
-            // deeplinks should be handled once, so clearing it after passing to webview
-            IntentObj = null;
         }
     }
 
-    private void CheckIntent(Intent intent) {
+    private String GetDeeplinkIntent(Intent intent) {
+        Uri data = intent.getData();
+
+        if (data == null) {
+            return null;
+        }
+
+        return new Gson().toJson(new ChannelsUtils.PreviewObj(data.toString() , "DEEPLINK"));
+    }
+
+    private void HandleChannelIntent(Intent intent) {
         if (!canRunChannel) return;
 
         IntentObj = intent.getStringExtra(Constants.CHANNEL_OBJ);
