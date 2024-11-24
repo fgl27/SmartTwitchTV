@@ -91,12 +91,14 @@ import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -325,6 +327,8 @@ public class PlayerActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
+        if (isDeeplinkIntent) HandleDeeplinkIntent(intent);
     }
 
     @Override
@@ -336,6 +340,7 @@ public class PlayerActivity extends Activity {
         if (!onCreateReady) {
             Intent intent = getIntent();
             boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
+            boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
             intent.setAction(null);
             setIntent(intent);
 
@@ -417,7 +422,8 @@ public class PlayerActivity extends Activity {
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
             appPreferences = new AppPreferences(this);
-            if (canRunChannel && isChannelIntent) SaveIntent(intent);
+            if (canRunChannel && isChannelIntent) SaveChannelIntent(intent);
+            if (isDeeplinkIntent) HandleDeeplinkIntent(intent);
 
             userAgent = Util.getUserAgent(this, TAG);
 
@@ -1533,10 +1539,34 @@ public class PlayerActivity extends Activity {
         registerScreenReceiver();
     }
 
-    private void SaveIntent(Intent intent) {
+    private void SaveChannelIntent(Intent intent) {
         String IntentObj = intent.getStringExtra(Constants.CHANNEL_OBJ);
         //IntentObj == null the channel content is empty or user clicked on the refresh opt
         LastIntent = IntentObj != null ? IntentObj : String.valueOf(intent.getIntExtra(Constants.CHANNEL_TYPE, 0));
+    }
+
+    private void HandleDeeplinkIntent(Intent intent) {
+        Gson gson = new Gson();
+        Uri data = intent.getData();
+
+        if (data == null) {
+            return;
+        }
+
+        // PreviewObj needs a JsonObject so we need to construct a minimal "object" aka map with
+        // the url to satisfy this contraint
+        Map<String,String> fakeObj = Map.of("URL", data.toString());
+        JsonObject jsonUrl = gson.toJsonTree(fakeObj).getAsJsonObject();
+
+        ChannelsUtils.PreviewObj previewObj = new ChannelsUtils.PreviewObj(jsonUrl, "DEEPLINK", 0);
+        IntentObj = gson.toJson(previewObj);
+
+        if (IntentObj != null) {
+            mWebView.loadUrl("javascript:smartTwitchTV.Main_onNewIntent(Android.GetIntentObj())");
+
+            // deeplinks should be handled once, so clearing it after passing to webview
+            IntentObj = null;
+        }
     }
 
     private void CheckIntent(Intent intent) {
