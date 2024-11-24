@@ -77,12 +77,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <!--adb shell am start -W -a android.intent.action.VIEW -d smarttvtwitch://data/Type/Value-->
                 <data android:scheme="smarttvtwitch" />
-                <data android:host="screen" />
-                <data android:host="channel" />
-                <data android:host="livestream" />
-                <data android:host="video" />
-                <data android:host="clip" />
+                <data android:host="data" />
             </intent-filter>
         </activity>
 

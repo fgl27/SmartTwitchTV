@@ -3243,10 +3243,14 @@ function Main_HandleDeeplinkIntent(obj) {
 }
 
 function Main_GetDeeplinkObj(obj) {
-    //obj = {URL: 'smarttvtwitch://channel/CHANNEL', screen: 0, type: 'DEEPLINK'}
+    //obj = {URL: 'smarttvtwitch://data/Type/Value', screen: 0, type: 'DEEPLINK'}
+
+    //Supported types video, clip, live, screen, search etc that the app may support
+    //Supported values video id, live id, clip id or slug, screen of the app live games etc, search type-query
+
     var urlArray = obj.URL.split('/'),
-        type = urlArray[2],
-        content = urlArray[3];
+        type = urlArray[3],
+        content = urlArray[4];
 
     return {type: type, content: content};
 }
