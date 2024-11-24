@@ -1186,8 +1186,6 @@ public class PlayerActivity extends Activity {
                 .setMaxVideoBitrate(PlayerBitrate[ParametersPos])
                 .setMaxVideoSize(width, PlayerResolution[ParametersPos])
                 .setAllowVideoNonSeamlessAdaptiveness(true)
-                .setExceedAudioConstraintsIfNecessary(true)
-                .setExceedVideoConstraintsIfNecessary(true)
                 .setAllowVideoMixedMimeTypeAdaptiveness(true)
                 .setAllowVideoMixedDecoderSupportAdaptiveness(true)
                 .setViewportSize(//set this to play resolution bigger then current screen resolution
