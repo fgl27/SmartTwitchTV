@@ -335,7 +335,12 @@ public class PlayerActivity extends Activity {
 
         //This is only handled when the app is open and visible
         boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
-        if (isDeeplinkIntent) HandleDeeplinkIntent(intent);
+        if (isDeeplinkIntent) {
+            HandleDeeplinkIntent(intent);
+            //clear deeplink intent Data to avoid calling the same again
+            intent.setData(null);
+            setIntent(intent);
+        }
     }
 
     @Override
@@ -1527,7 +1532,10 @@ public class PlayerActivity extends Activity {
         boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
         boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
 
+        //Clear channel intent action to avoid calling the same again
         intent.setAction(null);
+        //clear deeplink intent Data to avoid calling the same again
+        intent.setData(null);
         setIntent(intent);
 
         if (Tools.isConnected(this)) {
