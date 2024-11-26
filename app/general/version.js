@@ -15,17 +15,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
- *y
+ *
  */
 
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
-    WebVersion: 'November 15 2024',
-    WebTag: 687, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
+    WebVersion: 'November 27 2024',
+    WebTag: 689, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version November 27 2024 Apk Version 3.0.372',
+            changes: ['Update player dependencies to latest version', 'General improvements']
+        },
         {
             title: 'Version November 15 2024',
             changes: [
@@ -38,21 +42,6 @@ var version = {
             changes: [
                 'Fix issues for devices with a very low RAM size during playback, last version fix for high RAM size cause a issue for low 😑',
                 'Fix issues opening a game content without a user',
-                'Other General improvements'
-            ]
-        },
-        {
-            title: 'Version October 25 2024 Apk Version 3.0.369',
-            changes: [
-                'Fix crashes for devices with bigger RAM (4+GB) when playing VOD, even that teh device has a large amount of RAM if the app uses it for buffer the app will crash',
-                'Fix old deleted vod not being deleted from live history',
-                'Fix old deleted Lives not being deleted from live history',
-                'Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content',
-                'Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens',
-                'Fix player controls miss behaving randomly',
-                'Fix screen with a single content not allowing to open the content, issue introduced in last version',
-                'Improve numeric VODs jump to % function',
-                'Improve media keys Live/VODs jump to 5/30 seconds function',
                 'Other General improvements'
             ]
         }

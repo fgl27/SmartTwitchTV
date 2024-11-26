@@ -4867,17 +4867,21 @@
      *
      * You should have received a copy of the GNU General Public License
      * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
-     *y
+     *
      */
 
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 371, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/371/SmartTV_twitch_3_0_371.apk',
-        WebVersion: 'November 15 2024',
-        WebTag: 687, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
+        WebVersion: 'November 27 2024',
+        WebTag: 689, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version November 27 2024 Apk Version 3.0.372',
+                changes: ['Update player dependencies to latest version', 'General improvements']
+            },
             {
                 title: 'Version November 15 2024',
                 changes: [
@@ -4890,21 +4894,6 @@
                 changes: [
                     'Fix issues for devices with a very low RAM size during playback, last version fix for high RAM size cause a issue for low 😑',
                     'Fix issues opening a game content without a user',
-                    'Other General improvements'
-                ]
-            },
-            {
-                title: 'Version October 25 2024 Apk Version 3.0.369',
-                changes: [
-                    'Fix crashes for devices with bigger RAM (4+GB) when playing VOD, even that teh device has a large amount of RAM if the app uses it for buffer the app will crash',
-                    'Fix old deleted vod not being deleted from live history',
-                    'Fix old deleted Lives not being deleted from live history',
-                    'Fix Game content not showing the latest content when the app did a auto refresh in background, very  hare but after the app was running for a long time there was a chance the app did refresh in background but shows old none refreshed content',
-                    'Fix showing blocked content randomly, after navigating to a blocked content and exit the app in a very random scenario this can happens',
-                    'Fix player controls miss behaving randomly',
-                    'Fix screen with a single content not allowing to open the content, issue introduced in last version',
-                    'Improve numeric VODs jump to % function',
-                    'Improve media keys Live/VODs jump to 5/30 seconds function',
                     'Other General improvements'
                 ]
             }
@@ -15221,12 +15210,40 @@
         }
     }
 
+    function Main_HandleDeeplinkIntent(obj) {
+        console.log('Main_HandleDeeplinkIntent', obj);
+
+        var objContent = Main_GetDeeplinkObj(obj);
+
+        console.log('objContent', objContent);
+
+        //TODO make the handle for the objContent
+
+        Main_EventDEEPLINK(obj);
+    }
+
+    function Main_GetDeeplinkObj(obj) {
+        //obj = {URL: 'smarttvtwitch://data/Type/Value', screen: 0, type: 'DEEPLINK'}
+
+        //Supported types video, clip, live, screen, search etc that the app may support
+        //Supported values video id, live id, clip id or slug, screen of the app live games etc, search type-query
+
+        var urlArray = obj.URL.split('/'),
+            type = urlArray[3],
+            content = urlArray[4];
+
+        return {type: type, content: content};
+    }
+
     function Main_onNewIntent(mobj) {
         var obj = JSON.parse(mobj),
-            isLive = Main_A_equals_B(obj.type, 'LIVE');
+            isLive = Main_A_equals_B(obj.type, 'LIVE'),
+            isDEEPLINK = Main_A_equals_B(obj.type, 'DEEPLINK');
 
         //TODO check more cases for problems
-        if (isLive) {
+        if (isDEEPLINK) {
+            Main_HandleDeeplinkIntent(obj);
+        } else if (isLive) {
             Play_showBufferDialog();
             Main_CheckResume(true);
 
@@ -15323,9 +15340,11 @@
             Main_values.Main_Go = goTo;
 
             Main_ReStartScreens();
-        } else Main_CheckResume();
+        } else {
+            Main_CheckResume();
+        }
 
-        Main_EventChannel(obj);
+        if (!isDEEPLINK) Main_EventChannel(obj);
     }
 
     function Main_onNewIntentGetScreen(obj) {
@@ -15552,6 +15571,21 @@
                 gtag('event', 'channel', {
                     type: obj.type,
                     screen: Main_EventGetChannelScreen(obj)
+                });
+            } catch (e) {
+                console.log('Main_EventChannel e ' + e);
+            }
+        });
+    }
+
+    function Main_EventDEEPLINK(type, value) {
+        Main_ready(function () {
+            if (skipfirebase) return;
+
+            try {
+                gtag('event', 'deeplink', {
+                    type: type,
+                    value: value
                 });
             } catch (e) {
                 console.log('Main_EventChannel e ' + e);
@@ -28858,7 +28892,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             screen_channel_call,
             tempGame;
 
-        if (Last_obj) {
+        if (Last_obj && !Main_A_equals_B(obj.type, 'DEEPLINK')) {
             obj = JSON.parse(Last_obj);
             live_channel_call = Main_A_equals_B(obj.type, 'LIVE');
 
@@ -29934,9 +29968,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             var id = 0, //Clip
                 obj = Screens_GetObj(key);
 
-            if (ScreenObj[key].screenType === 0)
+            if (ScreenObj[key].screenType === 0) {
                 id = 14; //live
-            else if (ScreenObj[key].screenType === 1) id = 7; //vod
+            } else if (ScreenObj[key].screenType === 1) {
+                id = 7; //vod
+            }
 
             var ThumbId = obj[id]; //streamer id
 
