@@ -36,6 +36,7 @@ var UserLiveFeed_AnimationTimeout = 200; //Same value as user_feed_scroll
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
+var UserLiveFeed_Games_Obj = {};
 var UserLiveFeed_cell = [];
 var UserLiveFeed_cellVisible = [];
 var UserLiveFeed_FeedSetPosLast = [];

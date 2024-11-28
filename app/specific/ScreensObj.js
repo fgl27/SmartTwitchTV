@@ -234,10 +234,10 @@ function ScreensObj_StartAllVars() {
             this.loadingData = false;
 
             if (this.hasBackupData) {
-                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id);
             }
         },
-        setBackupData: function (responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
+        setBackupData: function (responseObj, data, lastScreenRefresh, game) {
             //make sure game is always a string to avoid issues withe backup obj
             game = game + '';
 
@@ -253,28 +253,16 @@ function ScreensObj_StartAllVars() {
                 };
             }
 
-            if (!this.BackupData.lastScreenRefresh[game] || lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
-                if (
-                    (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) ||
-                    (this.BackupData.ContentLang[game] && !Main_A_equals_B(this.BackupData.ContentLang[game], ContentLang)) ||
-                    (this.BackupData.Lang[game] && !Main_A_equals_B(this.BackupData.Lang[game], Lang))
-                ) {
-                    return;
-                }
+            this.eraseBackupData(game);
 
-                this.eraseBackupData(game);
+            this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
+            this.BackupData.responseObj[game] = responseObj;
+            this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+            this.BackupData.enable_mature[game] = Settings_value.enable_mature.defaultValue;
 
-                this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
-                this.BackupData.responseObj[game] = responseObj;
-                this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
-                this.BackupData.enable_mature[game] = Settings_value.enable_mature.defaultValue;
-
-                this.BackupData.ContentLang[game] = Main_ContentLang;
-                this.BackupData.Lang[game] = Settings_AppLang;
-                this.BackupData.offsettopFontsize[game] = this.offsettopFontsize
-                    ? this.offsettopFontsize
-                    : Settings_Obj_default('global_font_offset');
-            }
+            this.BackupData.ContentLang[game] = Main_ContentLang;
+            this.BackupData.Lang[game] = Settings_AppLang;
+            this.BackupData.offsettopFontsize[game] = this.offsettopFontsize ? this.offsettopFontsize : Settings_Obj_default('global_font_offset');
         },
         eraseBackupData: function (game) {
             //make sure game is always a string to avoid issues withe backup obj
@@ -2147,7 +2135,7 @@ function ScreensObj_InitUserGames() {
         this.loadingData = false;
 
         if (this.hasBackupData) {
-            this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+            this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id);
         }
     };
 }
