@@ -238,6 +238,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         setBackupData: function (responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
+            //make sure game is always a string to avoid issues withe backup obj
+            game = game + '';
+
             if (!this.BackupData) {
                 this.BackupData = {
                     data: {},
@@ -276,6 +279,8 @@ function ScreensObj_StartAllVars() {
             }
         },
         eraseBackupData: function (game) {
+            //make sure game is always a string to avoid issues withe backup obj
+            game = game + '';
             if (this.BackupData) {
                 this.BackupData.data[game] = null;
                 this.BackupData.ContentLang[game] = null;
@@ -288,6 +293,8 @@ function ScreensObj_StartAllVars() {
             }
         },
         CheckBackupData: function (game) {
+            //make sure game is always a string to avoid issues withe backup obj
+            game = game + '';
             return (
                 this.BackupData &&
                 this.BackupData.data[game] &&
@@ -301,7 +308,9 @@ function ScreensObj_StartAllVars() {
             );
         },
         restoreBackup: function () {
-            var game = this.gameSelected_Id;
+            //make sure game is always a string to avoid issues withe backup obj
+
+            var game = this.gameSelected_Id + '';
 
             this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
             this.offset = this.data.length;
@@ -322,12 +331,14 @@ function ScreensObj_StartAllVars() {
             Screens_SetLastRefresh(this.screen);
         },
         BackupScreen: function (game) {
+            //make sure game is always a string to avoid issues withe backup obj
+            game = game + '';
+
             if (!this.ScreenBackup) {
                 this.ScreenBackup = {};
-                this.ScreenBackup[game] = {};
-            } else if (!this.ScreenBackup[game]) {
-                this.ScreenBackup[game] = {};
             }
+
+            this.ScreenBackup[game] = {};
 
             if (!this.data || !this.data.length) {
                 this.ScreenBackup[game] = null;
@@ -357,6 +368,9 @@ function ScreensObj_StartAllVars() {
             this.ScreenBackup[game].BannerCreated = this.BannerCreated;
         },
         RestoreBackupScreen: function (game) {
+            //make sure game is always a string to avoid issues withe backup obj
+            game = game + '';
+
             this.ScrollDoc.style.transform = this.ScreenBackup[game].style;
             this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
             this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
