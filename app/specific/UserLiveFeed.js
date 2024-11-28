@@ -427,8 +427,12 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
                     UserLiveFeed_CounterDialogRst();
                     UserLiveFeedobj_loadDataPrepare(pos);
                     UserLiveFeed_obj[pos].load();
-                } else UserLiveFeed_CheckRefresh(pos, 5000);
-            } else UserLiveFeed_SetRefresh(pos);
+                } else {
+                    UserLiveFeed_CheckRefresh(pos, 5000);
+                }
+            } else {
+                UserLiveFeed_SetRefresh(pos);
+            }
         },
         timeout,
         UserLiveFeed_RefreshId[pos]

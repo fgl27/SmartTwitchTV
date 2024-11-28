@@ -253,10 +253,6 @@ function ScreensObj_StartAllVars() {
                 };
             }
 
-            if (lastScreenRefresh > this.BackupData.lastScreenRefresh[game]) {
-                this.eraseBackupData(game);
-            }
-
             if (!this.BackupData.lastScreenRefresh[game] || lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
                 if (
                     (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) ||
@@ -265,6 +261,8 @@ function ScreensObj_StartAllVars() {
                 ) {
                     return;
                 }
+
+                this.eraseBackupData(game);
 
                 this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
                 this.BackupData.responseObj[game] = responseObj;
@@ -281,6 +279,7 @@ function ScreensObj_StartAllVars() {
         eraseBackupData: function (game) {
             //make sure game is always a string to avoid issues withe backup obj
             game = game + '';
+
             if (this.BackupData) {
                 this.BackupData.data[game] = null;
                 this.BackupData.ContentLang[game] = null;
@@ -293,6 +292,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         CheckBackupData: function (game) {
+            if (!game) {
+                return false;
+            }
             //make sure game is always a string to avoid issues withe backup obj
             game = game + '';
             return (

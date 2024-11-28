@@ -402,11 +402,11 @@ function Screens_loadDataRequestStart(key) {
         Screens_loadDataFail(key);
     } else {
         if (
-            Main_values.Main_gameSelected_id &&
+            ScreenObj[key].gameSelected_Id &&
             !ScreenObj[key].itemsCount &&
             !ScreenObj[key].isReloadScreen &&
             ScreenObj[key].hasBackupData &&
-            ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
+            ScreenObj[key].CheckBackupData(ScreenObj[key].gameSelected_Id)
         ) {
             ScreenObj[key].restoreBackup();
         } else {
