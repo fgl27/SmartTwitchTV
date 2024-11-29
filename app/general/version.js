@@ -21,11 +21,19 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    publishVersionCode: 373, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-    WebVersion: 'November 27 2024',
+    WebVersion: 'November 29 2024',
     WebTag: 689, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version November 29 2024',
+            changes: [
+                'Prevent issues when switching or auto-refreshing game sections, the app always tries to remember the position and Streams showing when you exit and go back to a game section it only refreshes when the Auto-refresh timeout expires, but before this changes sometimes it was not doing it instead, it was showing old streams after an auto-refresh',
+                'Fix player User Games section not loading more than 100 live channels for a selected game',
+                'General improvements'
+            ]
+        },
         {
             title: 'Version November 27 2024 Apk Version 3.0.372',
             changes: ['Update player dependencies to latest version', 'General improvements']

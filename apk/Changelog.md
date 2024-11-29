@@ -9,6 +9,13 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version November 29 2024
+==============
+
+* Prevent issues when switching or auto-refreshing game sections, the app always tries to remember the position and Streams showing when you exit and go back to a game section it only refreshes when the Auto-refresh timeout expires, but before this changes sometimes it was not doing it instead, it was showing old streams after an auto-refresh
+* Fix player User Games section not loading more than 100 live channels for a selected game
+* General improvements
+
 Version November 27 2024 Apk Version 3.0.372
 ==============
 

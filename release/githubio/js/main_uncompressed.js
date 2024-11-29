@@ -4873,11 +4873,19 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        publishVersionCode: 373, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'November 27 2024',
+        WebVersion: 'November 29 2024',
         WebTag: 689, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version November 29 2024',
+                changes: [
+                    'Prevent issues when switching or auto-refreshing game sections, the app always tries to remember the position and Streams showing when you exit and go back to a game section it only refreshes when the Auto-refresh timeout expires, but before this changes sometimes it was not doing it instead, it was showing old streams after an auto-refresh',
+                    'Fix player User Games section not loading more than 100 live channels for a selected game',
+                    'General improvements'
+                ]
+            },
             {
                 title: 'Version November 27 2024 Apk Version 3.0.372',
                 changes: ['Update player dependencies to latest version', 'General improvements']
@@ -29139,11 +29147,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Screens_loadDataFail(key);
         } else {
             if (
-                Main_values.Main_gameSelected_id &&
+                ScreenObj[key].gameSelected_Id &&
                 !ScreenObj[key].itemsCount &&
                 !ScreenObj[key].isReloadScreen &&
                 ScreenObj[key].hasBackupData &&
-                ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
+                ScreenObj[key].CheckBackupData(ScreenObj[key].gameSelected_Id)
             ) {
                 ScreenObj[key].restoreBackup();
             } else {
@@ -33087,10 +33095,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 this.loadingData = false;
 
                 if (this.hasBackupData) {
-                    this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+                    this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id);
                 }
             },
-            setBackupData: function (responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
+            setBackupData: function (responseObj, data, lastScreenRefresh, game) {
                 //make sure game is always a string to avoid issues withe backup obj
                 game = game + '';
 
@@ -33106,34 +33114,23 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     };
                 }
 
-                if (lastScreenRefresh > this.BackupData.lastScreenRefresh[game]) {
-                    this.eraseBackupData(game);
-                }
+                this.eraseBackupData(game);
 
-                if (!this.BackupData.lastScreenRefresh[game] || lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
-                    if (
-                        (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) ||
-                        (this.BackupData.ContentLang[game] && !Main_A_equals_B(this.BackupData.ContentLang[game], ContentLang)) ||
-                        (this.BackupData.Lang[game] && !Main_A_equals_B(this.BackupData.Lang[game], Lang))
-                    ) {
-                        return;
-                    }
+                this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
+                this.BackupData.responseObj[game] = responseObj;
+                this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+                this.BackupData.enable_mature[game] = Settings_value.enable_mature.defaultValue;
 
-                    this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
-                    this.BackupData.responseObj[game] = responseObj;
-                    this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
-                    this.BackupData.enable_mature[game] = Settings_value.enable_mature.defaultValue;
-
-                    this.BackupData.ContentLang[game] = Main_ContentLang;
-                    this.BackupData.Lang[game] = Settings_AppLang;
-                    this.BackupData.offsettopFontsize[game] = this.offsettopFontsize
-                        ? this.offsettopFontsize
-                        : Settings_Obj_default('global_font_offset');
-                }
+                this.BackupData.ContentLang[game] = Main_ContentLang;
+                this.BackupData.Lang[game] = Settings_AppLang;
+                this.BackupData.offsettopFontsize[game] = this.offsettopFontsize
+                    ? this.offsettopFontsize
+                    : Settings_Obj_default('global_font_offset');
             },
             eraseBackupData: function (game) {
                 //make sure game is always a string to avoid issues withe backup obj
                 game = game + '';
+
                 if (this.BackupData) {
                     this.BackupData.data[game] = null;
                     this.BackupData.ContentLang[game] = null;
@@ -33146,6 +33143,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 }
             },
             CheckBackupData: function (game) {
+                if (!game) {
+                    return false;
+                }
                 //make sure game is always a string to avoid issues withe backup obj
                 game = game + '';
                 return (
@@ -35013,7 +35013,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             this.loadingData = false;
 
             if (this.hasBackupData) {
-                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id);
             }
         };
     }
@@ -41900,9 +41900,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
             UserLiveFeed_obj[i].neverLoaded = true;
             UserLiveFeed_obj[i].data = {};
-            UserLiveFeed_obj[i].idObjectBackup = {};
-            UserLiveFeed_obj[i].DataObjBackup = {};
-            UserLiveFeed_obj[i].cellBackup = {};
+            UserLiveFeed_obj[i].backup = {};
         }
 
         //User vod
@@ -42200,9 +42198,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     if (!Screens_Some_Screen_Is_Refreshing) {
                         UserLiveFeed_CounterDialogRst();
                         UserLiveFeedobj_loadDataPrepare(pos);
+                        UserLiveFeed_obj[pos].isReloadScreen = true;
                         UserLiveFeed_obj[pos].load();
-                    } else UserLiveFeed_CheckRefresh(pos, 5000);
-                } else UserLiveFeed_SetRefresh(pos);
+                    } else {
+                        UserLiveFeed_CheckRefresh(pos, 5000);
+                    }
+                } else {
+                    UserLiveFeed_SetRefresh(pos);
+                }
             },
             timeout,
             UserLiveFeed_RefreshId[pos]
@@ -43532,7 +43535,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 Main_helix_api +
                     'streams?first=' +
                     Main_ItemsLimitMax +
-                    (UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor : '') +
+                    (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
                     (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
                 UserLiveFeedobj_loadDataLiveSuccess,
                 true,
@@ -43632,22 +43635,17 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function UserLiveFeedobj_loadCurrentGame() {
         UserLiveFeedobj_CurrentGameName = Play_data.data[18];
 
-        var key = Main_aGame,
-            game = UserLiveFeedobj_CurrentGameName,
+        var game = UserLiveFeedobj_CurrentGameName,
             pos = UserLiveFeedobj_CurrentGamePos;
 
-        if (
-            game &&
-            ScreenObj[key].hasBackupData &&
-            !UserLiveFeed_itemsCount[pos] &&
-            !UserLiveFeed_obj[pos].isReloadScreen &&
-            ScreenObj[key].CheckBackupData(game)
-        ) {
-            UserLiveFeedobj_oldGameDataLoad(pos, game, key);
+        if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+            UserLiveFeedobj_oldGameDataLoad(pos, game);
         } else {
-            if (UserLiveFeed_obj[pos].isReloadScreen) {
+            if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
+                UserLiveFeedobj_backupStartObj(pos, game);
+
                 UserLiveFeed_obj[pos].data[game] = null;
-                UserLiveFeed_obj[pos].cellBackup[game] = null;
+                UserLiveFeed_obj[pos].backup[game].cell = null;
             }
 
             if (Play_data.data[18]) {
@@ -43660,28 +43658,41 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeed_obj[pos].isReloadScreen = false;
     }
 
+    function UserLiveFeedobj_CheckBackupData(pos, game) {
+        return (
+            UserLiveFeed_obj[pos] &&
+            UserLiveFeed_obj[pos].backup[game] &&
+            UserLiveFeed_obj[pos].backup[game].data &&
+            UserLiveFeed_obj[pos].backup[game].data.length &&
+            UserLiveFeed_obj[pos].backup[game].ContentLang === Main_ContentLang &&
+            (!Settings_Obj_default('auto_refresh_screen') ||
+                new Date().getTime() < UserLiveFeed_obj[pos].backup[game].lastRefresh + Settings_GetAutoRefreshTimeout())
+        );
+    }
+
     function UserLiveFeedobj_loadCurrentGameGetGames() {
+        var pos = UserLiveFeedobj_CurrentGamePos;
         UserLiveFeedobj_BaseLoad(
             Main_helix_api +
                 'streams?game_id=' +
                 Play_data.data[18] +
                 '&first=' +
                 Main_ItemsLimitMax +
-                (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
+                (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
                 (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
             UserLiveFeedobj_loadDataCurrentGameSuccess,
             true,
-            UserLiveFeedobj_CurrentGamePos
+            pos
         );
     }
 
     function UserLiveFeedobj_loadCurrentGameGetGameId() {
         var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-        UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentGameGetGamesSucess, true, UserLiveFeedobj_CurrentGamePos);
+        UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentGameGetGamesSuccess, true, UserLiveFeedobj_CurrentGamePos);
     }
 
-    function UserLiveFeedobj_loadCurrentGameGetGamesSucess(responseText) {
+    function UserLiveFeedobj_loadCurrentGameGetGamesSuccess(responseText) {
         var response = JSON.parse(responseText);
 
         if (response.data && response.data.length) {
@@ -43692,26 +43703,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
 
-    function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].BackupData.lastScreenRefresh[game];
+    function UserLiveFeedobj_oldGameDataLoad(pos, game) {
+        UserLiveFeed_lastRefresh[pos] = UserLiveFeed_obj[pos].backup[game].lastRefresh;
+        UserLiveFeed_obj[pos].data[game] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].backup[game].data));
 
         if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
             Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_obj[pos].LastPositionGame[game];
         }
 
-        var tempData = JSON.parse(JSON.stringify(ScreenObj[key].BackupData.data[game].slice(0, 100)));
-
-        if (!UserLiveFeed_obj[pos].data[game]) {
-            UserLiveFeed_obj[pos].data[game] = tempData;
-        } else {
-            UserLiveFeed_obj[pos].data[game] =
-                tempData.length >= UserLiveFeed_obj[pos].data[game].length ? tempData : UserLiveFeed_obj[pos].data[game];
-        }
-
-        if (UserLiveFeed_obj[pos].cellBackup[game]) {
-            UserLiveFeed_idObject[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].idObjectBackup[game]));
-            UserLiveFeed_DataObj[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].DataObjBackup[game]));
-            UserLiveFeed_cell[pos] = Main_Slice(UserLiveFeed_obj[pos].cellBackup[game]);
+        if (UserLiveFeed_obj[pos].backup[game].cell) {
+            UserLiveFeed_idObject[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].backup[game].idObject));
+            UserLiveFeed_DataObj[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].backup[game].DataObj));
+            UserLiveFeed_cell[pos] = Main_Slice(UserLiveFeed_obj[pos].backup[game].cell);
 
             UserLiveFeed_itemsCount[pos] = UserLiveFeed_cell[pos].length;
 
@@ -43802,36 +43805,28 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function UserLiveFeedobj_loadCurrentUserAGame() {
         UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameIdEnter;
 
-        var key = Main_aGame,
-            game = UserLiveFeedobj_CurrentUserAGameIdEnter,
+        var game = UserLiveFeedobj_CurrentUserAGameIdEnter,
             pos = UserLiveFeedobj_UserAGamesPos;
 
-        if (
-            game &&
-            ScreenObj[key].hasBackupData &&
-            !UserLiveFeed_itemsCount[pos] &&
-            !UserLiveFeed_obj[pos].isReloadScreen &&
-            ScreenObj[key].CheckBackupData(game)
-        ) {
-            UserLiveFeedobj_oldGameDataLoad(pos, game, key);
+        if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+            UserLiveFeedobj_oldGameDataLoad(pos, game);
         } else {
-            if (UserLiveFeed_obj[pos].isReloadScreen) {
-                UserLiveFeed_obj[pos].data[game] = null;
-                UserLiveFeed_obj[pos].cellBackup[game] = null;
-            }
+            if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
+                UserLiveFeedobj_backupStartObj(pos, game);
 
-            UserLiveFeedobj_BaseLoad(
+                UserLiveFeed_obj[pos].data[game] = null;
+                UserLiveFeed_obj[pos].backup[game].cell = null;
+            }
+            var URL =
                 Main_helix_api +
-                    'streams?game_id=' +
-                    UserLiveFeedobj_CurrentUserAGameIdEnter +
-                    '&first=' +
-                    Main_ItemsLimitMax +
-                    (UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor : '') +
-                    (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-                UserLiveFeedobj_loadDataCurrentUserGameSuccess,
-                true,
-                pos
-            );
+                'streams?game_id=' +
+                UserLiveFeedobj_CurrentUserAGameIdEnter +
+                '&first=' +
+                Main_ItemsLimitMax +
+                (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
+                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+
+            UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentUserGameSuccess, true, pos);
         }
 
         UserLiveFeed_obj[pos].isReloadScreen = false;
@@ -43943,22 +43938,17 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function UserLiveFeedobj_loadCurrentAGame() {
-        var key = Main_aGame,
-            game = UserLiveFeedobj_CurrentAGameIdEnter,
+        var game = UserLiveFeedobj_CurrentAGameIdEnter,
             pos = UserLiveFeedobj_AGamesPos;
 
-        if (
-            game &&
-            ScreenObj[key].hasBackupData &&
-            !UserLiveFeed_itemsCount[pos] &&
-            !UserLiveFeed_obj[pos].isReloadScreen &&
-            ScreenObj[key].CheckBackupData(game)
-        ) {
-            UserLiveFeedobj_oldGameDataLoad(pos, game, key);
+        if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+            UserLiveFeedobj_oldGameDataLoad(pos, game);
         } else {
-            if (UserLiveFeed_obj[pos].isReloadScreen) {
+            if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
+                UserLiveFeedobj_backupStartObj(pos, game);
+
                 UserLiveFeed_obj[pos].data[game] = null;
-                UserLiveFeed_obj[pos].cellBackup[game] = null;
+                UserLiveFeed_obj[pos].backup[game].cell = null;
             }
 
             if (UserLiveFeedobj_CurrentAGameIdEnter) {
@@ -43972,18 +43962,16 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function UserLiveFeedobj_loadCurrentAGameGetGames() {
-        UserLiveFeedobj_BaseLoad(
+        var URL =
             Main_helix_api +
-                'streams?game_id=' +
-                UserLiveFeedobj_CurrentAGameIdEnter +
-                '&first=' +
-                Main_ItemsLimitMax +
-                (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
-                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-            UserLiveFeedobj_loadDataCurrentAGameSuccess,
-            true,
-            UserLiveFeedobj_AGamesPos
-        );
+            'streams?game_id=' +
+            UserLiveFeedobj_CurrentAGameIdEnter +
+            '&first=' +
+            Main_ItemsLimitMax +
+            (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
+            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+
+        UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentAGameSuccess, true, UserLiveFeedobj_AGamesPos);
     }
 
     function UserLiveFeedobj_loadCurrentAGameGetGameId() {
@@ -44737,22 +44725,17 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         if (game) {
-            var key = Main_aGame;
-
             if (UserLiveFeed_obj[pos].data[game]) {
                 UserLiveFeed_obj[pos].data[game].push.apply(UserLiveFeed_obj[pos].data[game], response);
             } else {
+                UserLiveFeedobj_backupStartObj(pos, game);
+
                 UserLiveFeed_obj[pos].data[game] = response;
+                UserLiveFeed_obj[pos].backup[game].lastRefresh = new Date().getTime();
+                UserLiveFeed_obj[pos].backup[game].ContentLang = Main_ContentLang;
             }
 
-            ScreenObj[key].setBackupData(
-                responseObj,
-                UserLiveFeed_obj[pos].data[game],
-                UserLiveFeed_lastRefresh[pos],
-                game,
-                UserLiveFeed_obj[pos].ContentLang,
-                UserLiveFeed_obj[pos].Lang
-            );
+            UserLiveFeed_obj[pos].backup[game].data = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].data[game]));
         }
 
         UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount, game);
@@ -44883,10 +44866,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
 
+    function UserLiveFeedobj_backupStartObj(pos, game) {
+        if (!UserLiveFeed_obj[pos].backup[game]) {
+            UserLiveFeed_obj[pos].backup[game] = {};
+        }
+    }
+
     function UserLiveFeedobj_loadDataBaseLiveBackup(pos, game) {
-        UserLiveFeed_obj[pos].idObjectBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[pos]));
-        UserLiveFeed_obj[pos].DataObjBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_DataObj[pos]));
-        UserLiveFeed_obj[pos].cellBackup[game] = Main_Slice(UserLiveFeed_cell[pos]);
+        UserLiveFeedobj_backupStartObj(pos, game);
+
+        UserLiveFeed_obj[pos].backup[game].idObject = JSON.parse(JSON.stringify(UserLiveFeed_idObject[pos]));
+        UserLiveFeed_obj[pos].backup[game].DataObj = JSON.parse(JSON.stringify(UserLiveFeed_DataObj[pos]));
+        UserLiveFeed_obj[pos].backup[game].cell = Main_Slice(UserLiveFeed_cell[pos]);
     }
 
     function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items) {
