@@ -427,6 +427,7 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
                 if (!Screens_Some_Screen_Is_Refreshing) {
                     UserLiveFeed_CounterDialogRst();
                     UserLiveFeedobj_loadDataPrepare(pos);
+                    UserLiveFeed_obj[pos].isReloadScreen = true;
                     UserLiveFeed_obj[pos].load();
                 } else {
                     UserLiveFeed_CheckRefresh(pos, 5000);
