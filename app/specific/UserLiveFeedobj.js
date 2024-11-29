@@ -351,7 +351,7 @@ function UserLiveFeedobj_loadLive() {
             Main_helix_api +
                 'streams?first=' +
                 Main_ItemsLimitMax +
-                (UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor : '') +
+                (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
                 (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
             UserLiveFeedobj_loadDataLiveSuccess,
             true,
@@ -487,27 +487,28 @@ function UserLiveFeedobj_CheckBackupData(pos, game) {
 }
 
 function UserLiveFeedobj_loadCurrentGameGetGames() {
+    var pos = UserLiveFeedobj_CurrentGamePos;
     UserLiveFeedobj_BaseLoad(
         Main_helix_api +
             'streams?game_id=' +
             Play_data.data[18] +
             '&first=' +
             Main_ItemsLimitMax +
-            (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
+            (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
             (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
         UserLiveFeedobj_loadDataCurrentGameSuccess,
         true,
-        UserLiveFeedobj_CurrentGamePos
+        pos
     );
 }
 
 function UserLiveFeedobj_loadCurrentGameGetGameId() {
     var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-    UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentGameGetGamesSucess, true, UserLiveFeedobj_CurrentGamePos);
+    UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentGameGetGamesSuccess, true, UserLiveFeedobj_CurrentGamePos);
 }
 
-function UserLiveFeedobj_loadCurrentGameGetGamesSucess(responseText) {
+function UserLiveFeedobj_loadCurrentGameGetGamesSuccess(responseText) {
     var response = JSON.parse(responseText);
 
     if (response.data && response.data.length) {
@@ -632,19 +633,16 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
             UserLiveFeed_obj[pos].data[game] = null;
             UserLiveFeed_obj[pos].backup[game].cell = null;
         }
-
-        UserLiveFeedobj_BaseLoad(
+        var URL =
             Main_helix_api +
-                'streams?game_id=' +
-                UserLiveFeedobj_CurrentUserAGameIdEnter +
-                '&first=' +
-                Main_ItemsLimitMax +
-                (UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor : '') +
-                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-            UserLiveFeedobj_loadDataCurrentUserGameSuccess,
-            true,
-            pos
-        );
+            'streams?game_id=' +
+            UserLiveFeedobj_CurrentUserAGameIdEnter +
+            '&first=' +
+            Main_ItemsLimitMax +
+            (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
+            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+
+        UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentUserGameSuccess, true, pos);
     }
 
     UserLiveFeed_obj[pos].isReloadScreen = false;
@@ -778,18 +776,16 @@ function UserLiveFeedobj_loadCurrentAGame() {
 }
 
 function UserLiveFeedobj_loadCurrentAGameGetGames() {
-    UserLiveFeedobj_BaseLoad(
+    var URL =
         Main_helix_api +
-            'streams?game_id=' +
-            UserLiveFeedobj_CurrentAGameIdEnter +
-            '&first=' +
-            Main_ItemsLimitMax +
-            (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
-            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-        UserLiveFeedobj_loadDataCurrentAGameSuccess,
-        true,
-        UserLiveFeedobj_AGamesPos
-    );
+        'streams?game_id=' +
+        UserLiveFeedobj_CurrentAGameIdEnter +
+        '&first=' +
+        Main_ItemsLimitMax +
+        (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
+        (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+
+    UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentAGameSuccess, true, UserLiveFeedobj_AGamesPos);
 }
 
 function UserLiveFeedobj_loadCurrentAGameGetGameId() {
