@@ -1534,14 +1534,16 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
     if (game) {
         if (UserLiveFeed_obj[pos].data[game]) {
             UserLiveFeed_obj[pos].data[game].push.apply(UserLiveFeed_obj[pos].data[game], response);
+            UserLiveFeed_Games_Obj[game].data = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].data[game]));
         } else {
             if (!UserLiveFeed_Games_Obj[game]) {
                 UserLiveFeed_Games_Obj[game] = {};
             }
 
-            UserLiveFeed_Games_Obj[game].data = response;
-            UserLiveFeed_Games_Obj[game].lastRefresh = UserLiveFeed_lastRefresh[pos];
-            UserLiveFeed_Games_Obj[game].ContentLang = UserLiveFeed_obj[pos].ContentLang;
+            UserLiveFeed_obj[pos].data[game] = JSON.parse(JSON.stringify(response));
+            UserLiveFeed_Games_Obj[game].data = JSON.parse(JSON.stringify(response));
+            UserLiveFeed_Games_Obj[game].lastRefresh = new Date().getTime();
+            UserLiveFeed_Games_Obj[game].ContentLang = Main_ContentLang;
         }
     }
 
