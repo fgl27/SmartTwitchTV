@@ -36,7 +36,6 @@ var UserLiveFeed_AnimationTimeout = 200; //Same value as user_feed_scroll
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
-var UserLiveFeed_Games_Obj = {};
 var UserLiveFeed_cell = [];
 var UserLiveFeed_cellVisible = [];
 var UserLiveFeed_FeedSetPosLast = [];
@@ -127,9 +126,7 @@ function UserLiveFeed_Prepare() {
 
         UserLiveFeed_obj[i].neverLoaded = true;
         UserLiveFeed_obj[i].data = {};
-        UserLiveFeed_obj[i].idObjectBackup = {};
-        UserLiveFeed_obj[i].DataObjBackup = {};
-        UserLiveFeed_obj[i].cellBackup = {};
+        UserLiveFeed_obj[i].backup = {};
     }
 
     //User vod

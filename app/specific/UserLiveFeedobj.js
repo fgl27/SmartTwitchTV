@@ -454,12 +454,14 @@ function UserLiveFeedobj_loadCurrentGame() {
     var game = UserLiveFeedobj_CurrentGameName,
         pos = UserLiveFeedobj_CurrentGamePos;
 
-    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(game)) {
+    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
         UserLiveFeedobj_oldGameDataLoad(pos, game);
     } else {
-        if (UserLiveFeed_obj[pos].isReloadScreen) {
+        if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
+            UserLiveFeedobj_backupStartObj(pos, game);
+
             UserLiveFeed_obj[pos].data[game] = null;
-            UserLiveFeed_obj[pos].cellBackup[game] = null;
+            UserLiveFeed_obj[pos].backup[game].cell = null;
         }
 
         if (Play_data.data[18]) {
@@ -472,14 +474,15 @@ function UserLiveFeedobj_loadCurrentGame() {
     UserLiveFeed_obj[pos].isReloadScreen = false;
 }
 
-function UserLiveFeedobj_CheckBackupData(game) {
+function UserLiveFeedobj_CheckBackupData(pos, game) {
     return (
-        UserLiveFeed_Games_Obj[game] &&
-        UserLiveFeed_Games_Obj[game].data &&
-        UserLiveFeed_Games_Obj[game].data.length &&
-        UserLiveFeed_Games_Obj[game].ContentLang === Main_ContentLang &&
+        UserLiveFeed_obj[pos] &&
+        UserLiveFeed_obj[pos].backup[game] &&
+        UserLiveFeed_obj[pos].backup[game].data &&
+        UserLiveFeed_obj[pos].backup[game].data.length &&
+        UserLiveFeed_obj[pos].backup[game].ContentLang === Main_ContentLang &&
         (!Settings_Obj_default('auto_refresh_screen') ||
-            new Date().getTime() < UserLiveFeed_Games_Obj[game].lastRefresh + Settings_GetAutoRefreshTimeout())
+            new Date().getTime() < UserLiveFeed_obj[pos].backup[game].lastRefresh + Settings_GetAutoRefreshTimeout())
     );
 }
 
@@ -516,17 +519,17 @@ function UserLiveFeedobj_loadCurrentGameGetGamesSucess(responseText) {
 }
 
 function UserLiveFeedobj_oldGameDataLoad(pos, game) {
-    UserLiveFeed_lastRefresh[pos] = UserLiveFeed_Games_Obj[game].lastRefresh;
-    UserLiveFeed_obj[pos].data[game] = UserLiveFeed_Games_Obj[game].data;
+    UserLiveFeed_lastRefresh[pos] = UserLiveFeed_obj[pos].backup[game].lastRefresh;
+    UserLiveFeed_obj[pos].data[game] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].backup[game].data));
 
     if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
         Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_obj[pos].LastPositionGame[game];
     }
 
-    if (UserLiveFeed_obj[pos].cellBackup[game]) {
-        UserLiveFeed_idObject[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].idObjectBackup[game]));
-        UserLiveFeed_DataObj[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].DataObjBackup[game]));
-        UserLiveFeed_cell[pos] = Main_Slice(UserLiveFeed_obj[pos].cellBackup[game]);
+    if (UserLiveFeed_obj[pos].backup[game].cell) {
+        UserLiveFeed_idObject[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].backup[game].idObject));
+        UserLiveFeed_DataObj[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].backup[game].DataObj));
+        UserLiveFeed_cell[pos] = Main_Slice(UserLiveFeed_obj[pos].backup[game].cell);
 
         UserLiveFeed_itemsCount[pos] = UserLiveFeed_cell[pos].length;
 
@@ -620,12 +623,14 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
     var game = UserLiveFeedobj_CurrentUserAGameIdEnter,
         pos = UserLiveFeedobj_UserAGamesPos;
 
-    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(game)) {
+    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
         UserLiveFeedobj_oldGameDataLoad(pos, game);
     } else {
-        if (UserLiveFeed_obj[pos].isReloadScreen) {
+        if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
+            UserLiveFeedobj_backupStartObj(pos, game);
+
             UserLiveFeed_obj[pos].data[game] = null;
-            UserLiveFeed_obj[pos].cellBackup[game] = null;
+            UserLiveFeed_obj[pos].backup[game].cell = null;
         }
 
         UserLiveFeedobj_BaseLoad(
@@ -752,12 +757,14 @@ function UserLiveFeedobj_loadCurrentAGame() {
     var game = UserLiveFeedobj_CurrentAGameIdEnter,
         pos = UserLiveFeedobj_AGamesPos;
 
-    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(game)) {
+    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
         UserLiveFeedobj_oldGameDataLoad(pos, game);
     } else {
-        if (UserLiveFeed_obj[pos].isReloadScreen) {
+        if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
+            UserLiveFeedobj_backupStartObj(pos, game);
+
             UserLiveFeed_obj[pos].data[game] = null;
-            UserLiveFeed_obj[pos].cellBackup[game] = null;
+            UserLiveFeed_obj[pos].backup[game].cell = null;
         }
 
         if (UserLiveFeedobj_CurrentAGameIdEnter) {
@@ -1535,16 +1542,14 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
         if (UserLiveFeed_obj[pos].data[game]) {
             UserLiveFeed_obj[pos].data[game].push.apply(UserLiveFeed_obj[pos].data[game], response);
         } else {
-            if (!UserLiveFeed_Games_Obj[game]) {
-                UserLiveFeed_Games_Obj[game] = {};
-            }
+            UserLiveFeedobj_backupStartObj(pos, game);
 
             UserLiveFeed_obj[pos].data[game] = response;
-            UserLiveFeed_Games_Obj[game].lastRefresh = new Date().getTime();
-            UserLiveFeed_Games_Obj[game].ContentLang = Main_ContentLang;
+            UserLiveFeed_obj[pos].backup[game].lastRefresh = new Date().getTime();
+            UserLiveFeed_obj[pos].backup[game].ContentLang = Main_ContentLang;
         }
 
-        UserLiveFeed_Games_Obj[game].data = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].data[game]));
+        UserLiveFeed_obj[pos].backup[game].data = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].data[game]));
     }
 
     UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount, game);
@@ -1675,10 +1680,18 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
     }
 }
 
+function UserLiveFeedobj_backupStartObj(pos, game) {
+    if (!UserLiveFeed_obj[pos].backup[game]) {
+        UserLiveFeed_obj[pos].backup[game] = {};
+    }
+}
+
 function UserLiveFeedobj_loadDataBaseLiveBackup(pos, game) {
-    UserLiveFeed_obj[pos].idObjectBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[pos]));
-    UserLiveFeed_obj[pos].DataObjBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_DataObj[pos]));
-    UserLiveFeed_obj[pos].cellBackup[game] = Main_Slice(UserLiveFeed_cell[pos]);
+    UserLiveFeedobj_backupStartObj(pos, game);
+
+    UserLiveFeed_obj[pos].backup[game].idObject = JSON.parse(JSON.stringify(UserLiveFeed_idObject[pos]));
+    UserLiveFeed_obj[pos].backup[game].DataObj = JSON.parse(JSON.stringify(UserLiveFeed_DataObj[pos]));
+    UserLiveFeed_obj[pos].backup[game].cell = Main_Slice(UserLiveFeed_cell[pos]);
 }
 
 function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items) {
