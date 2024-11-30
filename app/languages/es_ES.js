@@ -482,6 +482,10 @@ function es_ESLang() {
     STR_CHAT_NICK_COLOR_SUMMARY =
         'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
     STR_CHAT_CLEAR_MSG = 'Limpiar el chat, eliminar los mensajes del usuario';
+    STR_CHAT_BADGES_OPTIONS = 'Opciones de insignias de usuarios del chat';
+    STR_CHAT_SHOW_BADGES = 'Mostrar insignias de usuarios (excepto las siguientes)';
+    STR_CHAT_SHOW_BADGES_MOD = 'Mostrar insignias de moderadores';
+    STR_CHAT_SHOW_BADGES_VIP = 'Mostrar insignias VIP';
     STR_CHAT_MESSAGE_DELETED = 'Se solicitó la eliminación de este mensaje de usuario único';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Se solicitó la eliminación de todos los mensajes de este usuario';
     STR_CHAT_CLEAR_MSG_SUMMARY =

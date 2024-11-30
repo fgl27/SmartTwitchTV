@@ -553,7 +553,7 @@ function Chat_loadChatSuccess(responseObj, id) {
             for (j = 0, len_j = mmessage.userBadges.length; j < len_j; j++) {
                 badges = mmessage.userBadges[j];
 
-                if (!badges.setID || !badges.version) {
+                if (!badges.setID || !badges.version || !ChatLive_ShouldShowBadge(badges.setID)) {
                     continue;
                 }
 

@@ -700,6 +700,10 @@ function en_USLang() {
     STR_CHAT_NICK_COLOR_SUMMARY =
         "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";
     STR_CHAT_CLEAR_MSG = 'Clear chat, delete user messages';
+    STR_CHAT_BADGES_OPTIONS = 'Chat user badges options';
+    STR_CHAT_SHOW_BADGES = 'Show user badges (excluding the ones below)';
+    STR_CHAT_SHOW_BADGES_MOD = 'Show Moderator badges';
+    STR_CHAT_SHOW_BADGES_VIP = 'Show VIP badges';
     STR_CHAT_MESSAGE_DELETED = 'This single user message was requested to be deleted';
     STR_CHAT_MESSAGE_DELETED_ALL = 'All messages from this user were requested to be deleted';
     STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've been timed out for";
