@@ -564,6 +564,11 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
+    highlight_first: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
     highlight_streamer: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -3101,6 +3106,7 @@ function Settings_PlayerEnd(click) {
 function Settings_DialogShowChat(click) {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.highlight_rewards.values = yes_no;
+    Settings_value.highlight_first.values = yes_no;
     Settings_value.highlight_atstreamer.values = yes_no;
     Settings_value.highlight_streamer.values = yes_no;
     Settings_value.highlight_mod.values = yes_no;
@@ -3166,6 +3172,12 @@ function Settings_DialogShowChat(click) {
             defaultValue: Settings_value.highlight_rewards.defaultValue,
             values: Settings_value.highlight_rewards.values,
             title: STR_CHAT_HIGHLIGHT_REDEEMED,
+            summary: null
+        },
+        highlight_first: {
+            defaultValue: Settings_value.highlight_first.defaultValue,
+            values: Settings_value.highlight_first.values,
+            title: STR_CHAT_HIGHLIGHT_FIRST,
             summary: null
         },
         highlight_mod: {

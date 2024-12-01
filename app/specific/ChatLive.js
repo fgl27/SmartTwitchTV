@@ -159,6 +159,7 @@ function ChatLive_Switch() {
 
 var ChatLive_Logging;
 var ChatLive_Highlight_Rewards;
+var ChatLive_Highlight_First;
 var ChatLive_Highlight_AtStreamer;
 var ChatLive_Highlight_FromStreamer;
 var ChatLive_Highlight_Mod;
@@ -199,6 +200,7 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
     ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
     ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
+    ChatLive_Highlight_First = Settings_value.highlight_first.defaultValue;
     ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
     ChatLive_Highlight_FromStreamer = Settings_value.highlight_streamer.defaultValue;
     ChatLive_Highlight_Mod = Settings_value.highlight_mod.defaultValue;
@@ -1624,6 +1626,8 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         nickColor,
         highlighted = '',
         extraMessage,
+        extraMessageClass,
+        firstTimer,
         atstreamer = false,
         atuser = false,
         hasbits = false,
@@ -1644,7 +1648,6 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         return;
     }
 
-    //str.startsWith("Hello")
     if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
         //Stringfy to prevent crashes
         tags['msg-id'] = tags['msg-id'] + '';
@@ -1656,6 +1659,11 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
             highlighted = ' chat_highlighted ';
             extraMessage = STR_CHAT_REDEEMED_MESSAGE_SUB;
         }
+    }
+    if (ChatLive_Highlight_First && tags.hasOwnProperty('first-msg') && tags['first-msg'] === '1') {
+        extraMessageClass = ' chat_fromstreamer ';
+        firstTimer = true;
+        extraMessage = STR_CHAT_FIRST_MESSAGE_HIGH;
     }
 
     if (ChatLive_Show_TimeStamp) {
@@ -1728,8 +1736,10 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         atuser: atuser,
         fromstreamer: fromstreamer,
         mod: mod,
+        firstTimer: firstTimer,
         hasbits: hasbits && ChatLive_Highlight_Bits,
         extraMessage: extraMessage,
+        extraMessageClass: extraMessageClass,
         addToStart: addToStart
     };
 
@@ -1862,7 +1872,7 @@ function ChatLive_ElementAdd(messageObj) {
             ChatLive_Channel_Regex_Replace[messageObj.chat_number],
             "<span style='color: #34B5FF; font-weight: bold'>$&</span>"
         );
-    } else if (messageObj.fromstreamer) {
+    } else if (messageObj.fromstreamer || messageObj.firstTimer || messageObj.extraClass) {
         classname += ' chat_fromstreamer';
     } else if (messageObj.mod) {
         classname += ' chat_mod';
@@ -1923,6 +1933,7 @@ function ChatLive_ElementAddCheckExtra(messageObj) {
             chat_number: messageObj.chat_number,
             message: ChatLive_LineAddSimple(messageObj.extraMessage),
             skip_addline: 1,
+            extraClass: messageObj.extraMessageClass,
             addToStart: messageObj.addToStart
         });
     }

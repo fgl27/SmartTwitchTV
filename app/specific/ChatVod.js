@@ -819,6 +819,7 @@ function Chat_Clean(chat_number) {
 
 var replaceHighlights = new RegExp('%x', 'g');
 var highlightsClasses = '.chat_highlighted {background: rgba(100, 65, 164, %x);}';
+highlightsClasses += '.chat_highlighted_first {background: rgba(208, 113, 0, %x);}';
 highlightsClasses += '.chat_atstreamer {background: rgba(150, 0, 0, %x);}';
 highlightsClasses += '.chat_fromstreamer {background: rgba(182, 0, 143, %x);}';
 highlightsClasses += '.chat_mod {background: rgba(0, 139, 156, %x);}';
