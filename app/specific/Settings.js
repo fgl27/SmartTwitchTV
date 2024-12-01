@@ -733,6 +733,23 @@ var Settings_value = {
         values: ['yes', 'toast', 'no'],
         set_values: [''],
         defaultValue: 1
+    },
+    chat_badges_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    chat_show_badges: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    chat_show_badges_mod: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    chat_show_badges_vip: {
+        values: ['no', 'yes'],
+        defaultValue: 2
     }
 };
 
@@ -3150,6 +3167,12 @@ function Settings_DialogShowChat(click) {
             title: STR_CHAT_NICK_COLOR,
             summary: STR_CHAT_NICK_COLOR_SUMMARY
         },
+        chat_badges_opt: {
+            defaultValue: Settings_value.chat_badges_opt.defaultValue,
+            values: Settings_value.chat_badges_opt.values,
+            title: STR_CHAT_BADGES_OPTIONS,
+            keyenter: true
+        },
         highlight_rewards: {
             defaultValue: Settings_value.highlight_rewards.defaultValue,
             values: Settings_value.highlight_rewards.values,
@@ -3219,6 +3242,36 @@ function Settings_DialogShowChat(click) {
     };
 
     Settings_DialogShow(obj, STR_CHAT_OPTIONS, click);
+}
+
+function Settings_DialogShowChatBadges(click) {
+    var yes_no = [STR_NO, STR_YES];
+    Settings_value.chat_show_badges.values = yes_no;
+    Settings_value.chat_show_badges_mod.values = yes_no;
+    Settings_value.chat_show_badges_vip.values = yes_no;
+
+    var obj = {
+        chat_show_badges: {
+            defaultValue: Settings_value.chat_show_badges.defaultValue,
+            values: Settings_value.chat_show_badges.values,
+            title: STR_CHAT_SHOW_BADGES,
+            summary: null
+        },
+        chat_show_badges_mod: {
+            defaultValue: Settings_value.chat_show_badges_mod.defaultValue,
+            values: Settings_value.chat_show_badges_mod.values,
+            title: STR_CHAT_SHOW_BADGES_MOD,
+            summary: null
+        },
+        chat_show_badges_vip: {
+            defaultValue: Settings_value.chat_show_badges_vip.defaultValue,
+            values: Settings_value.chat_show_badges_vip.values,
+            title: STR_CHAT_SHOW_BADGES_VIP,
+            summary: null
+        }
+    };
+
+    Settings_DialogShow(obj, STR_CHAT_BADGES_OPTIONS, click);
 }
 
 function Settings_block_qualities(click) {
@@ -3350,6 +3403,10 @@ function Settings_DialoghandleKeyDown(event) {
         case KEY_ENTER:
             if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background')) {
                 SettingsColor_DialogColorsShow();
+                break;
+            }
+            if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'chat_badges_opt')) {
+                Settings_DialogShowChatBadges();
                 break;
             }
         /* falls through */

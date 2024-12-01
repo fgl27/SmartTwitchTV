@@ -181,6 +181,9 @@ var ChatLive_Custom_Nick_Color;
 var ChatLive_Show_TimeStamp;
 var ChatLive_ClearChat;
 var ChatLive_HideBots;
+var ChatLive_ShowBadges;
+var ChatLive_ShowBadgesMod;
+var ChatLive_ShowBadgesVIP;
 
 function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     extraEmotes[chat_number] = {};
@@ -210,6 +213,9 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
     ChatLive_HideBots = Settings_value.chat_bot.defaultValue;
     ChatLive_Individual_Background_flip[chat_number] = 0;
+    ChatLive_ShowBadges = Settings_value.chat_show_badges.defaultValue;
+    ChatLive_ShowBadgesMod = Settings_value.chat_show_badges_mod.defaultValue;
+    ChatLive_ShowBadgesVIP = Settings_value.chat_show_badges_vip.defaultValue;
 
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', 'i');
     ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], 'gi');
@@ -1754,7 +1760,7 @@ function ChatLive_GetBadges(tags, chat_number) {
             for (var i = 0, len = badges.length; i < len; i++) {
                 badge = badges[i].split('/');
 
-                if (!badge[0] || !badge[1]) {
+                if (!badge[0] || !badge[1] || !ChatLive_ShouldShowBadge(badge[0])) {
                     continue;
                 }
 
@@ -1766,6 +1772,13 @@ function ChatLive_GetBadges(tags, chat_number) {
     }
 
     return '';
+}
+
+function ChatLive_ShouldShowBadge(badge_name) {
+    if (badge_name === 'moderator' && ChatLive_ShowBadgesMod) return true;
+    if (badge_name === 'vip' && ChatLive_ShowBadgesVIP) return true;
+
+    return ChatLive_ShowBadges;
 }
 
 function ChatLive_checkEmotes(tags) {
