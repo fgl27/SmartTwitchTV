@@ -734,11 +734,6 @@ var Settings_value = {
         set_values: [''],
         defaultValue: 1
     },
-    chat_badges_opt: {
-        values: ['None'],
-        set_values: [''],
-        defaultValue: 1
-    },
     chat_show_badges: {
         values: ['no', 'yes'],
         defaultValue: 2
@@ -1904,12 +1899,12 @@ function Settings_Do_ScrollUp(docId) {
 }
 
 function Settings_ScrollTable() {
-    var scroolPos = 14,
+    var scrolPos = 14,
         offset = 1; //!Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === scrolPos + offset) {
         Settings_ScrollDown();
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === scroolPos - 1 + offset) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === scrolPos - 1 + offset) {
         Settings_ScrollUp();
     }
 
@@ -3167,12 +3162,6 @@ function Settings_DialogShowChat(click) {
             title: STR_CHAT_NICK_COLOR,
             summary: STR_CHAT_NICK_COLOR_SUMMARY
         },
-        chat_badges_opt: {
-            defaultValue: Settings_value.chat_badges_opt.defaultValue,
-            values: Settings_value.chat_badges_opt.values,
-            title: STR_CHAT_BADGES_OPTIONS,
-            keyenter: true
-        },
         highlight_rewards: {
             defaultValue: Settings_value.highlight_rewards.defaultValue,
             values: Settings_value.highlight_rewards.values,
@@ -3238,19 +3227,7 @@ function Settings_DialogShowChat(click) {
             values: Settings_value.chat_bot.values,
             title: STR_CHAT_BOTS,
             summary: null
-        }
-    };
-
-    Settings_DialogShow(obj, STR_CHAT_OPTIONS, click);
-}
-
-function Settings_DialogShowChatBadges(click) {
-    var yes_no = [STR_NO, STR_YES];
-    Settings_value.chat_show_badges.values = yes_no;
-    Settings_value.chat_show_badges_mod.values = yes_no;
-    Settings_value.chat_show_badges_vip.values = yes_no;
-
-    var obj = {
+        },
         chat_show_badges: {
             defaultValue: Settings_value.chat_show_badges.defaultValue,
             values: Settings_value.chat_show_badges.values,
@@ -3271,7 +3248,12 @@ function Settings_DialogShowChatBadges(click) {
         }
     };
 
-    Settings_DialogShow(obj, STR_CHAT_BADGES_OPTIONS, click);
+    //Use off set if there is too many options
+    //Ajust the value as per setting option by trying diff Global app font size offset
+    var fontOffset = Settings_Obj_default('global_font_offset') + 2,
+        offset = Object.keys(obj).length - fontOffset;
+
+    Settings_DialogShow(obj, STR_CHAT_OPTIONS, click, offset);
 }
 
 function Settings_block_qualities(click) {
@@ -3352,26 +3334,38 @@ function Settings_Dialog_isVisible() {
 
 var Settings_DialogValue = [];
 var Settings_DialogPos = 0;
+var Settings_DialogScrollCenter = 0;
 
-function Settings_DialogShow(obj, title, click) {
+function Settings_DialogShow(obj, title, click, scroll) {
     Main_removeEventListener('keydown', Settings_handleKeyDown);
 
-    var dialogContent = title + STR_BR;
+    var dialogContent = title + STR_BR,
+        dialogScroollHolder =
+            '<div id="settings_scroll_container" class="' +
+            (scroll ? 'settings_scroll_container' : '') +
+            '"><div id="settings_scroll_container_scroll" class="side_panel_holder_ani">';
+
     Settings_DialogValue = [];
 
     for (var property in obj) {
         Settings_DialogValue.push(property);
         if (obj[property].keyenter) {
-            dialogContent += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
+            dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
         } else {
-            dialogContent += obj[property].summary
+            dialogScroollHolder += obj[property].summary
                 ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73)
                 : Settings_DivOptionNoSummary(property, obj[property].title);
         }
     }
 
-    Main_innerHTML('dialog_settings_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
+    dialogScroollHolder += '</div></div>';
 
+    Main_innerHTML(
+        'dialog_settings_text',
+        dialogContent + dialogScroollHolder + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>'
+    );
+
+    Settings_DialogScrollCenter = scroll ? scroll : 0;
     Settings_DialogPos = 0;
     Main_AddClass(Settings_DialogValue[0], 'settings_value_focus');
     Main_AddClass(Settings_DialogValue[0] + '_div', 'settings_div_focus');
@@ -3405,10 +3399,6 @@ function Settings_DialoghandleKeyDown(event) {
                 SettingsColor_DialogColorsShow();
                 break;
             }
-            if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'chat_badges_opt')) {
-                Settings_DialogShowChatBadges();
-                break;
-            }
         /* falls through */
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
@@ -3423,16 +3413,37 @@ function Settings_DialoghandleKeyDown(event) {
         case KEY_UP:
             if (Settings_DialogPos > 0) {
                 Settings_DialogUpDown(-1);
+
+                Settings_ScrollConatiner('settings_scroll_container_scroll', Settings_DialogPos);
             }
             break;
         case KEY_DOWN:
             if (Settings_DialogPos < Settings_DialogValue.length - 1) {
                 Settings_DialogUpDown(1);
+
+                Settings_ScrollConatiner('settings_scroll_container_scroll', Settings_DialogPos);
             }
             break;
         default:
             break;
     }
+}
+
+function Settings_ScrollConatiner(div, pos) {
+    if (!Settings_DialogScrollCenter) {
+        return;
+    }
+
+    var center = Settings_DialogScrollCenter,
+        doc = Main_getElementById(div),
+        value = 0,
+        offset = 0;
+
+    if (pos > center) {
+        value = Main_getElementById(Settings_DialogValue[pos - center - offset] + '_div').offsetTop;
+    }
+
+    doc.style.transform = 'translateY(-' + value / BodyfontSize + 'em)';
 }
 
 function Settings_DialogUpDown(offset) {

@@ -688,7 +688,6 @@ function pt_BRLang() {
     STR_CHAT_NICK_COLOR_SUMMARY =
         'Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar';
     STR_CHAT_CLEAR_MSG = 'Limpar chat, apagar mensagens do usuário';
-    STR_CHAT_BADGES_OPTIONS = 'Opções de emblemas de usuários do chat';
     STR_CHAT_SHOW_BADGES = 'Mostrar emblemas de usuários (exceto os abaixo)';
     STR_CHAT_SHOW_BADGES_MOD = 'Mostrar emblemas de Moderador';
     STR_CHAT_SHOW_BADGES_VIP = 'Mostrar emblemas VIP';

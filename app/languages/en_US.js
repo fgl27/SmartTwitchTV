@@ -693,14 +693,13 @@ function en_USLang() {
     STR_CHAT_LINE_ANIMATION = 'Animated scrolling when adding a new chat message';
     STR_CHAT_LOGGING = 'Logging in the chat with the current user';
     STR_CHAT_LOGGING_SUMMARY =
-        "When an authorization key is provided, the app logs into chat as the current user unless chat is disabled in the player's controls. If disabled, it logs in anonymously, allowing messages but hiding bans and ROOMSTATE.";
+        "When an authorization key is provided, the app logs into chat as the current user unless chat is disabled in the player's controls. If this is net to NO, it logs in anonymously, allowing messages but hiding bans and ROOMSTATE.";
     STR_CHAT_BOTS = 'Block bots and bot commands (!command) from show in chat';
     STR_CHAT_TIMESTAMP = 'Show message timestamp';
     STR_CHAT_NICK_COLOR = 'Readable nick colors';
     STR_CHAT_NICK_COLOR_SUMMARY =
         "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";
     STR_CHAT_CLEAR_MSG = 'Clear chat, delete user messages';
-    STR_CHAT_BADGES_OPTIONS = 'Chat user badges options';
     STR_CHAT_SHOW_BADGES = 'Show user badges (excluding the ones below)';
     STR_CHAT_SHOW_BADGES_MOD = 'Show Moderator badges';
     STR_CHAT_SHOW_BADGES_VIP = 'Show VIP badges';
