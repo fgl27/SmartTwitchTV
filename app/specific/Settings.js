@@ -3107,6 +3107,9 @@ function Settings_DialogShowChat(click) {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.highlight_rewards.values = yes_no;
     Settings_value.highlight_first.values = yes_no;
+    Settings_value.chat_show_badges.values = yes_no;
+    Settings_value.chat_show_badges_mod.values = yes_no;
+    Settings_value.chat_show_badges_vip.values = yes_no;
     Settings_value.highlight_atstreamer.values = yes_no;
     Settings_value.highlight_streamer.values = yes_no;
     Settings_value.highlight_mod.values = yes_no;
