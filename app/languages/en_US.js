@@ -688,12 +688,12 @@ function en_USLang() {
         "These messages are usually equal to sub messages, but sent via a stream bot, so if you have 'Show sub ...' enabled, it's redundant.";
     STR_CHAT_INDIVIDUAL_BACKGROUND = 'Background color difference between individual messages';
     STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY =
-        "Modes are 'disable', 'enable' (auto mode), Bright or Darker. In auto mode, if the chat is above the stream, the odd message will have a darker background accent color from the even. If the chat is not above (side by side for example), the color will be bright.";
+        "Modes are 'disable', 'enable' (auto), Bright, or Darker. In auto mode, messages alternate between darker and lighter accents if the chat is above the stream; otherwise, the background is bright.";
     STR_CHAT_INDIVIDUAL_LINE = 'Insert a line to separate individual chat messages';
     STR_CHAT_LINE_ANIMATION = 'Animated scrolling when adding a new chat message';
     STR_CHAT_LOGGING = 'Logging in the chat with the current user';
     STR_CHAT_LOGGING_SUMMARY =
-        "The app will always log to chat using the current user when an authorization key is provided, unless chat is disabled within the controls at the bottom of the player, but if this option if set to NO, it will prevent logging using current username, and will instead log as anonymous, even with a provided authorization key. This doesn't prevent from sending chat messages for this user, if a key was added, but does prevent from knowing if you are banned in the chat and prevents from seeing the chat's ROOMSTATE.";
+        "When an authorization key is provided, the app logs into chat as the current user unless chat is disabled in the player's controls. If disabled, it logs in anonymously, allowing messages but hiding bans and ROOMSTATE.";
     STR_CHAT_BOTS = 'Block bots and bot commands (!command) from show in chat';
     STR_CHAT_TIMESTAMP = 'Show message timestamp';
     STR_CHAT_NICK_COLOR = 'Readable nick colors';
@@ -708,7 +708,7 @@ function en_USLang() {
     STR_CHAT_MESSAGE_DELETED_ALL = 'All messages from this user were requested to be deleted';
     STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've been timed out for";
     STR_CHAT_CLEAR_MSG_SUMMARY =
-        "Delete chat messages from a specific user (typically after they've received a timeout or ban). Deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not, only the background color will change.";
+        'Delete messages from specific users (e.g., after a timeout or ban). If enabled, messages are removed; otherwise, only the background changes to blue.';
     STR_OPEN_HOST_SETTINGS = 'Always open the hosted live at the end of the stream if available';
     STR_ALWAYS_STAY = 'Always stay with the player opened after a live ends';
     STR_PING_WARNING = "Show 'Ping to Twitch fail' warning";
@@ -754,7 +754,7 @@ function en_USLang() {
     STR_IN_CHAT = 'In chat';
     STR_SHOW_IN_CHAT = 'Show total logged in users on top of the chat or viewers';
     STR_SHOW_IN_CHAT_SUMMARY =
-        'This is very helpful to know, for example if the offline chat has any user to talk to, also lets the user know the difference from total viewers VS total chat users.';
+        'This helps identify if the offline chat has active users and shows the difference between total viewers and chat users.';
     STR_SHOW_IN_CHAT_VIEWERS = 'Show viewers';
     STR_SHOW_IN_CHAT_CHATTERS = 'Show chatters';
     STR_PLAYED = 'Played';
