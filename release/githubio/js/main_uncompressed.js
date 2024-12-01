@@ -494,6 +494,8 @@
         STR_CHAT_LOGGING_SUMMARY,
         STR_CHAT_HIGHLIGHT_STREAMER_MSG,
         STR_CHAT_HIGHLIGHT_MOD_MSG,
+        STR_CHAT_HIGHLIGHT_FIRST,
+        STR_CHAT_FIRST_MESSAGE_HIGH,
         STR_CHAT_HIGHLIGHT_REDEEMED,
         STR_CHAT_INDIVIDUAL_LINE,
         STR_BRIGHT_MODE,
@@ -533,6 +535,9 @@
         STR_OPEN_EXTERNAL_PLAYER,
         STR_CHAT_CLEAR_MSG,
         STR_CHAT_CLEAR_MSG_SUMMARY,
+        STR_CHAT_SHOW_BADGES,
+        STR_CHAT_SHOW_BADGES_MOD,
+        STR_CHAT_SHOW_BADGES_VIP,
         STR_SHOW_SIDE_PLAYER,
         STR_PREVIEW_OTHERS_VOLUME,
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY,
@@ -1988,11 +1993,13 @@
         STR_NOKEY_CHAT_WARN = 'Add a user authorization key to be able to log and write to chat';
         STR_CHAT_NOT_READY = 'Chat not ready to send! Try again is a second or two.';
         STR_CHAT_REDEEMED_MESSAGE_HIGH = 'Redeemed highlight My Message';
+        STR_CHAT_FIRST_MESSAGE_HIGH = 'FIRST MESSAGE';
         STR_CHAT_REDEEMED_MESSAGE_SUB = 'Redeemed send a message in sub-only mode';
         STR_CHAT_OPTIONS = 'Chat options';
         STR_CHAT_HIGHLIGHT_STREAMER_MSG = 'Highlight messages from the streamer (Dark pink background)';
         STR_CHAT_HIGHLIGHT_MOD_MSG = 'Highlight messages from moderators (Dark cyan background)';
         STR_CHAT_HIGHLIGHT_REDEEMED = 'Highlight reward messages (Purple background message only)';
+        STR_CHAT_HIGHLIGHT_FIRST = 'Highlight First-Time Chatter (Dark pink background)';
         STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, the '@' is blue)";
         STR_CHAT_HIGHLIGHT_USER = "Highlight your @username messages (Dark Green background, the '@' is blue)";
         STR_CHAT_HIGHLIGHT_USER_SEND = 'Highlight your sent messages (Dark Green background)';
@@ -2003,23 +2010,26 @@
             "These messages are usually equal to sub messages, but sent via a stream bot, so if you have 'Show sub ...' enabled, it's redundant.";
         STR_CHAT_INDIVIDUAL_BACKGROUND = 'Background color difference between individual messages';
         STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY =
-            "Modes are 'disable', 'enable' (auto mode), Bright or Darker. In auto mode, if the chat is above the stream, the odd message will have a darker background accent color from the even. If the chat is not above (side by side for example), the color will be bright.";
+            "Modes are 'disable', 'enable' (auto), Bright, or Darker. In auto mode, messages alternate between darker and lighter accents if the chat is above the stream; otherwise, the background is bright.";
         STR_CHAT_INDIVIDUAL_LINE = 'Insert a line to separate individual chat messages';
         STR_CHAT_LINE_ANIMATION = 'Animated scrolling when adding a new chat message';
         STR_CHAT_LOGGING = 'Logging in the chat with the current user';
         STR_CHAT_LOGGING_SUMMARY =
-            "The app will always log to chat using the current user when an authorization key is provided, unless chat is disabled within the controls at the bottom of the player, but if this option if set to NO, it will prevent logging using current username, and will instead log as anonymous, even with a provided authorization key. This doesn't prevent from sending chat messages for this user, if a key was added, but does prevent from knowing if you are banned in the chat and prevents from seeing the chat's ROOMSTATE.";
+            "When an authorization key is provided, the app logs into chat as the current user unless chat is disabled in the player's controls. If this is net to NO, it logs in anonymously, allowing messages but hiding bans and ROOMSTATE.";
         STR_CHAT_BOTS = 'Block bots and bot commands (!command) from show in chat';
         STR_CHAT_TIMESTAMP = 'Show message timestamp';
         STR_CHAT_NICK_COLOR = 'Readable nick colors';
         STR_CHAT_NICK_COLOR_SUMMARY =
             "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";
         STR_CHAT_CLEAR_MSG = 'Clear chat, delete user messages';
+        STR_CHAT_SHOW_BADGES = 'Show user badges (excluding the ones below)';
+        STR_CHAT_SHOW_BADGES_MOD = 'Show Moderator badges';
+        STR_CHAT_SHOW_BADGES_VIP = 'Show VIP badges';
         STR_CHAT_MESSAGE_DELETED = 'This single user message was requested to be deleted';
         STR_CHAT_MESSAGE_DELETED_ALL = 'All messages from this user were requested to be deleted';
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've been timed out for";
         STR_CHAT_CLEAR_MSG_SUMMARY =
-            "Delete chat messages from a specific user (typically after they've received a timeout or ban). Deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not, only the background color will change.";
+            'Delete messages from specific users (e.g., after a timeout or ban). If enabled, messages are removed; otherwise, only the background changes to blue.';
         STR_OPEN_HOST_SETTINGS = 'Always open the hosted live at the end of the stream if available';
         STR_ALWAYS_STAY = 'Always stay with the player opened after a live ends';
         STR_PING_WARNING = "Show 'Ping to Twitch fail' warning";
@@ -2070,7 +2080,7 @@
         STR_IN_CHAT = 'In chat';
         STR_SHOW_IN_CHAT = 'Show total logged in users on top of the chat or viewers';
         STR_SHOW_IN_CHAT_SUMMARY =
-            'This is very helpful to know, for example if the offline chat has any user to talk to, also lets the user know the difference from total viewers VS total chat users.';
+            'This helps identify if the offline chat has active users and shows the difference between total viewers and chat users.';
         STR_SHOW_IN_CHAT_VIEWERS = 'Show viewers';
         STR_SHOW_IN_CHAT_CHATTERS = 'Show chatters';
         STR_PLAYED = 'Played';
@@ -2693,8 +2703,10 @@
         STR_CHAT_CHOOSE = 'Elija el chat al que desea escribir o pulse Retorno para cerrarlo';
         STR_NOKEY_CHAT_WARN = 'Añadir una clave de autorización de usuario para poder registrar y escribir en el chat';
         STR_CHAT_NOT_READY = 'El chat no está listo para ser enviado. Inténtelo de nuevo en uno o dos segundos.';
+        STR_CHAT_FIRST_MESSAGE_HIGH = 'PRIMER MENSAJE';
         STR_CHAT_OPTIONS = 'Opciones del chat';
         STR_CHAT_HIGHLIGHT_REDEEMED = 'Resaltar los mensajes de recompensa (sólo el mensaje de fondo púrpura)';
+        STR_CHAT_HIGHLIGHT_FIRST = 'Resaltar Primer Usuario en el Chat (Fondo rosa oscuro)';
         STR_CHAT_HIGHLIGHT_STREAMER = 'Resaltar los mensajes de @streamer (fondo rojo oscuro, la @ es azul)';
         STR_CHAT_HIGHLIGHT_USER = 'Resalte sus mensajes de @nombredeusuario (fondo verde oscuro, la @ es azul)';
         STR_CHAT_HIGHLIGHT_USER_SEND = 'Resalte sus mensajes enviados (fondo verde oscuro)';
@@ -2715,6 +2727,9 @@
         STR_CHAT_NICK_COLOR_SUMMARY =
             'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
         STR_CHAT_CLEAR_MSG = 'Limpiar el chat, eliminar los mensajes del usuario';
+        STR_CHAT_SHOW_BADGES = 'Mostrar insignias de usuarios (excepto las siguientes)';
+        STR_CHAT_SHOW_BADGES_MOD = 'Mostrar insignias de moderadores';
+        STR_CHAT_SHOW_BADGES_VIP = 'Mostrar insignias VIP';
         STR_CHAT_MESSAGE_DELETED = 'Se solicitó la eliminación de este mensaje de usuario único';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Se solicitó la eliminación de todos los mensajes de este usuario';
         STR_CHAT_CLEAR_MSG_SUMMARY =
@@ -3449,11 +3464,13 @@
         STR_NOKEY_CHAT_WARN = 'Adicionar uma chave de autorização do usuário para poder acessar e escrever no chat';
         STR_CHAT_NOT_READY = 'chat não está pronto para enviar! Tente novamente em um ou dois segundos.';
         STR_CHAT_REDEEMED_MESSAGE_HIGH = 'Resgate, Destacar Minha Mensagem';
+        STR_CHAT_FIRST_MESSAGE_HIGH = 'PRIMEIRA MENSAGEM';
         STR_CHAT_REDEEMED_MESSAGE_SUB = 'Resgate, Enviar uma Mensagem no Modo Sub-Only';
         STR_CHAT_OPTIONS = 'Opções de chat';
         STR_CHAT_HIGHLIGHT_STREAMER_MSG = 'Destacar mensagens do streamer (fundo rosa escuro)';
         STR_CHAT_HIGHLIGHT_MOD_MSG = 'Destacar mensagens de moderadores (fundo ciano escuro)';
         STR_CHAT_HIGHLIGHT_REDEEMED = 'Destacar mensagens de Resgate (somente mensagem de fundo roxo)';
+        STR_CHAT_HIGHLIGHT_FIRST = 'Destacar Primeiro Usuário no Chat (Fundo rosa escuro)';
         STR_CHAT_HIGHLIGHT_STREAMER = 'Destacar mensagens @streamer (fundo vermelho escuro, o @ é azul)';
         STR_CHAT_HIGHLIGHT_USER = 'Destaque suas mensagens de @username (fundo verde escuro, o @ é azul)';
         STR_CHAT_HIGHLIGHT_USER_SEND = 'Destacar suas mensagens enviadas (fundo verde escuro)';
@@ -3476,6 +3493,9 @@
         STR_CHAT_NICK_COLOR_SUMMARY =
             'Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar';
         STR_CHAT_CLEAR_MSG = 'Limpar chat, apagar mensagens do usuário';
+        STR_CHAT_SHOW_BADGES = 'Mostrar emblemas de usuários (exceto os abaixo)';
+        STR_CHAT_SHOW_BADGES_MOD = 'Mostrar emblemas de Moderador';
+        STR_CHAT_SHOW_BADGES_VIP = 'Mostrar emblemas VIP';
         STR_CHAT_MESSAGE_DELETED = 'Esta unica mensagem de usuário foi solicitada para ser excluída';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Todas as mensagens deste usuário foram solicitadas para serem excluídas';
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', o tempo esgotou para';
@@ -4344,11 +4364,13 @@
         STR_NOKEY_CHAT_WARN = 'Добавьте ключ пользователя, чтобы иметь возможность входить и писать в чат';
         STR_CHAT_NOT_READY = 'Чат не готов! Попробуйте еще раз через несколько секунд.';
         STR_CHAT_REDEEMED_MESSAGE_HIGH = 'Активировано Выделите мое сообщение';
+        STR_CHAT_FIRST_MESSAGE_HIGH = 'ПЕРВОЕ СООБЩЕНИЕ';
         STR_CHAT_REDEEMED_MESSAGE_SUB = 'Активировано Отправить сообщение в режиме для подписчиков';
         STR_CHAT_OPTIONS = 'Настройки чата';
         STR_CHAT_HIGHLIGHT_STREAMER_MSG = 'Выделить сообщения от стримера (темно-розовый фон)';
         STR_CHAT_HIGHLIGHT_MOD_MSG = 'Выделить сообщения от модератора (темно-голубой фон)';
         STR_CHAT_HIGHLIGHT_REDEEMED = 'Выделить сообщения о наградах (только сообщение с фиолетовым фоном)';
+        STR_CHAT_HIGHLIGHT_FIRST = 'Выделить Нового Участника Чата (Тёмно-розовый фон)';
         STR_CHAT_HIGHLIGHT_STREAMER = 'Выделить сообщения @streamer (темно-красный фон, @синий)';
         STR_CHAT_HIGHLIGHT_USER = 'Выделить сообщения вам @username (темно-зеленый фон, @синий)';
         STR_CHAT_HIGHLIGHT_USER_SEND = 'Выделить свои отправленные сообщения (темно-зеленый фон)';
@@ -4371,6 +4393,9 @@
         STR_CHAT_NICK_COLOR_SUMMARY =
             'Вместо использования цвета ников по умолчанию, который иногда не читается на темном фоне, использовать настраиваемый, удобный для чтения цвет.';
         STR_CHAT_CLEAR_MSG = 'Очистка чата, удаление сообщений пользователей';
+        STR_CHAT_SHOW_BADGES = 'Показывать значки пользователей (за исключением указанных ниже)';
+        STR_CHAT_SHOW_BADGES_MOD = 'Показывать значки модераторов';
+        STR_CHAT_SHOW_BADGES_VIP = 'Показывать значки VIP';
         STR_CHAT_MESSAGE_DELETED = 'Это сообщение пользователя было запрошено на удаление';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Все сообщения от этого пользователя были запрошены на удаление';
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', тайм-аут на';
@@ -4876,8 +4901,16 @@
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
         WebVersion: 'November 29 2024',
-        WebTag: 690, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 691, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version December 01 2024',
+                changes: [
+                    'Add Highlight First-Time ChatterSettings chat option, enabled by default',
+                    'Add option to configure chat badges, change by @Js41637',
+                    'General improvements'
+                ]
+            },
             {
                 title: 'Version November 29 2024',
                 changes: [
@@ -4895,14 +4928,6 @@
                 changes: [
                     'Add extra languages to the Content language, this may change your previously selected language after the update set the language again',
                     'General improvements'
-                ]
-            },
-            {
-                title: 'Version October 27 2024 Apk Version 3.0.371',
-                changes: [
-                    'Fix issues for devices with a very low RAM size during playback, last version fix for high RAM size cause a issue for low 😑',
-                    'Fix issues opening a game content without a user',
-                    'Other General improvements'
                 ]
             }
         ]
@@ -8180,6 +8205,7 @@
 
     var ChatLive_Logging;
     var ChatLive_Highlight_Rewards;
+    var ChatLive_Highlight_First;
     var ChatLive_Highlight_AtStreamer;
     var ChatLive_Highlight_FromStreamer;
     var ChatLive_Highlight_Mod;
@@ -8202,6 +8228,9 @@
     var ChatLive_Show_TimeStamp;
     var ChatLive_ClearChat;
     var ChatLive_HideBots;
+    var ChatLive_ShowBadges;
+    var ChatLive_ShowBadgesMod;
+    var ChatLive_ShowBadgesVIP;
 
     function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
         extraEmotes[chat_number] = {};
@@ -8217,6 +8246,7 @@
         ChatLive_Logging = Settings_value.chat_logging.defaultValue;
         ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
         ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
+        ChatLive_Highlight_First = Settings_value.highlight_first.defaultValue;
         ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
         ChatLive_Highlight_FromStreamer = Settings_value.highlight_streamer.defaultValue;
         ChatLive_Highlight_Mod = Settings_value.highlight_mod.defaultValue;
@@ -8231,6 +8261,9 @@
         ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
         ChatLive_HideBots = Settings_value.chat_bot.defaultValue;
         ChatLive_Individual_Background_flip[chat_number] = 0;
+        ChatLive_ShowBadges = Settings_value.chat_show_badges.defaultValue;
+        ChatLive_ShowBadgesMod = Settings_value.chat_show_badges_mod.defaultValue;
+        ChatLive_ShowBadgesVIP = Settings_value.chat_show_badges_vip.defaultValue;
 
         ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', 'i');
         ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], 'gi');
@@ -9647,6 +9680,8 @@
             nickColor,
             highlighted = '',
             extraMessage,
+            extraMessageClass,
+            firstTimer,
             atstreamer = false,
             atuser = false,
             hasbits = false,
@@ -9667,7 +9702,6 @@
             return;
         }
 
-        //str.startsWith("Hello")
         if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
             //Stringfy to prevent crashes
             tags['msg-id'] = tags['msg-id'] + '';
@@ -9679,6 +9713,11 @@
                 highlighted = ' chat_highlighted ';
                 extraMessage = STR_CHAT_REDEEMED_MESSAGE_SUB;
             }
+        }
+        if (ChatLive_Highlight_First && tags.hasOwnProperty('first-msg') && tags['first-msg'] === '1') {
+            extraMessageClass = ' chat_fromstreamer ';
+            firstTimer = true;
+            extraMessage = STR_CHAT_FIRST_MESSAGE_HIGH;
         }
 
         if (ChatLive_Show_TimeStamp) {
@@ -9751,8 +9790,10 @@
             atuser: atuser,
             fromstreamer: fromstreamer,
             mod: mod,
+            firstTimer: firstTimer,
             hasbits: hasbits && ChatLive_Highlight_Bits,
             extraMessage: extraMessage,
+            extraMessageClass: extraMessageClass,
             addToStart: addToStart
         };
 
@@ -9783,7 +9824,7 @@
                 for (var i = 0, len = badges.length; i < len; i++) {
                     badge = badges[i].split('/');
 
-                    if (!badge[0] || !badge[1]) {
+                    if (!badge[0] || !badge[1] || !ChatLive_ShouldShowBadge(badge[0])) {
                         continue;
                     }
 
@@ -9795,6 +9836,13 @@
         }
 
         return '';
+    }
+
+    function ChatLive_ShouldShowBadge(badge_name) {
+        if (badge_name === 'moderator' && ChatLive_ShowBadgesMod) return true;
+        if (badge_name === 'vip' && ChatLive_ShowBadgesVIP) return true;
+
+        return ChatLive_ShowBadges;
     }
 
     function ChatLive_checkEmotes(tags) {
@@ -9878,7 +9926,7 @@
                 ChatLive_Channel_Regex_Replace[messageObj.chat_number],
                 "<span style='color: #34B5FF; font-weight: bold'>$&</span>"
             );
-        } else if (messageObj.fromstreamer) {
+        } else if (messageObj.fromstreamer || messageObj.firstTimer || messageObj.extraClass) {
             classname += ' chat_fromstreamer';
         } else if (messageObj.mod) {
             classname += ' chat_mod';
@@ -9939,6 +9987,7 @@
                 chat_number: messageObj.chat_number,
                 message: ChatLive_LineAddSimple(messageObj.extraMessage),
                 skip_addline: 1,
+                extraClass: messageObj.extraMessageClass,
                 addToStart: messageObj.addToStart
             });
         }
@@ -11683,7 +11732,7 @@
                 for (j = 0, len_j = mmessage.userBadges.length; j < len_j; j++) {
                     badges = mmessage.userBadges[j];
 
-                    if (!badges.setID || !badges.version) {
+                    if (!badges.setID || !badges.version || !ChatLive_ShouldShowBadge(badges.setID)) {
                         continue;
                     }
 
@@ -11949,6 +11998,7 @@
 
     var replaceHighlights = new RegExp('%x', 'g');
     var highlightsClasses = '.chat_highlighted {background: rgba(100, 65, 164, %x);}';
+    highlightsClasses += '.chat_highlighted_first {background: rgba(208, 113, 0, %x);}';
     highlightsClasses += '.chat_atstreamer {background: rgba(150, 0, 0, %x);}';
     highlightsClasses += '.chat_fromstreamer {background: rgba(182, 0, 143, %x);}';
     highlightsClasses += '.chat_mod {background: rgba(0, 139, 156, %x);}';
@@ -37159,6 +37209,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             values: ['no', 'yes'],
             defaultValue: 2
         },
+        highlight_first: {
+            //Migrated to dialog
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
         highlight_streamer: {
             //Migrated to dialog
             values: ['no', 'yes'],
@@ -37328,6 +37383,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             values: ['yes', 'toast', 'no'],
             set_values: [''],
             defaultValue: 1
+        },
+        chat_show_badges: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        chat_show_badges_mod: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        chat_show_badges_vip: {
+            values: ['no', 'yes'],
+            defaultValue: 2
         }
     };
 
@@ -38495,12 +38562,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Settings_ScrollTable() {
-        var scroolPos = 14,
+        var scrolPos = 14,
             offset = 1; //!Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === scrolPos + offset) {
             Settings_ScrollDown();
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === scroolPos - 1 + offset) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === scrolPos - 1 + offset) {
             Settings_ScrollUp();
         }
 
@@ -39698,6 +39765,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Settings_DialogShowChat(click) {
         var yes_no = [STR_NO, STR_YES];
         Settings_value.highlight_rewards.values = yes_no;
+        Settings_value.highlight_first.values = yes_no;
+        Settings_value.chat_show_badges.values = yes_no;
+        Settings_value.chat_show_badges_mod.values = yes_no;
+        Settings_value.chat_show_badges_vip.values = yes_no;
         Settings_value.highlight_atstreamer.values = yes_no;
         Settings_value.highlight_streamer.values = yes_no;
         Settings_value.highlight_mod.values = yes_no;
@@ -39765,6 +39836,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 title: STR_CHAT_HIGHLIGHT_REDEEMED,
                 summary: null
             },
+            highlight_first: {
+                defaultValue: Settings_value.highlight_first.defaultValue,
+                values: Settings_value.highlight_first.values,
+                title: STR_CHAT_HIGHLIGHT_FIRST,
+                summary: null
+            },
             highlight_mod: {
                 defaultValue: Settings_value.highlight_mod.defaultValue,
                 values: Settings_value.highlight_mod.values,
@@ -39824,10 +39901,33 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 values: Settings_value.chat_bot.values,
                 title: STR_CHAT_BOTS,
                 summary: null
+            },
+            chat_show_badges: {
+                defaultValue: Settings_value.chat_show_badges.defaultValue,
+                values: Settings_value.chat_show_badges.values,
+                title: STR_CHAT_SHOW_BADGES,
+                summary: null
+            },
+            chat_show_badges_mod: {
+                defaultValue: Settings_value.chat_show_badges_mod.defaultValue,
+                values: Settings_value.chat_show_badges_mod.values,
+                title: STR_CHAT_SHOW_BADGES_MOD,
+                summary: null
+            },
+            chat_show_badges_vip: {
+                defaultValue: Settings_value.chat_show_badges_vip.defaultValue,
+                values: Settings_value.chat_show_badges_vip.values,
+                title: STR_CHAT_SHOW_BADGES_VIP,
+                summary: null
             }
         };
 
-        Settings_DialogShow(obj, STR_CHAT_OPTIONS, click);
+        //Use off set if there is too many options
+        //Ajust the value as per setting option by trying diff Global app font size offset
+        var fontOffset = Settings_Obj_default('global_font_offset') + 2,
+            offset = Object.keys(obj).length - fontOffset;
+
+        Settings_DialogShow(obj, STR_CHAT_OPTIONS, click, offset);
     }
 
     function Settings_block_qualities(click) {
@@ -39908,26 +40008,38 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     var Settings_DialogValue = [];
     var Settings_DialogPos = 0;
+    var Settings_DialogScrollCenter = 0;
 
-    function Settings_DialogShow(obj, title, click) {
+    function Settings_DialogShow(obj, title, click, scroll) {
         Main_removeEventListener('keydown', Settings_handleKeyDown);
 
-        var dialogContent = title + STR_BR;
+        var dialogContent = title + STR_BR,
+            dialogScroollHolder =
+                '<div id="settings_scroll_container" class="' +
+                (scroll ? 'settings_scroll_container' : '') +
+                '"><div id="settings_scroll_container_scroll" class="side_panel_holder_ani">';
+
         Settings_DialogValue = [];
 
         for (var property in obj) {
             Settings_DialogValue.push(property);
             if (obj[property].keyenter) {
-                dialogContent += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
+                dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
             } else {
-                dialogContent += obj[property].summary
+                dialogScroollHolder += obj[property].summary
                     ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73)
                     : Settings_DivOptionNoSummary(property, obj[property].title);
             }
         }
 
-        Main_innerHTML('dialog_settings_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
+        dialogScroollHolder += '</div></div>';
 
+        Main_innerHTML(
+            'dialog_settings_text',
+            dialogContent + dialogScroollHolder + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>'
+        );
+
+        Settings_DialogScrollCenter = scroll ? scroll : 0;
         Settings_DialogPos = 0;
         Main_AddClass(Settings_DialogValue[0], 'settings_value_focus');
         Main_AddClass(Settings_DialogValue[0] + '_div', 'settings_div_focus');
@@ -39975,16 +40087,37 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             case KEY_UP:
                 if (Settings_DialogPos > 0) {
                     Settings_DialogUpDown(-1);
+
+                    Settings_ScrollConatiner('settings_scroll_container_scroll', Settings_DialogPos);
                 }
                 break;
             case KEY_DOWN:
                 if (Settings_DialogPos < Settings_DialogValue.length - 1) {
                     Settings_DialogUpDown(1);
+
+                    Settings_ScrollConatiner('settings_scroll_container_scroll', Settings_DialogPos);
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    function Settings_ScrollConatiner(div, pos) {
+        if (!Settings_DialogScrollCenter) {
+            return;
+        }
+
+        var center = Settings_DialogScrollCenter,
+            doc = Main_getElementById(div),
+            value = 0,
+            offset = 0;
+
+        if (pos > center) {
+            value = Main_getElementById(Settings_DialogValue[pos - center - offset] + '_div').offsetTop;
+        }
+
+        doc.style.transform = 'translateY(-' + value / BodyfontSize + 'em)';
     }
 
     function Settings_DialogUpDown(offset) {

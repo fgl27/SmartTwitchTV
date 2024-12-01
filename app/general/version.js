@@ -24,8 +24,16 @@ var version = {
     publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
     WebVersion: 'November 29 2024',
-    WebTag: 690, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 691, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version December 01 2024',
+            changes: [
+                'Add Highlight First-Time ChatterSettings chat option, enabled by default',
+                'Add option to configure chat badges, change by @Js41637',
+                'General improvements'
+            ]
+        },
         {
             title: 'Version November 29 2024',
             changes: [
@@ -43,14 +51,6 @@ var version = {
             changes: [
                 'Add extra languages to the Content language, this may change your previously selected language after the update set the language again',
                 'General improvements'
-            ]
-        },
-        {
-            title: 'Version October 27 2024 Apk Version 3.0.371',
-            changes: [
-                'Fix issues for devices with a very low RAM size during playback, last version fix for high RAM size cause a issue for low 😑',
-                'Fix issues opening a game content without a user',
-                'Other General improvements'
             ]
         }
     ]
