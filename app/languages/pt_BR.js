@@ -661,11 +661,13 @@ function pt_BRLang() {
     STR_NOKEY_CHAT_WARN = 'Adicionar uma chave de autorização do usuário para poder acessar e escrever no chat';
     STR_CHAT_NOT_READY = 'chat não está pronto para enviar! Tente novamente em um ou dois segundos.';
     STR_CHAT_REDEEMED_MESSAGE_HIGH = 'Resgate, Destacar Minha Mensagem';
+    STR_CHAT_FIRST_MESSAGE_HIGH = 'PRIMEIRA MENSAGEM';
     STR_CHAT_REDEEMED_MESSAGE_SUB = 'Resgate, Enviar uma Mensagem no Modo Sub-Only';
     STR_CHAT_OPTIONS = 'Opções de chat';
     STR_CHAT_HIGHLIGHT_STREAMER_MSG = 'Destacar mensagens do streamer (fundo rosa escuro)';
     STR_CHAT_HIGHLIGHT_MOD_MSG = 'Destacar mensagens de moderadores (fundo ciano escuro)';
     STR_CHAT_HIGHLIGHT_REDEEMED = 'Destacar mensagens de Resgate (somente mensagem de fundo roxo)';
+    STR_CHAT_HIGHLIGHT_FIRST = 'Destacar Primeiro Usuário no Chat (Fundo rosa escuro)';
     STR_CHAT_HIGHLIGHT_STREAMER = 'Destacar mensagens @streamer (fundo vermelho escuro, o @ é azul)';
     STR_CHAT_HIGHLIGHT_USER = 'Destaque suas mensagens de @username (fundo verde escuro, o @ é azul)';
     STR_CHAT_HIGHLIGHT_USER_SEND = 'Destacar suas mensagens enviadas (fundo verde escuro)';

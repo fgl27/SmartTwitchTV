@@ -460,8 +460,10 @@ function es_ESLang() {
     STR_CHAT_CHOOSE = 'Elija el chat al que desea escribir o pulse Retorno para cerrarlo';
     STR_NOKEY_CHAT_WARN = 'Añadir una clave de autorización de usuario para poder registrar y escribir en el chat';
     STR_CHAT_NOT_READY = 'El chat no está listo para ser enviado. Inténtelo de nuevo en uno o dos segundos.';
+    STR_CHAT_FIRST_MESSAGE_HIGH = 'PRIMER MENSAJE';
     STR_CHAT_OPTIONS = 'Opciones del chat';
     STR_CHAT_HIGHLIGHT_REDEEMED = 'Resaltar los mensajes de recompensa (sólo el mensaje de fondo púrpura)';
+    STR_CHAT_HIGHLIGHT_FIRST = 'Resaltar Primer Usuario en el Chat (Fondo rosa oscuro)';
     STR_CHAT_HIGHLIGHT_STREAMER = 'Resaltar los mensajes de @streamer (fondo rojo oscuro, la @ es azul)';
     STR_CHAT_HIGHLIGHT_USER = 'Resalte sus mensajes de @nombredeusuario (fondo verde oscuro, la @ es azul)';
     STR_CHAT_HIGHLIGHT_USER_SEND = 'Resalte sus mensajes enviados (fondo verde oscuro)';

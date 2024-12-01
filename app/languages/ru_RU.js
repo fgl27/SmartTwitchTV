@@ -675,11 +675,13 @@ function ru_RULang() {
     STR_NOKEY_CHAT_WARN = 'Добавьте ключ пользователя, чтобы иметь возможность входить и писать в чат';
     STR_CHAT_NOT_READY = 'Чат не готов! Попробуйте еще раз через несколько секунд.';
     STR_CHAT_REDEEMED_MESSAGE_HIGH = 'Активировано Выделите мое сообщение';
+    STR_CHAT_FIRST_MESSAGE_HIGH = 'ПЕРВОЕ СООБЩЕНИЕ';
     STR_CHAT_REDEEMED_MESSAGE_SUB = 'Активировано Отправить сообщение в режиме для подписчиков';
     STR_CHAT_OPTIONS = 'Настройки чата';
     STR_CHAT_HIGHLIGHT_STREAMER_MSG = 'Выделить сообщения от стримера (темно-розовый фон)';
     STR_CHAT_HIGHLIGHT_MOD_MSG = 'Выделить сообщения от модератора (темно-голубой фон)';
     STR_CHAT_HIGHLIGHT_REDEEMED = 'Выделить сообщения о наградах (только сообщение с фиолетовым фоном)';
+    STR_CHAT_HIGHLIGHT_FIRST = 'Выделить Нового Участника Чата (Тёмно-розовый фон)';
     STR_CHAT_HIGHLIGHT_STREAMER = 'Выделить сообщения @streamer (темно-красный фон, @синий)';
     STR_CHAT_HIGHLIGHT_USER = 'Выделить сообщения вам @username (темно-зеленый фон, @синий)';
     STR_CHAT_HIGHLIGHT_USER_SEND = 'Выделить свои отправленные сообщения (темно-зеленый фон)';
