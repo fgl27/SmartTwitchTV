@@ -5,5 +5,11 @@
     "bracketSpacing": false,
     "singleQuote": true,
     "arrowParens": "avoid",
-    "parser": "babel"
+    "parser": "babel",
+    "overrides": [
+        {
+            "files": "**.html",
+            "options": {"parser": "html"}
+        }
+    ]
 }
