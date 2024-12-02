@@ -28950,8 +28950,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             screen_channel_call,
             tempGame;
 
-        if (Last_obj && !Main_A_equals_B(obj.type, 'DEEPLINK')) {
+        //
+        if (Last_obj) {
             obj = JSON.parse(Last_obj);
+
             live_channel_call = Main_A_equals_B(obj.type, 'LIVE');
 
             if (!live_channel_call) {
@@ -28960,7 +28962,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (!game_channel_call) {
                     screen_channel_call = Main_A_equals_B(obj.type, 'SCREEN');
 
-                    if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+                    if (!screen_channel_call && !Main_A_equals_B(obj.type, 'DEEPLINK')) OSInterface_mCheckRefreshToast(parseInt(obj));
                 }
             }
 
