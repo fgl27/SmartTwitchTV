@@ -160,8 +160,10 @@ function Screens_first_init() {
         screen_channel_call,
         tempGame;
 
-    if (Last_obj && !Main_A_equals_B(obj.type, 'DEEPLINK')) {
+    //
+    if (Last_obj) {
         obj = JSON.parse(Last_obj);
+
         live_channel_call = Main_A_equals_B(obj.type, 'LIVE');
 
         if (!live_channel_call) {
@@ -170,7 +172,7 @@ function Screens_first_init() {
             if (!game_channel_call) {
                 screen_channel_call = Main_A_equals_B(obj.type, 'SCREEN');
 
-                if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+                if (!screen_channel_call && !Main_A_equals_B(obj.type, 'DEEPLINK')) OSInterface_mCheckRefreshToast(parseInt(obj));
             }
         }
 
