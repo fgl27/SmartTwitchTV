@@ -58,11 +58,21 @@ function extraMessageTokenize(message, chat_number, bits) {
         } else {
             emote = extraEmotes[chat_number][SplittedMessage[i]];
 
-            SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
+            //some 7tv emotes goes direct on top of the center of the previews emote
+            if (i && emote && emote.chat_div_zero && Main_A_includes_B(SplittedMessage[i - 1], 'emoticon')) {
+                SplittedMessage[i] = '';
+                SplittedMessage[i - 1] = zeroWidth(SplittedMessage[i - 1], emote.chat_div_zero);
+            } else {
+                SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
+            }
         }
     }
 
     return SplittedMessage.join(' ') + (bits ? ' ' + bits + ' bits' : '');
+}
+
+function zeroWidth(parent, zero) {
+    return '<div class="zero-width-container" >' + parent + zero + '</div>';
 }
 
 function findCheerInToken(message, chat_number) {

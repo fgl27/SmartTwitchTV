@@ -842,7 +842,8 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
                 id: id,
                 chat_div: chat_div,
                 '4x': url,
-                srcset: srcset
+                srcset: srcset,
+                chat_div_zero: emote.flags === 256 ? chat_div.replace('emoticon', 'emoticon zero-width-emote') : null
             };
 
             //Don't copy to prevent shallow clone

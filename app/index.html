@@ -1388,9 +1388,9 @@
                 transform: translateX(0);
                 transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
                 will-change: transform;
-                /* on chrome do to the focus class side_panel_new_icons_text that uses background: linear-gradient 
-            is needed to add a border here to prevent visual glitches right on the border of the element
-            border-right: 2px solid #000000;*/
+                /* on chrome do to the focus class side_panel_new_icons_text that uses background: linear-gradient
+                is needed to add a border here to prevent visual glitches right on the border of the element
+                border-right: 2px solid #000000;*/
             }
 
             .side_panel_fix {
@@ -2351,6 +2351,18 @@
                 margin-bottom: -0.35em;
             }
 
+            .zero-width-container {
+                display: inline-block;
+                position: relative;
+            }
+
+            .zero-width-emote {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
             .emoji {
                 min-width: 1em;
                 height: 1em;
@@ -2630,16 +2642,16 @@
             }
 
             /* Simple way to see center of screen
-        .center {
-            border: 2px solid blue;
-            margin: auto;
-            background: #F00;
-            position: relative;
-            text-align: center;
-            top: 50%;
-            width: 20%;
-            color: #FFF;
-        }*/
+            .center {
+                border: 2px solid blue;
+                margin: auto;
+                background: #F00;
+                position: relative;
+                text-align: center;
+                top: 50%;
+                width: 20%;
+                color: #FFF;
+            }*/
         </style>
     </head>
 
