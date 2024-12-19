@@ -4900,9 +4900,13 @@
         VersionBase: '3.0',
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'November 29 2024',
-        WebTag: 691, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'December 19 2024',
+        WebTag: 693, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version December 19 2024',
+                changes: ['Add zero-width/overlay emote support, thanks to @JanitorialMess for the help', 'General improvements']
+            },
             {
                 title: 'Version December 01 2024',
                 changes: [
@@ -8725,6 +8729,7 @@
                 code: obj[property].code,
                 id: obj[property].id,
                 chat_div: obj[property].chat_div,
+                chat_div_zero: obj[property].chat_div_zero,
                 '4x': obj[property]['4x'],
                 srcset: obj[property].srcset
             };
@@ -8864,7 +8869,7 @@
             extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]] = {};
         }
 
-        var url, srcset, chat_div, id, emoteUrls, baseEmoteUrl, emote;
+        var url, srcset, chat_div, chat_div_zero, id, emoteUrls, baseEmoteUrl, emote;
 
         try {
             emotes.forEach(function (seven_tv_emote) {
@@ -8890,11 +8895,14 @@
                 srcset = ChatLive_seven_tv_srcset(baseEmoteUrl, emoteUrls);
                 chat_div = emoteTemplate(url, srcset);
                 id = emote.name + emote.id;
+                chat_div_zero = emote.flags === 256 ? chat_div.replace('emoticon', 'emoticon zero-width-emote') : null;
 
                 extraEmotes[chat_number][emote.name] = {
                     code: emote.name,
                     id: id,
                     chat_div: chat_div,
+                    chat_div_zero: chat_div_zero,
+
                     '4x': url,
                     srcset: srcset
                 };
@@ -8905,6 +8913,8 @@
                         code: emote.name,
                         id: id,
                         chat_div: chat_div,
+                        chat_div_zero: chat_div_zero,
+
                         '4x': url,
                         srcset: srcset
                     };
@@ -8913,6 +8923,8 @@
                         code: emote.name,
                         id: id,
                         chat_div: chat_div,
+                        chat_div_zero: chat_div_zero,
+
                         '4x': url,
                         srcset: srcset
                     };
@@ -9855,7 +9867,10 @@
                 var emote, replacements, replacement, j, len_j;
                 emotes = {};
 
-                for (var i = 0, len = tags.emotes.length; i < len; i++) {
+                var i = 0,
+                    len = tags.emotes.length;
+
+                for (i; i < len; i++) {
                     emote = tags.emotes[i].split(':');
 
                     if (!emotes[emote[0]]) emotes[emote[0]] = [];
@@ -9875,15 +9890,31 @@
     }
 
     function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
-        for (var i = 0, len = tokenizedMessage.length; i < len; i++) {
+        var wasArray = false,
+            i = 0,
+            len = tokenizedMessage.length;
+
+        for (i; i < len; i++) {
+            if (!tokenizedMessage[i]) {
+                continue;
+            }
+
             if (typeof tokenizedMessage[i] === 'string') {
-                tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
+                if (i && wasArray) {
+                    tokenizedMessage[i - 1] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags, tokenizedMessage[i - 1]);
+                    tokenizedMessage[i] = '';
+                } else {
+                    tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
+                }
+
+                wasArray = false;
             } else {
                 tokenizedMessage[i] = tokenizedMessage[i][0];
+                wasArray = true;
             }
         }
 
-        return twemoji.parse(tokenizedMessage.join(' '), true, true);
+        return tokenizedMessage.join(' '); // twemoji.parse(tokenizedMessage.join(' '), true, true);
     }
 
     function ChatLive_LineAddSimple(message) {
@@ -11671,6 +11702,7 @@
             len,
             j,
             len_j,
+            msgArray = [],
             messageObj;
 
         if (responseText.data && responseText.data.video && responseText.data.video.comments && responseText.data.video.comments.edges) {
@@ -11729,7 +11761,10 @@
 
             //Add badges
             if (mmessage.hasOwnProperty('userBadges')) {
-                for (j = 0, len_j = mmessage.userBadges.length; j < len_j; j++) {
+                j = 0;
+                len_j = mmessage.userBadges.length;
+
+                for (j; j < len_j; j++) {
                     badges = mmessage.userBadges[j];
 
                     if (!badges.setID || !badges.version || !ChatLive_ShouldShowBadge(badges.setID)) {
@@ -11748,12 +11783,17 @@
             //hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
 
             if (mmessage.fragments) {
-                for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
+                j = 0;
+                len_j = mmessage.fragments.length;
+                msgArray = [];
+
+                for (j; j < len_j; j++) {
                     fragment = mmessage.fragments[j];
 
-                    if (fragment.emote) message_text += emoteTemplate(emoteURL(fragment.emote.emoteID));
-                    else {
-                        message_text += ChatLive_extraMessageTokenize([fragment.text], 0, hasbits ? mmessage.bits_spent : 0);
+                    if (fragment.emote) {
+                        msgArray.push([emoteTemplate(emoteURL(fragment.emote.emoteID))]);
+                    } else {
+                        msgArray.push(fragment.text);
 
                         if (!atstreamer && ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[0].test(fragment.text)) {
                             atstreamer = true;
@@ -11762,6 +11802,8 @@
                         }
                     }
                 }
+
+                message_text = ChatLive_extraMessageTokenize(msgArray, 0, hasbits ? mmessage.bits_spent : 0);
             }
 
             if (ChatLive_Highlight_FromStreamer && Main_A_equals_B(comments[i].commenter.displayName.toLowerCase(), ChatLive_selectedChannel[0])) {
@@ -45896,12 +45938,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function extraMessageTokenize(message, chat_number, bits) {
+    function extraMessageTokenize(message, chat_number, bits, previewsEmote) {
         var SplittedMessage = message.split(' '),
             emote,
             cheer,
             i = 0,
-            len = SplittedMessage.length;
+            len = SplittedMessage.length,
+            skipEscape;
+
+        if (previewsEmote) {
+            SplittedMessage[0] = previewsEmote;
+            skipEscape = true;
+        }
 
         for (i; i < len; i++) {
             cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
@@ -45911,11 +45959,23 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             } else {
                 emote = extraEmotes[chat_number][SplittedMessage[i]];
 
-                SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
+                //some 7tv emotes goes direct on top of the center of the previews emote
+                if (i && emote && emote.chat_div_zero && Main_A_includes_B(SplittedMessage[i - 1], 'class="emoticon"')) {
+                    SplittedMessage[i] = '';
+                    SplittedMessage[i - 1] = zeroWidth(SplittedMessage[i - 1], emote.chat_div_zero);
+                } else if (emote) {
+                    SplittedMessage[i] = emote.chat_div;
+                } else {
+                    SplittedMessage[i] = !i && skipEscape ? SplittedMessage[i] : twemoji.parse(mescape(SplittedMessage[i]), true, true);
+                }
             }
         }
 
         return SplittedMessage.join(' ') + (bits ? ' ' + bits + ' bits' : '');
+    }
+
+    function zeroWidth(parent, zero) {
+        return '<div class="zero-width-container" >' + parent.replace('emoticon', 'emoticon zero-width-emote') + zero + '</div>';
     }
 
     function findCheerInToken(message, chat_number) {
@@ -46003,7 +46063,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         // Unshift the remaining part of the message (that contains no emotes)
         tokenizedMessage.unshift(punycode.ucs2.encode(message));
-
         return tokenizedMessage;
     }
 
@@ -46645,7 +46704,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             // not JIT based, and old browsers / engines
             UFE0Fg = /\uFE0F/g,
             // avoid using a string literal like '\u200D' here because minifiers expand it inline
-            U200D = String.fromCharCode(0x200d);
+            U200D = String.fromCharCode(0x200d),
+            //https://www.compart.com/en/unicode/U+E0002
+            U000E0002 = String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02);
 
         return twemoji;
 
@@ -46687,6 +46748,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             //Replace line break
             str = str.replace(/(\r\n|\n|\r)/gm, '');
+
+            //related to issue #242
+            str = str.replaceAll(U000E0002, U200D);
+
             return replace(str, function (rawText) {
                 var iconId = grabTheRightIcon(rawText);
 
