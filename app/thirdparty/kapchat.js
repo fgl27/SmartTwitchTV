@@ -43,12 +43,18 @@ function mescape(message) {
     return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function extraMessageTokenize(message, chat_number, bits) {
+function extraMessageTokenize(message, chat_number, bits, previewsEmote) {
     var SplittedMessage = message.split(' '),
         emote,
         cheer,
         i = 0,
-        len = SplittedMessage.length;
+        len = SplittedMessage.length,
+        skipEscape;
+
+    if (previewsEmote) {
+        SplittedMessage[0] = previewsEmote;
+        skipEscape = true;
+    }
 
     for (i; i < len; i++) {
         cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
@@ -63,7 +69,7 @@ function extraMessageTokenize(message, chat_number, bits) {
                 SplittedMessage[i] = '';
                 SplittedMessage[i - 1] = zeroWidth(SplittedMessage[i - 1], emote.chat_div_zero);
             } else {
-                SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
+                SplittedMessage[i] = emote ? emote.chat_div : !i && skipEscape ? SplittedMessage[i] : mescape(SplittedMessage[i]);
             }
         }
     }
@@ -72,7 +78,7 @@ function extraMessageTokenize(message, chat_number, bits) {
 }
 
 function zeroWidth(parent, zero) {
-    return '<div class="zero-width-container" >' + parent + zero + '</div>';
+    return '<div class="zero-width-container" >' + parent.replace('emoticon', 'emoticon zero-width-emote') + zero + '</div>';
 }
 
 function findCheerInToken(message, chat_number) {
@@ -158,7 +164,6 @@ function emoticonize(message, emotes) {
 
     // Unshift the remaining part of the message (that contains no emotes)
     tokenizedMessage.unshift(punycode.ucs2.encode(message));
-
     return tokenizedMessage;
 }
 

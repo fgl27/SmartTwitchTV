@@ -671,6 +671,7 @@ function ChatLive_updateExtraEmotes(obj, chat_number) {
             code: obj[property].code,
             id: obj[property].id,
             chat_div: obj[property].chat_div,
+            chat_div_zero: obj[property].chat_div_zero,
             '4x': obj[property]['4x'],
             srcset: obj[property].srcset
         };
@@ -810,7 +811,7 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
         extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]] = {};
     }
 
-    var url, srcset, chat_div, id, emoteUrls, baseEmoteUrl, emote;
+    var url, srcset, chat_div, chat_div_zero, id, emoteUrls, baseEmoteUrl, emote;
 
     try {
         emotes.forEach(function (seven_tv_emote) {
@@ -836,14 +837,16 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
             srcset = ChatLive_seven_tv_srcset(baseEmoteUrl, emoteUrls);
             chat_div = emoteTemplate(url, srcset);
             id = emote.name + emote.id;
+            chat_div_zero = emote.flags === 256 ? chat_div.replace('emoticon', 'emoticon zero-width-emote') : null;
 
             extraEmotes[chat_number][emote.name] = {
                 code: emote.name,
                 id: id,
                 chat_div: chat_div,
+                chat_div_zero: chat_div_zero,
+
                 '4x': url,
-                srcset: srcset,
-                chat_div_zero: emote.flags === 256 ? chat_div.replace('emoticon', 'emoticon zero-width-emote') : null
+                srcset: srcset
             };
 
             //Don't copy to prevent shallow clone
@@ -852,6 +855,8 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
                     code: emote.name,
                     id: id,
                     chat_div: chat_div,
+                    chat_div_zero: chat_div_zero,
+
                     '4x': url,
                     srcset: srcset
                 };
@@ -860,6 +865,8 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
                     code: emote.name,
                     id: id,
                     chat_div: chat_div,
+                    chat_div_zero: chat_div_zero,
+
                     '4x': url,
                     srcset: srcset
                 };
@@ -1822,11 +1829,25 @@ function ChatLive_checkEmotes(tags) {
 }
 
 function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
+    var wasArray = false;
+
     for (var i = 0, len = tokenizedMessage.length; i < len; i++) {
+        if (!tokenizedMessage[i]) {
+            continue;
+        }
+
         if (typeof tokenizedMessage[i] === 'string') {
-            tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
+            if (i && wasArray) {
+                tokenizedMessage[i - 1] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags, tokenizedMessage[i - 1]);
+                tokenizedMessage[i] = '';
+            } else {
+                tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
+            }
+
+            wasArray = false;
         } else {
             tokenizedMessage[i] = tokenizedMessage[i][0];
+            wasArray = true;
         }
     }
 
