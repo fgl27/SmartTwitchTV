@@ -6,12 +6,12 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         https://github.com/twitter/twemoji/blob/gh-pages/LICENSE
       */
 
-// WARNING:   this file is generated automatically via
-//            `node twemoji-generator.js`
-//            please update its `createTwemoji` function
-//            at the bottom of the same file instead.
-
 {
+    // WARNING:   this file is generated automatically via
+    //            `node twemoji-generator.js`
+    //            please update its `createTwemoji` function
+    //            at the bottom of the same file instead.
+
     var // the exported module object
         twemoji = {
             /**
@@ -172,6 +172,10 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         //Replace line break
         str = str.replace(/(\r\n|\n|\r)/gm, '');
+
+        //related to issue #242
+        str = str.replace('\u{E0002}', '\u{200d}');
+
         return replace(str, function (rawText) {
             var iconId = grabTheRightIcon(rawText);
 
