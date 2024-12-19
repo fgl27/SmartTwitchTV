@@ -1809,7 +1809,10 @@ function ChatLive_checkEmotes(tags) {
             var emote, replacements, replacement, j, len_j;
             emotes = {};
 
-            for (var i = 0, len = tags.emotes.length; i < len; i++) {
+            var i = 0,
+                len = tags.emotes.length;
+
+            for (i; i < len; i++) {
                 emote = tags.emotes[i].split(':');
 
                 if (!emotes[emote[0]]) emotes[emote[0]] = [];
@@ -1829,9 +1832,11 @@ function ChatLive_checkEmotes(tags) {
 }
 
 function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
-    var wasArray = false;
+    var wasArray = false,
+        i = 0,
+        len = tokenizedMessage.length;
 
-    for (var i = 0, len = tokenizedMessage.length; i < len; i++) {
+    for (i; i < len; i++) {
         if (!tokenizedMessage[i]) {
             continue;
         }

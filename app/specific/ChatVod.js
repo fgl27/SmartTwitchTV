@@ -492,6 +492,7 @@ function Chat_loadChatSuccess(responseObj, id) {
         len,
         j,
         len_j,
+        msgArray = [],
         messageObj;
 
     if (responseText.data && responseText.data.video && responseText.data.video.comments && responseText.data.video.comments.edges) {
@@ -550,7 +551,10 @@ function Chat_loadChatSuccess(responseObj, id) {
 
         //Add badges
         if (mmessage.hasOwnProperty('userBadges')) {
-            for (j = 0, len_j = mmessage.userBadges.length; j < len_j; j++) {
+            j = 0;
+            len_j = mmessage.userBadges.length;
+
+            for (j; j < len_j; j++) {
                 badges = mmessage.userBadges[j];
 
                 if (!badges.setID || !badges.version || !ChatLive_ShouldShowBadge(badges.setID)) {
@@ -569,12 +573,17 @@ function Chat_loadChatSuccess(responseObj, id) {
         //hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
 
         if (mmessage.fragments) {
-            for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
+            j = 0;
+            len_j = mmessage.fragments.length;
+            msgArray = [];
+
+            for (j; j < len_j; j++) {
                 fragment = mmessage.fragments[j];
 
-                if (fragment.emote) message_text += emoteTemplate(emoteURL(fragment.emote.emoteID));
-                else {
-                    message_text += ChatLive_extraMessageTokenize([fragment.text], 0, hasbits ? mmessage.bits_spent : 0);
+                if (fragment.emote) {
+                    msgArray.push([emoteTemplate(emoteURL(fragment.emote.emoteID))]);
+                } else {
+                    msgArray.push(fragment.text);
 
                     if (!atstreamer && ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[0].test(fragment.text)) {
                         atstreamer = true;
@@ -583,6 +592,8 @@ function Chat_loadChatSuccess(responseObj, id) {
                     }
                 }
             }
+
+            message_text = ChatLive_extraMessageTokenize(msgArray, 0, hasbits ? mmessage.bits_spent : 0);
         }
 
         if (ChatLive_Highlight_FromStreamer && Main_A_equals_B(comments[i].commenter.displayName.toLowerCase(), ChatLive_selectedChannel[0])) {
