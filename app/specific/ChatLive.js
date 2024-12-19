@@ -1851,7 +1851,7 @@ function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
         }
     }
 
-    return twemoji.parse(tokenizedMessage.join(' '), true, true);
+    return tokenizedMessage.join(' '); // twemoji.parse(tokenizedMessage.join(' '), true, true);
 }
 
 function ChatLive_LineAddSimple(message) {

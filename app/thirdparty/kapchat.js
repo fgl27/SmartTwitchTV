@@ -65,11 +65,13 @@ function extraMessageTokenize(message, chat_number, bits, previewsEmote) {
             emote = extraEmotes[chat_number][SplittedMessage[i]];
 
             //some 7tv emotes goes direct on top of the center of the previews emote
-            if (i && emote && emote.chat_div_zero && Main_A_includes_B(SplittedMessage[i - 1], 'emoticon')) {
+            if (i && emote && emote.chat_div_zero && Main_A_includes_B(SplittedMessage[i - 1], 'class="emoticon"')) {
                 SplittedMessage[i] = '';
                 SplittedMessage[i - 1] = zeroWidth(SplittedMessage[i - 1], emote.chat_div_zero);
+            } else if (emote) {
+                SplittedMessage[i] = emote.chat_div;
             } else {
-                SplittedMessage[i] = emote ? emote.chat_div : !i && skipEscape ? SplittedMessage[i] : mescape(SplittedMessage[i]);
+                SplittedMessage[i] = !i && skipEscape ? SplittedMessage[i] : twemoji.parse(mescape(SplittedMessage[i]), true, true);
             }
         }
     }
