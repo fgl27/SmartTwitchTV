@@ -130,9 +130,9 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         // not JIT based, and old browsers / engines
         UFE0Fg = /\uFE0F/g,
         // avoid using a string literal like '\u200D' here because minifiers expand it inline
-        U200D = String.fromCharCode(0x200d),
-        //https://www.compart.com/en/unicode/U+E0002
-        U000E0002 = String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02);
+        U200D = String.fromCharCode(0x200d);
+    //https://www.compart.com/en/unicode/U+E0002
+    // U000E0002 = String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02);
 
     return twemoji;
 
@@ -176,7 +176,7 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         str = str.replace(/(\r\n|\n|\r)/gm, '');
 
         //related to issue #242
-        str = str.replaceAll(U000E0002, U200D);
+        //str = str.replaceAll(U000E0002, U200D);
 
         return replace(str, function (rawText) {
             var iconId = grabTheRightIcon(rawText);
