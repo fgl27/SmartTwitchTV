@@ -182,6 +182,8 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
 
         //related to issue #242
         str = str.replace(U000E0002g, U200D);
+        //don't use replace all as it isn't supported by all webview versions
+        //some devices may be running old version of webview
 
         return replace(str, function (rawText) {
             var iconId = grabTheRightIcon(rawText);
