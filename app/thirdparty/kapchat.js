@@ -45,6 +45,7 @@ function mescape(message) {
 
 function extraMessageTokenize(message, chat_number, bits, previewsEmote) {
     var SplittedMessage = message.split(' '),
+        retArray = [],
         emote,
         cheer,
         i = 0,
@@ -60,27 +61,32 @@ function extraMessageTokenize(message, chat_number, bits, previewsEmote) {
         cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
 
         if (cheer) {
-            SplittedMessage[i] = cheer;
+            retArray.push(cheer);
         } else {
             emote = extraEmotes[chat_number][SplittedMessage[i]];
 
             //some 7tv emotes goes direct on top of the center of the previews emote
-            if (i && emote && emote.chat_div_zero && Main_A_includes_B(SplittedMessage[i - 1], 'class="emoticon"')) {
-                SplittedMessage[i] = '';
-                SplittedMessage[i - 1] = zeroWidth(SplittedMessage[i - 1], emote.chat_div_zero);
+            if (retArray.length && emote && emote.chat_div_zero && Main_A_includes_B(retArray[retArray.length - 1], 'emoticon')) {
+                retArray[retArray.length - 1] = Main_A_includes_B(retArray[retArray.length - 1], 'zero-width-container')
+                    ? zeroWidthDiv(retArray[retArray.length - 1], emote.chat_div_zero)
+                    : zeroWidth(retArray[retArray.length - 1], emote.chat_div_zero);
             } else if (emote) {
-                SplittedMessage[i] = emote.chat_div;
+                retArray.push(emote.chat_div);
             } else {
-                SplittedMessage[i] = !i && skipEscape ? SplittedMessage[i] : twemoji.parse(mescape(SplittedMessage[i]), true, true);
+                retArray.push(!i && skipEscape ? SplittedMessage[i] : twemoji.parse(mescape(SplittedMessage[i]), true, true));
             }
         }
     }
 
-    return SplittedMessage.join(' ') + (bits ? ' ' + bits + ' bits' : '');
+    return retArray.join(' ') + (bits ? ' ' + bits + ' bits' : '');
 }
 
 function zeroWidth(parent, zero) {
     return '<div class="zero-width-container" >' + parent.replace('emoticon', 'emoticon zero-width-emote') + zero + '</div>';
+}
+
+function zeroWidthDiv(parent, zero) {
+    return parent.replace('</div>', zero) + '</div>';
 }
 
 function findCheerInToken(message, chat_number) {
