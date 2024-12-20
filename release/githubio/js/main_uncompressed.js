@@ -45940,6 +45940,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function extraMessageTokenize(message, chat_number, bits, previewsEmote) {
         var SplittedMessage = message.split(' '),
+            retArray = [],
             emote,
             cheer,
             i = 0,
@@ -45955,27 +45956,32 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
 
             if (cheer) {
-                SplittedMessage[i] = cheer;
+                retArray.push(cheer);
             } else {
                 emote = extraEmotes[chat_number][SplittedMessage[i]];
 
                 //some 7tv emotes goes direct on top of the center of the previews emote
-                if (i && emote && emote.chat_div_zero && Main_A_includes_B(SplittedMessage[i - 1], 'class="emoticon"')) {
-                    SplittedMessage[i] = '';
-                    SplittedMessage[i - 1] = zeroWidth(SplittedMessage[i - 1], emote.chat_div_zero);
+                if (retArray.length && emote && emote.chat_div_zero && Main_A_includes_B(retArray[retArray.length - 1], 'emoticon')) {
+                    retArray[retArray.length - 1] = Main_A_includes_B(retArray[retArray.length - 1], 'zero-width-container')
+                        ? zeroWidthDiv(retArray[retArray.length - 1], emote.chat_div_zero)
+                        : zeroWidth(retArray[retArray.length - 1], emote.chat_div_zero);
                 } else if (emote) {
-                    SplittedMessage[i] = emote.chat_div;
+                    retArray.push(emote.chat_div);
                 } else {
-                    SplittedMessage[i] = !i && skipEscape ? SplittedMessage[i] : twemoji.parse(mescape(SplittedMessage[i]), true, true);
+                    retArray.push(!i && skipEscape ? SplittedMessage[i] : twemoji.parse(mescape(SplittedMessage[i]), true, true));
                 }
             }
         }
 
-        return SplittedMessage.join(' ') + (bits ? ' ' + bits + ' bits' : '');
+        return retArray.join(' ') + (bits ? ' ' + bits + ' bits' : '');
     }
 
     function zeroWidth(parent, zero) {
         return '<div class="zero-width-container" >' + parent.replace('emoticon', 'emoticon zero-width-emote') + zero + '</div>';
+    }
+
+    function zeroWidthDiv(parent, zero) {
+        return parent.replace('</div>', zero) + '</div>';
     }
 
     function findCheerInToken(message, chat_number) {
@@ -46704,9 +46710,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             // not JIT based, and old browsers / engines
             UFE0Fg = /\uFE0F/g,
             // avoid using a string literal like '\u200D' here because minifiers expand it inline
-            U200D = String.fromCharCode(0x200d),
-            //https://www.compart.com/en/unicode/U+E0002
-            U000E0002 = String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02);
+            U200D = String.fromCharCode(0x200d);
+        //https://www.compart.com/en/unicode/U+E0002
+        // U000E0002 = String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02);
 
         return twemoji;
 
@@ -46750,7 +46756,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             str = str.replace(/(\r\n|\n|\r)/gm, '');
 
             //related to issue #242
-            str = str.replaceAll(U000E0002, U200D);
+            //str = str.replaceAll(U000E0002, U200D);
 
             return replace(str, function (rawText) {
                 var iconId = grabTheRightIcon(rawText);
