@@ -130,9 +130,12 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         // not JIT based, and old browsers / engines
         UFE0Fg = /\uFE0F/g,
         // avoid using a string literal like '\u200D' here because minifiers expand it inline
-        U200D = String.fromCharCode(0x200d);
-    //https://www.compart.com/en/unicode/U+E0002
-    // U000E0002 = String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02);
+        U200D = String.fromCharCode(0x200d),
+        //https://www.compart.com/en/unicode/U+E0002
+        U000E0002g = new RegExp(String.fromCharCode(0xdb40) + String.fromCharCode(0xdc02), 'g'),
+        bgg = />/g,
+        ltg = /</g,
+        newLineg = /(\r\n|\n|\r)/gm;
 
     return twemoji;
 
@@ -169,14 +172,16 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
     }
 
     function parse(str, dontremove, emoticon) {
-        //Twitch title may contain < or > with causes html problems
         if (!str || typeof str !== 'string') return str + '';
-        if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        //Twitch title may contain < or > with causes html problems
+        if (!dontremove) str = str.replace(ltg, '&lt;').replace(bgg, '&gt;');
+
         //Replace line break
-        str = str.replace(/(\r\n|\n|\r)/gm, '');
+        str = str.replace(newLineg, '');
 
         //related to issue #242
-        //str = str.replaceAll(U000E0002, U200D);
+        str = str.replace(U000E0002g, U200D);
 
         return replace(str, function (rawText) {
             var iconId = grabTheRightIcon(rawText);
