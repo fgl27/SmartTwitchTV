@@ -173,6 +173,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].useHelix = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hasAllLang = true;
 
     //a game
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].success = UserLiveFeedobj_loadDataCurrentAGameSuccess;
@@ -188,6 +189,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor = null;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].hasAllLang = true;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -249,6 +251,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].useHelix = true;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor = null;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hasAllLang = true;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;

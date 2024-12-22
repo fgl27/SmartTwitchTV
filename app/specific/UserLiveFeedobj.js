@@ -444,8 +444,9 @@ function UserLiveFeedobj_HideFeatured() {
 //Featured end
 
 //Current game Start
-function UserLiveFeedobj_CurrentGame() {
+function UserLiveFeedobj_CurrentGame(LoadAllLangForced) {
     if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LoadAllLangForced = LoadAllLangForced;
 
     UserLiveFeedobj_loadCurrentGame();
 }
@@ -490,6 +491,9 @@ function UserLiveFeedobj_CheckBackupData(pos, game) {
 
 function UserLiveFeedobj_loadCurrentGameGetGames() {
     var pos = UserLiveFeedobj_CurrentGamePos;
+
+    var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? '&language=' + Main_ContentLang : '';
+
     UserLiveFeedobj_BaseLoad(
         Main_helix_api +
             'streams?game_id=' +
@@ -497,7 +501,7 @@ function UserLiveFeedobj_loadCurrentGameGetGames() {
             '&first=' +
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
-            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
+            lang,
         UserLiveFeedobj_loadDataCurrentGameSuccess,
         true,
         pos
@@ -614,8 +618,9 @@ function UserLiveFeedobj_HideUserGames() {
 
 //Current user a game Start
 var UserLiveFeedobj_CurrentUserAGameEnable = false;
-function UserLiveFeedobj_CurrentUserAGame() {
+function UserLiveFeedobj_CurrentUserAGame(LoadAllLangForced) {
     if (!UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LoadAllLangForced = LoadAllLangForced;
 
     UserLiveFeedobj_loadCurrentUserAGame();
 }
@@ -635,6 +640,8 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
             UserLiveFeed_obj[pos].data[game] = null;
             UserLiveFeed_obj[pos].backup[game].cell = null;
         }
+        var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? '&language=' + Main_ContentLang : '';
+
         var URL =
             Main_helix_api +
             'streams?game_id=' +
@@ -642,7 +649,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
             '&first=' +
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
-            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+            lang;
 
         UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentUserGameSuccess, true, pos);
     }
@@ -747,8 +754,9 @@ function UserLiveFeedobj_HideGames() {
 
 //Current a game Start
 var UserLiveFeedobj_CurrentAGameEnable = false;
-function UserLiveFeedobj_CurrentAGame() {
+function UserLiveFeedobj_CurrentAGame(LoadAllLangForced) {
     if (!UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LoadAllLangForced = LoadAllLangForced;
 
     UserLiveFeedobj_loadCurrentAGame();
 }
@@ -778,16 +786,20 @@ function UserLiveFeedobj_loadCurrentAGame() {
 }
 
 function UserLiveFeedobj_loadCurrentAGameGetGames() {
+    var pos = UserLiveFeedobj_AGamesPos;
+
+    var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? '&language=' + Main_ContentLang : '';
+
     var URL =
         Main_helix_api +
         'streams?game_id=' +
         UserLiveFeedobj_CurrentAGameIdEnter +
         '&first=' +
         Main_ItemsLimitMax +
-        (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
-        (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+        (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
+        lang;
 
-    UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentAGameSuccess, true, UserLiveFeedobj_AGamesPos);
+    UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentAGameSuccess, true, pos);
 }
 
 function UserLiveFeedobj_loadCurrentAGameGetGameId() {
