@@ -120,6 +120,10 @@ var Settings_value = {
         apply_values: ['en_US', 'es_Us', 'pt_BR', 'ru_RU'],
         defaultValue: 1
     },
+    loadAll_lang: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
     show_banner: {
         values: ['no', 'yes'],
         defaultValue: 2
@@ -870,6 +874,9 @@ function Settings_SetSettings() {
     Settings_value.content_lang.values[0] = STR_LANG_ALL;
     key = 'content_lang';
     div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
+
+    key = 'loadAll_lang';
+    div += Settings_Content(key, array_no_yes, STR_LOAD_ALL_LANG, STR_LOAD_ALL_LANG_SUMMARY);
 
     key = 'app_lang';
     div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);

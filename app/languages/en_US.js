@@ -913,4 +913,9 @@ function en_USLang() {
 
     STR_SW_CODEC = 'Software codec';
     STR_HW_CODEC = 'Hardware codec';
+
+    STR_LOAD_ALL_LANG = 'Auto Switch Content to "All" language';
+    STR_LOAD_ALL_LANG_SUMMARY =
+        'Auto Switch to All language when current language has no content, only applies to the no content screen and to only some screens (Games and Front page)';
+    STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' due to empty content';
 }

@@ -1685,6 +1685,7 @@ function ScreensObj_InitAGame() {
 
     ScreenObj[key] = Screens_assign(
         {
+            hasAllLang: true,
             useHelix: true,
             isGameScreen: true,
             HeadersArray: Main_base_array_header,
@@ -1700,13 +1701,9 @@ function ScreensObj_InitAGame() {
             hasBackupData: true,
             base_url: Main_helix_api + 'streams?game_id=',
             set_url: function () {
+                var lang = Main_ContentLang !== '' && !this.LoadAllLangForced ? '&language=' + Main_ContentLang : '';
                 this.url =
-                    this.base_url +
-                    this.gameSelected_Id +
-                    '&first=' +
-                    Main_ItemsLimitMax +
-                    (this.cursor ? '&after=' + this.cursor : '') +
-                    (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                    this.base_url + this.gameSelected_Id + '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '') + lang;
             },
             label_init: function () {
                 ScreensObj_TopLableAgameInit(this.screen);
@@ -1779,6 +1776,7 @@ function ScreensObj_InitFeatured() {
 
     ScreenObj[key] = Screens_assign(
         {
+            hasAllLang: true,
             isQuery: true,
             HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('Featured', key),
@@ -1791,9 +1789,9 @@ function ScreensObj_InitFeatured() {
             CheckContentLang: 1,
             set_url: function () {
                 this.dataEnded = true;
-                this.post = this.base_post
-                    .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
-                    .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
+                var lang = Main_ContentLang !== '' && !this.LoadAllLangForced ? ',language:\\"' + Main_ContentLang + '\\"' : '';
+
+                this.post = this.base_post.replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false').replace('%x', lang);
             },
             label_init: function () {
                 Sidepannel_SetDefaultLabels();

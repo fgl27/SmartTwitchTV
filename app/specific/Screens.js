@@ -390,6 +390,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].BannerCreated = false;
     ScreenObj[key].skippedCellLoadMore = false;
     ScreenObj[key].LoadOneMoreTimeForced = false;
+    ScreenObj[key].LoadAllLangForced = false;
 
     if (key === Main_values.Main_Go) {
         Main_CounterDialogRst();
@@ -613,7 +614,17 @@ function Screens_loadDataSuccess(key) {
         return;
     } else if (ScreenObj[key].emptyContent) {
         if (!ScreenObj[key].BannerCreated) {
-            ScreenObj[key].addEmptyContentBanner(true);
+            if (ScreenObj[key].hasAllLang && !ScreenObj[key].LoadAllLangForced && Main_ContentLang !== '') {
+                ScreenObj[key].LoadAllLangForced = true;
+                ScreenObj[key].emptyContent = false;
+                ScreenObj[key].data = null;
+                ScreenObj[key].dataEnded = false;
+
+                Screens_loadDataRequestStart(key);
+                return;
+            } else {
+                ScreenObj[key].addEmptyContentBanner(true);
+            }
         } else {
             ScreenObj[key].itemsCount = 1;
             ScreenObj[key].emptyContent = false;
@@ -623,6 +634,10 @@ function Screens_loadDataSuccess(key) {
     }
 
     Screens_loadDataSuccessFinish(key);
+
+    if (ScreenObj[key].LoadAllLangForced && !ScreenObj[key].BannerCreated) {
+        Main_showWarningDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
+    }
 }
 
 function Screens_createRow(key) {
