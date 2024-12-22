@@ -383,8 +383,10 @@ function UserLiveFeedobj_HideLive() {
 //Live end
 
 //Featured Start
-function UserLiveFeedobj_Featured() {
+function UserLiveFeedobj_Featured(LoadAllLangForced) {
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_FeaturedPos);
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].LoadAllLangForced = LoadAllLangForced;
+
     UserLiveFeedobj_loadFeatured();
 }
 
@@ -400,6 +402,8 @@ function UserLiveFeedobj_loadFeatured() {
     ) {
         UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
     } else {
+        var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? ',language:\\"' + Main_ContentLang + '\\"' : '';
+
         FullxmlHttpGet(
             PlayClip_BaseUrl,
             Play_base_backup_headers_Array,
@@ -408,9 +412,7 @@ function UserLiveFeedobj_loadFeatured() {
             UserLiveFeedobj_FeaturedPos,
             UserLiveFeedobj_FeaturedPos, //checkResult
             'POST', //Method, null for get
-            featuredQuery
-                .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
-                .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
+            featuredQuery.replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false').replace('%x', lang)
         );
     }
 
@@ -1709,7 +1711,12 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
     }
 
     if (!UserLiveFeed_itemsCount[pos]) {
-        UserLiveFeedobj_Empty(pos);
+        if (UserLiveFeed_obj[pos].hasAllLang && !UserLiveFeed_obj[pos].LoadAllLangForced && Main_ContentLang !== '') {
+            UserLiveFeed_obj[pos].load(true);
+            return;
+        } else {
+            UserLiveFeedobj_Empty(pos);
+        }
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
@@ -1721,6 +1728,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 
             UserLiveFeed_loadDataSuccessFinish(pos);
         }, 25);
+    }
+
+    if (UserLiveFeed_obj[pos].LoadAllLangForced) {
+        Play_showWarningMiddleDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
     }
 }
 function UserLiveFeedobj_AddBanner() {

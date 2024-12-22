@@ -261,6 +261,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckContentLang = 1;
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].hasAllLang = true;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
