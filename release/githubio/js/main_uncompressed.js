@@ -795,7 +795,10 @@
         STR_SPEED_ADJUST_SUMMARY,
         STR_SW_CODEC,
         STR_HW_CODEC,
-        STR_JUMP_TIME_CLICK_AGAIN;
+        STR_JUMP_TIME_CLICK_AGAIN,
+        STR_LOAD_ALL_LANG,
+        STR_LOAD_ALL_LANG_SUMMARY,
+        STR_LOAD_ALL_LANG_WARNING;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -2238,6 +2241,11 @@
 
         STR_SW_CODEC = 'Software codec';
         STR_HW_CODEC = 'Hardware codec';
+
+        STR_LOAD_ALL_LANG = 'Auto Switch Content to "All" language';
+        STR_LOAD_ALL_LANG_SUMMARY =
+            'Auto Switch to All language when current language has no content, only applies to the no content screen and to only some screens (Games and Front page)';
+        STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' due to empty content';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4900,9 +4908,16 @@
         VersionBase: '3.0',
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'December 19 2024',
+        WebVersion: 'December 24 2024',
         WebTag: 693, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version December 24 2024 ✨🎄🎅 🔔 🤶🎄✨',
+                changes: [
+                    'Add new settings option to Auto Switch content to All language when current language has no content enabled by default',
+                    '✨🎄🎅 🔔 🤶🎄✨ Merry christmas happy holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨'
+                ]
+            },
             {
                 title: 'Version December 19 2024',
                 changes: ['Add zero-width/overlay emote support, thanks to @JanitorialMess for the help', 'General improvements']
@@ -4926,13 +4941,6 @@
             {
                 title: 'Version November 27 2024 Apk Version 3.0.372',
                 changes: ['Update player dependencies to latest version', 'General improvements']
-            },
-            {
-                title: 'Version November 15 2024',
-                changes: [
-                    'Add extra languages to the Content language, this may change your previously selected language after the update set the language again',
-                    'General improvements'
-                ]
             }
         ]
     };
@@ -29227,6 +29235,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreenObj[key].BannerCreated = false;
         ScreenObj[key].skippedCellLoadMore = false;
         ScreenObj[key].LoadOneMoreTimeForced = false;
+        ScreenObj[key].LoadAllLangForced = false;
 
         if (key === Main_values.Main_Go) {
             Main_CounterDialogRst();
@@ -29450,7 +29459,24 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             return;
         } else if (ScreenObj[key].emptyContent) {
             if (!ScreenObj[key].BannerCreated) {
-                ScreenObj[key].addEmptyContentBanner(true);
+                if (
+                    Settings_Obj_default('loadAll_lang') &&
+                    ScreenObj[key].hasAllLang &&
+                    !ScreenObj[key].LoadAllLangForced &&
+                    Main_ContentLang !== ''
+                ) {
+                    ScreenObj[key].LoadAllLangForced = true;
+                    ScreenObj[key].emptyContent = false;
+                    ScreenObj[key].data = null;
+                    ScreenObj[key].isReloadScreen = true;
+                    ScreenObj[key].cursor = null;
+                    ScreenObj[key].dataEnded = false;
+
+                    Screens_loadDataRequestStart(key);
+                    return;
+                } else {
+                    ScreenObj[key].addEmptyContentBanner(true);
+                }
             } else {
                 ScreenObj[key].itemsCount = 1;
                 ScreenObj[key].emptyContent = false;
@@ -29460,6 +29486,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         Screens_loadDataSuccessFinish(key);
+
+        if (ScreenObj[key].LoadAllLangForced && !ScreenObj[key].BannerCreated) {
+            Main_showWarningDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
+        }
     }
 
     function Screens_createRow(key) {
@@ -34653,6 +34683,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign(
             {
+                hasAllLang: true,
                 useHelix: true,
                 isGameScreen: true,
                 HeadersArray: Main_base_array_header,
@@ -34668,13 +34699,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 hasBackupData: true,
                 base_url: Main_helix_api + 'streams?game_id=',
                 set_url: function () {
+                    var lang = Main_ContentLang !== '' && !this.LoadAllLangForced ? '&language=' + Main_ContentLang : '';
                     this.url =
-                        this.base_url +
-                        this.gameSelected_Id +
-                        '&first=' +
-                        Main_ItemsLimitMax +
-                        (this.cursor ? '&after=' + this.cursor : '') +
-                        (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                        this.base_url + this.gameSelected_Id + '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '') + lang;
                 },
                 label_init: function () {
                     ScreensObj_TopLableAgameInit(this.screen);
@@ -34747,6 +34774,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         ScreenObj[key] = Screens_assign(
             {
+                hasAllLang: true,
                 isQuery: true,
                 HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('Featured', key),
@@ -34759,9 +34787,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 CheckContentLang: 1,
                 set_url: function () {
                     this.dataEnded = true;
-                    this.post = this.base_post
-                        .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
-                        .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
+                    var lang = Main_ContentLang !== '' && !this.LoadAllLangForced ? ',language:\\"' + Main_ContentLang + '\\"' : '';
+
+                    this.post = this.base_post.replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false').replace('%x', lang);
                 },
                 label_init: function () {
                     Sidepannel_SetDefaultLabels();
@@ -36809,6 +36837,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             apply_values: ['en_US', 'es_Us', 'pt_BR', 'ru_RU'],
             defaultValue: 1
         },
+        loadAll_lang: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
         show_banner: {
             values: ['no', 'yes'],
             defaultValue: 2
@@ -37559,6 +37591,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_value.content_lang.values[0] = STR_LANG_ALL;
         key = 'content_lang';
         div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
+
+        key = 'loadAll_lang';
+        div += Settings_Content(key, array_no_yes, STR_LOAD_ALL_LANG, STR_LOAD_ALL_LANG_SUMMARY);
 
         key = 'app_lang';
         div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);
@@ -42124,6 +42159,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].useHelix = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame;
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hasAllLang = true;
 
         //a game
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].success = UserLiveFeedobj_loadDataCurrentAGameSuccess;
@@ -42139,6 +42175,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor = null;
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].hasAllLang = true;
 
         //User Games
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -42200,6 +42237,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].useHelix = true;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor = null;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hasAllLang = true;
 
         //Featured
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -42212,6 +42250,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckContentLang = 1;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].hasAllLang = true;
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
@@ -43744,8 +43783,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     //Live end
 
     //Featured Start
-    function UserLiveFeedobj_Featured() {
+    function UserLiveFeedobj_Featured(LoadAllLangForced) {
         UserLiveFeedobj_StartDefault(UserLiveFeedobj_FeaturedPos);
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].LoadAllLangForced = LoadAllLangForced;
+
         UserLiveFeedobj_loadFeatured();
     }
 
@@ -43761,6 +43802,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ) {
             UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
         } else {
+            var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? ',language:\\"' + Main_ContentLang + '\\"' : '';
+
             FullxmlHttpGet(
                 PlayClip_BaseUrl,
                 Play_base_backup_headers_Array,
@@ -43769,9 +43812,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 UserLiveFeedobj_FeaturedPos,
                 UserLiveFeedobj_FeaturedPos, //checkResult
                 'POST', //Method, null for get
-                featuredQuery
-                    .replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false')
-                    .replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
+                featuredQuery.replace('%m', Settings_value.enable_mature.defaultValue ? 'true' : 'false').replace('%x', lang)
             );
         }
 
@@ -43803,8 +43844,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     //Featured end
 
     //Current game Start
-    function UserLiveFeedobj_CurrentGame() {
-        if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+    function UserLiveFeedobj_CurrentGame(LoadAllLangForced) {
+        if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) {
+            UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+        }
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LoadAllLangForced = LoadAllLangForced;
 
         UserLiveFeedobj_loadCurrentGame();
     }
@@ -43815,7 +43859,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var game = UserLiveFeedobj_CurrentGameName,
             pos = UserLiveFeedobj_CurrentGamePos;
 
-        if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+        if (
+            game &&
+            !UserLiveFeed_itemsCount[pos] &&
+            !UserLiveFeed_obj[pos].isReloadScreen &&
+            !UserLiveFeed_obj[pos].LoadAllLangForced &&
+            UserLiveFeedobj_CheckBackupData(pos, game)
+        ) {
             UserLiveFeedobj_oldGameDataLoad(pos, game);
         } else {
             if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
@@ -43849,6 +43899,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function UserLiveFeedobj_loadCurrentGameGetGames() {
         var pos = UserLiveFeedobj_CurrentGamePos;
+
+        var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? '&language=' + Main_ContentLang : '';
+
         UserLiveFeedobj_BaseLoad(
             Main_helix_api +
                 'streams?game_id=' +
@@ -43856,7 +43909,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 '&first=' +
                 Main_ItemsLimitMax +
                 (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
-                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
+                lang,
             UserLiveFeedobj_loadDataCurrentGameSuccess,
             true,
             pos
@@ -43973,8 +44026,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     //Current user a game Start
     var UserLiveFeedobj_CurrentUserAGameEnable = false;
-    function UserLiveFeedobj_CurrentUserAGame() {
+    function UserLiveFeedobj_CurrentUserAGame(LoadAllLangForced) {
         if (!UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LoadAllLangForced = LoadAllLangForced;
 
         UserLiveFeedobj_loadCurrentUserAGame();
     }
@@ -43985,7 +44039,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var game = UserLiveFeedobj_CurrentUserAGameIdEnter,
             pos = UserLiveFeedobj_UserAGamesPos;
 
-        if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+        if (
+            game &&
+            !UserLiveFeed_itemsCount[pos] &&
+            !UserLiveFeed_obj[pos].isReloadScreen &&
+            !UserLiveFeed_obj[pos].LoadAllLangForced &&
+            UserLiveFeedobj_CheckBackupData(pos, game)
+        ) {
             UserLiveFeedobj_oldGameDataLoad(pos, game);
         } else {
             if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
@@ -43994,6 +44054,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 UserLiveFeed_obj[pos].data[game] = null;
                 UserLiveFeed_obj[pos].backup[game].cell = null;
             }
+            var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? '&language=' + Main_ContentLang : '';
+
             var URL =
                 Main_helix_api +
                 'streams?game_id=' +
@@ -44001,7 +44063,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 '&first=' +
                 Main_ItemsLimitMax +
                 (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
-                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+                lang;
 
             UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentUserGameSuccess, true, pos);
         }
@@ -44108,8 +44170,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     //Current a game Start
     var UserLiveFeedobj_CurrentAGameEnable = false;
-    function UserLiveFeedobj_CurrentAGame() {
+    function UserLiveFeedobj_CurrentAGame(LoadAllLangForced) {
         if (!UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LoadAllLangForced = LoadAllLangForced;
 
         UserLiveFeedobj_loadCurrentAGame();
     }
@@ -44118,7 +44181,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var game = UserLiveFeedobj_CurrentAGameIdEnter,
             pos = UserLiveFeedobj_AGamesPos;
 
-        if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+        if (
+            game &&
+            !UserLiveFeed_itemsCount[pos] &&
+            !UserLiveFeed_obj[pos].isReloadScreen &&
+            !UserLiveFeed_obj[pos].LoadAllLangForced &&
+            UserLiveFeedobj_CheckBackupData(pos, game)
+        ) {
             UserLiveFeedobj_oldGameDataLoad(pos, game);
         } else {
             if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
@@ -44139,16 +44208,20 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function UserLiveFeedobj_loadCurrentAGameGetGames() {
+        var pos = UserLiveFeedobj_AGamesPos;
+
+        var lang = Main_ContentLang !== '' && !UserLiveFeed_obj[pos].LoadAllLangForced ? '&language=' + Main_ContentLang : '';
+
         var URL =
             Main_helix_api +
             'streams?game_id=' +
             UserLiveFeedobj_CurrentAGameIdEnter +
             '&first=' +
             Main_ItemsLimitMax +
-            (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
-            (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
+            (UserLiveFeed_obj[pos].cursor ? '&after=' + UserLiveFeed_obj[pos].cursor : '') +
+            lang;
 
-        UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentAGameSuccess, true, UserLiveFeedobj_AGamesPos);
+        UserLiveFeedobj_BaseLoad(URL, UserLiveFeedobj_loadDataCurrentAGameSuccess, true, pos);
     }
 
     function UserLiveFeedobj_loadCurrentAGameGetGameId() {
@@ -45076,7 +45149,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         if (!UserLiveFeed_itemsCount[pos]) {
-            UserLiveFeedobj_Empty(pos);
+            if (
+                Settings_Obj_default('loadAll_lang') &&
+                UserLiveFeed_obj[pos].hasAllLang &&
+                !UserLiveFeed_obj[pos].LoadAllLangForced &&
+                Main_ContentLang !== ''
+            ) {
+                UserLiveFeed_obj[pos].cursor = null;
+                UserLiveFeed_obj[pos].load(true);
+                return;
+            } else {
+                UserLiveFeedobj_Empty(pos);
+            }
         }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
@@ -45088,6 +45172,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
                 UserLiveFeed_loadDataSuccessFinish(pos);
             }, 25);
+        }
+
+        if (UserLiveFeed_obj[pos].LoadAllLangForced) {
+            Play_showWarningMiddleDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
         }
     }
     function UserLiveFeedobj_AddBanner() {
