@@ -1743,7 +1743,12 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
     }
 
     if (!UserLiveFeed_itemsCount[pos]) {
-        if (UserLiveFeed_obj[pos].hasAllLang && !UserLiveFeed_obj[pos].LoadAllLangForced && Main_ContentLang !== '') {
+        if (
+            Settings_Obj_default('loadAll_lang') &&
+            UserLiveFeed_obj[pos].hasAllLang &&
+            !UserLiveFeed_obj[pos].LoadAllLangForced &&
+            Main_ContentLang !== ''
+        ) {
             UserLiveFeed_obj[pos].cursor = null;
             UserLiveFeed_obj[pos].load(true);
             return;

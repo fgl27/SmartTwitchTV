@@ -614,7 +614,7 @@ function Screens_loadDataSuccess(key) {
         return;
     } else if (ScreenObj[key].emptyContent) {
         if (!ScreenObj[key].BannerCreated) {
-            if (ScreenObj[key].hasAllLang && !ScreenObj[key].LoadAllLangForced && Main_ContentLang !== '') {
+            if (Settings_Obj_default('loadAll_lang') && ScreenObj[key].hasAllLang && !ScreenObj[key].LoadAllLangForced && Main_ContentLang !== '') {
                 ScreenObj[key].LoadAllLangForced = true;
                 ScreenObj[key].emptyContent = false;
                 ScreenObj[key].data = null;
