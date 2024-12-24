@@ -445,7 +445,9 @@ function UserLiveFeedobj_HideFeatured() {
 
 //Current game Start
 function UserLiveFeedobj_CurrentGame(LoadAllLangForced) {
-    if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+    if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) {
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+    }
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LoadAllLangForced = LoadAllLangForced;
 
     UserLiveFeedobj_loadCurrentGame();
@@ -457,7 +459,13 @@ function UserLiveFeedobj_loadCurrentGame() {
     var game = UserLiveFeedobj_CurrentGameName,
         pos = UserLiveFeedobj_CurrentGamePos;
 
-    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+    if (
+        game &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        !UserLiveFeed_obj[pos].LoadAllLangForced &&
+        UserLiveFeedobj_CheckBackupData(pos, game)
+    ) {
         UserLiveFeedobj_oldGameDataLoad(pos, game);
     } else {
         if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
@@ -631,7 +639,13 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
     var game = UserLiveFeedobj_CurrentUserAGameIdEnter,
         pos = UserLiveFeedobj_UserAGamesPos;
 
-    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+    if (
+        game &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        !UserLiveFeed_obj[pos].LoadAllLangForced &&
+        UserLiveFeedobj_CheckBackupData(pos, game)
+    ) {
         UserLiveFeedobj_oldGameDataLoad(pos, game);
     } else {
         if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
@@ -765,7 +779,13 @@ function UserLiveFeedobj_loadCurrentAGame() {
     var game = UserLiveFeedobj_CurrentAGameIdEnter,
         pos = UserLiveFeedobj_AGamesPos;
 
-    if (game && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && UserLiveFeedobj_CheckBackupData(pos, game)) {
+    if (
+        game &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        !UserLiveFeed_obj[pos].LoadAllLangForced &&
+        UserLiveFeedobj_CheckBackupData(pos, game)
+    ) {
         UserLiveFeedobj_oldGameDataLoad(pos, game);
     } else {
         if (!UserLiveFeed_itemsCount[pos] || UserLiveFeed_obj[pos].isReloadScreen) {
@@ -1724,6 +1744,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 
     if (!UserLiveFeed_itemsCount[pos]) {
         if (UserLiveFeed_obj[pos].hasAllLang && !UserLiveFeed_obj[pos].LoadAllLangForced && Main_ContentLang !== '') {
+            UserLiveFeed_obj[pos].cursor = null;
             UserLiveFeed_obj[pos].load(true);
             return;
         } else {

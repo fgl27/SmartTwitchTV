@@ -618,6 +618,8 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].LoadAllLangForced = true;
                 ScreenObj[key].emptyContent = false;
                 ScreenObj[key].data = null;
+                ScreenObj[key].isReloadScreen = true;
+                ScreenObj[key].cursor = null;
                 ScreenObj[key].dataEnded = false;
 
                 Screens_loadDataRequestStart(key);
