@@ -2805,6 +2805,11 @@
         STR_LEFT = 'Izquierda';
         STR_TOP = 'Arriba';
         STR_AVG = 'Avg';
+
+        STR_LOAD_ALL_LANG = 'Cambiar automáticamente el contenido al idioma "Todos"';
+        STR_LOAD_ALL_LANG_SUMMARY =
+            'Cambiar automáticamente al idioma "Todos" cuando el idioma actual no tiene contenido. Solo se aplica a la pantalla de "sin contenido" y a algunas pantallas específicas (Juegos y Página Principal).';
+        STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' debido al contenido vacío';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3690,6 +3695,11 @@
         STR_ADD_USER_TEXT_COUNTER_NOW = 'Verificando agora!';
         STR_ADD_ERROR = 'Sem acessar o serviço de adição de usuário';
         STR_USER_TOKEN_ERROR = 'Aacesso ao usuário atual perdido, revise a seção de usuários';
+
+        STR_LOAD_ALL_LANG = 'Alternar automaticamente o conteúdo para o idioma "Todos"';
+        STR_LOAD_ALL_LANG_SUMMARY =
+            'Alterna automaticamente para o idioma "Todos" quando o idioma atual não possui conteúdo. Aplica-se apenas à tela de "sem conteúdo" e a algumas telas específicas (Jogos e Página Inicial).';
+        STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' devido ao conteúdo vazio';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4625,6 +4635,11 @@
 
         STR_SW_CODEC = 'Программный кодек';
         STR_HW_CODEC = 'Аппаратный кодек';
+
+        STR_LOAD_ALL_LANG = 'Автоматически переключить содержимое на язык "Все"';
+        STR_LOAD_ALL_LANG_SUMMARY =
+            'Автоматически переключаться на язык "Все", когда на текущем языке нет содержимого. Применяется только к экрану "нет содержимого" и к некоторым экранам (Игры и Главная страница).';
+        STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' из-за отсутствия содержимого';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
