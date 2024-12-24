@@ -875,4 +875,9 @@ function pt_BRLang() {
     STR_ADD_USER_TEXT_COUNTER_NOW = 'Verificando agora!';
     STR_ADD_ERROR = 'Sem acessar o serviço de adição de usuário';
     STR_USER_TOKEN_ERROR = 'Aacesso ao usuário atual perdido, revise a seção de usuários';
+
+    STR_LOAD_ALL_LANG = 'Alternar automaticamente o conteúdo para o idioma "Todos"';
+    STR_LOAD_ALL_LANG_SUMMARY =
+        'Alterna automaticamente para o idioma "Todos" quando o idioma atual não possui conteúdo. Aplica-se apenas à tela de "sem conteúdo" e a algumas telas específicas (Jogos e Página Inicial).';
+    STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' devido ao conteúdo vazio';
 }

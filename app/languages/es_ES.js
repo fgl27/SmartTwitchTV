@@ -554,4 +554,9 @@ function es_ESLang() {
     STR_LEFT = 'Izquierda';
     STR_TOP = 'Arriba';
     STR_AVG = 'Avg';
+
+    STR_LOAD_ALL_LANG = 'Cambiar automáticamente el contenido al idioma "Todos"';
+    STR_LOAD_ALL_LANG_SUMMARY =
+        'Cambiar automáticamente al idioma "Todos" cuando el idioma actual no tiene contenido. Solo se aplica a la pantalla de "sin contenido" y a algunas pantallas específicas (Juegos y Página Principal).';
+    STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' debido al contenido vacío';
 }
