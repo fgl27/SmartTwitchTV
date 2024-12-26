@@ -48,7 +48,10 @@ var userEmote = {};
 var extraEmotes = {};
 var cheers = {};
 
+var ChatLive_sharedProfileImg = {};
+
 var ChatLive_selectedChannel_id = [];
+var ChatLive_isShared = [];
 var ChatLive_loadChattersId = [];
 var ChatLive_PingId = [];
 var ChatLive_SendPingId;
@@ -118,6 +121,7 @@ function ChatLive_Init(chat_number, SkipClear) {
         !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
         !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
     );
+    ChatLive_checkShared(chat_number, Chat_Id[chat_number]);
 
     if (!SkipClear) {
         ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
@@ -237,6 +241,56 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_loadEmotesChannelBTTV(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelFFZ(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelSeven_tv(chat_number, Chat_Id[chat_number]);
+}
+
+function ChatLive_checkShared(chat_number, id) {
+    ChatLive_isShared[chat_number] = false;
+    var theUrl = Main_helix_api + 'shared_chat/session?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
+
+    BaseXmlHttpGet(theUrl, ChatLive_checkSharedSuccess, noop_fun, chat_number, id, true);
+}
+
+function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
+    var response = JSON.parse(responseText);
+
+    if (response && response.data.length) {
+        ChatLive_isShared[chat_number] = true;
+
+        var i = 0,
+            participants = response.data[0].participants,
+            len = Math.min(participants.length, 100),
+            channelsIds = '';
+
+        for (i; i < len; i++) {
+            if (!ChatLive_sharedProfileImg[participants[i].broadcaster_id]) {
+                channelsIds += channelsIds ? '&id=' : 'id=';
+                channelsIds += participants[i].broadcaster_id;
+            }
+        }
+
+        if (channelsIds) ChatLive_updateBanner(channelsIds);
+    }
+}
+
+function ChatLive_updateBanner(channelsIds) {
+    var theUrl = Main_helix_api + 'users?' + channelsIds;
+
+    BaseXmlHttpGet(theUrl, ChatLive_updateBannerSuccess, noop_fun, null, null, true);
+}
+
+function ChatLive_updateBannerSuccess(responseText) {
+    var response = JSON.parse(responseText);
+
+    if (response.data && response.data.length) {
+        var i = 0,
+            len = response.data.length;
+
+        for (i; i < len; i++) {
+            ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
+        }
+    }
 }
 
 function ChatLive_checkFallow(chat_number, id) {
