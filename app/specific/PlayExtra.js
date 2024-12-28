@@ -429,6 +429,14 @@ function PlayExtra_updateStreamLogo(channelId, pp) {
 }
 
 function PlayExtra_updateStreamLogoValues(responseText, pp, ID) {
+    if (!pp && (!Play_data || !Play_data.data || !Play_data.data.length)) {
+        return;
+    }
+
+    if (pp && (!PlayExtra_data || !PlayExtra_data.data || !PlayExtra_data.data.length)) {
+        return;
+    }
+
     var response = JSON.parse(responseText);
 
     if (response.data && response.data.length && PlayExtra_updateStreamLogoValuesId[pp] === ID) {

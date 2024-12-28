@@ -656,6 +656,10 @@ function Play_updateStreamLogo() {
 }
 
 function Play_updateStreamLogoValues(responseText, key, id) {
+    if (!Play_data || !Play_data.data || !Play_data.data.length) {
+        return;
+    }
+
     var response = JSON.parse(responseText);
     if (response.data && response.data.length && Play_updateStreamLogoValuesId === id) {
         //TODO update this with a API that provides logo and is partner
@@ -1132,8 +1136,8 @@ function Play_extractQualities(input) {
         return b.resolution - a.resolution;
     });
 
-    //some vods dont have the source option
-    if (!Main_A_includes_B(result[0].id, 'ource')) {
+    //some vods don't have the source option
+    if (result && result[0] && !Main_A_includes_B(result[0].id, 'ource')) {
         result[0].id += ' | ' + STR_SOURCE;
     }
 
@@ -1147,7 +1151,7 @@ function Play_extractQualities(input) {
     }
 
     //Some stream have the wrong bitrate set what causes issue when selecting the best quality on auto playback
-    if (result.length > 1 && result[0].bitrate < result[1].bitrate) {
+    if (result && result.length > 1 && result[0].bitrate < result[1].bitrate) {
         result[0].truebitrate = result[0].bitrate + result[1].bitrate;
     }
 

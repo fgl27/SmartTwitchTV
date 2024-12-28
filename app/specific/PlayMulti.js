@@ -38,7 +38,15 @@ function Play_updateStreamInfoMulti(pos) {
 function Play_updateStreamInfoMultiValues(response, pos, ID) {
     var obj = JSON.parse(response);
 
-    if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoMultiId[pos] === ID) {
+    if (
+        Play_isOn &&
+        obj.data &&
+        obj.data.length &&
+        Play_updateStreamInfoMultiId[pos] === ID &&
+        Play_MultiArray[pos] &&
+        Play_MultiArray[pos].data &&
+        Play_MultiArray[pos].data.length
+    ) {
         var tempData = ScreensObj_LiveCellArray(obj.data[0]);
 
         //Prevent save the wrong stream data
@@ -547,11 +555,12 @@ function Play_MultiUpdateStreamLogo(channelId, pos) {
 
 var Play_MultiUpdateStreamLogoValuesID = [];
 function Play_MultiUpdateStreamLogoValues(responseText, i, ID) {
-    if (Play_MultiUpdateStreamLogoValuesID[i] !== ID) {
+    if (Play_MultiUpdateStreamLogoValuesID[i] !== ID || !Play_MultiArray[i] || !Play_MultiArray[i].data || !Play_MultiArray[i].data.length) {
         return;
     }
 
     var response = JSON.parse(responseText);
+
     if (response.data && response.data.length) {
         //TODO update this with a API that provides logo and is partner
         var objData = response.data[0];
@@ -795,7 +804,12 @@ function Play_MultiSetUpdateDialogLogo(channeiId, pos) {
 }
 
 function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
+    if (!Play_MultiArray[i] || !Play_MultiArray[i].data || !Play_MultiArray[i].data.length) {
+        return;
+    }
+
     var response = JSON.parse(responseText);
+
     if (response.data && response.data.length) {
         //TODO update this with a API that provides logo and is partner
         var objData = response.data[0];
