@@ -4924,13 +4924,20 @@
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
         WebVersion: 'December 24 2024',
-        WebTag: 695, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 697, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version December 28 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
+                changes: [
+                    'Fix scenarios where the player was in an "undefined" state, this was happening mostly  when playing 4 way multistream with only 3 streams',
+                    '🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉 Happy New Year, Merry Christmas, and Happy Holidays everybody!!! 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉'
+                ]
+            },
             {
                 title: 'Version December 24 2024 ✨🎄🎅 🔔 🤶🎄✨',
                 changes: [
                     'Add new settings option to Auto Switch content to All language when current language has no content enabled by default',
-                    '✨🎄🎅 🔔 🤶🎄✨ Merry christmas happy holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨'
+                    '✨🎄🎅 🔔 🤶🎄✨ Merry Christmas, and Happy Holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨'
                 ]
             },
             {
@@ -8121,7 +8128,10 @@
     var extraEmotes = {};
     var cheers = {};
 
+    var ChatLive_sharedProfileImg = {};
+
     var ChatLive_selectedChannel_id = [];
+    var ChatLive_isShared = [];
     var ChatLive_loadChattersId = [];
     var ChatLive_PingId = [];
     var ChatLive_SendPingId;
@@ -8191,6 +8201,7 @@
             !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
             !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
         );
+        ChatLive_checkShared(chat_number, Chat_Id[chat_number]);
 
         if (!SkipClear) {
             ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
@@ -8310,6 +8321,56 @@
         ChatLive_loadEmotesChannelBTTV(chat_number, Chat_Id[chat_number]);
         ChatLive_loadEmotesChannelFFZ(chat_number, Chat_Id[chat_number]);
         ChatLive_loadEmotesChannelSeven_tv(chat_number, Chat_Id[chat_number]);
+    }
+
+    function ChatLive_checkShared(chat_number, id) {
+        ChatLive_isShared[chat_number] = false;
+        var theUrl = Main_helix_api + 'shared_chat/session?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
+
+        BaseXmlHttpGet(theUrl, ChatLive_checkSharedSuccess, noop_fun, chat_number, id, true);
+    }
+
+    function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        var response = JSON.parse(responseText);
+
+        if (response && response.data.length) {
+            ChatLive_isShared[chat_number] = true;
+
+            var i = 0,
+                participants = response.data[0].participants,
+                len = Math.min(participants.length, 100),
+                channelsIds = '';
+
+            for (i; i < len; i++) {
+                if (!ChatLive_sharedProfileImg[participants[i].broadcaster_id]) {
+                    channelsIds += channelsIds ? '&id=' : 'id=';
+                    channelsIds += participants[i].broadcaster_id;
+                }
+            }
+
+            if (channelsIds) ChatLive_updateBanner(channelsIds);
+        }
+    }
+
+    function ChatLive_updateBanner(channelsIds) {
+        var theUrl = Main_helix_api + 'users?' + channelsIds;
+
+        BaseXmlHttpGet(theUrl, ChatLive_updateBannerSuccess, noop_fun, null, null, true);
+    }
+
+    function ChatLive_updateBannerSuccess(responseText) {
+        var response = JSON.parse(responseText);
+
+        if (response.data && response.data.length) {
+            var i = 0,
+                len = response.data.length;
+
+            for (i; i < len; i++) {
+                ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
+            }
+        }
     }
 
     function ChatLive_checkFallow(chat_number, id) {
@@ -17843,6 +17904,10 @@
     }
 
     function Play_updateStreamLogoValues(responseText, key, id) {
+        if (!Play_data || !Play_data.data || !Play_data.data.length) {
+            return;
+        }
+
         var response = JSON.parse(responseText);
         if (response.data && response.data.length && Play_updateStreamLogoValuesId === id) {
             //TODO update this with a API that provides logo and is partner
@@ -18319,8 +18384,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             return b.resolution - a.resolution;
         });
 
-        //some vods dont have the source option
-        if (!Main_A_includes_B(result[0].id, 'ource')) {
+        //some vods don't have the source option
+        if (result && result[0] && !Main_A_includes_B(result[0].id, 'ource')) {
             result[0].id += ' | ' + STR_SOURCE;
         }
 
@@ -18334,7 +18399,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         //Some stream have the wrong bitrate set what causes issue when selecting the best quality on auto playback
-        if (result.length > 1 && result[0].bitrate < result[1].bitrate) {
+        if (result && result.length > 1 && result[0].bitrate < result[1].bitrate) {
             result[0].truebitrate = result[0].bitrate + result[1].bitrate;
         }
 
@@ -25596,6 +25661,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function PlayExtra_updateStreamLogoValues(responseText, pp, ID) {
+        if (!pp && (!Play_data || !Play_data.data || !Play_data.data.length)) {
+            return;
+        }
+
+        if (pp && (!PlayExtra_data || !PlayExtra_data.data || !PlayExtra_data.data.length)) {
+            return;
+        }
+
         var response = JSON.parse(responseText);
 
         if (response.data && response.data.length && PlayExtra_updateStreamLogoValuesId[pp] === ID) {
@@ -26071,7 +26144,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Play_updateStreamInfoMultiValues(response, pos, ID) {
         var obj = JSON.parse(response);
 
-        if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoMultiId[pos] === ID) {
+        if (
+            Play_isOn &&
+            obj.data &&
+            obj.data.length &&
+            Play_updateStreamInfoMultiId[pos] === ID &&
+            Play_MultiArray[pos] &&
+            Play_MultiArray[pos].data &&
+            Play_MultiArray[pos].data.length
+        ) {
             var tempData = ScreensObj_LiveCellArray(obj.data[0]);
 
             //Prevent save the wrong stream data
@@ -26580,11 +26661,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     var Play_MultiUpdateStreamLogoValuesID = [];
     function Play_MultiUpdateStreamLogoValues(responseText, i, ID) {
-        if (Play_MultiUpdateStreamLogoValuesID[i] !== ID) {
+        if (Play_MultiUpdateStreamLogoValuesID[i] !== ID || !Play_MultiArray[i] || !Play_MultiArray[i].data || !Play_MultiArray[i].data.length) {
             return;
         }
 
         var response = JSON.parse(responseText);
+
         if (response.data && response.data.length) {
             //TODO update this with a API that provides logo and is partner
             var objData = response.data[0];
@@ -26831,7 +26913,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
+        if (!Play_MultiArray[i] || !Play_MultiArray[i].data || !Play_MultiArray[i].data.length) {
+            return;
+        }
+
         var response = JSON.parse(responseText);
+
         if (response.data && response.data.length) {
             //TODO update this with a API that provides logo and is partner
             var objData = response.data[0];

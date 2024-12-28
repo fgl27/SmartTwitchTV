@@ -9,11 +9,17 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version December 28 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉
+==============
+
+* Fix scenarios where the player was in an "undefined" state, this was happening mostly  when playing 4 way multistream with only 3 streams
+* 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉 Happy New Year, Merry Christmas, and Happy Holidays everybody!!! 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉
+
 Version December 24 2024 ✨🎄🎅 🔔 🤶🎄✨
 ==============
 
 * Add new settings option to Auto Switch content to All language when current language has no content enabled by default
-* ✨🎄🎅 🔔 🤶🎄✨ Merry christmas happy holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨
+* ✨🎄🎅 🔔 🤶🎄✨ Merry Christmas, and Happy Holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨
 
 Version December 19 2024
 ==============
