@@ -17913,10 +17913,12 @@
             //TODO update this with a API that provides logo and is partner
             var objData = response.data[0];
 
-            Play_data.data[10] = objData.broadcaster_type === 'partner';
-            Play_data.data[9] = objData.profile_image_url;
+            if (Main_A_equals_B(objData.id, Play_data.data[14])) {
+                Play_data.data[10] = objData.broadcaster_type === 'partner';
+                Play_data.data[9] = objData.profile_image_url;
 
-            Play_updateStreamLogoEnd();
+                Play_updateStreamLogoEnd();
+            }
         }
     }
     var updateStreamLogoValue;
@@ -25675,12 +25677,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             //TODO update this with a API that provides logo and is partner
             var objData = response.data[0];
 
-            if (!pp) {
+            if (!pp && Main_A_equals_B(objData.id, Play_data.data[14])) {
                 Play_data.data[10] = objData.broadcaster_type === 'partner';
                 Play_data.data[9] = objData.profile_image_url;
 
                 PlayExtra_updateLogo(pp);
-            } else {
+            } else if (Main_A_equals_B(objData.id, PlayExtra_data.data[14])) {
                 PlayExtra_data.data[10] = objData.broadcaster_type === 'partner';
                 PlayExtra_data.data[9] = objData.profile_image_url;
 
@@ -26672,10 +26674,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             var objData = response.data[0];
             var extraText = Play_Multi_MainBig ? '_big' : '';
 
-            Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
-            Play_MultiArray[i].data[9] = objData.profile_image_url;
+            if (Main_A_equals_B(objData.id, Play_MultiArray[i].data[14])) {
+                Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
+                Play_MultiArray[i].data[9] = objData.profile_image_url;
 
-            Play_MultiUpdateStreamLogoEnd(i, extraText);
+                Play_MultiUpdateStreamLogoEnd(i, extraText);
+            }
         }
     }
 
