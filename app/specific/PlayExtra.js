@@ -443,12 +443,12 @@ function PlayExtra_updateStreamLogoValues(responseText, pp, ID) {
         //TODO update this with a API that provides logo and is partner
         var objData = response.data[0];
 
-        if (!pp) {
+        if (!pp && Main_A_equals_B(objData.id, Play_data.data[14])) {
             Play_data.data[10] = objData.broadcaster_type === 'partner';
             Play_data.data[9] = objData.profile_image_url;
 
             PlayExtra_updateLogo(pp);
-        } else {
+        } else if (Main_A_equals_B(objData.id, PlayExtra_data.data[14])) {
             PlayExtra_data.data[10] = objData.broadcaster_type === 'partner';
             PlayExtra_data.data[9] = objData.profile_image_url;
 

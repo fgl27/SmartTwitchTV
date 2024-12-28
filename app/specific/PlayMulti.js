@@ -566,10 +566,12 @@ function Play_MultiUpdateStreamLogoValues(responseText, i, ID) {
         var objData = response.data[0];
         var extraText = Play_Multi_MainBig ? '_big' : '';
 
-        Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
-        Play_MultiArray[i].data[9] = objData.profile_image_url;
+        if (Main_A_equals_B(objData.id, Play_MultiArray[i].data[14])) {
+            Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
+            Play_MultiArray[i].data[9] = objData.profile_image_url;
 
-        Play_MultiUpdateStreamLogoEnd(i, extraText);
+            Play_MultiUpdateStreamLogoEnd(i, extraText);
+        }
     }
 }
 
