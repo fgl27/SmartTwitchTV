@@ -52,7 +52,9 @@ var ChatLive_sharedProfileImg = {};
 
 var ChatLive_selectedChannel_id = [];
 var ChatLive_isShared = [];
+var ChatLive_SharedShowedWarning = [];
 var ChatLive_loadChattersId = [];
+var ChatLive_StartSharedId = [];
 var ChatLive_PingId = [];
 var ChatLive_SendPingId;
 var ChatLive_selectedChannel = [];
@@ -121,7 +123,7 @@ function ChatLive_Init(chat_number, SkipClear) {
         !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
         !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
     );
-    ChatLive_checkShared(chat_number, Chat_Id[chat_number]);
+    ChatLive_StartShared(chat_number, Chat_Id[chat_number]);
 
     if (!SkipClear) {
         ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
@@ -245,8 +247,22 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_loadEmotesChannelSeven_tv(chat_number, Chat_Id[chat_number]);
 }
 
-function ChatLive_checkShared(chat_number, id) {
+function ChatLive_StartShared(chat_number, id) {
+    ChatLive_SharedShowedWarning[chat_number] = false;
     ChatLive_isShared[chat_number] = false;
+
+    ChatLive_checkShared(chat_number, id);
+
+    ChatLive_StartSharedId[chat_number] = Main_setInterval(
+        function () {
+            ChatLive_checkShared(chat_number, id);
+        },
+        30000, //3 * 60 * 1000, //3 min
+        ChatLive_StartSharedId[chat_number]
+    );
+}
+
+function ChatLive_checkShared(chat_number, id) {
     var theUrl = Main_helix_api + 'shared_chat/session?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
     BaseXmlHttpGet(theUrl, ChatLive_checkSharedSuccess, noop_fun, chat_number, id, true);
@@ -266,18 +282,18 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
             channelsIds = '';
 
         for (i; i < len; i++) {
-            if (!ChatLive_sharedProfileImg[participants[i].broadcaster_id]) {
-                channelsIds += channelsIds ? '&id=' : 'id=';
-                channelsIds += participants[i].broadcaster_id;
+            channelsIds += channelsIds ? '&id=' : 'id=';
+            channelsIds += participants[i].broadcaster_id;
 
-                //Load badges for all shared chats
-                if (!Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id)) {
-                    Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, participants[i].broadcaster_id);
-                }
+            //Load badges for all shared chats
+            if (!Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id)) {
+                Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, participants[i].broadcaster_id);
             }
         }
 
-        if (channelsIds) ChatLive_updateBanner(channelsIds);
+        if (channelsIds) {
+            ChatLive_updateBanner(channelsIds, chat_number, id);
+        }
 
         if (Settings_value.show_chatters.defaultValue) {
             ChatLive_loadChattersCheckTypeRun(chat_number, id);
@@ -285,13 +301,15 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
     }
 }
 
-function ChatLive_updateBanner(channelsIds) {
+function ChatLive_updateBanner(channelsIds, chat_number, id) {
     var theUrl = Main_helix_api + 'users?' + channelsIds;
 
-    BaseXmlHttpGet(theUrl, ChatLive_updateBannerSuccess, noop_fun, null, null, true);
+    BaseXmlHttpGet(theUrl, ChatLive_updateBannerSuccess, noop_fun, chat_number, id, true);
 }
 
-function ChatLive_updateBannerSuccess(responseText) {
+function ChatLive_updateBannerSuccess(responseText, chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
     var response = JSON.parse(responseText);
 
     if (response.data && response.data.length) {
@@ -304,19 +322,25 @@ function ChatLive_updateBannerSuccess(responseText) {
             return a.display_name < b.display_name ? -1 : a.display_name > b.display_name ? 1 : 0;
         });
 
-        for (i; i < len; i++) {
-            ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
-            chatWarning +=
-                STR_BR +
-                '<span class="tag" style=" background-image: url(' +
-                response.data[i].profile_image_url +
-                ');"></span>' +
-                STR_SPACE_HTML +
-                response.data[i].display_name +
-                STR_BR;
-        }
+        if (!ChatLive_SharedShowedWarning[chat_number]) {
+            for (i; i < len; i++) {
+                ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
+                chatWarning +=
+                    STR_BR +
+                    '<span class="tag" style=" background-image: url(' +
+                    response.data[i].profile_image_url +
+                    ');"></span>' +
+                    STR_SPACE_HTML +
+                    response.data[i].display_name +
+                    STR_BR;
+            }
 
-        ChatLive_Warn(STR_IN_SHARED_CHAT + chatWarning, 3000);
+            ChatLive_Warn(STR_IN_SHARED_CHAT + chatWarning, 3000);
+
+            ChatLive_SharedShowedWarning[chat_number] = true;
+        }
+    } else {
+        ChatLive_isShared[chat_number] = false;
     }
 }
 
@@ -2105,6 +2129,7 @@ function ChatLive_ClearIds(chat_number) {
     Main_clearTimeout(ChatLive_loadBadgesChannelId);
     Main_clearTimeout(ChatLive_LatencyId[chat_number]);
     Main_clearInterval(ChatLive_loadChattersId[chat_number]);
+    Main_clearInterval(ChatLive_StartSharedId[chat_number]);
     Main_clearInterval(ChatLive_PingId[chat_number]);
     Main_clearInterval(ChatLive_SendPingId);
 }
