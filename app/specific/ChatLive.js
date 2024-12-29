@@ -1820,12 +1820,18 @@ function ChatLive_LineAddDelay(chat_number, id, messageObj) {
 }
 
 function ChatLive_GetBadges(tags, chat_number) {
+    var ret = '',
+        channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
+
+    if (ChatLive_isShared[chat_number]) {
+        //TODO add a disable settings option shared chat badge
+        ret += '<span class="tag" style="background-image: url(' + ChatLive_sharedProfileImg[channelId] + ');"></span>';
+    }
+
     if (tags.hasOwnProperty('badges')) {
         if (typeof tags.badges === 'string') {
             var badges = tags.badges.split(','),
-                badge,
-                ret = '',
-                channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
+                badge;
 
             for (var i = 0, len = badges.length; i < len; i++) {
                 badge = badges[i].split('/');
@@ -1840,7 +1846,7 @@ function ChatLive_GetBadges(tags, chat_number) {
         }
     }
 
-    return '';
+    return ret;
 }
 
 function ChatLive_ShouldShowBadge(badge_name) {

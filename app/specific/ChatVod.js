@@ -251,7 +251,7 @@ function Chat_loadBadgesGlobalSuccess(obj, id, chat_number, channelId) {
     ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
 }
 
-function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
+function Chat_loadBadgesTransform(responseObj, id, isChannel) {
     var versions,
         versionsIds = {},
         property,
