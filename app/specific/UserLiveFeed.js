@@ -1370,7 +1370,13 @@ function UserLiveFeed_updateThumbInfo(pos) {
     ScreensObj_getStreamInfo(data[14], pos, UserLiveFeed_FeedPosY[pos] + '', null, null, null, null, UserLiveFeed_ThumbInfoUpdate, noop_fun);
 }
 
-function UserLiveFeed_ThumbInfoUpdate(tempData, checkResult, check_1) {
+function UserLiveFeed_ThumbInfoUpdate(obj, checkResult, check_1) {
+    if (!obj.data.length) {
+        return;
+    }
+
+    var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
     var id = checkResult + '_' + check_1;
     var pos = parseInt(checkResult);
 

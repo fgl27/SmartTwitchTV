@@ -3337,7 +3337,13 @@ function ScreensObj_updateThumbInfo(key) {
     );
 }
 
-function ScreensObj_ThumbInfoUpdate(tempData, checkResult, check_1, check_2) {
+function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2) {
+    if (!obj.data.length) {
+        return;
+    }
+
+    var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
     var key = parseInt(checkResult);
     var id = check_1 + '_' + check_2;
 
@@ -3451,17 +3457,9 @@ function BaseXmlHttpGetFull_Process(result, checkResult, check_1, check_2, check
 
 function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
     if (response.status === 200) {
-        var obj = JSON.parse(response.responseText);
-
-        if (!obj.data.length) {
-            return;
-        }
-
-        var tempData = ScreensObj_LiveCellArray(obj.data[0]);
-
         // prettier-ignore
         eval(callBackSuccess)( // jshint ignore:line
-            tempData, checkResult, check_1, check_2, check_3, check_4, check_5
+            JSON.parse(response.responseText), checkResult, check_1, check_2, check_3, check_4, check_5
         );
 
         return;

@@ -291,6 +291,7 @@ function ChatLive_updateBannerSuccess(responseText) {
             ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
         }
     }
+    console.log(ChatLive_sharedProfileImg);
 }
 
 function ChatLive_checkFallow(chat_number, id) {
@@ -377,34 +378,26 @@ function ChatLive_checkSubFail(chat_number, id) {
     ChatLive_SubState[chat_number].state = false;
 }
 
-function ChatLive_loadBadgesChannel(chat_number, id) {
+function ChatLive_loadBadgesChannel(chat_number, id, input_channelId) {
     if (id !== Chat_Id[chat_number]) return;
 
-    if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-        BaseXmlHttpGet(
-            Main_helix_api + 'chat/badges?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number],
-            ChatLive_loadBadgesChannelSuccess,
-            noop_fun,
-            chat_number,
-            id,
-            true
-        );
+    var channelId = input_channelId ? input_channelId : ChatLive_selectedChannel_id[chat_number];
+
+    if (!extraEmotesDone.BadgesChannel[channelId]) {
+        var theUrl = Main_helix_api + 'chat/badges?broadcaster_id=' + channelId;
+
+        BaseXmlHttpGetFull(theUrl, true, id, chat_number + '', channelId + '', null, null, null, ChatLive_loadBadgesChannelSuccess, noop_fun);
     } else {
-        Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+        Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
     }
 }
 
-function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
+function ChatLive_loadBadgesChannelSuccess(obj, id, chat_number, channelId) {
     if (id !== Chat_Id[chat_number]) return;
 
-    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(
-        JSON.parse(responseText),
-        ChatLive_selectedChannel_id[chat_number],
-        true,
-        chat_number
-    );
+    extraEmotesDone.BadgesChannel[channelId] = Chat_loadBadgesTransform(obj, channelId, true, chat_number);
 
-    Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+    Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
 }
 
 function ChatLive_resetChatters(chat_number) {
@@ -1827,7 +1820,8 @@ function ChatLive_GetBadges(tags, chat_number) {
         if (typeof tags.badges === 'string') {
             var badges = tags.badges.split(','),
                 badge,
-                ret = '';
+                ret = '',
+                channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared
 
             for (var i = 0, len = badges.length; i < len; i++) {
                 badge = badges[i].split('/');
@@ -1836,9 +1830,8 @@ function ChatLive_GetBadges(tags, chat_number) {
                     continue;
                 }
 
-                ret += '<span class="a' + badge[0] + ChatLive_selectedChannel_id[chat_number] + '-' + badge[1] + ' tag"></span>';
+                ret += '<span class="a' + badge[0] + channelId + '-' + badge[1] + ' tag"></span>';
             }
-
             return ret;
         }
     }
