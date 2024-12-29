@@ -759,6 +759,10 @@ var Settings_value = {
     chat_show_badges_vip: {
         values: ['no', 'yes'],
         defaultValue: 2
+    },
+    chat_show_badges_shared: {
+        values: ['no', 'yes'],
+        defaultValue: 2
     }
 };
 
@@ -3122,6 +3126,7 @@ function Settings_DialogShowChat(click) {
     Settings_value.chat_show_badges.values = yes_no;
     Settings_value.chat_show_badges_mod.values = yes_no;
     Settings_value.chat_show_badges_vip.values = yes_no;
+    Settings_value.chat_show_badges_shared.values = yes_no;
     Settings_value.highlight_atstreamer.values = yes_no;
     Settings_value.highlight_streamer.values = yes_no;
     Settings_value.highlight_mod.values = yes_no;
@@ -3280,12 +3285,18 @@ function Settings_DialogShowChat(click) {
             values: Settings_value.chat_show_badges_vip.values,
             title: STR_CHAT_SHOW_BADGES_VIP,
             summary: null
+        },
+        chat_show_badges_shared: {
+            defaultValue: Settings_value.chat_show_badges_shared.defaultValue,
+            values: Settings_value.chat_show_badges_shared.values,
+            title: STR_CHAT_SHOW_BADGES_SHARED,
+            summary: null
         }
     };
 
     //Use off set if there is too many options
     //Ajust the value as per setting option by trying diff Global app font size offset
-    var fontOffset = Settings_Obj_default('global_font_offset') + 2,
+    var fontOffset = Settings_Obj_default('global_font_offset') + 3,
         offset = Object.keys(obj).length - fontOffset;
 
     Settings_DialogShow(obj, STR_CHAT_OPTIONS, click, offset);

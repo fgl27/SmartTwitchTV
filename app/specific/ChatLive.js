@@ -161,6 +161,7 @@ function ChatLive_Switch() {
     }
 }
 
+var ChatLive_Show_Shared_Badge;
 var ChatLive_Logging;
 var ChatLive_Highlight_Rewards;
 var ChatLive_Highlight_First;
@@ -201,6 +202,7 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 
     ChatLive_User_Set = AddUser_IsUserSet();
 
+    ChatLive_Show_Shared_Badge = Settings_value.chat_show_badges_shared.defaultValue;
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
     ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
     ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
@@ -1856,7 +1858,7 @@ function ChatLive_GetBadges(tags, chat_number) {
     var ret = '',
         channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
 
-    if (ChatLive_isShared[chat_number] && ChatLive_sharedProfileImg[channelId]) {
+    if (ChatLive_Show_Shared_Badge && ChatLive_isShared[chat_number] && ChatLive_sharedProfileImg[channelId]) {
         //TODO add a disable settings option shared chat badge
         ret += '<span class="tag" style="background-image: url(' + ChatLive_sharedProfileImg[channelId] + ');"></span>';
     }

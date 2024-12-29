@@ -487,6 +487,7 @@ function es_ESLang() {
     STR_CHAT_SHOW_BADGES = 'Mostrar insignias de usuarios (excepto las siguientes)';
     STR_CHAT_SHOW_BADGES_MOD = 'Mostrar insignias de moderadores';
     STR_CHAT_SHOW_BADGES_VIP = 'Mostrar insignias VIP';
+    STR_CHAT_SHOW_BADGES_SHARED = 'Mostrar insignias del chat compartido';
     STR_CHAT_MESSAGE_DELETED = 'Se solicitó la eliminación de este mensaje de usuario único';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Se solicitó la eliminación de todos los mensajes de este usuario';
     STR_CHAT_CLEAR_MSG_SUMMARY =

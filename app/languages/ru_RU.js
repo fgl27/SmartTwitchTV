@@ -707,6 +707,7 @@ function ru_RULang() {
     STR_CHAT_SHOW_BADGES = 'Показывать значки пользователей (за исключением указанных ниже)';
     STR_CHAT_SHOW_BADGES_MOD = 'Показывать значки модераторов';
     STR_CHAT_SHOW_BADGES_VIP = 'Показывать значки VIP';
+    STR_CHAT_SHOW_BADGES_SHARED = 'Показывать значки общего чата';
     STR_CHAT_MESSAGE_DELETED = 'Это сообщение пользователя было запрошено на удаление';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Все сообщения от этого пользователя были запрошены на удаление';
     STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', тайм-аут на';

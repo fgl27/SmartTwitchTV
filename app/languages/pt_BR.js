@@ -693,6 +693,7 @@ function pt_BRLang() {
     STR_CHAT_SHOW_BADGES = 'Mostrar emblemas de usuários (exceto os abaixo)';
     STR_CHAT_SHOW_BADGES_MOD = 'Mostrar emblemas de Moderador';
     STR_CHAT_SHOW_BADGES_VIP = 'Mostrar emblemas VIP';
+    STR_CHAT_SHOW_BADGES_SHARED = 'Mostrar emblemas do chat compartilhado';
     STR_CHAT_MESSAGE_DELETED = 'Esta unica mensagem de usuário foi solicitada para ser excluída';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Todas as mensagens deste usuário foram solicitadas para serem excluídas';
     STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', o tempo esgotou para';
