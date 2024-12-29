@@ -538,6 +538,7 @@
         STR_CHAT_SHOW_BADGES,
         STR_CHAT_SHOW_BADGES_MOD,
         STR_CHAT_SHOW_BADGES_VIP,
+        STR_CHAT_SHOW_BADGES_SHARED,
         STR_SHOW_SIDE_PLAYER,
         STR_PREVIEW_OTHERS_VOLUME,
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY,
@@ -607,6 +608,7 @@
         STR_CHAT_MESSAGE_DELETED_ALL,
         STR_CHAT_MESSAGE_DELETED_TIMEOUT,
         STR_IN_CHAT,
+        STR_IN_SHARED_CHAT,
         STR_SHOW_IN_CHAT,
         STR_PLAYED,
         STR_CHAPTERS,
@@ -798,7 +800,9 @@
         STR_JUMP_TIME_CLICK_AGAIN,
         STR_LOAD_ALL_LANG,
         STR_LOAD_ALL_LANG_SUMMARY,
-        STR_LOAD_ALL_LANG_WARNING;
+        STR_LOAD_ALL_LANG_WARNING,
+        STR_DISABLE_SHARED_CHAT,
+        STR_DISABLE_SHARED_CHAT_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -958,6 +962,7 @@
         STR_TOO_ERRORS = STR_SPACE + STR_TOO_ERRORS;
         STR_GIFT_SUB = STR_SPACE + STR_GIFT_SUB;
         STR_IN_CHAT = STR_SPACE + STR_IN_CHAT;
+        STR_IN_SHARED_CHAT = STR_SPACE + STR_IN_SHARED_CHAT;
         STR_MILLISECONDS = STR_SPACE + STR_MILLISECONDS;
         STR_HOUR = STR_SPACE + STR_HOUR;
         STR_HOURS = STR_SPACE + STR_HOURS;
@@ -2028,6 +2033,7 @@
         STR_CHAT_SHOW_BADGES = 'Show user badges (excluding the ones below)';
         STR_CHAT_SHOW_BADGES_MOD = 'Show Moderator badges';
         STR_CHAT_SHOW_BADGES_VIP = 'Show VIP badges';
+        STR_CHAT_SHOW_BADGES_SHARED = 'Show Shared chat badges';
         STR_CHAT_MESSAGE_DELETED = 'This single user message was requested to be deleted';
         STR_CHAT_MESSAGE_DELETED_ALL = 'All messages from this user were requested to be deleted';
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've been timed out for";
@@ -2080,7 +2086,8 @@
         STR_VOD_SEEK_TIME = 'Increase timeout after holding for';
         STR_UP_LOCKED = 'press up to lock the step value';
         STR_LOCKED = 'locked press up to change';
-        STR_IN_CHAT = 'In chat';
+        STR_IN_CHAT = 'In Chat';
+        STR_IN_SHARED_CHAT = 'In Shared Chat';
         STR_SHOW_IN_CHAT = 'Show total logged in users on top of the chat or viewers';
         STR_SHOW_IN_CHAT_SUMMARY =
             'This helps identify if the offline chat has active users and shows the difference between total viewers and chat users.';
@@ -2246,6 +2253,9 @@
         STR_LOAD_ALL_LANG_SUMMARY =
             'Auto Switch to All language when current language has no content, only applies to the no content screen and to only some screens (Games and Front page)';
         STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' due to empty content';
+
+        STR_DISABLE_SHARED_CHAT = 'Disable shared chat';
+        STR_DISABLE_SHARED_CHAT_SUMMARY = 'If set to yes will only show chat messages from the stream you open';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -2738,6 +2748,7 @@
         STR_CHAT_SHOW_BADGES = 'Mostrar insignias de usuarios (excepto las siguientes)';
         STR_CHAT_SHOW_BADGES_MOD = 'Mostrar insignias de moderadores';
         STR_CHAT_SHOW_BADGES_VIP = 'Mostrar insignias VIP';
+        STR_CHAT_SHOW_BADGES_SHARED = 'Mostrar insignias del chat compartido';
         STR_CHAT_MESSAGE_DELETED = 'Se solicitó la eliminación de este mensaje de usuario único';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Se solicitó la eliminación de todos los mensajes de este usuario';
         STR_CHAT_CLEAR_MSG_SUMMARY =
@@ -2777,6 +2788,7 @@
         STR_UP_LOCKED = 'pulse arriba para bloquear el valor del paso';
         STR_LOCKED = 'bloqueado pulse arriba para cambiar';
         STR_IN_CHAT = 'En el chat';
+        STR_IN_SHARED_CHAT = 'En Chat Compartido';
         STR_SHOW_IN_CHAT = 'Mostrar el total de usuarios conectados en la parte superior del chat o de los espectadores';
         STR_SHOW_IN_CHAT_SUMMARY =
             'Esto es muy útil para saber, por ejemplo, si el chat fuera de línea tiene algún usuario con el que hablar, también permite al usuario saber la diferencia de espectador total VS usuario total del chat';
@@ -2810,6 +2822,9 @@
         STR_LOAD_ALL_LANG_SUMMARY =
             'Cambiar automáticamente al idioma "Todos" cuando el idioma actual no tiene contenido. Solo se aplica a la pantalla de "sin contenido" y a algunas pantallas específicas (Juegos y Página Principal).';
         STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' debido al contenido vacío';
+
+        STR_DISABLE_SHARED_CHAT = 'Desactivar chat compartido';
+        STR_DISABLE_SHARED_CHAT_SUMMARY = 'Si se establece en "sí", solo mostrará los mensajes del chat del stream que abriste';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3509,6 +3524,7 @@
         STR_CHAT_SHOW_BADGES = 'Mostrar emblemas de usuários (exceto os abaixo)';
         STR_CHAT_SHOW_BADGES_MOD = 'Mostrar emblemas de Moderador';
         STR_CHAT_SHOW_BADGES_VIP = 'Mostrar emblemas VIP';
+        STR_CHAT_SHOW_BADGES_SHARED = 'Mostrar emblemas do chat compartilhado';
         STR_CHAT_MESSAGE_DELETED = 'Esta unica mensagem de usuário foi solicitada para ser excluída';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Todas as mensagens deste usuário foram solicitadas para serem excluídas';
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', o tempo esgotou para';
@@ -3578,6 +3594,7 @@
         STR_UP_LOCKED = 'pressione para cima para bloquear o valor do passo';
         STR_LOCKED = 'bloqueado pressione para cima para alterar';
         STR_IN_CHAT = 'No chat';
+        STR_IN_SHARED_CHAT = 'No Chat Compartilhado';
         STR_SHOW_IN_CHAT = 'Mostrar total de usuários no chat ou visualizações';
         STR_SHOW_IN_CHAT_SUMMARY =
             'Isso é muito útil para saber, por exemplo, se o chat offline tem algum usuário com quem conversar, também deixe o usuário saber a diferença entre o visualizações e o usuário no chat';
@@ -3700,6 +3717,9 @@
         STR_LOAD_ALL_LANG_SUMMARY =
             'Alterna automaticamente para o idioma "Todos" quando o idioma atual não possui conteúdo. Aplica-se apenas à tela de "sem conteúdo" e a algumas telas específicas (Jogos e Página Inicial).';
         STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' devido ao conteúdo vazio';
+
+        STR_DISABLE_SHARED_CHAT = 'Desativar chat compartilhado';
+        STR_DISABLE_SHARED_CHAT_SUMMARY = 'Se definido como "sim", mostrará apenas as mensagens do chat da transmissão que você abriu';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4414,6 +4434,7 @@
         STR_CHAT_SHOW_BADGES = 'Показывать значки пользователей (за исключением указанных ниже)';
         STR_CHAT_SHOW_BADGES_MOD = 'Показывать значки модераторов';
         STR_CHAT_SHOW_BADGES_VIP = 'Показывать значки VIP';
+        STR_CHAT_SHOW_BADGES_SHARED = 'Показывать значки общего чата';
         STR_CHAT_MESSAGE_DELETED = 'Это сообщение пользователя было запрошено на удаление';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Все сообщения от этого пользователя были запрошены на удаление';
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', тайм-аут на';
@@ -4479,6 +4500,7 @@
         STR_UP_LOCKED = 'нажмите вверх, чтобы зафиксировать значение шага';
         STR_LOCKED = 'заблокировано нажмите вверх, чтобы изменить';
         STR_IN_CHAT = 'В чате';
+        STR_IN_SHARED_CHAT = 'В общем чате';
         STR_SHOW_IN_CHAT = 'Показывать общее количество пользователей или зрителей поверх чата';
         STR_SHOW_IN_CHAT_SUMMARY =
             'Это очень полезно, например, узнать, есть ли в чате какой-либо пользователь, с которым можно поговорить, а также узнать разницу зрители/пользователи чата.';
@@ -4640,6 +4662,9 @@
         STR_LOAD_ALL_LANG_SUMMARY =
             'Автоматически переключаться на язык "Все", когда на текущем языке нет содержимого. Применяется только к экрану "нет содержимого" и к некоторым экранам (Игры и Главная страница).';
         STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' из-за отсутствия содержимого';
+
+        STR_DISABLE_SHARED_CHAT = 'Отключить общий чат';
+        STR_DISABLE_SHARED_CHAT_SUMMARY = 'Если установлено "да", будут отображаться только сообщения из чата открытого вами стрима';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4923,9 +4948,19 @@
         VersionBase: '3.0',
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'December 28 2024',
-        WebTag: 697, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'December 29 2024',
+        WebTag: 699, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version December 29 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
+                changes: [
+                    'Add support for Shared chat',
+                    'Add new settings option Chat > Disable shared chat (No by default)',
+                    'Add new settings option Chat > Show Shared chat badges (Yes by default)',
+                    'Add new Player controls Chat extra settings > Disable shared chat (No by default)',
+                    '🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉 Happy New Year, Merry Christmas, and Happy Holidays everybody!!! 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉'
+                ]
+            },
             {
                 title: 'Version December 28 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
                 changes: [
@@ -4951,18 +4986,6 @@
                     'Add option to configure chat badges, change by @Js41637',
                     'General improvements'
                 ]
-            },
-            {
-                title: 'Version November 29 2024',
-                changes: [
-                    'Prevent issues when switching or auto-refreshing game sections, the app always tries to remember the position and Streams showing when you exit and go back to a game section it only refreshes when the Auto-refresh timeout expires, but before this changes sometimes it was not doing it instead, it was showing old streams after an auto-refresh',
-                    'Fix player User Games section not loading more than 100 live channels for a selected game',
-                    'General improvements'
-                ]
-            },
-            {
-                title: 'Version November 27 2024 Apk Version 3.0.372',
-                changes: ['Update player dependencies to latest version', 'General improvements']
             }
         ]
     };
@@ -8132,7 +8155,9 @@
 
     var ChatLive_selectedChannel_id = [];
     var ChatLive_isShared = [];
+    var ChatLive_SharedShowedWarning = [];
     var ChatLive_loadChattersId = [];
+    var ChatLive_StartSharedId = [];
     var ChatLive_PingId = [];
     var ChatLive_SendPingId;
     var ChatLive_selectedChannel = [];
@@ -8201,7 +8226,7 @@
             !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
             !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
         );
-        ChatLive_checkShared(chat_number, Chat_Id[chat_number]);
+        ChatLive_StartShared(chat_number, Chat_Id[chat_number]);
 
         if (!SkipClear) {
             ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
@@ -8241,6 +8266,7 @@
         }
     }
 
+    var ChatLive_Show_Shared_Badge;
     var ChatLive_Logging;
     var ChatLive_Highlight_Rewards;
     var ChatLive_Highlight_First;
@@ -8281,6 +8307,7 @@
 
         ChatLive_User_Set = AddUser_IsUserSet();
 
+        ChatLive_Show_Shared_Badge = Settings_value.chat_show_badges_shared.defaultValue;
         ChatLive_Logging = Settings_value.chat_logging.defaultValue;
         ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
         ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
@@ -8323,8 +8350,22 @@
         ChatLive_loadEmotesChannelSeven_tv(chat_number, Chat_Id[chat_number]);
     }
 
-    function ChatLive_checkShared(chat_number, id) {
+    function ChatLive_StartShared(chat_number, id) {
+        ChatLive_SharedShowedWarning[chat_number] = false;
         ChatLive_isShared[chat_number] = false;
+
+        ChatLive_checkShared(chat_number, id);
+
+        ChatLive_StartSharedId[chat_number] = Main_setInterval(
+            function () {
+                ChatLive_checkShared(chat_number, id);
+            },
+            30000, //3 * 60 * 1000, //3 min
+            ChatLive_StartSharedId[chat_number]
+        );
+    }
+
+    function ChatLive_checkShared(chat_number, id) {
         var theUrl = Main_helix_api + 'shared_chat/session?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
         BaseXmlHttpGet(theUrl, ChatLive_checkSharedSuccess, noop_fun, chat_number, id, true);
@@ -8344,32 +8385,65 @@
                 channelsIds = '';
 
             for (i; i < len; i++) {
-                if (!ChatLive_sharedProfileImg[participants[i].broadcaster_id]) {
-                    channelsIds += channelsIds ? '&id=' : 'id=';
-                    channelsIds += participants[i].broadcaster_id;
+                channelsIds += channelsIds ? '&id=' : 'id=';
+                channelsIds += participants[i].broadcaster_id;
+
+                //Load badges for all shared chats
+                if (!Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id)) {
+                    Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, participants[i].broadcaster_id);
                 }
             }
 
-            if (channelsIds) ChatLive_updateBanner(channelsIds);
+            if (channelsIds) {
+                ChatLive_updateBanner(channelsIds, chat_number, id);
+            }
+
+            if (Settings_value.show_chatters.defaultValue) {
+                ChatLive_loadChattersCheckTypeRun(chat_number, id);
+            }
         }
     }
 
-    function ChatLive_updateBanner(channelsIds) {
+    function ChatLive_updateBanner(channelsIds, chat_number, id) {
         var theUrl = Main_helix_api + 'users?' + channelsIds;
 
-        BaseXmlHttpGet(theUrl, ChatLive_updateBannerSuccess, noop_fun, null, null, true);
+        BaseXmlHttpGet(theUrl, ChatLive_updateBannerSuccess, noop_fun, chat_number, id, true);
     }
 
-    function ChatLive_updateBannerSuccess(responseText) {
+    function ChatLive_updateBannerSuccess(responseText, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
         var response = JSON.parse(responseText);
 
         if (response.data && response.data.length) {
             var i = 0,
-                len = response.data.length;
+                len = response.data.length,
+                chatWarning = '';
 
-            for (i; i < len; i++) {
-                ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
+            //a-z
+            response.data.sort(function (a, b) {
+                return a.display_name < b.display_name ? -1 : a.display_name > b.display_name ? 1 : 0;
+            });
+
+            if (!ChatLive_SharedShowedWarning[chat_number]) {
+                for (i; i < len; i++) {
+                    ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
+                    chatWarning +=
+                        STR_BR +
+                        '<span class="tag" style=" background-image: url(' +
+                        response.data[i].profile_image_url +
+                        ');"></span>' +
+                        STR_SPACE_HTML +
+                        response.data[i].display_name +
+                        STR_BR;
+                }
+
+                ChatLive_Warn(STR_IN_SHARED_CHAT + chatWarning, 3000);
+
+                ChatLive_SharedShowedWarning[chat_number] = true;
             }
+        } else {
+            ChatLive_isShared[chat_number] = false;
         }
     }
 
@@ -8449,14 +8523,14 @@
 
             var theUrl = Main_helix_api + 'chat/emotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
-            BaseXmlHttpGet(theUrl, ChatLive_loadChannelEmotesSucess, noop_fun, chat_number, id, true);
+            BaseXmlHttpGet(theUrl, ChatLive_loadChannelEmotesSuccess, noop_fun, chat_number, id, true);
         } else {
             ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
         }
     }
 
-    function ChatLive_loadChannelEmotesSucess(responseText, chat_number, chat_id) {
-        ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
+    function ChatLive_loadChannelEmotesSuccess(responseText, chat_number, chat_id) {
+        ChatLive_loadTwitchEmotesSuccess(responseText, chat_number, chat_id, extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
     }
 
     function ChatLive_checkSubFail(chat_number, id) {
@@ -8465,34 +8539,26 @@
         ChatLive_SubState[chat_number].state = false;
     }
 
-    function ChatLive_loadBadgesChannel(chat_number, id) {
+    function ChatLive_loadBadgesChannel(chat_number, id, input_channelId) {
         if (id !== Chat_Id[chat_number]) return;
 
-        if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-            BaseXmlHttpGet(
-                Main_helix_api + 'chat/badges?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number],
-                ChatLive_loadBadgesChannelSuccess,
-                noop_fun,
-                chat_number,
-                id,
-                true
-            );
+        var channelId = input_channelId ? input_channelId : ChatLive_selectedChannel_id[chat_number];
+
+        if (!extraEmotesDone.BadgesChannel[channelId]) {
+            var theUrl = Main_helix_api + 'chat/badges?broadcaster_id=' + channelId;
+
+            BaseXmlHttpGetFull(theUrl, true, id, chat_number + '', channelId + '', null, null, null, ChatLive_loadBadgesChannelSuccess, noop_fun);
         } else {
-            Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+            Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
         }
     }
 
-    function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
+    function ChatLive_loadBadgesChannelSuccess(obj, id, chat_number, channelId) {
         if (id !== Chat_Id[chat_number]) return;
 
-        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(
-            JSON.parse(responseText),
-            ChatLive_selectedChannel_id[chat_number],
-            true,
-            chat_number
-        );
+        extraEmotesDone.BadgesChannel[channelId] = Chat_loadBadgesTransform(obj, channelId, true, chat_number);
 
-        Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+        Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
     }
 
     function ChatLive_resetChatters(chat_number) {
@@ -8504,7 +8570,15 @@
 
     function ChatLive_loadChatters(chat_number, id) {
         if (Settings_value.show_chatters.defaultValue) {
-            Main_innerHTML('chat_loggedin' + chat_number, '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWERS));
+            Main_innerHTML(
+                'chat_loggedin' + chat_number,
+                '...' +
+                    (Settings_value.show_chatters.defaultValue === 1
+                        ? ChatLive_isShared[chat_number]
+                            ? STR_IN_SHARED_CHAT
+                            : STR_IN_CHAT
+                        : STR_VIEWERS)
+            );
             Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
 
             Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.9vh)';
@@ -8582,7 +8656,10 @@
                     var resultObj = JSON.parse(responseObj.responseText);
                     var counter = resultObj.data.channels[0].chatters.count;
 
-                    Main_innerHTML('chat_loggedin' + chat_number, Main_addCommas(counter) + STR_IN_CHAT);
+                    Main_innerHTML(
+                        'chat_loggedin' + chat_number,
+                        Main_addCommas(counter) + (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT)
+                    );
                 }
             } catch (e) {
                 Main_Log('ChatLive_loadChattersSuccess ' + e);
@@ -8602,7 +8679,7 @@
     }
 
     function ChatLive_loadGlobalEmotesSucess(responseText, chat_number, chat_id) {
-        ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone.GlobalTwitch);
+        ChatLive_loadTwitchEmotesSuccess(responseText, chat_number, chat_id, extraEmotesDone.GlobalTwitch);
     }
 
     function ChatLive_SetTwitchEmotesSuccess(obj) {
@@ -8620,7 +8697,7 @@
         }
     }
 
-    function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone_obj) {
+    function ChatLive_loadTwitchEmotesSuccess(responseText, chat_number, chat_id, extraEmotesDone_obj) {
         if (chat_id !== Chat_Id[chat_number]) return;
 
         var response = JSON.parse(responseText);
@@ -9692,8 +9769,9 @@
         //reference smartTwitchTV/jsonreferences/sub.json
         var tags = message.tags;
         var params = message.params;
-
-        if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) return; //bad formatted message
+        if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) {
+            return; //bad formatted message
+        }
 
         var gifter_Or_Sub_name = tags['display-name'] || null,
             msgid = tags['msg-id'] || null,
@@ -9785,7 +9863,14 @@
             mod = false,
             action;
 
-        if (!tags || !tags.hasOwnProperty('display-name') || (ChatLive_HideBots && KnowBots[tags['display-name']])) {
+        if (
+            !tags ||
+            !tags.hasOwnProperty('display-name') ||
+            (ChatLive_HideBots && KnowBots[tags['display-name']]) ||
+            (Settings_value.disabled_shared.defaultValue &&
+                ChatLive_isShared[chat_number] &&
+                !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+        ) {
             return; //bad formatted message
         }
 
@@ -9911,11 +9996,18 @@
     }
 
     function ChatLive_GetBadges(tags, chat_number) {
+        var ret = '',
+            channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
+
+        if (ChatLive_Show_Shared_Badge && ChatLive_isShared[chat_number] && ChatLive_sharedProfileImg[channelId]) {
+            //TODO add a disable settings option shared chat badge
+            ret += '<span class="tag" style="background-image: url(' + ChatLive_sharedProfileImg[channelId] + ');"></span>';
+        }
+
         if (tags.hasOwnProperty('badges')) {
             if (typeof tags.badges === 'string') {
                 var badges = tags.badges.split(','),
-                    badge,
-                    ret = '';
+                    badge;
 
                 for (var i = 0, len = badges.length; i < len; i++) {
                     badge = badges[i].split('/');
@@ -9924,14 +10016,13 @@
                         continue;
                     }
 
-                    ret += '<span class="a' + badge[0] + ChatLive_selectedChannel_id[chat_number] + '-' + badge[1] + ' tag"></span>';
+                    ret += '<span class="a' + badge[0] + channelId + '-' + badge[1] + ' tag"></span>';
                 }
-
                 return ret;
             }
         }
 
-        return '';
+        return ret;
     }
 
     function ChatLive_ShouldShowBadge(badge_name) {
@@ -10155,6 +10246,7 @@
         Main_clearTimeout(ChatLive_loadBadgesChannelId);
         Main_clearTimeout(ChatLive_LatencyId[chat_number]);
         Main_clearInterval(ChatLive_loadChattersId[chat_number]);
+        Main_clearInterval(ChatLive_StartSharedId[chat_number]);
         Main_clearInterval(ChatLive_PingId[chat_number]);
         Main_clearInterval(ChatLive_SendPingId);
     }
@@ -11505,42 +11597,47 @@
     }
 
     function Chat_loadBadgesGlobalRequest(chat_number, id) {
+        Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, ChatLive_selectedChannel_id[chat_number]);
+    }
+
+    function Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, channelId) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!Chat_GlobalBadges) {
             BaseXmlHttpGet(Main_helix_api + 'chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
+
+            var theUrl = Main_helix_api + 'chat/badges/global';
+
+            BaseXmlHttpGetFull(theUrl, true, id, chat_number + '', channelId + '', null, null, null, Chat_loadBadgesGlobalSuccess, noop_fun);
         } else {
-            if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
-                Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(
-                    /\%x/g,
-                    ChatLive_selectedChannel_id[chat_number]
-                );
+            if (!Chat_GlobalBadges[channelId]) {
+                Chat_GlobalBadges[channelId] = Chat_GlobalBadges[0].replace(/\%x/g, channelId);
             }
 
-            Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+            Chat_tagCSS(Chat_GlobalBadges[channelId], Chat_div[chat_number]);
 
             //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
-            ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
+            ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number], channelId);
         }
     }
 
-    function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
+    function Chat_loadBadgesGlobalSuccess(obj, id, chat_number, channelId) {
         if (id !== Chat_Id[chat_number]) return;
 
         Chat_GlobalBadges = {};
 
         Chat_GlobalBadges_Bits_Subs = {};
-        Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x', false, chat_number);
+        Chat_GlobalBadges[0] = Chat_loadBadgesTransform(obj, '%x', false, chat_number);
 
-        Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+        Chat_GlobalBadges[channelId] = Chat_GlobalBadges[0].replace(/\%x/g, channelId);
 
-        Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+        Chat_tagCSS(Chat_GlobalBadges[channelId], Chat_div[chat_number]);
 
         //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
         ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
     }
 
-    function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
+    function Chat_loadBadgesTransform(responseObj, id, isChannel) {
         var versions,
             versionsIds = {},
             property,
@@ -11591,7 +11688,7 @@
         });
 
         if (isChannel) {
-            innerHTML = Chat_AddMissingBadges(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
+            innerHTML = Chat_AddMissingBadges(Chat_GlobalBadges_Bits_Subs, Channel_Badges, id, innerHTML);
         }
 
         return innerHTML;
@@ -22653,6 +22750,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var Play_controlsPreview = temp_controls_pos++;
 
     var Play_controlsChatForceDis = temp_controls_pos++;
+    var Play_controlsChatDisShared = temp_controls_pos++;
     var Play_controlsChatDelay = temp_controls_pos++;
     var Play_controlsChatPos = temp_controls_pos++;
     var Play_controlsChatSize = temp_controls_pos++;
@@ -23772,6 +23870,38 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             },
             setLabel: function () {
                 Main_textContent('controls_text_summary_' + this.position, '(' + (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
+            }
+        };
+
+        Play_controls[Play_controlsChatDisShared] = {
+            //force disable chat
+            ShowInLive: false,
+            ShowInVod: false,
+            ShowInClip: false,
+            ShowInPP: false,
+            ShowInMulti: false,
+            ShowInChat: true,
+            ShowInAudio: false,
+            ShowInAudioPP: false,
+            ShowInAudioMulti: false,
+            ShowInPreview: false,
+            ShowInStay: false,
+            icons: 'proxy',
+            offsetY: -5,
+            string: STR_DISABLE_SHARED_CHAT,
+            values: [STR_NO, STR_YES],
+            defaultValue: Settings_value.disabled_shared.defaultValue,
+            enterKey: function () {
+                Settings_value.disabled_shared.defaultValue = Settings_value.disabled_shared.defaultValue ? 0 : 1;
+                Main_setItem('disabled_shared', Settings_value.disabled_shared.defaultValue + 1);
+
+                this.setLabel();
+            },
+            setLabel: function () {
+                Main_textContent(
+                    'controls_text_summary_' + this.position,
+                    '(' + (Settings_value.disabled_shared.defaultValue ? STR_YES : STR_NO) + ')'
+                );
             }
         };
 
@@ -36453,7 +36583,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         );
     }
 
-    function ScreensObj_ThumbInfoUpdate(tempData, checkResult, check_1, check_2) {
+    function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2) {
+        if (!obj.data.length) {
+            return;
+        }
+
+        var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
         var key = parseInt(checkResult);
         var id = check_1 + '_' + check_2;
 
@@ -36570,17 +36706,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function BaseXmlHttpGetFull_Process_End(response, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
         if (response.status === 200) {
-            var obj = JSON.parse(response.responseText);
-
-            if (!obj.data.length) {
-                return;
-            }
-
-            var tempData = ScreensObj_LiveCellArray(obj.data[0]);
-
             // prettier-ignore
             eval(callBackSuccess)( // jshint ignore:line
-            tempData, checkResult, check_1, check_2, check_3, check_4, check_5
+            JSON.parse(response.responseText), checkResult, check_1, check_2, check_3, check_4, check_5
         );
 
             return;
@@ -37466,6 +37594,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             values: ['disabled', 'enabled', 'bright', 'dark'],
             defaultValue: 1
         },
+        disabled_shared: {
+            //Migrated to dialog
+            values: ['no', 'yes'],
+            defaultValue: 1
+        },
         chat_logging: {
             //Migrated to dialog
             values: ['no', 'yes'],
@@ -37575,6 +37708,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             defaultValue: 2
         },
         chat_show_badges_vip: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        chat_show_badges_shared: {
             values: ['no', 'yes'],
             defaultValue: 2
         }
@@ -39954,6 +40091,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_value.chat_show_badges.values = yes_no;
         Settings_value.chat_show_badges_mod.values = yes_no;
         Settings_value.chat_show_badges_vip.values = yes_no;
+        Settings_value.chat_show_badges_shared.values = yes_no;
         Settings_value.highlight_atstreamer.values = yes_no;
         Settings_value.highlight_streamer.values = yes_no;
         Settings_value.highlight_mod.values = yes_no;
@@ -39965,6 +40103,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_value.chat_bot.values = yes_no;
         Settings_value.chat_individual_background.values = [STR_DISABLED, STR_ENABLED, STR_BRIGHT_MODE, STR_DARK_MODE];
         Settings_value.chat_logging.values = yes_no;
+        Settings_value.disabled_shared.values = yes_no;
+
         Settings_value.individual_lines.values = yes_no;
         Settings_value.chat_nickcolor.values = yes_no;
         Settings_value.chat_line_animation.values = yes_no;
@@ -39978,6 +40118,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 values: Settings_value.chat_logging.values,
                 title: STR_CHAT_LOGGING,
                 summary: STR_CHAT_LOGGING_SUMMARY
+            },
+            disabled_shared: {
+                defaultValue: Settings_value.disabled_shared.defaultValue,
+                values: Settings_value.disabled_shared.values,
+                title: STR_DISABLE_SHARED_CHAT,
+                summary: STR_DISABLE_SHARED_CHAT_SUMMARY
             },
             chat_line_animation: {
                 defaultValue: Settings_value.chat_line_animation.defaultValue,
@@ -40104,12 +40250,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 values: Settings_value.chat_show_badges_vip.values,
                 title: STR_CHAT_SHOW_BADGES_VIP,
                 summary: null
+            },
+            chat_show_badges_shared: {
+                defaultValue: Settings_value.chat_show_badges_shared.defaultValue,
+                values: Settings_value.chat_show_badges_shared.values,
+                title: STR_CHAT_SHOW_BADGES_SHARED,
+                summary: null
             }
         };
 
         //Use off set if there is too many options
         //Ajust the value as per setting option by trying diff Global app font size offset
-        var fontOffset = Settings_Obj_default('global_font_offset') + 2,
+        var fontOffset = Settings_Obj_default('global_font_offset') + 3,
             offset = Object.keys(obj).length - fontOffset;
 
         Settings_DialogShow(obj, STR_CHAT_OPTIONS, click, offset);
@@ -41295,7 +41447,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreensObj_getStreamInfo(obj[14], Sidepannel_PosFeed, null, null, null, null, null, Sidepannel_ThumbInfoUpdate, noop_fun);
     }
 
-    function Sidepannel_ThumbInfoUpdate(tempData, checkResult) {
+    function Sidepannel_ThumbInfoUpdate(obj, checkResult) {
+        if (!obj.data.length) {
+            return;
+        }
+
+        var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
         var pos = parseInt(checkResult);
 
         if (!Sidepannel_ObjNotNullPos(pos)) {
@@ -43484,7 +43642,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreensObj_getStreamInfo(data[14], pos, UserLiveFeed_FeedPosY[pos] + '', null, null, null, null, UserLiveFeed_ThumbInfoUpdate, noop_fun);
     }
 
-    function UserLiveFeed_ThumbInfoUpdate(tempData, checkResult, check_1) {
+    function UserLiveFeed_ThumbInfoUpdate(obj, checkResult, check_1) {
+        if (!obj.data.length) {
+            return;
+        }
+
+        var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
         var id = checkResult + '_' + check_1;
         var pos = parseInt(checkResult);
 
