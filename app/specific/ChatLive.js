@@ -201,6 +201,7 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 
     ChatLive_User_Set = AddUser_IsUserSet();
 
+    ChatLive_DisabledShared = Settings_value.disabled_shared.defaultValue;
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
     ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
     ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
@@ -1628,8 +1629,9 @@ function ChatLive_CheckIfSub(message, chat_number) {
     //reference smartTwitchTV/jsonreferences/sub.json
     var tags = message.tags;
     var params = message.params;
-
-    if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) return; //bad formatted message
+    if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) {
+        return; //bad formatted message
+    }
 
     var gifter_Or_Sub_name = tags['display-name'] || null,
         msgid = tags['msg-id'] || null,
@@ -1721,7 +1723,12 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         mod = false,
         action;
 
-    if (!tags || !tags.hasOwnProperty('display-name') || (ChatLive_HideBots && KnowBots[tags['display-name']])) {
+    if (
+        !tags ||
+        !tags.hasOwnProperty('display-name') ||
+        (ChatLive_HideBots && KnowBots[tags['display-name']]) ||
+        (ChatLive_DisabledShared && ChatLive_isShared[chat_number] && !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+    ) {
         return; //bad formatted message
     }
 

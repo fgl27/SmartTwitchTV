@@ -643,6 +643,11 @@ var Settings_value = {
         values: ['disabled', 'enabled', 'bright', 'dark'],
         defaultValue: 1
     },
+    disabled_shared: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
     chat_logging: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -3128,6 +3133,8 @@ function Settings_DialogShowChat(click) {
     Settings_value.chat_bot.values = yes_no;
     Settings_value.chat_individual_background.values = [STR_DISABLED, STR_ENABLED, STR_BRIGHT_MODE, STR_DARK_MODE];
     Settings_value.chat_logging.values = yes_no;
+    Settings_value.disabled_shared.values = yes_no;
+
     Settings_value.individual_lines.values = yes_no;
     Settings_value.chat_nickcolor.values = yes_no;
     Settings_value.chat_line_animation.values = yes_no;
@@ -3141,6 +3148,12 @@ function Settings_DialogShowChat(click) {
             values: Settings_value.chat_logging.values,
             title: STR_CHAT_LOGGING,
             summary: STR_CHAT_LOGGING_SUMMARY
+        },
+        disabled_shared: {
+            defaultValue: Settings_value.disabled_shared.defaultValue,
+            values: Settings_value.disabled_shared.values,
+            title: STR_DISABLE_SHARED_CHAT,
+            summary: STR_DISABLE_SHARED_CHAT_SUMMARY
         },
         chat_line_animation: {
             defaultValue: Settings_value.chat_line_animation.defaultValue,

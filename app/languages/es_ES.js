@@ -560,4 +560,7 @@ function es_ESLang() {
     STR_LOAD_ALL_LANG_SUMMARY =
         'Cambiar automáticamente al idioma "Todos" cuando el idioma actual no tiene contenido. Solo se aplica a la pantalla de "sin contenido" y a algunas pantallas específicas (Juegos y Página Principal).';
     STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' debido al contenido vacío';
+
+    STR_DISABLE_SHARED_CHAT = 'Desactivar chat compartido';
+    STR_DISABLE_SHARED_CHAT_SUMMARY = 'Si se establece en "sí", solo mostrará los mensajes del chat del stream que abriste';
 }

@@ -881,4 +881,7 @@ function pt_BRLang() {
     STR_LOAD_ALL_LANG_SUMMARY =
         'Alterna automaticamente para o idioma "Todos" quando o idioma atual não possui conteúdo. Aplica-se apenas à tela de "sem conteúdo" e a algumas telas específicas (Jogos e Página Inicial).';
     STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' devido ao conteúdo vazio';
+
+    STR_DISABLE_SHARED_CHAT = 'Desativar chat compartilhado';
+    STR_DISABLE_SHARED_CHAT_SUMMARY = 'Se definido como "sim", mostrará apenas as mensagens do chat da transmissão que você abriu';
 }
