@@ -294,11 +294,27 @@ function ChatLive_updateBannerSuccess(responseText) {
 
     if (response.data && response.data.length) {
         var i = 0,
-            len = response.data.length;
+            len = response.data.length,
+            chatWarning = '';
+
+        //a-z
+        response.data.sort(function (a, b) {
+            return a.display_name < b.display_name ? -1 : a.display_name > b.display_name ? 1 : 0;
+        });
 
         for (i; i < len; i++) {
             ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
+            chatWarning +=
+                STR_BR +
+                '<span class="tag" style=" background-image: url(' +
+                response.data[i].profile_image_url +
+                ');"></span>' +
+                STR_SPACE_HTML +
+                response.data[i].display_name +
+                STR_BR;
         }
+
+        ChatLive_Warn(STR_IN_SHARED_CHAT + chatWarning, 3000);
     }
 }
 
