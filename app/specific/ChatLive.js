@@ -267,6 +267,11 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
             if (!ChatLive_sharedProfileImg[participants[i].broadcaster_id]) {
                 channelsIds += channelsIds ? '&id=' : 'id=';
                 channelsIds += participants[i].broadcaster_id;
+
+                //Load badges for all shared chats
+                if (!Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id)) {
+                    Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, participants[i].broadcaster_id);
+                }
             }
         }
 
@@ -291,7 +296,6 @@ function ChatLive_updateBannerSuccess(responseText) {
             ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
         }
     }
-    console.log(ChatLive_sharedProfileImg);
 }
 
 function ChatLive_checkFallow(chat_number, id) {
@@ -1821,7 +1825,7 @@ function ChatLive_GetBadges(tags, chat_number) {
             var badges = tags.badges.split(','),
                 badge,
                 ret = '',
-                channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared
+                channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
 
             for (var i = 0, len = badges.length; i < len; i++) {
                 badge = badges[i].split('/');

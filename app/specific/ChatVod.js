@@ -211,36 +211,41 @@ function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
 }
 
 function Chat_loadBadgesGlobalRequest(chat_number, id) {
+    Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, ChatLive_selectedChannel_id[chat_number]);
+}
+
+function Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, channelId) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!Chat_GlobalBadges) {
         BaseXmlHttpGet(Main_helix_api + 'chat/badges/global', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id, true);
+
+        var theUrl = Main_helix_api + 'chat/badges/global';
+
+        BaseXmlHttpGetFull(theUrl, true, id, chat_number + '', channelId + '', null, null, null, Chat_loadBadgesGlobalSuccess, noop_fun);
     } else {
-        if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
-            Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(
-                /\%x/g,
-                ChatLive_selectedChannel_id[chat_number]
-            );
+        if (!Chat_GlobalBadges[channelId]) {
+            Chat_GlobalBadges[channelId] = Chat_GlobalBadges[0].replace(/\%x/g, channelId);
         }
 
-        Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+        Chat_tagCSS(Chat_GlobalBadges[channelId], Chat_div[chat_number]);
 
         //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
-        ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number], channelId);
     }
 }
 
-function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
+function Chat_loadBadgesGlobalSuccess(obj, id, chat_number, channelId) {
     if (id !== Chat_Id[chat_number]) return;
 
     Chat_GlobalBadges = {};
 
     Chat_GlobalBadges_Bits_Subs = {};
-    Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x', false, chat_number);
+    Chat_GlobalBadges[0] = Chat_loadBadgesTransform(obj, '%x', false, chat_number);
 
-    Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+    Chat_GlobalBadges[channelId] = Chat_GlobalBadges[0].replace(/\%x/g, channelId);
 
-    Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+    Chat_tagCSS(Chat_GlobalBadges[channelId], Chat_div[chat_number]);
 
     //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
     ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
@@ -297,7 +302,7 @@ function Chat_loadBadgesTransform(responseObj, id, isChannel, chat_number) {
     });
 
     if (isChannel) {
-        innerHTML = Chat_AddMissingBadges(Chat_GlobalBadges_Bits_Subs, Channel_Badges, ChatLive_selectedChannel_id[chat_number], innerHTML);
+        innerHTML = Chat_AddMissingBadges(Chat_GlobalBadges_Bits_Subs, Channel_Badges, id, innerHTML);
     }
 
     return innerHTML;
