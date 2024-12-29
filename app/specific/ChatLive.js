@@ -276,6 +276,10 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
         }
 
         if (channelsIds) ChatLive_updateBanner(channelsIds);
+
+        if (Settings_value.show_chatters.defaultValue) {
+            ChatLive_loadChattersCheckTypeRun(chat_number, id);
+        }
     }
 }
 
@@ -413,7 +417,11 @@ function ChatLive_resetChatters(chat_number) {
 
 function ChatLive_loadChatters(chat_number, id) {
     if (Settings_value.show_chatters.defaultValue) {
-        Main_innerHTML('chat_loggedin' + chat_number, '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWERS));
+        Main_innerHTML(
+            'chat_loggedin' + chat_number,
+            '...' +
+                (Settings_value.show_chatters.defaultValue === 1 ? (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT) : STR_VIEWERS)
+        );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
 
         Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.9vh)';
@@ -491,7 +499,10 @@ function ChatLive_loadChattersSuccess(responseObj, chat_number, id) {
                 var resultObj = JSON.parse(responseObj.responseText);
                 var counter = resultObj.data.channels[0].chatters.count;
 
-                Main_innerHTML('chat_loggedin' + chat_number, Main_addCommas(counter) + STR_IN_CHAT);
+                Main_innerHTML(
+                    'chat_loggedin' + chat_number,
+                    Main_addCommas(counter) + (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT)
+                );
             }
         } catch (e) {
             Main_Log('ChatLive_loadChattersSuccess ' + e);
@@ -1823,7 +1834,7 @@ function ChatLive_GetBadges(tags, chat_number) {
     var ret = '',
         channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
 
-    if (ChatLive_isShared[chat_number]) {
+    if (ChatLive_isShared[chat_number] && ChatLive_sharedProfileImg[channelId]) {
         //TODO add a disable settings option shared chat badge
         ret += '<span class="tag" style="background-image: url(' + ChatLive_sharedProfileImg[channelId] + ');"></span>';
     }

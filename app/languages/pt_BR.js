@@ -758,6 +758,7 @@ function pt_BRLang() {
     STR_UP_LOCKED = 'pressione para cima para bloquear o valor do passo';
     STR_LOCKED = 'bloqueado pressione para cima para alterar';
     STR_IN_CHAT = 'No chat';
+    STR_IN_SHARED_CHAT = 'No Chat Compartilhado';
     STR_SHOW_IN_CHAT = 'Mostrar total de usuários no chat ou visualizações';
     STR_SHOW_IN_CHAT_SUMMARY =
         'Isso é muito útil para saber, por exemplo, se o chat offline tem algum usuário com quem conversar, também deixe o usuário saber a diferença entre o visualizações e o usuário no chat';

@@ -752,7 +752,8 @@ function en_USLang() {
     STR_VOD_SEEK_TIME = 'Increase timeout after holding for';
     STR_UP_LOCKED = 'press up to lock the step value';
     STR_LOCKED = 'locked press up to change';
-    STR_IN_CHAT = 'In chat';
+    STR_IN_CHAT = 'In Chat';
+    STR_IN_SHARED_CHAT = 'In Shared Chat';
     STR_SHOW_IN_CHAT = 'Show total logged in users on top of the chat or viewers';
     STR_SHOW_IN_CHAT_SUMMARY =
         'This helps identify if the offline chat has active users and shows the difference between total viewers and chat users.';

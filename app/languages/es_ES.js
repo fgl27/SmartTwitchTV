@@ -526,6 +526,7 @@ function es_ESLang() {
     STR_UP_LOCKED = 'pulse arriba para bloquear el valor del paso';
     STR_LOCKED = 'bloqueado pulse arriba para cambiar';
     STR_IN_CHAT = 'En el chat';
+    STR_IN_SHARED_CHAT = 'En Chat Compartido';
     STR_SHOW_IN_CHAT = 'Mostrar el total de usuarios conectados en la parte superior del chat o de los espectadores';
     STR_SHOW_IN_CHAT_SUMMARY =
         'Esto es muy útil para saber, por ejemplo, si el chat fuera de línea tiene algún usuario con el que hablar, también permite al usuario saber la diferencia de espectador total VS usuario total del chat';
