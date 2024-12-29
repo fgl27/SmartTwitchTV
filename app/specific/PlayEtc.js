@@ -2040,6 +2040,7 @@ var Play_controlsPlayerStatus = temp_controls_pos++;
 var Play_controlsPreview = temp_controls_pos++;
 
 var Play_controlsChatForceDis = temp_controls_pos++;
+var Play_controlsChatDisShared = temp_controls_pos++;
 var Play_controlsChatDelay = temp_controls_pos++;
 var Play_controlsChatPos = temp_controls_pos++;
 var Play_controlsChatSize = temp_controls_pos++;
@@ -3159,6 +3160,35 @@ function Play_MakeControls() {
         },
         setLabel: function () {
             Main_textContent('controls_text_summary_' + this.position, '(' + (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
+        }
+    };
+
+    Play_controls[Play_controlsChatDisShared] = {
+        //force disable chat
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'proxy',
+        offsetY: -5,
+        string: STR_DISABLE_SHARED_CHAT,
+        values: [STR_NO, STR_YES],
+        defaultValue: Settings_value.disabled_shared.defaultValue,
+        enterKey: function () {
+            Settings_value.disabled_shared.defaultValue = Settings_value.disabled_shared.defaultValue ? 0 : 1;
+            Main_setItem('disabled_shared', Settings_value.disabled_shared.defaultValue + 1);
+
+            this.setLabel();
+        },
+        setLabel: function () {
+            Main_textContent('controls_text_summary_' + this.position, '(' + (Settings_value.disabled_shared.defaultValue ? STR_YES : STR_NO) + ')');
         }
     };
 
