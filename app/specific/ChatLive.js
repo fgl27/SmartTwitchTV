@@ -362,14 +362,14 @@ function ChatLive_loadChannelEmotes(chat_number, id) {
 
         var theUrl = Main_helix_api + 'chat/emotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
-        BaseXmlHttpGet(theUrl, ChatLive_loadChannelEmotesSucess, noop_fun, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_loadChannelEmotesSuccess, noop_fun, chat_number, id, true);
     } else {
         ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
     }
 }
 
-function ChatLive_loadChannelEmotesSucess(responseText, chat_number, chat_id) {
-    ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
+function ChatLive_loadChannelEmotesSuccess(responseText, chat_number, chat_id) {
+    ChatLive_loadTwitchEmotesSuccess(responseText, chat_number, chat_id, extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
 }
 
 function ChatLive_checkSubFail(chat_number, id) {
@@ -507,7 +507,7 @@ function ChatLive_loadGlobalEmotes(chat_number, id) {
 }
 
 function ChatLive_loadGlobalEmotesSucess(responseText, chat_number, chat_id) {
-    ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone.GlobalTwitch);
+    ChatLive_loadTwitchEmotesSuccess(responseText, chat_number, chat_id, extraEmotesDone.GlobalTwitch);
 }
 
 function ChatLive_SetTwitchEmotesSuccess(obj) {
@@ -525,7 +525,7 @@ function ChatLive_SetTwitchEmotesSuccess(obj) {
     }
 }
 
-function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone_obj) {
+function ChatLive_loadTwitchEmotesSuccess(responseText, chat_number, chat_id, extraEmotesDone_obj) {
     if (chat_id !== Chat_Id[chat_number]) return;
 
     var response = JSON.parse(responseText);
