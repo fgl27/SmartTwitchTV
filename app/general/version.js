@@ -23,11 +23,11 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-    WebVersion: 'December 29 2024',
-    WebTag: 699, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'December 30 2024',
+    WebTag: 700, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'Version December 29 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
+            title: 'Version December 29/30 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
             changes: [
                 'Add support for Shared chat',
                 'Add new settings option Chat > Disable shared chat (No by default)',
