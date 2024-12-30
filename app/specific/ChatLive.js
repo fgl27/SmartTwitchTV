@@ -274,7 +274,9 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
     var response = JSON.parse(responseText);
 
     if (response && response.data.length) {
-        ChatLive_isShared[chat_number] = true;
+        if (!Settings_value.disabled_shared.defaultValue) {
+            ChatLive_isShared[chat_number] = true;
+        }
 
         var i = 0,
             participants = response.data[0].participants,
@@ -295,9 +297,11 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
             ChatLive_updateBanner(channelsIds, chat_number, id);
         }
 
-        if (Settings_value.show_chatters.defaultValue) {
+        if (ChatLive_isShared[chat_number] && Settings_value.show_chatters.defaultValue) {
             ChatLive_loadChattersCheckTypeRun(chat_number, id);
         }
+    } else {
+        ChatLive_isShared[chat_number] = false;
     }
 }
 
@@ -322,7 +326,7 @@ function ChatLive_updateBannerSuccess(responseText, chat_number, id) {
             return a.display_name < b.display_name ? -1 : a.display_name > b.display_name ? 1 : 0;
         });
 
-        if (!ChatLive_SharedShowedWarning[chat_number]) {
+        if (!ChatLive_SharedShowedWarning[chat_number] && ChatLive_isShared[chat_number]) {
             for (i; i < len; i++) {
                 ChatLive_sharedProfileImg[response.data[i].id] = response.data[i].profile_image_url;
                 chatWarning +=
@@ -339,8 +343,6 @@ function ChatLive_updateBannerSuccess(responseText, chat_number, id) {
 
             ChatLive_SharedShowedWarning[chat_number] = true;
         }
-    } else {
-        ChatLive_isShared[chat_number] = false;
     }
 }
 
@@ -1752,7 +1754,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         !tags ||
         !tags.hasOwnProperty('display-name') ||
         (ChatLive_HideBots && KnowBots[tags['display-name']]) ||
-        (Settings_value.disabled_shared.defaultValue && ChatLive_isShared[chat_number] && !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+        (ChatLive_isShared[chat_number] && !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
     ) {
         return; //bad formatted message
     }
