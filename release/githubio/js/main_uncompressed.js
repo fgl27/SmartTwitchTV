@@ -8367,7 +8367,6 @@
 
     function ChatLive_checkShared(chat_number, id) {
         var theUrl = Main_helix_api + 'shared_chat/session?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
-
         BaseXmlHttpGet(theUrl, ChatLive_checkSharedSuccess, noop_fun, chat_number, id, true);
     }
 
@@ -8442,7 +8441,7 @@
                         STR_BR;
                 }
 
-                ChatLive_Warn(STR_IN_SHARED_CHAT + chatWarning, 3000);
+                ChatLive_Warn(ChatLive_selectedChannel[chat_number] + STR_SPACE_HTML + STR_IN_SHARED_CHAT + chatWarning, 3000);
 
                 ChatLive_SharedShowedWarning[chat_number] = true;
             }
@@ -23896,6 +23895,22 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 Main_setItem('disabled_shared', Settings_value.disabled_shared.defaultValue + 1);
 
                 this.setLabel();
+
+                ChatLive_checkShared(0, Chat_Id[0]);
+                if (PlayExtra_PicturePicture) {
+                    ChatLive_checkShared(1, Chat_Id[1]);
+                }
+
+                if (Settings_value.show_chatters.defaultValue) {
+                    ChatLive_isShared[0] = false;
+                    ChatLive_isShared[1] = false;
+
+                    ChatLive_loadChattersCheckTypeRun(0, Chat_Id[0]);
+
+                    if (PlayExtra_PicturePicture) {
+                        ChatLive_loadChattersCheckTypeRun(1, Chat_Id[1]);
+                    }
+                }
             },
             setLabel: function () {
                 Main_textContent(
