@@ -272,7 +272,7 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
 
     var response = JSON.parse(responseText);
 
-    if (Settings_value.disabled_shared.defaultValue && response && response.data.length) {
+    if (!Settings_value.disabled_shared.defaultValue && response && response.data.length) {
         ChatLive_isShared[chat_number] = true;
 
         var i = 0,
