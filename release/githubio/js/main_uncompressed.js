@@ -10000,7 +10000,7 @@
 
     function ChatLive_GetBadges(tags, chat_number) {
         var ret = '',
-            channelId = tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
+            channelId = ChatLive_isShared[chat_number] && tags['source-room-id'] ? tags['source-room-id'] : ChatLive_selectedChannel_id[chat_number]; //shared support
 
         if (ChatLive_Show_Shared_Badge && ChatLive_isShared[chat_number] && ChatLive_sharedProfileImg[channelId]) {
             //TODO add a disable settings option shared chat badge
