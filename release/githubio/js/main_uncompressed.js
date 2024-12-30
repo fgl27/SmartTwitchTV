@@ -8404,6 +8404,9 @@
             }
         } else {
             ChatLive_isShared[chat_number] = false;
+            if (Settings_value.show_chatters.defaultValue) {
+                ChatLive_loadChattersCheckTypeRun(chat_number, Chat_Id[chat_number]);
+            }
         }
     }
 

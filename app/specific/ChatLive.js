@@ -272,10 +272,8 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
 
     var response = JSON.parse(responseText);
 
-    if (response && response.data.length) {
-        if (!Settings_value.disabled_shared.defaultValue) {
-            ChatLive_isShared[chat_number] = true;
-        }
+    if (Settings_value.disabled_shared.defaultValue && response && response.data.length) {
+        ChatLive_isShared[chat_number] = true;
 
         var i = 0,
             participants = response.data[0].participants,
@@ -301,6 +299,10 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
         }
     } else {
         ChatLive_isShared[chat_number] = false;
+
+        if (Settings_value.show_chatters.defaultValue) {
+            ChatLive_loadChattersCheckTypeRun(chat_number, Chat_Id[chat_number]);
+        }
     }
 }
 
