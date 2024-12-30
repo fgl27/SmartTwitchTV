@@ -1755,7 +1755,9 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         !tags ||
         !tags.hasOwnProperty('display-name') ||
         (ChatLive_HideBots && KnowBots[tags['display-name']]) ||
-        (ChatLive_isShared[chat_number] && !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+        (Settings_value.disabled_shared.defaultValue &&
+            tags.hasOwnProperty('source-room-id') &&
+            !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
     ) {
         return; //bad formatted message
     }
