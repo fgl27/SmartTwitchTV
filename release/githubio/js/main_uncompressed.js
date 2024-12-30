@@ -8152,6 +8152,7 @@
     var cheers = {};
 
     var ChatLive_sharedProfileImg = {};
+    var ChatLive_sharedChannelBadgeLoaded = [];
 
     var ChatLive_selectedChannel_id = [];
     var ChatLive_isShared = [];
@@ -8342,6 +8343,8 @@
 
         Chat_Id[chat_number] = new Date().getTime();
 
+        ChatLive_sharedChannelBadgeLoaded[chat_number] = {};
+
         Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
         ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
 
@@ -8360,7 +8363,7 @@
             function () {
                 ChatLive_checkShared(chat_number, id);
             },
-            30000, //3 * 60 * 1000, //3 min
+            3 * 60 * 1000, //3 min
             ChatLive_StartSharedId[chat_number]
         );
     }
@@ -8388,7 +8391,10 @@
                 channelsIds += participants[i].broadcaster_id;
 
                 //Load badges for all shared chats
-                if (!Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id)) {
+                if (
+                    !Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id) &&
+                    !ChatLive_sharedChannelBadgeLoaded[chat_number][participants[i].broadcaster_id]
+                ) {
                     Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, participants[i].broadcaster_id);
                 }
             }
@@ -8553,6 +8559,7 @@
             BaseXmlHttpGetFull(theUrl, true, id, chat_number + '', channelId + '', null, null, null, ChatLive_loadBadgesChannelSuccess, noop_fun);
         } else {
             Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
+            ChatLive_sharedChannelBadgeLoaded[chat_number][channelId] = true;
         }
     }
 
@@ -8560,6 +8567,7 @@
         if (id !== Chat_Id[chat_number]) return;
 
         extraEmotesDone.BadgesChannel[channelId] = Chat_loadBadgesTransform(obj, channelId, true, chat_number);
+        ChatLive_sharedChannelBadgeLoaded[chat_number][channelId] = true;
 
         Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
     }
@@ -9772,7 +9780,15 @@
         //reference smartTwitchTV/jsonreferences/sub.json
         var tags = message.tags;
         var params = message.params;
-        if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) {
+
+        if (
+            !tags ||
+            !tags.hasOwnProperty('msg-id') ||
+            !tags['system-msg'] ||
+            (Settings_value.disabled_shared.defaultValue &&
+                tags.hasOwnProperty('source-room-id') &&
+                !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+        ) {
             return; //bad formatted message
         }
 
@@ -11637,7 +11653,7 @@
         Chat_tagCSS(Chat_GlobalBadges[channelId], Chat_div[chat_number]);
 
         //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
-        ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number], channelId);
     }
 
     function Chat_loadBadgesTransform(responseObj, id, isChannel) {
@@ -18516,7 +18532,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Play_extractCodec(input) {
         if (Main_A_includes_B(input, 'avc')) return ' | AVC';
         else if (Main_A_includes_B(input, 'vp9')) return ' | VP9';
-        else if (Main_A_includes_B(input, 'hvc')) return ' | HEVC';
+        else if (Main_A_includes_B(input, 'hvc') || Main_A_includes_B(input, 'hev')) return ' | HEVC';
         else if (Main_A_includes_B(input, 'av01')) return ' | AV1';
         else if (Main_A_includes_B(input, 'mp4')) return ' | MP4';
 
