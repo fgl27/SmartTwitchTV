@@ -3186,6 +3186,22 @@ function Play_MakeControls() {
             Main_setItem('disabled_shared', Settings_value.disabled_shared.defaultValue + 1);
 
             this.setLabel();
+
+            ChatLive_checkShared(0, Chat_Id[0]);
+            if (PlayExtra_PicturePicture) {
+                ChatLive_checkShared(1, Chat_Id[1]);
+            }
+
+            if (Settings_value.show_chatters.defaultValue) {
+                ChatLive_isShared[0] = false;
+                ChatLive_isShared[1] = false;
+
+                ChatLive_loadChattersCheckTypeRun(0, Chat_Id[0]);
+
+                if (PlayExtra_PicturePicture) {
+                    ChatLive_loadChattersCheckTypeRun(1, Chat_Id[1]);
+                }
+            }
         },
         setLabel: function () {
             Main_textContent('controls_text_summary_' + this.position, '(' + (Settings_value.disabled_shared.defaultValue ? STR_YES : STR_NO) + ')');

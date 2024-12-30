@@ -264,7 +264,6 @@ function ChatLive_StartShared(chat_number, id) {
 
 function ChatLive_checkShared(chat_number, id) {
     var theUrl = Main_helix_api + 'shared_chat/session?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
-
     BaseXmlHttpGet(theUrl, ChatLive_checkSharedSuccess, noop_fun, chat_number, id, true);
 }
 
@@ -339,7 +338,7 @@ function ChatLive_updateBannerSuccess(responseText, chat_number, id) {
                     STR_BR;
             }
 
-            ChatLive_Warn(STR_IN_SHARED_CHAT + chatWarning, 3000);
+            ChatLive_Warn(ChatLive_selectedChannel[chat_number] + STR_SPACE_HTML + STR_IN_SHARED_CHAT + chatWarning, 3000);
 
             ChatLive_SharedShowedWarning[chat_number] = true;
         }
