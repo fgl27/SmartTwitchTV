@@ -248,7 +248,7 @@ function Chat_loadBadgesGlobalSuccess(obj, id, chat_number, channelId) {
     Chat_tagCSS(Chat_GlobalBadges[channelId], Chat_div[chat_number]);
 
     //Load channel badges after global as it depends on Chat_GlobalBadges_Bits & Chat_GlobalBadges_Subs
-    ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number], channelId);
 }
 
 function Chat_loadBadgesTransform(responseObj, id, isChannel) {

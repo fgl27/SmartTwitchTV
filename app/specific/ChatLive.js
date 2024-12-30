@@ -49,6 +49,7 @@ var extraEmotes = {};
 var cheers = {};
 
 var ChatLive_sharedProfileImg = {};
+var ChatLive_sharedChannelBadgeLoaded = [];
 
 var ChatLive_selectedChannel_id = [];
 var ChatLive_isShared = [];
@@ -239,6 +240,8 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 
     Chat_Id[chat_number] = new Date().getTime();
 
+    ChatLive_sharedChannelBadgeLoaded[chat_number] = {};
+
     Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
     ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
 
@@ -257,7 +260,7 @@ function ChatLive_StartShared(chat_number, id) {
         function () {
             ChatLive_checkShared(chat_number, id);
         },
-        30000, //3 * 60 * 1000, //3 min
+        3 * 60 * 1000, //3 min
         ChatLive_StartSharedId[chat_number]
     );
 }
@@ -285,7 +288,10 @@ function ChatLive_checkSharedSuccess(responseText, chat_number, id) {
             channelsIds += participants[i].broadcaster_id;
 
             //Load badges for all shared chats
-            if (!Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id)) {
+            if (
+                !Main_A_equals_B(ChatLive_selectedChannel_id[chat_number], participants[i].broadcaster_id) &&
+                !ChatLive_sharedChannelBadgeLoaded[chat_number][participants[i].broadcaster_id]
+            ) {
                 Chat_loadBadgesGlobalRequestWithChannel(chat_number, id, participants[i].broadcaster_id);
             }
         }
@@ -442,6 +448,7 @@ function ChatLive_loadBadgesChannel(chat_number, id, input_channelId) {
         BaseXmlHttpGetFull(theUrl, true, id, chat_number + '', channelId + '', null, null, null, ChatLive_loadBadgesChannelSuccess, noop_fun);
     } else {
         Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
+        ChatLive_sharedChannelBadgeLoaded[chat_number][channelId] = true;
     }
 }
 
@@ -449,6 +456,7 @@ function ChatLive_loadBadgesChannelSuccess(obj, id, chat_number, channelId) {
     if (id !== Chat_Id[chat_number]) return;
 
     extraEmotesDone.BadgesChannel[channelId] = Chat_loadBadgesTransform(obj, channelId, true, chat_number);
+    ChatLive_sharedChannelBadgeLoaded[chat_number][channelId] = true;
 
     Chat_tagCSS(extraEmotesDone.BadgesChannel[channelId], Chat_div[chat_number]);
 }
