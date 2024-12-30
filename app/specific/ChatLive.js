@@ -1657,7 +1657,15 @@ function ChatLive_CheckIfSub(message, chat_number) {
     //reference smartTwitchTV/jsonreferences/sub.json
     var tags = message.tags;
     var params = message.params;
-    if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) {
+
+    if (
+        !tags ||
+        !tags.hasOwnProperty('msg-id') ||
+        !tags['system-msg'] ||
+        (Settings_value.disabled_shared.defaultValue &&
+            tags.hasOwnProperty('source-room-id') &&
+            !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+    ) {
         return; //bad formatted message
     }
 
