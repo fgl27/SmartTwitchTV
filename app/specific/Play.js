@@ -1168,7 +1168,7 @@ function Play_extractBand(input) {
 function Play_extractCodec(input) {
     if (Main_A_includes_B(input, 'avc')) return ' | AVC';
     else if (Main_A_includes_B(input, 'vp9')) return ' | VP9';
-    else if (Main_A_includes_B(input, 'hvc')) return ' | HEVC';
+    else if (Main_A_includes_B(input, 'hvc') || Main_A_includes_B(input, 'hev')) return ' | HEVC';
     else if (Main_A_includes_B(input, 'av01')) return ' | AV1';
     else if (Main_A_includes_B(input, 'mp4')) return ' | MP4';
 
