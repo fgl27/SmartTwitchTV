@@ -8516,10 +8516,10 @@
             '&user_id=' +
             AddUser_UsernameArray[0].id;
 
-        BaseXmlHttpGet(theUrl, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_checkSubSuccess, ChatLive_checkSubFail, chat_number, id, true);
     }
 
-    function ChatLive_checkSubSucess(responseText, chat_number, id) {
+    function ChatLive_checkSubSuccess(responseText, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_SubState[chat_number].state = true;
@@ -9785,9 +9785,7 @@
             !tags ||
             !tags.hasOwnProperty('msg-id') ||
             !tags['system-msg'] ||
-            (Settings_value.disabled_shared.defaultValue &&
-                tags.hasOwnProperty('source-room-id') &&
-                !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+            (tags.hasOwnProperty('source-room-id') && !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
         ) {
             return; //bad formatted message
         }
