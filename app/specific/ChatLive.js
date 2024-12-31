@@ -346,7 +346,7 @@ function ChatLive_updateBannerSuccess(responseText, chat_number, id) {
                     STR_BR;
             }
 
-            ChatLive_Warn(ChatLive_selectedChannel[chat_number] + STR_SPACE_HTML + STR_IN_SHARED_CHAT + chatWarning, 3000);
+            Play_showWarningDialog('Chat: ' + ChatLive_selectedChannel[chat_number] + STR_SPACE_HTML + STR_IN_SHARED_CHAT + chatWarning, 3000);
 
             ChatLive_SharedShowedWarning[chat_number] = true;
         }
