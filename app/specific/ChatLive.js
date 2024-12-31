@@ -405,10 +405,10 @@ function ChatLive_checkSub(chat_number, id) {
     var theUrl =
         Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] + '&user_id=' + AddUser_UsernameArray[0].id;
 
-    BaseXmlHttpGet(theUrl, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
+    BaseXmlHttpGet(theUrl, ChatLive_checkSubSuccess, ChatLive_checkSubFail, chat_number, id, true);
 }
 
-function ChatLive_checkSubSucess(responseText, chat_number, id) {
+function ChatLive_checkSubSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_SubState[chat_number].state = true;
