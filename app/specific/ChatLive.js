@@ -1670,9 +1670,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
         !tags ||
         !tags.hasOwnProperty('msg-id') ||
         !tags['system-msg'] ||
-        (Settings_value.disabled_shared.defaultValue &&
-            tags.hasOwnProperty('source-room-id') &&
-            !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
+        (tags.hasOwnProperty('source-room-id') && !Main_A_equals_B(tags['source-room-id'], tags['room-id']))
     ) {
         return; //bad formatted message
     }
