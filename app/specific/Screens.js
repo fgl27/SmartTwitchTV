@@ -637,7 +637,7 @@ function Screens_loadDataSuccess(key) {
 
     Screens_loadDataSuccessFinish(key);
 
-    if (ScreenObj[key].LoadAllLangForced && !ScreenObj[key].BannerCreated) {
+    if (ScreenObj[key].LoadAllLangForced && !ScreenObj[key].BannerCreated && Screens_IsInUse(key)) {
         Main_showWarningDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
     }
 }

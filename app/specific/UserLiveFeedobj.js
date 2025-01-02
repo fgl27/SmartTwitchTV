@@ -1768,7 +1768,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
         }, 25);
     }
 
-    if (UserLiveFeed_obj[pos].LoadAllLangForced) {
+    if (UserLiveFeed_obj[pos].LoadAllLangForced && UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
         Play_showWarningMiddleDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
     }
 }
