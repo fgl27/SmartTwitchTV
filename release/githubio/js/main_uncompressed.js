@@ -29747,7 +29747,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         Screens_loadDataSuccessFinish(key);
 
-        if (ScreenObj[key].LoadAllLangForced && !ScreenObj[key].BannerCreated) {
+        if (ScreenObj[key].LoadAllLangForced && !ScreenObj[key].BannerCreated && Screens_IsInUse(key)) {
             Main_showWarningDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
         }
     }
@@ -45468,7 +45468,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }, 25);
         }
 
-        if (UserLiveFeed_obj[pos].LoadAllLangForced) {
+        if (UserLiveFeed_obj[pos].LoadAllLangForced && UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
             Play_showWarningMiddleDialog(STR_LOAD_ALL_LANG_WARNING, 3000);
         }
     }
