@@ -8,7 +8,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     namespace "com.fgl27.twitch"
-    compileSdk 34
+    compileSdk 35
 
     buildFeatures {
         buildConfig = true
@@ -18,8 +18,8 @@ android {
         applicationId "com.fgl27.twitch"
 
         minSdkVersion 21
-        targetSdkVersion 34
-        compileSdk 34
+        targetSdkVersion 35
+        compileSdk 35
 
         versionCode versions.publishVersionCode
         versionName versions.publishVersion + versions.publishVersionCode
@@ -82,7 +82,7 @@ dependencies {
     //implementation project(':media-lib-decoder-av1')
 
     //Crashlytics
-    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation platform('com.google.firebase:firebase-bom:33.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     //Crashlytics end

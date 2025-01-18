@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/../../media/libraries/cast" />
             <option value="$PROJECT_DIR$/../../media/libraries/common" />
+            <option value="$PROJECT_DIR$/../../media/libraries/common_ktx" />
             <option value="$PROJECT_DIR$/../../media/libraries/container" />
             <option value="$PROJECT_DIR$/../../media/libraries/database" />
             <option value="$PROJECT_DIR$/../../media/libraries/datasource" />
@@ -24,6 +25,7 @@
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_av1" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_ffmpeg" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_flac" />
+            <option value="$PROJECT_DIR$/../../media/libraries/decoder_iamf" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_opus" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_vp9" />
             <option value="$PROJECT_DIR$/../../media/libraries/effect" />
