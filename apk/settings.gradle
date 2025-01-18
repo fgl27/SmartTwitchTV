@@ -1,5 +1,5 @@
 include ':app'
 gradle.ext.mediaRoot = "$rootDir/../../media"
-gradle.ext.androidxMediaModulePrefix = 'media-'
+gradle.ext.androidxMediaModulePrefix = 'media3-'
 apply from: new File(gradle.ext.mediaRoot, 'core_settings.gradle')
 
