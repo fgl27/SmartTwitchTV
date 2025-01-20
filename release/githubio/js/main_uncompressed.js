@@ -13840,6 +13840,7 @@
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         var isHosting = false;
 
+        Main_clearAllPlayerEvents();
         Main_removeEventListener('keydown', handleKeyDownFunction);
         Main_values_Play_data = data;
         Play_data.data = Main_values_Play_data;
@@ -14041,6 +14042,7 @@
     function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
 
+        Main_clearAllPlayerEvents();
         Main_removeEventListener('keydown', handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
@@ -14088,6 +14090,8 @@
 
     function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
+
+        Main_clearAllPlayerEvents();
         Main_removeEventListener('keydown', handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
         Main_values_Play_data = data;
@@ -14157,6 +14161,7 @@
         Main_removeEventListener('keydown', ChatLiveControls_EmotesEvent);
         Main_removeEventListener('keydown', ChatLiveControls_ChooseChat);
         Main_removeEventListener('keydown', ChatLiveControls_OptionsKeyDown);
+        Main_removeEventListener('keydown', Play_handleKeyControls);
 
         Main_removeEventListener('keydown', Play_EndUpclearCalback);
 
@@ -23333,8 +23338,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             enterKey: function (PlayVodClip) {
                 Play_hidePanelFull(PlayVodClip);
 
-                Play_ScreeIsOff = true;
-                Settings_ScreenOff();
+                //prevent out of sync input disable the screen off as soon as it is enabled
+                Main_setTimeout(function () {
+                    Play_ScreeIsOff = true;
+                    Settings_ScreenOff();
+                }, 100);
             }
         };
 
@@ -25359,6 +25367,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     var Play_controlsEventListener;
     function Play_showControlsDialog(removeEventListener) {
+        Main_clearAllPlayerEvents();
+
         Play_controlsEventListener = removeEventListener;
         Main_removeEventListener('keydown', removeEventListener);
         Main_addEventListener('keydown', Play_handleKeyControls);
