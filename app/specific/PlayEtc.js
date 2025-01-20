@@ -2600,8 +2600,11 @@ function Play_MakeControls() {
         enterKey: function (PlayVodClip) {
             Play_hidePanelFull(PlayVodClip);
 
-            Play_ScreeIsOff = true;
-            Settings_ScreenOff();
+            //prevent out of sync input disable the screen off as soon as it is enabled
+            Main_setTimeout(function () {
+                Play_ScreeIsOff = true;
+                Settings_ScreenOff();
+            }, 100);
         }
     };
 
