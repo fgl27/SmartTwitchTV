@@ -1562,6 +1562,7 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     var isHosting = false;
 
+    Main_clearAllPlayerEvents();
     Main_removeEventListener('keydown', handleKeyDownFunction);
     Main_values_Play_data = data;
     Play_data.data = Main_values_Play_data;
@@ -1763,6 +1764,7 @@ function Main_openStream() {
 function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
 
+    Main_clearAllPlayerEvents();
     Main_removeEventListener('keydown', handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
@@ -1810,6 +1812,8 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
 
 function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
+
+    Main_clearAllPlayerEvents();
     Main_removeEventListener('keydown', handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
     Main_values_Play_data = data;
@@ -1879,6 +1883,7 @@ function Main_clearAllPlayerEvents() {
     Main_removeEventListener('keydown', ChatLiveControls_EmotesEvent);
     Main_removeEventListener('keydown', ChatLiveControls_ChooseChat);
     Main_removeEventListener('keydown', ChatLiveControls_OptionsKeyDown);
+    Main_removeEventListener('keydown', Play_handleKeyControls);
 
     Main_removeEventListener('keydown', Play_EndUpclearCalback);
 

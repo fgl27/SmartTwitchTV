@@ -4622,6 +4622,8 @@ function Play_SetSceneBackground(url, reset) {
 
 var Play_controlsEventListener;
 function Play_showControlsDialog(removeEventListener) {
+    Main_clearAllPlayerEvents();
+
     Play_controlsEventListener = removeEventListener;
     Main_removeEventListener('keydown', removeEventListener);
     Main_addEventListener('keydown', Play_handleKeyControls);
