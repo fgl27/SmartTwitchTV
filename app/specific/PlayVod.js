@@ -168,7 +168,8 @@ function PlayVod_Start() {
             }
         }
 
-        if (PlayVod_VodOffset && !Main_vodOffset) {
+        //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
+        if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
             Play_HideBufferDialog();
             Play_showVodDialog(isFromVod);
         } else {
@@ -1072,10 +1073,13 @@ function PlayVod_DialogPressed(fromStart) {
         if (!fromStart) PlayVod_DialogPressedClick(PlayVod_VodOffset);
         else {
             if (!ScreenObj[Main_HistoryVod].histPosX[1]) {
+                //Don't start the vod at zero zero to avoid playback issue
                 Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, 0.001, 'vod');
                 Main_vodOffset = 0;
                 PlayVod_Start();
-            } else PlayVod_DialogPressedClick(0);
+            } else {
+                PlayVod_DialogPressedClick(0);
+            }
         }
     });
 }
