@@ -1166,7 +1166,7 @@ function PlayVod_SetPreview() {
 function PlayVod_handleKeyDown(e) {
     //console.log('PlayVod_handleKeyDown', e.keyCode);
 
-    if (!PlayVod_isOn || !Main_isScene2DocVisible()) {
+    if ((!PlayVod_isOn || !Main_isScene2DocVisible()) && !Play_isVodDialogVisible()) {
         return;
     }
 
