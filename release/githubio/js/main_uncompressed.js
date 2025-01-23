@@ -28340,7 +28340,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function PlayVod_handleKeyDown(e) {
         //console.log('PlayVod_handleKeyDown', e.keyCode);
 
-        if (!PlayVod_isOn || !Main_isScene2DocVisible()) {
+        if ((!PlayVod_isOn || !Main_isScene2DocVisible()) && !Play_isVodDialogVisible()) {
             return;
         }
 
