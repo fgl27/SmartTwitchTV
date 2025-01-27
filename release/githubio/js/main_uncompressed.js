@@ -14731,10 +14731,13 @@
             Main_values_History_data[AddUser_UsernameArray[0].id][type][index].date = new Date().getTime();
             Main_values_History_data[AddUser_UsernameArray[0].id][type][index].watched = time;
 
-            Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (type === 'vod' ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
+            var isVod = type === 'vod';
+            Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (isVod ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
 
             //If this is live that becomes a VOD update the until to avoid confusion if playing it from live history
-            Main_history_UpdateLiveVodDate(time, ArrayPos.data[7]);
+            if (isVod) {
+                Main_history_UpdateLiveVodDate(time, ArrayPos.data[7]);
+            }
 
             Main_setHistoryItem();
         }
