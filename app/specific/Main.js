@@ -2463,8 +2463,37 @@ function Main_history_UpdateVodClip(id, time, type) {
 
         Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (type === 'vod' ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
 
+        //If this is live that becomes a VOD update the until to avoid confusion if playing it from live history
+        Main_history_UpdateLiveVodDate(time, ArrayPos.data[7]);
+
         Main_setHistoryItem();
     }
+}
+
+function Main_history_UpdateLiveVodDate(time, Vod_Id) {
+    var index = Main_history_Exist_By_VOD_Id(Vod_Id);
+
+    if (index > -1) {
+        var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+
+        time = time * 1000;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date = time + new Date(ArrayPos.data[12]).getTime();
+    }
+}
+
+function Main_history_Exist_By_VOD_Id(id) {
+    var index = 0,
+        len = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
+
+    id = id.toString();
+
+    for (index; index < len; index++) {
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid.toString() === id) {
+            return index;
+        }
+    }
+
+    return -1;
 }
 
 function Main_Restore_history() {
