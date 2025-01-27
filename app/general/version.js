@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-    WebVersion: 'January 19 2024',
+    WebVersion: 'January 27 2024',
     WebTag: 702, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version January 27 2024',
+            changes: ['General improves']
+        },
         {
             title: 'Version January 19 2024',
             changes: ['General visual improves']
@@ -52,18 +56,6 @@ var version = {
             changes: [
                 'Add new settings option to Auto Switch content to All language when current language has no content enabled by default',
                 '✨🎄🎅 🔔 🤶🎄✨ Merry Christmas, and Happy Holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨'
-            ]
-        },
-        {
-            title: 'Version December 19 2024',
-            changes: ['Add zero-width/overlay emote support, thanks to @JanitorialMess for the help', 'General improvements']
-        },
-        {
-            title: 'Version December 01 2024',
-            changes: [
-                'Add Highlight First-Time ChatterSettings chat option, enabled by default',
-                'Add option to configure chat badges, change by @Js41637',
-                'General improvements'
             ]
         }
     ]
