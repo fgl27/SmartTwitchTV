@@ -4948,11 +4948,11 @@
         VersionBase: '3.0',
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'January 27 2024',
+        WebVersion: 'January 28 2024',
         WebTag: 702, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
             {
-                title: 'Version January 27 2024',
+                title: 'Version January 27 & 28 2024',
                 changes: ['General improves']
             },
             {
@@ -14750,7 +14750,10 @@
             var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
 
             time = time * 1000;
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date = time + new Date(ArrayPos.data[12]).getTime();
+            var mDate = time + new Date(ArrayPos.data[12]).getTime();
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date = mDate;
+
+            Screens_UpdateLiveHistoryUntil(Vod_Id, time);
         }
     }
 
@@ -14761,7 +14764,11 @@
         id = id.toString();
 
         for (index; index < len; index++) {
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid.toString() === id) {
+            if (
+                Main_values_History_data[AddUser_UsernameArray[0].id].live[index] &&
+                Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid &&
+                Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid.toString() === id
+            ) {
                 return index;
             }
         }
@@ -30008,8 +30015,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                   Main_videoCreatedAtWithHM(Extra_when) +
                   STR_SPACE_HTML +
                   STR_UNTIL +
+                  '<span id="' +
+                  idArray[9] +
+                  id +
+                  '" >' +
                   Play_timeS(Extra_until) +
-                  '</div>'
+                  '</span></div>'
                 : '') +
             '</div></div></div></div>'
         );
@@ -30100,8 +30111,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                   Main_videoCreatedAtWithHM(Extra_when) +
                   STR_SPACE_HTML +
                   STR_UNTIL +
+                  '<span id="' +
+                  idArray[7] +
+                  id +
+                  '" >' +
                   Play_timeMs(Extra_when - new Date(valuesArray[12]).getTime()) +
-                  '</div>'
+                  '</span></div>'
                 : '') +
             '</div></div></div></div>'
         );
@@ -30959,9 +30974,21 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
                 if (Main_history_Watched_Obj[data[7]]) {
                     Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+                    if (ScreenObj[key].screen === Main_HistoryVod) {
+                        var index = Main_history_Exist('vod', data[7]);
+
+                        if (index > -1) {
+                            var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].vod[index];
+
+                            if (ArrayPos.watched) {
+                                Main_textContent(ScreenObj[key].ids[9] + id, Play_timeMs(ArrayPos.watched * 1000));
+                            }
+                        }
+                    }
                 }
             }
-        } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
+        } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key)) {
             Screens_UpdateSince(key);
             ScreensObj_updateThumbInfo(key);
         }
@@ -30993,7 +31020,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (Screens_ObjNotNull(key)) {
             var data = Screens_GetObj(key);
 
-            Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
+            if (ScreenObj[key].screen === Main_HistoryLive) {
+                var index = Main_history_Exist('live', data[7]);
+                if (index > -1) {
+                    var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+
+                    if (!ArrayPos.forceVod) {
+                        Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
+                    }
+                }
+            } else {
+                Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
+            }
         }
 
         Screens_UpdateSinceId = Main_setTimeout(
@@ -31003,6 +31041,58 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             1000,
             Screens_UpdateSinceId
         );
+    }
+
+    function Screens_UpdateLiveHistoryUntil(Vod_Id, time) {
+        if (ScreenObj[Main_HistoryLive].Cells && ScreenObj[Main_HistoryLive].Cells.length && Vod_Id) {
+            var id,
+                i = 0,
+                len = ScreenObj[Main_HistoryLive].data.length,
+                arrayPos;
+
+            Vod_Id = Vod_Id.toString();
+
+            for (i; i < len; i++) {
+                arrayPos = ScreenObj[Main_HistoryLive].data[i];
+
+                if (arrayPos && arrayPos.vodid && arrayPos.vodid.toString() === Vod_Id) {
+                    var y = parseInt(i / ScreenObj[Main_HistoryLive].ColumnsCount),
+                        x = parseInt(i - y * ScreenObj[Main_HistoryLive].ColumnsCount);
+
+                    id = y + '_' + x;
+
+                    Main_textContent(ScreenObj[Main_HistoryLive].ids[7] + id, Play_timeMs(time));
+                    break;
+                }
+            }
+        }
+
+        Screens_UpdateVodHistoryUntil(Vod_Id, time);
+    }
+
+    function Screens_UpdateVodHistoryUntil(Vod_Id, time) {
+        if (ScreenObj[Main_HistoryVod].Cells && ScreenObj[Main_HistoryVod].Cells.length && Vod_Id) {
+            var id,
+                i = 0,
+                len = ScreenObj[Main_HistoryVod].data.length,
+                arrayPos;
+
+            Vod_Id = Vod_Id.toString();
+
+            for (i; i < len; i++) {
+                arrayPos = ScreenObj[Main_HistoryVod].data[i];
+
+                if (arrayPos && arrayPos.id && arrayPos.id.toString() === Vod_Id) {
+                    var y = parseInt(i / ScreenObj[Main_HistoryVod].ColumnsCount),
+                        x = parseInt(i - y * ScreenObj[Main_HistoryVod].ColumnsCount);
+
+                    id = y + '_' + x;
+
+                    Main_textContent(ScreenObj[Main_HistoryVod].ids[9] + id, Play_timeMs(time));
+                    break;
+                }
+            }
+        }
     }
 
     function Screens_setOffset(pos, y, key) {
