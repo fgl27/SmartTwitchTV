@@ -1886,13 +1886,41 @@ function Screens_UpdateLiveHistoryUntil(Vod_Id, time) {
 
         for (i; i < len; i++) {
             arrayPos = ScreenObj[Main_HistoryLive].data[i];
-            if (arrayPos.vodid.toString() === Vod_Id) {
+
+            if (arrayPos && arrayPos.vodid.toString() === Vod_Id) {
                 var y = parseInt(i / ScreenObj[Main_HistoryLive].ColumnsCount),
                     x = parseInt(i - y * ScreenObj[Main_HistoryLive].ColumnsCount);
 
                 id = y + '_' + x;
 
                 Main_textContent(ScreenObj[Main_HistoryLive].ids[7] + id, Play_timeMs(time));
+                break;
+            }
+        }
+    }
+
+    Screens_UpdateVodHistoryUntil(Vod_Id, time);
+}
+
+function Screens_UpdateVodHistoryUntil(Vod_Id, time) {
+    if (ScreenObj[Main_HistoryVod].Cells && ScreenObj[Main_HistoryVod].Cells.length && Vod_Id) {
+        var id,
+            i = 0,
+            len = ScreenObj[Main_HistoryVod].data.length,
+            arrayPos;
+
+        Vod_Id = Vod_Id.toString();
+
+        for (i; i < len; i++) {
+            arrayPos = ScreenObj[Main_HistoryVod].data[i];
+
+            if (arrayPos && arrayPos.id.toString() === Vod_Id) {
+                var y = parseInt(i / ScreenObj[Main_HistoryVod].ColumnsCount),
+                    x = parseInt(i - y * ScreenObj[Main_HistoryVod].ColumnsCount);
+
+                id = y + '_' + x;
+
+                Main_textContent(ScreenObj[Main_HistoryVod].ids[9] + id, Play_timeMs(time));
                 break;
             }
         }
