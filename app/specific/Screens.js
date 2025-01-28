@@ -1803,7 +1803,7 @@ function Screens_addrowEnd(forceScroll, key) {
                 Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
             }
         }
-    } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
+    } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key)) {
         Screens_UpdateSince(key);
         ScreensObj_updateThumbInfo(key);
     }
@@ -1835,7 +1835,18 @@ function Screens_UpdateSince(key) {
     if (Screens_ObjNotNull(key)) {
         var data = Screens_GetObj(key);
 
-        Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
+        if (ScreenObj[key].screen === Main_HistoryLive) {
+            var index = Main_history_Exist('live', data[7]);
+            if (index > -1) {
+                var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+
+                if (!ArrayPos.forceVod) {
+                    Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
+                }
+            }
+        } else {
+            Main_textContent(ScreenObj[key].ids[9] + id, STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]));
+        }
     }
 
     Screens_UpdateSinceId = Main_setTimeout(
