@@ -944,8 +944,12 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
               Main_videoCreatedAtWithHM(Extra_when) +
               STR_SPACE_HTML +
               STR_UNTIL +
+              '<span id="' +
+              idArray[7] +
+              id +
+              '" >' +
               Play_timeMs(Extra_when - new Date(valuesArray[12]).getTime()) +
-              '</div>'
+              '</span></div>'
             : '') +
         '</div></div></div></div>'
     );
@@ -1856,6 +1860,30 @@ function Screens_UpdateSince(key) {
         1000,
         Screens_UpdateSinceId
     );
+}
+
+function Screens_UpdateLiveHistoryUntil(Vod_Id, time) {
+    if (ScreenObj[Main_HistoryLive].Cells && ScreenObj[Main_HistoryLive].Cells.length && Vod_Id) {
+        var id,
+            i = 0,
+            len = ScreenObj[Main_HistoryLive].data.length,
+            arrayPos;
+
+        Vod_Id = Vod_Id.toString();
+
+        for (i; i < len; i++) {
+            arrayPos = ScreenObj[Main_HistoryLive].data[i];
+            if (arrayPos.vodid.toString() === Vod_Id) {
+                var y = parseInt(i / ScreenObj[Main_HistoryLive].ColumnsCount),
+                    x = parseInt(i - y * ScreenObj[Main_HistoryLive].ColumnsCount);
+
+                id = y + '_' + x;
+
+                Main_textContent(ScreenObj[Main_HistoryLive].ids[7] + id, Play_timeMs(time));
+                break;
+            }
+        }
+    }
 }
 
 function Screens_setOffset(pos, y, key) {

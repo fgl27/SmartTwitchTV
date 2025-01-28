@@ -2480,7 +2480,10 @@ function Main_history_UpdateLiveVodDate(time, Vod_Id) {
         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
 
         time = time * 1000;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date = time + new Date(ArrayPos.data[12]).getTime();
+        var mDate = time + new Date(ArrayPos.data[12]).getTime();
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date = mDate;
+
+        Screens_UpdateLiveHistoryUntil(Vod_Id, time);
     }
 }
 
