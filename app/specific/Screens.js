@@ -1815,7 +1815,10 @@ function Screens_addrowEnd(forceScroll, key) {
 
                     if (index > -1) {
                         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].vod[index];
-                        Main_textContent(ScreenObj[key].ids[9] + id, Play_timeMs(ArrayPos.watched * 1000));
+
+                        if (ArrayPos.watched) {
+                            Main_textContent(ScreenObj[key].ids[9] + id, Play_timeMs(ArrayPos.watched * 1000));
+                        }
                     }
                 }
             }
@@ -1887,7 +1890,7 @@ function Screens_UpdateLiveHistoryUntil(Vod_Id, time) {
         for (i; i < len; i++) {
             arrayPos = ScreenObj[Main_HistoryLive].data[i];
 
-            if (arrayPos && arrayPos.vodid.toString() === Vod_Id) {
+            if (arrayPos && arrayPos.vodid && arrayPos.vodid.toString() === Vod_Id) {
                 var y = parseInt(i / ScreenObj[Main_HistoryLive].ColumnsCount),
                     x = parseInt(i - y * ScreenObj[Main_HistoryLive].ColumnsCount);
 
@@ -1914,7 +1917,7 @@ function Screens_UpdateVodHistoryUntil(Vod_Id, time) {
         for (i; i < len; i++) {
             arrayPos = ScreenObj[Main_HistoryVod].data[i];
 
-            if (arrayPos && arrayPos.id.toString() === Vod_Id) {
+            if (arrayPos && arrayPos.id && arrayPos.id.toString() === Vod_Id) {
                 var y = parseInt(i / ScreenObj[Main_HistoryVod].ColumnsCount),
                     x = parseInt(i - y * ScreenObj[Main_HistoryVod].ColumnsCount);
 

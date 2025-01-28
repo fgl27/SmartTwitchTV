@@ -2494,7 +2494,11 @@ function Main_history_Exist_By_VOD_Id(id) {
     id = id.toString();
 
     for (index; index < len; index++) {
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid.toString() === id) {
+        if (
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] &&
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid &&
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid.toString() === id
+        ) {
             return index;
         }
     }
