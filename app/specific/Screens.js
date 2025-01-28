@@ -854,8 +854,12 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
               Main_videoCreatedAtWithHM(Extra_when) +
               STR_SPACE_HTML +
               STR_UNTIL +
+              '<span id="' +
+              idArray[9] +
+              id +
+              '" >' +
               Play_timeS(Extra_until) +
-              '</div>'
+              '</span></div>'
             : '') +
         '</div></div></div></div>'
     );
@@ -1805,6 +1809,15 @@ function Screens_addrowEnd(forceScroll, key) {
 
             if (Main_history_Watched_Obj[data[7]]) {
                 Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+                if (ScreenObj[key].screen === Main_HistoryVod) {
+                    var index = Main_history_Exist('vod', data[7]);
+
+                    if (index > -1) {
+                        var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].vod[index];
+                        Main_textContent(ScreenObj[key].ids[9] + id, Play_timeMs(ArrayPos.watched * 1000));
+                    }
+                }
             }
         }
     } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key)) {
