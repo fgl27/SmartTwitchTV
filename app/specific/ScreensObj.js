@@ -520,7 +520,12 @@ function ScreensObj_StartAllVars() {
                 this.idObject[cell.id] = 1;
 
                 this.tempHtml.push(
-                    Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, ScreensObj_VodCellArray(cell, this.isQuery), this.screen)
+                    Screens_createCellVod(
+                        this.row_id + '_' + this.column_id,
+                        this.ids,
+                        ScreensObj_VodCellArray(cell, this.isQuery, this.gameSelected_Id, this.gameSelected_name),
+                        this.screen
+                    )
                 );
 
                 this.column_id++;
@@ -3036,13 +3041,13 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
     ];
 }
 
-function ScreensObj_VodCellArray(cell, isQuery) {
+function ScreensObj_VodCellArray(cell, isQuery, game_id, game_name) {
     if (isQuery) {
         return [
             ScreensObj_VodGetPreview(cell.thumbnailURLs[0], cell.animatedPreviewURL), //0
             cell.creator ? cell.creator.displayName : '', //1
             Main_videoCreatedAt(cell.createdAt), //2
-            cell.game_name, //3
+            cell.game_name ? cell.game_name : game_name, //3
             Main_addCommas(cell.viewCount), //4
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.creator ? cell.creator.login : '', //6
@@ -3055,7 +3060,7 @@ function ScreensObj_VodCellArray(cell, isQuery) {
             cell.viewCount, //13
             cell.creator ? cell.creator.id : '', //14
             cell.duration, //15
-            cell.game_id //16
+            cell.game_id ? cell.game_id : game_id //16
         ];
     }
 
@@ -3063,7 +3068,7 @@ function ScreensObj_VodCellArray(cell, isQuery) {
         ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
         cell.user_name, //1
         Main_videoCreatedAt(cell.created_at), //2
-        null, //3
+        cell.game_name ? cell.game_name : game_name, //3
         Main_addCommas(cell.view_count), //4
         cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
@@ -3075,7 +3080,8 @@ function ScreensObj_VodCellArray(cell, isQuery) {
         cell.created_at, //12
         cell.view_count, //13
         cell.user_id, //14
-        cell.duration //15
+        cell.duration, //15
+        cell.game_id ? cell.game_id : game_id //16
     ];
 }
 
