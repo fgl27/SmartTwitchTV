@@ -190,7 +190,6 @@ function PlayVod_SetStart() {
     PlayVod_previews_clear();
     PlayVod_get_vod_info();
 
-    PlayVod_updateChapters();
     Play_HasLive = false;
     Play_BottonIcons_End_Live_Img.src = IMG_404_VIDEO;
     Play_EndSet(2);
@@ -1391,7 +1390,7 @@ function PlayVod_FastBackForward(position) {
 }
 
 var fullVodInfoQuery =
-    '{"query":"{video(id:\\"%x\\"){seekPreviewsURL,creator{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)},muteInfo{mutedSegmentConnection{nodes{duration,offset}}},game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}"}';
+    '{"query":"{video(id:\\"%x\\"){seekPreviewsURL,creator{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)},muteInfo{mutedSegmentConnection{nodes{duration,offset}}},game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login},moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
 
 function PlayVod_get_vod_info() {
     FullxmlHttpGet(
@@ -1410,7 +1409,6 @@ function PlayVod_get_vod_infoResult(responseObj) {
     if (PlayVod_isOn) {
         if (responseObj.status === 200) {
             var obj = JSON.parse(responseObj.responseText);
-
             if (obj.data && obj.data.video) {
                 if (obj.data.video.seekPreviewsURL) {
                     PlayVod_previews_pre_start(obj.data.video.seekPreviewsURL);
@@ -1421,6 +1419,8 @@ function PlayVod_get_vod_infoResult(responseObj) {
                     obj.data.video.game_id = obj.data.video.game.id;
                     obj.data.video.game_name = obj.data.video.game.displayName;
                 }
+
+                PlayVod_ProcessChapters(obj);
 
                 if (obj.data.video.creator) {
                     Main_values.Main_selectedChannelPartner = obj.data.video.creator.roles.isPartner;
@@ -1733,41 +1733,12 @@ function PlayVod_muted_WarningDialog() {
     );
 }
 
-var PlayVod_updateChaptersId;
-function PlayVod_updateChapters() {
-    // if (Main_IsOn_OSInterface) {
-
-    PlayVod_updateChaptersId = new Date().getTime();
-
-    FullxmlHttpGet(
-        PlayClip_BaseUrl,
-        Play_base_backup_headers_Array,
-        PlayVod_updateChaptersResult,
-        noop_fun,
-        0,
-        PlayVod_updateChaptersId,
-        'POST', //Method, null for get
-        PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId) //postMessage, null for get
-    );
-
-    //} else PlayVod_ProcessChaptersFake();
-}
-
-function PlayVod_updateChaptersResult(responseObj, key, id) {
-    if (PlayVod_isOn && PlayVod_updateChaptersId === id) {
-        if (responseObj.status === 200) {
-            PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
-        } else if (ChannelVod_game) {
-            Main_textContent('stream_info_game', ChannelVod_game);
-        }
-    }
-}
-
 function PlayVod_ProcessChapters(obj) {
     var hasMoments = obj.data && obj.data.video && obj.data.video.moments && obj.data.video.moments.edges;
     if (!hasMoments) {
         return;
     }
+
     obj = obj.data.video.moments.edges;
 
     var i = 0,
