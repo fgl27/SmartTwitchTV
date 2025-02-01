@@ -44,13 +44,12 @@ var PlayVod_TimeToJump = 0;
 var PlayVod_replay = false;
 var PlayVod_PreviewType;
 
+var PlayVod_updateChaptersId;
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_VodOffset;
 var PlayVod_VodGameID;
 var PlayVod_ChaptersArray = [];
-var PlayVod_postChapters =
-    '{"query":"{ video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -520,7 +519,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
     PlayVod_isOn = false;
-    PlayVod_updateVodInfoId = 0;
     PlayClip_OpenAVod = true;
     Main_clearInterval(PlayVod_SaveOffsetId);
     Main_clearTimeout(PlayVod_WarnEndId);
@@ -1439,7 +1437,7 @@ function PlayVod_get_vod_infoResult(responseObj) {
 }
 
 function PlayVod_updateVodInfoPanel(obj) {
-    response = obj.data.video;
+    var response = obj.data.video;
 
     //Update the value only if the Play_UpdateDuration() has not yet
     if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
