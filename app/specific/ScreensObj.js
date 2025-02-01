@@ -729,7 +729,12 @@ function ScreensObj_StartAllVars() {
                 this.idObject[idValue] = 1;
 
                 this.tempHtml.push(
-                    Screens_createCellClip(this.row_id + '_' + this.column_id, this.ids, ScreensObj_ClipCellArray(cell, this.isQuery), this.screen)
+                    Screens_createCellClip(
+                        this.row_id + '_' + this.column_id,
+                        this.ids,
+                        ScreensObj_ClipCellArray(cell, this.isQuery, this.gameSelected_name),
+                        this.screen
+                    )
                 );
 
                 this.column_id++;
@@ -1711,7 +1716,9 @@ function ScreensObj_InitAGame() {
                 if (Main_values.Search_isSearching) {
                     //Reset label as the app may be restoring from background
                     Main_cleanTopLabel();
-                } else Main_values.gameSelected_IdOld = null;
+                } else {
+                    Main_values.gameSelected_IdOld = null;
+                }
 
                 if (Main_values.Main_gameSelected) {
                     ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
@@ -2922,6 +2929,8 @@ function ScreensObj_TopLableAgameInit(key) {
     }
 
     ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
+    ScreenObj[key].gameSelected_name = Main_values.Main_gameSelected;
+
     Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
 
     if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) {
@@ -3070,13 +3079,13 @@ function ScreensObj_VodCellArray(cell, isQuery) {
     ];
 }
 
-function ScreensObj_ClipCellArray(cell, isQuery) {
+function ScreensObj_ClipCellArray(cell, isQuery, game_name) {
     if (isQuery) {
         return [
             cell.slug, //0
             cell.durationSeconds, //1
             cell.broadcaster ? cell.broadcaster.id : '', //2
-            cell.game_name, //3
+            cell.game_name ? cell.game_name : game_name, //3
             cell.broadcaster ? cell.broadcaster.displayName : '', //4
             null, //5
             cell.broadcaster ? cell.broadcaster.login : '', //6
@@ -3099,7 +3108,7 @@ function ScreensObj_ClipCellArray(cell, isQuery) {
         cell.id, //0
         cell.duration, //1
         cell.broadcaster_id, //2
-        null, //3
+        game_name, //3
         cell.broadcaster_name, //6
         null, //5
         cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
