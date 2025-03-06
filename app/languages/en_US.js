@@ -247,7 +247,7 @@ function en_USLang() {
     STR_STAY_OPEN = 'Stay on the stream';
     STR_STAY_OPEN_SUMMARY = 'Remain on the stream and the app will check periodically to see if it returns live.';
     STR_STAY_CHECK = 'Check if stream is live in:';
-    STR_STAY_CHECKING = 'Checking if is live ...';
+    STR_STAY_CHECKING = 'Checking if stream is live ...';
     STR_STAY_CHECK_LAST = 'Last result:';
     STR_STAY_IS_OFFLINE = 'The stream was offline';
     STR_NO_BROADCAST = 'No VOD';
