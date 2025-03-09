@@ -284,7 +284,7 @@ function Screens_first_init() {
 function Screens_init(key, preventRefresh) {
     //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
-    Main_values.Main_Go = key; //Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
+    Main_values.Main_Go = key; //Sidepannel, playclip, Main_updateClock Screens_Isfocused Main_CheckStop use this var
     ScreenObj[key].label_init();
 
     if (Main_isScene1DocVisible() && !Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) {

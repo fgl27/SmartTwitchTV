@@ -430,6 +430,11 @@ var Settings_value = {
         values: Settings_GenerateClock(),
         defaultValue: 49
     },
+    clock_style: {
+        //Migrated to dialog
+        values: ['24h', '12H AM PM', '12h'],
+        defaultValue: 49
+    },
     thumb_background: {
         //Migrated to dialog
         values: ['None'],
@@ -1191,7 +1196,7 @@ function Settings_UpdateString() {
     Play_MultiSetPanelInfo();
     Settings_inputFocus(Settings_cursorY);
     ScreensObj_SetTopLable(STR_SETTINGS);
-    Main_updateclock();
+    Main_updateClock();
     Main_checkVersion(true);
     AddUser_UpdateSidepanelAfterShow();
     BrowserTestSetStrings();
@@ -1365,9 +1370,9 @@ function Settings_SetDefault(position) {
     else if (position === 'burn_in_protection') Settings_burn_in_protection_start();
     else if (position === 'hide_main_screen_title') Settings_HideScreenTitle();
     else if (position === 'hide_etc_help_text') Settings_HideEtcHelp();
-    else if (position === 'clock_offset') {
+    else if (position === 'clock_offset' || position === 'clock_style') {
         Settings_SetClock();
-        Main_updateclock();
+        Main_updateClock();
     } else if (position === 'bitrate_main') Settings_SetResBitRate(1);
     else if (position === 'bitrate_min') Settings_SetResBitRate(2);
     else if (position === 'res_max') Settings_SetResBitRate(1);
@@ -2938,6 +2943,12 @@ function Settings_DialogShowUIOpt(click) {
             values: Settings_value.clock_offset.values,
             title: STR_CLOCK_OFFSET,
             summary: STR_CLOCK_OFFSET_SUMMARY
+        },
+        clock_style: {
+            defaultValue: Settings_value.clock_style.defaultValue,
+            values: Settings_value.clock_style.values,
+            title: STR_CLOCK_AM_PM,
+            summary: STR_CLOCK_AM_PM_SUMMARY
         },
         hide_main_clock: {
             defaultValue: Settings_value.hide_main_clock.defaultValue,

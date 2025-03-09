@@ -222,7 +222,7 @@ function pt_BRLang() {
     STR_FOLLOW_GAMES = 'Jogos Seguidos Ao Vivo';
     STR_USER_GAMES_CHANGE = 'Mudar entre';
     STR_GUIDE = 'Segure enter';
-    STR_MONTHS = ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    STR_MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
     STR_DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     STR_STARTED = 'Iniciou';
     STR_VIDEOS = 'Vídeos';

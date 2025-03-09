@@ -304,6 +304,8 @@ function en_USLang() {
     STR_MINUTES = 'minutes';
     STR_CLOCK_OFFSET = 'Clock offset';
     STR_CLOCK_OFFSET_SUMMARY = 'Adjust the app’s main clock based on your preferred time offset.';
+    STR_CLOCK_AM_PM = 'Clock style';
+    STR_CLOCK_AM_PM_SUMMARY = 'Set 24H or 12H AM PM or 12H.';
     STR_CONTENT_LANG = 'Content language';
     STR_CONTENT_LANG_SUMMARY = 'The language of the content on the screen, lives, VODs, clips.';
     STR_APP_LANG = 'Application language';

@@ -127,7 +127,7 @@ var Main_IsDayFirst = false;
 var Main_SearchInput;
 var Main_PasswordInput;
 var Main_ChatLiveInput;
-var Main_UpdateClockId;
+var Main_updateClockId;
 var Main_ContentLang = '';
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
@@ -1122,21 +1122,6 @@ function Main_cleanTopLabel() {
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
 }
 
-function Main_videoCreatedAt(time) {
-    //time in '2017-10-27T13:27:27Z' or ms
-    time = new Date(time);
-    if (Main_IsDayFirst) return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ' ' + time.getFullYear();
-    else return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ' ' + time.getFullYear();
-}
-
-//WithHM = with hour minutes
-function Main_videoCreatedAtWithHM(time) {
-    //time in '2017-10-27T13:27:27Z' or ms
-    var result = Main_videoCreatedAt(time);
-    time = new Date(time);
-    return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
-}
-
 var checkUpdates = true;
 
 function Main_checkVersion(skipCheck) {
@@ -1937,22 +1922,22 @@ function Main_ready(func) {
 
 var Main_SetUpdateclockId;
 function Main_SetUpdateclock() {
-    Main_updateclock();
-    Main_clearInterval(Main_UpdateClockId);
+    Main_updateClock();
+    Main_clearInterval(Main_updateClockId);
 
     //sync with device clock
     var seconds = 61 - new Date().getSeconds();
     Main_SetUpdateclockId = Main_setTimeout(
         function () {
-            Main_updateclock();
-            Main_UpdateClockId = Main_setInterval(Main_updateclock, 60000, Main_UpdateClockId);
+            Main_updateClock();
+            Main_updateClockId = Main_setInterval(Main_updateClock, 60000, Main_updateClockId);
         },
         seconds * 1000,
         Main_SetUpdateclockId
     );
 }
 
-function Main_updateclock() {
+function Main_updateClock() {
     var clock = Main_getclock();
     Main_textContent('stream_clock', clock);
     Main_textContent('label_clock', clock);
@@ -1973,12 +1958,51 @@ function Main_getclock() {
         dayMonth,
         date = new Date(timems);
 
-    if (Main_IsDayFirst) dayMonth = STR_DAYS[date.getDay()] + ' ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
-    else dayMonth = STR_DAYS[date.getDay()] + ' ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
+    if (Main_IsDayFirst) {
+        dayMonth = STR_DAYS[date.getDay()] + ', ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
+    } else {
+        dayMonth = STR_DAYS[date.getDay()] + ', ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
+    }
 
-    Main_clock_H_M = Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+    Main_clock_H_M = Main_getHours(date);
 
-    return dayMonth + ' ' + Main_clock_H_M;
+    return dayMonth + ', ' + Main_clock_H_M;
+}
+
+function Main_getHours(date) {
+    var hours = date.getHours(),
+        minutes = date.getMinutes(),
+        ampm = '',
+        settings_AM_PM = Settings_value.clock_style.defaultValue,
+        settings_show_AM_PM = Settings_value.clock_style.defaultValue === 1;
+
+    if (settings_AM_PM) {
+        hours = hours % 12 || 12;
+
+        if (settings_show_AM_PM) {
+            ampm += ' ' + (hours >= 12 ? 'PM' : 'AM');
+        }
+    }
+
+    return Play_lessthanten(hours) + ':' + Play_lessthanten(minutes) + ampm;
+}
+
+function Main_videoCreatedAt(time) {
+    //time in '2017-10-27T13:27:27Z' or ms
+    time = new Date(time);
+    if (Main_IsDayFirst) {
+        return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ', ' + time.getFullYear();
+    } else {
+        return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
+    }
+}
+
+//WithHM = with hour minutes
+function Main_videoCreatedAtWithHM(time) {
+    //time in '2017-10-27T13:27:27Z' or ms
+    var result = Main_videoCreatedAt(time);
+    time = new Date(time);
+    return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
 }
 
 function Main_updateUserFeed() {
@@ -3030,7 +3054,7 @@ function Main_CheckStop() {
     Screens_ClearAnimation(Main_values.Main_Go);
 
     Main_clearInterval(Settings_burn_in_protectionId);
-    Main_clearInterval(Main_UpdateClockId);
+    Main_clearInterval(Main_updateClockId);
     Main_clearInterval(Main_StartHistoryworkerId);
     Main_clearInterval(Main_checkWebVersionId);
     Main_clearTimeout(Main_checkWebVersionResumeId);
