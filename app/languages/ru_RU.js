@@ -246,7 +246,7 @@ function ru_RULang() {
     STR_STAY_OPEN = 'Остаться на стриме';
     STR_STAY_OPEN_SUMMARY = 'Проверить еще раз, не онлайн ли он';
     STR_STAY_CHECK = 'Проверить, идет ли трансляция:';
-    STR_STAY_CHECKING = 'Проверяем, в сети ли...';
+    STR_STAY_CHECKING = 'Проверка, идет ли трансляция в прямом эфире...';
     STR_STAY_CHECK_LAST = 'Последняя проверка:';
     STR_STAY_IS_OFFLINE = 'Трансляция офлайн';
     STR_NO_BROADCAST = 'Нет трансляции';

@@ -802,7 +802,9 @@
         STR_LOAD_ALL_LANG_SUMMARY,
         STR_LOAD_ALL_LANG_WARNING,
         STR_DISABLE_SHARED_CHAT,
-        STR_DISABLE_SHARED_CHAT_SUMMARY;
+        STR_DISABLE_SHARED_CHAT_SUMMARY,
+        STR_CLOCK_AM_PM,
+        STR_CLOCK_AM_PM_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1573,7 +1575,7 @@
         STR_STAY_OPEN = 'Stay on the stream';
         STR_STAY_OPEN_SUMMARY = 'Remain on the stream and the app will check periodically to see if it returns live.';
         STR_STAY_CHECK = 'Check if stream is live in:';
-        STR_STAY_CHECKING = 'Checking if is live ...';
+        STR_STAY_CHECKING = 'Checking if stream is live ...';
         STR_STAY_CHECK_LAST = 'Last result:';
         STR_STAY_IS_OFFLINE = 'The stream was offline';
         STR_NO_BROADCAST = 'No VOD';
@@ -1630,6 +1632,8 @@
         STR_MINUTES = 'minutes';
         STR_CLOCK_OFFSET = 'Clock offset';
         STR_CLOCK_OFFSET_SUMMARY = 'Adjust the app’s main clock based on your preferred time offset.';
+        STR_CLOCK_AM_PM = 'Clock style';
+        STR_CLOCK_AM_PM_SUMMARY = 'Set 24H or 12H AM PM or 12H.';
         STR_CONTENT_LANG = 'Content language';
         STR_CONTENT_LANG_SUMMARY = 'The language of the content on the screen, lives, VODs, clips.';
         STR_APP_LANG = 'Application language';
@@ -2465,7 +2469,7 @@
         STR_STAY_OPEN = 'Permanecer en el stream';
 
         STR_STAY_CHECK_LAST = 'Último resultado:';
-
+        STR_STAY_CHECKING = 'Comprobando si la transmisión está en vivo...';
         STR_IS_NOW = 'es ahora';
 
         STR_SETTINGS_BUFFER_SIZE = 'Tamaño del buffer de inicio:';
@@ -2502,6 +2506,8 @@
         STR_MINUTES = 'minutos';
         STR_CLOCK_OFFSET = 'Desplazamiento del reloj';
         STR_CLOCK_OFFSET_SUMMARY = 'Ajustar el reloj de la aplicación principal en relación con su elección';
+        STR_CLOCK_AM_PM = 'Estilo de reloj';
+        STR_CLOCK_AM_PM_SUMMARY = 'Elige entre 24H, 12H con AM/PM o 12H sin AM/PM.';
         STR_CONTENT_LANG = 'Idioma del contenido';
         STR_CONTENT_LANG_SUMMARY = 'El idioma del contenido en su pantalla, directo, vods, clips';
         STR_APP_LANG = 'Idioma de la aplicación';
@@ -3051,7 +3057,7 @@
         STR_FOLLOW_GAMES = 'Jogos Seguidos Ao Vivo';
         STR_USER_GAMES_CHANGE = 'Mudar entre';
         STR_GUIDE = 'Segure enter';
-        STR_MONTHS = ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+        STR_MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
         STR_DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
         STR_STARTED = 'Iniciou';
         STR_VIDEOS = 'Vídeos';
@@ -3069,7 +3075,7 @@
         STR_STAY_OPEN = 'Permanecer na Live';
         STR_STAY_OPEN_SUMMARY = 'Fique ligado e verifique novamente para ver se volta ao vivo';
         STR_STAY_CHECK = 'Verificando se está ao vivo em:';
-        STR_STAY_CHECKING = 'Verificando se está ao vivo ...';
+        STR_STAY_CHECKING = 'Verificando se a transmissão está ao vivo...';
         STR_STAY_CHECK_LAST = 'Último resultado:';
         STR_STAY_IS_OFFLINE = 'O stream estava offline';
         STR_NO_BROADCAST = 'Sem Vídeos';
@@ -3125,6 +3131,8 @@
         STR_MINUTES = 'minutos';
         STR_CLOCK_OFFSET = 'Clock offset';
         STR_CLOCK_OFFSET_SUMMARY = 'Ajuste o relógio do aplicativo em relação à sua escolha';
+        STR_CLOCK_AM_PM = 'Estilo do relógio';
+        STR_CLOCK_AM_PM_SUMMARY = 'Escolha entre 24H, 12H com AM/PM ou 12H sem AM/PM.';
         STR_APP_LANG = 'Idioma do aplicativo';
         STR_APP_LANG_SUMMARY = 'A linguagem dos textos do aplicativo';
         STR_CONTENT_LANG = 'Idioma do conteúdo';
@@ -3970,7 +3978,7 @@
         STR_STAY_OPEN = 'Остаться на стриме';
         STR_STAY_OPEN_SUMMARY = 'Проверить еще раз, не онлайн ли он';
         STR_STAY_CHECK = 'Проверить, идет ли трансляция:';
-        STR_STAY_CHECKING = 'Проверяем, в сети ли...';
+        STR_STAY_CHECKING = 'Проверка, идет ли трансляция в прямом эфире...';
         STR_STAY_CHECK_LAST = 'Последняя проверка:';
         STR_STAY_IS_OFFLINE = 'Трансляция офлайн';
         STR_NO_BROADCAST = 'Нет трансляции';
@@ -4027,6 +4035,8 @@
         STR_MINUTES = 'мин.';
         STR_CLOCK_OFFSET = 'Часы';
         STR_CLOCK_OFFSET_SUMMARY = 'Настройте разницу часов приложения в соответствии с вашим часовым поясом';
+        STR_CLOCK_AM_PM = 'Стиль часов';
+        STR_CLOCK_AM_PM_SUMMARY = 'Выберите между 24-часовым форматом, 12-часовым с AM/PM или 12-часовым без AM/PM.';
         STR_CONTENT_LANG = 'Язык контента';
         STR_CONTENT_LANG_SUMMARY = 'Язык отображаемого контента, стримы, видео, клипы';
         STR_APP_LANG = 'Язык приложения';
@@ -4924,7 +4934,7 @@
     var KEY_T = 84;
     var KEY_U = 85;
     /*
-     * Copyright (c) 2017-2021 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017-∞ Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -4948,9 +4958,17 @@
         VersionBase: '3.0',
         publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'January 28 2024',
-        WebTag: 702, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'March 09 2024',
+        WebTag: 703, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version January 27 & 28 2024',
+                changes: [
+                    'Improve clock style',
+                    'Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related',
+                    'General improves'
+                ]
+            },
             {
                 title: 'Version January 27 & 28 2024',
                 changes: ['General improves']
@@ -4958,30 +4976,6 @@
             {
                 title: 'Version January 19 2024',
                 changes: ['General visual improves']
-            },
-            {
-                title: 'Version December 29/30 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
-                changes: [
-                    'Add support for Shared chat',
-                    'Add new settings option Chat > Disable shared chat (No by default)',
-                    'Add new settings option Chat > Show Shared chat badges (Yes by default)',
-                    'Add new Player controls Chat extra settings > Disable shared chat (No by default)',
-                    '🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉 Happy New Year, Merry Christmas, and Happy Holidays everybody!!! 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉'
-                ]
-            },
-            {
-                title: 'Version December 28 2024 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉',
-                changes: [
-                    'Fix scenarios where the player was in an "undefined" state, this was happening mostly  when playing 4 way multistream with only 3 streams',
-                    '🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉 Happy New Year, Merry Christmas, and Happy Holidays everybody!!! 🎉 🎊 🥂 ✨ 🎅 💖 🤶 ✨ 🥂 🎊 🎉'
-                ]
-            },
-            {
-                title: 'Version December 24 2024 ✨🎄🎅 🔔 🤶🎄✨',
-                changes: [
-                    'Add new settings option to Auto Switch content to All language when current language has no content enabled by default',
-                    '✨🎄🎅 🔔 🤶🎄✨ Merry Christmas, and Happy Holidays everybody!!! ✨🎄🎅 🔔 🤶🎄✨'
-                ]
             }
         ]
     };
@@ -9857,7 +9851,7 @@
     function ChatLive_GetTimeStamp(time) {
         var date = new Date(parseInt(time) + Main_ClockOffset);
 
-        return Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+        return Main_getHours(date);
     }
 
     function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
@@ -12395,7 +12389,7 @@
     var Main_SearchInput;
     var Main_PasswordInput;
     var Main_ChatLiveInput;
-    var Main_UpdateClockId;
+    var Main_updateClockId;
     var Main_ContentLang = '';
     var Main_Periods = [];
     var Main_addFocusVideoOffset = 0;
@@ -13392,21 +13386,6 @@
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     }
 
-    function Main_videoCreatedAt(time) {
-        //time in '2017-10-27T13:27:27Z' or ms
-        time = new Date(time);
-        if (Main_IsDayFirst) return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ' ' + time.getFullYear();
-        else return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ' ' + time.getFullYear();
-    }
-
-    //WithHM = with hour minutes
-    function Main_videoCreatedAtWithHM(time) {
-        //time in '2017-10-27T13:27:27Z' or ms
-        var result = Main_videoCreatedAt(time);
-        time = new Date(time);
-        return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
-    }
-
     var checkUpdates = true;
 
     function Main_checkVersion(skipCheck) {
@@ -14207,22 +14186,22 @@
 
     var Main_SetUpdateclockId;
     function Main_SetUpdateclock() {
-        Main_updateclock();
-        Main_clearInterval(Main_UpdateClockId);
+        Main_updateClock();
+        Main_clearInterval(Main_updateClockId);
 
         //sync with device clock
         var seconds = 61 - new Date().getSeconds();
         Main_SetUpdateclockId = Main_setTimeout(
             function () {
-                Main_updateclock();
-                Main_UpdateClockId = Main_setInterval(Main_updateclock, 60000, Main_UpdateClockId);
+                Main_updateClock();
+                Main_updateClockId = Main_setInterval(Main_updateClock, 60000, Main_updateClockId);
             },
             seconds * 1000,
             Main_SetUpdateclockId
         );
     }
 
-    function Main_updateclock() {
+    function Main_updateClock() {
         var clock = Main_getclock();
         Main_textContent('stream_clock', clock);
         Main_textContent('label_clock', clock);
@@ -14243,12 +14222,51 @@
             dayMonth,
             date = new Date(timems);
 
-        if (Main_IsDayFirst) dayMonth = STR_DAYS[date.getDay()] + ' ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
-        else dayMonth = STR_DAYS[date.getDay()] + ' ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
+        if (Main_IsDayFirst) {
+            dayMonth = STR_DAYS[date.getDay()] + ', ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
+        } else {
+            dayMonth = STR_DAYS[date.getDay()] + ', ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
+        }
 
-        Main_clock_H_M = Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+        Main_clock_H_M = Main_getHours(date);
 
-        return dayMonth + ' ' + Main_clock_H_M;
+        return dayMonth + ', ' + Main_clock_H_M;
+    }
+
+    function Main_getHours(date) {
+        var hours = date.getHours(),
+            minutes = date.getMinutes(),
+            ampm = '',
+            settings_AM_PM = Settings_value.clock_style.defaultValue,
+            settings_show_AM_PM = Settings_value.clock_style.defaultValue === 1;
+
+        if (settings_AM_PM) {
+            hours = hours % 12 || 12;
+
+            if (settings_show_AM_PM) {
+                ampm += ' ' + (hours >= 12 ? 'PM' : 'AM');
+            }
+        }
+
+        return Play_lessthanten(hours) + ':' + Play_lessthanten(minutes) + ampm;
+    }
+
+    function Main_videoCreatedAt(time) {
+        //time in '2017-10-27T13:27:27Z' or ms
+        time = new Date(time);
+        if (Main_IsDayFirst) {
+            return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ', ' + time.getFullYear();
+        } else {
+            return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear();
+        }
+    }
+
+    //WithHM = with hour minutes
+    function Main_videoCreatedAtWithHM(time) {
+        //time in '2017-10-27T13:27:27Z' or ms
+        var result = Main_videoCreatedAt(time);
+        time = new Date(time);
+        return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
     }
 
     function Main_updateUserFeed() {
@@ -15304,7 +15322,7 @@
         Screens_ClearAnimation(Main_values.Main_Go);
 
         Main_clearInterval(Settings_burn_in_protectionId);
-        Main_clearInterval(Main_UpdateClockId);
+        Main_clearInterval(Main_updateClockId);
         Main_clearInterval(Main_StartHistoryworkerId);
         Main_clearInterval(Main_checkWebVersionId);
         Main_clearTimeout(Main_checkWebVersionResumeId);
@@ -27231,13 +27249,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var PlayVod_replay = false;
     var PlayVod_PreviewType;
 
+    var PlayVod_updateChaptersId;
     var PlayVod_RefreshProgressBarrID;
     var PlayVod_SaveOffsetId;
     var PlayVod_VodOffset;
     var PlayVod_VodGameID;
     var PlayVod_ChaptersArray = [];
-    var PlayVod_postChapters =
-        '{"query":"{ video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
     //Variable initialization end
 
     function PlayVod_Start() {
@@ -27376,35 +27393,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function PlayVod_SetStart() {
         PlayVod_muted_segments_value = null;
         PlayVod_previews_clear();
-        PlayVod_get_vod_extra_info();
+        PlayVod_get_vod_info();
 
-        PlayVod_updateStreamLogo();
-        PlayVod_updateChapters();
         Play_HasLive = false;
         Play_BottonIcons_End_Live_Img.src = IMG_404_VIDEO;
         Play_EndSet(2);
-    }
-
-    var PlayVod_updateStreamLogoValuesId;
-    function PlayVod_updateStreamLogo() {
-        PlayVod_updateStreamLogoValuesId = new Date().getTime();
-        var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
-
-        BaseXmlHttpGet(theUrl, PlayVod_updateStreamLogoValues, noop_fun, null, PlayVod_updateStreamLogoValuesId, true);
-    }
-
-    function PlayVod_updateStreamLogoValues(responseText, key, id) {
-        var response = JSON.parse(responseText);
-
-        if (response.data && response.data.length && PlayVod_updateStreamLogoValuesId === id) {
-            //TODO update this with a API that provides logo and is partner
-            var objData = response.data[0];
-
-            Main_values.Main_selectedChannelPartner = objData.broadcaster_type === 'partner';
-            Play_LoadLogo(Main_getElementById('stream_info_icon'), objData.profile_image_url);
-        }
-
-        PlayVod_updateVodInfo();
     }
 
     function PlayVod_PosStart() {
@@ -27456,85 +27449,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         Main_values.Play_WasPlaying = 2;
         Main_SaveValues();
-    }
-
-    var PlayVod_updateVodInfoId;
-    function PlayVod_updateVodInfo() {
-        var theUrl = Main_helix_api + 'videos?id=' + Main_values.ChannelVod_vodId;
-
-        PlayVod_updateVodInfoId = new Date().getTime();
-
-        BaseXmlHttpGet(theUrl, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId, true);
-    }
-
-    function PlayVod_updateVodInfoPannel(response, key, ID) {
-        if (!PlayVod_isOn || PlayVod_updateVodInfoId !== ID) return;
-
-        response = JSON.parse(response);
-
-        if (response.data && response.data.length) {
-            response = response.data[0];
-            //Update the value only if the Play_UpdateDuration() has not yet
-            if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
-
-            ChannelVod_title = twemoji.parse(response.title, false, true);
-
-            Main_innerHTML(
-                'stream_info_name',
-                Play_partnerIcon(
-                    Main_values.Main_selectedChannelDisplayname,
-                    Main_values.Main_selectedChannelPartner,
-                    1,
-                    '[' + response.language.toUpperCase() + ']'
-                )
-            );
-
-            Main_innerHTML('stream_info_title', ChannelVod_title);
-
-            //Main_innerHTML('stream_info_game', response.game && response.game !== '' ? STR_STARTED + STR_PLAYING + response.game : '');
-
-            Main_innerHTMLWithEle(
-                Play_infoLiveTime,
-                STR_STREAM_ON +
-                    Main_videoCreatedAt(response.created_at) +
-                    ',' +
-                    STR_SPACE_HTML +
-                    Main_addCommas(response.view_count) +
-                    Main_GetViewsStrings(response.view_count)
-            );
-            Main_textContent('stream_live_viewers', '');
-            Main_textContentWithEle(Play_infoWatchingTime, '');
-
-            Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
-
-            PlayVod_currentTime = Main_vodOffset * 1000;
-            PlayVod_ProgressBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
-
-            Main_values.Main_selectedChannelDisplayname = response.user_name;
-
-            Main_values.Main_selectedChannel_id = response.user_id;
-            Main_values.Main_selectedChannel = response.user_login;
-
-            Play_CheckFollow(Main_values.Main_selectedChannel_id);
-
-            PlayVod_muted_segments_value = response.muted_segments;
-            PlayVod_muted_segments(PlayVod_muted_segments_value);
-
-            Main_values_Play_data = ScreensObj_VodCellArray(response);
-            Main_Set_history('vod', Main_values_Play_data);
-
-            if (!Main_IsOn_OSInterface && enable_embed) {
-                Play_SetFullScreen(Play_isFullScreen);
-
-                if (Main_values_Play_data[0]) {
-                    Play_SetSceneBackground(Main_values_Play_data[0].replace(Main_VideoSize, '1280x720'));
-                }
-
-                BrowserTestStartVod(Main_values.ChannelVod_vodId, PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s');
-
-                PlayClip_OpenAVodOffset = 0;
-            }
-        }
     }
 
     function PlayVod_convertHMS(value) {
@@ -27811,7 +27725,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
         PlayVod_isOn = false;
-        PlayVod_updateVodInfoId = 0;
         PlayClip_OpenAVod = true;
         Main_clearInterval(PlayVod_SaveOffsetId);
         Main_clearTimeout(PlayVod_WarnEndId);
@@ -28697,35 +28610,115 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         PlayVod_setHidePanel();
     }
 
-    var previewUrl = '{"query":"{video(id:\\"%x\\"){game{displayName, id},seekPreviewsURL}}"}';
+    var fullVodInfoQuery =
+        '{"query":"{video(id:\\"%x\\"){seekPreviewsURL,creator{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)},muteInfo{mutedSegmentConnection{nodes{duration,offset}}},game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login},moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
 
-    function PlayVod_get_vod_extra_info() {
+    function PlayVod_get_vod_info() {
         FullxmlHttpGet(
             PlayClip_BaseUrl,
             Play_base_backup_headers_Array,
-            PlayVod_get_vod_extra_infoResult,
+            PlayVod_get_vod_infoResult,
             noop_fun,
             0,
             PlayClip_loadVodOffsetStartVodId,
             'POST', //Method, null for get
-            previewUrl.replace('%x', Main_values.ChannelVod_vodId)
+            fullVodInfoQuery.replace('%x', Main_values.ChannelVod_vodId)
         );
     }
 
-    function PlayVod_get_vod_extra_infoResult(responseObj) {
+    function PlayVod_get_vod_infoResult(responseObj) {
         if (PlayVod_isOn) {
             if (responseObj.status === 200) {
                 var obj = JSON.parse(responseObj.responseText);
-
                 if (obj.data && obj.data.video) {
                     if (obj.data.video.seekPreviewsURL) {
                         PlayVod_previews_pre_start(obj.data.video.seekPreviewsURL);
                     }
-                    if (obj.data.video.game && !Play_data.data[3]) {
+
+                    if (obj.data.video.game) {
                         PlayVod_UpdateGameInfoLabels(obj.data.video.game.id, obj.data.video.game.displayName);
+                        obj.data.video.game_id = obj.data.video.game.id;
+                        obj.data.video.game_name = obj.data.video.game.displayName;
                     }
+
+                    PlayVod_ProcessChapters(obj);
+
+                    if (obj.data.video.creator) {
+                        Main_values.Main_selectedChannelPartner = obj.data.video.creator.roles.isPartner;
+                        Play_LoadLogo(Main_getElementById('stream_info_icon'), obj.data.video.creator.profileImageURL);
+
+                        Main_values.Main_selectedChannelDisplayname = obj.data.video.creator.displayName;
+
+                        Main_values.Main_selectedChannel_id = obj.data.video.creator.id;
+                        Main_values.Main_selectedChannel = obj.data.video.creator.login;
+                    }
+
+                    PlayVod_updateVodInfoPanel(obj);
                 }
             }
+        }
+    }
+
+    function PlayVod_updateVodInfoPanel(obj) {
+        var response = obj.data.video;
+
+        //Update the value only if the Play_UpdateDuration() has not yet
+        if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
+
+        ChannelVod_title = twemoji.parse(response.title, false, true);
+
+        Main_innerHTML(
+            'stream_info_name',
+            Play_partnerIcon(
+                Main_values.Main_selectedChannelDisplayname,
+                Main_values.Main_selectedChannelPartner,
+                1,
+                '[' + response.language.toUpperCase() + ']'
+            )
+        );
+
+        Main_innerHTML('stream_info_title', ChannelVod_title);
+
+        Main_innerHTMLWithEle(
+            Play_infoLiveTime,
+            STR_STREAM_ON +
+                Main_videoCreatedAt(response.createdAt) +
+                ',' +
+                STR_SPACE_HTML +
+                Main_addCommas(response.viewCount) +
+                Main_GetViewsStrings(response.viewCount)
+        );
+        Main_textContent('stream_live_viewers', '');
+        Main_textContentWithEle(Play_infoWatchingTime, '');
+
+        Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
+
+        PlayVod_currentTime = Main_vodOffset * 1000;
+        PlayVod_ProgressBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
+
+        Play_CheckFollow(Main_values.Main_selectedChannel_id);
+
+        PlayVod_muted_segments_value =
+            response.muteInfo && response.muteInfo.mutedSegmentConnection && response.muteInfo.mutedSegmentConnection.nodes
+                ? response.muteInfo.mutedSegmentConnection.nodes
+                : null;
+
+        PlayVod_muted_segments(PlayVod_muted_segments_value);
+
+        Main_values_Play_data = ScreensObj_VodCellArray(response, true);
+
+        Main_Set_history('vod', Main_values_Play_data);
+
+        if (!Main_IsOn_OSInterface && enable_embed) {
+            Play_SetFullScreen(Play_isFullScreen);
+
+            if (Main_values_Play_data[0]) {
+                Play_SetSceneBackground(Main_values_Play_data[0].replace(Main_VideoSize, '1280x720'));
+            }
+
+            BrowserTestStartVod(Main_values.ChannelVod_vodId, PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s');
+
+            PlayClip_OpenAVodOffset = 0;
         }
     }
 
@@ -28961,41 +28954,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         );
     }
 
-    var PlayVod_updateChaptersId;
-    function PlayVod_updateChapters() {
-        // if (Main_IsOn_OSInterface) {
-
-        PlayVod_updateChaptersId = new Date().getTime();
-
-        FullxmlHttpGet(
-            PlayClip_BaseUrl,
-            Play_base_backup_headers_Array,
-            PlayVod_updateChaptersResult,
-            noop_fun,
-            0,
-            PlayVod_updateChaptersId,
-            'POST', //Method, null for get
-            PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId) //postMessage, null for get
-        );
-
-        //} else PlayVod_ProcessChaptersFake();
-    }
-
-    function PlayVod_updateChaptersResult(responseObj, key, id) {
-        if (PlayVod_isOn && PlayVod_updateChaptersId === id) {
-            if (responseObj.status === 200) {
-                PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
-            } else if (ChannelVod_game) {
-                Main_textContent('stream_info_game', ChannelVod_game);
-            }
-        }
-    }
-
     function PlayVod_ProcessChapters(obj) {
         var hasMoments = obj.data && obj.data.video && obj.data.video.moments && obj.data.video.moments.edges;
         if (!hasMoments) {
             return;
         }
+
         obj = obj.data.video.moments.edges;
 
         var i = 0,
@@ -29438,7 +29402,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Screens_init(key, preventRefresh) {
         //Main_Log('Screens_init ' + ScreenObj[key].screen);
         Main_addFocusVideoOffset = -1;
-        Main_values.Main_Go = key; //Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
+        Main_values.Main_Go = key; //Sidepannel, playclip, Main_updateClock Screens_Isfocused Main_CheckStop use this var
         ScreenObj[key].label_init();
 
         if (Main_isScene1DocVisible() && !Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) {
@@ -33899,7 +33863,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     this.idObject[cell.id] = 1;
 
                     this.tempHtml.push(
-                        Screens_createCellVod(this.row_id + '_' + this.column_id, this.ids, ScreensObj_VodCellArray(cell, this.isQuery), this.screen)
+                        Screens_createCellVod(
+                            this.row_id + '_' + this.column_id,
+                            this.ids,
+                            ScreensObj_VodCellArray(cell, this.isQuery, this.gameSelected_Id, this.gameSelected_name),
+                            this.screen
+                        )
                     );
 
                     this.column_id++;
@@ -34116,7 +34085,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                         Screens_createCellClip(
                             this.row_id + '_' + this.column_id,
                             this.ids,
-                            ScreensObj_ClipCellArray(cell, this.isQuery),
+                            ScreensObj_ClipCellArray(cell, this.isQuery, this.gameSelected_name),
                             this.screen
                         )
                     );
@@ -35101,7 +35070,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     if (Main_values.Search_isSearching) {
                         //Reset label as the app may be restoring from background
                         Main_cleanTopLabel();
-                    } else Main_values.gameSelected_IdOld = null;
+                    } else {
+                        Main_values.gameSelected_IdOld = null;
+                    }
 
                     if (Main_values.Main_gameSelected) {
                         ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
@@ -36324,6 +36295,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
+        ScreenObj[key].gameSelected_name = Main_values.Main_gameSelected;
+
         Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
 
         if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) {
@@ -36429,13 +36402,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ];
     }
 
-    function ScreensObj_VodCellArray(cell, isQuery) {
+    function ScreensObj_VodCellArray(cell, isQuery, game_id, game_name) {
         if (isQuery) {
             return [
                 ScreensObj_VodGetPreview(cell.thumbnailURLs[0], cell.animatedPreviewURL), //0
                 cell.creator ? cell.creator.displayName : '', //1
                 Main_videoCreatedAt(cell.createdAt), //2
-                cell.game_name, //3
+                cell.game_name ? cell.game_name : game_name, //3
                 Main_addCommas(cell.viewCount), //4
                 cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
                 cell.creator ? cell.creator.login : '', //6
@@ -36448,7 +36421,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 cell.viewCount, //13
                 cell.creator ? cell.creator.id : '', //14
                 cell.duration, //15
-                cell.game_id //16
+                cell.game_id ? cell.game_id : game_id //16
             ];
         }
 
@@ -36456,7 +36429,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
             cell.user_name, //1
             Main_videoCreatedAt(cell.created_at), //2
-            null, //3
+            cell.game_name ? cell.game_name : game_name, //3
             Main_addCommas(cell.view_count), //4
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.user_login, //6
@@ -36468,17 +36441,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cell.created_at, //12
             cell.view_count, //13
             cell.user_id, //14
-            cell.duration //15
+            cell.duration, //15
+            cell.game_id ? cell.game_id : game_id //16
         ];
     }
 
-    function ScreensObj_ClipCellArray(cell, isQuery) {
+    function ScreensObj_ClipCellArray(cell, isQuery, game_name) {
         if (isQuery) {
             return [
                 cell.slug, //0
                 cell.durationSeconds, //1
                 cell.broadcaster ? cell.broadcaster.id : '', //2
-                cell.game_name, //3
+                cell.game_name ? cell.game_name : game_name, //3
                 cell.broadcaster ? cell.broadcaster.displayName : '', //4
                 null, //5
                 cell.broadcaster ? cell.broadcaster.login : '', //6
@@ -36501,7 +36475,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cell.id, //0
             cell.duration, //1
             cell.broadcaster_id, //2
-            null, //3
+            game_name, //3
             cell.broadcaster_name, //6
             null, //5
             cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
@@ -37537,6 +37511,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             values: Settings_GenerateClock(),
             defaultValue: 49
         },
+        clock_style: {
+            //Migrated to dialog
+            values: ['24h', '12H AM PM', '12h'],
+            defaultValue: 49
+        },
         thumb_background: {
             //Migrated to dialog
             values: ['None'],
@@ -38303,7 +38282,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_MultiSetPanelInfo();
         Settings_inputFocus(Settings_cursorY);
         ScreensObj_SetTopLable(STR_SETTINGS);
-        Main_updateclock();
+        Main_updateClock();
         Main_checkVersion(true);
         AddUser_UpdateSidepanelAfterShow();
         BrowserTestSetStrings();
@@ -38477,9 +38456,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         else if (position === 'burn_in_protection') Settings_burn_in_protection_start();
         else if (position === 'hide_main_screen_title') Settings_HideScreenTitle();
         else if (position === 'hide_etc_help_text') Settings_HideEtcHelp();
-        else if (position === 'clock_offset') {
+        else if (position === 'clock_offset' || position === 'clock_style') {
             Settings_SetClock();
-            Main_updateclock();
+            Main_updateClock();
         } else if (position === 'bitrate_main') Settings_SetResBitRate(1);
         else if (position === 'bitrate_min') Settings_SetResBitRate(2);
         else if (position === 'res_max') Settings_SetResBitRate(1);
@@ -40059,6 +40038,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 values: Settings_value.clock_offset.values,
                 title: STR_CLOCK_OFFSET,
                 summary: STR_CLOCK_OFFSET_SUMMARY
+            },
+            clock_style: {
+                defaultValue: Settings_value.clock_style.defaultValue,
+                values: Settings_value.clock_style.values,
+                title: STR_CLOCK_AM_PM,
+                summary: STR_CLOCK_AM_PM_SUMMARY
             },
             hide_main_clock: {
                 defaultValue: Settings_value.hide_main_clock.defaultValue,
