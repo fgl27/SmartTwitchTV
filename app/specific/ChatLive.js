@@ -1746,7 +1746,7 @@ function ChatLive_CheckIfSubSend(message, chat_number, isSub) {
 function ChatLive_GetTimeStamp(time) {
     var date = new Date(parseInt(time) + Main_ClockOffset);
 
-    return Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+    return Main_getHours(date);
 }
 
 function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
