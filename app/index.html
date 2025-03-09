@@ -2683,8 +2683,16 @@
                         <div></div>
                     </div>
                 </div>
+                <div id="restore_dialog" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75)">
+                    <div id="restore_dialog_text_container" class="dialog_exit" style="width: 75%; margin-left: 12.5%">
+                        <div id="restore_dialog_text" class="exit_text"></div>
+                        <div style="text-align: center; margin-bottom: 4%">
+                            <div id="restore_dialog_button" class="button_dialog"></div>
+                        </div>
+                    </div>
+                </div>
                 <div id="yes_no_dialog" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75)">
-                    <div class="dialog_exit" style="width: 75%; margin-left: 12.5%">
+                    <div id="main_dialog_remove_container" class="dialog_exit" style="width: 75%; margin-left: 12.5%">
                         <div id="main_dialog_remove" class="exit_text"></div>
                         <div style="text-align: center; margin-bottom: 4%">
                             <div id="yes_no_dialog_button_no" class="button_dialog_focused button_dialog" style="margin-left: 0%"></div>
@@ -2920,12 +2928,17 @@
                 </div>
                 <div id="dialog_accessibility" class="screens hide" style="z-index: 2; background: rgba(0, 0, 0, 0.75)">
                     <div class="about_dialogs" style="width: 70%; margin-left: 15%">
-                        <div id="dialog_accessibility_text" class="about_text">dsds</div>
+                        <div id="dialog_accessibility_text" class="about_text"></div>
                     </div>
                 </div>
                 <div id="welcome_dialog" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75)">
                     <div class="about_dialogs" style="width: 90%; margin-left: 5%">
                         <div id="welcome_dialog_text" class="about_text" style="font-size: 78%"></div>
+                    </div>
+                </div>
+                <div id="backup_dialog" class="screens hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75)">
+                    <div class="about_dialogs" style="width: 90%; margin-left: 5%">
+                        <div id="backup_dialog_text" class="about_text" style="font-size: 78%"></div>
                     </div>
                 </div>
                 <div id="dialog_codecs" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75)">
@@ -4374,6 +4387,11 @@
         <script src="specific/PlayExtra.js" defer></script>
         <script src="specific/PlayClip.js" defer></script>
         <script src="specific/PlayVod.js" defer></script>
+        <script src="specific/BackupSync.js" defer></script>
+        <script src="specific/BackupSyncRestore.js" defer></script>
+        <script src="specific/BackupSyncBackup.js" defer></script>
+        <script src="specific/BackupSyncSave.js" defer></script>
+        <script src="specific/BackupSyncRequests.js" defer></script>
         <script src="specific/AddUser.js" defer></script>
         <script src="specific/AddCode.js" defer></script>
         <script src="specific/ChatLive.js" defer></script>

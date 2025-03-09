@@ -54,9 +54,12 @@ function AddCode_AppTokenCheckReady(obj) {
 
         var data = JSON.parse(obj.responseText);
 
-        window.setTimeout(function () {
-            AddCode_AppToken();
-        }, (parseInt(data.expires_in) - 60) * 1000);
+        window.setTimeout(
+            function () {
+                AddCode_AppToken();
+            },
+            (parseInt(data.expires_in) - 60) * 1000
+        );
     } else {
         AddCode_AppToken(0, Main_initWindowsEnd, Main_initWindowsEnd, 0, true);
 

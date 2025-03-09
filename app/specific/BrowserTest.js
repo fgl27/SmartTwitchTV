@@ -470,7 +470,7 @@ function BrowserTestFun() {
         var id = event.target.id,
             div;
 
-        //console.log(id);
+        console.log(id);
 
         var idArray = id.split('_'),
             key = parseInt(idArray[0]),
@@ -496,6 +496,10 @@ function BrowserTestFun() {
                     Users_cursorY = y;
                     Users_addFocus();
                 } else if (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x) {
+                    if (!Screens_ObjNotNull_YX(key, y, x)) {
+                        return;
+                    }
+
                     Screens_RemoveFocus(key);
                     ScreenObj[key].posY = y;
                     Screens_ChangeFocus(0, x, key);
@@ -525,6 +529,15 @@ function BrowserTestFun() {
                 Sidepannel_Hide();
                 Main_SwitchScreen();
             }
+        } else if (Main_A_includes_B(id, 'backup_body') || Main_A_includes_B(id, 'main_dialog_remove') || !id || Main_PreventCheckResume) {
+            if (Main_A_includes_B(id, 'yes_no_dialog_button_no')) {
+                Main_PreventCheckResume = false;
+                Users_RemoveCursor = 0;
+                Main_BackupDialogKeyDownEnter();
+            } else if (Main_A_includes_B(id, 'yes_no_dialog_button_yes')) {
+                Users_RemoveCursor = 1;
+                Main_BackupDialogKeyDownEnter();
+            }
         } else if (Main_A_includes_B(id, 'main_dialog_user') || Main_A_includes_B(id, 'yes_no_dialog')) {
             if (Main_A_equals_B(id, 'main_dialog_user') || Main_A_equals_B(id, 'yes_no_dialog')) {
                 Users_handleKeyBack();
@@ -532,7 +545,12 @@ function BrowserTestFun() {
                 if (Main_values.Main_Go === Main_Users) {
                     Users_handleKeyEnter();
                 } else if (Settings_isVisible()) {
-                    Settings_checkMatureKeyEnter();
+                    if (Settings_isMature) {
+                        Settings_checkMatureKeyEnter();
+                    } else {
+                        Settings_RemoveBackupAccountDone();
+                        GDriveClean();
+                    }
                 } else {
                     Screens_histDeleteKeyEnter(Main_values.Main_Go);
                 }
@@ -898,6 +916,15 @@ function BrowserTestFun() {
 
     Main_getElementById('dialog_about').onclick = function () {
         Main_CheckDialogs();
+    };
+
+    Main_getElementById('backup_dialog').onclick = function (event) {
+        if (Main_A_includes_B(event.target.id, 'backup_dialog') && !GDrivePreventClose) {
+            Main_HideElement('backup_dialog');
+            if (Main_PreventCheckResume) {
+                Main_initWindows();
+            }
+        }
     };
 
     Main_getElementById('welcome_dialog').onclick = function () {

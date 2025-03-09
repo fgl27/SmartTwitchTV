@@ -85,7 +85,7 @@ function Screens_InitScreens() {
         ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_histdelete = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
         //ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
@@ -145,7 +145,9 @@ function Screens_assign() {
             keys = Object.keys(obj),
             keys_length = keys.length;
 
-        for (j = 0; j < keys_length; j++) ret[keys[j]] = obj[keys[j]];
+        for (j = 0; j < keys_length; j++) {
+            ret[keys[j]] = obj[keys[j]];
+        }
     }
     return ret;
 }
@@ -1124,7 +1126,9 @@ function Screens_handleKeyControlsEnter(key) {
         CheckAccessibilityWasVisible = true;
         Main_removeEventListener('keydown', Main_CheckAccessibilityKey);
         Main_HideElement('dialog_accessibility');
-    } else CheckAccessibilityWasVisible = false;
+    } else {
+        CheckAccessibilityWasVisible = false;
+    }
 
     Main_HideWelcomeDialog();
     Main_HideControlsDialog();
@@ -1233,6 +1237,10 @@ function Screens_GetObjId(obj_id, key) {
 
 function Screens_ObjNotNull(key) {
     return Boolean(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+}
+
+function Screens_ObjNotNull_YX(key, y, x) {
+    return Boolean(ScreenObj[key].DataObj[y + '_' + x]);
 }
 
 var Screens_LoadPreviewId;
@@ -2288,6 +2296,7 @@ function Screens_handleKeyDown(key, event) {
         case KEY_NUMPAD_2:
         case KEY_2:
             Main_ReloadScreen();
+            GDriveBackup();
             break;
         case KEY_PAUSE: //key s
         case KEY_NUMPAD_6:
@@ -2576,7 +2585,7 @@ function Screens_showDeleteDialog(text, key) {
     Main_innerHTML('main_dialog_remove', text);
     Main_ShowElementWithEle(Screens_dialog_thumb_delete_div);
     Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-    Main_addEventListener('keydown', ScreenObj[key].key_histdelet);
+    Main_addEventListener('keydown', ScreenObj[key].key_histdelete);
     Screens_setRemoveDialog(key);
 }
 
@@ -2592,7 +2601,7 @@ function Screens_setRemoveDialog(key) {
 
 function Screens_HideRemoveDialog(key) {
     Users_clearRemoveDialog();
-    Main_removeEventListener('keydown', ScreenObj[key].key_histdelet);
+    Main_removeEventListener('keydown', ScreenObj[key].key_histdelete);
     Main_addEventListener('keydown', ScreenObj[key].key_fun);
     Main_HideElementWithEle(Screens_dialog_thumb_delete_div);
     Users_RemoveCursor = 0;
@@ -2604,11 +2613,13 @@ function Screens_HideRemoveDialog(key) {
 function Screens_histDeleteKeyEnter(key) {
     var temp = Users_RemoveCursor;
     Screens_HideRemoveDialog(key);
-    if (temp) Screens_histDelete(key);
+    if (temp) {
+        Screens_histDelete(key);
+    }
 }
 
 function Screens_histDeleteKeyDown(key, event) {
-    //Main_Log('ScreenObj[key].key_histdelet ' + event.keyCode);
+    //Main_Log('ScreenObj[key].key_histdelete ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_LEFT:
@@ -2638,24 +2649,58 @@ function Screens_histDeleteKeyDown(key, event) {
 }
 
 function Screens_histDelete(key) {
+    var type = ScreenObj[key].Type;
+
     if (Screens_DeleteDialogAll) {
-        Main_values_History_data[AddUser_UsernameArray[0].id][ScreenObj[key].Type] = [];
+        Screens_addAllToDelete(JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][type])), type);
+
+        Main_values_History_data[AddUser_UsernameArray[0].id][type] = [];
+
         Main_setHistoryItem();
         Main_ReloadScreen();
     } else {
-        var type = 'live';
-
-        if (ScreenObj[key].screen === Main_HistoryVod) type = 'vod';
-        else if (ScreenObj[key].screen === Main_HistoryClip) type = 'clip';
-
         var index = Main_history_Exist(type, Screens_values_Play_data[7]);
+
         if (index > -1) {
+            var deleted = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][type][index]));
+            Screens_checkDeleteObj();
+            Screens_addToDelete(deleted, type);
+
             Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
             Main_setHistoryItem();
         }
 
         Screens_deleteUpdateRows(key);
     }
+    1;
+
+    GDriveBackup();
+}
+
+function Screens_addAllToDelete(array, type) {
+    Screens_checkDeleteObj();
+
+    var index = 0,
+        len = array.length;
+
+    for (index; index < len; index++) {
+        Screens_addToDelete(array[index], type);
+    }
+}
+
+function Screens_checkDeleteObj() {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted = {
+            live: {},
+            vod: {},
+            clip: {}
+        };
+    }
+}
+
+function Screens_addToDelete(value, type) {
+    Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][value.id] = value;
+    Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][value.id].date = new Date().getTime();
 }
 
 // Not an ideal way to delete a thumbnail

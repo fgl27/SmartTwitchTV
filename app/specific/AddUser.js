@@ -232,7 +232,7 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 }
 
 function AddUser_RestoreUsers() {
-    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
+    AddUser_UsernameArray = Main_getItemJson(AddUser_UserArrayItemName, []);
 
     if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
@@ -246,12 +246,24 @@ function AddUser_RestoreUsers() {
         for (i; i < len; i++) {
             AddUser_UsernameArray[i].timeout_id = null;
 
+            //originally the user was added without a date value with is needed to backup restore and sync
+            if (!AddUser_UsernameArray[i].date) {
+                AddUser_UsernameArray[i].date = new Date().getTime();
+            }
+
             //Set user history obj
             Main_values_History_data[AddUser_UsernameArray[i].id] = {
                 live: [],
                 vod: [],
-                clip: []
+                clip: [],
+                test: [],
+                was_deleted: {
+                    live: {},
+                    vod: {},
+                    clip: {}
+                }
             };
+            console.log('Main_values_History_data1', Main_values_History_data);
         }
 
         Main_Restore_history();
@@ -338,10 +350,10 @@ function AddUser_UpdateUserAllUsers() {
 function AddUser_UpdateUser(position) {
     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
 
-    BaseXmlHttpGet(theUrl, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
+    BaseXmlHttpGet(theUrl, AddUser_UpdateUsersSuccess, noop_fun, position, null, true);
 }
 
-function AddUser_UpdateUsertSuccess(response, position) {
+function AddUser_UpdateUsersSuccess(response, position) {
     var user = JSON.parse(response);
 
     if (user.data.length) {
@@ -368,6 +380,7 @@ function AddUser_SaveNewUser(responseText) {
             display_name: AddUser_Username.display_name,
             logo: AddUser_Username.profile_image_url,
             access_token: AddUser_getDeviceCodeToken,
+            date: new Date().getTime(),
             refresh_token: 0,
             expires_in: 0,
             expires_when: 0,
@@ -455,9 +468,7 @@ function AddUser_SaveUserArray() {
     }
 
     var string = JSON.stringify(AddUser_UsernameArray);
-    Main_setItem('AddUser_UsernameArrayNew', string);
-
-    if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
+    Main_setItem(AddUser_UserArrayItemName, string);
 
     //Main_Log('AddUser_SaveUserArray');
 }

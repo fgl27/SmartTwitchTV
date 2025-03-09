@@ -1,0 +1,241 @@
+/*
+ * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+ *
+ * SmartTwitchTV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SmartTwitchTV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+ *
+ */
+
+function GDriveRestore() {
+    console.log('GDriveRestore');
+    GDriveRefreshToken = Main_getItemString('GDriveRefreshToken', null);
+    GDriveAccessToken = Main_getItemString('GDriveAccessToken', null);
+    GDriveFileID = Main_getItemString('GDriveFileID', null);
+    GDriveLastBackupDate = Main_getItemInt('GDriveLastBackupDate', 0);
+    GDriveBackupSize = Main_getItemString('GDriveBackupSize', null);
+    GDriveDoBackupCall = Main_getItemJson('GDriveDoBackupCall', []);
+    GDriveBackupExpiresTime = Main_getItemInt('GDriveBackupExpiresTime', 0);
+
+    if (GDriveAccessToken) {
+        GDriveValidateToken();
+    } else if (!Main_PreventCheckResume) {
+        GDriveCheckMainStarted();
+    }
+
+    console.log('GDriveRefreshToken', GDriveRefreshToken);
+    console.log('GDriveAccessToken', GDriveAccessToken);
+    console.log('GDriveBackupExpiresTime', GDriveBackupExpiresTime);
+}
+
+function GDriveValidateToken() {
+    if (GDriveBackupExpiresTime > new Date().getTime()) {
+        console.log('not expireted');
+
+        GDriveSetHeader(GDriveBackupExpiresTime - new Date().getTime());
+
+        GDriveGetBackupFile();
+
+        return;
+    }
+
+    GDriveValidateAccessToken(GDriveValidateTokenSuccess, noop_fun, 0, 0);
+}
+
+function GDriveValidateTokenSuccess(obj) {
+    console.log('GDriveValidateTokenSuccess', obj);
+    console.log(JSON.parse(obj.responseText));
+
+    if (obj.status === 200) {
+        GDriveSetExpires(JSON.parse(obj.responseText));
+
+        GDriveGetBackupFile();
+    } else {
+        //expired or no longer has access to Gdrive
+        //Only on 401 we erase Gdrive configuration
+        //GDriveValidateAccessToken only returns 200 or 400
+        GDriveValidateTokenRefreshAccessToken();
+    }
+}
+
+function GDriveValidateTokenRefreshAccessToken() {
+    GDriveRefreshAccessToken(GDriveRefreshSuccess, noop_fun, 0, 0);
+}
+
+function GDriveRefreshSuccess(obj) {
+    console.log('GDriveRefreshSuccess', obj);
+    console.log(JSON.parse(obj.responseText));
+
+    if (obj.status === 200) {
+        var data = JSON.parse(obj.responseText);
+        GDriveAccessToken = data.access_token;
+        Main_setItem('GDriveAccessToken', GDriveAccessToken);
+
+        GDriveSetExpires(data);
+
+        console.log('new GDriveAccessToken', GDriveAccessToken);
+
+        GDriveGetBackupFile();
+    } else if (obj.status === 401) {
+        //401 lost access need to erase the config let the user know
+        Main_PlayMainShowWarning(STR_BACKUP_ACCOUNT_REFRESH_ERROR, 7500, true);
+        GDriveErase();
+    } else {
+        GDriveCheckMainStarted();
+    }
+}
+
+function GDriveGetBackupFile() {
+    if (!GDriveFileID) {
+        GDriveGetFileInfo();
+        return;
+    }
+
+    if (!GDriveCanDoBackup()) {
+        console.log('GDriveGetBackupFile GDriveCanDoBackup return');
+        GDriveCheckMainStarted();
+        return;
+    }
+
+    GDriveDownloadBackupFile(GDriveGetBackupFileSuccess, noop_fun, 0, 0);
+
+    //GDriveBackupTimeout();
+}
+
+function GDriveGetFileInfo() {
+    console.log('GDriveGetFileInfo');
+
+    GDriveGetFileByName(GDriveGetFileInfoSuccess, noop_fun, 0, 0);
+}
+
+function GDriveSaveFileInfo(obj) {
+    var data = JSON.parse(obj.responseText);
+
+    if (!data.files || !data.files.length) {
+        return;
+    }
+
+    GDriveBackupSize = formatFileSize(data.files[0].size);
+    GDriveFileID = data.files[0].id;
+
+    Main_setItem('GDriveBackupSize', GDriveBackupSize);
+    Main_setItem('GDriveFileID', GDriveFileID);
+}
+
+function GDriveGetFileInfoSuccess(obj) {
+    console.log('GDriveGetFileInfoSuccess', obj);
+    console.log(JSON.parse(obj.responseText));
+
+    if (obj.status === 200) {
+        GDriveSaveFileInfo(obj);
+    } else {
+        console.log('GDriveGetFileInfoSuccess fail', obj.responseText);
+        GDriveCheckMainStarted();
+    }
+
+    if (GDriveFileID) {
+        GDriveGetBackupFile();
+    } else {
+        GDriveUploadFile(GDriveBackupFileFromRestore, noop_fun, 0, 0);
+    }
+}
+
+function GDriveBackupFileFromRestore(obj) {
+    console.log('GDriveBackupFileFromRestore', obj);
+
+    if (obj.status === 200) {
+        GDriveUpFileSuccessSave(obj);
+    } else {
+        console.log('GDriveUpFileSuccess fail', obj.responseText);
+    }
+
+    GDriveCheckMainStarted();
+}
+
+function GDriveGetBackupFileSuccess(obj) {
+    console.log('GDriveGetBackupFileSuccess', obj);
+    console.log('GDriveGetBackupFileSuccess refresh', obj.responseText);
+
+    //if has backup sync first
+    if (obj.status === 200) {
+        var backupObj;
+
+        try {
+            //The file can be empty of the user change it and/or bricked it
+            backupObj = JSON.parse(obj.responseText);
+        } catch (error) {
+            console.log('GDriveGetBackupFileSuccess try json', error);
+            GDriveCheckMainStarted();
+            return;
+        }
+
+        if (AddUser_UserIsSet()) {
+            GDriveSyncBackupFile(backupObj);
+        } else {
+            GDriveRestoreBackupFile(backupObj, true, true, true);
+        }
+
+        return;
+    } else if (obj.status === 404) {
+        var data = JSON.parse(obj.responseText);
+        console.log('GDriveGetBackupFileSuccess error', data);
+        console.log('GDriveGetBackupFileSuccess error', data.error.message);
+
+        if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+            GDriveFileID = null;
+            localStorage.removeItem('GDriveFileID');
+
+            console.log('GDriveGetBackupFileSuccess save file');
+            GDriveGetFileInfo();
+        }
+        return;
+    }
+
+    console.log('GDriveGetBackupFileSuccess fail', obj);
+    GDriveCheckMainStarted();
+}
+
+function GDriveSyncBackupFile(backup) {
+    console.log('GDriveSyncBackupFile GDriveSyncBackup', backup);
+
+    var date = JSON.parse(backup[GDriveBackupDateItemName]) || new Date().getTime();
+
+    console.log('GDriveSyncBackupFile date', date);
+
+    //skip sync if date is the same or smaller
+    if (!GDriveNeedsSync(date)) {
+        console.log('skip sync GDriveSyncBackupFile date', date);
+        GDriveCheckMainStarted();
+        return;
+    }
+
+    GDriveSyncFromBackup(backup, date, true);
+
+    GDriveCheckMainStarted();
+}
+
+function GDriveRestoreBackupFile(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
+    console.log('GDriveRestoreBackupFile');
+
+    GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings);
+
+    GDriveCheckMainStarted();
+}
+
+function GDriveCheckMainStarted() {
+    console.log('GDriveCheckMainStarted');
+    if (!Main_started) {
+        Main_initWindows();
+    }
+}

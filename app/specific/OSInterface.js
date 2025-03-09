@@ -449,15 +449,6 @@ function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
     }
 }
 
-//public void BackupFile(String file, String file_content)
-//file =  the file name and or path
-//file_content = the file content
-//Android specific: true
-//Backups user array and user history to a file
-function OSInterface_BackupFile(file, file_content) {
-    Android.BackupFile(file, file_content);
-}
-
 //public String mPageUrl()
 //Android specific: true
 //return the apk main url
@@ -551,36 +542,6 @@ function OSInterface_getversion() {
 //Allows to get the app debug state
 function OSInterface_getdebug() {
     return Android.getdebug();
-}
-
-//public void requestWr()
-//Android specific: true
-//Runs only once, this functions check for storage access and request the user to give the permission
-function OSInterface_requestWr() {
-    Android.requestWr();
-}
-
-//public boolean HasBackupFile(String file)
-//file =  the file path to check
-//Android specific: true
-//Check if the file exist before restore it
-function OSInterface_HasBackupFile(file) {
-    return Android.HasBackupFile(file);
-}
-
-//public String RestoreBackupFile(String file)
-//file =  the file path to restore
-//Android specific: true
-//Check if the file exist before restore it
-function OSInterface_RestoreBackupFile(file) {
-    return Android.RestoreBackupFile(file);
-}
-
-//public boolean canBackupFile()
-//Android specific: true
-//Check if storage access is available
-function OSInterface_canBackupFile() {
-    return Android.canBackupFile();
 }
 
 //public String getDevice()

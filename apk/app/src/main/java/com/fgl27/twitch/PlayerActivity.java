@@ -2492,16 +2492,6 @@ public class PlayerActivity extends Activity {
         LoadUrlWebView("javascript:smartTwitchTV." + WebViewLoad);
     }
 
-    @TargetApi(23)
-    private void Check_WriteExternalStorage() {
-        if (!Tools.WR_storage(this)) {
-            requestPermissions(new String[]{
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    123);
-        }
-    }
-
     //TO understand better the use of it WebAppInterface function is used check the file app/specific/Android.js
     @SuppressWarnings({"unused", "RedundantSuppression"})
     public class WebAppInterface {
@@ -3821,42 +3811,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mhideSystemUI() {
             runOnUiThread(PlayerActivity.this::hideSystemUI);
-        }
-
-        @JavascriptInterface
-        public void BackupFile(String file, String file_content) {
-            SaveBackupJsonHandler.postDelayed(() -> {
-                if (Tools.WR_storage(mWebViewContext)) {
-                    Tools.BackupJson(
-                            mWebViewContext.getPackageName(),
-                            file,
-                            file_content
-                    );
-                }
-            }, 5000);
-        }
-
-        @JavascriptInterface
-        public boolean HasBackupFile(String file) {
-            return Tools.HasBackupFile(file, mWebViewContext);
-        }
-
-        @JavascriptInterface
-        public String RestoreBackupFile(String file) {
-            if (Tools.WR_storage(mWebViewContext))
-                return Tools.RestoreBackupFile(file, mWebViewContext);
-
-            return null;
-        }
-
-        @JavascriptInterface
-        public void requestWr() {
-            runOnUiThread(PlayerActivity.this::Check_WriteExternalStorage);
-        }
-
-        @JavascriptInterface
-        public boolean canBackupFile() {
-            return Tools.WR_storage(mWebViewContext);
         }
 
         @JavascriptInterface

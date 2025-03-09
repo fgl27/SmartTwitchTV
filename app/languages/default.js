@@ -34,6 +34,7 @@ var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
 var STR_SETTINGS_KEY = '';
+var STR_BACKUP_ACCOUNT_MAIN_0 = '';
 var STR_CONTROLS_MAIN_0 = '';
 var STR_CONTROLS_PLAYER_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
@@ -389,6 +390,24 @@ function DefaultLang() {
         STR_DIV_TITLE +
         STR_CLOSE_THIS +
         '</div>';
+
+    STR_BACKUP_ACCOUNT_MAIN_0 =
+        '<div id="backup_container">' + //mouse click outside to close this
+        STR_DIV_TITLE +
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE +
+        '</div>' +
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE_SUMMARY +
+        STR_BR +
+        STR_BR +
+        '<div id="backup_body">' +
+        STR_BACKUP_ACCOUNT_DIALOG_BODY +
+        '</div>' +
+        STR_BR +
+        '<div id="backup_body_checking"></div>' +
+        STR_BR +
+        '<div id="backup_end_info" class="about_text_title">' +
+        STR_CLOSE_THIS +
+        '</div></div>';
 
     STR_CONTROLS_PLAYER_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' + STR_CONTROLS_PLAY_0 + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 

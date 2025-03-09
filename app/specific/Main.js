@@ -159,12 +159,12 @@ var Main_IsOn_OSInterfaceVersion = '';
 var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
 var Main_randomImg = '?' + Math.random();
-var Main_DoRestore = true;
-var Main_CanBackup = false;
+
 var Main_UserBackupFile = 'user.json';
 var Main_HistoryBackupFile = 'history.json';
 var Main_Scene1Doc;
 var Main_Scene2Doc;
+var Main_started;
 var Main_about_dialog_div;
 var Main_vodOffset = 0;
 var Main_body = document.body;
@@ -279,13 +279,25 @@ function Main_StartApp() {
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
-        Main_DoRestore = AddUser_RestoreUsers();
-
-        if (!Main_values.Restore_Backup_Check && Main_IsOn_OSInterface && OSInterface_getSDK() < 30) {
+        if (!Main_values.Restore_Backup_Check) {
             try {
-                OSInterface_requestWr();
                 Main_HideLoadDialog();
-                Main_innerHTML('main_dialog_remove', STR_BACKUP);
+                Main_innerHTML(
+                    'main_dialog_remove',
+                    STR_DIV_TITLE +
+                        STR_WELCOME +
+                        STR_SPACE_HTML +
+                        STR_TWITCH_TV +
+                        '</div>' +
+                        STR_BR +
+                        STR_DIV_TITLE +
+                        STR_BACKUP_START +
+                        '</div>' +
+                        STR_BACKUP +
+                        GDriveFileName
+                );
+                Main_getElementById('main_dialog_remove_container').style.marginTop = '3%';
+
                 Main_textContent('yes_no_dialog_button_no', STR_NO);
                 Main_textContent('yes_no_dialog_button_yes', STR_YES);
                 Main_ShowElement('yes_no_dialog');
@@ -296,7 +308,12 @@ function Main_StartApp() {
                 Main_ready(Main_initWindows);
                 return;
             }
-        } else Main_ready(Main_initWindows);
+        } else {
+            AddUser_RestoreUsers();
+        }
+        //  else {
+        //     Main_ready(Main_initWindows);
+        // }
     });
 }
 
@@ -314,6 +331,12 @@ function Main_initClick() {
 }
 
 function Main_BackupDialogKeyDown(event) {
+    if (Settings_BackupDialogExit(event)) {
+        Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
+        Main_initWindows();
+        return;
+    }
+
     switch (event.keyCode) {
         case KEY_LEFT:
             Users_RemoveCursor--;
@@ -326,47 +349,33 @@ function Main_BackupDialogKeyDown(event) {
             Users_RemoveCursorSet();
             break;
         case KEY_ENTER:
-            Main_PreventCheckResume = false;
-            Main_showLoadDialog();
-            Main_HideElement('yes_no_dialog');
-            Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
-            if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
-            else Main_initWindows();
+            Main_BackupDialogKeyDownEnter();
             break;
         default:
             break;
     }
 }
 
-function Main_initRestoreBackups() {
-    try {
-        if (OSInterface_HasBackupFile(Main_UserBackupFile)) {
-            var tempBackup = OSInterface_RestoreBackupFile(Main_UserBackupFile);
+function Main_BackupDialogKeyDownEnter() {
+    Main_showLoadDialog();
+    Main_HideElement('yes_no_dialog');
 
-            if (tempBackup !== null) {
-                var tempBackupArray = JSON.parse(tempBackup) || [];
-
-                if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
-                    Main_setItem('AddUser_UsernameArrayNew', tempBackup);
-
-                    tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
-                    var tempBackupObj = JSON.parse(tempBackup) || {};
-
-                    if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
-
-                    AddUser_RestoreUsers();
-                    if (AddUser_UserHasToken()) OSInterface_mCheckRefresh();
-                }
-            }
-        }
-
-        Main_initWindows();
-    } catch (e) {
+    if (Users_RemoveCursor) {
+        Main_initRestoreBackups();
+    } else {
+        Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
         Main_initWindows();
     }
 }
 
+//TODO update this
+function Main_initRestoreBackups() {
+    Settings_DialogAddBackupAccount();
+}
+
 function Main_initWindows() {
+    console.log('Main_initWindows');
+    Main_started = true;
     if (AddUser_UserHasToken()) {
         Main_initWindowsEnd();
     } else {
@@ -376,7 +385,6 @@ function Main_initWindows() {
 
 function Main_initWindowsEnd() {
     //Main_Log('Main_initWindows');
-    Main_CheckBackup();
 
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
@@ -415,19 +423,6 @@ function Main_initWindowsEnd() {
 
     Main_SetStringsSecondary();
     Main_checkVersion();
-}
-
-function Main_CheckBackup() {
-    if (Main_IsOn_OSInterface) {
-        Main_CanBackup = OSInterface_canBackupFile();
-
-        //Backup at start as a backup may never be done yet
-        if (Main_CanBackup && AddUser_IsUserSet()) {
-            Main_setTimeout(function () {
-                OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-            }, 10000);
-        }
-    } else Main_CanBackup = false;
 }
 
 function Main_CheckDevice() {
@@ -880,6 +875,14 @@ function Main_CounterDialog(x, y, Columns, total) {
     else Main_CounterDialogRst();
 }
 
+function Main_PlayMainShowWarning(string, time, changePos) {
+    if (Main_isScene1DocVisible()) {
+        Main_showWarningDialog(string, time, changePos);
+    } else {
+        Play_showWarningDialog(string, time);
+    }
+}
+
 var Main_showWarningDialogId;
 function Main_showWarningDialog(text, timeout, changePos) {
     var doc = Main_getElementById('dialog_warning');
@@ -1099,14 +1102,19 @@ function Main_SaveValuesWithTimeout() {
     Main_SaveValuesWithTimeoutId = Main_setTimeout(Main_SaveValues, 500, Main_SaveValuesWithTimeoutId);
 }
 
-function Main_SaveValues() {
+function Main_SaveValues(backup) {
     Main_setItem('Main_values', JSON.stringify(Main_values));
     Main_setItem('Play_data', JSON.stringify(Play_data));
+
+    if (backup) {
+        GDriveBackup();
+    }
 }
 
 function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
     Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
+    console.log('Main_values', Main_values);
 }
 
 function Main_ExitCurrent(ExitCurrent) {
@@ -1264,11 +1272,7 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
         if (Main_IsOn_OSInterface) {
             OSInterface_showToast(updateString);
         } else {
-            if (Main_isScene1DocVisible()) {
-                Main_showWarningDialog(updateString, 3000);
-            } else {
-                Play_showWarningDialog(updateString, 3000);
-            }
+            Main_PlayMainShowWarning(updateString, 3000);
         }
 
         Main_update_show_toast = true;
@@ -1370,10 +1374,7 @@ function Main_UpdateDialogKeyEnter() {
                 Main_hideScene1Doc();
                 Main_hideScene2Doc();
 
-                //delay to make sure all was saved OK
-                Main_setTimeout(function () {
-                    OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
-                }, 250);
+                Main_RefreshPage();
             } else {
                 Main_showLoadDialog();
                 var fromPlay = OSInterface_getInstallFromPLay();
@@ -1387,6 +1388,13 @@ function Main_UpdateDialogKeyEnter() {
             Main_UpdateDialogStartCheck();
         }
     }
+}
+
+function Main_RefreshPage() {
+    //delay to make sure all was saved OK
+    Main_setTimeout(function () {
+        OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+    }, 250);
 }
 
 var Main_UpdateDialogLastCheck;
@@ -2339,6 +2347,7 @@ function Main_Set_history(type, Data, skipUpdateDate) {
     }
 
     var ArrayPos = Main_history_GetById(type, Data[7]);
+    Main_history_Clean_deleted(type, Data[7]);
 
     if (ArrayPos) {
         ArrayPos.data = Main_Slice(Data);
@@ -2422,6 +2431,13 @@ function Main_history_Exist(type, id) {
     }
 
     return -1;
+}
+
+function Main_history_Clean_deleted(type, id) {
+    Screens_checkDeleteObj();
+    id = id.toString();
+
+    delete Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][id];
 }
 
 function Main_history_GetById(type, id) {
@@ -2533,10 +2549,18 @@ function Main_history_Exist_By_VOD_Id(id) {
 }
 
 function Main_Restore_history() {
-    Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+    Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
+
+    console.log('Main_values_History_data', Main_values_History_data);
 
     Main_history_SetVod_Watched();
     Main_UpdateBlockedHomeScreen();
+
+    if (Settings_value.sync_enabled.defaultValue) {
+        GDriveRestore();
+    } else {
+        Main_initWindows();
+    }
 }
 
 function Main_History_Sort(array, msort, direction) {
@@ -2560,12 +2584,11 @@ function Main_setHistoryItem(time) {
 
 function Main_SaveHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
-    Main_setItem('Main_values_History_data', string);
+    Main_setItem(Main_values_History_data_ItemName, string);
 
-    if (Main_CanBackup) {
-        OSInterface_BackupFile(Main_HistoryBackupFile, string);
-    }
     Main_UpdateBlockedHomeScreen();
+
+    console.log('Main_SaveHistoryItem', Main_values_History_data);
 }
 
 function Main_UpdateBlockedHomeScreen() {
@@ -2858,8 +2881,7 @@ function Main_StartHistoryworker() {
     if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-        i = 0,
-        len = array.length,
+        i = array.length,
         header;
 
     if (AddUser_UserHasToken()) {
@@ -2868,8 +2890,8 @@ function Main_StartHistoryworker() {
         header = Main_Bearer_Headers;
     }
 
-    for (i; i < len; i++) {
-        if (!array[i].forceVod) {
+    while (i--) {
+        if (array[i] && !array[i].forceVod) {
             if (array[i].data[14] && array[i].data[14] !== '') {
                 Main_StartHistoryworkerBradcast(array[i], 1, header);
             } else {
@@ -3015,6 +3037,10 @@ function Main_CheckStop() {
     Main_isStopped = true;
     Main_PreventClick(true, Main_PreventClickfun);
 
+    //sync backup, but prevent backup in background
+    GDriveBackup();
+    Main_clearTimeout(GDriveDoBackupID);
+
     //Player related
     ChatLive_Clear(0);
     ChatLive_Clear(1);
@@ -3141,8 +3167,11 @@ function Main_CheckResume(skipPlay) {
 
     Main_SetUpdateclock();
 
-    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
-    else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
+    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) {
+        Play_CheckResume();
+    } else {
+        Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
+    }
 
     if (UserIsSet) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 2000, Main_CheckResumeFeedId);
@@ -3718,6 +3747,8 @@ function Main_Set() {
         AddCode_client_token = atob(AddCode_client_token);
         AddCode_backup_client_id = atob(AddCode_backup_client_id);
         Chat_token = atob(Chat_token);
+        GDriveClientKey = atob(GDriveClientKey);
+        GDriveKey = atob(GDriveKey);
 
         Play_Headers = JSON.stringify([['Client-ID', Chat_token]]);
     }

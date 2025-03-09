@@ -242,7 +242,7 @@ function PlayVod_PosStart() {
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id, true);
 
     Main_values.Play_WasPlaying = 2;
-    Main_SaveValues();
+    Main_SaveValues(true);
 }
 
 function PlayVod_convertHMS(value) {

@@ -247,7 +247,7 @@ function Play_Start(offline_chat) {
     Play_ShowPanelStatus(1);
 
     Main_values.Play_WasPlaying = 1;
-    Main_SaveValues();
+    Main_SaveValues(true);
     //Check the Play_UpdateMainStream fun when on a browser
     if (!Main_IsOn_OSInterface && !offline_chat && !skipTest) {
         Play_UpdateMainStream(true, true);
@@ -2182,7 +2182,7 @@ function Play_RestorePlayData(error_410, Isforbiden) {
 
     Play_RestorePlayDataValues();
 
-    Main_SaveValues();
+    Main_SaveValues(true);
 }
 
 function Play_SavePlayData() {

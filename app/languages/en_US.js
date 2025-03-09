@@ -526,15 +526,7 @@ function en_USLang() {
     STR_OLDEST = 'Oldest watched';
     STR_PRESS_ENTER_D = 'Press enter to delete';
     STR_LIVE_VOD = 'This live is now a VOD<br>opening the VOD from where you last stopped watching the live:<br>';
-    STR_BACKUP =
-        'Allow the app to make and restore backups?<br>(Users and their history will be backed up)' +
-        '<br><br>' +
-        'If you click Yes, the app will save backups for future use, and restore a saved backup if app data is empty.' +
-        'Is necessary to give the app storage permission for this, so give before click yes.' +
-        '<br><br>' +
-        "If you don't give storage permission, no backups will be ever made." +
-        '<br><br>' +
-        'The Backup folder path is Main_Storage/data/com.fgl27.twitch/Backup';
+
     STR_DELETE_SURE = 'Are you sure you want to delete all';
     STR_CREATED_NEWEST = 'Created / Uptime newest';
     STR_CREATED_OLDEST = 'Created / Uptime Oldest';
@@ -813,7 +805,7 @@ function en_USLang() {
     STR_WARNING_BROWSER_SUMMARY =
         'This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).';
     STR_THUMB_OPTIONS_CLICK = 'Click twice above an action (to open or apply it), click outside the dialog to exit without applying';
-    STR_CLOSE_THIS_BROWSER = 'Press return, enter or click outside to close this';
+    STR_CLOSE_THIS_BROWSER = 'Press return, enter or mouse click outside to close this';
 
     STR_DISABLE_EMBED = 'Enable Live and Vod Twitch player';
     STR_DISABLE_EMBED_SUMMARY =
@@ -925,4 +917,58 @@ function en_USLang() {
 
     STR_DISABLE_SHARED_CHAT = 'Disable shared chat';
     STR_DISABLE_SHARED_CHAT_SUMMARY = 'If set to yes will only show chat messages from the stream you open';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Remove Google Drive account';
+    STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Account will be used to only access file the app created TODO';
+
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Add google drive title';
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE_SUMMARY = 'Add google summary';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'getting the code...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Access denied';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Access success, Please wait while the app verifies...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'The app will restore and close this dialog in a few';
+    STR_BACKUP_NO_BACKUP_FOUND = 'No previously made backup found, backup created with success';
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
+
+    STR_BACKUP_START = 'Sync across devices, backup, and restore user info using Google Drive?';
+
+    STR_BACKUP_SIZE = 'Backup size:';
+    STR_BACKUP_SYNC = 'Sync and Backup';
+    STR_BACKUP_SYNC_SUMMARY =
+        'The app will be able to: See, edit, create, and delete only the specific Google Drive files this app create.' +
+        '<br><br>' +
+        'The app will NOT be able to see, change or delete any other file in yours Google drive.';
+
+    STR_BACKUP_USER_INFO = '(User info: Users, favorites, history, blocked, and settings)';
+
+    STR_BACKUP_SYNC_USER = 'Sync users';
+    STR_BACKUP_SYNC_HISTORY = 'Sync users favorites, history, blocked';
+
+    STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
+    STR_BACKUP_SYNC_RESTORE = 'Backup found';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found choose what to restore and press return or enter key to confirm';
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
+    STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
+
+    STR_BACKUP =
+        STR_BACKUP_USER_INFO +
+        '<br><br>' +
+        'You can click NO and add one later using settings.' +
+        '<br><br>' +
+        'If you click YES, you need to add a Google Drive account now.' +
+        '<br><br>' +
+        STR_BACKUP_SYNC_SUMMARY +
+        '<br><br>' +
+        'The backup size is around 50 to 500 KB.' +
+        '<br><br>' +
+        'The Backup file name is:<br><br>';
+
+    STR_BACKUP_ENABLE = 'Backup enable';
+    STR_BACKUP_ENABLE_SUMMARY = 'If set to YES the app will keep a backup of all user info ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Sync enable';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY =
+        'If set to YES, the app will sync this device with others using the same Google Drive account. To switch devices and continue watching the same content, minimize the app on the current device (press the Home key), then with the app fully closed on the other device open it.';
 }

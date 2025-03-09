@@ -1,0 +1,579 @@
+/*
+ * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+ *
+ * SmartTwitchTV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SmartTwitchTV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+ *
+ */
+
+// TODO
+
+// Test Ui to choose each option
+// informing that backup was success and refresh the page
+
+// review and sync process add option to what to sync GDriveSyncFromBackup7
+// related to above after add account rebuild dialog to show other sync option
+
+//honer sync user history settings
+
+//UPDATE GDriveRestoreFromBackup WHAT to sync
+
+//12h clock
+
+//fix notification for android 11
+
+//update player
+
+//aftet block save backup
+
+//Variable initialization
+var GDriveValidateTokenUrl = 'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=';
+var GDriveUploadNewUrl = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+var GDriveUpdateUrl = 'https://www.googleapis.com/upload/drive/v3/files/%x?uploadType=media';
+var GDriveFileIdUrl = 'https://www.googleapis.com/drive/v3/files?q=%x&fields=files(id,name,createdTime,modifiedTime,mimeType,size,trashed)';
+var GDriveDownLoadUrl = 'https://www.googleapis.com/drive/v3/files/%x?alt=media';
+var GDriveUrl = 'https://oauth2.googleapis.com/';
+
+var GDriveToken = GDriveUrl + 'token?';
+var GDriveCode = GDriveUrl + 'device/code?';
+
+var GDriveClientKey = 'MTAwNTQzNzk3NDA3MC1yZ2I5bGIyNmk1OGJlN2picXM0b2V1MWliOHA2ZTI1cy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==';
+var GDriveKey = 'R09DU1BYLU1PaE1UTkd6bTZ2UVF5d3d2YUJaVFFiZlNhQXo=';
+
+var GDriveDeviceCodeTimeout = 5;
+var GDriveBoundary = '--GDriveBoundary--';
+var GDriveFileName = 'STTV_BACKUP.json';
+var GDriveMetadata = JSON.stringify({
+    name: GDriveFileName,
+    mimeType: 'application/json'
+});
+var GDrivePreventClose = false;
+
+var GDriveHeader;
+var GDriveFileID;
+var GDriveDeviceCode;
+var GDriveTokenExpiresTime;
+var GDriveRefreshToken;
+var GDriveAccessToken;
+var GDriveLastBackupDate;
+var GDriveBackupSize;
+var GDriveBackupExpiresTime;
+var GDriveCheckCodeId;
+var GDriveDoBackupID;
+var GDriveSetExpiresId;
+
+var AddUser_UserArrayItemName = 'AddUser_UsernameArrayNew';
+var Main_values_History_data_ItemName = 'Main_values_History_data';
+var GDriveBackupDateItemName = 'backup_date';
+
+var GDriveDoBackupLimit = 100;
+var GDriveDoBackupInterval = 100 * 1000;
+var GDriveDoBackupCall = [];
+
+function GDriveSetExpires(obj) {
+    console.log('GDriveSetExpires', obj);
+
+    GDriveTokenExpiresTime = (parseInt(obj.expires_in) - 60) * 1000;
+    GDriveBackupExpiresTime = new Date().getTime() + GDriveTokenExpiresTime;
+    Main_setItem('GDriveBackupExpiresTime', GDriveBackupExpiresTime);
+
+    GDriveSetHeader(GDriveTokenExpiresTime);
+
+    console.log('GDriveTokenExpiresTime', GDriveTokenExpiresTime);
+}
+
+function GDriveSetHeader(expiresTime) {
+    GDriveSetExpiresId = Main_setTimeout(GDriveDeviceRefresh, expiresTime, GDriveSetExpiresId);
+
+    GDriveHeader = [['Authorization', 'Bearer ' + GDriveAccessToken]];
+}
+
+function GDriveDeviceRefresh(sync) {
+    GDriveRefreshAccessToken(GDriveDeviceRefreshSuccess, noop_fun, sync, 0);
+}
+
+function GDriveDeviceRefreshSuccess(obj) {
+    console.log('GDriveDeviceRefreshSuccess', obj);
+    console.log(JSON.parse(obj.responseText));
+
+    if (obj.status === 200) {
+        var data = JSON.parse(obj.responseText);
+        GDriveAccessToken = data.access_token;
+        Main_setItem('GDriveAccessToken', GDriveAccessToken);
+
+        GDriveSetExpires(data);
+    } else {
+        GDriveGetBackupAPI_Fail();
+    }
+}
+
+function GDriveGetBackupAPI_Fail() {
+    Main_PlayMainShowWarning(STR_BACKUP_ACCOUNT_REFRESH_ERROR, 7500, true);
+    GDriveCheckMainStarted();
+}
+
+function GDriveClean() {
+    GDriveRefreshToken = null;
+    GDriveAccessToken = null;
+    GDriveFileID = null;
+    GDriveLastBackupDate = null;
+    GDriveBackupSize = null;
+    GDriveDoBackupCall = [];
+
+    localStorage.removeItem('GDriveRefreshToken');
+    localStorage.removeItem('GDriveAccessToken');
+    localStorage.removeItem('GDriveFileID');
+    localStorage.removeItem('GDriveLastBackupDate');
+    localStorage.removeItem('GDriveBackupSize');
+    localStorage.removeItem('GDriveRefreshToken');
+
+    Main_clearTimeout(GDriveDoBackupID);
+    Main_clearTimeout(GDriveSetExpiresId);
+}
+
+function GDriveErase() {
+    console.log('GDriveErase');
+    GDriveClean();
+
+    GDriveCheckMainStarted();
+}
+
+function GDriveUpdateFile() {
+    console.log('GDriveUpdateFile');
+
+    GDriveUpdateFile2(GDriveUpFileSuccess, noop_fun, 0, 0);
+}
+
+function GDriveUpFileSuccess(obj) {
+    console.log('GDriveUpFileSuccess', obj);
+
+    if (obj.status === 200) {
+        GDriveUpFileSuccessSave(obj);
+    } else {
+        console.log('GDriveUpFileSuccess fail', obj.responseText);
+        Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);
+    }
+}
+
+function GDriveUpFileSuccessSave(obj) {
+    var data = JSON.parse(obj.responseText);
+    GDriveFileID = data.id;
+    Main_setItem('GDriveFileID', GDriveFileID);
+
+    console.log('GDriveUpFileSuccessSave data', data);
+}
+
+function GDriveGetBackupFileContent() {
+    console.log('GDriveGetBackupFile');
+
+    var backup = {},
+        i = 0,
+        len = localStorage.length,
+        key = '';
+
+    for (i; i < len; i++) {
+        key = localStorage.key(i);
+        backup[key] = localStorage.getItem(key);
+    }
+
+    backup[GDriveBackupDateItemName] = new Date().getTime();
+    GDriveLastBackupDate = backup[GDriveBackupDateItemName];
+    Main_setItem('GDriveLastBackupDate', GDriveLastBackupDate);
+
+    var backupString = JSON.stringify(backup);
+    GDriveSetBackupSize(backupString);
+
+    return backupString;
+}
+
+function GDriveSetBackupSize(backupString) {
+    try {
+        var sizeInBytes = new Blob([backupString]).size;
+        console.log('GDriveSetBackupSize', sizeInBytes);
+        GDriveBackupSize = formatFileSize(sizeInBytes);
+    } catch (error) {
+        console.log('GDriveSetBackupSize error', error);
+    }
+}
+
+var formatFileSizeArray = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+
+    var i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+    return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + formatFileSizeArray[i];
+}
+
+//api limit is 100 request per 100 seconds
+function GDriveCanDoBackup() {
+    var now = new Date().getTime(),
+        result = false;
+
+    console.log('GDriveDoBackupCall', GDriveDoBackupCall);
+    // Remove calls that are outside the time window
+    while (GDriveDoBackupCall.length > 0 && GDriveDoBackupCall[0] <= now - GDriveDoBackupInterval) {
+        GDriveDoBackupCall.shift();
+    }
+
+    if (GDriveDoBackupCall.length < GDriveDoBackupLimit) {
+        GDriveDoBackupCall.push(now);
+
+        result = true;
+    }
+
+    Main_setItem('GDriveDoBackupCall', JSON.stringify(GDriveDoBackupCall));
+
+    return result;
+}
+
+function GDriveSyncBackupSetting(backup) {
+    GDriveRestoreSettings(backup);
+    Main_RestoreValues();
+}
+
+function GDriveRefresh() {
+    console.log('GDriveRefresh xxx');
+
+    if (Main_IsOn_OSInterface) {
+        Main_RefreshPage();
+    } else {
+        window.location.reload();
+    }
+}
+
+function GDriveSyncBackups(backupsObj, date) {
+    var backupUsers = Object.keys(backupsObj),
+        i = 0,
+        len = backupUsers.length,
+        user = '',
+        userBackupObj,
+        saveAfter;
+
+    console.log('GDriveSyncBackups', backupsObj);
+
+    for (i; i < len; i++) {
+        user = backupUsers[i];
+        userBackupObj = backupsObj[user];
+
+        console.log('userBackupObj', userBackupObj);
+        console.log('userBackupObj was_deleted', userBackupObj.was_deleted);
+
+        if (Main_values_History_data[user]) {
+            saveAfter =
+                GDriveSyncBackupsByArray(
+                    userBackupObj.clip,
+                    Main_values_History_data[user].clip,
+                    userBackupObj.was_deleted ? userBackupObj.was_deleted.clip : {},
+                    Main_values_History_data[user].was_deleted ? Main_values_History_data[user].was_deleted.clip : {}
+                ) || saveAfter;
+            saveAfter =
+                GDriveSyncBackupsByArray(
+                    userBackupObj.live,
+                    Main_values_History_data[user].live,
+                    userBackupObj.was_deleted ? userBackupObj.was_deleted.live : {},
+                    Main_values_History_data[user].was_deleted ? Main_values_History_data[user].was_deleted.live : {}
+                ) || saveAfter;
+            saveAfter =
+                GDriveSyncBackupsByArray(
+                    userBackupObj.vod,
+                    Main_values_History_data[user].vod,
+                    userBackupObj.was_deleted ? userBackupObj.was_deleted.vod : {},
+                    Main_values_History_data[user].was_deleted ? Main_values_History_data[user].was_deleted.vod : {}
+                ) || saveAfter;
+
+            if (userBackupObj.blocked) {
+                Screens_BlockSetDefaultObj();
+
+                saveAfter =
+                    GDriveSyncBackupsByObj(
+                        userBackupObj.blocked && userBackupObj.blocked.channel ? userBackupObj.blocked.channel : {},
+                        Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.channel
+                            ? Main_values_History_data[user].blocked.channel
+                            : {},
+                        date
+                    ) || saveAfter;
+                saveAfter =
+                    GDriveSyncBackupsByObj(
+                        userBackupObj.blocked && userBackupObj.blocked.game ? userBackupObj.blocked.game : {},
+                        Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.game
+                            ? Main_values_History_data[user].blocked.game
+                            : {},
+                        date
+                    ) || saveAfter;
+            }
+        } else {
+            Main_values_History_data[user] = userBackupObj;
+            saveAfter = true;
+        }
+    }
+
+    if (saveAfter) {
+        Main_SaveHistoryItem();
+
+        Main_history_SetVod_Watched();
+    }
+}
+
+function GDriveSyncBackupsByObj(backupObj, localObj, date) {
+    var i = 0,
+        backupItems = Object.keys(backupObj),
+        len = backupItems.length,
+        saveAfter,
+        key = '';
+
+    //if any new entry add it
+    //if date is newer update from
+    for (i; i < len; i++) {
+        key = backupItems[i];
+
+        if (!localObj[key] && backupObj[key].date > GDriveLastBackupDate) {
+            localObj[key] = backupObj[key];
+            saveAfter = true;
+        }
+    }
+
+    var userItems = Object.keys(localObj);
+
+    i = userItems.length;
+
+    while (i--) {
+        key = userItems[i];
+
+        //if obj.date is less than date the user was deleted by another device
+        //as we always sync before saving must always work without deleting something new
+
+        // if (localObj[key] && !backupObj[key] && localObj[key].date < date) {
+        //     delete localObj[key];
+
+        //     saveAfter = true;
+        // }
+    }
+
+    return saveAfter;
+}
+
+function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localDeleted, isUser) {
+    var i = 0,
+        len = backupArray.length,
+        backupObj = GDriveBackupObject(backupArray),
+        localObj = GDriveBackupObject(localArray),
+        saveAfter,
+        toUpdateArray = {};
+
+    console.log('backupArray', JSON.stringify(backupArray));
+    console.log('localArray', JSON.stringify(localArray));
+    console.log('backupDeleted', JSON.stringify(backupDeleted));
+    console.log('localDeleted', JSON.stringify(localDeleted));
+
+    //if any new entry add it
+    //if date is newer update from
+    for (i; i < len; i++) {
+        //for backupArray[i]
+        // New entry on local
+        console.log('before backupArray[i].id', backupArray[i].id);
+
+        if (!localObj[backupArray[i].id]) {
+            console.log('before add localDeleted', localDeleted[backupArray[i].id]);
+            console.log('before add backupDeleted', backupArray[i].date);
+
+            //i snot deleted locally or the date was delete is before the last watched date
+            if (!localDeleted[backupArray[i].id] || localDeleted[backupArray[i].id].date < backupArray[i].date) {
+                console.log('add', backupArray[i]);
+
+                localArray.push(backupArray[i]);
+                delete localDeleted[backupArray[i].id];
+
+                saveAfter = true;
+            }
+        } else if (localObj[backupArray[i].id].date < backupArray[i].date) {
+            console.log('update', backupArray[i]);
+            // Entry exists on both, use the most recent one
+            toUpdateArray[backupArray[i].id] = backupArray[i];
+        }
+    }
+
+    i = 0;
+    len = localArray.length;
+
+    for (i; i < len; i++) {
+        if (toUpdateArray[localArray[i].id]) {
+            localArray[i] = toUpdateArray[localArray[i].id];
+            saveAfter = true;
+        }
+    }
+
+    i = localArray.length;
+
+    while (i--) {
+        //skip removing main user if isUser
+        if (isUser && !i) {
+            continue;
+        }
+
+        if (localArray[i] && backupDeleted[localArray[i].id] && backupDeleted[localArray[i].id].date > localArray[i].date) {
+            if (localArray[i].timeout_id) {
+                Main_clearTimeout(localArray[i].timeout_id);
+            }
+
+            localDeleted[localArray[i].id] = backupDeleted[localArray[i].id];
+            localArray.splice(i, 1);
+            saveAfter = true;
+        }
+    }
+
+    return saveAfter;
+}
+
+function GDriveBackupObject(mArray) {
+    var i = 0,
+        len = mArray.length,
+        obj = {};
+
+    for (i; i < len; i++) {
+        obj[mArray[i].id] = mArray[i];
+    }
+
+    return obj;
+}
+
+function GDriveRestoreSettings(backup) {
+    var backupItems = Object.keys(backup),
+        i = 0,
+        len = backupItems.length,
+        item = '';
+
+    for (i; i < len; i++) {
+        item = backupItems[i];
+
+        //Skip anything that is a app settings
+        if (item === GDriveBackupDateItemName || item === AddUser_UserArrayItemName || item === Main_values_History_data_ItemName) {
+            continue;
+        }
+
+        Main_setItem(item, backup[item]);
+    }
+}
+
+// function deleteAllFiles() {
+//     // Step 1: Get a list of all files
+//     var xhr = new XMLHttpRequest();
+//     var listUrl = 'https://www.googleapis.com/drive/v3/files?pageSize=1000';
+
+//     xhr.open('GET', listUrl, true);
+//     xhr.setRequestHeader('Authorization', 'Bearer ' + GDriveAccessToken);
+
+//     xhr.onload = function () {
+//         if (xhr.status === 200) {
+//             var fileList = JSON.parse(xhr.responseText);
+//             var files = fileList.files;
+
+//             // Step 2: Delete each file
+//             files.forEach(function (file) {
+//                 deleteFile(file.id);
+//             });
+//         } else {
+//             console.error('Error listing files:', xhr.statusText, xhr.responseText);
+//         }
+//     };
+
+//     xhr.onerror = function () {
+//         console.error('Error with the request.');
+//     };
+
+//     xhr.send();
+
+//     // Step 3: Delete each file by ID
+// }
+
+// function deleteFile(fileId) {
+//     var deleteXhr = new XMLHttpRequest();
+//     var deleteUrl = 'https://www.googleapis.com/drive/v3/files/' + fileId;
+
+//     deleteXhr.open('DELETE', deleteUrl, true);
+//     deleteXhr.setRequestHeader('Authorization', 'Bearer ' + GDriveAccessToken);
+
+//     deleteXhr.onload = function () {
+//         if (deleteXhr.status === 204) {
+//             console.log('File with ID ' + fileId + ' deleted successfully.');
+//         } else {
+//             console.error('Failed to delete file ' + fileId + ':', deleteXhr.statusText, deleteXhr.responseText);
+//         }
+//     };
+
+//     deleteXhr.onerror = function () {
+//         console.error('Error deleting file ' + fileId + '.');
+//     };
+
+//     deleteXhr.send();
+// }
+
+function GDriveNeedsSync(date) {
+    //skip sync if date is the same or smaller
+    if (GDriveLastBackupDate === date || GDriveLastBackupDate > date) {
+        return false;
+    }
+
+    return true;
+}
+
+function GDriveSyncFromBackup(backup, date, syncSettings) {
+    //GDriveSyncFromBackupSyncUser(backup, date);
+    GDriveSyncFromBackupSyncUserEtc(backup, date);
+
+    if (syncSettings) {
+        GDriveSyncBackupSetting(backup);
+    }
+}
+
+function GDriveSyncFromBackupSyncUser(backup, date) {
+    var usersArray = JSON.parse(backup[AddUser_UserArrayItemName]) || [];
+
+    if (usersArray && usersArray.length && GDriveSyncBackupsByArray(usersArray, AddUser_UsernameArray, {}, {}, true)) {
+        AddUser_SaveUserArray();
+    }
+}
+
+function GDriveSyncFromBackupSyncUserEtc(backup, date) {
+    var historyBlocked = JSON.parse(backup[Main_values_History_data_ItemName]) || {};
+
+    if (historyBlocked) {
+        GDriveSyncBackups(historyBlocked, date);
+    }
+}
+
+function GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
+    console.log('GDriveRestoreBackup');
+
+    if (!restoreUser) {
+        backup[AddUser_UserArrayItemName] = null;
+    }
+
+    if (!restoreHistoryBlocked) {
+        backup[Main_values_History_data_ItemName] = null;
+    }
+
+    if (backup[AddUser_UserArrayItemName]) {
+        Main_setItem(AddUser_UserArrayItemName, backup[AddUser_UserArrayItemName]);
+    }
+
+    if (backup[Main_values_History_data_ItemName]) {
+        Main_setItem(Main_values_History_data_ItemName, backup[Main_values_History_data_ItemName]);
+    }
+
+    if (restoreSettings) {
+        GDriveRestoreSettings(backup);
+    }
+}

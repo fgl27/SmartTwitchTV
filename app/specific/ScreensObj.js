@@ -3387,7 +3387,9 @@ function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2, check_3)
 }
 
 function ScreensObj_getStreamInfo(userId, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
-    if (!userId) return;
+    if (!userId) {
+        return;
+    }
 
     var theUrl = Main_helix_api + 'streams?user_id=' + userId;
 
