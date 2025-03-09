@@ -52,7 +52,7 @@ var Settings_value = {
             'Ελληνικά - Griechisch [EL]',
             'English [EN]',
             'Español - Spanisch [ES]',
-            'Suomi - Finnisch [FI]',
+            'Suomi - Finnish [FI]',
             'Français - French [FR]',
             'Italiano - Italian [IT]',
             'मानक हिन्दी - Hindi [HI]',
