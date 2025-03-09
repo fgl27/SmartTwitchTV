@@ -240,7 +240,7 @@ function pt_BRLang() {
     STR_STAY_OPEN = 'Permanecer na Live';
     STR_STAY_OPEN_SUMMARY = 'Fique ligado e verifique novamente para ver se volta ao vivo';
     STR_STAY_CHECK = 'Verificando se está ao vivo em:';
-    STR_STAY_CHECKING = 'Verificando se está ao vivo ...';
+    STR_STAY_CHECKING = 'Verificando se a transmissão está ao vivo...';
     STR_STAY_CHECK_LAST = 'Último resultado:';
     STR_STAY_IS_OFFLINE = 'O stream estava offline';
     STR_NO_BROADCAST = 'Sem Vídeos';
@@ -296,6 +296,8 @@ function pt_BRLang() {
     STR_MINUTES = 'minutos';
     STR_CLOCK_OFFSET = 'Clock offset';
     STR_CLOCK_OFFSET_SUMMARY = 'Ajuste o relógio do aplicativo em relação à sua escolha';
+    STR_CLOCK_AM_PM = 'Estilo do relógio';
+    STR_CLOCK_AM_PM_SUMMARY = 'Escolha entre 24H, 12H com AM/PM ou 12H sem AM/PM.';
     STR_APP_LANG = 'Idioma do aplicativo';
     STR_APP_LANG_SUMMARY = 'A linguagem dos textos do aplicativo';
     STR_CONTENT_LANG = 'Idioma do conteúdo';

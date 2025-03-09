@@ -205,7 +205,7 @@ function es_ESLang() {
     STR_STAY_OPEN = 'Permanecer en el stream';
 
     STR_STAY_CHECK_LAST = 'Último resultado:';
-
+    STR_STAY_CHECKING = 'Comprobando si la transmisión está en vivo...';
     STR_IS_NOW = 'es ahora';
 
     STR_SETTINGS_BUFFER_SIZE = 'Tamaño del buffer de inicio:';
@@ -242,6 +242,8 @@ function es_ESLang() {
     STR_MINUTES = 'minutos';
     STR_CLOCK_OFFSET = 'Desplazamiento del reloj';
     STR_CLOCK_OFFSET_SUMMARY = 'Ajustar el reloj de la aplicación principal en relación con su elección';
+    STR_CLOCK_AM_PM = 'Estilo de reloj';
+    STR_CLOCK_AM_PM_SUMMARY = 'Elige entre 24H, 12H con AM/PM o 12H sin AM/PM.';
     STR_CONTENT_LANG = 'Idioma del contenido';
     STR_CONTENT_LANG_SUMMARY = 'El idioma del contenido en su pantalla, directo, vods, clips';
     STR_APP_LANG = 'Idioma de la aplicación';

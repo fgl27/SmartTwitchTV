@@ -303,6 +303,8 @@ function ru_RULang() {
     STR_MINUTES = 'мин.';
     STR_CLOCK_OFFSET = 'Часы';
     STR_CLOCK_OFFSET_SUMMARY = 'Настройте разницу часов приложения в соответствии с вашим часовым поясом';
+    STR_CLOCK_AM_PM = 'Стиль часов';
+    STR_CLOCK_AM_PM_SUMMARY = 'Выберите между 24-часовым форматом, 12-часовым с AM/PM или 12-часовым без AM/PM.';
     STR_CONTENT_LANG = 'Язык контента';
     STR_CONTENT_LANG_SUMMARY = 'Язык отображаемого контента, стримы, видео, клипы';
     STR_APP_LANG = 'Язык приложения';
