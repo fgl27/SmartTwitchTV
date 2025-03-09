@@ -36705,7 +36705,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             key,
             ScreenObj[key].posY + '',
             ScreenObj[key].posX + '',
-            null,
+            obj[7],
             null,
             null,
             ScreensObj_ThumbInfoUpdate,
@@ -36713,12 +36713,16 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         );
     }
 
-    function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2) {
+    function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2, check_3) {
         if (!obj.data.length) {
             return;
         }
 
         var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
+        if (check_3 !== tempData[7]) {
+            return;
+        }
 
         var key = parseInt(checkResult);
         var id = check_1 + '_' + check_2;
