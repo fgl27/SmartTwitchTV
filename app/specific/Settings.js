@@ -51,7 +51,7 @@ var Settings_value = {
             'Deutsch [DE]',
             'Ελληνικά - Griechisch [EL]',
             'English [EN]',
-            'Español - Spanisch [ES]',
+            'Español - Spanish [ES]',
             'Suomi - Finnish [FI]',
             'Français - French [FR]',
             'Italiano - Italian [IT]',
