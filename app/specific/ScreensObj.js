@@ -3344,7 +3344,7 @@ function ScreensObj_updateThumbInfo(key) {
         key,
         ScreenObj[key].posY + '',
         ScreenObj[key].posX + '',
-        null,
+        obj[7],
         null,
         null,
         ScreensObj_ThumbInfoUpdate,
@@ -3352,12 +3352,16 @@ function ScreensObj_updateThumbInfo(key) {
     );
 }
 
-function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2) {
+function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2, check_3) {
     if (!obj.data.length) {
         return;
     }
 
     var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+
+    if (check_3 !== tempData[7]) {
+        return;
+    }
 
     var key = parseInt(checkResult);
     var id = check_1 + '_' + check_2;
