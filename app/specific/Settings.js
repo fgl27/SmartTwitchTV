@@ -433,7 +433,7 @@ var Settings_value = {
     clock_style: {
         //Migrated to dialog
         values: ['24h', '12H AM PM', '12h'],
-        defaultValue: 49
+        defaultValue: 1
     },
     thumb_background: {
         //Migrated to dialog
