@@ -37136,8 +37136,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 'Deutsch [DE]',
                 'Ελληνικά - Griechisch [EL]',
                 'English [EN]',
-                'Español - Spanisch [ES]',
-                'Suomi - Finnisch [FI]',
+                'Español - Spanish [ES]',
+                'Suomi - Finnish [FI]',
                 'Français - French [FR]',
                 'Italiano - Italian [IT]',
                 'मानक हिन्दी - Hindi [HI]',
@@ -37518,7 +37518,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         clock_style: {
             //Migrated to dialog
             values: ['24h', '12H AM PM', '12h'],
-            defaultValue: 49
+            defaultValue: 1
         },
         thumb_background: {
             //Migrated to dialog
