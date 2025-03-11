@@ -1977,11 +1977,11 @@ function Main_getHours(date) {
         settings_show_AM_PM = Settings_value.clock_style.defaultValue === 1;
 
     if (settings_AM_PM) {
-        hours = hours % 12 || 12;
-
         if (settings_show_AM_PM) {
             ampm += ' ' + (hours >= 12 ? 'PM' : 'AM');
         }
+
+        hours = hours % 12 || 12;
     }
 
     return Play_lessthanten(hours) + ':' + Play_lessthanten(minutes) + ampm;
