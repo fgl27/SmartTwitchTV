@@ -1123,9 +1123,11 @@ function OSInterface_SetLanguage(lang) {
 //String callback = the fun to receive the value
 //Android specific: true
 //Runs only once, this functions check for storage access and request the user to give the permission
-// function OSInterface_getDuration(callback) {
-//     Android.getDuration(callback);
-// }
+function OSInterface_getDuration(callback) {
+    if (Main_IsOn_OSInterface) {
+        Android.getDuration(callback);
+    }
+}
 
 //public boolean isKeyboardConnected()
 //Android specific: true

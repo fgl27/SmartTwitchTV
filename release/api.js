@@ -74,7 +74,8 @@
         Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
         PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
         PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
-        AddCode_AppTokenResult: AddCode_AppTokenResult
+        AddCode_AppTokenResult: AddCode_AppTokenResult,
+        Play_UpdateDurationDiv: Play_UpdateDurationDiv
     };
 
     /** Expose `smartTwitchTV` */

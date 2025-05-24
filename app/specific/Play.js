@@ -2037,7 +2037,9 @@ function Play_UpdateDuration(duration) {
     // Called only by JAVA
 
     if (Main_isScene1DocVisible()) {
-        if (!Sidepannel_isShowingUserLive()) Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
+        if (!Sidepannel_isShowingUserLive()) {
+            Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
+        }
     } else if (duration > 0) {
         Play_UpdateDurationDiv(duration);
 

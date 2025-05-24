@@ -635,6 +635,7 @@ function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
     PlayVod_RefreshProgressBarrID = Main_setInterval(
         function () {
             PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
+            OSInterface_getDuration('Play_UpdateDurationDiv');
         },
         PlayVod_RefreshProgressBarrTimeout,
         PlayVod_RefreshProgressBarrID
