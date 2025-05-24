@@ -54,7 +54,7 @@ var ChannelVod_title = '';
 var ChannelVod_game = '';
 
 var DefaultPreviewDelay = 200; //To avoid multiple simultaneous request
-var DefaultHttpGetTimeout = 30000;
+var DefaultHttpGetTimeout = 20000;
 var noop_fun = function () {};
 var ScreensObj_banner_added_section = false;
 

@@ -269,7 +269,13 @@ function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
     //if at te end of a request the values are different we have a issues
     proxy_fail_counter_checker = proxy_fail_counter;
 
-    return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, use_proxy);
+    try {
+        return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, use_proxy);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return null;
 }
 
 function PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, useProxy) {
@@ -281,7 +287,7 @@ function PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, useProxy) {
         //getToken
         var obj = OSInterface_mMethodUrlHeaders(
             PlayClip_BaseUrl, //urlString
-            DefaultHttpGetTimeout, //timeout
+            DefaultHttpGetTimeout / 2, //timeout
             (isLive ? Play_live_token : Play_vod_token).replace('%x', Channel_or_VOD_Id), //postMessage
             'POST', //Method
             0, //checkResult
@@ -311,7 +317,7 @@ function PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, useProxy, Token, 
 
     var obj = OSInterface_mMethodUrlHeaders(
         urlObj.url, //urlString
-        useProxy ? proxy_timeout : DefaultHttpGetTimeout, //timeout
+        DefaultHttpGetTimeout / 2, //timeout
         null, //postMessage
         null, //Method
         0, //checkResult
