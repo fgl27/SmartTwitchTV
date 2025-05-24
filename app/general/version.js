@@ -21,11 +21,20 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    publishVersionCode: 373, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-    WebVersion: 'March 09 2024',
-    WebTag: 705, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'May 25 2024',
+    WebTag: 707, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version May 25',
+            changes: [
+                'Update player dependencies to latest version, this may solve some player related issue',
+                'Fix support for VOD of current live, Twitch is now providing full replay of the live but you need to open it from the most recent VOD, when detected the playback will start from the end of the VOD and will continue update the duration',
+                'Fix random scenario that after changing app the player stayed loading for ever when returning to the app',
+                'General improves'
+            ]
+        },
         {
             title: 'Version January 27 & 28 2024',
             changes: [
