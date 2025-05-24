@@ -121,9 +121,8 @@ function PlayHLS_GetTokenResult(result, checkResult, check_1, check_2, check_3, 
             var Sig = tokenObj.signature;
 
             PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, checkResult, CheckId_x, callBackSuccess, Token, Sig, useProxy);
+            return;
         }
-
-        return;
     }
 
     // prettier-ignore
