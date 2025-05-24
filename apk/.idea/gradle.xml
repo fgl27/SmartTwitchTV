@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_ffmpeg" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_flac" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_iamf" />
+            <option value="$PROJECT_DIR$/../../media/libraries/decoder_mpegh" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_opus" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder_vp9" />
             <option value="$PROJECT_DIR$/../../media/libraries/effect" />
@@ -44,10 +45,10 @@
             <option value="$PROJECT_DIR$/../../media/libraries/test_utils_robolectric" />
             <option value="$PROJECT_DIR$/../../media/libraries/transformer" />
             <option value="$PROJECT_DIR$/../../media/libraries/ui" />
+            <option value="$PROJECT_DIR$/../../media/libraries/ui_compose" />
             <option value="$PROJECT_DIR$/../../media/libraries/ui_leanback" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
