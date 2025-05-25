@@ -4024,9 +4024,13 @@ function Screens_UpdatePlaybackTime(key, id) {
     }
 
     if (Screens_ObjNotNull(key)) {
+        if (ScreenObj[key].screenType === 1) {
+            Screens_PlaybackTimeGetVodDuration(key);
+        }
+
         var time = OSInterface_gettime() / 1000,
             data = Screens_GetObj(key),
-            originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
+            originalTime = Screens_PlaybackTimeGetOriginal(key, data);
 
         if (time || ScreenObj[key].screenType === 2) {
             Main_textContent(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
@@ -4063,13 +4067,27 @@ function Screens_ResetPlaybackTime(key, id) {
     }
 
     var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
-        originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
+        originalTime = Play_timeS(Screens_PlaybackTimeGetOriginal(key, data));
 
     Main_textContent(ScreenObj[key].ids[8] + id, originalTime);
 }
 
-function Screens_PlaybackTimeGetOrigianl(key, data) {
+function Screens_PlaybackTimeGetOriginal(key, data) {
     return data[ScreenObj[key].screenType === 1 ? 11 : 1];
+}
+
+function Screens_PlaybackTimeSetVodDuration(obj_id, key, value) {
+    if (!value || value < 0) {
+        return;
+    }
+
+    ScreenObj[key].DataObj[obj_id][11] = value / 1000;
+}
+
+function Screens_PlaybackTimeGetVodDuration(key) {
+    var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+    OSInterface_updateScreenDuration('Screens_PlaybackTimeSetVodDuration', key, obj_id);
 }
 
 var AGame_following = false;

@@ -2886,6 +2886,20 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void updateScreenDuration(String callback, long key, String obj_id) {
+
+            runOnUiThread(() -> {
+
+                if (PlayerObj[0].player != null) {
+
+                    mWebView.loadUrl("javascript:smartTwitchTV." + callback + "('" + obj_id + "'," + key + "," + PlayerObj[0].player.getDuration() + ")");
+
+                }
+            });
+
+        }
+
+        @JavascriptInterface
         public void mseekTo(long position) {
             runOnUiThread(() -> {
 

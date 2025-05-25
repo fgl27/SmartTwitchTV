@@ -1122,10 +1122,21 @@ function OSInterface_SetLanguage(lang) {
 //public void getDuration()
 //String callback = the fun to receive the value
 //Android specific: true
-//Runs only once, this functions check for storage access and request the user to give the permission
 function OSInterface_getDuration(callback) {
     if (Main_IsOn_OSInterface) {
         Android.getDuration(callback);
+    }
+}
+
+//public void updateScreenDuration()
+//String callback = the fun to receive the value
+//String id = the vodId
+//Android specific: true
+function OSInterface_updateScreenDuration(callback, key, obj_id) {
+    if (Main_IsOn_OSInterface) {
+        try {
+            Android.updateScreenDuration(callback, key, obj_id + '');
+        } catch (e) {}
     }
 }
 
