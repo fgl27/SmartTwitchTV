@@ -27,7 +27,8 @@ var Chat_cursor = null;
 var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
-var Chat_lastOffset = 0;
+var Chat_lastMsgTime = 0;
+var Chat_loadingMore = false;
 var Chat_fakeClock = 0;
 var Chat_fakeClockOld = 0;
 var Chat_title = '';
@@ -150,7 +151,7 @@ function Chat_StartFakeClockInterval() {
                     Chat_fakeClock = clip_player.currentTime;
                     Play_BufferSize = Chat_fakeClock + clip_player.buffered.end(0);
                 } catch (e) {
-                    console.log('Chat_StartFakeClockInterval e ' + e);
+                    console.log('Chat_StartFakeClockInterval e ', e);
                 }
             } else if (embedPlayer && PlayVod_isOn) {
                 try {
@@ -509,7 +510,7 @@ function Chat_loadChatSuccess(responseObj, id) {
         return;
     }
 
-    if (null_next) {
+    if (null_next && !Chat_loadingMore) {
         Chat_MessageVector({
             chat_number: 0,
             time: 0,
@@ -649,14 +650,23 @@ function Chat_loadChatSuccess(responseObj, id) {
             hasbits: hasbits && ChatLive_Highlight_Bits
         };
 
-        if (null_next) Chat_MessageVector(messageObj);
-        else if (Chat_cursor !== '') Chat_MessageVectorNext(messageObj);
+        if (null_next) {
+            Chat_MessageVector(messageObj);
+        } else if (Chat_cursor !== '') {
+            Chat_MessageVectorNext(messageObj);
+        }
     }
 
     if (null_next && Chat_Id[0] === id) {
         Chat_JustStarted = false;
-        Chat_Play(id);
-        if (Chat_cursor !== '') Chat_loadChatNext(id); //if (Chat_cursor === '') chat has ended
+
+        if (!Chat_loadingMore) {
+            Chat_Play(id);
+        }
+        Chat_loadingMore = false;
+        if (Chat_cursor !== '') {
+            Chat_loadChatNext(id); //if (Chat_cursor === '') chat has ended
+        }
     }
 }
 
@@ -705,8 +715,8 @@ function Chat_Clear() {
     Chat_hasEnded = false;
     Chat_Pause();
     Chat_Id[0] = 0;
-    Chat_lastOffset = 0;
-    Chat_hasError = false;
+    Chat_lastMsgTime = 0;
+    Chat_loadingMore = false;
     Main_emptyWithEle(Chat_div[0]);
     Main_emptyWithEle(Chat_div[1]);
     Chat_cursor = null;
@@ -722,16 +732,18 @@ function Chat_Clear() {
 
 function Main_Addline(id) {
     var i,
-        len = Chat_Messages.length;
+        len = Chat_Messages.length,
+        currentTime = ChannelVod_vodOffset + OSInterface_gettime() / 1000;
 
     if (Chat_Position < len - 1) {
         i = Chat_Position;
-        for (i; i < len; i++, Chat_Position++) {
-            Chat_lastOffset = Chat_Messages[i].time;
 
-            if (Chat_Messages[i].time < ChannelVod_vodOffset + OSInterface_gettime() / 1000) {
+        for (i; i < len; i++, Chat_Position++) {
+            if (Chat_Messages[i].time >= Chat_lastMsgTime && Chat_Messages[i].time < currentTime) {
+                Chat_lastMsgTime = Chat_Messages[i].time;
+
                 ChatLive_ElementAdd(Chat_Messages[i]);
-            } else {
+            } else if (Chat_Messages[i].time >= Chat_lastMsgTime) {
                 break;
             }
         }
@@ -750,23 +762,28 @@ function Main_Addline(id) {
 
             Chat_Clean(0);
         } else {
-            Main_clearInterval(Chat_addLinesId);
-
             //Chat has ended try to load more as this may be a live that is being played as VOD
-            //if is a VOD Chat_loadChatRequest will error out and this will not loop
-            if (Chat_lastOffset) {
-                Chat_loadMoreId = Main_setTimeout(
-                    function () {
-                        Chat_cursor = null;
-                        Chat_Position = 0;
-                        Chat_MessagesNext = [];
-                        Chat_Messages = [];
-                        Chat_offset = Chat_lastOffset;
-                        Chat_loadChatRequest(id);
-                    },
-                    3000,
-                    Chat_loadMoreId
-                );
+            if (Chat_lastMsgTime && !Chat_loadingMore) {
+                Chat_cursor = null;
+                Chat_Position = 0;
+                Chat_MessagesNext = [];
+                Chat_Messages = [];
+                Chat_lastMsgTime = currentTime - Chat_lastMsgTime > 100 ? currentTime - 80 : Chat_lastMsgTime - 1;
+                Chat_offset = Chat_lastMsgTime;
+                Chat_loadingMore = true;
+
+                Chat_loadChatRequest(id);
+            } else if (!Chat_loadingMore) {
+                if (!Chat_hasEnded) {
+                    ChatLive_ElementAdd({
+                        chat_number: 0,
+                        message: '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR + '</span>'
+                    });
+                }
+
+                Chat_hasEnded = true;
+
+                Main_clearInterval(Chat_addLinesId);
             }
         }
     }
