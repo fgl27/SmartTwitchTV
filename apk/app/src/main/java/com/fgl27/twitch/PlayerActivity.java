@@ -187,6 +187,7 @@ public class PlayerActivity extends Activity {
     private long NetCounter = 0L;
     private long SpeedCounter = 0L;
     private int mLowLatency = 0;
+    private int mLowLatencyVod = 7;
     private boolean speedAdjustment = false;
     private boolean AlreadyStarted;
     private boolean onCreateReady;
@@ -710,6 +711,9 @@ public class PlayerActivity extends Activity {
 
     }
 
+    private int getLowLatency(int Type) {
+        return Type == 1 ? mLowLatency : mLowLatencyVod;
+    }
     private void ResetPPView() {
         VideoHolder.bringChildToFront(PlayerObj[1].playerView);
 
@@ -2996,7 +3000,7 @@ public class PlayerActivity extends Activity {
                                 Uri.parse(uri),
                                 mWebViewContext,
                                 Type,
-                                mLowLatency,
+                                getLowLatency(Type),
                                 speedAdjustment,
                                 mainPlaylistString,
                                 userAgent
@@ -3040,7 +3044,7 @@ public class PlayerActivity extends Activity {
                             Uri.parse(uri),
                             mWebViewContext,
                             Type,
-                            mLowLatency,
+                            getLowLatency(Type),
                             speedAdjustment,
                             mainPlaylistString,
                             userAgent
@@ -3290,11 +3294,12 @@ public class PlayerActivity extends Activity {
                 }
 
                 PreviewPlayerPlaylist = mainPlaylistString;
+                int Type = isVod ? 2 : 1;
                 PlayerObj[4].mediaSources = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
-                        isVod ? 2 : 1,
-                        mLowLatency,
+                        Type,
+                        getLowLatency(Type),
                         speedAdjustment,
                         mainPlaylistString,
                         userAgent
@@ -3342,7 +3347,7 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         1,
-                        mLowLatency,
+                        getLowLatency(1),
                         speedAdjustment,
                         mainPlaylistString,
                         userAgent
@@ -3373,7 +3378,7 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         Type,
-                        mLowLatency,
+                        getLowLatency(Type),
                         speedAdjustment,
                         mainPlaylistString,
                         userAgent
@@ -3436,6 +3441,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetlatency(int LowLatency) {
             mLowLatency = LowLatency;
+        }
+
+        @JavascriptInterface
+        public void mSetlatencyVod(int LowLatencyVod) {
+            mLowLatencyVod = LowLatencyVod;
         }
 
         @JavascriptInterface
@@ -3872,7 +3882,7 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         1,
-                        mLowLatency,
+                        getLowLatency(1),
                         speedAdjustment,
                         mainPlaylistString,
                         userAgent
