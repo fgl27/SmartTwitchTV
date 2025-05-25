@@ -545,7 +545,7 @@ public final class Tools {
         } else if (Type == 2) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
-                    .setLowLatency(2)//For VODs that the live has not yet ended and the user has not yet watched
+                    .setLowLatency(LowLatency)//For VODs that the live has not yet ended and the user has not yet watched
                     .createMediaSource(MediaItemBuilder(uri));
         } else
             return new ProgressiveMediaSource
