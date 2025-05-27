@@ -14,7 +14,7 @@ Version May 27
 
 * Update player dependencies to latest version, this may solve some player related issue
 * Fix support for VOD of current live, Twitch is now providing full replay of the live but you need to open it from the most recent VOD, when detected the playback will start from the end of the VOD and will continue update the duration
-* Chat is not perfect in the VOD of current live if you are too close to where the live is, some chat messages may not show and the sync is a little off
+* Chat is not perfect in the VOD of current live if you are too close to where the live is, some chat messages may not show and the sync is a little off, recommended keep remaining time to 1 minute or longer
 * Fix random scenario that after changing app the player stayed loading for ever when returning to the app
 * General improves
 
