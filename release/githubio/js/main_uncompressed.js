@@ -4956,13 +4956,23 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 372, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/372/SmartTV_twitch_3_0_372.apk',
-        WebVersion: 'March 09 2024',
-        WebTag: 705, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 375, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/375/SmartTV_twitch_3_0_375.apk',
+        WebVersion: 'May 27 2024',
+        WebTag: 707, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
             {
-                title: 'Version January 27 & 28 2024',
+                title: 'Version May 27',
+                changes: [
+                    'Update player dependencies to latest version, this may solve some player related issue',
+                    'Fix support for VOD of current live, Twitch is now providing full replay of the live but you need to open it from the most recent VOD, when detected the playback will start from the end of the VOD and will continue update the duration',
+                    'Chat is not perfect in the VOD of current live if you are too close to where the live is, some chat messages may not show and the sync is a little off',
+                    'Fix random scenario that after changing app the player stayed loading for ever when returning to the app',
+                    'General improves'
+                ]
+            },
+            {
+                title: 'Version March 9',
                 changes: [
                     'Improve clock style',
                     'Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related',
@@ -11416,11 +11426,14 @@
     //Variable initialization
     var Chat_Messages = [];
     var Chat_MessagesNext = [];
-    var Chat_addlinesId;
+    var Chat_addLinesId;
+    var Chat_loadMoreId;
     var Chat_cursor = null;
     var Chat_loadChatId;
     var Chat_loadChatNextId;
     var Chat_offset = 0;
+    var Chat_lastMsgTime = 0;
+    var Chat_loadingMore = false;
     var Chat_fakeClock = 0;
     var Chat_fakeClockOld = 0;
     var Chat_title = '';
@@ -11543,7 +11556,7 @@
                         Chat_fakeClock = clip_player.currentTime;
                         Play_BufferSize = Chat_fakeClock + clip_player.buffered.end(0);
                     } catch (e) {
-                        console.log('Chat_StartFakeClockInterval e ' + e);
+                        console.log('Chat_StartFakeClockInterval e ', e);
                     }
                 } else if (embedPlayer && PlayVod_isOn) {
                     try {
@@ -11902,7 +11915,7 @@
             return;
         }
 
-        if (null_next) {
+        if (null_next && !Chat_loadingMore) {
             Chat_MessageVector({
                 chat_number: 0,
                 time: 0,
@@ -12042,14 +12055,23 @@
                 hasbits: hasbits && ChatLive_Highlight_Bits
             };
 
-            if (null_next) Chat_MessageVector(messageObj);
-            else if (Chat_cursor !== '') Chat_MessageVectorNext(messageObj);
+            if (null_next) {
+                Chat_MessageVector(messageObj);
+            } else if (Chat_cursor !== '') {
+                Chat_MessageVectorNext(messageObj);
+            }
         }
 
         if (null_next && Chat_Id[0] === id) {
             Chat_JustStarted = false;
-            Chat_Play(id);
-            if (Chat_cursor !== '') Chat_loadChatNext(id); //if (Chat_cursor === '') chat has ended
+
+            if (!Chat_loadingMore) {
+                Chat_Play(id);
+            }
+            Chat_loadingMore = false;
+            if (Chat_cursor !== '') {
+                Chat_loadChatNext(id); //if (Chat_cursor === '') chat has ended
+            }
         }
     }
 
@@ -12072,12 +12094,12 @@
     function Chat_Play(id) {
         if (!Chat_JustStarted && !Chat_hasEnded && Chat_Id[0] === id && !Main_values.Play_ChatForceDisable) {
             Main_Addline(id);
-            Chat_addlinesId = Main_setInterval(
+            Chat_addLinesId = Main_setInterval(
                 function () {
                     Main_Addline(id);
                 },
                 1000,
-                Chat_addlinesId
+                Chat_addLinesId
             );
 
             if (!Main_IsOn_OSInterface) {
@@ -12089,7 +12111,7 @@
     function Chat_Pause() {
         Main_clearTimeout(Chat_loadChatId);
         Main_clearTimeout(Chat_loadChatNextId);
-        Main_clearInterval(Chat_addlinesId);
+        Main_clearInterval(Chat_addLinesId);
         Main_clearInterval(Chat_StartFakeClockId);
     }
 
@@ -12098,6 +12120,8 @@
         Chat_hasEnded = false;
         Chat_Pause();
         Chat_Id[0] = 0;
+        Chat_lastMsgTime = 0;
+        Chat_loadingMore = false;
         Main_emptyWithEle(Chat_div[0]);
         Main_emptyWithEle(Chat_div[1]);
         Chat_cursor = null;
@@ -12105,6 +12129,7 @@
         Chat_MessagesNext = [];
         Chat_Position = 0;
         Chat_comment_ids = {};
+        Main_clearTimeout(Chat_loadMoreId);
         ChatLive_ClearIds(0);
         ChatLive_ClearIds(1);
         ChatLive_resetChatters(0);
@@ -12112,14 +12137,18 @@
 
     function Main_Addline(id) {
         var i,
-            len = Chat_Messages.length;
+            len = Chat_Messages.length,
+            currentTime = ChannelVod_vodOffset + OSInterface_gettime() / 1000;
 
         if (Chat_Position < len - 1) {
             i = Chat_Position;
+
             for (i; i < len; i++, Chat_Position++) {
-                if (Chat_Messages[i].time < ChannelVod_vodOffset + OSInterface_gettime() / 1000) {
+                if (Chat_Messages[i].time >= Chat_lastMsgTime && Chat_Messages[i].time < currentTime) {
+                    Chat_lastMsgTime = Chat_Messages[i].time;
+
                     ChatLive_ElementAdd(Chat_Messages[i]);
-                } else {
+                } else if (Chat_Messages[i].time >= Chat_lastMsgTime) {
                     break;
                 }
             }
@@ -12132,20 +12161,35 @@
 
                 Chat_MessagesNext = [];
 
-                if (Chat_Id[0] === id && Chat_cursor !== '') Chat_loadChatNext(id);
-                Chat_Clean(0);
-            } else {
-                //Chat has ended
-
-                if (!Chat_hasEnded) {
-                    ChatLive_ElementAdd({
-                        chat_number: 0,
-                        message: '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR + '</span>'
-                    });
+                if (Chat_Id[0] === id && Chat_cursor !== '') {
+                    Chat_loadChatNext(id);
                 }
 
-                Chat_hasEnded = true;
-                Main_clearInterval(Chat_addlinesId);
+                Chat_Clean(0);
+            } else {
+                //Chat has ended try to load more as this may be a live that is being played as VOD
+                if (Chat_lastMsgTime && !Chat_loadingMore) {
+                    Chat_cursor = null;
+                    Chat_Position = 0;
+                    Chat_MessagesNext = [];
+                    Chat_Messages = [];
+                    Chat_lastMsgTime = currentTime - Chat_lastMsgTime > 100 ? currentTime - 80 : Chat_lastMsgTime - 1;
+                    Chat_offset = Chat_lastMsgTime;
+                    Chat_loadingMore = true;
+
+                    Chat_loadChatRequest(id);
+                } else if (!Chat_loadingMore) {
+                    if (!Chat_hasEnded) {
+                        ChatLive_ElementAdd({
+                            chat_number: 0,
+                            message: '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_END + STR_BR + STR_BR + '</span>'
+                        });
+                    }
+
+                    Chat_hasEnded = true;
+
+                    Main_clearInterval(Chat_addLinesId);
+                }
             }
         }
     }
@@ -12488,7 +12532,9 @@
                         Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
                         PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
                         PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
-                        AddCode_AppTokenResult: AddCode_AppTokenResult
+                        AddCode_AppTokenResult: AddCode_AppTokenResult,
+                        Play_UpdateDurationDiv: Play_UpdateDurationDiv,
+                        Screens_PlaybackTimeSetVodDuration: Screens_PlaybackTimeSetVodDuration
                     };
                 }
                 Main_Set();
@@ -17114,10 +17160,23 @@
     //public void getDuration()
     //String callback = the fun to receive the value
     //Android specific: true
-    //Runs only once, this functions check for storage access and request the user to give the permission
-    // function OSInterface_getDuration(callback) {
-    //     Android.getDuration(callback);
-    // }
+    function OSInterface_getDuration(callback) {
+        if (Main_IsOn_OSInterface) {
+            Android.getDuration(callback);
+        }
+    }
+
+    //public void updateScreenDuration()
+    //String callback = the fun to receive the value
+    //String id = the vodId
+    //Android specific: true
+    function OSInterface_updateScreenDuration(callback, key, obj_id) {
+        if (Main_IsOn_OSInterface) {
+            try {
+                Android.updateScreenDuration(callback, key, obj_id + '');
+            } catch (e) {}
+        }
+    }
 
     //public boolean isKeyboardConnected()
     //Android specific: true
@@ -19461,7 +19520,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         // Called only by JAVA
 
         if (Main_isScene1DocVisible()) {
-            if (!Sidepannel_isShowingUserLive()) Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
+            if (!Sidepannel_isShowingUserLive()) {
+                Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
+            }
         } else if (duration > 0) {
             Play_UpdateDurationDiv(duration);
 
@@ -26098,9 +26159,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 var Sig = tokenObj.signature;
 
                 PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, checkResult, CheckId_x, callBackSuccess, Token, Sig, useProxy);
+                return;
             }
-
-            return;
         }
 
         // prettier-ignore
@@ -26248,7 +26308,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         //if at te end of a request the values are different we have a issues
         proxy_fail_counter_checker = proxy_fail_counter;
 
-        return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, use_proxy);
+        try {
+            return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, use_proxy);
+        } catch (error) {
+            console.log(error);
+        }
+
+        return null;
     }
 
     function PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, useProxy) {
@@ -26260,7 +26326,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             //getToken
             var obj = OSInterface_mMethodUrlHeaders(
                 PlayClip_BaseUrl, //urlString
-                DefaultHttpGetTimeout, //timeout
+                DefaultHttpGetTimeout / 2, //timeout
                 (isLive ? Play_live_token : Play_vod_token).replace('%x', Channel_or_VOD_Id), //postMessage
                 'POST', //Method
                 0, //checkResult
@@ -26290,7 +26356,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         var obj = OSInterface_mMethodUrlHeaders(
             urlObj.url, //urlString
-            useProxy ? proxy_timeout : DefaultHttpGetTimeout, //timeout
+            DefaultHttpGetTimeout / 2, //timeout
             null, //postMessage
             null, //Method
             0, //checkResult
@@ -27841,6 +27907,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function () {
                 PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
+                OSInterface_getDuration('Play_UpdateDurationDiv');
             },
             PlayVod_RefreshProgressBarrTimeout,
             PlayVod_RefreshProgressBarrID
@@ -33169,9 +33236,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         if (Screens_ObjNotNull(key)) {
+            if (ScreenObj[key].screenType === 1) {
+                Screens_PlaybackTimeGetVodDuration(key);
+            }
+
             var time = OSInterface_gettime() / 1000,
                 data = Screens_GetObj(key),
-                originalTime = Screens_PlaybackTimeGetOrigianl(key, data);
+                originalTime = Screens_PlaybackTimeGetOriginal(key, data);
 
             if (time || ScreenObj[key].screenType === 2) {
                 Main_textContent(ScreenObj[key].ids[8] + id, Play_timeS(time) + ' | ' + Play_timeS(originalTime));
@@ -33208,13 +33279,27 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
 
         var data = Main_Slice(ScreenObj[key].DataObj[id].image ? [] : ScreenObj[key].DataObj[id]),
-            originalTime = Play_timeS(Screens_PlaybackTimeGetOrigianl(key, data));
+            originalTime = Play_timeS(Screens_PlaybackTimeGetOriginal(key, data));
 
         Main_textContent(ScreenObj[key].ids[8] + id, originalTime);
     }
 
-    function Screens_PlaybackTimeGetOrigianl(key, data) {
+    function Screens_PlaybackTimeGetOriginal(key, data) {
         return data[ScreenObj[key].screenType === 1 ? 11 : 1];
+    }
+
+    function Screens_PlaybackTimeSetVodDuration(obj_id, key, value) {
+        if (!value || value < 0) {
+            return;
+        }
+
+        ScreenObj[key].DataObj[obj_id][11] = value / 1000;
+    }
+
+    function Screens_PlaybackTimeGetVodDuration(key) {
+        var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+        OSInterface_updateScreenDuration('Screens_PlaybackTimeSetVodDuration', key, obj_id);
     }
 
     var AGame_following = false;
@@ -33393,7 +33478,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var ChannelVod_game = '';
 
     var DefaultPreviewDelay = 200; //To avoid multiple simultaneous request
-    var DefaultHttpGetTimeout = 30000;
+    var DefaultHttpGetTimeout = 20000;
     var noop_fun = function () {};
     var ScreensObj_banner_added_section = false;
 
@@ -47337,7 +47422,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
         PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
         PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
-        AddCode_AppTokenResult: AddCode_AppTokenResult
+        AddCode_AppTokenResult: AddCode_AppTokenResult,
+        Play_UpdateDurationDiv: Play_UpdateDurationDiv,
+        Screens_PlaybackTimeSetVodDuration: Screens_PlaybackTimeSetVodDuration
     };
 
     /** Expose `smartTwitchTV` */

@@ -9,6 +9,24 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version May 27
+==============
+
+* Update player dependencies to latest version, this may solve some player related issue
+* Fix support for VOD of current live, Twitch is now providing full replay of the live but you need to open it from the most recent VOD, when detected the playback will start from the end of the VOD and will continue update the duration
+* Chat is not perfect in the VOD of current live if you are too close to where the live is, some chat messages may not show and the sync is a little off
+* Fix random scenario that after changing app the player stayed loading for ever when returning to the app
+* General improves
+
+Version March 09
+==============
+
+* Improve clock style
+* Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related
+* General improves
+
+
+
 Version January 27 & 28 2024
 ==============
 
