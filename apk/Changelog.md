@@ -25,8 +25,6 @@ Version March 09
 * Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related
 * General improves
 
-
-
 Version January 27 & 28 2024
 ==============
 
