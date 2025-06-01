@@ -331,8 +331,6 @@ function Main_initClick() {
 }
 
 function Main_BackupDialogKeyDown(event) {
-    console.log('Main_BackupDialogKeyDown');
-
     if (Settings_BackupDialogExit(event)) {
         console.log('Main_BackupDialogKeyDown if');
 

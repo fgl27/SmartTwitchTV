@@ -930,6 +930,8 @@ function en_USLang() {
 
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'The app will restore and close this dialog in a few';
     STR_BACKUP_NO_BACKUP_FOUND = 'No previously made backup found, backup created with success';
+    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Go to Settings > Sync and Backup, to customize or remove backup option';
+
     STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
 
     STR_BACKUP_START = 'Sync across devices, backup, and restore user info using Google Drive?';
@@ -948,7 +950,7 @@ function en_USLang() {
 
     STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
     STR_BACKUP_SYNC_RESTORE = 'Backup found';
-    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found choose what to restore and press return or enter key to confirm';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found choose what to sync and restore and press return or enter key to confirm';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
     STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
 

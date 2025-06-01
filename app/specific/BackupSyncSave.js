@@ -203,10 +203,11 @@ function GDriveBackupAndSyncGetFileInfoSuccess(obj) {
     } else {
         GDriveUploadFile(GDriveBackupFileSuccess, noop_fun, 0, 0);
 
-        Main_textContent('backup_body', STR_BACKUP_NO_BACKUP_FOUND);
+        var extraSummary = !Settings_Dialog_isVisible() ? +STR_BR + STR_BR + STR_BACKUP_NO_BACKUP_FOUND_SUMMARY : '';
+
+        Main_innerHTML('backup_body', STR_BACKUP_NO_BACKUP_FOUND + extraSummary);
         Main_textContent('backup_body_checking', '');
         Main_textContent('backup_end_info', STR_CLOSE_THIS);
-        Settings_DialogBackupSync(!Main_IsOn_OSInterface);
         GDrivePreventClose = false;
     }
 }
