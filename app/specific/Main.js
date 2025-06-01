@@ -279,41 +279,7 @@ function Main_StartApp() {
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
-        if (!Main_values.Restore_Backup_Check) {
-            try {
-                Main_HideLoadDialog();
-                Main_innerHTML(
-                    'main_dialog_remove',
-                    STR_DIV_TITLE +
-                        STR_WELCOME +
-                        STR_SPACE_HTML +
-                        STR_TWITCH_TV +
-                        '</div>' +
-                        STR_BR +
-                        STR_DIV_TITLE +
-                        STR_BACKUP_START +
-                        '</div>' +
-                        STR_BACKUP +
-                        GDriveFileName
-                );
-                Main_getElementById('main_dialog_remove_container').style.marginTop = '3%';
-
-                Main_textContent('yes_no_dialog_button_no', STR_NO);
-                Main_textContent('yes_no_dialog_button_yes', STR_YES);
-                Main_ShowElement('yes_no_dialog');
-                Main_values.Restore_Backup_Check = true;
-                Main_PreventCheckResume = true;
-                Main_addEventListener('keydown', Main_BackupDialogKeyDown);
-            } catch (e) {
-                Main_ready(Main_initWindows);
-                return;
-            }
-        } else {
-            AddUser_RestoreUsers();
-        }
-        //  else {
-        //     Main_ready(Main_initWindows);
-        // }
+        AddUser_RestoreUsers();
     });
 }
 

@@ -447,9 +447,6 @@ function DefaultLang() {
         '</div>' +
         OPEN_NEW_ISSUE +
         STR_BR +
-        STR_BR +
-        STR_PAYPAL +
-        STR_BITCOIN +
         STR_BR;
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -461,8 +458,9 @@ function DefaultLang() {
         STR_ABOUT_INFO_2 +
         (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
         STR_CONTACT +
-        // STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-        // STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
+        STR_PAYPAL +
+        STR_BITCOIN +
+        STR_BR +
         STR_DIV_TITLE +
         STR_ABOUT_INFO_18 +
         '</div>' +

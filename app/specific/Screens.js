@@ -1161,7 +1161,7 @@ function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
     Main_FirstRun = false;
     if (!SkipHidedialog) Main_HideLoadDialog();
 
-    AddUser_UpdateSidepanelAfterShow();
+    AddUser_UpdateSidePanelAfterShow();
 
     if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLabels();
     else Sidepannel_SetDefaultLabels();

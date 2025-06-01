@@ -1229,7 +1229,7 @@ function Settings_UpdateString() {
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_updateClock();
     Main_checkVersion(true);
-    AddUser_UpdateSidepanelAfterShow();
+    AddUser_UpdateSidePanelAfterShow();
     BrowserTestSetStrings();
 
     Main_SaveValues();
@@ -1391,7 +1391,7 @@ function Settings_SetDefault(position) {
     else if (position === 'enable_mature') Settings_checkMature();
     else if (position === 'global_font_offset') {
         calculateFontSize();
-        AddUser_UpdateSidepanelAfterShow();
+        AddUser_UpdateSidePanelAfterShow();
         UserLiveFeed_ResetAddCellsize();
         Sidepannel_Scroll(true);
     } else if (position === 'hide_screen_counter') Settings_ShowCounter();

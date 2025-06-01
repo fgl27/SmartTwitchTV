@@ -488,7 +488,7 @@ function en_USLang() {
     STR_WARNINGS = 'Warnings';
     STR_WELCOME = 'Welcome to';
     STR_WELCOME_SUMMARY =
-        'This application has a lot of features and was designed to give the user full control of it, because of that it has many options, controls and customizations. Check the app settings and controls to understasnd how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.';
+        'This application has lots and lots of features. Check the app settings and controls to understand how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.';
     STR_WARNING_PHONE = 'Cellphones warning';
     STR_WARNING_PHONE_SUMMARY =
         "This app is designed to be used mainly on TVs, the support for other devices is limited and may never receive a better support. If you don't have a keyboard or a D-pad + enter and return controller (ESC works as a return on a computer), use the virtual on-screen keys to navigate (only visible on phone/tablet devices). In settings you can change the position and the opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad. When it's hidden, it doesn't work.";

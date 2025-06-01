@@ -237,7 +237,7 @@ function AddUser_RestoreUsers() {
     if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
-        AddUser_UpdateSidepanel();
+        AddUser_UpdateSidePanel();
 
         //Check and refresh all tokens at start
         var i = 0,
@@ -268,30 +268,31 @@ function AddUser_RestoreUsers() {
 
         Main_Restore_history();
         return true;
-    } else {
-        Main_Restore_history();
-        AddUser_UsernameArray = [];
-        AddUser_UpdateSidepanelDefault();
-        return false;
     }
+
+    Main_Restore_history();
+    AddUser_UsernameArray = [];
+    AddUser_UpdateSidePanelDefault();
+
+    return false;
 }
 
-function AddUser_UpdateSidepanel() {
+function AddUser_UpdateSidePanel() {
     if (AddUser_UserIsSet()) {
-        AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+        AddUser_UpdateSidePanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
     }
 }
 
-function AddUser_UpdateSidepanelDefault() {
-    AddUser_UpdateSidepanelSize(IMG_404_LOGO, STR_USER_ADD);
+function AddUser_UpdateSidePanelDefault() {
+    AddUser_UpdateSidePanelSize(IMG_404_LOGO, STR_USER_ADD);
 }
 
-function AddUser_UpdateSidepanelAfterShow() {
-    if (AddUser_IsUserSet()) AddUser_UpdateSidepanel();
-    else AddUser_UpdateSidepanelDefault();
+function AddUser_UpdateSidePanelAfterShow() {
+    if (AddUser_IsUserSet()) AddUser_UpdateSidePanel();
+    else AddUser_UpdateSidePanelDefault();
 }
 
-function AddUser_UpdateSidepanelSize(logo, username) {
+function AddUser_UpdateSidePanelSize(logo, username) {
     //remove transition to change size
     Sidepannel_MovelDiv.style.transition = 'none';
     var MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
@@ -363,7 +364,7 @@ function AddUser_UpdateUsersSuccess(response, position) {
             AddUser_UsernameArray[position].display_name = user.display_name;
             AddUser_UsernameArray[position].logo = user.profile_image_url;
 
-            if (!position) AddUser_UpdateSidepanel();
+            if (!position) AddUser_UpdateSidePanel();
 
             AddUser_SaveUserArray();
         }
@@ -415,7 +416,7 @@ function AddUser_SaveNewUser(responseText) {
 }
 
 function AddUser_SaveNewUserRefreshTokens(position) {
-    AddUser_UpdateSidepanel();
+    AddUser_UpdateSidePanel();
     OSInterface_UpdateUserId(AddUser_UsernameArray[position]);
     OSInterface_mCheckRefresh();
     HttpGetSetUserHeader();
@@ -437,7 +438,7 @@ function AddUser_removeUser(position, skipInitUser) {
     if (AddUser_UsernameArray.length > 0) {
         //Reset main user if user is 0
         if (!position) {
-            AddUser_UpdateSidepanel();
+            AddUser_UpdateSidePanel();
 
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
         }
@@ -446,7 +447,7 @@ function AddUser_removeUser(position, skipInitUser) {
             Users_init();
         }
     } else {
-        AddUser_UpdateSidepanelDefault();
+        AddUser_UpdateSidePanelDefault();
         if (!skipInitUser) {
             Users_init();
         }
@@ -482,7 +483,7 @@ function AddUser_UserMakeOne(position) {
 
     AddUser_SaveUserArray();
     Users_status = false;
-    AddUser_UpdateSidepanel();
+    AddUser_UpdateSidePanel();
     Users_init();
 
     OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
