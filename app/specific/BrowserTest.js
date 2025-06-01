@@ -529,15 +529,6 @@ function BrowserTestFun() {
                 Sidepannel_Hide();
                 Main_SwitchScreen();
             }
-        } else if (Main_A_includes_B(id, 'backup_body') || Main_A_includes_B(id, 'main_dialog_remove') || !id || Main_PreventCheckResume) {
-            if (Main_A_includes_B(id, 'yes_no_dialog_button_no')) {
-                Main_PreventCheckResume = false;
-                Users_RemoveCursor = 0;
-                Main_BackupDialogKeyDownEnter();
-            } else if (Main_A_includes_B(id, 'yes_no_dialog_button_yes')) {
-                Users_RemoveCursor = 1;
-                Main_BackupDialogKeyDownEnter();
-            }
         } else if (Main_A_includes_B(id, 'main_dialog_user') || Main_A_includes_B(id, 'yes_no_dialog')) {
             if (Main_A_equals_B(id, 'main_dialog_user') || Main_A_equals_B(id, 'yes_no_dialog')) {
                 Users_handleKeyBack();

@@ -2672,7 +2672,6 @@ function Screens_histDelete(key) {
 
         Screens_deleteUpdateRows(key);
     }
-    1;
 
     GDriveBackup();
 }

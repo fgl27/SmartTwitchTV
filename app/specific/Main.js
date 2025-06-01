@@ -160,8 +160,6 @@ var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
 var Main_randomImg = '?' + Math.random();
 
-var Main_UserBackupFile = 'user.json';
-var Main_HistoryBackupFile = 'history.json';
 var Main_Scene1Doc;
 var Main_Scene2Doc;
 var Main_started;
@@ -294,53 +292,6 @@ function Main_initClick() {
         OSInterface_initbodyClickSet();
     };
     OSInterface_initbodyClickSet();
-}
-
-function Main_BackupDialogKeyDown(event) {
-    if (Settings_BackupDialogExit(event)) {
-        console.log('Main_BackupDialogKeyDown if');
-
-        Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
-        Main_initWindows();
-        return;
-    }
-
-    switch (event.keyCode) {
-        case KEY_LEFT:
-            Users_RemoveCursor--;
-            if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
-            Users_RemoveCursorSet();
-            break;
-        case KEY_RIGHT:
-            Users_RemoveCursor++;
-            if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
-            Users_RemoveCursorSet();
-            break;
-        case KEY_ENTER:
-            Main_BackupDialogKeyDownEnter();
-            break;
-        default:
-            break;
-    }
-}
-
-function Main_BackupDialogKeyDownEnter() {
-    console.log('Main_BackupDialogKeyDownEnter Users_RemoveCursor');
-
-    Main_showLoadDialog();
-    Main_HideElement('yes_no_dialog');
-
-    if (Users_RemoveCursor && !Settings_Dialog_isVisible()) {
-        Main_initRestoreBackups();
-    } else {
-        Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
-        Main_initWindows();
-    }
-}
-
-//TODO update this
-function Main_initRestoreBackups() {
-    Settings_DialogAddBackupAccount();
 }
 
 function Main_initWindows() {
