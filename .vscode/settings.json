@@ -1,5 +1,10 @@
 {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/release/githubio": true,
+        "**/tmp": true
+    }
 }
