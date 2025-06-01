@@ -539,7 +539,7 @@ function GDriveSyncFromBackup(backup, date, syncSettings) {
 }
 
 function GDriveSyncFromBackupSyncUser(backup, date) {
-    var usersArray = JSON.parse(backup[AddUser_UserArrayItemName]) || [];
+    var usersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
 
     if (usersArray && usersArray.length && GDriveSyncBackupsByArray(usersArray, AddUser_UsernameArray, {}, {}, true)) {
         AddUser_SaveUserArray();
@@ -547,7 +547,7 @@ function GDriveSyncFromBackupSyncUser(backup, date) {
 }
 
 function GDriveSyncFromBackupSyncUserEtc(backup, date) {
-    var historyBlocked = JSON.parse(backup[Main_values_History_data_ItemName]) || {};
+    var historyBlocked = JSON.parse(backup[Main_values_History_data_ItemName] || '{}');
 
     if (historyBlocked) {
         GDriveSyncBackups(historyBlocked, date);

@@ -331,7 +331,11 @@ function Main_initClick() {
 }
 
 function Main_BackupDialogKeyDown(event) {
+    console.log('Main_BackupDialogKeyDown');
+
     if (Settings_BackupDialogExit(event)) {
+        console.log('Main_BackupDialogKeyDown if');
+
         Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
         Main_initWindows();
         return;
@@ -357,10 +361,12 @@ function Main_BackupDialogKeyDown(event) {
 }
 
 function Main_BackupDialogKeyDownEnter() {
+    console.log('Main_BackupDialogKeyDownEnter Users_RemoveCursor');
+
     Main_showLoadDialog();
     Main_HideElement('yes_no_dialog');
 
-    if (Users_RemoveCursor) {
+    if (Users_RemoveCursor && !Settings_Dialog_isVisible()) {
         Main_initRestoreBackups();
     } else {
         Main_removeEventListener('keydown', Main_BackupDialogKeyDown);

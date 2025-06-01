@@ -137,6 +137,8 @@ function GDriveBackupAndSyncValidate(obj) {
 
     if (obj.status === 200) {
         GDriveBackupAndSyncValidateBackup = JSON.parse(obj.responseText);
+        Main_values.Restore_Backup_Check = true;
+        Main_SaveValues();
 
         Main_HideElement('backup_dialog');
         Settings_DialogShowRestoreBackup(!Main_IsOn_OSInterface);
