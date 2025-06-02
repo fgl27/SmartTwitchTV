@@ -2662,11 +2662,7 @@ function Screens_histDelete(key) {
         var index = Main_history_Exist(type, Screens_values_Play_data[7]);
 
         if (index > -1) {
-            var deleted = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][type][index]));
-            Screens_checkDeleteObj();
-            Screens_addToDelete(deleted, type);
-
-            Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
+            Screens_deleteFromHistory(type, Main_values_History_data[AddUser_UsernameArray[0].id][type], index, 1);
             Main_setHistoryItem();
         }
 
@@ -2674,6 +2670,15 @@ function Screens_histDelete(key) {
     }
 
     GDriveBackup();
+}
+
+function Screens_deleteFromHistory(type, array, index, position) {
+    Screens_checkDeleteObj();
+
+    var value = JSON.parse(JSON.stringify(array[index]));
+
+    Screens_addToDelete(value, type);
+    array.splice(index, position);
 }
 
 function Screens_addAllToDelete(array, type) {

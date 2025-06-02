@@ -2356,6 +2356,7 @@ function Main_history_Exist(type, id) {
 
 function Main_history_Clean_deleted(type, id) {
     Screens_checkDeleteObj();
+
     id = id.toString();
 
     delete Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][id];
@@ -2761,7 +2762,8 @@ function Main_SetHistoryworker() {
                                 AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers
                             );
                         } else {
-                            Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                            //delete the live entry as it doesn't have a VOD
+                            Screens_deleteFromHistory('live', Main_values_History_data[AddUser_UsernameArray[0].id].live, index, 1);
                         }
                     }
                 } else {
@@ -2775,7 +2777,7 @@ function Main_SetHistoryworker() {
 
                     if (index > -1) {
                         //delete the live that is now a vod entry as it no longer exist
-                        Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+                        Screens_deleteFromHistory(event.data.type, Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type], index, 1);
                     }
                 } else {
                     if (vodInfo && vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
@@ -2787,7 +2789,8 @@ function Main_SetHistoryworker() {
 
                 if (index > -1) {
                     //delete the entry as its content no longer exist
-                    Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                    Screens_deleteFromHistory(event.data.type, Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type], index, 1);
                 }
             }
             Main_setHistoryItem(10000);
@@ -2799,7 +2802,9 @@ var Main_StartHistoryworkerId;
 
 //Check if a live in history has become a VOD
 function Main_StartHistoryworker() {
-    if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (!AddUser_IsUserSet() || !BradcastCheckerWorker) {
+        return;
+    }
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
         i = array.length,
@@ -2816,7 +2821,7 @@ function Main_StartHistoryworker() {
             if (array[i].data[14] && array[i].data[14] !== '') {
                 Main_StartHistoryworkerBradcast(array[i], 1, header);
             } else {
-                array.splice(i, 1);
+                Screens_deleteFromHistory('live', array, i, 1);
             }
         }
     }
@@ -2895,7 +2900,8 @@ function Main_RunLiveVODWorker() {
                     header: header
                 });
             } else {
-                Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(i, 1); //delete the live entry as it doesn't have a VOD
+                //delete the live entry as it doesn't have a VOD
+                Screens_deleteFromHistory('live', Main_values_History_data[AddUser_UsernameArray[0].id].live, i, 1);
             }
         }
     }
