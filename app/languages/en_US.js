@@ -934,8 +934,6 @@ function en_USLang() {
 
     STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
 
-    STR_BACKUP_START = 'Sync across devices, backup, and restore user info using Google Drive?';
-
     STR_BACKUP_SIZE = 'Backup size:';
     STR_BACKUP_SYNC = 'Sync and Backup';
     STR_BACKUP_SYNC_SUMMARY =
@@ -953,19 +951,6 @@ function en_USLang() {
     STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found choose what to sync and restore and press return or enter key to confirm';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
     STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
-
-    STR_BACKUP =
-        STR_BACKUP_USER_INFO +
-        '<br><br>' +
-        'You can click NO and add one later using settings.' +
-        '<br><br>' +
-        'If you click YES, you need to add a Google Drive account now.' +
-        '<br><br>' +
-        STR_BACKUP_SYNC_SUMMARY +
-        '<br><br>' +
-        'The backup size is around 50 to 500 KB.' +
-        '<br><br>' +
-        'The Backup file name is:<br><br>';
 
     STR_BACKUP_ENABLE = 'Backup enable';
     STR_BACKUP_ENABLE_SUMMARY = 'If set to YES the app will keep a backup of all user info ' + STR_BACKUP_USER_INFO;

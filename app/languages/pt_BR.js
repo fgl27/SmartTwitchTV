@@ -516,15 +516,7 @@ function pt_BRLang() {
     STR_OLDEST = 'Assistidos mais antigos';
     STR_PRESS_ENTER_D = 'Pressione enter para deletar';
     STR_LIVE_VOD = 'Esta transmissão ao vivo agora é um VOD <br> abrindo o VOD de onde você parou de assistir ao vivo: <br>';
-    STR_BACKUP =
-        'Permitir que o aplicativo faça e restaure backups? <br> (Os usuários e seu histórico serão backups)' +
-        '<br><br>' +
-        'Clique em Sim, o aplicativo salvará backups para uso futuro e restaurará um backup salvo se os dados do aplicativo estiverem vazios.' +
-        'É necessário dar permissão de armazenamento ao app para isso, então dê antes clique sim.' +
-        '<br><br>' +
-        'Se você não der permissão de armazenamento, nenhum backup será feito.' +
-        '<br><br>' +
-        'A pasta Backup é Main_Storage/data/com.fgl27.twitch/Backup';
+
     STR_DELETE_SURE = 'Tem certeza que deseja deletar tudo';
     STR_CREATED_NEWEST = 'Criado/Desde mais recente';
     STR_CREATED_OLDEST = 'Criado/Desde mais antigo';
