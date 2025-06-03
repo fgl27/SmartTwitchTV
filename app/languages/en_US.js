@@ -885,19 +885,18 @@ function en_USLang() {
     STR_WRONG_PASS = 'Wrong password!';
     STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
-    STR_PLAYER_EXTRA_CODEC = 'Extra codec support';
-    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Beta codec support that are being tested by Twitch';
+    STR_PLAYER_EXTRA_CODEC = 'Enhanced Broadcasting HEVC, AV1, 1440p 4k support';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available.';
 
-    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Most streams only have AVC H.264 support ';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'The app checks if your device supports HEVC or AV1 for higher-quality streams.';
 
-    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
-        'For the codec to work the device must be capable, check the capability below (must be green), and the stream must be using the codec.';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 = 'Without device support, playback will be limited and may not work for enhanced streams.';
 
     STR_PLAYER_CODEC_AV1 = 'AV1';
     STR_PLAYER_CODEC_HEVC = 'HEVC';
 
-    STR_PLAYER_CODEC_SUPPORTED = 'supported';
-    STR_PLAYER_CODEC_NOT_SUPPORTED = 'Not supported! Enabling this codec can cause playback errors and no playback.';
+    STR_PLAYER_CODEC_SUPPORTED = 'device supported';
+    STR_PLAYER_CODEC_NOT_SUPPORTED = 'Device Not supported! Enabling this codec can cause playback errors.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'To better understand the device capability check the settings option: ';
 

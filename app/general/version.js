@@ -23,9 +23,20 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 375, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/375/SmartTV_twitch_3_0_375.apk',
-    WebVersion: 'May 27 2024',
-    WebTag: 707, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'June 03 2024',
+    WebTag: 709, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Version June 03',
+            changes: [
+                'Enhanced Broadcasting support for HEVC/AV1 codecs now enabled by default on compatible devices',
+                'Upgraded from "Extra codec support" to "Enhanced Broadcasting" with improved HEVC/AV1 implementation',
+                'Most streams use AVC (H.264) up to 1080p60, while HEVC/AV1 enable higher quality 1440p, 4K, and 60+fps streams where available',
+                'Device compatibility is automatically detected to ensure optimal streaming performance',
+                'Access the new setting in player options to enable/disable Enhanced Broadcasting support based on your preferences',
+                'General improvements to streaming performance and stability'
+            ]
+        },
         {
             title: 'Version May 27',
             changes: [
@@ -43,14 +54,6 @@ var version = {
                 'Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related',
                 'General improves'
             ]
-        },
-        {
-            title: 'Version January 27 & 28 2024',
-            changes: ['General improves']
-        },
-        {
-            title: 'Version January 19 2024',
-            changes: ['General visual improves']
         }
     ]
 };

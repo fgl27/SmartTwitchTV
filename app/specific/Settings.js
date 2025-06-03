@@ -2277,12 +2277,18 @@ function Settings_CodecsRightLeft(offset) {
 }
 
 function Settings_CodecsSet() {
-    if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecs.join());
+    if (Main_IsOn_OSInterface) {
+        OSInterface_setBlackListMediaCodec(Settings_DisableCodecs.join());
+    }
+
     Settings_SetMaxInstances();
 }
 
 function Settings_SetMaxInstances() {
-    if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
+    if (!Settings_CodecsValue.length) {
+        Settings_SetCodecsValue();
+    }
+
     Play_MaxInstances = 0;
 
     var i = 0,
@@ -2304,7 +2310,9 @@ function Settings_SetMaxInstances() {
 }
 
 function Settings_SetCodecsValue() {
-    if (Settings_CodecsValue.length) return;
+    if (Settings_CodecsValue.length) {
+        return;
+    }
 
     if (!Main_IsOn_OSInterface) {
         // Settings_CodecsValue = [
@@ -2483,12 +2491,27 @@ function Settings_SetSuportedCodecs(codecs) {
         len = codecs.length;
 
     for (i; i < len; i++) {
-        if (Main_A_includes_B(codecs[i].type, 'hevc')) Settings_HEVCSupported = true;
-        if (Main_A_includes_B(codecs[i].type, 'av01')) Settings_AV1Supported = true;
+        if (Main_A_includes_B(codecs[i].type, 'hevc')) {
+            Settings_HEVCSupported = true;
+        }
+
+        if (Main_A_includes_B(codecs[i].type, 'av01')) {
+            Settings_AV1Supported = true;
+        }
 
         if (Settings_HEVCSupported && Settings_AV1Supported) {
             break;
         }
+    }
+
+    if (!Main_values.checkedEnhancedStream) {
+        Main_values.checkedEnhancedStream = true;
+
+        Settings_value.hevc_codec.defaultValue = Settings_HEVCSupported ? 1 : 0;
+        Settings_value.av1_codec.defaultValue = Settings_AV1Supported ? 1 : 0;
+
+        Main_setItem('hevc_codec', Settings_value.hevc_codec.defaultValue + 1);
+        Main_setItem('av1_codec', Settings_value.av1_codec.defaultValue + 1);
     }
 }
 

@@ -43,3 +43,4 @@ release/scripts/testing.sh
 firebase-debug.log
 node_modules/*
 package-lock.json
+todo.txt
