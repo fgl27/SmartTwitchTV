@@ -3418,6 +3418,12 @@ function Screens_BlockChannel(key) {
     Screens_BlockSetDefaultObj();
 
     if (Screens_getChannelIsBlocked(channelId)) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.channel[channelId] = JSON.parse(
+            JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId])
+        );
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.channel[channelId].date = new Date().getTime();
+
         delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
 
         if (ScreenObj[key].screen === Main_Blocked) {
@@ -3445,6 +3451,8 @@ function Screens_BlockChannel(key) {
         Screens_BlockChannelUpdateInfo(channelId);
 
         Screens_BlockCheckDeleteChannel(key);
+
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.channel[channelId];
     }
 
     Main_setHistoryItem();
@@ -3580,6 +3588,12 @@ function Screens_BlockGame(key) {
     Screens_BlockSetDefaultObj();
 
     if (Screens_getGameIsBlocked(gameId)) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.game[gameId] = JSON.parse(
+            JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId])
+        );
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.game[gameId].date = new Date().getTime();
+
         delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
 
         if (ScreenObj[key].screen === Main_Blocked) {
@@ -3608,6 +3622,8 @@ function Screens_BlockGame(key) {
         Screens_BlockGameUpdateInfo(gameId);
 
         Screens_BlockCheckDeleteGame(key);
+
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.game[gameId];
     }
 
     Main_setHistoryItem();
@@ -3732,6 +3748,13 @@ function Screens_BlockSetDefaultObj() {
 
     if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel) {
         Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel = {};
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked = {
+            game: {},
+            channel: {}
+        };
     }
 }
 

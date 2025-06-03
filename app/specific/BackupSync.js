@@ -18,26 +18,6 @@
  *
  */
 
-// TODO
-
-// Test Ui to choose each option
-// informing that backup was success and refresh the page
-
-// review and sync process add option to what to sync GDriveSyncFromBackup7
-// related to above after add account rebuild dialog to show other sync option
-
-//honer sync user history settings
-
-//UPDATE GDriveRestoreFromBackup WHAT to sync
-
-//12h clock
-
-//fix notification for android 11
-
-//update player
-
-//aftet block save backup
-
 //Variable initialization
 var GDriveValidateTokenUrl = 'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=';
 var GDriveUploadNewUrl = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
@@ -303,7 +283,12 @@ function GDriveSyncBackups(backupsObj, date) {
                         Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.channel
                             ? Main_values_History_data[user].blocked.channel
                             : {},
-                        date
+                        userBackupObj.was_blocked && userBackupObj.was_blocked.channel ? userBackupObj.was_blocked.channel : {},
+                        Main_values_History_data[user] &&
+                            Main_values_History_data[user].was_blocked &&
+                            Main_values_History_data[user].was_blocked.channel
+                            ? Main_values_History_data[user].was_blocked.channel
+                            : {}
                     ) || saveAfter;
                 saveAfter =
                     GDriveSyncBackupsByObj(
@@ -311,7 +296,12 @@ function GDriveSyncBackups(backupsObj, date) {
                         Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.game
                             ? Main_values_History_data[user].blocked.game
                             : {},
-                        date
+                        userBackupObj.was_blocked && userBackupObj.was_blocked.game ? userBackupObj.was_blocked.game : {},
+                        Main_values_History_data[user] &&
+                            Main_values_History_data[user].was_blocked &&
+                            Main_values_History_data[user].was_blocked.game
+                            ? Main_values_History_data[user].was_blocked.game
+                            : {}
                     ) || saveAfter;
             }
         } else {
@@ -327,39 +317,62 @@ function GDriveSyncBackups(backupsObj, date) {
     }
 }
 
-function GDriveSyncBackupsByObj(backupObj, localObj, date) {
+function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted) {
+    console.log('GDriveSyncBackupsByObj backupObj', JSON.stringify(backupObj));
+    console.log('localObj', JSON.stringify(localObj));
+    console.log('backupDeleted', JSON.stringify(backupDeleted));
+    console.log('localDeleted', JSON.stringify(localDeleted));
+
     var i = 0,
         backupItems = Object.keys(backupObj),
         len = backupItems.length,
         saveAfter,
-        key = '';
+        key = '',
+        toUpdateObj = {};
 
     //if any new entry add it
     //if date is newer update from
     for (i; i < len; i++) {
         key = backupItems[i];
 
-        if (!localObj[key] && backupObj[key].date > GDriveLastBackupDate) {
-            localObj[key] = backupObj[key];
+        if (!localObj[key]) {
+            //is not deleted locally or the date was delete is before the last watched date
+            if (!localDeleted[key] || localDeleted[key].date < backupObj[key].date) {
+                console.log('add', backupObj[key]);
+
+                localObj[key] = backupObj[key];
+                delete localDeleted[key];
+
+                saveAfter = true;
+            }
+        } else if (localObj[key].date < backupObj[key].date) {
+            // Entry exists on both, use the most recent one
+            toUpdateObj[key] = backupObj[key];
+        }
+    }
+
+    var localItems = Object.keys(localObj);
+    i = 0;
+    len = localItems.length;
+
+    for (i; i < len; i++) {
+        key = localItems[i];
+        if (toUpdateObj[key]) {
+            localObj[key] = toUpdateObj[key];
             saveAfter = true;
         }
     }
 
-    var userItems = Object.keys(localObj);
-
-    i = userItems.length;
+    i = localItems.length;
 
     while (i--) {
-        key = userItems[i];
+        key = localItems[i];
 
-        //if obj.date is less than date the user was deleted by another device
-        //as we always sync before saving must always work without deleting something new
-
-        // if (localObj[key] && !backupObj[key] && localObj[key].date < date) {
-        //     delete localObj[key];
-
-        //     saveAfter = true;
-        // }
+        if (localObj[key] && backupDeleted[key] && backupDeleted[key].date > localObj[key].date) {
+            localDeleted[key] = backupDeleted[key];
+            delete localObj[key];
+            saveAfter = true;
+        }
     }
 
     return saveAfter;
@@ -383,12 +396,8 @@ function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localD
     for (i; i < len; i++) {
         //for backupArray[i]
         // New entry on local
-        console.log('before backupArray[i].id', backupArray[i].id);
 
         if (!localObj[backupArray[i].id]) {
-            console.log('before add localDeleted', localDeleted[backupArray[i].id]);
-            console.log('before add backupDeleted', backupArray[i].date);
-
             //i snot deleted locally or the date was delete is before the last watched date
             if (!localDeleted[backupArray[i].id] || localDeleted[backupArray[i].id].date < backupArray[i].date) {
                 console.log('add', backupArray[i]);
@@ -399,7 +408,6 @@ function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localD
                 saveAfter = true;
             }
         } else if (localObj[backupArray[i].id].date < backupArray[i].date) {
-            console.log('update', backupArray[i]);
             // Entry exists on both, use the most recent one
             toUpdateArray[backupArray[i].id] = backupArray[i];
         }
