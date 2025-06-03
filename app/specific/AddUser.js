@@ -20,6 +20,7 @@
 
 //Variable initialization
 var AddUser_UsernameArray = [];
+var AddUser_UsernameArrayRemoved = {};
 var AddUser_Username = null;
 //Variable initialization end
 
@@ -233,6 +234,7 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
 
 function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson(AddUser_UserArrayItemName, []);
+    AddUser_UsernameArrayRemoved = Main_getItemJson(AddUser_UsernameArrayRemovedItemName, {});
 
     if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
@@ -388,6 +390,7 @@ function AddUser_SaveNewUser(responseText) {
             timeout_id: null
         };
         AddUser_UsernameArray.push(userObj);
+        delete AddUser_UsernameArrayRemoved[userObj.id];
 
         if (!Main_values_History_data[userObj.id]) {
             Main_values_History_data[userObj.id] = {
@@ -426,7 +429,11 @@ function AddUser_SaveNewUserRefreshTokens(position) {
 function AddUser_removeUser(position, skipInitUser) {
     // remove the user
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
+
     if (index > -1) {
+        AddUser_UsernameArrayRemoved[AddUser_UsernameArray[index].id] = JSON.parse(JSON.stringify(AddUser_UsernameArray[index]));
+        AddUser_UsernameArrayRemoved[AddUser_UsernameArray[index].id].date = new Date().getTime();
+
         Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
         AddUser_UsernameArray.splice(index, 1);
     }
@@ -461,15 +468,20 @@ function AddUser_removeUser(position, skipInitUser) {
 function AddUser_SaveUserArray() {
     if (AddUser_UsernameArray.length > 0) {
         //Remove first user alphabetical sort and add first back
-        var mainuser = AddUser_UsernameArray.splice(0, 1);
+        var mainUser = AddUser_UsernameArray.splice(0, 1);
+
         AddUser_UsernameArray.sort(function (a, b) {
             return a.display_name.toLowerCase().localeCompare(b.display_name.toLowerCase());
         });
-        AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+
+        AddUser_UsernameArray.splice(0, 0, mainUser[0]);
     }
 
     var string = JSON.stringify(AddUser_UsernameArray);
     Main_setItem(AddUser_UserArrayItemName, string);
+
+    string = JSON.stringify(AddUser_UsernameArrayRemoved);
+    Main_setItem(AddUser_UsernameArrayRemovedItemName, string);
 
     //Main_Log('AddUser_SaveUserArray');
 }

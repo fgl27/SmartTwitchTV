@@ -55,6 +55,7 @@ var GDriveDoBackupID;
 var GDriveSetExpiresId;
 
 var AddUser_UserArrayItemName = 'AddUser_UsernameArrayNew';
+var AddUser_UsernameArrayRemovedItemName = 'AddUser_UsernameArrayRemoved';
 var Main_values_History_data_ItemName = 'Main_values_History_data';
 var GDriveBackupDateItemName = 'backup_date';
 
@@ -171,6 +172,8 @@ function GDriveGetBackupFileContent() {
     backup[GDriveBackupDateItemName] = new Date().getTime();
     GDriveLastBackupDate = backup[GDriveBackupDateItemName];
     Main_setItem('GDriveLastBackupDate', GDriveLastBackupDate);
+
+    console.log(backup);
 
     var backupString = JSON.stringify(backup);
     GDriveSetBackupSize(backupString);
@@ -467,7 +470,12 @@ function GDriveRestoreSettings(backup) {
         item = backupItems[i];
 
         //Skip anything that is a app settings
-        if (item === GDriveBackupDateItemName || item === AddUser_UserArrayItemName || item === Main_values_History_data_ItemName) {
+        if (
+            item === GDriveBackupDateItemName ||
+            item === AddUser_UserArrayItemName ||
+            item === AddUser_UsernameArrayRemovedItemName ||
+            item === Main_values_History_data_ItemName
+        ) {
             continue;
         }
 
@@ -538,7 +546,7 @@ function GDriveNeedsSync(date) {
 }
 
 function GDriveSyncFromBackup(backup, date, syncSettings) {
-    //GDriveSyncFromBackupSyncUser(backup, date);
+    GDriveSyncFromBackupSyncUser(backup, date);
     GDriveSyncFromBackupSyncUserEtc(backup, date);
 
     if (syncSettings) {
@@ -547,9 +555,17 @@ function GDriveSyncFromBackup(backup, date, syncSettings) {
 }
 
 function GDriveSyncFromBackupSyncUser(backup, date) {
-    var usersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
+    var backupUsersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
+    var backupUsersDeletedArray = JSON.parse(backup[AddUser_UsernameArrayRemovedItemName] || '{}');
 
-    if (usersArray && usersArray.length && GDriveSyncBackupsByArray(usersArray, AddUser_UsernameArray, {}, {}, true)) {
+    console.log('backupUsersArray', backupUsersArray);
+    console.log('backupUsersDeletedArray', backupUsersDeletedArray);
+
+    if (
+        backupUsersArray &&
+        backupUsersArray.length &&
+        GDriveSyncBackupsByArray(backupUsersArray, AddUser_UsernameArray, backupUsersDeletedArray, AddUser_UsernameArrayRemoved, true)
+    ) {
         AddUser_SaveUserArray();
     }
 }
@@ -563,7 +579,7 @@ function GDriveSyncFromBackupSyncUserEtc(backup, date) {
 }
 
 function GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
-    console.log('GDriveRestoreBackup');
+    console.log('GDriveRestoreBackup', backup);
 
     if (!restoreUser) {
         backup[AddUser_UserArrayItemName] = null;
@@ -575,6 +591,10 @@ function GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, res
 
     if (backup[AddUser_UserArrayItemName]) {
         Main_setItem(AddUser_UserArrayItemName, backup[AddUser_UserArrayItemName]);
+    }
+
+    if (backup[AddUser_UsernameArrayRemovedItemName]) {
+        Main_setItem(AddUser_UsernameArrayRemovedItemName, backup[AddUser_UsernameArrayRemovedItemName]);
     }
 
     if (backup[Main_values_History_data_ItemName]) {
