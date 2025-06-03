@@ -64,15 +64,11 @@ var GDriveDoBackupInterval = 100 * 1000;
 var GDriveDoBackupCall = [];
 
 function GDriveSetExpires(obj) {
-    console.log('GDriveSetExpires', obj);
-
     GDriveTokenExpiresTime = (parseInt(obj.expires_in) - 60) * 1000;
     GDriveBackupExpiresTime = new Date().getTime() + GDriveTokenExpiresTime;
     Main_setItem('GDriveBackupExpiresTime', GDriveBackupExpiresTime);
 
     GDriveSetHeader(GDriveTokenExpiresTime);
-
-    console.log('GDriveTokenExpiresTime', GDriveTokenExpiresTime);
 }
 
 function GDriveSetHeader(expiresTime) {
@@ -86,9 +82,6 @@ function GDriveDeviceRefresh(sync) {
 }
 
 function GDriveDeviceRefreshSuccess(obj) {
-    console.log('GDriveDeviceRefreshSuccess', obj);
-    console.log(JSON.parse(obj.responseText));
-
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
         GDriveAccessToken = data.access_token;
@@ -125,25 +118,19 @@ function GDriveClean() {
 }
 
 function GDriveErase() {
-    console.log('GDriveErase');
     GDriveClean();
 
     GDriveCheckMainStarted();
 }
 
 function GDriveUpdateFile() {
-    console.log('GDriveUpdateFile');
-
     GDriveUpdateFile2(GDriveUpFileSuccess, noop_fun, 0, 0);
 }
 
 function GDriveUpFileSuccess(obj) {
-    console.log('GDriveUpFileSuccess', obj);
-
     if (obj.status === 200) {
         GDriveUpFileSuccessSave(obj);
     } else {
-        console.log('GDriveUpFileSuccess fail', obj.responseText);
         Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);
     }
 }
@@ -157,8 +144,6 @@ function GDriveUpFileSuccessSave(obj) {
 }
 
 function GDriveGetBackupFileContent() {
-    console.log('GDriveGetBackupFile');
-
     var backup = {},
         i = 0,
         len = localStorage.length,
@@ -173,8 +158,6 @@ function GDriveGetBackupFileContent() {
     GDriveLastBackupDate = backup[GDriveBackupDateItemName];
     Main_setItem('GDriveLastBackupDate', GDriveLastBackupDate);
 
-    console.log(backup);
-
     var backupString = JSON.stringify(backup);
     GDriveSetBackupSize(backupString);
 
@@ -184,11 +167,8 @@ function GDriveGetBackupFileContent() {
 function GDriveSetBackupSize(backupString) {
     try {
         var sizeInBytes = new Blob([backupString]).size;
-        console.log('GDriveSetBackupSize', sizeInBytes);
         GDriveBackupSize = formatFileSize(sizeInBytes);
-    } catch (error) {
-        console.log('GDriveSetBackupSize error', error);
-    }
+    } catch (error) {}
 }
 
 var formatFileSizeArray = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -205,7 +185,6 @@ function GDriveCanDoBackup() {
     var now = new Date().getTime(),
         result = false;
 
-    console.log('GDriveDoBackupCall', GDriveDoBackupCall);
     // Remove calls that are outside the time window
     while (GDriveDoBackupCall.length > 0 && GDriveDoBackupCall[0] <= now - GDriveDoBackupInterval) {
         GDriveDoBackupCall.shift();
@@ -228,8 +207,6 @@ function GDriveSyncBackupSetting(backup) {
 }
 
 function GDriveRefresh() {
-    console.log('GDriveRefresh xxx');
-
     if (Main_IsOn_OSInterface) {
         Main_RefreshPage();
     } else {
@@ -245,14 +222,9 @@ function GDriveSyncBackups(backupsObj, date) {
         userBackupObj,
         saveAfter;
 
-    console.log('GDriveSyncBackups', backupsObj);
-
     for (i; i < len; i++) {
         user = backupUsers[i];
         userBackupObj = backupsObj[user];
-
-        console.log('userBackupObj', userBackupObj);
-        console.log('userBackupObj was_deleted', userBackupObj.was_deleted);
 
         if (Main_values_History_data[user]) {
             saveAfter =
@@ -321,11 +293,6 @@ function GDriveSyncBackups(backupsObj, date) {
 }
 
 function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted) {
-    console.log('GDriveSyncBackupsByObj backupObj', JSON.stringify(backupObj));
-    console.log('localObj', JSON.stringify(localObj));
-    console.log('backupDeleted', JSON.stringify(backupDeleted));
-    console.log('localDeleted', JSON.stringify(localDeleted));
-
     var i = 0,
         backupItems = Object.keys(backupObj),
         len = backupItems.length,
@@ -341,8 +308,6 @@ function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted
         if (!localObj[key]) {
             //is not deleted locally or the date was delete is before the last watched date
             if (!localDeleted[key] || localDeleted[key].date < backupObj[key].date) {
-                console.log('add', backupObj[key]);
-
                 localObj[key] = backupObj[key];
                 delete localDeleted[key];
 
@@ -389,11 +354,6 @@ function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localD
         saveAfter,
         toUpdateArray = {};
 
-    console.log('backupArray', JSON.stringify(backupArray));
-    console.log('localArray', JSON.stringify(localArray));
-    console.log('backupDeleted', JSON.stringify(backupDeleted));
-    console.log('localDeleted', JSON.stringify(localDeleted));
-
     //if any new entry add it
     //if date is newer update from
     for (i; i < len; i++) {
@@ -403,8 +363,6 @@ function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localD
         if (!localObj[backupArray[i].id]) {
             //i snot deleted locally or the date was delete is before the last watched date
             if (!localDeleted[backupArray[i].id] || localDeleted[backupArray[i].id].date < backupArray[i].date) {
-                console.log('add', backupArray[i]);
-
                 localArray.push(backupArray[i]);
                 delete localDeleted[backupArray[i].id];
 
@@ -558,9 +516,6 @@ function GDriveSyncFromBackupSyncUser(backup, date) {
     var backupUsersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
     var backupUsersDeletedArray = JSON.parse(backup[AddUser_UsernameArrayRemovedItemName] || '{}');
 
-    console.log('backupUsersArray', backupUsersArray);
-    console.log('backupUsersDeletedArray', backupUsersDeletedArray);
-
     if (
         backupUsersArray &&
         backupUsersArray.length &&
@@ -579,8 +534,6 @@ function GDriveSyncFromBackupSyncUserEtc(backup, date) {
 }
 
 function GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
-    console.log('GDriveRestoreBackup', backup);
-
     if (!restoreUser) {
         backup[AddUser_UserArrayItemName] = null;
     }

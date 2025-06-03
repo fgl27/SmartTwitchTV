@@ -23,8 +23,6 @@ function GDriveBackupTimeout() {
 }
 
 function GDriveBackup() {
-    console.log('GDriveDoBackup refresh');
-
     if (!GDriveAccessToken) {
         return;
     }
@@ -33,7 +31,6 @@ function GDriveBackup() {
         GDriveBackupGetFileInfo();
     } else {
         if (!GDriveCanDoBackup()) {
-            console.log('GDriveDoBackup return');
             return;
         }
 
@@ -44,9 +41,6 @@ function GDriveBackup() {
 }
 
 function GDriveDownloadBackupFileSuccess(obj) {
-    console.log('GDriveDownloadBackupFileSuccess', obj);
-    console.log('GDriveGetBackupFileSuccess obj.responseText', obj.responseText);
-
     //if has backup sync first
     if (obj.status === 200) {
         GDriveDownloadBackupFileSuccessSync(obj);
@@ -87,9 +81,6 @@ function GDriveBackupGetFileInfo() {
 }
 
 function GDriveBackupGetFileInfoSuccess(obj) {
-    console.log('GDriveBackupGetFileInfoSuccess', obj);
-    console.log(JSON.parse(obj.responseText));
-
     if (obj.status === 200) {
         GDriveSaveFileInfo(obj);
     } else {
@@ -104,11 +95,8 @@ function GDriveBackupGetFileInfoSuccess(obj) {
 }
 
 function GDriveBackupFileSuccess(obj) {
-    console.log('GDriveBackupFileSuccess', obj);
-
     if (obj.status === 200) {
         GDriveUpFileSuccessSave(obj);
     } else {
-        console.log('GDriveUpFileSuccess fail', obj.responseText);
     }
 }

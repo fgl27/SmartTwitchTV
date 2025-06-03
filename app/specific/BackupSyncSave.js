@@ -109,9 +109,6 @@ function GDriveBackupAndSync() {
 }
 
 function GDriveBackupAndSyncSuccess(obj) {
-    console.log('GDriveBackupAndSyncSuccess', obj);
-    console.log('GDriveBackupAndSyncSuccess obj.responseText', obj.responseText);
-
     GDriveBackupAndSyncValidate(obj);
 
     // var backup = GDriveDownloadBackupFileSuccessSync(obj);
@@ -133,8 +130,6 @@ function GDriveBackupAndSyncSuccess(obj) {
 
 var GDriveBackupAndSyncValidateBackup;
 function GDriveBackupAndSyncValidate(obj) {
-    console.log('GDriveBackupAndSyncValidate', obj);
-
     if (obj.status === 200) {
         GDriveBackupAndSyncValidateBackup = JSON.parse(obj.responseText);
 
@@ -182,14 +177,10 @@ function GDriveBackupAndSyncRunRestore() {
 }
 
 function GDriveBackupAndSyncGetFileInfo() {
-    console.log('GDriveBackupAndSyncGetFileInfo');
     GDriveGetFileByName(GDriveBackupAndSyncGetFileInfoSuccess, noop_fun, 0, 0);
 }
 
 function GDriveBackupAndSyncGetFileInfoSuccess(obj) {
-    console.log('GDriveBackupAndSyncGetFileInfoSuccess', obj);
-    console.log(JSON.parse(obj.responseText));
-
     if (obj.status === 200) {
         GDriveSaveFileInfo(obj);
     } else {

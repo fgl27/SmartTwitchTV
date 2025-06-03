@@ -19,7 +19,6 @@
  */
 
 function GDriveRestore() {
-    console.log('GDriveRestore');
     GDriveRefreshToken = Main_getItemString('GDriveRefreshToken', null);
     GDriveAccessToken = Main_getItemString('GDriveAccessToken', null);
     GDriveFileID = Main_getItemString('GDriveFileID', null);
@@ -33,16 +32,10 @@ function GDriveRestore() {
     } else if (!Main_PreventCheckResume) {
         GDriveCheckMainStarted();
     }
-
-    console.log('GDriveRefreshToken', GDriveRefreshToken);
-    console.log('GDriveAccessToken', GDriveAccessToken);
-    console.log('GDriveBackupExpiresTime', GDriveBackupExpiresTime);
 }
 
 function GDriveValidateToken() {
     if (GDriveBackupExpiresTime > new Date().getTime()) {
-        console.log('not expireted');
-
         GDriveSetHeader(GDriveBackupExpiresTime - new Date().getTime());
 
         GDriveGetBackupFile();
@@ -54,9 +47,6 @@ function GDriveValidateToken() {
 }
 
 function GDriveValidateTokenSuccess(obj) {
-    console.log('GDriveValidateTokenSuccess', obj);
-    console.log(JSON.parse(obj.responseText));
-
     if (obj.status === 200) {
         GDriveSetExpires(JSON.parse(obj.responseText));
 
@@ -74,17 +64,12 @@ function GDriveValidateTokenRefreshAccessToken() {
 }
 
 function GDriveRefreshSuccess(obj) {
-    console.log('GDriveRefreshSuccess', obj);
-    console.log(JSON.parse(obj.responseText));
-
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
         GDriveAccessToken = data.access_token;
         Main_setItem('GDriveAccessToken', GDriveAccessToken);
 
         GDriveSetExpires(data);
-
-        console.log('new GDriveAccessToken', GDriveAccessToken);
 
         GDriveGetBackupFile();
     } else if (obj.status === 401) {
@@ -114,8 +99,6 @@ function GDriveGetBackupFile() {
 }
 
 function GDriveGetFileInfo() {
-    console.log('GDriveGetFileInfo');
-
     GDriveGetFileByName(GDriveGetFileInfoSuccess, noop_fun, 0, 0);
 }
 
@@ -134,9 +117,6 @@ function GDriveSaveFileInfo(obj) {
 }
 
 function GDriveGetFileInfoSuccess(obj) {
-    console.log('GDriveGetFileInfoSuccess', obj);
-    console.log(JSON.parse(obj.responseText));
-
     if (obj.status === 200) {
         GDriveSaveFileInfo(obj);
     } else {
@@ -152,8 +132,6 @@ function GDriveGetFileInfoSuccess(obj) {
 }
 
 function GDriveBackupFileFromRestore(obj) {
-    console.log('GDriveBackupFileFromRestore', obj);
-
     if (obj.status === 200) {
         GDriveUpFileSuccessSave(obj);
     } else {
@@ -164,9 +142,6 @@ function GDriveBackupFileFromRestore(obj) {
 }
 
 function GDriveGetBackupFileSuccess(obj) {
-    console.log('GDriveGetBackupFileSuccess', obj);
-    console.log('GDriveGetBackupFileSuccess refresh', obj.responseText);
-
     //if has backup sync first
     if (obj.status === 200) {
         var backupObj;
@@ -189,33 +164,24 @@ function GDriveGetBackupFileSuccess(obj) {
         return;
     } else if (obj.status === 404) {
         var data = JSON.parse(obj.responseText);
-        console.log('GDriveGetBackupFileSuccess error', data);
-        console.log('GDriveGetBackupFileSuccess error', data.error.message);
 
         if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
             GDriveFileID = null;
             localStorage.removeItem('GDriveFileID');
 
-            console.log('GDriveGetBackupFileSuccess save file');
             GDriveGetFileInfo();
         }
         return;
     }
 
-    console.log('GDriveGetBackupFileSuccess fail', obj);
     GDriveCheckMainStarted();
 }
 
 function GDriveSyncBackupFile(backup) {
-    console.log('GDriveSyncBackupFile GDriveSyncBackup', backup);
-
     var date = JSON.parse(backup[GDriveBackupDateItemName]) || new Date().getTime();
-
-    console.log('GDriveSyncBackupFile date', date);
 
     //skip sync if date is the same or smaller
     if (!GDriveNeedsSync(date)) {
-        console.log('skip sync GDriveSyncBackupFile date', date);
         GDriveCheckMainStarted();
         return;
     }
@@ -226,16 +192,15 @@ function GDriveSyncBackupFile(backup) {
 }
 
 function GDriveRestoreBackupFile(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
-    console.log('GDriveRestoreBackupFile');
-
     GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings);
 
     GDriveCheckMainStarted();
 }
 
 function GDriveCheckMainStarted() {
-    console.log('GDriveCheckMainStarted');
-    if (!Main_started) {
-        Main_initWindows();
+    if (Main_started) {
+        return;
     }
+
+    Main_initWindows();
 }

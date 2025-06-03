@@ -93,8 +93,6 @@ function GDriveUploadFile(callbackSuccess, callbackError, key_1, key_2) {
         GDriveBoundary +
         '--';
 
-    console.log(body);
-
     FullxmlHttpGet(GDriveUploadNewUrl, header, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
 
