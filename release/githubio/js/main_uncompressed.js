@@ -2220,19 +2220,18 @@
         STR_WRONG_PASS = 'Wrong password!';
         STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
-        STR_PLAYER_EXTRA_CODEC = 'Extra codec support';
-        STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Beta codec support that are being tested by Twitch';
+        STR_PLAYER_EXTRA_CODEC = 'Enhanced Broadcasting HEVC, AV1, 1440p 4k support';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available.';
 
-        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Most streams only have AVC H.264 support ';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'The app checks if your device supports HEVC or AV1 for higher-quality streams.';
 
-        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
-            'For the codec to work the device must be capable, check the capability below (must be green), and the stream must be using the codec.';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 = 'Without device support, playback will be limited and may not work for enhanced streams.';
 
         STR_PLAYER_CODEC_AV1 = 'AV1';
         STR_PLAYER_CODEC_HEVC = 'HEVC';
 
-        STR_PLAYER_CODEC_SUPPORTED = 'supported';
-        STR_PLAYER_CODEC_NOT_SUPPORTED = 'Not supported! Enabling this codec can cause playback errors and no playback.';
+        STR_PLAYER_CODEC_SUPPORTED = 'device supported';
+        STR_PLAYER_CODEC_NOT_SUPPORTED = 'Device Not supported! Enabling this codec can cause playback errors.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'To better understand the device capability check the settings option: ';
 
@@ -2831,6 +2830,24 @@
 
         STR_DISABLE_SHARED_CHAT = 'Desactivar chat compartido';
         STR_DISABLE_SHARED_CHAT_SUMMARY = 'Si se establece en "sí", solo mostrará los mensajes del chat del stream que abriste';
+
+        STR_PLAYER_EXTRA_CODEC = 'Transmisión Mejorada: soporte para HEVC, AV1, 1440p y 4K';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY =
+            'La mayoría de las transmisiones usan AVC (H.264) hasta 1080p60; HEVC/AV1 permiten 1440p, 4K y más de 60fps cuando está disponible.';
+
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA =
+            'La aplicación verifica si tu dispositivo es compatible con HEVC o AV1 para transmisiones de mayor calidad.';
+
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
+            'Sin compatibilidad en el dispositivo, la reproducción será limitada y puede que no funcione en transmisiones mejoradas.';
+
+        STR_PLAYER_CODEC_AV1 = 'AV1';
+        STR_PLAYER_CODEC_HEVC = 'HEVC';
+
+        STR_PLAYER_CODEC_SUPPORTED = 'dispositivo compatible';
+        STR_PLAYER_CODEC_NOT_SUPPORTED = '¡Dispositivo no compatible! Activar este códec puede causar errores de reproducción.';
+
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Para comprender mejor las capacidades del dispositivo, revisa la opción de configuración: ';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3728,6 +3745,21 @@
 
         STR_DISABLE_SHARED_CHAT = 'Desativar chat compartilhado';
         STR_DISABLE_SHARED_CHAT_SUMMARY = 'Se definido como "sim", mostrará apenas as mensagens do chat da transmissão que você abriu';
+
+        STR_PLAYER_EXTRA_CODEC = 'Transmissão Avançada: suporte a HEVC, AV1, 1440p e 4K';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY =
+            'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permitem 1440p, 4K e mais de 60fps quando disponível.';
+
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'O app verifica se seu dispositivo suporta HEVC ou AV1 para transmissões de maior qualidade.';
+
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
+            'Sem suporte do dispositivo, a reprodução será limitada e pode não funcionar para transmissões avançadas.';
+
+        STR_PLAYER_CODEC_AV1 = 'AV1';
+        STR_PLAYER_CODEC_HEVC = 'HEVC';
+
+        STR_PLAYER_CODEC_SUPPORTED = 'dispositivo compatível';
+        STR_PLAYER_CODEC_NOT_SUPPORTED = 'Dispositivo não compatível! Ativar este codec pode causar erros na reprodução.';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4632,22 +4664,22 @@
         STR_WRONG_PASS = 'Неправильный пароль!';
         STR_PASS_MATURE_ENABLED = 'Зрелый контент включён, старый пароль удалён';
 
-        STR_PLAYER_EXTRA_CODEC = 'Поддержка дополнительных кодеков';
-        STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Поддержка бета-версий кодеков, которые тестируются Twitch';
+        STR_PLAYER_EXTRA_CODEC = 'Расширенная трансляция: поддержка HEVC, AV1, 1440p и 4K';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY =
+            'Большинство трансляций использует AVC (H.264) до 1080p60; HEVC/AV1 позволяют воспроизводить 1440p, 4K и более 60 кадров в секунду, если доступно.';
 
-        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Большинство потоков поддерживают только AVC H.264';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Приложение проверяет, поддерживает ли ваше устройство HEVC или AV1 для трансляций высокого качества.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
-            'Для работы кодека устройство должно поддерживать его (проверьте ниже, должно быть зелёным), и поток должен использовать этот кодек.';
+            'Без поддержки устройства воспроизведение будет ограничено и может не работать для расширенных трансляций.';
 
         STR_PLAYER_CODEC_AV1 = 'AV1';
         STR_PLAYER_CODEC_HEVC = 'HEVC';
 
-        STR_PLAYER_CODEC_SUPPORTED = 'поддерживается';
-        STR_PLAYER_CODEC_NOT_SUPPORTED =
-            'Не поддерживается! Включение этого кодека может вызвать ошибки воспроизведения и отсутствие воспроизведения.';
+        STR_PLAYER_CODEC_SUPPORTED = 'устройство поддерживается';
+        STR_PLAYER_CODEC_NOT_SUPPORTED = 'Устройство не поддерживается! Включение этого кодека может вызвать ошибки воспроизведения.';
 
-        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Чтобы лучше понять возможности устройства, проверьте настройку:';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Чтобы лучше понять возможности устройства, проверьте параметр в настройках: ';
 
         STR_BLOCKED_CODEC = 'Возможности кодека и заблокированные кодеки';
         STR_BLOCKED_CODEC_SUMMARY =
@@ -4958,9 +4990,20 @@
         VersionBase: '3.0',
         publishVersionCode: 375, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/375/SmartTV_twitch_3_0_375.apk',
-        WebVersion: 'May 27 2024',
-        WebTag: 707, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'June 03 2024',
+        WebTag: 709, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version June 03',
+                changes: [
+                    'Enhanced Broadcasting support for HEVC/AV1 codecs now enabled by default on compatible devices',
+                    'Upgraded from "Extra codec support" to "Enhanced Broadcasting" with improved HEVC/AV1 implementation',
+                    'Most streams use AVC (H.264) up to 1080p60, while HEVC/AV1 enable higher quality 1440p, 4K, and 60+fps streams where available',
+                    'Device compatibility is automatically detected to ensure optimal streaming performance',
+                    'Access the new setting in player options to enable/disable Enhanced Broadcasting support based on your preferences',
+                    'General improvements to streaming performance and stability'
+                ]
+            },
             {
                 title: 'Version May 27',
                 changes: [
@@ -4978,14 +5021,6 @@
                     'Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related',
                     'General improves'
                 ]
-            },
-            {
-                title: 'Version January 27 & 28 2024',
-                changes: ['General improves']
-            },
-            {
-                title: 'Version January 19 2024',
-                changes: ['General visual improves']
             }
         ]
     };
@@ -12413,7 +12448,8 @@
         API_Change: true,
         Password_data: null,
         OverwriteBlock: 0,
-        BlockSort: false
+        BlockSort: false,
+        checkedEnhancedStream: false
     };
 
     var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -12563,9 +12599,9 @@
             Main_showLoadDialog();
 
             Main_initClick();
-            Settings_SetDefaults();
             calculateFontSize();
             Main_RestoreValues();
+            Settings_SetDefaults();
             Settings_RestoreAppLang();
 
             DefaultLang();
@@ -39461,12 +39497,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Settings_CodecsSet() {
-        if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecs.join());
+        if (Main_IsOn_OSInterface) {
+            OSInterface_setBlackListMediaCodec(Settings_DisableCodecs.join());
+        }
+
         Settings_SetMaxInstances();
     }
 
     function Settings_SetMaxInstances() {
-        if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
+        if (!Settings_CodecsValue.length) {
+            Settings_SetCodecsValue();
+        }
+
         Play_MaxInstances = 0;
 
         var i = 0,
@@ -39488,7 +39530,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Settings_SetCodecsValue() {
-        if (Settings_CodecsValue.length) return;
+        if (Settings_CodecsValue.length) {
+            return;
+        }
 
         if (!Main_IsOn_OSInterface) {
             // Settings_CodecsValue = [
@@ -39667,12 +39711,27 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             len = codecs.length;
 
         for (i; i < len; i++) {
-            if (Main_A_includes_B(codecs[i].type, 'hevc')) Settings_HEVCSupported = true;
-            if (Main_A_includes_B(codecs[i].type, 'av01')) Settings_AV1Supported = true;
+            if (Main_A_includes_B(codecs[i].type, 'hevc')) {
+                Settings_HEVCSupported = true;
+            }
+
+            if (Main_A_includes_B(codecs[i].type, 'av01')) {
+                Settings_AV1Supported = true;
+            }
 
             if (Settings_HEVCSupported && Settings_AV1Supported) {
                 break;
             }
+        }
+
+        if (!Main_values.checkedEnhancedStream) {
+            Main_values.checkedEnhancedStream = true;
+
+            Settings_value.hevc_codec.defaultValue = Settings_HEVCSupported ? 1 : 0;
+            Settings_value.av1_codec.defaultValue = Settings_AV1Supported ? 1 : 0;
+
+            Main_setItem('hevc_codec', Settings_value.hevc_codec.defaultValue + 1);
+            Main_setItem('av1_codec', Settings_value.av1_codec.defaultValue + 1);
         }
     }
 
