@@ -879,4 +879,19 @@ function pt_BRLang() {
 
     STR_DISABLE_SHARED_CHAT = 'Desativar chat compartilhado';
     STR_DISABLE_SHARED_CHAT_SUMMARY = 'Se definido como "sim", mostrará apenas as mensagens do chat da transmissão que você abriu';
+
+    STR_PLAYER_EXTRA_CODEC = 'Transmissão Avançada: suporte a HEVC, AV1, 1440p e 4K';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY =
+        'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permitem 1440p, 4K e mais de 60fps quando disponível.';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'O app verifica se seu dispositivo suporta HEVC ou AV1 para transmissões de maior qualidade.';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 =
+        'Sem suporte do dispositivo, a reprodução será limitada e pode não funcionar para transmissões avançadas.';
+
+    STR_PLAYER_CODEC_AV1 = 'AV1';
+    STR_PLAYER_CODEC_HEVC = 'HEVC';
+
+    STR_PLAYER_CODEC_SUPPORTED = 'dispositivo compatível';
+    STR_PLAYER_CODEC_NOT_SUPPORTED = 'Dispositivo não compatível! Ativar este codec pode causar erros na reprodução.';
 }

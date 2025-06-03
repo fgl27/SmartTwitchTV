@@ -107,7 +107,8 @@ var Main_values = {
     API_Change: true,
     Password_data: null,
     OverwriteBlock: 0,
-    BlockSort: false
+    BlockSort: false,
+    checkedEnhancedStream: false
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -256,9 +257,9 @@ function Main_StartApp() {
         Main_showLoadDialog();
 
         Main_initClick();
-        Settings_SetDefaults();
         calculateFontSize();
         Main_RestoreValues();
+        Settings_SetDefaults();
         Settings_RestoreAppLang();
 
         DefaultLang();
