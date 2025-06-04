@@ -971,6 +971,8 @@ function Main_ReStartScreens(preventRefresh) {
         }
 
         Sidepannel_AddFocusLiveFeed(true);
+
+        Main_SaveValues(true);
     } else {
         Main_SwitchScreen(false, preventRefresh);
     }
@@ -997,6 +999,8 @@ function Main_SwitchScreen(removekey, preventRefresh) {
     if (removekey) {
         Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
     }
+
+    Main_SaveValues(true);
 }
 
 //var used to allow to search in a search result,

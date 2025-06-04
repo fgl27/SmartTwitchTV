@@ -1384,7 +1384,6 @@ function Play_ClearPlayer() {
     Main_clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_HideWarningDialog();
-    Main_SaveValues(true);
 
     if (!Play_EndDialogEnter) {
         Play_HideEndDialog();
