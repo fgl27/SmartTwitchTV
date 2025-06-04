@@ -480,10 +480,19 @@ function AddUser_SaveUserArray() {
     var string = JSON.stringify(AddUser_UsernameArray);
     Main_setItem(AddUser_UserArrayItemName, string);
 
+    Main_trimObject(AddUser_UsernameArrayRemoved, 100);
+
     string = JSON.stringify(AddUser_UsernameArrayRemoved);
     Main_setItem(AddUser_UsernameArrayRemovedItemName, string);
 
+    AddUser_CleanUserData();
+
     //Main_Log('AddUser_SaveUserArray');
+}
+
+function AddUser_CleanUserData() {
+    Main_removeMissingProps(Main_values_History_data, AddUser_UsernameArray);
+    Main_SaveHistoryItem();
 }
 
 function AddUser_UserMakeOne(position) {

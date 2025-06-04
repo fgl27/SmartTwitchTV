@@ -296,7 +296,6 @@ function Main_initClick() {
 }
 
 function Main_initWindows() {
-    console.log('Main_initWindows');
     Main_started = true;
     if (AddUser_UserHasToken()) {
         Main_initWindowsEnd();
@@ -1036,7 +1035,6 @@ function Main_SaveValues(backup) {
 function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
     Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
-    console.log('Main_values', Main_values);
 }
 
 function Main_ExitCurrent(ExitCurrent) {
@@ -2474,8 +2472,6 @@ function Main_history_Exist_By_VOD_Id(id) {
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
 
-    console.log('Main_values_History_data', Main_values_History_data);
-
     Main_history_SetVod_Watched();
     Main_UpdateBlockedHomeScreen();
 
@@ -2510,8 +2506,6 @@ function Main_SaveHistoryItem() {
     Main_setItem(Main_values_History_data_ItemName, string);
 
     Main_UpdateBlockedHomeScreen();
-
-    console.log('Main_SaveHistoryItem', Main_values_History_data);
 }
 
 function Main_UpdateBlockedHomeScreen() {
@@ -3680,4 +3674,39 @@ function Main_Set() {
 
         Play_Headers = JSON.stringify([['Client-ID', Chat_token]]);
     }
+}
+
+function Main_trimObject(obj, sizeLimit) {
+    var keys = Object.keys(obj);
+    var excess = keys.length - sizeLimit;
+
+    if (excess > 0) {
+        for (var i = 0; i < excess; i++) {
+            delete obj[keys[i]];
+        }
+    }
+
+    return obj;
+}
+
+function Main_removeMissingProps(obj, referenceArray) {
+    var i,
+        refIds = {},
+        key;
+
+    // Build a lookup map of reference IDs for faster checks
+    for (i = 0; i < referenceArray.length; i++) {
+        refIds[referenceArray[i].id] = true;
+    }
+
+    // Iterate over object keys and remove those not in reference
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            if (!refIds.hasOwnProperty(key)) {
+                delete obj[key];
+            }
+        }
+    }
+
+    return obj;
 }

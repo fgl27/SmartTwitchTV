@@ -344,7 +344,7 @@ function BrowserTestFun() {
         if (!Settings_isVisible()) return;
 
         var id = event.target.id;
-        console.log(id);
+        //console.log(id);
 
         if (Main_A_includes_B(id, 'left')) {
             Settings_DialoghandleKeyLeft();
@@ -470,7 +470,7 @@ function BrowserTestFun() {
         var id = event.target.id,
             div;
 
-        console.log(id);
+        //console.log(id);
 
         var idArray = id.split('_'),
             key = parseInt(idArray[0]),
@@ -796,7 +796,7 @@ function BrowserTestFun() {
                 pos = parseInt(id.split('_')[2]) + 1;
 
                 if (isNaN(pos)) {
-                    console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
+                    // console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
                     return;
                 }
 
@@ -828,7 +828,7 @@ function BrowserTestFun() {
                     pos = parseInt(idArray[idArray.length - 1]);
 
                     if (isNaN(pos)) {
-                        console.log('Main_Scene2Doc.onclick ' + pos);
+                        // console.log('Main_Scene2Doc.onclick ' + pos);
                         return;
                     }
 
