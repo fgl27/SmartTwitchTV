@@ -961,10 +961,19 @@ function Main_ThumbNull(y, x, thumbnail) {
 function Main_ReStartScreens(preventRefresh) {
     if (Sidepannel_isShowingUserLive()) {
         Main_addEventListener('keydown', Sidepannel_handleKeyDown);
-        if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
-        if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
+
+        if (!Sidepannel_PlayerViewSidePanelSet) {
+            Sidepannel_SetPlayerViewSidePanel();
+        }
+
+        if (Play_PreviewId) {
+            OSInterface_SidePanelPlayerRestore();
+        }
+
         Sidepannel_AddFocusLiveFeed(true);
-    } else Main_SwitchScreen(false, preventRefresh);
+    } else {
+        Main_SwitchScreen(false, preventRefresh);
+    }
 }
 
 function Main_SwitchScreen(removekey, preventRefresh) {
@@ -2471,6 +2480,7 @@ function Main_history_Exist_By_VOD_Id(id) {
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
+
     Main_HistoryClean();
 
     Main_history_SetVod_Watched();

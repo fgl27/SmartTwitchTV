@@ -143,6 +143,8 @@ function PlayClip_Start() {
     Play_controls[Play_controlsChanelCont].setLabel(Main_values.Main_selectedChannelDisplayname);
 
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
+
+    Main_SaveValues(true);
 }
 
 function PlayClip_SetProgressBarJumpers() {

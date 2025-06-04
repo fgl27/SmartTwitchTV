@@ -513,7 +513,9 @@ function PlayVod_shutdownStream(SkipSaveOffset) {
 function PlayVod_PreshutdownStream(saveOffset) {
     PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
-    if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
+    if (Main_IsOn_OSInterface && !Play_PreviewId) {
+        OSInterface_stopVideo();
+    }
 
     Main_ShowElementWithEle(Play_Controls_Holder);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);

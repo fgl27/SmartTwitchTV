@@ -258,11 +258,11 @@ function GDriveSyncBackups(backupsObj, date) {
                         Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.channel
                             ? Main_values_History_data[user].blocked.channel
                             : {},
-                        userBackupObj.was_blocked && userBackupObj.was_blocked.channel ? userBackupObj.was_blocked.channel : {},
+                        userBackupObj.blocked.deleted && userBackupObj.blocked.deleted.channel ? userBackupObj.blocked.deleted.channel : {},
                         Main_values_History_data[user] &&
-                            Main_values_History_data[user].was_blocked &&
-                            Main_values_History_data[user].was_blocked.channel
-                            ? Main_values_History_data[user].was_blocked.channel
+                            Main_values_History_data[user].blocked.deleted &&
+                            Main_values_History_data[user].blocked.deleted.channel
+                            ? Main_values_History_data[user].blocked.deleted.channel
                             : {}
                     ) || saveAfter;
                 saveAfter =
@@ -271,11 +271,11 @@ function GDriveSyncBackups(backupsObj, date) {
                         Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.game
                             ? Main_values_History_data[user].blocked.game
                             : {},
-                        userBackupObj.was_blocked && userBackupObj.was_blocked.game ? userBackupObj.was_blocked.game : {},
+                        userBackupObj.blocked.deleted && userBackupObj.blocked.deleted.game ? userBackupObj.blocked.deleted.game : {},
                         Main_values_History_data[user] &&
-                            Main_values_History_data[user].was_blocked &&
-                            Main_values_History_data[user].was_blocked.game
-                            ? Main_values_History_data[user].was_blocked.game
+                            Main_values_History_data[user].blocked.deleted &&
+                            Main_values_History_data[user].blocked.deleted.game
+                            ? Main_values_History_data[user].blocked.deleted.game
                             : {}
                     ) || saveAfter;
             }

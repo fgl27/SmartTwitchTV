@@ -2296,7 +2296,6 @@ function Screens_handleKeyDown(key, event) {
         case KEY_NUMPAD_2:
         case KEY_2:
             Main_ReloadScreen();
-            GDriveBackup();
             break;
         case KEY_PAUSE: //key s
         case KEY_NUMPAD_6:
@@ -3418,11 +3417,11 @@ function Screens_BlockChannel(key) {
     Screens_BlockSetDefaultObj();
 
     if (Screens_getChannelIsBlocked(channelId)) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.channel[channelId] = JSON.parse(
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId] = JSON.parse(
             JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId])
         );
 
-        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.channel[channelId].date = new Date().getTime();
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId].date = new Date().getTime();
 
         delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
 
@@ -3452,7 +3451,7 @@ function Screens_BlockChannel(key) {
 
         Screens_BlockCheckDeleteChannel(key);
 
-        delete Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.channel[channelId];
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId];
     }
 
     Main_setHistoryItem();
@@ -3588,11 +3587,11 @@ function Screens_BlockGame(key) {
     Screens_BlockSetDefaultObj();
 
     if (Screens_getGameIsBlocked(gameId)) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.game[gameId] = JSON.parse(
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId] = JSON.parse(
             JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId])
         );
 
-        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.game[gameId].date = new Date().getTime();
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId].date = new Date().getTime();
 
         delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
 
@@ -3623,7 +3622,7 @@ function Screens_BlockGame(key) {
 
         Screens_BlockCheckDeleteGame(key);
 
-        delete Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked.game[gameId];
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId];
     }
 
     Main_setHistoryItem();
@@ -3750,8 +3749,8 @@ function Screens_BlockSetDefaultObj() {
         Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel = {};
     }
 
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].was_blocked = {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted = {
             game: {},
             channel: {}
         };

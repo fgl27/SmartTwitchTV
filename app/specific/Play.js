@@ -1384,7 +1384,11 @@ function Play_ClearPlayer() {
     Main_clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_HideWarningDialog();
-    if (!Play_EndDialogEnter) Play_HideEndDialog();
+    Main_SaveValues(true);
+
+    if (!Play_EndDialogEnter) {
+        Play_HideEndDialog();
+    }
 
     if (Play_data.qualities[1] && Play_data.qualityIndex === Play_getQualitiesCount() - 1) {
         if (Play_data.qualities[1].hasOwnProperty('id')) {
