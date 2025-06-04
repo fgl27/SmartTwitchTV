@@ -259,13 +259,12 @@ function AddUser_RestoreUsers() {
                 vod: [],
                 clip: [],
                 test: [],
-                was_deleted: {
+                deleted: {
                     live: {},
                     vod: {},
                     clip: {}
                 }
             };
-            console.log('Main_values_History_data1', Main_values_History_data);
         }
 
         Main_Restore_history();

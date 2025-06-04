@@ -2693,8 +2693,8 @@ function Screens_addAllToDelete(array, type) {
 }
 
 function Screens_checkDeleteObj() {
-    if (!Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted) {
-        Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted = {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].deleted) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].deleted = {
             live: {},
             vod: {},
             clip: {}
@@ -2703,8 +2703,8 @@ function Screens_checkDeleteObj() {
 }
 
 function Screens_addToDelete(value, type) {
-    Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][value.id] = value;
-    Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][value.id].date = new Date().getTime();
+    Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][value.id] = value;
+    Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][value.id].date = new Date().getTime();
 }
 
 // Not an ideal way to delete a thumbnail

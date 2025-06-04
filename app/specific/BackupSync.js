@@ -231,22 +231,22 @@ function GDriveSyncBackups(backupsObj, date) {
                 GDriveSyncBackupsByArray(
                     userBackupObj.clip,
                     Main_values_History_data[user].clip,
-                    userBackupObj.was_deleted ? userBackupObj.was_deleted.clip : {},
-                    Main_values_History_data[user].was_deleted ? Main_values_History_data[user].was_deleted.clip : {}
+                    userBackupObj.deleted ? userBackupObj.deleted.clip : {},
+                    Main_values_History_data[user].deleted ? Main_values_History_data[user].deleted.clip : {}
                 ) || saveAfter;
             saveAfter =
                 GDriveSyncBackupsByArray(
                     userBackupObj.live,
                     Main_values_History_data[user].live,
-                    userBackupObj.was_deleted ? userBackupObj.was_deleted.live : {},
-                    Main_values_History_data[user].was_deleted ? Main_values_History_data[user].was_deleted.live : {}
+                    userBackupObj.deleted ? userBackupObj.deleted.live : {},
+                    Main_values_History_data[user].deleted ? Main_values_History_data[user].deleted.live : {}
                 ) || saveAfter;
             saveAfter =
                 GDriveSyncBackupsByArray(
                     userBackupObj.vod,
                     Main_values_History_data[user].vod,
-                    userBackupObj.was_deleted ? userBackupObj.was_deleted.vod : {},
-                    Main_values_History_data[user].was_deleted ? Main_values_History_data[user].was_deleted.vod : {}
+                    userBackupObj.deleted ? userBackupObj.deleted.vod : {},
+                    Main_values_History_data[user].deleted ? Main_values_History_data[user].deleted.vod : {}
                 ) || saveAfter;
 
             if (userBackupObj.blocked) {

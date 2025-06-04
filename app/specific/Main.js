@@ -2358,7 +2358,7 @@ function Main_history_Clean_deleted(type, id) {
 
     id = id.toString();
 
-    delete Main_values_History_data[AddUser_UsernameArray[0].id].was_deleted[type][id];
+    delete Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][id];
 }
 
 function Main_history_GetById(type, id) {
@@ -2471,6 +2471,7 @@ function Main_history_Exist_By_VOD_Id(id) {
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
+    Main_HistoryClean();
 
     Main_history_SetVod_Watched();
     Main_UpdateBlockedHomeScreen();
@@ -2479,6 +2480,19 @@ function Main_Restore_history() {
         GDriveRestore();
     } else {
         Main_initWindows();
+    }
+}
+
+function Main_HistoryClean() {
+    var obj = Main_values_History_data;
+    var limit = 1000;
+
+    for (key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key].deleted) {
+            for (innerKey in obj[key].deleted) {
+                Main_trimObject(obj[key].deleted[innerKey], limit);
+            }
+        }
     }
 }
 
