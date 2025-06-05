@@ -1418,6 +1418,7 @@ function Settings_SetDefault(position) {
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
+    else if (position === 'sync_enabled') Settings_DialogBackupSyncRefresh();
     else if (
         position === 'block_qualities_43' ||
         position === 'block_qualities_21' ||
@@ -3192,6 +3193,18 @@ function Settings_PlayerEnd(click) {
     Settings_DialogShow(obj, STR_END_DIALOG_OPT, click);
 }
 
+function Settings_DialogBackupSyncRefresh() {
+    var divArray = ['sync_users' + '_div', 'sync_history' + '_div', 'sync_settings' + '_div'];
+
+    for (var i = 0; i < divArray.length; i++) {
+        if (Settings_value.sync_enabled.defaultValue) {
+            Main_RemoveClass(divArray[i], 'hideimp');
+        } else {
+            Main_AddClass(divArray[i], 'hideimp');
+        }
+    }
+}
+
 function Settings_DialogBackupSync(click) {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.backup_enabled.values = yes_no;
@@ -3250,6 +3263,8 @@ function Settings_DialogBackupSync(click) {
             (GDriveBackupSize ? STR_BACKUP_SIZE + STR_SPACE + GDriveBackupSize : ''),
         click
     );
+
+    Settings_DialogBackupSyncRefresh();
 }
 
 var Settings_RemoveBackupPos = 0;

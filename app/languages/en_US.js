@@ -956,5 +956,5 @@ function en_USLang() {
 
     STR_BACKUP_SYNC_ENABLE = 'Sync enable';
     STR_BACKUP_SYNC_ENABLE_SUMMARY =
-        'If set to YES, the app will sync this device with others using the same Google Drive account. To switch devices and continue watching the same content, minimize the app on the current device (press the Home key), then with the app fully closed on the other device open it.';
+        'If set to YES, the app will sync all enabled options below between this device and others using the same Google Drive account. To switch devices and continue watching seamlessly, minimize the app on the current device by pressing the Home key. Then, make sure the app is fully closed on the other device before opening it.';
 }
