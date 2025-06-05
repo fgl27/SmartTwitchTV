@@ -492,6 +492,7 @@ function AddUser_SaveUserArray() {
 function AddUser_CleanUserData() {
     Main_removeMissingProps(Main_values_History_data, AddUser_UsernameArray);
     Main_SaveHistoryItem();
+    GDriveBackup();
 }
 
 function AddUser_UserMakeOne(position) {

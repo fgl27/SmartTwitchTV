@@ -1252,6 +1252,8 @@ function UserLiveFeed_KeyUpDown(Adder) {
         Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
+
+    GDriveBackup();
 }
 
 function UserLiveFeed_KeyEnter(pos) {
