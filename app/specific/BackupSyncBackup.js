@@ -23,6 +23,10 @@ function GDriveBackupTimeout() {
 }
 
 function GDriveBackup(skipAsync) {
+    if (!Settings_value.backup_enabled.defaultValue) {
+        return;
+    }
+
     GDriveBackupAsyncID = Main_setTimeout(GDriveBackupStart, skipAsync ? 0 : 5000, GDriveBackupAsyncID);
 }
 
