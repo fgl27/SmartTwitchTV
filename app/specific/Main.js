@@ -2501,9 +2501,9 @@ function Main_HistoryClean() {
     var obj = Main_values_History_data;
     var limit = 1000;
 
-    for (key in obj) {
+    for (var key in obj) {
         if (obj.hasOwnProperty(key) && obj[key].deleted) {
-            for (innerKey in obj[key].deleted) {
+            for (var innerKey in obj[key].deleted) {
                 Main_trimObject(obj[key].deleted[innerKey], limit);
             }
         }
