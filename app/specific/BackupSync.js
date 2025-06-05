@@ -215,7 +215,7 @@ function GDriveRefresh() {
     }
 }
 
-function GDriveSyncBackups(backupsObj, date) {
+function GDriveSyncBackups(backupsObj) {
     var backupUsers = Object.keys(backupsObj),
         i = 0,
         len = backupUsers.length,
@@ -350,7 +350,6 @@ function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted
 function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localDeleted, isUser) {
     var i = 0,
         len = backupArray.length,
-        backupObj = GDriveBackupObject(backupArray),
         localObj = GDriveBackupObject(localArray),
         saveAfter,
         toUpdateArray = {};
@@ -513,7 +512,7 @@ function GDriveSyncFromBackup(backup, date, syncSettings) {
     }
 }
 
-function GDriveSyncFromBackupSyncUser(backup, date) {
+function GDriveSyncFromBackupSyncUser(backup) {
     var backupUsersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
     var backupUsersDeletedArray = JSON.parse(backup[AddUser_UsernameArrayRemovedItemName] || '{}');
 
@@ -526,11 +525,11 @@ function GDriveSyncFromBackupSyncUser(backup, date) {
     }
 }
 
-function GDriveSyncFromBackupSyncUserEtc(backup, date) {
+function GDriveSyncFromBackupSyncUserEtc(backup) {
     var historyBlocked = JSON.parse(backup[Main_values_History_data_ItemName] || '{}');
 
     if (historyBlocked) {
-        GDriveSyncBackups(historyBlocked, date);
+        GDriveSyncBackups(historyBlocked);
     }
 }
 
