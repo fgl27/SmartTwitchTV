@@ -940,10 +940,10 @@ function en_USLang() {
         '<br><br>' +
         'The app will NOT be able to see, change or delete any other file in yours Google drive.';
 
-    STR_BACKUP_USER_INFO = '(User info: Users, favorites, history, blocked, and settings)';
+    STR_BACKUP_USER_INFO = '(User info: Users, history, blocked, and settings)';
 
     STR_BACKUP_SYNC_USER = 'Sync users';
-    STR_BACKUP_SYNC_HISTORY = 'Sync users favorites, history, blocked';
+    STR_BACKUP_SYNC_HISTORY = 'Sync users, history, blocked';
 
     STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
     STR_BACKUP_SYNC_RESTORE = 'Backup found';
