@@ -64,6 +64,7 @@ public final class Constants {
     public static final String ACTION_SCREEN_ON = "action_screenOn";
     public static final String ACTION_SCREEN_OFF = "action_screenOff";
     public static final String ACTION_NOTIFY_START = "action_StartService";
+    public static final String ACTION_NOTIFY_BACKGROUND_START = "action_StartServiceBackGround";
     public static final String ACTION_NOTIFY_STOP = "action_StopService";
 
     public static final String CHANNEL_OBJ = "channel_obj";

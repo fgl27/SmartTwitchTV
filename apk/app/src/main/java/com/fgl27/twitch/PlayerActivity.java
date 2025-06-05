@@ -1799,7 +1799,7 @@ public class PlayerActivity extends Activity {
 
         //Clear activity notification check and start background service if enable
         NotificationHandler.removeCallbacksAndMessages(null);
-        StartNotificationService();
+        StartNotificationService(true);
 
         //Reset status values
         PingValue = 0f;
@@ -1836,7 +1836,7 @@ public class PlayerActivity extends Activity {
 
         StopNotifications();
 
-        StartNotificationService();
+        StartNotificationService(true);
 
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
@@ -1855,10 +1855,10 @@ public class PlayerActivity extends Activity {
         appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
     }
 
-    public void StartNotificationService() {
+    public void StartNotificationService(Boolean fromBackGround) {
         //closeThisCalled... If the user force close the app using closeThis() the service can't run
         if (appPreferences != null && !closeThisCalled && NotificationUtils.StartNotificationService(appPreferences))
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+            Tools.SendNotificationIntent(fromBackGround ? Constants.ACTION_NOTIFY_BACKGROUND_START : Constants.ACTION_NOTIFY_START, this);
     }
 
     public void StopNotificationService() {

@@ -78,6 +78,14 @@ public class NotificationService extends Service {
 
                 //Fully stop the service
                 StopService();
+                
+            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_BACKGROUND_START)) {
+                appPreferences = new AppPreferences(getApplicationContext());
+
+                appPreferences.put(Constants.PREF_APP_RUNNING, false);
+
+                //Start or restart the service
+                startService();
 
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {
 

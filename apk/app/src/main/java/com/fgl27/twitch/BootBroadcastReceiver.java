@@ -41,7 +41,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             AppPreferences appPreferences = new AppPreferences(context);
 
             if (NotificationUtils.StartNotificationService(appPreferences))
-                Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, context);
+                Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_BACKGROUND_START, context);
 
             if (Tools.deviceIsTV(context) &&
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
