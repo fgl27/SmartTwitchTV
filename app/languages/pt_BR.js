@@ -417,7 +417,7 @@ function pt_BRLang() {
     STR_NOW_LIVE_GAME_SHOW = 'Mostrar notificação de "Jogo ao vivo" para jogos seguidos';
     STR_NOW_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
     STR_NOW_BACKGROUND_SUMMARY =
-        'Se você impedir a notificação para este aplicativo nas configurações do sistema, este recurso não funcionará, se as notificações do aplicativo já estiverem em execução e você sair do aplicativo, a notificação será exibida sobre outros aplicativos, mesmo se estiver desativado';
+        'Se o seu dispositivo estiver executando o Android 11 ou mais recente, o app exibirá uma notificação simples quando estiver em segundo plano. Quando o app estiver aberto, a notificação será personalizada.';
     STR_NOTIFICATION_REPEAT = 'Quantas vezes para mostrar notificação individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'O tempo limite de notificação individual é de cerca de 3 segundos, e não pode ser alterado porque esse tempo limite é controlado pelo sistema, mas você pode definir o número de vezes que a mesma notificação será exibida';

@@ -429,7 +429,7 @@ function en_USLang() {
     STR_NOW_LIVE_GAME_SHOW = "Show 'Game is live' notification for followed games";
     STR_NOW_BACKGROUND = 'Notification over other apps when the app is running in the background';
     STR_NOW_BACKGROUND_SUMMARY =
-        "If you disabled notifications for this app in the system settings, this feature won't work. If the app notifications are already running and you exit the app, the notification will show over other apps, even if this is disabled.";
+        'If your device is running Android 11 or newer, the app will display a simple notification when running in the background. When the app is open, the notification will be customized.';
     STR_NOTIFICATION_REPEAT = 'Number of times an individual notification in shown';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         "The individual notification timeout is around 3 seconds, and can't be changed, because this timeout is controlled by the system, but you can set the number of times the same notification shows with this option.";

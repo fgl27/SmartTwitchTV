@@ -20,6 +20,8 @@
 
 package com.fgl27.twitch.notification;
 
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -101,7 +103,8 @@ public class NotificationService extends Service {
         } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
             Tools.recordException(TAG, "onStartCommand e ", e);
         }
-        return START_NOT_STICKY;
+
+        return START_STICKY;
     }
 
     @Override
@@ -146,7 +149,12 @@ public class NotificationService extends Service {
                             context
                     );
 
-            startForeground(100, builder.build());
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                startForeground(100, builder.build());
+            } else {
+                startForeground(100, builder.build(), FOREGROUND_SERVICE_TYPE_SHORT_SERVICE);
+            }
         }
     }
 

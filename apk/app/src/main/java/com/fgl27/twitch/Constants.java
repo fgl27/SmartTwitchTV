@@ -36,6 +36,7 @@ public final class Constants {
     final static String KeyPageUrlBackup = "https://smarttv-client-for-twitch.web.app/extrapageindex.html";
 
     //Keep all public constant on same place
+    public static final String PREF_APP_RUNNING = "app_running";
     public static final String PREF_NOTIFY_OLD_STREAM_LIST = "stream_list";
     public static final String PREF_NOTIFY_OLD_GAME_LIST = "game_list";
     public static final String PREF_NOTIFICATION_BACKGROUND = "notification_background";

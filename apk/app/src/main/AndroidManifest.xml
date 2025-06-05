@@ -33,6 +33,10 @@
 
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <!-- Android 8.0 updater fix only needed for github release version of the apk
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
 
@@ -94,6 +98,7 @@
         <service
             android:enabled="true"
             android:process=":background"
+            android:foregroundServiceType="shortService"
             android:name=".notification.NotificationService" />
 
         <service

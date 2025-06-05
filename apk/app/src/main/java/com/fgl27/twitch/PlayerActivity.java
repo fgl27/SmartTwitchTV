@@ -351,6 +351,8 @@ public class PlayerActivity extends Activity {
 
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
+            appPreferences = new AppPreferences(this);
+
             Intent intent = getIntent();
             boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
             boolean isDeeplinkIntent = Objects.equals(intent.getScheme(), Constants.DEEPLINK_SCHEME);
@@ -378,6 +380,7 @@ public class PlayerActivity extends Activity {
 
             SetDefaultLoadingLayout();
 
+            appPreferences.put(Constants.PREF_APP_RUNNING, true);
             IsStopped = false;
             AlreadyStarted = true;
             onCreateReady = true;
@@ -434,7 +437,7 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
-            appPreferences = new AppPreferences(this);
+
 
             if (canRunChannel && isChannelIntent) {
                 SaveChannelIntent(intent);
@@ -1528,6 +1531,7 @@ public class PlayerActivity extends Activity {
 
         }
 
+        appPreferences.put(Constants.PREF_APP_RUNNING, true);
         IsStopped = false;
 
         if (!WebViewLoaded) return;
@@ -1772,7 +1776,11 @@ public class PlayerActivity extends Activity {
 
     private void monStop() {
         IsStopped = true;
+
+        appPreferences.put(Constants.PREF_APP_RUNNING, false);
+
         if (!WebViewLoaded) return;
+
         unRegisterScreenReceiver();
 
         updateResumePosition(0);//VOD only uses mainPlayer

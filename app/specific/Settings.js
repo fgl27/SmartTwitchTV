@@ -2915,18 +2915,14 @@ function Settings_DialogShowNotification(click) {
             values: Settings_value.since_notification.values,
             title: STR_NOTIFICATION_SINCE,
             summary: STR_NOTIFICATION_SINCE_SUMMARY
-        }
-    };
-
-    //TODO remove comments when apk is updated
-    if (!Main_IsOn_OSInterface || OSInterface_getSDK() < 30) {
-        obj.live_notification_background = {
+        },
+        live_notification_background: {
             defaultValue: Settings_value.live_notification_background.defaultValue,
             values: Settings_value.live_notification_background.values,
             title: STR_NOW_BACKGROUND,
             summary: STR_NOW_BACKGROUND_SUMMARY
-        };
-    }
+        }
+    };
 
     Settings_DialogShow(obj, STR_NOTIFICATION_OPT, click);
 }

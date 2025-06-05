@@ -20,6 +20,7 @@
 
 package com.fgl27.twitch.notification;
 
+import static androidx.core.content.ContextCompat.getSystemService;
 import static com.fgl27.twitch.Tools.getBoolean;
 import static com.google.gson.JsonParser.parseString;
 
@@ -33,6 +34,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,6 +48,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.fgl27.twitch.PlayerActivity;
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
@@ -678,7 +682,8 @@ public final class NotificationUtils {
                             ImageSize,
                             ImageSizeHeight,
                             textSizeSmall,
-                            textSizeBig
+                            textSizeBig,
+                            appPreferences
                     );
                 }
 
@@ -692,7 +697,8 @@ public final class NotificationUtils {
 
     private static void ShowNotification(NotifyList NotifyListResult, int delay,
                                          Handler ToastHandler, Context context, int ToastPosition,
-                                         int LayoutWidth, int ImageSize, int ImageSizeHeight, float textSizeSmall, float textSizeBig) {
+                                         int LayoutWidth, int ImageSize, int ImageSizeHeight, float textSizeSmall, float textSizeBig,
+                                         AppPreferences appPreferences) {
 
         ToastHandler.postDelayed(() -> {
             try {
@@ -704,7 +710,8 @@ public final class NotificationUtils {
                         ImageSize,
                         ImageSizeHeight,
                         textSizeSmall,
-                        textSizeBig
+                        textSizeBig,
+                        appPreferences
                 );
             } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
                 Tools.recordException(TAG, "ShowNotification e ", e);
@@ -714,7 +721,25 @@ public final class NotificationUtils {
     }
 
     @SuppressLint("InflateParams")
-    private static void DoToast(NotifyList result, Context context, int ToastPosition, int LayoutWidth, int ImageSize, int ImageSizeHeight, float textSizeSmall, float textSizeBig) {
+    private static void DoToast(NotifyList result, Context context, int ToastPosition, int LayoutWidth, int ImageSize, int ImageSizeHeight, float textSizeSmall, float textSizeBig, AppPreferences appPreferences) {
+        boolean isAppInBackGround = !Tools.getBoolean(Constants.PREF_APP_RUNNING, false, appPreferences);
+
+        //https://developer.android.com/about/versions/11/behavior-changes-11#toasts
+        if (isAppInBackGround && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+            Toast.makeText(
+                    context,
+                    String.format(
+                            Locale.US,
+                            "%s %s: %s",
+                            context.getString(R.string.app_name) ,
+                            result.notificationTitle,
+                            result.name
+                    ),
+                    Toast.LENGTH_LONG).show();
+
+            return;
+        }
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -788,9 +813,7 @@ public final class NotificationUtils {
     }
 
     public static boolean StartNotificationService(AppPreferences appPreferences) {
-        //https://developer.android.com/about/versions/11/behavior-changes-11#toasts
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.R &&
-                getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
+        return getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences) != null;
     }
 

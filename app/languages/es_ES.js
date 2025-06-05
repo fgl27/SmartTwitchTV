@@ -325,7 +325,7 @@ function es_ESLang() {
     STR_NOW_LIVE_GAME_SHOW = 'Mostrar la notificación "Juego en directo" para los juegos seguidos';
     STR_NOW_BACKGROUND = 'Notificación sobre otras aplicaciones, cuando la aplicación está en segundo plano';
     STR_NOW_BACKGROUND_SUMMARY =
-        'Si impides las notificaciones para esta aplicación en la configuración del sistema, esta característica no funcionará, si las notificaciones de la aplicación ya se están ejecutando y sales de la aplicación, la notificación se mostrará por encima de otras aplicaciones, incluso si está desactivada.';
+        'Si tu dispositivo tiene Android 11 o una versión más reciente, la aplicación mostrará una notificación simple cuando se ejecute en segundo plano. Cuando la aplicación esté abierta, la notificación será personalizada.';
     STR_NOTIFICATION_REPEAT = 'Cuántas veces hay que mostrar la notificación individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'El tiempo de espera de las notificaciones individuales es de unos 3 segundos, y no se puede cambiar porque este tiempo de espera está controlado por el sistema, pero se puede establecer el número de veces que se mostrará la misma notificación';
