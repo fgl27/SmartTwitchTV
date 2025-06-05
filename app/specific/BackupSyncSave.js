@@ -97,15 +97,16 @@ function GDriveSave(obj) {
 }
 
 function GDriveBackupAndSync() {
+    if (!GDriveCanDoBackup()) {
+        return;
+    }
+
     if (!GDriveFileID) {
         GDriveBackupAndSyncGetFileInfo();
-    } else {
-        if (!GDriveCanDoBackup()) {
-            return;
-        }
-
-        GDriveDownloadBackupFile(GDriveBackupAndSyncSuccess, noop_fun, 0, 0);
+        return;
     }
+
+    GDriveDownloadBackupFile(GDriveBackupAndSyncSuccess, noop_fun, 0, 0);
 }
 
 function GDriveBackupAndSyncSuccess(obj) {
