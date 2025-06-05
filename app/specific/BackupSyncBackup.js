@@ -55,7 +55,11 @@ function GDriveDownloadBackupFileSuccess(obj) {
 }
 
 function GDriveDownloadBackupFileSuccessSync(obj) {
-    var backupObj;
+    var backupObj,
+        syncEnabled = Settings_value.sync_enabled.defaultValue,
+        doUser = syncEnabled && Settings_value.sync_users.defaultValue,
+        doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
+        doSetting = syncEnabled && Settings_value.sync_settings.defaultValue;
 
     try {
         //The file can be empty of the user change it and/or bricked it
@@ -68,7 +72,7 @@ function GDriveDownloadBackupFileSuccessSync(obj) {
     if (AddUser_UserIsSet()) {
         GDriveDownloadSyncFromBackup(backupObj);
     } else {
-        GDriveRestoreFromBackup(backupObj, true, true, true);
+        GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
     }
 
     return backupObj; //Success
