@@ -51,7 +51,8 @@ var GDriveLastBackupDate;
 var GDriveBackupSize;
 var GDriveBackupExpiresTime;
 var GDriveCheckCodeId;
-var GDriveDoBackupID;
+var GDriveBackupTimeoutID;
+var GDriveBackupAsyncID;
 var GDriveSetExpiresId;
 
 var AddUser_UserArrayItemName = 'AddUser_UsernameArrayNew';
@@ -113,7 +114,7 @@ function GDriveClean() {
     localStorage.removeItem('GDriveBackupSize');
     localStorage.removeItem('GDriveRefreshToken');
 
-    Main_clearTimeout(GDriveDoBackupID);
+    Main_clearTimeout(GDriveBackupTimeoutID);
     Main_clearTimeout(GDriveSetExpiresId);
 }
 

@@ -19,21 +19,21 @@
  */
 
 function GDriveBackupTimeout() {
-    GDriveDoBackupID = Main_setTimeout(GDriveBackup, 200 * 1000, GDriveDoBackupID);
+    GDriveBackupTimeoutID = Main_setTimeout(GDriveBackup, 200 * 1000, GDriveBackupTimeoutID);
 }
 
-function GDriveBackup() {
-    if (!GDriveAccessToken) {
+function GDriveBackup(skipAsync) {
+    GDriveBackupAsyncID = Main_setTimeout(GDriveBackupStart, skipAsync ? 0 : 5000, GDriveBackupAsyncID);
+}
+
+function GDriveBackupStart() {
+    if (!GDriveAccessToken || !GDriveCanDoBackup()) {
         return;
     }
 
     if (!GDriveFileID) {
         GDriveBackupGetFileInfo();
     } else {
-        if (!GDriveCanDoBackup()) {
-            return;
-        }
-
         GDriveDownloadBackupFile(GDriveDownloadBackupFileSuccess, noop_fun, 0, 0);
     }
 

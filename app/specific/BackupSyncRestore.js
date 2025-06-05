@@ -94,8 +94,6 @@ function GDriveGetBackupFile() {
     }
 
     GDriveDownloadBackupFile(GDriveGetBackupFileSuccess, noop_fun, 0, 0);
-
-    //GDriveBackupTimeout();
 }
 
 function GDriveGetFileInfo() {

@@ -2988,8 +2988,8 @@ function Main_CheckStop() {
     Main_PreventClick(true, Main_PreventClickfun);
 
     //sync backup, but prevent backup in background
-    GDriveBackup();
-    Main_clearTimeout(GDriveDoBackupID);
+    GDriveBackup(true);
+    Main_clearTimeout(GDriveBackupTimeoutID);
 
     //Player related
     ChatLive_Clear(0);
