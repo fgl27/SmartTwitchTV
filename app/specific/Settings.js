@@ -1626,7 +1626,13 @@ function Settings_notification_game() {
 }
 
 function Settings_notification_background() {
-    OSInterface_upNotificationState(Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable());
+    var enabled = Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable();
+
+    OSInterface_upNotificationState(enabled);
+
+    if (enabled && !OSInterface_hasNotificationPermission()) {
+        OSInterface_showToast(STR_NOTIFICATION_BACKGROUND_WARNING);
+    }
 }
 
 function Settings_notification_position() {
@@ -2919,8 +2925,8 @@ function Settings_DialogShowNotification(click) {
         live_notification_background: {
             defaultValue: Settings_value.live_notification_background.defaultValue,
             values: Settings_value.live_notification_background.values,
-            title: STR_NOW_BACKGROUND,
-            summary: STR_NOW_BACKGROUND_SUMMARY
+            title: STR_NOTIFICATION_BACKGROUND,
+            summary: STR_NOTIFICATION_BACKGROUND_SUMMARY
         }
     };
 

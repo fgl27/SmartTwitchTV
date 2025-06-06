@@ -70,6 +70,22 @@ function OSInterface_upNotificationState(Notify) {
     if (Main_IsOn_OSInterface) Android.upNotificationState(Notify);
 }
 
+//public void upNotificationState(boolean Notify)
+//Notify  background notification are enable
+//Android specific: true
+//Allows to stop the notification service from js side
+function OSInterface_hasNotificationPermission() {
+    try {
+        if (Main_IsOn_OSInterface) {
+            return Android.hasNotificationPermission();
+        }
+
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 //public void SetNotificationLive(boolean Notify)
 //Notify  background notification are enable
 //Android specific: true

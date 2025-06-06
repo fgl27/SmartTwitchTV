@@ -50,6 +50,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.media3.common.C;
@@ -697,6 +698,21 @@ public final class Tools {
         } catch (Exception e) { //Exception caused on android 8.1 and up when notification fail to
             recordException(TAG, "SendNotificationIntent e ", e);
         }
+    }
+
+    public static boolean hasNotificationPermission(Context context) {
+        // Step 1: Check the runtime permission for POST_NOTIFICATIONS on Android 13 (API 33) and higher.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Permission not granted at runtime
+                return false;
+            }
+        }
+
+        // Step 2: Check if notifications are globally enabled for the app (user's main switch).
+        // This is important for all Android versions, as users can disable notifications
+        // for your app in system settings regardless of runtime permission.
+        return NotificationManagerCompat.from(context).areNotificationsEnabled();
     }
 
     public static boolean isConnected(Context context) {

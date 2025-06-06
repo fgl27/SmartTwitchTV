@@ -415,9 +415,10 @@ function pt_BRLang() {
     STR_TITLE_CHANGE_SHOW = 'Mostrar notificação de "Título alterado do Streamer" para canais seguidos';
     STR_GAME_CHANGE_SHOW = 'Mostrar notificação de "Streamer mudou jogo" para canais seguidos';
     STR_NOW_LIVE_GAME_SHOW = 'Mostrar notificação de "Jogo ao vivo" para jogos seguidos';
-    STR_NOW_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
-    STR_NOW_BACKGROUND_SUMMARY =
-        'Se o seu dispositivo estiver executando o Android 11 ou mais recente, o app exibirá uma notificação simples quando estiver em segundo plano. Quando o app estiver aberto, a notificação será personalizada.';
+    STR_NOTIFICATION_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
+    STR_NOTIFICATION_BACKGROUND_SUMMARY =
+        'Para ativar este recurso, verifique se o app tem permissão para notificações nas Configurações do Android. Em dispositivos com Android 11 ou superior, o app exibirá uma notificação simples de uma única linha quando estiver em segundo plano.';
+    STR_NOTIFICATION_BACKGROUND_SUMMARY = 'Permissão de notificações do sistema Android ausente!';
     STR_NOTIFICATION_REPEAT = 'Quantas vezes para mostrar notificação individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'O tempo limite de notificação individual é de cerca de 3 segundos, e não pode ser alterado porque esse tempo limite é controlado pelo sistema, mas você pode definir o número de vezes que a mesma notificação será exibida';

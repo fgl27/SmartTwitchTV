@@ -2463,6 +2463,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public boolean hasNotificationPermission() {
+            return Tools.hasNotificationPermission(mWebViewContext);
+        }
+
+        @JavascriptInterface
         public void upNotificationState(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_BACKGROUND, Notify);
         }
