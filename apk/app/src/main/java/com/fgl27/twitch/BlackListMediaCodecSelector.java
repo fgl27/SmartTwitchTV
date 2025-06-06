@@ -27,11 +27,9 @@ import androidx.annotation.NonNull;
 import androidx.media3.exoplayer.mediacodec.MediaCodecInfo;
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector;
 import androidx.media3.exoplayer.mediacodec.MediaCodecUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 public class BlackListMediaCodecSelector implements MediaCodecSelector {
 
@@ -44,38 +42,27 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
     @NonNull
     @Override
     public List<MediaCodecInfo> getDecoderInfos(@NonNull String mimeType, boolean requiresSecureDecoder, boolean requiresTunnelingDecoder)
-            throws MediaCodecUtil.DecoderQueryException {
-
-        List<MediaCodecInfo> codecInfoList = MediaCodecUtil.getDecoderInfos(
-                mimeType,
-                requiresSecureDecoder,
-                requiresTunnelingDecoder
-        );
+        throws MediaCodecUtil.DecoderQueryException {
+        List<MediaCodecInfo> codecInfoList = MediaCodecUtil.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder);
 
         // filter codecs based on blacklist template
         List<MediaCodecInfo> filteredCodecInfo = new ArrayList<>();
 
         for (MediaCodecInfo codecInfo : codecInfoList) {
             if (codecInfo != null && !blacklistedCodec(codecInfo.name.toLowerCase(Locale.US) + codecInfo.mimeType)) {
-
                 filteredCodecInfo.add(codecInfo);
-
             }
         }
         return filteredCodecInfo;
     }
 
     private boolean blacklistedCodec(String codecNameMimeType) {
-
         for (String blackListedCodec : BLACKLISTEDCODECS) {
-
             if (codecNameMimeType.contains(blackListedCodec)) {
                 return true;
             }
-
         }
 
         return false;
     }
-
 }

@@ -24,33 +24,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
-
 import net.grandcentrix.tray.AppPreferences;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         String action = intent.getAction();
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             AppPreferences appPreferences = new AppPreferences(context);
 
-            if (NotificationUtils.StartNotificationService(appPreferences))
+            if (NotificationUtils.StartNotificationService(appPreferences)) {
                 Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_BACKGROUND_START, context);
+            }
 
-            if (Tools.deviceIsTV(context) &&
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                    ChannelsUtils.isJobServiceNotSchedule(context)) {
-
+            if (Tools.deviceIsTV(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && ChannelsUtils.isJobServiceNotSchedule(context)) {
                 ChannelsUtils.scheduleSyncingChannel(context);
-
             }
         }
     }
-
 }

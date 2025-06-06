@@ -6,5 +6,8 @@
         "**/node_modules": true,
         "**/release/githubio": true,
         "**/tmp": true
+    },
+    "[java]": {
+       "editor.defaultFormatter": "RudraPatel.prettier-plugin-java-vscode"
     }
 }

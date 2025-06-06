@@ -23,17 +23,17 @@ package com.fgl27.twitch;
 public final class Constants {
 
     //Load the page from assets for testing
-    private final static boolean LoadFromAssets = false;
+    private static final boolean LoadFromAssets = false;
 
-    final static String PageUrl = LoadFromAssets ?
-            "file:///android_asset/app/index.html" :
-            "https://fgl27.github.io/SmartTwitchTV/release/index.html";
-    final static String KeyPageUrl = LoadFromAssets ?
-            "file:///android_asset/app/Extrapage/index.html" :
-            "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.html";
+    static final String PageUrl = LoadFromAssets
+        ? "file:///android_asset/app/index.html"
+        : "https://fgl27.github.io/SmartTwitchTV/release/index.html";
+    static final String KeyPageUrl = LoadFromAssets
+        ? "file:///android_asset/app/Extrapage/index.html"
+        : "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.html";
 
-    final static String PageUrlBackup = "https://smarttv-client-for-twitch.web.app/index.html";
-    final static String KeyPageUrlBackup = "https://smarttv-client-for-twitch.web.app/extrapageindex.html";
+    static final String PageUrlBackup = "https://smarttv-client-for-twitch.web.app/index.html";
+    static final String KeyPageUrlBackup = "https://smarttv-client-for-twitch.web.app/extrapageindex.html";
 
     //Keep all public constant on same place
     public static final String PREF_APP_RUNNING = "app_running";
@@ -68,24 +68,21 @@ public final class Constants {
     public static final String ACTION_NOTIFY_STOP = "action_StopService";
 
     public static final String CHANNEL_OBJ = "channel_obj";
-    public static final String CHANNEL_INTENT = "channel_intent";//f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
+    public static final String CHANNEL_INTENT = "channel_intent"; //f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
     public static final String CHANNEL_TYPE = "channel_type";
 
     public static final String DEEPLINK_SCHEME = "smarttvtwitch";
     public static final String BLOCKED_CHANNEL = "blocked_channel";
     public static final String BLOCKED_GAMES = "blocked_games";
 
-    public static final String[][] BASE_HEADERS = {
-            {"Client-ID", ""},
-            {"Authorization", "Bearer "}
-    };
+    public static final String[][] BASE_HEADERS = { { "Client-ID", "" }, { "Authorization", "Bearer " } };
 
     public static final String[] CHANNELS_NAMES = {
-            "",//Default reserved getIntExtra (String name, int defaultValue : 0)
-            "Live",
-            "User Live",
-            "Featured",
-            "Games",
+        "", //Default reserved getIntExtra (String name, int defaultValue : 0)
+        "Live",
+        "User Live",
+        "Featured",
+        "Games"
     };
 
     public static final int CHANNEL_TYPE_LIVE = 1;
@@ -93,7 +90,7 @@ public final class Constants {
     public static final int CHANNEL_TYPE_FEATURED = 3;
     public static final int CHANNEL_TYPE_GAMES = 4;
 
-    public static final int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5;//it 5 min
+    public static final int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5; //it 5 min
     public static final int DEFAULT_HTTP_TIMEOUT = 60000;
     public static final int DEFAULT_HTTP_EXTRA_TIMEOUT = 10000;
 

@@ -32,16 +32,12 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
-
 import androidx.core.app.NotificationCompat;
-
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
-
-import net.grandcentrix.tray.AppPreferences;
-
 import java.util.Objects;
+import net.grandcentrix.tray.AppPreferences;
 
 public class NotificationService extends Service {
 
@@ -75,10 +71,8 @@ public class NotificationService extends Service {
             String action = intent.getAction();
 
             if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {
-
                 //Fully stop the service
                 StopService();
-                
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_BACKGROUND_START)) {
                 appPreferences = new AppPreferences(getApplicationContext());
 
@@ -86,29 +80,21 @@ public class NotificationService extends Service {
 
                 //Start or restart the service
                 startService();
-
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {
-
                 //Start or restart the service
                 startService();
-
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {
-
                 screenOn = false;
 
                 //Stop all current running notification
                 StopRunningNotifications();
-
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
-
                 screenOn = true;
                 //Small delay as the device just wakeup and may need some time to connect to the internet
                 if (isRunning) InitNotifications(10 * 1000);
                 else StopService();
-
             }
-
-        } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
+        } catch (Exception e) { //Exception caused on android 8.1 and up when notification fail to
             Tools.recordException(TAG, "onStartCommand e ", e);
         }
 
@@ -149,14 +135,12 @@ public class NotificationService extends Service {
         context = getApplicationContext();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder builder =
-                    NotificationUtils.NotificationBuilder(
-                            getString(R.string.notification_service),
-                            getString(R.string.notification_text),
-                            TAG,
-                            context
-                    );
-
+            NotificationCompat.Builder builder = NotificationUtils.NotificationBuilder(
+                getString(R.string.notification_service),
+                getString(R.string.notification_text),
+                TAG,
+                context
+            );
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 startForeground(100, builder.build());
@@ -197,7 +181,6 @@ public class NotificationService extends Service {
     }
 
     private void InitNotifications(int timeout) {
-
         try {
             if (NotificationHandler != null) {
                 NotificationHandler.removeCallbacksAndMessages(null);
@@ -205,12 +188,15 @@ public class NotificationService extends Service {
                 long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
                 if (delay > 0) delay = delay - System.currentTimeMillis();
 
-                NotificationHandler.postDelayed(() -> {
-                    if (screenOn && isRunning) {
-                        RunNotifications();
-                        InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL);//it 3 min refresh
-                    }
-                }, timeout + (delay > 0 ? delay : 0));
+                NotificationHandler.postDelayed(
+                    () -> {
+                        if (screenOn && isRunning) {
+                            RunNotifications();
+                            InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL); //it 3 min refresh
+                        }
+                    },
+                    timeout + (delay > 0 ? delay : 0)
+                );
             }
         } catch (Exception e) {
             Tools.recordException(TAG, "InitHandler e ", e);
@@ -220,12 +206,7 @@ public class NotificationService extends Service {
     private void RunNotifications() {
         if (CheckCanRun() || !Tools.isConnected(context)) return;
 
-        NotificationUtils.CheckNotifications(
-                UserId,
-                appPreferences,
-                ToastHandler,
-                context
-        );
+        NotificationUtils.CheckNotifications(UserId, appPreferences, ToastHandler, context);
     }
 
     private boolean CheckCanRun() {
@@ -233,17 +214,13 @@ public class NotificationService extends Service {
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
         if (tempUserId == null || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
-
             StopService();
             return true;
-
         } else if (!Objects.equals(tempUserId, UserId)) {
-
             //Stop all toast as user has changed
             //Technical can't happen after the service has started but just in case one is so fast that can change user during a off and on of the service
             if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
             NotificationUtils.ResetNotificationList(appPreferences, tempUserId);
-
         }
 
         UserId = tempUserId;
@@ -257,16 +234,13 @@ public class NotificationService extends Service {
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mReceiver = new ScreenReceiver();
             registerReceiver(mReceiver, filter);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     private void mUnRegisterReceiver() {
         try {
             if (mReceiver != null) unregisterReceiver(mReceiver);
             mReceiver = null;
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
-
 }
