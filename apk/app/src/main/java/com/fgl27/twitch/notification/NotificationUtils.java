@@ -666,7 +666,7 @@ public final class NotificationUtils {
         if (isAppInBackGround && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Toast.makeText(
                 context,
-                String.format(Locale.US, "%s %s: %s", context.getString(R.string.app_name), result.notificationTitle, result.name),
+                String.format(Locale.US, "%s - %s: %s", context.getString(R.string.short_app_name), result.notificationTitle, result.name),
                 Toast.LENGTH_LONG
             ).show();
 

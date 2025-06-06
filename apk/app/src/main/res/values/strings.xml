@@ -22,6 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="app_name">SmartTV Client for Twitch</string>
+    <string name="short_app_name">STTV</string>
 
     <!--Notification-->
     <string name="notification_service">Notification service running</string>
