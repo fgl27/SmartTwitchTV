@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ /*
+ * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+ *
+ * SmartTwitchTV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SmartTwitchTV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+ *
+ */
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="app_name">SmartTV Client для Twitch</string>
+
+    <!--Notification-->
+    <string name="notification_service">Сервіс сповіщень активний</string>
+    <string name="notification_live_game">Гра в ефірі</string>
+    <string name="notification_live">Стрімер у прямому ефірі</string>
+    <string name="notification_title">Стрімер змінив заголовок</string>
+    <string name="notification_game">Стрімер змінив гру</string>
+    <string name="notification_title_game">Стрімер змінив гру та заголовок</string>
+    <string name="notification_text">Без цього фонові сповіщення не зʼявляться</string>
+
+    <!--Warnings-->
+    <string name="no_network">Немає підключення до Інтернету!\n\nПідключіться до мережі, щоб завершити завантаження додатку\n\nабо\n\nУтримуйте клавішу повернення, щоб закрити додаток.</string>
+    <string name="no_internet">Ping до Twitch не пройшов протягом останніх 30 секунд!\n\nЯкщо додаток працює некоректно — перевірте ваше інтернет-зʼєднання\n\nУтримуйте клавішу повернення, щоб закрити додаток у разі зависання.\n\nЯкщо зʼєднання відновиться, це повідомлення зникне автоматично, інакше — через 30 секунд\n\nЦе попередження можна вимкнути в налаштуваннях</string>
+    <string name="external_player_fail">Немає доступного зовнішнього відеоплеєра</string>
+    <string name="webview_exception">Не вдалося завантажити додаток: WebView або відсутній (малоймовірно), або оновлюється. Спробуйте ще раз через кілька секунд</string>
+
+    <!--Home screen channel-->
+    <string name="channel_disable">Це було вимкнено або не вдалося завантажити контент. Натисніть Enter для оновлення (оновлення відбувається тільки коли додаток на екрані)</string>
+    <string name="channel_refresh">Натисніть Enter для оновлення (автоматичне оновлення кожні 30 хвилин у фоні, вручну — лише коли додаток видимий)</string>
+    <string name="channel_no_user">Спочатку потрібно додати користувача, щоб завантажити цей контент</string>
+    <string name="channel_empty">Список порожній</string>
+    <string name="channel_last_refresh">Останнє оновлення - %s %s %02d:%02d</string>
+    <string name="channel_refreshed">%s канал головного екрана оновлено</string> 
+    <string name="channel_live_title">%s %s з %s для %s глядачів\n%s</string> 
+    <string name="channel_game_title">%s каналів\nДля %s глядачів</string> 
+    <string name="playing">Грає</string>
+    <string name="streaming">Транслює</string>
+
+
+</resources>
