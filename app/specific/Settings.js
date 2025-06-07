@@ -3314,9 +3314,7 @@ function Settings_handleRemoveDrive(event) {
             Settings_RemoveBackupAccountDone();
             break;
         case KEY_LEFT:
-            Main_AddClass('yes_no_dialog_button_no', 'button_dialog_focused');
-            Main_RemoveClass('yes_no_dialog_button_yes', 'button_dialog_focused');
-            Settings_RemoveBackupPos = 0;
+            Settings_handleRemoveDriveLeft();
             break;
         case KEY_RIGHT:
             Main_RemoveClass('yes_no_dialog_button_no', 'button_dialog_focused');
@@ -3326,12 +3324,19 @@ function Settings_handleRemoveDrive(event) {
         case KEY_ENTER:
             Settings_RemoveBackupAccountDone();
             if (Settings_RemoveBackupPos) {
+                Settings_handleRemoveDriveLeft();
                 GDriveClean();
             }
             break;
         default:
             break;
     }
+}
+
+function Settings_handleRemoveDriveLeft() {
+    Main_AddClass('yes_no_dialog_button_no', 'button_dialog_focused');
+    Main_RemoveClass('yes_no_dialog_button_yes', 'button_dialog_focused');
+    Settings_RemoveBackupPos = 0;
 }
 
 function Settings_DialogAddBackupAccount() {
@@ -3689,6 +3694,7 @@ function Settings_DialoghandleKeyDown(event) {
                 SettingsColor_DialogColorsShow();
                 break;
             }
+
             if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'backup_account')) {
                 if (GDriveAccessToken) {
                     Settings_RemoveBackupAccount();
@@ -3698,14 +3704,14 @@ function Settings_DialoghandleKeyDown(event) {
 
                 break;
             }
-            if (Settings_DialogRestoreBackupShowing) {
-                Settings_DialogRestoreBackupShowing = false;
-                GDriveBackupAndSyncRunRestore();
-            }
+
+            Settings_DialogRestoreBackupShowingCheck();
 
         /* falls through */
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
+            Settings_DialogRestoreBackupShowingCheck();
+
             Settings_DialoghandleKeyReturn();
             break;
         case KEY_LEFT:
@@ -3812,4 +3818,11 @@ function Settings_DialogShowRestoreBackup(click) {
 
     Settings_DialogShow(obj, STR_BACKUP_SYNC_RESTORE + STR_BR + STR_BR + STR_BACKUP_SYNC_RESTORE_SUMMARY + STR_BR + STR_BR, click);
     Main_textContent('dialog_setting_close_text', '');
+}
+
+function Settings_DialogRestoreBackupShowingCheck() {
+    if (Settings_DialogRestoreBackupShowing) {
+        Settings_DialogRestoreBackupShowing = false;
+        GDriveBackupAndSyncRunRestore();
+    }
 }
