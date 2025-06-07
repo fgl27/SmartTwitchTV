@@ -1340,6 +1340,7 @@ function Settings_ChangeSettings(position, skipDefault) {
     Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
     Settings_Setarrows(position);
+
     if (!skipDefault) {
         Settings_SetDefault(key);
     }
@@ -2032,8 +2033,6 @@ function Settings_handleKeyRight(key) {
 }
 
 function Settings_handleKeyDown(event) {
-    console.log('Settings_handleKeyDown');
-
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
@@ -2073,8 +2072,6 @@ function Settings_handleKeyDown(event) {
 }
 
 function Settings_KeyEnter(click) {
-    console.log('Settings_handleKeyDown', Settings_value_keys[Settings_cursorY]);
-
     if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'playerend_opt')) Settings_PlayerEnd(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
@@ -2215,6 +2212,7 @@ function Settings_handleKeyDownCodecsRight() {
 
 function Settings_handleKeyDownCodecs(event) {
     //console.log('event.keyCode ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_ENTER:
         case KEY_KEYBOARD_BACKSPACE:
@@ -3203,13 +3201,25 @@ function Settings_PlayerEnd(click) {
 }
 
 function Settings_DialogBackupSyncRefresh() {
-    var divArray = ['sync_users' + '_div', 'sync_history' + '_div', 'sync_settings' + '_div'];
+    var divArray = ['sync_users', 'sync_history', 'sync_settings'],
+        elem,
+        div;
 
     for (var i = 0; i < divArray.length; i++) {
-        if (Settings_value.sync_enabled.defaultValue) {
-            Main_RemoveClass(divArray[i], 'hideimp');
-        } else {
-            Main_AddClass(divArray[i], 'hideimp');
+        element = divArray[i] + '_div';
+        div = Main_getElementById(element);
+
+        if (!div) {
+            continue;
+        }
+
+        if (Settings_value.sync_enabled.defaultValue && Main_A_includes_B(div.className, 'hideimp')) {
+            Main_RemoveClassWithEle(div, 'hideimp');
+
+            Settings_DialogValue.push(divArray[i]);
+        } else if (!Settings_value.sync_enabled.defaultValue) {
+            Main_AddClassWitEle(div, 'hideimp');
+            Settings_DialogValue.pop();
         }
     }
 }
@@ -3659,8 +3669,6 @@ function Settings_DialoghandleKeyRight() {
 }
 
 function Settings_BackupDialogExit(event) {
-    console.log('Settings_BackupDialogExit');
-
     if (Main_isElementShowing('backup_dialog')) {
         if (event.keyCode === KEY_ENTER || event.keyCode === KEY_RETURN || event.keyCode === KEY_KEYBOARD_BACKSPACE) {
             Main_HideElement('backup_dialog');
