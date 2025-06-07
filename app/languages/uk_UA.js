@@ -19,104 +19,104 @@
  */
 
 //Spacing for release maker not trow errors from jshint
-function uk_UALang() {
+function en_USLang() {
     // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
     //Then copy this and set it to true, if doesn't don't copy it
-    Main_IsDayFirst = true;
+    Main_IsDayFirst = false;
 
     // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
     // If it need ajustment or yours language just copy the below line and change it value until it does
-    Sidepannel_MoveldefaultMargin = 21.5;
+    Sidepannel_MoveldefaultMargin = 20;
 
     //Below are variables to translate
-	STR_KEY_UP_DOWN = 'Сторінка вгору/вниз';
-	STR_KEY_MEDIA_FF = 'або медіаклавіша перемотки вперед/назад';
+	STR_KEY_UP_DOWN = 'Вгору/вниз';
+	STR_KEY_MEDIA_FF = 'або медіаклавіші перемотки вперед/назад';
 	STR_GUIDE_EXTRA = 'або натисніть клавішу 2';
 	STR_GUIDE_EXTRA2 = 'або медіаклавіша наступний трек';
 	STR_REFRESH = 'Оновити';
 	STR_SEARCH = 'Пошук';
 	STR_SETTINGS = 'Налаштування';
-	STR_CONTROLS = 'Управління';
+	STR_CONTROLS = 'Справка';
 	STR_ABOUT = 'Про програму';
 	STR_HIDE = 'Приховати';
-	STR_SEARCH_EMPTY = 'Ви ввели порожній запит для пошуку';
-	STR_SEARCH_RESULT_EMPTY = 'Результати пошуку не знайдено';
-	STR_SWITCH = 'Перемикання екрану';
-	STR_SWITCH_USER = 'Перемкнути екран користувача';
-	STR_SWITCH_VOD = 'Перемикання: VOD або записи';
-	STR_SWITCH_CLIP = 'Перемикання: Період (24 год, 7 днів, 30 днів, всі)';
-	STR_GO_TO = 'Перейти на екран';
+	STR_SEARCH_EMPTY = 'Ви нічого не ввели';
+	STR_SEARCH_RESULT_EMPTY = 'Результати відсутні';
+	STR_SWITCH = 'Перемкнути розділ';
+	STR_SWITCH_USER = 'Перемкнути користувача';
+	STR_SWITCH_VOD = 'Перемкнути на VOD або хайлайти';
+	STR_SWITCH_CLIP = 'Обрати період';
+	STR_GO_TO = 'Перейти до ';
 	STR_USER = 'Користувач';
 	STR_LIVE = 'Наживо';
 	STR_GAMES = 'Ігри';
-	STR_PLAYING = 'Грає';
+	STR_PLAYING = 'Грає в ';
 	STR_FOR = 'для';
-	STR_WATCHING = 'Час перегляду';
-	STR_WAITING = 'Час очікування';
-	STR_SINCE = 'З';
+	STR_WATCHING = 'Дивиться';
+	STR_WAITING = 'Чекає';
+	STR_SINCE = 'Вже ';
 	STR_AGAME = 'Гра';
-	STR_PLACEHOLDER_PASS = 'Введіть свій пароль...';
-	STR_PLACEHOLDER_SEARCH = 'Введіть пошуковий запит ...';
-	STR_PLACEHOLDER_OAUTH = 'Введіть ваш авторизаційний ключ ...';
-	STR_PLACEHOLDER_USER = 'Введіть ім’я користувача і натисніть Enter ...';
-	STR_PLACEHOLDER_PRESS = 'Натисніть Enter або клавішу Вибору, щоб';
+	STR_PLACEHOLDER_PASS = 'Потрібен ваш пароль';
+	STR_PLACEHOLDER_SEARCH = 'Що будемо шукати?';
+	STR_PLACEHOLDER_OAUTH = 'Потрібен авторизаційний ключ';
+	STR_PLACEHOLDER_USER = 'Введіть ім’я користувача';
+	STR_PLACEHOLDER_PRESS = 'Натисніть Enter або клавішу Вибору, щоб ';
 	STR_CHANNELS = 'Канали';
 	STR_CHANNEL = 'Канал';
-	STR_GOBACK_START = 'Повернення до попереднього екрану: натисніть Повернення';
+	STR_GOBACK_START = 'Назад';
 	STR_IS_OFFLINE = 'завершив трансляцію';
 	STR_CHECK_HOST = ', перевірка хоста';
-	STR_IS_SUB_ONLY = 'Це відео доступне лише для підписників';
+	STR_IS_SUB_ONLY = 'Відео доступне лише для підписників';
 	STR_IS_SUB_ONLY_ERROR = 'є контентом лише для підписників.';
-	STR_NOKEY_GENERAL_WARN = ', перейдіть до бічної панелі (верхній варіант) Додати користувача або Користувач: Перемикання, додати, ключ, натиснути enter на користувачеві';
-	STR_REFRESH_PROBLEM = 'Не вдалося підключитися або немає доступного контенту. Спробуйте оновити';
-	STR_REFRESH_PROBLEM_ENTER = 'Не вдалося підключитися або немає доступного контенту. Спробуйте оновити.';
+	STR_NOKEY_GENERAL_WARN = ', перейдіть до бічної панелі, щоб додати користувача';
+	STR_REFRESH_PROBLEM = 'Помилка підключення або немає контенту. Спробуйте оновити';
+	STR_REFRESH_PROBLEM_ENTER = 'Помилка підключення або немає контенту. Натисніть ОК для оновлення.';
 	STR_REFRESH_PROBLEM_ENTER_LANG = 
-		'Не вдалося підключитися або немає контенту цією мовою. Змініть мову контенту (утримуйте вліво) або натисніть Enter для оновлення';
+		'Помилка підключення або немає контенту цією мовою. Змініть мову контенту (утримуйте вліво) або натисніть ОК для оновлення';
 	STR_NO = 'Ні';
 	STR_FOR_THIS = 'для цього';
-	STR_PLAYER_PROBLEM = 'Не вдалося підключитися, неможливо завантажити відео, вихід ...';
-	STR_VODS = 'VOD-записи';
-	STR_HIGHLIGHTS = 'Найкращі моменти';
+	STR_PLAYER_PROBLEM = 'Помилка підключення, неможливо завантажити контент, вихід ...';
+	STR_VODS = 'VOD-записів';
+	STR_HIGHLIGHTS = 'хайлайтів';
 	STR_CLIPS = 'Кліпи';
 	STR_CONTENT = 'Контент';
 	STR_STREAM_ON = 'Трансляція';
 	STR_DURATION = 'Тривалість';
 	STR_VIEW = 'Перегляд';
 	STR_VIEWS = 'Перегляди';
-	STR_VIEWER = 'Глядач';
-	STR_VIEWERS = 'Глядачі';
+	STR_VIEWER = 'глядач';
+	STR_VIEWERS = 'глядачів';
 	STR_EXIT_AGAIN = 'Натисніть ще раз для виходу';
 	STR_EXIT_AGAIN_PICTURE = 'Натисніть ще раз, щоб вийти з режиму "картинка в картинці"';
 	STR_EXIT_AGAIN_MULTI = 'Натисніть ще раз, щоб вийти з мультистріму';
-	STR_EXIT_MESSAGE = 'Ви впевнені, що хочете вийти з SmartTV Client для Twitch?';
+	STR_EXIT_MESSAGE = 'Ви впевнені, що хочете вийти';
 	STR_EXIT = 'Вихід';
 	STR_CHANGELOG = 'Журнал змін';
 	STR_FULL_CHANGELOG = 'Повний журнал змін';
-	STR_CHANGELOG_SUMMARY = 'Останні зміни. Повний список доступний за посиланням нижче:';
-	STR_UPDATE = 'Натисніть, щоб оновити';
-	STR_UPDATE_CHECK = 'Перевірити наявність оновлень';
-	STR_UPDATE_CHECKING = 'Перевірка оновлень ...';
-	STR_UPDATE_CHECKING_FAIL = 'Не вдалося перевірити оновлення';
+	STR_CHANGELOG_SUMMARY = 'Завжди актуальні зміни. Детальніше за посиланням нижче:';
+	STR_UPDATE = 'Натисніть ОК, щоб оновити';
+	STR_UPDATE_CHECK = 'Перевірити оновлення';
+	STR_UPDATE_CHECKING = 'Перевіряємо';
+	STR_UPDATE_CHECKING_FAIL = 'Не вдалося перевірити';
 	STR_NO_UPDATES = 'Додаток оновлено до останньої версії';
-	STR_UPDATE_CHANGELOG = 'Оновлення та журнал змін';
-	STR_UPDATE_LATEST = 'Останні зміни:';
+	STR_UPDATE_CHANGELOG = 'Оновлення та зміни';
+	STR_UPDATE_LATEST = 'Останні зміни';
 	STR_UPDATE_FAIL = 'Не вдалося оновити, спробуйте вручну!';
 	STR_UPDATE_FAIL_DOWNLOAD = 'Не вдалося завантажити оновлення. Спробуйте вручну';
-	STR_UPDATE_AVAILABLE = 'Доступне оновлення APK';
-	STR_WEB_UPDATE_AVAILABLE = 'Доступне веб-оновлення';
+	STR_UPDATE_AVAILABLE = 'Доступне оновлення';
+	STR_WEB_UPDATE_AVAILABLE = 'Доступне оновлення';
 	STR_UPDATE_CHECK_SIDE = ', перевірте бічну панель для оновлень';
-	STR_UPDATE_LAST_CHECK = 'Остання перевірка:';
+	STR_UPDATE_LAST_CHECK = 'Остання перевірка: ';
 	STR_UPDATE_OPT = 'Параметри оновлень';
-	STR_UPDATE_CHECK_FOR = 'Перевіряти оновлення у фоновому режимі';
-	STR_UPDATE_SHOW = 'Показувати діалог оновлення, коли доступні оновлення';
+	STR_UPDATE_CHECK_FOR = 'Перевіряти оновлення у фоні';
+	STR_UPDATE_SHOW = 'Показувати вікно, коли є нові оновлення';
 	STR_UPDATE_SHOW_ARRAY = ['Так', 'Тільки сповіщення', 'Ні'];
-	STR_UPDATE_START = 'Розпочато оновлення. Це може зайняти кілька секунд, будь ласка, зачекайте!';
-	STR_UPDATE_PLAY = 'Якщо Play Store не показує оновлення, спробуйте знову через кілька хвилин!';
-	STR_UPDATE_ERROR = 'Потрібна версія APK 3.0.303 або новіша. Будь ласка, оновіть звичним способом!';
-	STR_UPDATE_WARNING_OK = 'Додаток успішно оновлено';
+	STR_UPDATE_START = 'Триває оновлення. Це може зайняти кілька секунд, зачекайте!';
+	STR_UPDATE_PLAY = 'Якщо Google Play Store не показує оновлення, спробуйте пізніше!';
+	STR_UPDATE_ERROR = 'Потрібна версія APK 3.0.303 або новіша. Оновіть зручним способом!';
+	STR_UPDATE_WARNING_OK = 'Успішно оновлено';
 	STR_CLOSE = 'Закрити';
 	STR_MINIMIZE = 'Згорнути';
-	STR_CANCEL = 'Скасувати';
+	STR_CANCEL = 'Назад';
 	STR_RERUN = 'Запустити знову';
 	STR_LIVE_CHANNELS = 'Канали в ефірі';
 	STR_LIVE_HOSTS = 'Хости';
@@ -129,43 +129,43 @@ function uk_UALang() {
 	STR_USER_HOSTING = 'хостить';
 	STR_USER_HOSTED_BY = 'хоститься у';
 	STR_USER_SET = 'вже встановлено';
-	STR_USER_MAKE_ONE = 'Перемкнутися на';
-	STR_USER_NUMBER_ONE = 'Перший користувач може бачити стрічку ефірів та стежити/відписуватися';
-	STR_ADD_USER_SH = 'Додайте користувача Twitch, щоб відображати улюблений контент тут';
-	STR_CLIP_DAY = '24 год';
-	STR_CLIP_WEEK = '7 днів';
-	STR_CLIP_MONTH = '30 днів';
-	STR_CLIP_ALL = 'всі';
+	STR_USER_MAKE_ONE = 'Заміна';
+	STR_USER_NUMBER_ONE = 'Перший користувач може бачити всі ефіри та стежити/відписуватися';
+	STR_ADD_USER_SH = 'Додайте користувача Twitch, щоб тут відображаася контент ваших каналів';
+	STR_CLIP_DAY = 'за 24 години';
+	STR_CLIP_WEEK = 'за 7 днів';
+	STR_CLIP_MONTH = 'за 30 днів';
+	STR_CLIP_ALL = 'за весь час';
 	STR_JUMP_TIME = 'Перемотка';
 	STR_JUMP_TIME_CLICK_AGAIN = 'Натисніть ще раз для перемотки';
 	STR_JUMP_T0 = 'до';
 	STR_JUMP_CANCEL = 'Перемотку скасовано';
 	STR_JUMP_TIME_BIG = ', час перемотки перевищує тривалість';
-	STR_SEC = 'Сек';
-	STR_MIN = 'Хв';
-	STR_MS = 'Мс';
-	STR_HR = 'Год';
+	STR_SEC = 'сек';
+	STR_MIN = 'хв';
+	STR_MS = 'мс';
+	STR_HR = 'год';
 	STR_SOURCE = 'Джерело';
 	STR_TWITCH_TV = 'SmartTV Client для Twitch';
-	STR_CLOSE_THIS = 'Натисніть Return або Enter, щоб закрити це';
-	STR_CLOSE_THIS2 = 'Натисніть Return, щоб закрити це';
-	STR_CLOSE_THIS3 = 'Натисніть Return, щоб показати діалог оновлення або Enter, щоб закрити це';
-	STR_PLAYER = 'Що стосується програвача:';
+	STR_CLOSE_THIS = 'Натисніть ОК або назад, щоб закрити';
+	STR_CLOSE_THIS2 = 'Натисніть назад, щоб закрити';
+	STR_CLOSE_THIS3 = 'Натисніть назад, щоб показати вікно оновлення або ОК, щоб закрити';
+	STR_PLAYER = 'Що стосується плнєру:';
 	STR_CHAT = 'Що стосується чату:';
 	STR_CHAT_SHOW = 'Показати чат';
 	STR_CURRENT_VERSION = 'Поточна версія';
 	STR_LATEST_VERSION = 'остання доступна версія';
-	STR_CONTROLS_MAIN_2 = 'Програвання відео: навігація D-pad (вгору/вниз/вліво/вправо), натисніть Enter, програти/паузу, медіаклавіші або клавіша 1';
+	STR_CONTROLS_MAIN_2 = 'Програвання відео: навігація D-pad (вгору/вниз/вліво/вправо), ОК, плей/пауза, медіаклавіші або клавіша 1';
 	STR_CONTROLS_MAIN_3 = 'Оновлення вмісту екрана:';
 	STR_CONTROLS_MAIN_4 = 'Вихід з програми: натисніть "Вихід" у бічній панелі';
-	STR_CONTROLS_MAIN_5 = 'Примусове завершення роботи програми: утримуйте Return, поки не закриється';
-	STR_CONTROLS_MAIN_6 = 'Перемикання екранів: натисніть Return, потім D-Pad вгору/вниз або ' + STR_KEY_UP_DOWN + ' ' + STR_KEY_MEDIA_FF;
+	STR_CONTROLS_MAIN_5 = 'Примусове завершення програми: утримуйте назад, поки не закриється';
+	STR_CONTROLS_MAIN_6 = 'Перемикання розділів: натисніть назад, потім D-Pad вгору/вниз або ' + STR_KEY_UP_DOWN + ' ' + STR_KEY_MEDIA_FF;
 	STR_CONTROLS_MAIN_10 = 
-		'Почати пошук: у бічній панелі натисніть "Пошук", введіть запит і натисніть Enter на віртуальній клавіатурі, потім оберіть опцію пошуку';
+		'Пошук: у бічній панелі натисніть "Пошук", введіть запит і натисніть ОК на клавіатурі';
 	STR_CONTROLS_MAIN_14 = 'Про програму: натисніть "Про програму" в бічній панелі';
-	STR_ABOUT_INFO_1 = 'Це клієнт Twitch для Android TV, безкоштовний для всіх охочих.';
+	STR_ABOUT_INFO_1 = 'Це неофіційний клієнт Twitch для Android TV, безкоштовний для всіх.';
 	STR_ABOUT_INFO_2 = 
-		'Цей додаток не пов’язаний із Twitch, створений користувачем, але можливий завдяки відкритому Twitch API.';
+		'Це неофіційний додаток Twitch, створений завдяки відкритому Twitch API.';
 	STR_ABOUT_INFO_2_SOURCE = 'Ця версія програми призначена лише для тестування в браузері!';
 	STR_ABOUT_INFO_3 = 'Контактна інформація:';
 	STR_ABOUT_INFO_4 = 'Це проєкт з відкритим кодом, ліцензований GNU GPL v3.0, дивіться на GitHub:';
@@ -173,7 +173,7 @@ function uk_UALang() {
 	STR_ABOUT_INFO_6 = 'Щоб переглянути залежності програми, скористайтеся посиланням:';
 	STR_ABOUT_INFO_18 = 'Підтримка телефонів і планшетів:';
 	STR_ABOUT_INFO_19 = 
-		'Можна використовувати на телефонах і планшетах, але додаток створено в першу чергу для ТВ. Через обмежену підтримку він не публікується в Play Store. Завантажте останній APK за посиланням нижче для ручного встановлення.';
+		'Можна використовувати на телефонах і планшетах, але додаток створено в першу чергу для ТВ. Через обмежену підтримку він не публікується в Play Store. Завантажте APK за посиланням нижче для ручного встановлення.';
 	
 	STR_CONTROLS_PLAY_0 = 'або внизу програвача в елементах керування';
 	STR_CONTROLS_PLAY_1 = 'Показати інформаційну панель: натисніть Enter або D-pad, якщо чат або стрічка не відображається';
@@ -199,8 +199,8 @@ function uk_UALang() {
 	STR_USER_CODE = 'Додати авторизаційний ключ';
 	STR_USER_CODE_OK = 'Ключ успішно додано';
 	STR_KEY_BAD = 'Перевірка ключа не вдалася, потрібно додати новий';
-	STR_OAUTH_WRONG = 'Ви намагаєтеся додати ключ для користувача';
-	STR_OAUTH_WRONG2 = 'але цей ключ належить користувачу';
+	STR_OAUTH_WRONG = 'Ви намагаєтеся додати ключ для ';
+	STR_OAUTH_WRONG2 = 'але цей ключ належить ';
 	STR_FOLLOWING = 'Стежите';
 	STR_FOLLOW = 'Не стежите';
 	STR_IS_SUB_NOOAUTH = 'і ви не додали авторизаційний ключ, тому додаток не може перевірити ваш статус підписки.';
@@ -227,7 +227,7 @@ function uk_UALang() {
 	STR_PLACEHOLDER_PRESS_UP = 'Натисніть вгору, щоб';
 	STR_FOLLOW_GAMES = 'Улюблені трансляції ігор';
 	STR_USER_GAMES_CHANGE = 'Перемикання між';
-	STR_GUIDE = 'Утримуйте Enter';
+	STR_GUIDE = ' утримуйте OK';
 	STR_MONTHS = ['Січ', 'Лют', 'Бер', 'Квіт', 'Трав', 'Черв', 'Лип', 'Серп', 'Вер', 'Жовт', 'Лист', 'Груд'];
 	STR_DAYS = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 	STR_STARTED = 'Розпочато';
@@ -235,7 +235,7 @@ function uk_UALang() {
 	STR_REPLAY = 'Повтор';
 	STR_STREAM_END = 'вихід через';
 	STR_STREAM_END_EXIT = "Натисніть 'Повернення' для виходу";
-	STR_FEATURED = 'Головна сторінка';
+	STR_FEATURED = 'Головна';
 	STR_CREATED_AT = 'Створено';
 	STR_OPEN_BROADCAST = 'Відкрити VOD';
 	STR_OPEN_LAST_BROADCAST = 'Відкрити останній VOD';
@@ -322,7 +322,7 @@ function uk_UALang() {
 	STR_PLAY_NEXT_IN = 'Наступне через';
 	STR_PLAY_ALL = 'Відтворити все';
 	STR_AUTO_PLAY_NEXT = 'Автоматично відтворювати наступний кліп';
-	STR_SIDE_PANEL_BACK_MAIN_MENU = 'Назад до головного меню';
+	STR_SIDE_PANEL_BACK_MAIN_MENU = 'Назад на головну';
 	STR_UP = 'Натисніть вгору';
 	STR_HOLD_UP = 'Утримуйте вгору або клавішу 2';
 	STR_LIVE_FEED = 'Пряма стрічка';
@@ -439,8 +439,8 @@ function uk_UALang() {
 	STR_GLOBAL_FONT = 'Глобальне масштабування шрифту';
 	STR_GLOBAL_FONT_SUMMARY = 
 		'Змінює розмір усіх текстів і значків (окрім шрифту чату). Надто мале значення — текст не видно, надто велике — текст виходить за межі. Значення обмежене. Після зміни всі екрани оновляться.';
-	STR_MAIN_MENU = 'Головне меню';
-	STR_USER_MENU = 'Меню користувача';
+	STR_MAIN_MENU = 'Головна';
+	STR_USER_MENU = 'Моє меню';
 	STR_CH_IS_OFFLINE = 'Офлайн';
 	STR_ROUND_IMAGES = 'Округлені зображення каналів';
 	STR_ROUND_IMAGES_SUMMARY = 'Більшість зображень каналів квадратні, тому округлення може спотворити їх вигляд';
@@ -565,7 +565,7 @@ function uk_UALang() {
 	STR_CONTROLS_MULTI_4 = 'Змінити джерело звуку: D-pad ліворуч/праворуч або медіаклавіші наступний/попередній. Утримуйте — щоб змінити для всіх відео';
 	STR_CONTROLS_MULTI_5 = 'Вийти з мультистріму: двічі натисніть Return або виберіть опцію внизу плеєра';
 	STR_CONTROLS_MULTI_6 = 'Щоб закрити це — відкрийте 4 ефіри';
-	STR_PICTURE_LIVE_FEED = 'Картинка-в-картинці: утримуйте Enter або натисніть клавішу 1, потім D-pad вліво — перемістити, вправо — змінити розмір, вниз — змінити відео';
+	STR_PICTURE_LIVE_FEED = 'Картинка в картинці: утримуйте OK або натисніть клавішу 1, потім D-pad вліво — перемістити, вправо — змінити розмір, вниз — змінити відео';
 	STR_MULTI_TITLE = ', натисніть на мініатюру, щоб відкрити або замінити стрім, використовуйте D-pad ліворуч/праворуч для зміни джерела звуку';
 	STR_FEED_END_DIALOG = ', натисніть Return для повернення до головного меню';
 	STR_BACK_USER_GAMES = 'Натисніть Return, щоб повернутися до';
@@ -607,7 +607,7 @@ function uk_UALang() {
 	STR_SIDE_PANEL_PLAYER = 'Налаштування попереднього перегляду в мініатюрі';
 	STR_START_AT_USER = 'Завжди запускати з екрана користувача';
 	STR_START_AT_USER_SUMMARY = "Це вимикає 'Відновити перегляд', але дозволяє вибрати користувача при запуску.";
-	STR_LAST_REFRESH = 'Останнє оновлення:';
+	STR_LAST_REFRESH = 'останнє оновлення:';
 	STR_PP_VOD_ERROR = 'Вийдіть з режиму картинка-в-картинці або мультистріму, щоб переглянути цей VOD';
 	STR_SETTINGS_ACCESSIBILITY = "Показувати попередження 'Увімкнено службу доступності'";
 	STR_SETTINGS_ACCESSIBILITY_SUMMARY = 
