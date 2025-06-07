@@ -21,6 +21,9 @@
 function GDriveRestore() {
     GDriveRefreshToken = Main_getItemString('GDriveRefreshToken', null);
     GDriveAccessToken = Main_getItemString('GDriveAccessToken', null);
+
+    GDriveUserEmail = Main_getItemString('GDriveUserEmail', null);
+    GDriveUserImgURL = Main_getItemString('GDriveUserImgURL', null);
     GDriveFileID = Main_getItemString('GDriveFileID', null);
     GDriveLastBackupDate = Main_getItemInt('GDriveLastBackupDate', 0);
     GDriveBackupSize = Main_getItemString('GDriveBackupSize', null);
@@ -37,7 +40,7 @@ function GDriveRestore() {
 
 function GDriveValidateToken() {
     if (GDriveBackupExpiresTime > new Date().getTime()) {
-        GDriveSetExpires(GDriveBackupExpiresTime - new Date().getTime());
+        GDriveSetExpiresId(GDriveBackupExpiresTime - new Date().getTime());
 
         GDriveGetBackupFile();
         GDriveGetUserInfo();
@@ -73,7 +76,13 @@ function GDriveGetUserInfoSuccess(obj) {
         GDriveUserEmail = data.email;
         GDriveUserImgURL = data.picture;
 
+        Main_setItem('GDriveUserEmail', GDriveUserEmail);
+        Main_setItem('GDriveUserImgURL', GDriveUserImgURL);
         Main_ImageLoaderWorker.postMessage(GDriveUserImgURL);
+
+        if (Settings_Dialog_isVisible()) {
+            Settings_DialogBackupSync();
+        }
     }
 }
 

@@ -922,8 +922,8 @@ function en_USLang() {
     STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Account will be used to only access file the app created TODO';
 
-    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Add google drive title';
-    STR_BACKUP_ACCOUNT_DIALOG_TITLE_SUMMARY = 'Add google summary';
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Google drive account added';
+
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'getting the code...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Access denied';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Access success, Please wait while the app verifies...';

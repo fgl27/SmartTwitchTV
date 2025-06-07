@@ -396,8 +396,6 @@ function DefaultLang() {
         STR_DIV_TITLE +
         STR_BACKUP_ACCOUNT_DIALOG_TITLE +
         '</div>' +
-        STR_BACKUP_ACCOUNT_DIALOG_TITLE_SUMMARY +
-        STR_BR +
         STR_BR +
         '<div id="backup_body">' +
         STR_BACKUP_ACCOUNT_DIALOG_BODY +

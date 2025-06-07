@@ -57,7 +57,7 @@ var GDriveBackupExpiresTime;
 var GDriveCheckCodeId;
 var GDriveBackupTimeoutID;
 var GDriveBackupAsyncID;
-var GDriveSetExpiresId;
+var GDriveExpiresId;
 
 var AddUser_UserArrayItemName = 'AddUser_UsernameArrayNew';
 var AddUser_UsernameArrayRemovedItemName = 'AddUser_UsernameArrayRemoved';
@@ -73,11 +73,11 @@ function GDriveSetExpires(obj) {
     GDriveBackupExpiresTime = new Date().getTime() + GDriveTokenExpiresTime;
     Main_setItem('GDriveBackupExpiresTime', GDriveBackupExpiresTime);
 
-    GDriveSetExpires(GDriveTokenExpiresTime);
+    GDriveSetExpiresId(GDriveTokenExpiresTime);
 }
 
-function GDriveSetExpires(expiresTime) {
-    GDriveSetExpiresId = Main_setTimeout(GDriveDeviceRefresh, expiresTime, GDriveSetExpiresId);
+function GDriveSetExpiresId(expiresTime) {
+    GDriveExpiresId = Main_setTimeout(GDriveDeviceRefresh, expiresTime, GDriveExpiresId);
 }
 
 function GDriveSetHeader() {
@@ -85,6 +85,7 @@ function GDriveSetHeader() {
 }
 
 function GDriveDeviceRefresh(sync) {
+    console.trace();
     GDriveRefreshAccessToken(GDriveDeviceRefreshSuccess, noop_fun, sync, 0);
 }
 
@@ -114,10 +115,13 @@ function GDriveClean() {
     GDriveBackupSize = null;
     GDriveUserEmail = null;
     GDriveUserImgURL = null;
+    GDriveHeader = null;
     GDriveDoBackupCall = [];
 
     localStorage.removeItem('GDriveRefreshToken');
     localStorage.removeItem('GDriveAccessToken');
+    localStorage.removeItem('GDriveUserEmail');
+    localStorage.removeItem('GDriveUserImgURL');
     localStorage.removeItem('GDriveFileID');
     localStorage.removeItem('GDriveLastBackupDate');
     localStorage.removeItem('GDriveBackupSize');

@@ -914,7 +914,6 @@ function BrowserTestFun() {
     Main_getElementById('backup_dialog').onclick = function (event) {
         if (Main_A_includes_B(event.target.id, 'backup_dialog') && !GDrivePreventClose) {
             Main_HideElement('backup_dialog');
-            Main_initWindows();
         }
     };
 
