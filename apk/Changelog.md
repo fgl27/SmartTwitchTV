@@ -9,7 +9,7 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Version June 03
+Version June 03 2025
 ==============
 
 * Enhanced Broadcasting support for HEVC/AV1 codecs now enabled by default on compatible devices
@@ -19,7 +19,7 @@ Version June 03
 * Access the new setting in player options to enable/disable Enhanced Broadcasting support based on your preferences
 * General improvements to streaming performance and stability
 
-Version May 27
+Version May 27 2025
 ==============
 
 * Update player dependencies to latest version, this may solve some player related issue
@@ -28,19 +28,19 @@ Version May 27
 * Fix random scenario that after changing app the player stayed loading for ever when returning to the app
 * General improves
 
-Version March 09
+Version March 09 2025
 ==============
 
 * Improve clock style
 * Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related
 * General improves
 
-Version January 27 & 28 2024
+Version January 27 & 28 2025
 ==============
 
 * General improves
 
-Version January 19 2024
+Version January 19 2025
 ==============
 
 * General visual improves
