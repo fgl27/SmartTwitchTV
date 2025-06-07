@@ -3202,7 +3202,7 @@ function Settings_PlayerEnd(click) {
 
 function Settings_DialogBackupSyncRefresh() {
     var divArray = ['sync_users', 'sync_history', 'sync_settings'],
-        elem,
+        element,
         div;
 
     for (var i = 0; i < divArray.length; i++) {
