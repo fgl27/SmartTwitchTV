@@ -27,6 +27,10 @@ var version = {
     WebTag: 709, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
+            title: 'Version June 07',
+            changes: ['Add Ukraine application language by @sladkOy']
+        },
+        {
             title: 'Version June 03',
             changes: [
                 'Enhanced Broadcasting support for HEVC/AV1 codecs now enabled by default on compatible devices',
