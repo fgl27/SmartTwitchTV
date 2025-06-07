@@ -27,9 +27,9 @@ function GDriveRestore() {
     GDriveDoBackupCall = Main_getItemJson('GDriveDoBackupCall', []);
     GDriveBackupExpiresTime = Main_getItemInt('GDriveBackupExpiresTime', 0);
 
-    if (GDriveAccessToken) {
+    if (GDriveAccessToken && Settings_value.sync_enabled.defaultValue) {
         GDriveValidateToken();
-    } else if (!Main_PreventCheckResume) {
+    } else {
         GDriveCheckMainStarted();
     }
 }

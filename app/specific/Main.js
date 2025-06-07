@@ -135,7 +135,6 @@ var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 var Main_FirstLoad = false;
 var Main_RunningTime = 0;
-var Main_PreventCheckResume = false;
 
 var Main_base_string_header;
 var Main_base_array_header;
@@ -2490,11 +2489,7 @@ function Main_Restore_history() {
     Main_history_SetVod_Watched();
     Main_UpdateBlockedHomeScreen();
 
-    if (Settings_value.sync_enabled.defaultValue) {
-        GDriveRestore();
-    } else {
-        Main_initWindows();
-    }
+    GDriveRestore();
 }
 
 function Main_HistoryClean() {
@@ -3101,10 +3096,6 @@ function Main_CheckResume(skipPlay) {
     // Called only by JAVA
     Main_PreventClick(false, Main_PreventClickfun);
     Main_isStopped = false;
-
-    //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
-    //but the aap is not ready for the rest of the check on this fun
-    if (Main_PreventCheckResume) return;
 
     if (Main_isUpdateDialogVisible()) {
         Main_HideLoadDialog();
