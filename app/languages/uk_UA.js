@@ -19,10 +19,10 @@
  */
 
 //Spacing for release maker not trow errors from jshint
-function en_USLang() {
+function uk_UALang() {
     // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
     //Then copy this and set it to true, if doesn't don't copy it
-    Main_IsDayFirst = false;
+    Main_IsDayFirst = true;
 
     // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
     // If it need ajustment or yours language just copy the below line and change it value until it does
