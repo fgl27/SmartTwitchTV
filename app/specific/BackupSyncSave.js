@@ -78,6 +78,7 @@ function GDriveSave(obj) {
     GDriveRefreshToken = obj.refresh_token;
     GDriveAccessToken = obj.access_token;
 
+    GDriveSetHeader();
     GDriveSetExpires(obj);
 
     Main_setItem('GDriveRefreshToken', GDriveRefreshToken);
@@ -91,6 +92,7 @@ function GDriveSave(obj) {
     GDrivePreventClose = true;
 
     GDriveBackupAndSync();
+    GDriveGetUserInfo();
 
     console.log('GDriveRefreshToken', GDriveRefreshToken);
     console.log('GDriveAccessToken', GDriveAccessToken);

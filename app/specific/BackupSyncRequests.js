@@ -19,7 +19,12 @@
  */
 
 function GDriveGetCodes(callbackSuccess, callbackError, key_1, key_2) {
-    var theUrl = GDriveCode + 'client_id=' + GDriveClientKey + '&scope=' + encodeURIComponent('https://www.googleapis.com/auth/drive.file');
+    var theUrl =
+        GDriveCode +
+        'client_id=' +
+        GDriveClientKey +
+        '&scope=' +
+        encodeURIComponent('https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email');
 
     FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
 }
@@ -111,4 +116,8 @@ function GDriveUpdateFile2(callbackSuccess, callbackError, key_1, key_2) {
 
 function GDriveDownloadBackupFile(callbackSuccess, callbackError, key_1, key_2) {
     FullxmlHttpGet(GDriveDownLoadUrl.replace('%x', GDriveFileID), GDriveHeader, callbackSuccess, callbackError, key_1, key_2, null, null);
+}
+
+function GDriveUserInfo(callbackSuccess, callbackError, key_1, key_2) {
+    FullxmlHttpGet(GDriveUserInfoURL, GDriveHeader, callbackSuccess, callbackError, key_1, key_2, null, null);
 }

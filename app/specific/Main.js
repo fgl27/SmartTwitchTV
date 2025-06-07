@@ -260,6 +260,7 @@ function Main_StartApp() {
         Main_RestoreValues();
         Settings_SetDefaults();
         Settings_RestoreAppLang();
+        Main_Setworker();
 
         DefaultLang();
 
@@ -310,7 +311,6 @@ function Main_initWindowsEnd() {
     Users_RemoveCursorSet();
     Main_CheckDevice();
 
-    Main_Setworker();
     Main_SetStringsMain();
 
     Main_GoBefore = Main_values.Main_Go;

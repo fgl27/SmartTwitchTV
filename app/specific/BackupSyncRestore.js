@@ -26,6 +26,7 @@ function GDriveRestore() {
     GDriveBackupSize = Main_getItemString('GDriveBackupSize', null);
     GDriveDoBackupCall = Main_getItemJson('GDriveDoBackupCall', []);
     GDriveBackupExpiresTime = Main_getItemInt('GDriveBackupExpiresTime', 0);
+    GDriveSetHeader();
 
     if (GDriveAccessToken && Settings_value.sync_enabled.defaultValue) {
         GDriveValidateToken();
@@ -36,9 +37,10 @@ function GDriveRestore() {
 
 function GDriveValidateToken() {
     if (GDriveBackupExpiresTime > new Date().getTime()) {
-        GDriveSetHeader(GDriveBackupExpiresTime - new Date().getTime());
+        GDriveSetExpires(GDriveBackupExpiresTime - new Date().getTime());
 
         GDriveGetBackupFile();
+        GDriveGetUserInfo();
 
         return;
     }
@@ -51,11 +53,27 @@ function GDriveValidateTokenSuccess(obj) {
         GDriveSetExpires(JSON.parse(obj.responseText));
 
         GDriveGetBackupFile();
+        GDriveGetUserInfo();
     } else {
         //expired or no longer has access to Gdrive
         //Only on 401 we erase Gdrive configuration
         //GDriveValidateAccessToken only returns 200 or 400
         GDriveValidateTokenRefreshAccessToken();
+    }
+}
+
+function GDriveGetUserInfo() {
+    GDriveUserInfo(GDriveGetUserInfoSuccess, noop_fun, 0, 0);
+}
+
+function GDriveGetUserInfoSuccess(obj) {
+    if (obj.status === 200) {
+        var data = JSON.parse(obj.responseText);
+
+        GDriveUserEmail = data.email;
+        GDriveUserImgURL = data.picture;
+
+        Main_ImageLoaderWorker.postMessage(GDriveUserImgURL);
     }
 }
 
@@ -67,8 +85,10 @@ function GDriveRefreshSuccess(obj) {
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
         GDriveAccessToken = data.access_token;
+
         Main_setItem('GDriveAccessToken', GDriveAccessToken);
 
+        GDriveSetHeader();
         GDriveSetExpires(data);
 
         GDriveGetBackupFile();
