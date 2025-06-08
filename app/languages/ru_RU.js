@@ -932,4 +932,41 @@ function ru_RULang() {
 
     STR_DISABLE_SHARED_CHAT = 'Отключить общий чат';
     STR_DISABLE_SHARED_CHAT_SUMMARY = 'Если установлено "да", будут отображаться только сообщения из чата открытого вами стрима';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Удалить аккаунт Google Drive';
+    STR_BACKUP_ACCOUNT_ADD = 'Добавить аккаунт Google Drive для резервного копирования';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Аккаунт будет использоваться только для доступа к файлам, созданным приложением';
+
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Аккаунт Google Drive добавлен';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'получение кода...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Доступ запрещен';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Доступ успешно получен, подождите, пока приложение проверяет...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'Приложение восстановит и закроет этот диалог в ближайшее время';
+    STR_BACKUP_NO_BACKUP_FOUND = 'Ранее созданная резервная копия не найдена, резервная копия успешно создана';
+    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY =
+        'Перейдите в Настройки > Синхронизация и Резервное копирование, чтобы настроить или удалить опцию резервного копирования';
+
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Потерян доступ к аккаунту Резервного копирования и Синхронизации, аккаунт резервного копирования удален!';
+
+    STR_BACKUP_SIZE = 'Размер резервной копии:';
+    STR_BACKUP_SYNC = 'Синхронизация и Резервное копирование';
+    STR_BACKUP_SYNC_SUMMARY = 'Синхронизируйте и создавайте резервные копии информации пользователя между устройствами';
+    STR_BACKUP_USER_INFO = '(Информация пользователя: Пользователи, история, заблокированные и настройки)';
+
+    STR_BACKUP_SYNC_USER = 'Синхронизировать пользователей';
+    STR_BACKUP_SYNC_HISTORY = 'Синхронизировать пользователей, историю, заблокированные';
+    STR_BACKUP_SYNC_SETTINGS = 'Синхронизировать настройки';
+    STR_BACKUP_SYNC_RESTORE = 'Найдена резервная копия';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY =
+        'Найдена резервная копия, выберите, что синхронизировать и восстановить, и нажмите клавишу возврата или ввода для подтверждения';
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Восстановление успешно!';
+    STR_BACKUP_RESTORE_FAIL = 'Не удалось восстановить резервную копию';
+
+    STR_BACKUP_ENABLE = 'Включить резервное копирование';
+    STR_BACKUP_ENABLE_SUMMARY = 'Если установлено ДА, приложение будет хранить резервную копию всей информации пользователя ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Включить синхронизацию';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY =
+        'Если установлено ДА, приложение будет автоматически синхронизировать информацию пользователя между устройствами';
 }

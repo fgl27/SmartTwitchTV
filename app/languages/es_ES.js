@@ -585,4 +585,43 @@ function es_ESLang() {
     STR_PLAYER_CODEC_NOT_SUPPORTED = '¡Dispositivo no compatible! Activar este códec puede causar errores de reproducción.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Para comprender mejor las capacidades del dispositivo, revisa la opción de configuración: ';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Eliminar cuenta de Google Drive';
+    STR_BACKUP_ACCOUNT_ADD = 'Añadir cuenta de Google Drive para copia de seguridad';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'La cuenta solo se usará para acceder a los archivos creados por la aplicación';
+
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Cuenta de Google Drive añadida';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'obteniendo el código...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acceso denegado';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acceso exitoso, espere mientras la aplicación verifica...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'La aplicación restaurará y cerrará este diálogo en breve';
+    STR_BACKUP_NO_BACKUP_FOUND = 'No se encontró copia de seguridad previa, copia de seguridad creada con éxito';
+    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY =
+        'Vaya a Configuración > Sincronización y Copia de seguridad, para personalizar o eliminar la opción de copia de seguridad';
+
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR =
+        '¡Se perdió el acceso a la cuenta de Copia de seguridad y Sincronización, cuenta de copia de seguridad eliminada!';
+
+    STR_BACKUP_SIZE = 'Tamaño de la copia de seguridad:';
+    STR_BACKUP_SYNC = 'Sincronización y Copia de seguridad';
+    STR_BACKUP_SYNC_SUMMARY = 'Sincronice y haga copias de seguridad de la información del usuario entre dispositivos';
+    STR_BACKUP_USER_INFO = '(Información del usuario: Usuarios, historial, bloqueados y configuración)';
+
+    STR_BACKUP_SYNC_USER = 'Sincronizar usuarios';
+    STR_BACKUP_SYNC_HISTORY = 'Sincronizar usuarios, historial, bloqueados';
+    STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configuración';
+    STR_BACKUP_SYNC_RESTORE = 'Copia de seguridad encontrada';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY =
+        'Copia de seguridad encontrada, elija qué sincronizar y restaurar y presione la tecla de retorno o enter para confirmar';
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = '¡Restauración exitosa!';
+    STR_BACKUP_RESTORE_FAIL = 'Error al restaurar la copia de seguridad';
+
+    STR_BACKUP_ENABLE = 'Habilitar copia de seguridad';
+    STR_BACKUP_ENABLE_SUMMARY =
+        'Si se establece en SÍ, la aplicación mantendrá una copia de seguridad de toda la información del usuario ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Habilitar sincronización';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY =
+        'Si se establece en SÍ, la aplicación sincronizará automáticamente la información del usuario entre dispositivos';
 }

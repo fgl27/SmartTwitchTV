@@ -895,4 +895,39 @@ function pt_BRLang() {
 
     STR_PLAYER_CODEC_SUPPORTED = 'dispositivo compatível';
     STR_PLAYER_CODEC_NOT_SUPPORTED = 'Dispositivo não compatível! Ativar este codec pode causar erros na reprodução.';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Remover conta do Google Drive';
+    STR_BACKUP_ACCOUNT_ADD = 'Adicionar conta do Google Drive para backup';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'A conta será usada apenas para acessar arquivos criados pelo aplicativo';
+
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Conta do Google Drive adicionada';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'obtendo o código...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acesso negado';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acesso bem-sucedido, aguarde enquanto o aplicativo verifica...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'O aplicativo irá restaurar e fechar este diálogo em breve';
+    STR_BACKUP_NO_BACKUP_FOUND = 'Nenhum backup feito anteriormente encontrado, backup criado com sucesso';
+    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Vá para Configurações > Sincronização e Backup, para personalizar ou remover a opção de backup';
+
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Perdeu acesso à conta de Backup e Sincronização, conta de backup removida!';
+
+    STR_BACKUP_SIZE = 'Tamanho do backup:';
+    STR_BACKUP_SYNC = 'Sincronização e Backup';
+    STR_BACKUP_SYNC_SUMMARY = 'Sincronize e faça backup das informações do usuário entre dispositivos';
+    STR_BACKUP_USER_INFO = '(Informações do usuário: Usuários, histórico, bloqueados e configurações)';
+
+    STR_BACKUP_SYNC_USER = 'Sincronizar usuários';
+    STR_BACKUP_SYNC_HISTORY = 'Sincronizar usuários, histórico, bloqueados';
+    STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configurações';
+    STR_BACKUP_SYNC_RESTORE = 'Backup encontrado';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY =
+        'Backup encontrado, escolha o que sincronizar e restaurar e pressione a tecla de retorno ou enter para confirmar';
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restauração bem-sucedida!';
+    STR_BACKUP_RESTORE_FAIL = 'Falha ao restaurar backup';
+
+    STR_BACKUP_ENABLE = 'Habilitar backup';
+    STR_BACKUP_ENABLE_SUMMARY = 'Se definido como SIM, o aplicativo manterá um backup de todas as informações do usuário ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Habilitar sincronização';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY = 'Se definido como SIM, o aplicativo sincronizará automaticamente as informações do usuário entre dispositivos';
 }

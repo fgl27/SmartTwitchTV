@@ -920,8 +920,7 @@ function en_USLang() {
 
     STR_BACKUP_ACCOUNT_REMOVE = 'Remove Google Drive account';
     STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
-    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Account will be used to only access file the app created TODO';
-
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Account will be used to only access files the app created';
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Google drive account added';
 
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'getting the code...';
