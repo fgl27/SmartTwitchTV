@@ -45,7 +45,7 @@ function GDriveCheckDeviceCode(callbackSuccess, callbackError, key_1, key_2) {
 }
 
 function GDriveValidateAccessToken(callbackSuccess, callbackError, key_1, key_2) {
-    var theUrl = GDriveValidateTokenUrl + GDriveAccessToken;
+    var theUrl = GDriveValidateTokenUrl + GDriveConfig.accessToken;
 
     FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
 }
@@ -59,7 +59,7 @@ function GDriveRefreshAccessToken(callbackSuccess, callbackError, key_1, key_2) 
         '&client_secret=' +
         GDriveKey +
         '&refresh_token=' +
-        GDriveRefreshToken;
+        GDriveConfig.refreshToken;
 
     FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
 }
@@ -67,7 +67,7 @@ function GDriveRefreshAccessToken(callbackSuccess, callbackError, key_1, key_2) 
 function GDriveGetFileByName(callbackSuccess, callbackError, key_1, key_2) {
     FullxmlHttpGet(
         GDriveFileIdUrl.replace('%x', "name='" + encodeURIComponent(GDriveFileName) + "' and trashed=false"),
-        GDriveHeader,
+        GDriveConfig.header,
         callbackSuccess,
         callbackError,
         key_1,
@@ -78,7 +78,7 @@ function GDriveGetFileByName(callbackSuccess, callbackError, key_1, key_2) {
 }
 
 function GDriveUploadFile(callbackSuccess, callbackError, key_1, key_2) {
-    var header = JSON.parse(JSON.stringify(GDriveHeader));
+    var header = JSON.parse(JSON.stringify(GDriveConfig.header));
     header.push(['Content-Type', 'multipart/related; boundary=' + GDriveBoundary]);
 
     var body =
@@ -103,8 +103,8 @@ function GDriveUploadFile(callbackSuccess, callbackError, key_1, key_2) {
 
 function GDriveUpdateFile2(callbackSuccess, callbackError, key_1, key_2) {
     FullxmlHttpGet(
-        GDriveUpdateUrl.replace('%x', encodeURIComponent(GDriveFileID)),
-        GDriveHeader,
+        GDriveUpdateUrl.replace('%x', encodeURIComponent(GDriveConfig.fileID)),
+        GDriveConfig.header,
         callbackSuccess,
         callbackError,
         key_1,
@@ -115,9 +115,18 @@ function GDriveUpdateFile2(callbackSuccess, callbackError, key_1, key_2) {
 }
 
 function GDriveDownloadBackupFile(callbackSuccess, callbackError, key_1, key_2) {
-    FullxmlHttpGet(GDriveDownLoadUrl.replace('%x', GDriveFileID), GDriveHeader, callbackSuccess, callbackError, key_1, key_2, null, null);
+    FullxmlHttpGet(
+        GDriveDownLoadUrl.replace('%x', GDriveConfig.fileID),
+        GDriveConfig.header,
+        callbackSuccess,
+        callbackError,
+        key_1,
+        key_2,
+        null,
+        null
+    );
 }
 
 function GDriveUserInfo(callbackSuccess, callbackError, key_1, key_2) {
-    FullxmlHttpGet(GDriveUserInfoURL, GDriveHeader, callbackSuccess, callbackError, key_1, key_2, null, null);
+    FullxmlHttpGet(GDriveUserInfoURL, GDriveConfig.header, callbackSuccess, callbackError, key_1, key_2, null, null);
 }

@@ -75,14 +75,11 @@ function GDriveDeviceCodeSuccess(obj) {
 }
 
 function GDriveSave(obj) {
-    GDriveRefreshToken = obj.refresh_token;
-    GDriveAccessToken = obj.access_token;
+    GDriveConfig.refreshToken = obj.refresh_token;
+    GDriveConfig.accessToken = obj.access_token;
 
     GDriveSetHeader();
     GDriveSetExpires(obj);
-
-    Main_setItem('GDriveRefreshToken', GDriveRefreshToken);
-    Main_setItem('GDriveAccessToken', GDriveAccessToken);
 
     Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS);
     Main_textContent('backup_body_checking', '');
@@ -93,9 +90,13 @@ function GDriveSave(obj) {
 
     GDriveBackupAndSync();
     GDriveGetUserInfo();
+    GDriveSaveConfig();
 
-    console.log('GDriveRefreshToken', GDriveRefreshToken);
-    console.log('GDriveAccessToken', GDriveAccessToken);
+    console.log('GDriveConfig', GDriveConfig);
+}
+
+function GDriveSaveConfig() {
+    Main_setItem(GDriveConfigItemName, JSON.stringify(GDriveConfig));
 }
 
 function GDriveBackupAndSync() {
@@ -103,7 +104,7 @@ function GDriveBackupAndSync() {
         return;
     }
 
-    if (!GDriveFileID) {
+    if (!GDriveConfig.fileID) {
         GDriveBackupAndSyncGetFileInfo();
         return;
     }
@@ -147,7 +148,7 @@ function GDriveBackupAndSyncValidate(obj) {
 
 function GDriveBackupAndSyncRunRestore() {
     var backupObj = GDriveBackupAndSyncValidateBackup,
-        date = JSON.parse(backupObj[GDriveBackupDateItemName]) || new Date().getTime(),
+        date = JSON.parse(backupObj[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime(),
         syncEnabled = Settings_value.sync_enabled.defaultValue,
         doUser = syncEnabled && Settings_value.sync_users.defaultValue,
         doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
@@ -191,7 +192,7 @@ function GDriveBackupAndSyncGetFileInfoSuccess(obj) {
         console.log('GDriveGetFileInfoSuccess fail', obj.responseText);
     }
 
-    if (GDriveFileID) {
+    if (GDriveConfig.fileID) {
         GDriveBackupAndSync();
     } else {
         GDriveUploadFile(GDriveBackupFileSuccess, noop_fun, 0, 0);

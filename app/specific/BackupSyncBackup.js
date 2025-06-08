@@ -31,11 +31,11 @@ function GDriveBackup(skipAsync) {
 }
 
 function GDriveBackupStart() {
-    if (!GDriveAccessToken || !GDriveCanDoBackup()) {
+    if (!GDriveConfig.accessToken || !GDriveCanDoBackup()) {
         return;
     }
 
-    if (!GDriveFileID) {
+    if (!GDriveConfig.fileID) {
         GDriveBackupGetFileInfo();
     } else {
         GDriveDownloadBackupFile(GDriveDownloadBackupFileSuccess, noop_fun, 0, 0);
@@ -79,7 +79,7 @@ function GDriveDownloadBackupFileSuccessSync(obj) {
 }
 
 function GDriveDownloadSyncFromBackup(backup) {
-    var date = JSON.parse(backup[GDriveBackupDateItemName]) || new Date().getTime();
+    var date = JSON.parse(backup[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime();
 
     GDriveSyncFromBackup(backup, date);
 }
@@ -95,7 +95,7 @@ function GDriveBackupGetFileInfoSuccess(obj) {
         console.log('GDriveBackupGetFileInfoSuccess fail', obj.responseText);
     }
 
-    if (GDriveFileID) {
+    if (GDriveConfig.fileID) {
         GDriveBackup();
     } else {
         GDriveUploadFile(GDriveBackupFileSuccess, noop_fun, 0, 0);

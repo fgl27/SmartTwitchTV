@@ -3236,7 +3236,7 @@ function Settings_DialogBackupSync(click) {
         backup_account: {
             defaultValue: Settings_value.backup_account.defaultValue,
             values: Settings_value.backup_account.values,
-            title: GDriveAccessToken ? STR_BACKUP_ACCOUNT_REMOVE : STR_BACKUP_ACCOUNT_ADD,
+            title: GDriveConfig.accessToken ? STR_BACKUP_ACCOUNT_REMOVE : STR_BACKUP_ACCOUNT_ADD,
             keyenter: true
         },
         backup_enabled: {
@@ -3275,18 +3275,18 @@ function Settings_DialogBackupSync(click) {
         obj,
         STR_BACKUP_SYNC +
             STR_BR +
-            (GDriveUserEmail
+            (GDriveConfig.userEmail
                 ? '<div style="min-height: 15vh;margin:10px;" > <img style="width: 7%; border-radius: 50%;" src="' +
-                  GDriveUserImgURL +
+                  GDriveConfig.userImgURL +
                   '" /> <div > ' +
-                  DefaultMakeLink(GDriveUserEmail, 'mailto:') +
+                  DefaultMakeLink(GDriveConfig.userEmail, 'mailto:') +
                   ' </div></div>'
                 : '') +
             STR_BR +
             STR_BACKUP_SYNC_SUMMARY +
             STR_BR +
             STR_BR +
-            (GDriveBackupSize ? STR_BACKUP_SIZE + STR_SPACE + GDriveBackupSize : ''),
+            (GDriveConfig.backupSize ? STR_BACKUP_SIZE + STR_SPACE + GDriveConfig.backupSize : ''),
         click
     );
 
@@ -3703,7 +3703,7 @@ function Settings_DialoghandleKeyDown(event) {
             }
 
             if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'backup_account')) {
-                if (GDriveAccessToken) {
+                if (GDriveConfig.accessToken) {
                     Settings_RemoveBackupAccount();
                 } else {
                     Settings_DialogAddBackupAccount();

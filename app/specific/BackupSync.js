@@ -21,8 +21,8 @@
 //Variable initialization
 var GDriveValidateTokenUrl = 'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=';
 var GDriveUserInfoURL = 'https://www.googleapis.com/oauth2/v3/userinfo';
-var GDriveUploadNewUrl = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
 var GDriveUpdateUrl = 'https://www.googleapis.com/upload/drive/v3/files/%x?uploadType=media';
+var GDriveUploadNewUrl = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
 var GDriveFileIdUrl = 'https://www.googleapis.com/drive/v3/files?q=%x&fields=files(id,name,createdTime,modifiedTime,mimeType,size,trashed)';
 var GDriveDownLoadUrl = 'https://www.googleapis.com/drive/v3/files/%x?alt=media';
 var GDriveUrl = 'https://oauth2.googleapis.com/';
@@ -42,18 +42,7 @@ var GDriveMetadata = JSON.stringify({
 });
 var GDrivePreventClose = false;
 
-var GDriveHeader;
-var GDriveFileID;
 var GDriveDeviceCode;
-var GDriveTokenExpiresTime;
-var GDriveUserEmail;
-var GDriveUserImgURL;
-var GDriveTokenExpiresTime;
-var GDriveRefreshToken;
-var GDriveAccessToken;
-var GDriveLastBackupDate;
-var GDriveBackupSize;
-var GDriveBackupExpiresTime;
 var GDriveCheckCodeId;
 var GDriveBackupTimeoutID;
 var GDriveBackupAsyncID;
@@ -62,18 +51,22 @@ var GDriveExpiresId;
 var AddUser_UserArrayItemName = 'AddUser_UsernameArrayNew';
 var AddUser_UsernameArrayRemovedItemName = 'AddUser_UsernameArrayRemoved';
 var Main_values_History_data_ItemName = 'Main_values_History_data';
-var GDriveBackupDateItemName = 'backup_date';
 
 var GDriveDoBackupLimit = 100;
 var GDriveDoBackupInterval = 100 * 1000;
+
 var GDriveDoBackupCall = [];
+var GDriveDoBackupCallItemName = 'GDriveDoBackupCall';
+
+var GDriveConfig = {};
+var GDriveConfigItemName = 'GDriveConfig';
 
 function GDriveSetExpires(obj) {
-    GDriveTokenExpiresTime = (parseInt(obj.expires_in) - 60) * 1000;
-    GDriveBackupExpiresTime = new Date().getTime() + GDriveTokenExpiresTime;
-    Main_setItem('GDriveBackupExpiresTime', GDriveBackupExpiresTime);
+    GDriveConfig.tokenExpiresTime = (parseInt(obj.expires_in) - 60) * 1000;
+    GDriveConfig.backupExpiresTime = new Date().getTime() + GDriveConfig.tokenExpiresTime;
 
-    GDriveSetExpiresId(GDriveTokenExpiresTime);
+    GDriveSaveConfig();
+    GDriveSetExpiresId(GDriveConfig.tokenExpiresTime);
 }
 
 function GDriveSetExpiresId(expiresTime) {
@@ -81,7 +74,7 @@ function GDriveSetExpiresId(expiresTime) {
 }
 
 function GDriveSetHeader() {
-    GDriveHeader = [['Authorization', 'Bearer ' + GDriveAccessToken]];
+    GDriveConfig.header = [['Authorization', 'Bearer ' + GDriveConfig.accessToken]];
 }
 
 function GDriveDeviceRefresh(sync) {
@@ -92,11 +85,11 @@ function GDriveDeviceRefresh(sync) {
 function GDriveDeviceRefreshSuccess(obj) {
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
-        GDriveAccessToken = data.access_token;
-        Main_setItem('GDriveAccessToken', GDriveAccessToken);
+        GDriveConfig.accessToken = data.access_token;
 
         GDriveSetHeader();
         GDriveSetExpires(data);
+        GDriveSaveConfig();
     } else {
         GDriveGetBackupAPI_Fail();
     }
@@ -108,24 +101,11 @@ function GDriveGetBackupAPI_Fail() {
 }
 
 function GDriveClean() {
-    GDriveRefreshToken = null;
-    GDriveAccessToken = null;
-    GDriveFileID = null;
-    GDriveLastBackupDate = null;
-    GDriveBackupSize = null;
-    GDriveUserEmail = null;
-    GDriveUserImgURL = null;
-    GDriveHeader = null;
+    GDriveConfig = {};
     GDriveDoBackupCall = [];
 
-    localStorage.removeItem('GDriveRefreshToken');
-    localStorage.removeItem('GDriveAccessToken');
-    localStorage.removeItem('GDriveUserEmail');
-    localStorage.removeItem('GDriveUserImgURL');
-    localStorage.removeItem('GDriveFileID');
-    localStorage.removeItem('GDriveLastBackupDate');
-    localStorage.removeItem('GDriveBackupSize');
-    localStorage.removeItem('GDriveRefreshToken');
+    localStorage.removeItem(GDriveConfigItemName);
+    localStorage.removeItem(GDriveDoBackupCallItemName);
 
     Main_clearTimeout(GDriveBackupTimeoutID);
     Main_clearTimeout(GDriveSetExpiresId);
@@ -151,9 +131,9 @@ function GDriveUpFileSuccess(obj) {
 
 function GDriveUpFileSuccessSave(obj) {
     var data = JSON.parse(obj.responseText);
-    GDriveFileID = data.id;
-    Main_setItem('GDriveFileID', GDriveFileID);
+    GDriveConfig.fileID = data.id;
 
+    GDriveSaveConfig();
     console.log('GDriveUpFileSuccessSave data', data);
 }
 
@@ -168,9 +148,8 @@ function GDriveGetBackupFileContent() {
         backup[key] = localStorage.getItem(key);
     }
 
-    backup[GDriveBackupDateItemName] = new Date().getTime();
-    GDriveLastBackupDate = backup[GDriveBackupDateItemName];
-    Main_setItem('GDriveLastBackupDate', GDriveLastBackupDate);
+    GDriveConfig.lastBackupDate = new Date().getTime();
+    GDriveSaveConfig();
 
     var backupString = JSON.stringify(backup);
     GDriveSetBackupSize(backupString);
@@ -181,7 +160,8 @@ function GDriveGetBackupFileContent() {
 function GDriveSetBackupSize(backupString) {
     try {
         var sizeInBytes = new Blob([backupString]).size;
-        GDriveBackupSize = formatFileSize(sizeInBytes);
+        GDriveConfig.backupSize = formatFileSize(sizeInBytes);
+        GDriveSaveConfig();
     } catch (error) {}
 }
 
@@ -210,7 +190,7 @@ function GDriveCanDoBackup() {
         result = true;
     }
 
-    Main_setItem('GDriveDoBackupCall', JSON.stringify(GDriveDoBackupCall));
+    Main_setItem(GDriveDoBackupCallItemName, JSON.stringify(GDriveDoBackupCall));
 
     return result;
 }
@@ -442,7 +422,7 @@ function GDriveRestoreSettings(backup) {
 
         //Skip anything that is a app settings
         if (
-            item === GDriveBackupDateItemName ||
+            item === GDriveConfigItemName ||
             item === AddUser_UserArrayItemName ||
             item === AddUser_UsernameArrayRemovedItemName ||
             item === Main_values_History_data_ItemName
@@ -460,7 +440,7 @@ function GDriveRestoreSettings(backup) {
 //     var listUrl = 'https://www.googleapis.com/drive/v3/files?pageSize=1000';
 
 //     xhr.open('GET', listUrl, true);
-//     xhr.setRequestHeader('Authorization', 'Bearer ' + GDriveAccessToken);
+//     xhr.setRequestHeader('Authorization', 'Bearer ' + GDriveConfig.accessToken);
 
 //     xhr.onload = function () {
 //         if (xhr.status === 200) {
@@ -490,7 +470,7 @@ function GDriveRestoreSettings(backup) {
 //     var deleteUrl = 'https://www.googleapis.com/drive/v3/files/' + fileId;
 
 //     deleteXhr.open('DELETE', deleteUrl, true);
-//     deleteXhr.setRequestHeader('Authorization', 'Bearer ' + GDriveAccessToken);
+//     deleteXhr.setRequestHeader('Authorization', 'Bearer ' + GDriveConfig.accessToken);
 
 //     deleteXhr.onload = function () {
 //         if (deleteXhr.status === 204) {
@@ -509,7 +489,7 @@ function GDriveRestoreSettings(backup) {
 
 function GDriveNeedsSync(date) {
     //skip sync if date is the same or smaller
-    if (GDriveLastBackupDate === date || GDriveLastBackupDate > date) {
+    if (GDriveConfig.lastBackupDate === date || GDriveConfig.lastBackupDate > date) {
         return false;
     }
 

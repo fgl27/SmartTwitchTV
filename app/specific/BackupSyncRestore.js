@@ -19,19 +19,10 @@
  */
 
 function GDriveRestore() {
-    GDriveRefreshToken = Main_getItemString('GDriveRefreshToken', null);
-    GDriveAccessToken = Main_getItemString('GDriveAccessToken', null);
+    GDriveConfig = Main_getItemJson(GDriveConfigItemName, {});
+    GDriveDoBackupCall = Main_getItemJson(GDriveDoBackupCallItemName, []);
 
-    GDriveUserEmail = Main_getItemString('GDriveUserEmail', null);
-    GDriveUserImgURL = Main_getItemString('GDriveUserImgURL', null);
-    GDriveFileID = Main_getItemString('GDriveFileID', null);
-    GDriveLastBackupDate = Main_getItemInt('GDriveLastBackupDate', 0);
-    GDriveBackupSize = Main_getItemString('GDriveBackupSize', null);
-    GDriveDoBackupCall = Main_getItemJson('GDriveDoBackupCall', []);
-    GDriveBackupExpiresTime = Main_getItemInt('GDriveBackupExpiresTime', 0);
-    GDriveSetHeader();
-
-    if (GDriveAccessToken && Settings_value.sync_enabled.defaultValue) {
+    if (GDriveConfig.accessToken && Settings_value.sync_enabled.defaultValue) {
         GDriveValidateToken();
     } else {
         GDriveCheckMainStarted();
@@ -39,8 +30,8 @@ function GDriveRestore() {
 }
 
 function GDriveValidateToken() {
-    if (GDriveBackupExpiresTime > new Date().getTime()) {
-        GDriveSetExpiresId(GDriveBackupExpiresTime - new Date().getTime());
+    if (GDriveConfig.backupExpiresTime > new Date().getTime()) {
+        GDriveSetExpiresId(GDriveConfig.backupExpiresTime - new Date().getTime());
 
         GDriveGetBackupFile();
         GDriveGetUserInfo();
@@ -73,12 +64,11 @@ function GDriveGetUserInfoSuccess(obj) {
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
 
-        GDriveUserEmail = data.email;
-        GDriveUserImgURL = data.picture;
+        GDriveConfig.userEmail = data.email;
+        GDriveConfig.userImgURL = data.picture;
 
-        Main_setItem('GDriveUserEmail', GDriveUserEmail);
-        Main_setItem('GDriveUserImgURL', GDriveUserImgURL);
-        Main_ImageLoaderWorker.postMessage(GDriveUserImgURL);
+        GDriveSaveConfig();
+        Main_ImageLoaderWorker.postMessage(GDriveConfig.userImgURL);
 
         if (Settings_Dialog_isVisible()) {
             Settings_DialogBackupSync();
@@ -93,9 +83,7 @@ function GDriveValidateTokenRefreshAccessToken() {
 function GDriveRefreshSuccess(obj) {
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
-        GDriveAccessToken = data.access_token;
-
-        Main_setItem('GDriveAccessToken', GDriveAccessToken);
+        GDriveConfig.accessToken = data.access_token;
 
         GDriveSetHeader();
         GDriveSetExpires(data);
@@ -111,7 +99,7 @@ function GDriveRefreshSuccess(obj) {
 }
 
 function GDriveGetBackupFile() {
-    if (!GDriveFileID) {
+    if (!GDriveConfig.fileID) {
         GDriveGetFileInfo();
         return;
     }
@@ -136,11 +124,10 @@ function GDriveSaveFileInfo(obj) {
         return;
     }
 
-    GDriveBackupSize = formatFileSize(data.files[0].size);
-    GDriveFileID = data.files[0].id;
+    GDriveConfig.backupSize = formatFileSize(data.files[0].size);
+    GDriveConfig.fileID = data.files[0].id;
 
-    Main_setItem('GDriveBackupSize', GDriveBackupSize);
-    Main_setItem('GDriveFileID', GDriveFileID);
+    GDriveSaveConfig();
 }
 
 function GDriveGetFileInfoSuccess(obj) {
@@ -151,7 +138,7 @@ function GDriveGetFileInfoSuccess(obj) {
         GDriveCheckMainStarted();
     }
 
-    if (GDriveFileID) {
+    if (GDriveConfig.fileID) {
         GDriveGetBackupFile();
     } else {
         GDriveUploadFile(GDriveBackupFileFromRestore, noop_fun, 0, 0);
@@ -193,9 +180,9 @@ function GDriveGetBackupFileSuccess(obj) {
         var data = JSON.parse(obj.responseText);
 
         if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
-            GDriveFileID = null;
-            localStorage.removeItem('GDriveFileID');
+            GDriveConfig.fileID = null;
 
+            GDriveSaveConfig();
             GDriveGetFileInfo();
         }
         return;
@@ -205,7 +192,7 @@ function GDriveGetBackupFileSuccess(obj) {
 }
 
 function GDriveSyncBackupFile(backup) {
-    var date = JSON.parse(backup[GDriveBackupDateItemName]) || new Date().getTime();
+    var date = JSON.parse(backup[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime();
 
     //skip sync if date is the same or smaller
     if (!GDriveNeedsSync(date)) {
