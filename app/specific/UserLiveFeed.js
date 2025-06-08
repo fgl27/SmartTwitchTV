@@ -157,6 +157,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].show = UserLiveFeedobj_ShowHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].cell = UserLiveFeedobj_FeaturedCell;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = Main_getElementById('user_live_history_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
@@ -403,12 +404,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 }
 
 function UserLiveFeed_SetRefresh(pos) {
-    if (
-        Settings_Obj_default('auto_refresh_screen') &&
-        Settings_Obj_default('auto_refresh_background') &&
-        pos !== UserLiveFeedobj_UserVodHistoryPos &&
-        pos !== UserLiveFeedobj_UserHistoryPos
-    ) {
+    if (Settings_Obj_default('auto_refresh_screen') && Settings_Obj_default('auto_refresh_background') && pos !== UserLiveFeedobj_UserVodHistoryPos) {
         UserLiveFeed_CheckRefresh(pos, Settings_GetAutoRefreshTimeout());
     } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
 }
@@ -453,7 +449,6 @@ function UserLiveFeed_CheckRefreshAfterResume() {
             if (
                 UserLiveFeed_lastRefresh[i] &&
                 i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
-                i !== UserLiveFeedobj_UserVodHistoryPos &&
                 i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
                 date > UserLiveFeed_lastRefresh[i] + Settings_GetAutoRefreshTimeout()
             ) {

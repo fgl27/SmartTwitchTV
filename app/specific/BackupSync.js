@@ -78,7 +78,6 @@ function GDriveSetHeader() {
 }
 
 function GDriveDeviceRefresh(sync) {
-    console.trace();
     GDriveRefreshAccessToken(GDriveDeviceRefreshSuccess, noop_fun, sync, 0);
 }
 
