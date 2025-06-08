@@ -333,8 +333,6 @@ function BrowserTestFun() {
 
         pos = Settings_DialogValue.indexOf(key);
 
-        Settings_DialogRestoreBackupShowingCheck();
-
         if (pos > -1) {
             Settings_RemoveInputFocusKey(Settings_DialogValue[Settings_DialogPos]);
             Settings_DialogPos = pos;

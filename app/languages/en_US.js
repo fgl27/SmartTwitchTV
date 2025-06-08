@@ -937,9 +937,13 @@ function en_USLang() {
     STR_BACKUP_SIZE = 'Backup size:';
     STR_BACKUP_SYNC = 'Sync and Backup';
     STR_BACKUP_SYNC_SUMMARY =
-        'The app will be able to: See, edit, create, and delete only the specific Google Drive files this app create.' +
+        'The app will be able to view, create, edit, and delete only the specific Google Drive files it creates.' +
         '<br><br>' +
-        'The app will NOT be able to see, change or delete any other file in yours Google drive.';
+        'It will also be able to access your email address and profile image to display the currently active account. ' +
+        '<br><br>' +
+        'This information will only be displayed and will NOT be modified.' +
+        '<br><br>' +
+        'The app will NOT be able to view, modify, or delete any other files in your Google Drive.';
 
     STR_BACKUP_USER_INFO = '(User info: Users, history, blocked, and settings)';
 
