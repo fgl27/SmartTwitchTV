@@ -1170,14 +1170,6 @@ function UserLiveFeed_KeyUpDown(Adder) {
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();
 
-        //Workaround for hiden options
-        if (NextPos === UserLiveFeedobj_UserVodPos) {
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
-            UserLiveFeed_FeedPosX = NextPos;
-            UserLiveFeed_KeyUpDown(Adder);
-            return;
-        }
-
         if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
             NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
             if (!userSet) Play_showWarningMiddleDialog(STR_NOKUSER_WARNING, 1000);
