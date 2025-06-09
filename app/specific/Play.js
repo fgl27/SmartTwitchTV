@@ -318,8 +318,11 @@ function Play_CheckIfIsLiveGetError(response, isVod) {
     } else if (response.status === 403) {
         error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
     } else {
-        if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-        else error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
+        if (isVod) {
+            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+        } else {
+            error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
+        }
     }
 
     return error;

@@ -449,7 +449,6 @@ function UserLiveFeed_CheckRefreshAfterResume() {
             if (
                 UserLiveFeed_lastRefresh[i] &&
                 i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
-                i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
                 date > UserLiveFeed_lastRefresh[i] + Settings_GetAutoRefreshTimeout()
             ) {
                 UserLiveFeed_CheckRefresh(i, run * 5000);
@@ -496,7 +495,10 @@ function UserLiveFeed_ShowFeed() {
 
 function UserLiveFeed_ResetFeedId() {
     UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) UserLiveFeed_setHideFeed();
+
+    if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) {
+        UserLiveFeed_setHideFeed();
+    }
 }
 
 function UserLiveFeed_clearHideFeed() {
@@ -650,7 +652,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (!Play_EndFocus && !isBanner) UserLiveFeed_CheckIfIsLiveStart(pos);
+    if (!Play_EndFocus && !isBanner) {
+        UserLiveFeed_CheckIfIsLiveStart(pos);
+    }
 
     if (pos === UserLiveFeed_FeedPosX) {
         UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
@@ -758,8 +762,11 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
         if (obj) {
             var id;
 
-            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
-            else id = obj[14];
+            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+                id = obj[7];
+            } else {
+                id = obj[14];
+            }
 
             if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
                 UserLiveFeed_LoadPreviewId = Main_setTimeout(
@@ -1150,7 +1157,10 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
     if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
-        if (NextPos > UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1 || NextPos < 0) return;
+
+        if (NextPos > UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1 || NextPos < 0) {
+            return;
+        }
 
         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] = NextPos;

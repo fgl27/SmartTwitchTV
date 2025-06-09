@@ -1323,9 +1323,13 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         }
     }
 
-    if (!PreventWarn) Play_showWarningMiddleDialog(error, 1500);
+    if (!PreventWarn) {
+        Play_showWarningMiddleDialog(error, 1500);
+    }
 
-    if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
+    if (!PreventResetFeed) {
+        UserLiveFeed_ResetFeedId();
+    }
 
     return null;
 }
@@ -1781,14 +1785,16 @@ function Play_handleKeyDown(e) {
 
                 Play_clearHidePanel();
                 Play_setHidePanel();
-            } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
-            else if (Play_MultiDialogVisible()) {
+            } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                UserLiveFeed_KeyRightLeft(1);
+            } else if (Play_MultiDialogVisible()) {
                 Play_MultiRemoveFocus();
                 Play_MultiDialogPos++;
                 if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
                 Play_MultiAddFocus();
-            } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
-            else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
+            } else if (Play_MultiEnable) {
+                Play_MultiEnableKeyRightLeft(1);
+            } else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                 Play_KeyChatSizeChage();
             } else if (Play_isEndDialogVisible()) {
                 Play_EndTextClear();
@@ -1802,9 +1808,13 @@ function Play_handleKeyDown(e) {
                 if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 0;
                 OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
                 Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
-            } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeftRight();
-            else if (!PlayExtra_PicturePicture && !Play_isFullScreen) Play_ChatFullScreenKeyRight();
-            else Play_FastBackForward(1);
+            } else if (PlayExtra_PicturePicture && !Play_isFullScreen) {
+                Play_AudioChangeLeftRight();
+            } else if (!PlayExtra_PicturePicture && !Play_isFullScreen) {
+                Play_ChatFullScreenKeyRight();
+            } else {
+                Play_FastBackForward(1);
+            }
             break;
         case KEY_UP:
             if (Play_isPanelShowing()) {
