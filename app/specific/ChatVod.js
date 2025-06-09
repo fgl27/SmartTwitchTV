@@ -469,7 +469,10 @@ function Chat_loadChatError(id) {
         Chat_loadChatId = Main_setTimeout(
             function () {
                 var time = OSInterface_gettime() / 1000;
-                if (time && time < Chat_offset) Chat_offset = time;
+
+                if (time && time < Chat_offset) {
+                    Chat_offset = time;
+                }
 
                 Chat_loadChatRequest(id, 0);
             },
@@ -732,8 +735,16 @@ function Chat_Clear() {
 
 function Main_Addline(id) {
     var i,
+        currentTime = OSInterface_gettime() / 1000,
         len = Chat_Messages.length,
-        currentTime = ChannelVod_vodOffset + OSInterface_gettime() / 1000;
+        currentTime = ChannelVod_vodOffset + currentTime;
+
+    //fall back in case player position changes
+    if (len && Chat_Messages[len - 1] && Chat_Messages[len - 1].time + 200 < currentTime) {
+        Chat_offset = currentTime;
+        Chat_Init();
+        return;
+    }
 
     if (Chat_Position < len - 1) {
         i = Chat_Position;
