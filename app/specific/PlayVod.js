@@ -160,7 +160,7 @@ function PlayVod_Start() {
                 }
             }
 
-            if (!ShowDialog && PlayVod_VodOffset) {
+            if (!Play_OpenRewind && !ShowDialog && PlayVod_VodOffset) {
                 Main_vodOffset = PlayVod_VodOffset;
                 PlayClip_OpenAVodOffset = Main_vodOffset;
                 Play_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000), 2000);
@@ -168,7 +168,7 @@ function PlayVod_Start() {
         }
 
         //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
-        if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
+        if (!Play_OpenRewind && PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
             Play_HideBufferDialog();
             Play_showVodDialog(isFromVod);
         } else {
@@ -484,6 +484,8 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_onPlayerStartPlay(time) {
+    time = Play_OpenRewind ? 0 : time; //at 0 if this is a vod that has not ended the player will auto start at the end
+
     if (Main_IsOn_OSInterface && PlayVod_isOn) {
         if (Play_SkipStartAuto) {
             OSInterface_FixViewPosition(0, 2);
@@ -520,6 +522,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Main_ShowElementWithEle(Play_Controls_Holder);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
+    Play_OpenRewind = false;
     PlayVod_isOn = false;
     PlayClip_OpenAVod = true;
     Main_clearInterval(PlayVod_SaveOffsetId);

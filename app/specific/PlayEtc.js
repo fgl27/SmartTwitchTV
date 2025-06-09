@@ -2022,6 +2022,7 @@ var Play_controlsOpenVod = temp_controls_pos++;
 var Play_controlsFollow = temp_controls_pos++;
 var Play_controlsSpeed = temp_controls_pos++;
 var Play_controlsExternal = temp_controls_pos++;
+var Play_controlsRewind = temp_controls_pos++;
 var Play_controlsQuality = temp_controls_pos++;
 var Play_controlsQualityMini = temp_controls_pos++;
 var Play_controlsQualityMulti = temp_controls_pos++;
@@ -2387,6 +2388,51 @@ function Play_MakeControls() {
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsRewind] = {
+        //open rewind
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'rewind',
+        offsetY: -2,
+        string: STR_OPEN_REWIND,
+        values: null,
+        defaultValue: null,
+        enterKey: function () {
+            Play_ForceHidePannel();
+
+            if (Play_RewindId) {
+                Main_values.ChannelVod_vodId = Play_RewindId;
+            } else {
+                Main_PlayMainShowWarning(STR_OPEN_REWIND_FAIL, 3000);
+                return;
+            }
+
+            Main_vodOffset = 0;
+
+            Main_clearInterval(Play_ShowPanelStatusId);
+            Main_values.Play_WasPlaying = 0;
+            Play_ClearPlay(true);
+            Play_isOn = false;
+
+            Play_handleKeyUpClear();
+            Play_OpenRewind = true; //used by PlayVod_Start and PlayVod_onPlayerStartPlay
+            Main_PlayVodHandleKeyDown();
+            PlayVod_Start();
+        },
+        setLabel: function () {
+            Main_textContent('controls_text_summary_' + this.position, STR_OPEN_REWIND_SUMMARY);
         }
     };
 
@@ -4037,7 +4083,8 @@ function Play_SetControlsArrows(key) {
     return (
         '<div id="controls_arrows_' +
         key +
-        '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+        '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;">' +
+        '<div style="display: inline-block;"><div id="control_arrow_up_' +
         key +
         '" class="up"></div><div id="control_arrow_down' +
         key +
