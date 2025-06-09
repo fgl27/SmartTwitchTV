@@ -2393,7 +2393,7 @@ function Play_MakeControls() {
 
     Play_controls[Play_controlsRewind] = {
         //open rewind
-        ShowInLive: false,
+        ShowInLive: true,
         ShowInVod: false,
         ShowInClip: false,
         ShowInPP: false,
@@ -2410,15 +2410,16 @@ function Play_MakeControls() {
         values: null,
         defaultValue: null,
         enterKey: function () {
-            Play_ForceHidePannel();
+            var rewindId = Play_RewindId[Play_data.data[7]];
 
-            if (Play_RewindId) {
-                Main_values.ChannelVod_vodId = Play_RewindId;
+            if (rewindId) {
+                Main_values.ChannelVod_vodId = rewindId;
             } else {
                 Main_PlayMainShowWarning(STR_OPEN_REWIND_FAIL, 3000);
                 return;
             }
 
+            Play_ForceHidePannel();
             Main_vodOffset = 0;
 
             Main_clearInterval(Play_ShowPanelStatusId);

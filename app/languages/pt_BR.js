@@ -234,8 +234,8 @@ function pt_BRLang() {
     STR_OPEN_LAST_BROADCAST = 'Abra o último Vídeo';
     STR_IS_LIVE = 'Agora Ao vivo';
     STR_OPEN_REWIND = 'Abrir retrocesso';
-    STR_OPEN_REWIND_SUMMARY = 'Abrir a transmissão ao vivo com retrocesso completo';
-    STR_OPEN_REWIND_FAIL = 'Falha ao obter informações de retrocesso';
+    STR_OPEN_REWIND_SUMMARY = 'Abrir o VOD com retrocesso completo';
+    STR_OPEN_REWIND_FAIL = 'Sem retrocesso para esta live';
     STR_SHOW_ISLIVE_WARNING = 'Mostrar aviso "Streamer Agora ao vivo"';
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
         'Ao assistir a um clipe ou VOD o aplicativo pode verificar quando o streamer está ao vivo, se estiver definido como SIM, um aviso aparecerá, para abrir ao vivo basta usar a opção de controles inferiores do player';

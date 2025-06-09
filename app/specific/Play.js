@@ -48,7 +48,7 @@ var Play_HasLive;
 var Play_HasVod;
 var Play_VodObj;
 var Play_OpenRewind;
-var Play_RewindId;
+var Play_RewindId = {};
 
 var Play_ChatEnable = false;
 var Play_exitID = null;
@@ -226,7 +226,6 @@ function Play_Start(offline_chat) {
 
     Main_textContentWithEle(Play_infoLiveTime, Play_timeMs(0));
 
-    Play_RewindId = null;
     Play_isOn = true;
     Play_Playing = false;
     var skipTest = false;
@@ -630,9 +629,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 
         if (firstVod.stream_id.toString() === BroadcastID.toString()) {
             Main_history_UpdateLiveVod(BroadcastID, firstVod.id, null);
-            Play_RewindId = firstVod.id;
-
-            Play_BottomShow(Play_controlsRewind);
+            Play_RewindId[BroadcastID] = firstVod.id;
         }
     }
 }

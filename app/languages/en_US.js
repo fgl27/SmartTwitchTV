@@ -241,8 +241,8 @@ function en_USLang() {
     STR_OPEN_LAST_BROADCAST = 'Open the Last VOD';
     STR_IS_LIVE = 'Is now live';
     STR_OPEN_REWIND = 'Open rewind';
-    STR_OPEN_REWIND_SUMMARY = 'Open the live with full rewind';
-    STR_OPEN_REWIND_FAIL = 'Fail to get rewind information';
+    STR_OPEN_REWIND_SUMMARY = 'Open the full rewind VOD';
+    STR_OPEN_REWIND_FAIL = 'No rewind for this live';
     STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
         'While watching a clip or VOD, the app can check if the streamer is live. If enabled, a warning will appear. To watch the live stream, use the controls at the bottom of the player.';

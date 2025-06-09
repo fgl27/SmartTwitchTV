@@ -625,6 +625,6 @@ function es_ESLang() {
     STR_BACKUP_SYNC_ENABLE_SUMMARY =
         'Si se establece en SÍ, la aplicación sincronizará automáticamente la información del usuario entre dispositivos';
     STR_OPEN_REWIND = 'Abrir retroceso';
-    STR_OPEN_REWIND_SUMMARY = 'Abrir la transmisión en vivo con retroceso completo';
-    STR_OPEN_REWIND_FAIL = 'Error al obtener información de retroceso';
+    STR_OPEN_REWIND_SUMMARY = 'Abrir el VOD con retroceso completo';
+    STR_OPEN_REWIND_FAIL = 'Sin retroceso para esta transmisión en vivo';
 }
