@@ -2425,10 +2425,12 @@ function Play_MakeControls() {
             Main_values.Play_WasPlaying = 0;
             Play_ClearPlay(true);
             Play_isOn = false;
+            Play_DurationSeconds = 0;
 
             Play_handleKeyUpClear();
             Play_OpenRewind = true; //used by PlayVod_Start and PlayVod_onPlayerStartPlay
             Main_PlayVodHandleKeyDown();
+            Play_showBufferDialog();
             PlayVod_Start();
         },
         setLabel: function () {

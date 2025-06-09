@@ -133,7 +133,7 @@ function PlayVod_Start() {
 
     PlayVod_SetStart();
 
-    if (!Play_PreviewId) {
+    if (!Play_PreviewId && !Play_OpenRewind) {
         Play_showBufferDialog();
         var isFromVod = true;
         var ShowDialog = Settings_Obj_default('vod_dialog');
@@ -160,7 +160,7 @@ function PlayVod_Start() {
                 }
             }
 
-            if (!Play_OpenRewind && !ShowDialog && PlayVod_VodOffset) {
+            if (!ShowDialog && PlayVod_VodOffset) {
                 Main_vodOffset = PlayVod_VodOffset;
                 PlayClip_OpenAVodOffset = Main_vodOffset;
                 Play_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000), 2000);
@@ -168,7 +168,7 @@ function PlayVod_Start() {
         }
 
         //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
-        if (!Play_OpenRewind && PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
+        if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
             Play_HideBufferDialog();
             Play_showVodDialog(isFromVod);
         } else {
@@ -224,7 +224,7 @@ function PlayVod_PosStart() {
         if (Play_PreviewOffset) Main_vodOffset = Play_PreviewOffset;
         PlayVod_onPlayer();
 
-        if (!Play_PreviewOffset) {
+        if (!Play_PreviewId && !Play_PreviewOffset) {
             Chat_offset = parseInt(OSInterface_gettime() / 1000);
 
             Chat_Init();
@@ -1447,6 +1447,11 @@ function PlayVod_updateVodInfoPanel(obj) {
 
     //Update the value only if the Play_UpdateDuration() has not yet
     if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
+
+    if (Play_OpenRewind && Play_DurationSeconds) {
+        Chat_offset = Play_DurationSeconds - 100;
+        Chat_Init();
+    }
 
     ChannelVod_title = twemoji.parse(response.title, false, true);
 
