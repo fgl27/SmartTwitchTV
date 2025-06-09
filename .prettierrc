@@ -9,7 +9,15 @@
     "overrides": [
         {
             "files": "**.html",
-            "options": {"parser": "html"}
+            "options": {
+                "parser": "html"
+            }
+        },
+        {
+            "files": "*.css",
+            "options": {
+                "parser": "css"
+            }
         }
     ]
 }

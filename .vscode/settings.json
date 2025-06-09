@@ -1,5 +1,8 @@
 {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }
