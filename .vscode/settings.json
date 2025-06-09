@@ -8,6 +8,9 @@
         "**/tmp": true
     },
     "[java]": {
-       "editor.defaultFormatter": "RudraPatel.prettier-plugin-java-vscode"
+        "editor.defaultFormatter": "RudraPatel.prettier-plugin-java-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
     }
 }
