@@ -224,7 +224,7 @@ function PlayVod_PosStart() {
         if (Play_PreviewOffset) Main_vodOffset = Play_PreviewOffset;
         PlayVod_onPlayer();
 
-        if (!Play_PreviewId && !Play_PreviewOffset) {
+        if (!Play_PreviewOffset && !Play_OpenRewind) {
             Chat_offset = parseInt(OSInterface_gettime() / 1000);
 
             Chat_Init();
@@ -1449,7 +1449,7 @@ function PlayVod_updateVodInfoPanel(obj) {
     if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
 
     if (Play_OpenRewind && Play_DurationSeconds) {
-        Chat_offset = Play_DurationSeconds - 100;
+        Chat_offset = Math.max(0, Play_DurationSeconds - 100);
         Chat_Init();
     }
 

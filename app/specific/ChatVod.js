@@ -740,7 +740,7 @@ function Main_Addline(id) {
         currentTime = ChannelVod_vodOffset + currentTime;
 
     //fall back in case player position changes
-    if (len && Chat_Messages[len - 1] && Chat_Messages[len - 1].time + 200 < currentTime) {
+    if (currentTime && currentTime > 0 && len && Chat_Messages[len - 1] && Chat_Messages[len - 1].time + 200 < currentTime) {
         Chat_offset = currentTime;
         Chat_Init();
         return;
