@@ -26,7 +26,7 @@ function uk_UALang() {
 
     // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
     // If it need ajustment or yours language just copy the below line and change it value until it does
-    Sidepannel_MoveldefaultMargin = 20;
+    Sidepannel_MoveldefaultMargin = 17;
 
     //Below are variables to translate
 	STR_KEY_UP_DOWN = 'Вгору/вниз';
@@ -45,9 +45,9 @@ function uk_UALang() {
 	STR_SWITCH_USER = 'Перемкнути користувача';
 	STR_SWITCH_VOD = 'Перемкнути на VOD або хайлайти';
 	STR_SWITCH_CLIP = 'Обрати період';
-	STR_GO_TO = 'Перейти до ';
+	STR_GO_TO = 'Перейти до розділу ';
 	STR_USER = 'Користувач';
-	STR_LIVE = 'Наживо';
+	STR_LIVE = 'В ефірі';
 	STR_GAMES = 'Ігри';
 	STR_PLAYING = 'Грає в ';
 	STR_FOR = 'для';
@@ -310,7 +310,7 @@ function uk_UALang() {
 	STR_CONTENT_LANG_SUMMARY = 'Мова для контенту на екрані: ефіри, VOD, кліпи.';
 	STR_APP_LANG = 'Мова додатку';
 	STR_APP_LANG_SUMMARY = 'Мова інтерфейсу програми.';
-	STR_ENTER_TO_OPEN = 'Натисніть Enter для доступу';
+	STR_ENTER_TO_OPEN = 'Натисніть ОК для перегляду';
 	STR_LANG_ALL = 'Усі';
 	STR_NO_GAME = 'Неможливо отримати гру з цього';
 	STR_EMPTY = 'Порожньо';
@@ -453,7 +453,7 @@ function uk_UALang() {
 	STR_USER_OPTION = 'Оберіть дію для користувача';
 	STR_MAIN_USER = 'Основний користувач';
 	STR_USER_TOP_LABEL = 'Натисніть на користувача, щоб побачити опції';
-	STR_USER_EXTRAS = 'Користувач: Перемикання, додавання, ключ';
+	STR_USER_EXTRAS = 'Змінити/додати користувача';
 	STR_LOW_LATENCY = 'Низька затримка';
 	STR_LOW_LATENCY_SUMMARY = 
 		'Якщо виникають буферизації — вимкніть ' + 
@@ -538,17 +538,17 @@ function uk_UALang() {
 	STR_DELETE_SURE = 'Ви впевнені, що хочете видалити все';
 	STR_CREATED_NEWEST = 'Дата створення / Найновіші';
 	STR_CREATED_OLDEST = 'Дата створення / Найстаріші';
-	STR_THUMB_OPTIONS = 'Опції мініатюр';
+	STR_THUMB_OPTIONS = 'Опції щодо трансляції';
 	STR_HISTORY_LIVE_DIS = 'Увімкнути історію ефірів';
 	STR_HISTORY_VOD_DIS = 'Увімкнути історію VOD';
 	STR_HISTORY_CLIP_DIS = 'Увімкнути історію кліпів';
-	STR_OPEN_GAME = 'Відкрити гру';
-	STR_OPEN_CHANNEL = 'Відкрити канал';
+	STR_OPEN_GAME = 'Трансляції по грі';
+	STR_OPEN_CHANNEL = 'Перейти до каналу';
 	STR_THUMB_OPTIONS_KEY = 'Натисніть Enter над дією (для відкриття або застосування), Return — для скасування';
 	STR_DELETE_FROM_HISTORY = 'Видалити з історії';
 	STR_CHECK_FOLLOW = 'Перевірка підписки ...';
 	STR_REFRESH_DELETE = 'Оновіть екран після видалення, щоб побачити зміни.';
-	STR_THUMB_OPTIONS_TOP = 'Утримуйте вліво для опцій мініатюр';
+	STR_THUMB_OPTIONS_TOP = 'Утримуйте вліво для опцій щодо мініатюри трансляції';
 	STR_REPLACE_MULTI = 'Чим замінити вище?';
 	STR_REPLACE_MULTI_ENTER = 'Натисніть Enter для заміни або Return для виходу без змін';
 	STR_ALREDY_PLAYING = 'Це вже відтворюється';
@@ -812,8 +812,8 @@ function uk_UALang() {
 	STR_WARNING_BROWSER = 'Попередження для браузера';
 	STR_WARNING_BROWSER_SUMMARY = 
 		'Цей додаток створено в першу чергу для ТВ. Підтримка інших пристроїв обмежена. Ви можете керувати мишею, але краще використовувати клавіатуру (вгору, вниз, ліво, право, Enter і Return — ESC працює як Return).';
-	STR_THUMB_OPTIONS_CLICK = 'Клацніть двічі по дії (щоб відкрити або застосувати), клацніть поза діалогом для виходу без змін';
-	STR_CLOSE_THIS_BROWSER = 'Натисніть Return, Enter або клацніть поза межами — щоб закрити';
+	STR_THUMB_OPTIONS_CLICK = 'Клацніть двічі, щоб відкрити або застосувати опцію (або клацніть поза вікном для виходу без змін)';
+	STR_CLOSE_THIS_BROWSER = 'Натисніть назад, ОК або клацніть поза межами вікна, щоб закрити';
 
 	STR_DISABLE_EMBED = 'Увімкнути плеєр Twitch для ефірів і VOD';
 	STR_DISABLE_EMBED_SUMMARY = 
