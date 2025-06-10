@@ -597,8 +597,6 @@ function es_ESLang() {
 
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'La aplicación restaurará y cerrará este diálogo en breve';
     STR_BACKUP_NO_BACKUP_FOUND = 'No se encontró copia de seguridad previa, copia de seguridad creada con éxito';
-    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY =
-        'Ve a Configuración > Sincronización, Copia de seguridad y Restauración para personalizar o eliminar la opción de copia de seguridad.';
     STR_BACKUP_ACCOUNT_REFRESH_ERROR =
         '¡Se perdió el acceso a la cuenta de Copia de seguridad y Sincronización, cuenta de copia de seguridad eliminada!';
 
@@ -620,7 +618,7 @@ function es_ESLang() {
         'La copia de seguridad tiene solo un conjunto de configuraciones unificadas para todos sus dispositivos. Cualquier cambio que realice se aplicará en sus otros dispositivos la próxima vez que abra la aplicación.'; // New line to add
     STR_BACKUP_SYNC_RESTORE = 'Copia de seguridad encontrada';
     STR_BACKUP_SYNC_RESTORE_SUMMARY =
-        'Copia de seguridad encontrada, elija qué sincronizar y restaurar y presione la tecla de retorno o enter para confirmar';
+        'Copia de seguridad encontrada. Elige qué sincronizar y restaurar, luego presiona Enter o Return para confirmar.';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = '¡Restauración exitosa!';
     STR_BACKUP_RESTORE_FAIL = 'Error al restaurar la copia de seguridad';
 

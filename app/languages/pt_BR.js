@@ -910,7 +910,6 @@ function pt_BRLang() {
 
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'O aplicativo irá restaurar e fechar este diálogo em breve';
     STR_BACKUP_NO_BACKUP_FOUND = 'Nenhum backup feito anteriormente encontrado, backup criado com sucesso';
-    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Vá em Configurações > Sincronizar, Backup e Restauração para personalizar ou remover a opção de backup.';
     STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Perdeu acesso à conta de Backup e Sincronização, conta de backup removida!';
 
     STR_BACKUP_NAME = 'Nome do backup:';
@@ -928,8 +927,8 @@ function pt_BRLang() {
     STR_BACKUP_SYNC_SETTINGS_SUMMARY =
         'O backup tem apenas um conjunto de configurações unificadas para todos os seus dispositivos. Qualquer alteração que você fizer será aplicada em seus outros dispositivos na próxima vez que abrir o aplicativo.';
     STR_BACKUP_SYNC_RESTORE = 'Backup encontrado';
-    STR_BACKUP_SYNC_RESTORE_SUMMARY =
-        'Backup encontrado, escolha o que sincronizar e restaurar e pressione a tecla de retorno ou enter para confirmar';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup encontrado. Escolha o que sincronizar e restaurar, depois pressione Enter ou Return para confirmar.';
+
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restauração bem-sucedida!';
     STR_BACKUP_RESTORE_FAIL = 'Falha ao restaurar backup';
 

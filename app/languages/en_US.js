@@ -924,7 +924,7 @@ function en_USLang() {
     STR_BACKUP_ACCOUNT_REMOVE = 'Remove Google Drive account';
     STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'To restore a backup, add an account and the app will show you available restore options.';
-    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Google drive account added';
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Add Google drive account';
 
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'getting the code...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Access denied';
@@ -932,8 +932,6 @@ function en_USLang() {
 
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'The app will restore and close this dialog in a few';
     STR_BACKUP_NO_BACKUP_FOUND = 'No previously made backup found, backup created with success';
-    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Go to Settings > Sync, Backup and Restore to customize or remove the backup option.';
-
     STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
 
     STR_BACKUP_SIZE = 'Backup size:';
@@ -953,7 +951,7 @@ function en_USLang() {
     STR_BACKUP_SYNC_SETTINGS_SUMMARY =
         'The backup has only one set of unified settings for all your devices. Any changes you make will be applied on your other devices the next time you open the app.';
     STR_BACKUP_SYNC_RESTORE = 'Backup found';
-    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found choose what to sync and restore and press return or enter key to confirm';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found. Choose what to sync and restore, then press Return or Enter to confirm.';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
     STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
 

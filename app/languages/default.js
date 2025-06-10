@@ -394,7 +394,7 @@ function DefaultLang() {
     STR_BACKUP_ACCOUNT_MAIN_0 =
         '<div id="backup_container">' + //mouse click outside to close this
         STR_DIV_TITLE +
-        STR_BACKUP_ACCOUNT_DIALOG_TITLE +
+        STR_BACKUP_ACCOUNT_ADD +
         '</div>' +
         STR_BR +
         '<div id="backup_body">' +
