@@ -3225,9 +3225,11 @@ function Settings_DialogBackupSync(click) {
         STR_BACKUP_SYNC +
             STR_BR +
             (GDriveConfig.userEmail
-                ? '<div style="min-height: 15vh;margin:10px;" > <img style="width: 7%; border-radius: 50%;" src="' +
+                ? '<div style="min-height: 15vh;margin:0.6em;" > <img style="width: 7%; border-radius: 50%;" src="' +
                   GDriveConfig.userImgURL +
-                  '" /> <div > ' +
+                  '" onerror="this.onerror=null;this.src=\'' +
+                  IMG_404_LOGO +
+                  '\';" /> <div > ' +
                   DefaultMakeLink(GDriveConfig.userEmail, 'mailto:') +
                   ' </div></div>'
                 : '') +
