@@ -20,6 +20,9 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# Keep class and method names (disable obfuscation)
+-dontobfuscate
+
 # Gson uses generic type information stored in a class file when working with
 # fields. Proguard removes such information by default, keep it.
 -keepattributes Signature
