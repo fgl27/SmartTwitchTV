@@ -736,8 +736,9 @@ function Chat_Clear() {
 function Main_Addline(id) {
     var i,
         currentTime = OSInterface_gettime() / 1000,
-        len = Chat_Messages.length,
-        currentTime = ChannelVod_vodOffset + currentTime;
+        len = Chat_Messages.length;
+
+    currentTime += ChannelVod_vodOffset;
 
     //fall back in case player position changes
     if (currentTime && currentTime > 0 && len && Chat_Messages[len - 1] && Chat_Messages[len - 1].time + 200 < currentTime) {
