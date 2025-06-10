@@ -588,7 +588,7 @@ function es_ESLang() {
 
     STR_BACKUP_ACCOUNT_REMOVE = 'Eliminar cuenta de Google Drive';
     STR_BACKUP_ACCOUNT_ADD = 'Añadir cuenta de Google Drive para copia de seguridad';
-    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'La cuenta solo se usará para acceder a los archivos creados por la aplicación';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar una copia de seguridad, agrega una cuenta y la aplicación te mostrará las opciones disponibles.';
 
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Cuenta de Google Drive añadida';
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'obteniendo el código...';
@@ -598,19 +598,26 @@ function es_ESLang() {
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'La aplicación restaurará y cerrará este diálogo en breve';
     STR_BACKUP_NO_BACKUP_FOUND = 'No se encontró copia de seguridad previa, copia de seguridad creada con éxito';
     STR_BACKUP_NO_BACKUP_FOUND_SUMMARY =
-        'Vaya a Configuración > Sincronización y Copia de seguridad, para personalizar o eliminar la opción de copia de seguridad';
-
+        'Ve a Configuración > Sincronización, Copia de seguridad y Restauración para personalizar o eliminar la opción de copia de seguridad.';
     STR_BACKUP_ACCOUNT_REFRESH_ERROR =
         '¡Se perdió el acceso a la cuenta de Copia de seguridad y Sincronización, cuenta de copia de seguridad eliminada!';
 
     STR_BACKUP_SIZE = 'Tamaño de la copia de seguridad:';
-    STR_BACKUP_SYNC = 'Sincronización y Copia de seguridad';
-    STR_BACKUP_SYNC_SUMMARY = 'Sincronice y haga copias de seguridad de la información del usuario entre dispositivos';
+    STR_BACKUP_NAME = 'Nombre de la copia de seguridad:';
+    STR_BACKUP_SYNC = 'Sincronización, Copia de seguridad y Restauración';
+    STR_BACKUP_SYNC_SUMMARY =
+        'La aplicación podrá ver, crear, editar y eliminar solo los archivos específicos de Google Drive que crea, NO podrá ver, modificar o eliminar ningún otro archivo en su Google Drive.' +
+        '<br><br>' +
+        'También podrá leer su dirección de correo electrónico e imagen de perfil para mostrar la cuenta activa actualmente. Esta información solo se mostrará y NO se modificará.';
+
     STR_BACKUP_USER_INFO = '(Información del usuario: Usuarios, historial, bloqueados y configuración)';
 
     STR_BACKUP_SYNC_USER = 'Sincronizar usuarios';
-    STR_BACKUP_SYNC_HISTORY = 'Sincronizar usuarios, historial, bloqueados';
+    STR_BACKUP_SYNC_HISTORY = 'Sincronizar el historial y la lista de bloqueados de los usuarios.';
+
     STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configuración';
+    STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+        'La copia de seguridad tiene solo un conjunto de configuraciones unificadas para todos sus dispositivos. Cualquier cambio que realice se aplicará en sus otros dispositivos la próxima vez que abra la aplicación.'; // New line to add
     STR_BACKUP_SYNC_RESTORE = 'Copia de seguridad encontrada';
     STR_BACKUP_SYNC_RESTORE_SUMMARY =
         'Copia de seguridad encontrada, elija qué sincronizar y restaurar y presione la tecla de retorno o enter para confirmar';

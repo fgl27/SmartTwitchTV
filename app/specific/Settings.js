@@ -3186,6 +3186,7 @@ function Settings_DialogBackupSync(click) {
             defaultValue: Settings_value.backup_account.defaultValue,
             values: Settings_value.backup_account.values,
             title: GDriveConfig.accessToken ? STR_BACKUP_ACCOUNT_REMOVE : STR_BACKUP_ACCOUNT_ADD,
+            summary: GDriveConfig.accessToken ? null : STR_BACKUP_ACCOUNT_ADD_SUMMARY,
             keyenter: true
         },
         backup_enabled: {
@@ -3216,7 +3217,7 @@ function Settings_DialogBackupSync(click) {
             defaultValue: Settings_value.sync_settings.defaultValue,
             values: Settings_value.sync_settings.values,
             title: STR_BACKUP_SYNC_SETTINGS,
-            summary: null
+            summary: STR_BACKUP_SYNC_SETTINGS_SUMMARY
         }
     };
 
@@ -3237,7 +3238,14 @@ function Settings_DialogBackupSync(click) {
             STR_BACKUP_SYNC_SUMMARY +
             STR_BR +
             STR_BR +
-            (GDriveConfig.backupSize ? STR_BACKUP_SIZE + STR_SPACE + GDriveConfig.backupSize : ''),
+            STR_BACKUP_NAME +
+            STR_SPACE_HTML +
+            '<spam class="class_bold">' +
+            GDriveFileName +
+            '</spam>' +
+            STR_SPACE_HTML +
+            STR_SPACE_HTML +
+            (GDriveConfig.backupSize ? STR_BACKUP_SIZE + STR_SPACE + '<spam class="class_bold">' + GDriveConfig.backupSize + '</spam>' : ''),
         click
     );
 
@@ -3770,7 +3778,7 @@ function Settings_DialogShowRestoreBackup(click) {
             defaultValue: Settings_value.sync_settings.defaultValue,
             values: Settings_value.sync_settings.values,
             title: STR_BACKUP_SYNC_SETTINGS,
-            summary: null
+            summary: STR_BACKUP_SYNC_SETTINGS_SUMMARY
         }
     };
 

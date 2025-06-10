@@ -923,7 +923,7 @@ function en_USLang() {
 
     STR_BACKUP_ACCOUNT_REMOVE = 'Remove Google Drive account';
     STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
-    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Account will be used to only access files the app created';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'To restore a backup, add an account and the app will show you available restore options.';
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Google drive account added';
 
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'getting the code...';
@@ -932,27 +932,26 @@ function en_USLang() {
 
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'The app will restore and close this dialog in a few';
     STR_BACKUP_NO_BACKUP_FOUND = 'No previously made backup found, backup created with success';
-    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Go to Settings > Sync and Backup, to customize or remove backup option';
+    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Go to Settings > Sync, Backup and Restore to customize or remove the backup option.';
 
     STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
 
     STR_BACKUP_SIZE = 'Backup size:';
-    STR_BACKUP_SYNC = 'Sync and Backup';
+    STR_BACKUP_NAME = 'Backup name:';
+    STR_BACKUP_SYNC = 'Sync, Backup and Restore';
     STR_BACKUP_SYNC_SUMMARY =
-        'The app will be able to view, create, edit, and delete only the specific Google Drive files it creates.' +
+        'The app will be able to view, create, edit, and delete only the specific Google Drive files it creates, it will NOT be able to view, modify, or delete any other files in your Google Drive.' +
         '<br><br>' +
-        'It will also be able to access your email address and profile image to display the currently active account. ' +
-        '<br><br>' +
-        'This information will only be displayed and will NOT be modified.' +
-        '<br><br>' +
-        'The app will NOT be able to view, modify, or delete any other files in your Google Drive.';
+        'It will also be able to read your email address and profile image to display the currently active account, This information will only be displayed and will NOT be modified.';
 
     STR_BACKUP_USER_INFO = '(User info: Users, history, blocked, and settings)';
 
     STR_BACKUP_SYNC_USER = 'Sync users';
-    STR_BACKUP_SYNC_HISTORY = 'Sync users, history, blocked';
+    STR_BACKUP_SYNC_HISTORY = "Sync users' history and blocked list.";
 
     STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
+    STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+        'The backup has only one set of unified settings for all your devices. Any changes you make will be applied on your other devices the next time you open the app.';
     STR_BACKUP_SYNC_RESTORE = 'Backup found';
     STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found choose what to sync and restore and press return or enter key to confirm';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
@@ -963,5 +962,5 @@ function en_USLang() {
 
     STR_BACKUP_SYNC_ENABLE = 'Sync enable';
     STR_BACKUP_SYNC_ENABLE_SUMMARY =
-        'If set to YES, the app will sync all enabled options below between this device and others using the same Google Drive account. To switch devices and continue watching seamlessly, minimize the app on the current device by pressing the Home key. Then, make sure the app is fully closed on the other device before opening it.';
+        "Enabling this will add a slight delay to the application's startup process, and is unnecessary if you are using the app in a single device. The app will sync all enabled options below between this device and others using the same Google Drive account. To switch devices and continue watching seamlessly, minimize the app on the current device by pressing the Home key. Then, make sure the app is fully closed on the other device before opening it.";
 }

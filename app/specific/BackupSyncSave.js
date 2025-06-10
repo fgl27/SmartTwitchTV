@@ -197,7 +197,7 @@ function GDriveBackupAndSyncGetFileInfoSuccess(obj) {
     } else {
         GDriveUploadFile(GDriveBackupFileSuccess, noop_fun, 0, 0);
 
-        var extraSummary = !Settings_Dialog_isVisible() ? +STR_BR + STR_BR + STR_BACKUP_NO_BACKUP_FOUND_SUMMARY : '';
+        var extraSummary = !Settings_Dialog_isVisible() ? STR_BR + STR_BR + STR_BACKUP_NO_BACKUP_FOUND_SUMMARY : '';
 
         Main_innerHTML('backup_body', STR_BACKUP_NO_BACKUP_FOUND + extraSummary);
         Main_textContent('backup_body_checking', '');

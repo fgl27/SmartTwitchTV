@@ -901,7 +901,7 @@ function pt_BRLang() {
 
     STR_BACKUP_ACCOUNT_REMOVE = 'Remover conta do Google Drive';
     STR_BACKUP_ACCOUNT_ADD = 'Adicionar conta do Google Drive para backup';
-    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'A conta será usada apenas para acessar arquivos criados pelo aplicativo';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar um backup, adicione uma conta e o app mostrará as opções disponíveis para restauração.';
 
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Conta do Google Drive adicionada';
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'obtendo o código...';
@@ -910,18 +910,23 @@ function pt_BRLang() {
 
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'O aplicativo irá restaurar e fechar este diálogo em breve';
     STR_BACKUP_NO_BACKUP_FOUND = 'Nenhum backup feito anteriormente encontrado, backup criado com sucesso';
-    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Vá para Configurações > Sincronização e Backup, para personalizar ou remover a opção de backup';
-
+    STR_BACKUP_NO_BACKUP_FOUND_SUMMARY = 'Vá em Configurações > Sincronizar, Backup e Restauração para personalizar ou remover a opção de backup.';
     STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Perdeu acesso à conta de Backup e Sincronização, conta de backup removida!';
 
+    STR_BACKUP_NAME = 'Nome do backup:';
     STR_BACKUP_SIZE = 'Tamanho do backup:';
-    STR_BACKUP_SYNC = 'Sincronização e Backup';
-    STR_BACKUP_SYNC_SUMMARY = 'Sincronize e faça backup das informações do usuário entre dispositivos';
+    STR_BACKUP_SYNC = 'Sincronizar, Backup e Restauração';
+    STR_BACKUP_SYNC_SUMMARY =
+        'O aplicativo poderá visualizar, criar, editar e excluir apenas os arquivos específicos do Google Drive que ele cria, NÃO poderá visualizar, modificar ou excluir quaisquer outros arquivos no seu Google Drive.' +
+        '<br><br>' +
+        'Também poderá ler seu endereço de e-mail e imagem de perfil para exibir a conta atualmente ativa. Essas informações serão apenas exibidas e NÃO serão modificadas.';
     STR_BACKUP_USER_INFO = '(Informações do usuário: Usuários, histórico, bloqueados e configurações)';
 
     STR_BACKUP_SYNC_USER = 'Sincronizar usuários';
-    STR_BACKUP_SYNC_HISTORY = 'Sincronizar usuários, histórico, bloqueados';
+    STR_BACKUP_SYNC_HISTORY = 'Sincronizar histórico e bloqueados dos usuários.';
     STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configurações';
+    STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+        'O backup tem apenas um conjunto de configurações unificadas para todos os seus dispositivos. Qualquer alteração que você fizer será aplicada em seus outros dispositivos na próxima vez que abrir o aplicativo.';
     STR_BACKUP_SYNC_RESTORE = 'Backup encontrado';
     STR_BACKUP_SYNC_RESTORE_SUMMARY =
         'Backup encontrado, escolha o que sincronizar e restaurar e pressione a tecla de retorno ou enter para confirmar';
