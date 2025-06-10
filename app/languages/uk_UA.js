@@ -62,7 +62,7 @@ function uk_UALang() {
 	STR_PLACEHOLDER_PRESS = 'Натисніть Enter або клавішу Вибору, щоб ';
 	STR_CHANNELS = 'Канали';
 	STR_CHANNEL = 'Канал';
-	STR_GOBACK_START = 'Назад';
+	STR_GOBACK_START = 'Натисніть назад для повернення до пепереднього розділу';
 	STR_IS_OFFLINE = 'завершив трансляцію';
 	STR_CHECK_HOST = ', перевірка хоста';
 	STR_IS_SUB_ONLY = 'Відео доступне лише для підписників';
@@ -75,8 +75,8 @@ function uk_UALang() {
 	STR_NO = 'Ні';
 	STR_FOR_THIS = 'для цього';
 	STR_PLAYER_PROBLEM = 'Помилка підключення, неможливо завантажити контент, вихід ...';
-	STR_VODS = 'VOD-записів';
-	STR_HIGHLIGHTS = 'хайлайтів';
+	STR_VODS = 'VOD-записи';
+	STR_HIGHLIGHTS = 'хайлайти';
 	STR_CLIPS = 'Кліпи';
 	STR_CONTENT = 'Контент';
 	STR_STREAM_ON = 'Трансляція';
@@ -325,7 +325,7 @@ function uk_UALang() {
 	STR_SIDE_PANEL_BACK_MAIN_MENU = 'Назад на головну';
 	STR_UP = 'Натисніть вгору';
 	STR_HOLD_UP = 'Утримуйте вгору або клавішу 2';
-	STR_LIVE_FEED = 'Пряма стрічка';
+	STR_LIVE_FEED = 'Зараз в ефірі';
 	STR_VOD_DIALOG = 'Діалог старту VOD';
 	STR_VOD_DIALOG_SUMMARY = 
 		'Встановити типову поведінку при запуску VOD з історії. Вибір "Завжди з початку" також діє для попереднього перегляду.';
@@ -522,7 +522,7 @@ function uk_UALang() {
 	STR_VIWES_LOWEST = 'Найменше переглядів';
 	STR_CHANNELS_MOST = 'Найбільше каналів';
 	STR_CHANNELS_LOWEST = 'Найменше каналів';
-	STR_NEWEST = 'Нещодавно переглянуті';
+	STR_NEWEST = 'нещодавно переглянуті';
 	STR_OLDEST = 'Найстаріші перегляди';
 	STR_PRESS_ENTER_D = 'Натисніть Enter для видалення';
 	STR_LIVE_VOD = 'Цей ефір став VOD<br>відкриваємо VOD з моменту зупинки перегляду:<br>';
@@ -917,9 +917,9 @@ function uk_UALang() {
 	STR_SW_CODEC = 'Програмний кодек';
 	STR_HW_CODEC = 'Апаратний кодек';
 
-	STR_LOAD_ALL_LANG = 'Автоперемикання контенту на мову "Усі"';
+	STR_LOAD_ALL_LANG = 'Відображати контент усіма мовами';
 	STR_LOAD_ALL_LANG_SUMMARY = 
-		'Автоматично перемикає мову контенту на "Усі", якщо для поточної мови контенту немає. Діє лише на деяких екранах (Ігри та Головна).';
+		'Автоматично перемикає мову контенту на "Усі", якщо для поточної мови немає контенту. Діє лише для розділу з іграми та головної';
 	STR_LOAD_ALL_LANG_WARNING = STR_LOAD_ALL_LANG + ' через відсутність контенту';
 
 	STR_DISABLE_SHARED_CHAT = 'Вимкнути спільний чат';
