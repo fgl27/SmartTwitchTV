@@ -351,6 +351,10 @@ function BrowserTestFun() {
         } else if (Main_A_includes_B(id, 'right')) {
             Settings_DialoghandleKeyRight();
         } else if (Main_A_includes_B(id, 'dialog_settings')) {
+            if (Settings_DialogRestoreBackupShowing) {
+                return;
+            }
+
             Settings_DialoghandleKeyReturn();
         } else if (Main_A_includes_B(id, 'thumb_background')) {
             Main_showWarningDialog(STR_SPECIAL_FEATURE, 2000);
