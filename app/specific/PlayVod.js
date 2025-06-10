@@ -812,6 +812,8 @@ function PlayVod_jump() {
         }
 
         if (!Play_isOn && PlayClip_HasVOD) Chat_Init();
+
+        Play_OpenRewind = false;
     }
     PlayVod_IsJumping = false;
     PlayVod_UpdateRemaining(PlayVod_TimeToJump, Play_DurationSeconds);
