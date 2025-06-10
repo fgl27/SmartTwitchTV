@@ -13108,8 +13108,17 @@
 
     function Main_Addline(id) {
         var i,
-            len = Chat_Messages.length,
-            currentTime = ChannelVod_vodOffset + OSInterface_gettime() / 1000;
+            currentTime = OSInterface_gettime() / 1000,
+            len = Chat_Messages.length;
+
+        currentTime += ChannelVod_vodOffset;
+
+        //fall back in case player position changes
+        if (currentTime && currentTime > 0 && len && Chat_Messages[len - 1] && Chat_Messages[len - 1].time + 200 < currentTime) {
+            Chat_offset = currentTime;
+            Chat_Init();
+            return;
+        }
 
         if (Chat_Position < len - 1) {
             i = Chat_Position;
