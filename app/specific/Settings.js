@@ -989,7 +989,6 @@ function Settings_SetSettings() {
     div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
     div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
-    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY);
 
     Main_innerHTML('settings_main', div);
     Settings_positions_length = Settings_value_keys.length;
@@ -1116,7 +1115,6 @@ function Settings_SetDefaults() {
         if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
     }
 
-    Settings_SetBuffers(0);
     Settings_ExtraCodecs(false);
     Settings_SetClock();
     Settings_HideMainClock();
@@ -1380,10 +1378,7 @@ function Settings_SetDefault(position) {
     else if (position === 'since_notification') Settings_notification_sicetime();
     else if (position === 'ping_warn') Settings_SetPingWarning();
     else if (position === 'app_animations') Settings_SetAnimations();
-    else if (position === 'buffer_live') Settings_SetBuffers(1);
     else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
-    else if (position === 'buffer_vod') Settings_SetBuffers(2);
-    else if (position === 'buffer_clip') Settings_SetBuffers(3);
     else if (position === 'av1_codec' || position === 'hevc_codec') Settings_ExtraCodecs(true);
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
@@ -1863,26 +1858,6 @@ function Settings_ExtraCodecs(showWarning) {
     play_ExtraCodecsValues = ExtraCodecsValuesArray.join(',');
 }
 
-function Settings_SetBuffers(whocall) {
-    if (!whocall) {
-        Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
-        PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
-        PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
-        OSInterface_SetBuffer(1, Play_Buffer);
-        OSInterface_SetBuffer(2, PlayVod_Buffer);
-        OSInterface_SetBuffer(3, PlayClip_Buffer);
-    } else if (whocall === 1) {
-        Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
-        OSInterface_SetBuffer(1, Play_Buffer);
-    } else if (whocall === 2) {
-        PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
-        OSInterface_SetBuffer(2, PlayVod_Buffer);
-    } else if (whocall === 3) {
-        PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
-        OSInterface_SetBuffer(3, PlayClip_Buffer);
-    }
-}
-
 function Settings_SetClock() {
     var time = Settings_Obj_default('clock_offset');
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
@@ -2074,7 +2049,6 @@ function Settings_handleKeyDown(event) {
 function Settings_KeyEnter(click) {
     if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'playerend_opt')) Settings_PlayerEnd(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
-    else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_extracodecs')) Settings_DialogShowExtraCodecs(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'proxy_settings')) Settings_DialogShowProxy(click);
@@ -2598,31 +2572,6 @@ function Settings_ForceEnableAnimations() {
     Settings_value.app_animations.defaultValue = 1;
     Main_setItem('app_animations', 2);
     Settings_SetAnimations();
-}
-
-function Settings_DialogShowBuffer(ckick) {
-    var obj = {
-        buffer_live: {
-            defaultValue: Settings_value.buffer_live.defaultValue,
-            values: Settings_value.buffer_live.values,
-            title: STR_SETTINGS_BUFFER_LIVE,
-            summary: null
-        },
-        buffer_vod: {
-            defaultValue: Settings_value.buffer_vod.defaultValue,
-            values: Settings_value.buffer_vod.values,
-            title: STR_SETTINGS_BUFFER_VOD,
-            summary: null
-        },
-        buffer_clip: {
-            defaultValue: Settings_value.buffer_clip.defaultValue,
-            values: Settings_value.buffer_clip.values,
-            title: STR_SETTINGS_BUFFER_CLIP,
-            summary: null
-        }
-    };
-
-    Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY, ckick);
 }
 
 function Settings_DialogShowProxy(click) {

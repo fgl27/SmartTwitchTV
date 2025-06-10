@@ -250,7 +250,7 @@ public class PlayerActivity extends Activity {
     private boolean reUsePlayer = true;
 
     //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
-    private final int[] BUFFER_SIZE = { 250, 250, 250 }; //live, vod, clips
+    private final int[] BUFFER_SIZE = { 100, 100, 100 }; //live, vod, clips
 
     ////Main Player, PP or MultiStream, Player preview
     private final DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];

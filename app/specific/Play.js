@@ -26,7 +26,6 @@ var Play_ChatSizeValue = 4;
 var Play_MaxChatSizeValue = 4;
 var Play_PanelHideID = null;
 var Play_isFullScreen = true;
-var Play_Buffer = 2000;
 var PlayVod_RefreshProgressBarrTimeout = 1000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;

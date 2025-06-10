@@ -27,7 +27,6 @@ var PlayVod_qualityIndex = 0;
 var PlayVod_playlist = null;
 
 var PlayVod_isOn = false;
-var PlayVod_Buffer = 2000;
 
 var Play_jumping = false;
 var PlayVod_SizeClearID;

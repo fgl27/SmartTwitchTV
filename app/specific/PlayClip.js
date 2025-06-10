@@ -28,7 +28,6 @@ var PlayClip_playingUrl = '';
 var PlayClip_replayOrNext = false;
 var PlayClip_replay = false;
 var PlayClip_HasVOD = false;
-var PlayClip_Buffer = 2000;
 
 var PlayClip_jumpTimers = [1];
 

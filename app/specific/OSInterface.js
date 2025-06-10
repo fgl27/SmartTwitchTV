@@ -282,9 +282,9 @@ function OSInterface_msetPlayer(surface_view, FullScreen) {
 //buffer_size = buffer size in ms
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Change the player starting buffer
-function OSInterface_SetBuffer(who_called, buffer_size) {
-    if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
-}
+// function OSInterface_SetBuffer(who_called, buffer_size) {
+//     if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
+// }
 
 //public void mSetlatency(int LowLatency)
 //LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
