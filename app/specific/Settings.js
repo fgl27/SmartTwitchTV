@@ -3589,7 +3589,7 @@ function Settings_DialogShow(obj, title, click, scroll) {
     for (var property in obj) {
         Settings_DialogValue.push(property);
         if (obj[property].keyenter) {
-            dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
+            dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, obj[property].summary);
         } else {
             dialogScroollHolder += obj[property].summary
                 ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73)
