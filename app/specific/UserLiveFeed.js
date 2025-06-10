@@ -754,8 +754,7 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
         Settings_Obj_default('show_feed_player') &&
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
         (!Play_MultiEnable || !Settings_Obj_default('disable_feed_player_multi')) &&
-        UserLiveFeed_MaxInstances() &&
-        UserLiveFeed_CheckVod()
+        UserLiveFeed_MaxInstances()
     ) {
         var obj = Play_CheckLiveThumb(false, true);
 
