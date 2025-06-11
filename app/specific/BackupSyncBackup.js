@@ -108,5 +108,6 @@ function GDriveBackupFileSuccess(obj) {
     if (obj.status === 200) {
         GDriveUpFileSuccessSave(obj);
     } else {
+        console.log('GDriveBackupFileSuccess fail', obj.responseText);
     }
 }
