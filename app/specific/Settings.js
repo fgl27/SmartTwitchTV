@@ -1443,6 +1443,7 @@ var Settings_isMature;
 function Settings_checkMature() {
     var enabled = Settings_value.enable_mature.defaultValue;
     Settings_enable_matureBackup = enabled;
+    Settings_isMature = false;
 
     if (enabled) {
         if (Main_values.Password_data) {
