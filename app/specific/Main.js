@@ -162,7 +162,7 @@ var Main_randomImg = '?' + Math.random();
 
 var Main_Scene1Doc;
 var Main_Scene2Doc;
-var Main_started;
+var Main_started = false;
 var Main_about_dialog_div;
 var Main_vodOffset = 0;
 var Main_body = document.body;
