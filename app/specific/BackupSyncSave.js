@@ -91,8 +91,6 @@ function GDriveSave(obj) {
     GDriveBackupAndSync();
     GDriveGetUserInfo();
     GDriveSaveConfig();
-
-    console.log('GDriveConfig', GDriveConfig);
 }
 
 function GDriveSaveConfig() {
@@ -160,7 +158,7 @@ function GDriveBackupAndSyncRunRestore() {
             GDriveSyncFromBackupSyncUser(backupObj, date);
         }
 
-        if (doUser) {
+        if (doHistory) {
             GDriveSyncFromBackupSyncUserEtc(backupObj, date);
         }
 
