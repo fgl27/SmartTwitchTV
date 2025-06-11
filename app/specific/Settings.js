@@ -3627,10 +3627,6 @@ function Settings_DialogShow(obj, title, click, scroll) {
 function Settings_DialoghandleKeyReturn() {
     Settings_DialoghandleKeyReturnAfter();
     Main_addEventListener('keydown', Settings_handleKeyDown);
-    // Reset the flag if dialog is closed without restore
-    if (Settings_DialogRestoreBackupShowing && !Settings_DialogValue.includes('sync_users')) {
-        Settings_DialogRestoreBackupShowing = false;
-    }
 }
 
 function Settings_DialoghandleKeyReturnAfter() {

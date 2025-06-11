@@ -96,7 +96,12 @@ function GDriveBackupAndSync() {
         return;
     }
 
-    GDriveBackupAndSyncGetFileInfo();
+    if (!GDriveConfig.fileID) {
+        GDriveBackupAndSyncGetFileInfo();
+        return;
+    }
+
+    GDriveDownloadBackupFile(GDriveBackupAndSyncSuccess, noop_fun, 0, 0);
 }
 
 function GDriveBackupAndSyncSuccess(obj) {

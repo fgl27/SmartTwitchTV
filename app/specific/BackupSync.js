@@ -204,7 +204,10 @@ function GDriveRefresh() {
     if (Main_IsOn_OSInterface) {
         Main_RefreshPage();
     } else {
-        window.location.reload();
+        //add timeout to avoid esc key prevent the page refresh
+        Main_setTimeout(function () {
+            window.location.reload();
+        }, 100);
     }
 }
 
