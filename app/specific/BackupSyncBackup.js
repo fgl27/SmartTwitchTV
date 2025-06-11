@@ -56,34 +56,35 @@ function GDriveDownloadBackupFileSuccess(obj) {
 }
 
 function GDriveDownloadBackupFileSuccessSync(obj) {
-    var backupObj,
-        syncEnabled = Settings_value.sync_enabled.defaultValue,
-        doUser = syncEnabled && Settings_value.sync_users.defaultValue,
-        doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
-        doSetting = syncEnabled && Settings_value.sync_settings.defaultValue;
+    var backupObj;
 
     try {
-        //The file can be empty of the user change it and/or bricked it
+        //The file can be empty or the user change it and/or bricked it
         backupObj = JSON.parse(obj.responseText);
     } catch (error) {
         console.log('GDriveGetBackupFileSuccess try json', error);
-        return null; //fail
+        return null;
+    }
+
+    var date = JSON.parse(backupObj[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime(),
+        syncEnabled = Settings_value.sync_enabled.defaultValue,
+        doUser = syncEnabled && Settings_value.sync_users.defaultValue,
+        doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
+        //do not sync settings as it will overwrite the changes
+        //we only sync setting on first app start at GDriveGetBackupFileSuccess()
+        doSetting = false;
+
+    //skip sync if date is the same or smaller
+    if (!GDriveNeedsSync(date)) {
+        return;
     }
 
     if (AddUser_UserIsSet()) {
-        //do not sync settings as it will overwrite the changes
-        //we only sync setting on first app start
-        GDriveDownloadSyncFromBackup(backupObj, doUser, doHistory, false);
+        GDriveSyncFromBackup(backupObj, doUser, doHistory, doSetting);
     } else {
         //we have no users update the storage items directly
         GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
     }
-
-    return backupObj; //Success
-}
-
-function GDriveDownloadSyncFromBackup(backup, doUser, doHistory, doSetting) {
-    GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
 }
 
 function GDriveBackupGetFileInfo() {
