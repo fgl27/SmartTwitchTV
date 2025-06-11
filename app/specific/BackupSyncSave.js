@@ -51,13 +51,8 @@ function GDriveCheckCode(counter) {
         );
     } else {
         Main_textContent('backup_body_checking', STR_ADD_USER_TEXT_COUNTER_NOW);
-        GDriveGetDeviceCode();
+        GDriveCheckDeviceCode(GDriveDeviceCodeSuccess, noop_fun, 0, 0);
     }
-}
-
-//https://developers.google.com/identity/protocols/oauth2/limited-input-device#creatingcred
-function GDriveGetDeviceCode() {
-    GDriveCheckDeviceCode(GDriveDeviceCodeSuccess, noop_fun, 0, 0);
 }
 
 function GDriveDeviceCodeSuccess(obj) {
@@ -101,12 +96,7 @@ function GDriveBackupAndSync() {
         return;
     }
 
-    if (!GDriveConfig.fileID) {
-        GDriveBackupAndSyncGetFileInfo();
-        return;
-    }
-
-    GDriveDownloadBackupFile(GDriveBackupAndSyncSuccess, noop_fun, 0, 0);
+    GDriveBackupAndSyncGetFileInfo();
 }
 
 function GDriveBackupAndSyncSuccess(obj) {
