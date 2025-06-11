@@ -2425,7 +2425,7 @@ function Play_MakeControls() {
             if (rewindId) {
                 Main_values.ChannelVod_vodId = rewindId;
             } else {
-                Main_PlayMainShowWarning(STR_OPEN_REWIND_FAIL, 3000);
+                Play_showWarningMiddleDialog(STR_OPEN_REWIND_FAIL, 3000);
                 return;
             }
 
