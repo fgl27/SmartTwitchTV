@@ -19,7 +19,7 @@
  */
 
 function GDriveBackupTimeout() {
-    GDriveBackupTimeoutID = Main_setTimeout(GDriveBackup, 200 * 1000, GDriveBackupTimeoutID);
+    GDriveBackupTimeoutID = Main_setTimeout(GDriveBackup, 300 * 1000, GDriveBackupTimeoutID);
 }
 
 function GDriveBackup(skipAsync) {
