@@ -448,11 +448,16 @@ function GDriveNeedsSync(date) {
     return true;
 }
 
-function GDriveSyncFromBackup(backup, date, syncSettings) {
-    GDriveSyncFromBackupSyncUser(backup, date);
-    GDriveSyncFromBackupSyncUserEtc(backup, date);
+function GDriveSyncFromBackup(backup, doUser, doHistory, doSetting) {
+    if (doUser) {
+        GDriveSyncFromBackupSyncUser(backup);
+    }
 
-    if (syncSettings) {
+    if (doHistory) {
+        GDriveSyncFromBackupSyncUserEtc(backup);
+    }
+
+    if (doSetting) {
         GDriveSyncBackupSetting(backup);
     }
 }

@@ -71,18 +71,19 @@ function GDriveDownloadBackupFileSuccessSync(obj) {
     }
 
     if (AddUser_UserIsSet()) {
-        GDriveDownloadSyncFromBackup(backupObj);
+        //do not sync settings as it will overwrite the changes
+        //we only sync setting on first app start
+        GDriveDownloadSyncFromBackup(backupObj, doUser, doHistory, false);
     } else {
+        //we have no users update the storage items directly
         GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
     }
 
     return backupObj; //Success
 }
 
-function GDriveDownloadSyncFromBackup(backup) {
-    var date = JSON.parse(backup[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime();
-
-    GDriveSyncFromBackup(backup, date);
+function GDriveDownloadSyncFromBackup(backup, doUser, doHistory, doSetting) {
+    GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
 }
 
 function GDriveBackupGetFileInfo() {

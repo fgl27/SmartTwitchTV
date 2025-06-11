@@ -192,7 +192,11 @@ function GDriveGetBackupFileSuccess(obj) {
 }
 
 function GDriveSyncBackupFile(backup) {
-    var date = JSON.parse(backup[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime();
+    var date = JSON.parse(backup[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime(),
+        syncEnabled = Settings_value.sync_enabled.defaultValue,
+        doUser = syncEnabled && Settings_value.sync_users.defaultValue,
+        doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
+        doSetting = syncEnabled && Settings_value.sync_settings.defaultValue;
 
     //skip sync if date is the same or smaller
     if (!GDriveNeedsSync(date)) {
@@ -200,7 +204,7 @@ function GDriveSyncBackupFile(backup) {
         return;
     }
 
-    GDriveSyncFromBackup(backup, date, true);
+    GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
 
     GDriveCheckMainStarted();
 }
