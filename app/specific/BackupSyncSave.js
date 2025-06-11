@@ -132,18 +132,9 @@ function GDriveBackupAndSyncRunRestore() {
         refresh;
 
     if (AddUser_UserIsSet()) {
-        if (doUser) {
-            GDriveSyncFromBackupSyncUser(backupObj, date);
-        }
+        GDriveSyncFromBackup(backupObj, doUser, doHistory, doSetting);
 
-        if (doHistory) {
-            GDriveSyncFromBackupSyncHistoryBlocked(backupObj, date);
-        }
-
-        if (doSetting) {
-            GDriveRestoreSettings(backupObj);
-            refresh = true;
-        }
+        refresh = doSetting;
     } else {
         GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
         refresh = true;
