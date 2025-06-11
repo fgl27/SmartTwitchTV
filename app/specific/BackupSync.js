@@ -207,70 +207,54 @@ function GDriveRefresh() {
     }
 }
 
+function _syncHistoryCategory(userBackupObj, localHistoryData, category, saveAfter) {
+    return (
+        GDriveSyncBackupsByArray(
+            userBackupObj[category],
+            localHistoryData[category],
+            userBackupObj.deleted ? userBackupObj.deleted[category] : {},
+            localHistoryData.deleted ? localHistoryData.deleted[category] : {}
+        ) || saveAfter
+    );
+}
+
+function _syncBlockedCategory(userBackupObj, localHistoryData, category, saveAfter) {
+    var backupBlocked = userBackupObj.blocked || {};
+    var localBlocked = localHistoryData.blocked || {};
+
+    return (
+        GDriveSyncBackupsByObj(
+            backupBlocked[category] || {},
+            localBlocked[category] || {},
+            backupBlocked.deleted ? backupBlocked.deleted[category] : {},
+            localBlocked.deleted ? localBlocked.deleted[category] : {}
+        ) || saveAfter
+    );
+}
+
 function GDriveSyncBackups(backupsObj) {
     var backupUsers = Object.keys(backupsObj),
         i = 0,
         len = backupUsers.length,
         user = '',
         userBackupObj,
-        saveAfter;
+        saveAfter = false; // Initialize saveAfter to false
 
     for (i; i < len; i++) {
         user = backupUsers[i];
         userBackupObj = backupsObj[user];
 
         if (Main_values_History_data[user]) {
-            saveAfter =
-                GDriveSyncBackupsByArray(
-                    userBackupObj.clip,
-                    Main_values_History_data[user].clip,
-                    userBackupObj.deleted ? userBackupObj.deleted.clip : {},
-                    Main_values_History_data[user].deleted ? Main_values_History_data[user].deleted.clip : {}
-                ) || saveAfter;
-            saveAfter =
-                GDriveSyncBackupsByArray(
-                    userBackupObj.live,
-                    Main_values_History_data[user].live,
-                    userBackupObj.deleted ? userBackupObj.deleted.live : {},
-                    Main_values_History_data[user].deleted ? Main_values_History_data[user].deleted.live : {}
-                ) || saveAfter;
-            saveAfter =
-                GDriveSyncBackupsByArray(
-                    userBackupObj.vod,
-                    Main_values_History_data[user].vod,
-                    userBackupObj.deleted ? userBackupObj.deleted.vod : {},
-                    Main_values_History_data[user].deleted ? Main_values_History_data[user].deleted.vod : {}
-                ) || saveAfter;
+            var localHistoryData = Main_values_History_data[user];
+
+            saveAfter = _syncHistoryCategory(userBackupObj, localHistoryData, 'clip', saveAfter);
+            saveAfter = _syncHistoryCategory(userBackupObj, localHistoryData, 'live', saveAfter);
+            saveAfter = _syncHistoryCategory(userBackupObj, localHistoryData, 'vod', saveAfter);
 
             if (userBackupObj.blocked) {
                 Screens_BlockSetDefaultObj();
-
-                saveAfter =
-                    GDriveSyncBackupsByObj(
-                        userBackupObj.blocked && userBackupObj.blocked.channel ? userBackupObj.blocked.channel : {},
-                        Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.channel
-                            ? Main_values_History_data[user].blocked.channel
-                            : {},
-                        userBackupObj.blocked.deleted && userBackupObj.blocked.deleted.channel ? userBackupObj.blocked.deleted.channel : {},
-                        Main_values_History_data[user] &&
-                            Main_values_History_data[user].blocked.deleted &&
-                            Main_values_History_data[user].blocked.deleted.channel
-                            ? Main_values_History_data[user].blocked.deleted.channel
-                            : {}
-                    ) || saveAfter;
-                saveAfter =
-                    GDriveSyncBackupsByObj(
-                        userBackupObj.blocked && userBackupObj.blocked.game ? userBackupObj.blocked.game : {},
-                        Main_values_History_data[user] && Main_values_History_data[user].blocked && Main_values_History_data[user].blocked.game
-                            ? Main_values_History_data[user].blocked.game
-                            : {},
-                        userBackupObj.blocked.deleted && userBackupObj.blocked.deleted.game ? userBackupObj.blocked.deleted.game : {},
-                        Main_values_History_data[user] &&
-                            Main_values_History_data[user].blocked.deleted &&
-                            Main_values_History_data[user].blocked.deleted.game
-                            ? Main_values_History_data[user].blocked.deleted.game
-                            : {}
-                    ) || saveAfter;
+                saveAfter = _syncBlockedCategory(userBackupObj, localHistoryData, 'channel', saveAfter);
+                saveAfter = _syncBlockedCategory(userBackupObj, localHistoryData, 'game', saveAfter);
             }
         } else {
             Main_values_History_data[user] = userBackupObj;
@@ -280,59 +264,38 @@ function GDriveSyncBackups(backupsObj) {
 
     if (saveAfter) {
         Main_SaveHistoryItem();
-
         Main_history_SetVod_Watched();
     }
 }
 
 function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted) {
-    var i = 0,
-        backupItems = Object.keys(backupObj),
-        len = backupItems.length,
-        saveAfter,
-        key = '',
-        toUpdateObj = {};
+    var saveAfter = false;
+    var key;
 
-    //if any new entry add it
-    //if date is newer update from
-    for (i; i < len; i++) {
-        key = backupItems[i];
-
-        if (!localObj[key]) {
-            //is not deleted locally or the date was delete is before the last watched date
-            if (!localDeleted[key] || localDeleted[key].date < backupObj[key].date) {
+    // Add new entries or update if backup is newer
+    for (key in backupObj) {
+        if (backupObj.hasOwnProperty(key)) {
+            if (!localObj[key]) {
+                if (!localDeleted[key] || localDeleted[key].date < backupObj[key].date) {
+                    localObj[key] = backupObj[key];
+                    delete localDeleted[key];
+                    saveAfter = true;
+                }
+            } else if (localObj[key].date < backupObj[key].date) {
                 localObj[key] = backupObj[key];
-                delete localDeleted[key];
-
                 saveAfter = true;
             }
-        } else if (localObj[key].date < backupObj[key].date) {
-            // Entry exists on both, use the most recent one
-            toUpdateObj[key] = backupObj[key];
         }
     }
 
-    var localItems = Object.keys(localObj);
-    i = 0;
-    len = localItems.length;
-
-    for (i; i < len; i++) {
-        key = localItems[i];
-        if (toUpdateObj[key]) {
-            localObj[key] = toUpdateObj[key];
-            saveAfter = true;
-        }
-    }
-
-    i = localItems.length;
-
-    while (i--) {
-        key = localItems[i];
-
-        if (localObj[key] && backupDeleted[key] && backupDeleted[key].date > localObj[key].date) {
-            localDeleted[key] = backupDeleted[key];
-            delete localObj[key];
-            saveAfter = true;
+    // Remove entries from localObj if they are marked as deleted in backupDeleted and are newer
+    for (key in localObj) {
+        if (localObj.hasOwnProperty(key)) {
+            if (backupDeleted[key] && backupDeleted[key].date > localObj[key].date) {
+                localDeleted[key] = backupDeleted[key];
+                delete localObj[key];
+                saveAfter = true;
+            }
         }
     }
 
@@ -340,56 +303,45 @@ function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted
 }
 
 function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localDeleted, isUser) {
-    var i = 0,
-        len = backupArray.length,
-        localObj = GDriveBackupObject(localArray),
-        saveAfter,
-        toUpdateArray = {};
+    var saveAfter = false;
+    var localObj = GDriveBackupObject(localArray); // Convert localArray to an object for easier lookup
+    var i;
 
-    //if any new entry add it
-    //if date is newer update from
-    for (i; i < len; i++) {
-        //for backupArray[i]
-        // New entry on local
-
-        if (!localObj[backupArray[i].id]) {
-            //i snot deleted locally or the date was delete is before the last watched date
-            if (!localDeleted[backupArray[i].id] || localDeleted[backupArray[i].id].date < backupArray[i].date) {
-                localArray.push(backupArray[i]);
-                delete localDeleted[backupArray[i].id];
-
+    // Add new entries or update if backup is newer
+    for (i = 0; i < backupArray.length; i++) {
+        var backupItem = backupArray[i];
+        if (!localObj[backupItem.id]) {
+            if (!localDeleted[backupItem.id] || localDeleted[backupItem.id].date < backupItem.date) {
+                localArray.push(backupItem);
+                delete localDeleted[backupItem.id];
                 saveAfter = true;
             }
-        } else if (localObj[backupArray[i].id].date < backupArray[i].date) {
-            // Entry exists on both, use the most recent one
-            toUpdateArray[backupArray[i].id] = backupArray[i];
+        } else if (localObj[backupItem.id].date < backupItem.date) {
+            // Update existing item in localArray
+            for (var j = 0; j < localArray.length; j++) {
+                if (localArray[j].id === backupItem.id) {
+                    localArray[j] = backupItem;
+                    saveAfter = true;
+                    break;
+                }
+            }
         }
     }
 
-    i = 0;
-    len = localArray.length;
-
-    for (i; i < len; i++) {
-        if (toUpdateArray[localArray[i].id]) {
-            localArray[i] = toUpdateArray[localArray[i].id];
-            saveAfter = true;
-        }
-    }
-
+    // Remove entries from localArray if they are marked as deleted in backupDeleted and are newer
     i = localArray.length;
-
     while (i--) {
-        //skip removing main user if isUser
-        if (isUser && !i) {
+        var localItem = localArray[i];
+        // Skip removing main user if isUser and it's the first item (assuming main user is always at index 0)
+        if (isUser && i === 0) {
             continue;
         }
 
-        if (localArray[i] && backupDeleted[localArray[i].id] && backupDeleted[localArray[i].id].date > localArray[i].date) {
-            if (localArray[i].timeout_id) {
-                Main_clearTimeout(localArray[i].timeout_id);
+        if (localItem && backupDeleted[localItem.id] && backupDeleted[localItem.id].date > localItem.date) {
+            if (localItem.timeout_id) {
+                Main_clearTimeout(localItem.timeout_id);
             }
-
-            localDeleted[localArray[i].id] = backupDeleted[localArray[i].id];
+            localDeleted[localItem.id] = backupDeleted[localItem.id];
             localArray.splice(i, 1);
             saveAfter = true;
         }
