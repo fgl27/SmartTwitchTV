@@ -22,11 +22,18 @@ function GDriveRestore() {
     GDriveConfig = Main_getItemJson(GDriveConfigItemName, {});
     GDriveDoBackupCall = Main_getItemJson(GDriveDoBackupCallItemName, []);
 
-    if (GDriveConfig.accessToken && Settings_value.sync_enabled.defaultValue) {
+    if (GDriveConfig.accessToken && GDriveSyncEnabled()) {
         GDriveValidateToken();
     } else {
         GDriveCheckMainStarted();
     }
+}
+
+function GDriveSyncEnabled() {
+    return (
+        Settings_value.sync_enabled.defaultValue &&
+        (Settings_value.sync_users.defaultValue || Settings_value.sync_history.defaultValue || Settings_value.sync_settings.defaultValue)
+    );
 }
 
 function GDriveValidateToken() {
