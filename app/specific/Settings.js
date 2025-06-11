@@ -3168,7 +3168,12 @@ function Settings_DialogBackupSyncRefresh() {
             Settings_DialogValue.push(divArray[i]);
         } else if (!Settings_value.sync_enabled.defaultValue) {
             Main_AddClassWitEle(div, 'hideimp');
-            Settings_DialogValue.pop();
+
+            var index = Settings_DialogValue.indexOf(divArray[i]);
+
+            if (index > -1) {
+                Settings_DialogValue.splice(index, 1);
+            }
         }
     }
 }
@@ -3621,6 +3626,10 @@ function Settings_DialogShow(obj, title, click, scroll) {
 function Settings_DialoghandleKeyReturn() {
     Settings_DialoghandleKeyReturnAfter();
     Main_addEventListener('keydown', Settings_handleKeyDown);
+    // Reset the flag if dialog is closed without restore
+    if (Settings_DialogRestoreBackupShowing && !Settings_DialogValue.includes('sync_users')) {
+        Settings_DialogRestoreBackupShowing = false;
+    }
 }
 
 function Settings_DialoghandleKeyReturnAfter() {
