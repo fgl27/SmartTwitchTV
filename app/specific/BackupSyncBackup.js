@@ -48,10 +48,11 @@ function GDriveDownloadBackupFileSuccess(obj) {
     //if has backup sync first
     if (obj.status === 200) {
         GDriveDownloadBackupFileSuccessSync(obj);
-        GDriveUpdateFile();
     } else {
         console.log('GDriveDownloadBackupFileSuccess fail', obj);
     }
+
+    GDriveUpdateFile();
 }
 
 function GDriveDownloadBackupFileSuccessSync(obj) {
