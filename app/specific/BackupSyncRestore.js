@@ -176,11 +176,7 @@ function GDriveGetBackupFileSuccess(obj) {
             return;
         }
 
-        if (AddUser_UserIsSet()) {
-            GDriveSyncBackupFile(backupObj);
-        } else {
-            GDriveRestoreBackupFile(backupObj, true, true, true);
-        }
+        GDriveSyncBackupFile(backupObj);
 
         return;
     } else if (obj.status === 404) {
@@ -192,6 +188,7 @@ function GDriveGetBackupFileSuccess(obj) {
             GDriveSaveConfig();
             GDriveGetFileInfo();
         }
+
         return;
     }
 
@@ -212,12 +209,6 @@ function GDriveSyncBackupFile(backup) {
     }
 
     GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
-
-    GDriveCheckMainStarted();
-}
-
-function GDriveRestoreBackupFile(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
-    GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings);
 
     GDriveCheckMainStarted();
 }
