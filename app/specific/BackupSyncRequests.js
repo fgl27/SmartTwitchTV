@@ -51,17 +51,17 @@ function GDriveValidateAccessToken(callbackSuccess, callbackError, key_1, key_2)
 }
 
 function GDriveRefreshAccessToken(callbackSuccess, callbackError, key_1, key_2) {
-    var theUrl =
-        GDriveToken +
-        'grant_type=refresh_token' +
-        '&client_id=' +
-        GDriveClientKey +
-        '&client_secret=' +
-        GDriveKey +
-        '&refresh_token=' +
-        GDriveConfig.refreshToken;
+    var body =
+        'grant_type=refresh_token&' +
+        'client_id=' +
+        encodeURIComponent(GDriveClientKey) +
+        '&' +
+        'refresh_token=' +
+        encodeURIComponent(GDriveConfig.refreshToken);
 
-    FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
+    var header = [['Content-Type', 'application/x-www-form-urlencoded']];
+
+    FullxmlHttpGet(GDriveToken, header, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
 
 function GDriveGetFileByName(callbackSuccess, callbackError, key_1, key_2) {
