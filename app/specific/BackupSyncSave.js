@@ -112,22 +112,6 @@ function GDriveBackupAndSync() {
 
 function GDriveBackupAndSyncSuccess(obj) {
     GDriveBackupAndSyncValidate(obj);
-
-    // var backup = GDriveDownloadBackupFileSuccessSync(obj);
-    // console.log('GDriveBackupAndSyncSuccess', backup);
-
-    // //if has backup sync first
-    // if (obj.status !== 200 || !backup) {
-    //     console.log('GDriveDoBackupSuccess fail', obj);
-    //     return;
-    // }
-
-    // console.log('GDriveBackupAndSyncSuccess after');
-
-    // //todo review this, if has no user will restore setting any way
-    // //but we may only wanna to do that on initial save, not when the user already has settings and etc
-    // //GDriveRestoreSettings(backup);
-    // GDriveRefresh();
 }
 
 var GDriveBackupAndSyncValidateBackup;
