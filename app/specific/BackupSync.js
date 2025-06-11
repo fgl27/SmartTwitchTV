@@ -32,6 +32,7 @@ var GDriveCode = GDriveUrl + 'device/code?';
 
 var GDriveClientKey = 'MTAwNTQzNzk3NDA3MC1yZ2I5bGIyNmk1OGJlN2picXM0b2V1MWliOHA2ZTI1cy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==';
 var GDriveKey = 'R09DU1BYLU1PaE1UTkd6bTZ2UVF5d3d2YUJaVFFiZlNhQXo=';
+var GDriveDefaultBodyToken = [['Content-Type', 'application/x-www-form-urlencoded']];
 
 var GDriveDeviceCodeTimeout = 5;
 var GDriveBoundary = '--GDriveBoundary--';

@@ -19,29 +19,31 @@
  */
 
 function GDriveGetCodes(callbackSuccess, callbackError, key_1, key_2) {
-    var theUrl =
-        GDriveCode +
+    var body =
         'client_id=' +
-        GDriveClientKey +
-        '&scope=' +
+        encodeURIComponent(GDriveClientKey) +
+        '&' +
+        'scope=' +
         encodeURIComponent('https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email');
 
-    FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
+    FullxmlHttpGet(GDriveCode, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
 
 function GDriveCheckDeviceCode(callbackSuccess, callbackError, key_1, key_2) {
-    var theUrl =
-        GDriveToken +
+    var body =
         'grant_type=' +
         encodeURIComponent('urn:ietf:params:oauth:grant-type:device_code') +
-        '&client_id=' +
-        GDriveClientKey +
-        '&client_secret=' +
+        '&' +
+        'client_id=' +
+        encodeURIComponent(GDriveClientKey) +
+        '&' +
+        'client_secret=' +
         GDriveKey +
-        '&device_code=' +
-        GDriveDeviceCode;
+        '&' +
+        'device_code=' +
+        encodeURIComponent(GDriveDeviceCode);
 
-    FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
+    FullxmlHttpGet(GDriveToken, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
 
 function GDriveValidateAccessToken(callbackSuccess, callbackError, key_1, key_2) {
@@ -52,16 +54,18 @@ function GDriveValidateAccessToken(callbackSuccess, callbackError, key_1, key_2)
 
 function GDriveRefreshAccessToken(callbackSuccess, callbackError, key_1, key_2) {
     var body =
-        'grant_type=refresh_token&' +
+        'grant_type=refresh_token' +
+        '&' +
         'client_id=' +
         encodeURIComponent(GDriveClientKey) +
+        '&' +
+        'client_secret=' +
+        GDriveKey +
         '&' +
         'refresh_token=' +
         encodeURIComponent(GDriveConfig.refreshToken);
 
-    var header = [['Content-Type', 'application/x-www-form-urlencoded']];
-
-    FullxmlHttpGet(GDriveToken, header, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
+    FullxmlHttpGet(GDriveToken, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
 
 function GDriveGetFileByName(callbackSuccess, callbackError, key_1, key_2) {
