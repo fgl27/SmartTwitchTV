@@ -926,7 +926,7 @@ function en_USLang() {
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'To restore a backup, add an account and the app will show you available restore options.';
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Add Google drive account';
 
-    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'getting the code...';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Retrieving API information please wait...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Access denied';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Access success, Please wait while the app verifies...';
 

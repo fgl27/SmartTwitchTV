@@ -3653,6 +3653,9 @@ function Settings_BackupDialogExit(event) {
     if (Main_isElementShowing('backup_dialog')) {
         if (event.keyCode === KEY_ENTER || event.keyCode === KEY_RETURN || event.keyCode === KEY_KEYBOARD_BACKSPACE) {
             Main_HideElement('backup_dialog');
+
+            Main_clearTimeout(GDriveCheckCodeId);
+
             return true;
         }
     }

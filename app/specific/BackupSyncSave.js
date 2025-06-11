@@ -25,7 +25,6 @@ function GDriveStart() {
 function GDriveGetCodesSuccess(obj) {
     if (obj.status === 200) {
         var data = JSON.parse(obj.responseText);
-        console.log(data);
         GDriveDeviceCode = data.device_code;
 
         //update instruction on the screen
