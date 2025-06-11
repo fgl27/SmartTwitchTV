@@ -85,7 +85,7 @@ function GDriveSave(obj) {
     Main_textContent('backup_body_checking', '');
     Main_textContent('backup_end_info', '');
 
-    //todo review this
+    //Used by browser clicks
     GDrivePreventClose = true;
 
     GDriveBackupAndSync();
