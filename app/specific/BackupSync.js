@@ -454,7 +454,7 @@ function GDriveSyncFromBackup(backup, doUser, doHistory, doSetting) {
     }
 
     if (doHistory) {
-        GDriveSyncFromBackupSyncUserEtc(backup);
+        GDriveSyncFromBackupSyncHistoryBlocked(backup);
     }
 
     if (doSetting) {
@@ -475,7 +475,7 @@ function GDriveSyncFromBackupSyncUser(backup) {
     }
 }
 
-function GDriveSyncFromBackupSyncUserEtc(backup) {
+function GDriveSyncFromBackupSyncHistoryBlocked(backup) {
     var historyBlocked = JSON.parse(backup[Main_values_History_data_ItemName] || '{}');
 
     if (historyBlocked) {

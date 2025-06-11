@@ -159,7 +159,7 @@ function GDriveBackupAndSyncRunRestore() {
         }
 
         if (doHistory) {
-            GDriveSyncFromBackupSyncUserEtc(backupObj, date);
+            GDriveSyncFromBackupSyncHistoryBlocked(backupObj, date);
         }
 
         if (doSetting) {
