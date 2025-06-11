@@ -260,7 +260,7 @@ function Main_StartApp() {
         Main_RestoreValues();
         Settings_SetDefaults();
         Settings_RestoreAppLang();
-        Main_Setworker();
+        Main_SetWorker();
 
         DefaultLang();
 
@@ -2568,7 +2568,7 @@ function Main_Slice(arrayTocopy) {
 }
 
 var Main_ImageLoaderWorker;
-function Main_Setworker() {
+function Main_SetWorker() {
     var blobURL = URL.createObjectURL(
         new Blob(
             [
