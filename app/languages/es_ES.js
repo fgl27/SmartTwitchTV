@@ -326,7 +326,6 @@ function es_ESLang() {
     STR_NOTIFICATION_BACKGROUND = 'Notificación sobre otras aplicaciones, cuando la aplicación está en segundo plano';
     STR_NOTIFICATION_BACKGROUND_SUMMARY =
         'Para activar esta función, asegúrate de que la aplicación tenga permiso para mostrar notificaciones en la configuración de Android. En dispositivos con Android 11 o versiones posteriores, la app mostrará una notificación simple de una sola línea cuando se ejecute en segundo plano.';
-    STR_NOTIFICATION_BACKGROUND_SUMMARY = '¡Falta el permiso de notificaciones del sistema Android!';
     STR_NOTIFICATION_REPEAT = 'Cuántas veces hay que mostrar la notificación individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'El tiempo de espera de las notificaciones individuales es de unos 3 segundos, y no se puede cambiar porque este tiempo de espera está controlado por el sistema, pero se puede establecer el número de veces que se mostrará la misma notificación';
