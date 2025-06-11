@@ -137,6 +137,9 @@ function GDriveUpFileSuccessSave(obj) {
 }
 
 function GDriveGetBackupFileContent() {
+    GDriveConfig.lastBackupDate = new Date().getTime();
+    GDriveSaveConfig();
+
     var backup = {},
         i = 0,
         len = localStorage.length,
@@ -146,9 +149,6 @@ function GDriveGetBackupFileContent() {
         key = localStorage.key(i);
         backup[key] = localStorage.getItem(key);
     }
-
-    GDriveConfig.lastBackupDate = new Date().getTime();
-    GDriveSaveConfig();
 
     var backupString = JSON.stringify(backup);
     GDriveSetBackupSize(backupString);
