@@ -183,7 +183,7 @@ function Main_Start() {
 }
 
 function Main_StartApp() {
-    Main_Checktylesheet();
+    Main_CheckdStyleSheet();
 
     Main_ready(function () {
         try {
@@ -1829,7 +1829,7 @@ function Main_removeFocus(id, idArray) {
 // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
 // So in order to check if a css class is loaded one can check it's font-family
 // The simple test here it to remove the <link rel="stylesheet" href="https://werevere"> from index and see if the bellow funtion loads the css for you and vice versa
-function Main_Checktylesheet() {
+function Main_CheckdStyleSheet() {
     var span = document.createElement('span');
 
     span.className = 'fa';
@@ -1838,9 +1838,9 @@ function Main_Checktylesheet() {
 
     Main_ready(function () {
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-            Main_Log('Main_Checktylesheet reloading');
+            Main_Log('Main_CheckdStyleSheet reloading');
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-        } else Main_Log('Main_Checktylesheet loaded OK');
+        } else Main_Log('Main_CheckdStyleSheet loaded OK');
 
         Main_body.removeChild(span);
     });
