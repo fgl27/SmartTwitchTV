@@ -886,7 +886,7 @@ function pt_BRLang() {
 
     STR_PLAYER_EXTRA_CODEC = 'Transmissão Avançada: suporte a HEVC, AV1, 1440p e 4K';
     STR_PLAYER_EXTRA_CODEC_SUMMARY =
-        'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permitem 1440p, 4K e mais de 60fps quando disponível.';
+        'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permite 1440p, 4K e mais de 60fps quando disponível (Nem todas as transmissões são compatíveis, depende do streamer ativar essa opção e do Twitch disponibilizá-la na sua região).';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'O app verifica se seu dispositivo suporta HEVC ou AV1 para transmissões de maior qualidade.';
 
