@@ -2221,7 +2221,8 @@
         STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
         STR_PLAYER_EXTRA_CODEC = 'Enhanced Broadcasting HEVC, AV1, 1440p 4k support';
-        STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available.';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY =
+            'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available (Not all streams are supported, it depends on the streamer enabling it and Twitch provide it to your region).';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'The app checks if your device supports HEVC or AV1 for higher-quality streams.';
 
@@ -2833,7 +2834,7 @@
 
         STR_PLAYER_EXTRA_CODEC = 'Transmisión Mejorada: soporte para HEVC, AV1, 1440p y 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
-            'La mayoría de las transmisiones usan AVC (H.264) hasta 1080p60; HEVC/AV1 permiten 1440p, 4K y más de 60fps cuando está disponible.';
+            'La mayoría de las transmisiones usan AVC (H.264) hasta 1080p60; HEVC/AV1 permite 1440p, 4K y más de 60fps cuando está disponible (No todas las transmisiones son compatibles, depende de que el streamer lo habilite y que Twitch lo ofrezca en tu región).';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA =
             'La aplicación verifica si tu dispositivo es compatible con HEVC o AV1 para transmisiones de mayor calidad.';
@@ -3748,7 +3749,7 @@
 
         STR_PLAYER_EXTRA_CODEC = 'Transmissão Avançada: suporte a HEVC, AV1, 1440p e 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
-            'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permitem 1440p, 4K e mais de 60fps quando disponível.';
+            'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permite 1440p, 4K e mais de 60fps quando disponível (Nem todas as transmissões são compatíveis, depende do streamer ativar essa opção e do Twitch disponibilizá-la na sua região).';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'O app verifica se seu dispositivo suporta HEVC ou AV1 para transmissões de maior qualidade.';
 
@@ -4666,7 +4667,7 @@
 
         STR_PLAYER_EXTRA_CODEC = 'Расширенная трансляция: поддержка HEVC, AV1, 1440p и 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
-            'Большинство трансляций использует AVC (H.264) до 1080p60; HEVC/AV1 позволяют воспроизводить 1440p, 4K и более 60 кадров в секунду, если доступно.';
+            'Большинство потоков используют AVC (H.264) до 1080p60; HEVC/AV1 позволяет 1440p, 4K и более 60 кадров/с, если доступно (Поддерживаются не все потоки — это зависит от того, включил ли стример эту функцию и предоставляет ли Twitch её в вашем регионе).';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Приложение проверяет, поддерживает ли ваше устройство HEVC или AV1 для трансляций высокого качества.';
 
@@ -5600,7 +5601,7 @@
 
         STR_PLAYER_EXTRA_CODEC = 'Покращене мовлення HEVC, AV1, підтримка 1440p 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
-            'Більшість стрімів використовують AVC (H.264) до 1080p60; HEVC/AV1 дозволяють 1440p, 4K і 60+ кадрів/с, якщо доступно.';
+            'Більшість трансляцій використовують AVC (H.264) до 1080p60; HEVC/AV1 забезпечує 1440p, 4K і понад 60 кадрів/с за наявності (Підтримуються не всі трансляції — це залежить від того, чи ввімкнув це стрімер і чи доступно це від Twitch у вашому регіоні).';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Додаток перевіряє, чи підтримує ваш пристрій HEVC або AV1 для відтворення високоякісного відео.';
 
