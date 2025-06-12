@@ -2481,7 +2481,7 @@ function Main_history_Exist_By_VOD_Id(id) {
     return -1;
 }
 
-function Main_Restore_history() {
+function Main_Restore_history(skipDrive) {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
 
     Main_HistoryClean();
@@ -2489,7 +2489,9 @@ function Main_Restore_history() {
     Main_history_SetVod_Watched();
     Main_UpdateBlockedHomeScreen();
 
-    GDriveRestore();
+    if (!skipDrive) {
+        GDriveRestore();
+    }
 }
 
 function Main_HistoryClean() {

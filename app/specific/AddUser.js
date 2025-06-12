@@ -232,7 +232,7 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
     if (EnaKeydown) Main_addEventListener('keydown', AddUser_handleKeyDown);
 }
 
-function AddUser_RestoreUsers() {
+function AddUser_RestoreUsers(skipDrive) {
     AddUser_UsernameArray = Main_getItemJson(AddUser_UserArrayItemName, []);
     AddUser_UsernameArrayRemoved = Main_getItemJson(AddUser_UsernameArrayRemovedItemName, {});
 
@@ -267,11 +267,11 @@ function AddUser_RestoreUsers() {
             };
         }
 
-        Main_Restore_history();
+        Main_Restore_history(skipDrive);
         return true;
     }
 
-    Main_Restore_history();
+    Main_Restore_history(skipDrive);
     AddUser_UsernameArray = [];
     AddUser_UpdateSidePanelDefault();
 

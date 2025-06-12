@@ -208,7 +208,15 @@ function GDriveSyncBackupFile(backup) {
         return;
     }
 
-    GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
+    if (AddUser_UserIsSet()) {
+        GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
+    } else {
+        //we have no users update the storage items directly
+        GDriveRestoreFromBackup(backup, doUser, doHistory, doSetting);
+        //after make sure to restore users and update the main values as they may have changed
+        AddUser_RestoreUsers(true);
+        Main_RestoreValues();
+    }
 
     GDriveCheckMainStarted();
 }

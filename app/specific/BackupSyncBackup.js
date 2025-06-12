@@ -48,6 +48,17 @@ function GDriveDownloadBackupFileSuccess(obj) {
     //if has backup sync first
     if (obj.status === 200) {
         GDriveDownloadBackupFileSuccessSync(obj);
+    } else if (obj.status === 404) {
+        var data = JSON.parse(obj.responseText);
+
+        if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+            GDriveConfig.fileID = null;
+
+            GDriveSaveConfig();
+            GDriveBackupStart();
+        }
+
+        return;
     } else {
         console.log('GDriveDownloadBackupFileSuccess fail', obj);
     }
@@ -84,6 +95,9 @@ function GDriveDownloadBackupFileSuccessSync(obj) {
     } else {
         //we have no users update the storage items directly
         GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
+        //after make sure to restore users and update the header
+        AddUser_RestoreUsers(true);
+        Play_SetUserHeader();
     }
 }
 
