@@ -124,7 +124,6 @@ function GDriveBackupAndSyncValidate(obj) {
 
 function GDriveBackupAndSyncRunRestore() {
     var backupObj = GDriveBackupAndSyncValidateBackup,
-        date = JSON.parse(backupObj[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime(),
         syncEnabled = Settings_value.sync_enabled.defaultValue,
         doUser = syncEnabled && Settings_value.sync_users.defaultValue,
         doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
