@@ -27,6 +27,8 @@ var GDriveFileIdUrl = 'https://www.googleapis.com/drive/v3/files?q=%x&fields=fil
 var GDriveDownLoadUrl = 'https://www.googleapis.com/drive/v3/files/%x?alt=media';
 var GDriveUrl = 'https://oauth2.googleapis.com/';
 
+var GDriveScopes = 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email';
+
 var GDriveToken = GDriveUrl + 'token?';
 var GDriveCode = GDriveUrl + 'device/code?';
 

@@ -19,12 +19,7 @@
  */
 
 function GDriveGetCodes(callbackSuccess, callbackError, key_1, key_2) {
-    var body =
-        'client_id=' +
-        encodeURIComponent(GDriveClientKey) +
-        '&' +
-        'scope=' +
-        encodeURIComponent('https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email');
+    var body = 'client_id=' + encodeURIComponent(GDriveClientKey) + '&' + 'scope=' + encodeURIComponent(GDriveScopes);
 
     FullxmlHttpGet(GDriveCode, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
