@@ -947,19 +947,23 @@ function en_USLang() {
 
     STR_BACKUP_SYNC_USER = 'Sync users';
     STR_BACKUP_SYNC_HISTORY = "Sync users' history and blocked list.";
-
     STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
+    STR_BACKUP_RESTORE_USER = 'Restore users';
+    STR_BACKUP_RESTORE_HISTORY = "Restore users' history and blocked list.";
+    STR_BACKUP_RESTORE_SETTINGS = 'Restore settings';
+    STR_BACKUP_RESTORE_SUMMARY = 'If you experience issues after restoring, try clearing the app data and restoring with one option skipped.';
+
     STR_BACKUP_SYNC_SETTINGS_SUMMARY =
         'The backup has only one set of unified settings for all your devices. Any changes you make will be applied on your other devices the next time you open the app.';
     STR_BACKUP_SYNC_RESTORE = 'Backup found';
-    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found. Choose what to sync and restore, then press Return or Enter to confirm.';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found. Select items to restore, then press Return or Enter to confirm.';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
     STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
 
     STR_BACKUP_ENABLE = 'Backup enable';
     STR_BACKUP_ENABLE_SUMMARY = 'If set to YES the app will keep a backup of all user info ' + STR_BACKUP_USER_INFO;
 
-    STR_BACKUP_SYNC_ENABLE = 'Sync enable';
+    STR_BACKUP_SYNC_ENABLE = 'Sync across devices';
     STR_BACKUP_SYNC_ENABLE_SUMMARY =
         "Enabling this will add a slight delay to the application's startup process, and is unnecessary if you are using the app in a single device. The app will sync all enabled options below between this device and others using the same Google Drive account. To switch devices and continue watching seamlessly, minimize the app on the current device by pressing the Home key. Then, make sure the app is fully closed on the other device before opening it.";
 }

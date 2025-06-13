@@ -612,13 +612,17 @@ function es_ESLang() {
 
     STR_BACKUP_SYNC_USER = 'Sincronizar usuarios';
     STR_BACKUP_SYNC_HISTORY = 'Sincronizar el historial y la lista de bloqueados de los usuarios.';
-
     STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configuración';
+    STR_BACKUP_RESTORE_USER = 'Restaurar usuarios';
+    STR_BACKUP_RESTORE_HISTORY = 'Restaurar historial y lista de bloqueados de los usuarios.';
+    STR_BACKUP_RESTORE_SETTINGS = 'Restaurar configuración';
+    STR_BACKUP_RESTORE_SUMMARY =
+        'Si tienes problemas después de restaurar, intenta borrar los datos de la aplicación y restaurar omitiendo una de las opciones.';
+
     STR_BACKUP_SYNC_SETTINGS_SUMMARY =
         'La copia de seguridad tiene solo un conjunto de configuraciones unificadas para todos sus dispositivos. Cualquier cambio que realice se aplicará en sus otros dispositivos la próxima vez que abra la aplicación.'; // New line to add
     STR_BACKUP_SYNC_RESTORE = 'Copia de seguridad encontrada';
-    STR_BACKUP_SYNC_RESTORE_SUMMARY =
-        'Copia de seguridad encontrada. Elige qué sincronizar y restaurar, luego presiona Enter o Return para confirmar.';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Copia de seguridad encontrada. Elige qué restaurar ahora, luego presiona Return o Enter para confirmar.';
     STR_BACKUP_SYNC_RESTORE_SUCCESS = '¡Restauración exitosa!';
     STR_BACKUP_RESTORE_FAIL = 'Error al restaurar la copia de seguridad';
 

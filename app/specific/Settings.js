@@ -3774,24 +3774,28 @@ function Settings_DialogShowRestoreBackup(click) {
         sync_users: {
             defaultValue: Settings_value.sync_users.defaultValue,
             values: Settings_value.sync_users.values,
-            title: STR_BACKUP_SYNC_USER,
+            title: STR_BACKUP_RESTORE_USER,
             summary: null
         },
         sync_history: {
             defaultValue: Settings_value.sync_history.defaultValue,
             values: Settings_value.sync_history.values,
-            title: STR_BACKUP_SYNC_HISTORY,
+            title: STR_BACKUP_RESTORE_HISTORY,
             summary: null
         },
         sync_settings: {
             defaultValue: Settings_value.sync_settings.defaultValue,
             values: Settings_value.sync_settings.values,
-            title: STR_BACKUP_SYNC_SETTINGS,
-            summary: STR_BACKUP_SYNC_SETTINGS_SUMMARY
+            title: STR_BACKUP_RESTORE_SETTINGS,
+            summary: null
         }
     };
 
-    Settings_DialogShow(obj, STR_BACKUP_SYNC_RESTORE + STR_BR + STR_BR + STR_BACKUP_SYNC_RESTORE_SUMMARY + STR_BR + STR_BR, click);
+    Settings_DialogShow(
+        obj,
+        STR_BACKUP_SYNC_RESTORE + STR_BR + STR_BR + STR_BACKUP_SYNC_RESTORE_SUMMARY + STR_BR + STR_BR + STR_BACKUP_RESTORE_SUMMARY + STR_BR,
+        click
+    );
     Main_textContent('dialog_setting_close_text', '');
 }
 

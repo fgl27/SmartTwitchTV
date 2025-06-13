@@ -924,10 +924,15 @@ function pt_BRLang() {
     STR_BACKUP_SYNC_USER = 'Sincronizar usuários';
     STR_BACKUP_SYNC_HISTORY = 'Sincronizar histórico e bloqueados dos usuários.';
     STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configurações';
+    STR_BACKUP_RESTORE_USER = 'Restaurar usuários';
+    STR_BACKUP_RESTORE_HISTORY = 'Restaurar histórico e lista de bloqueados dos usuários.';
+    STR_BACKUP_RESTORE_SETTINGS = 'Restaurar configurações';
+    STR_BACKUP_RESTORE_SUMMARY = 'Se você tiver problemas após a restauração, tente limpar os dados do app e restaurar pulando uma das opções.';
+
     STR_BACKUP_SYNC_SETTINGS_SUMMARY =
         'O backup tem apenas um conjunto de configurações unificadas para todos os seus dispositivos. Qualquer alteração que você fizer será aplicada em seus outros dispositivos na próxima vez que abrir o aplicativo.';
     STR_BACKUP_SYNC_RESTORE = 'Backup encontrado';
-    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup encontrado. Escolha o que sincronizar e restaurar, depois pressione Enter ou Return para confirmar.';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup encontrado. Escolha o que restaurar agora e pressione Enter para confirmar.';
 
     STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restauração bem-sucedida!';
     STR_BACKUP_RESTORE_FAIL = 'Falha ao restaurar backup';
