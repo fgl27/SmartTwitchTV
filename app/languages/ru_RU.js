@@ -941,7 +941,7 @@ function ru_RULang() {
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Чтобы восстановить резервную копию, добавьте аккаунт, и приложение покажет доступные варианты восстановления.';
 
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Аккаунт Google Drive добавлен';
-    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'получение кода...';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Получение информации от API, пожалуйста, подождите...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Доступ запрещен';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Доступ успешно получен, подождите, пока приложение проверяет...';
 

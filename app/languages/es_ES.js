@@ -591,7 +591,7 @@ function es_ESLang() {
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar una copia de seguridad, agrega una cuenta y la aplicación te mostrará las opciones disponibles.';
 
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Cuenta de Google Drive añadida';
-    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'obteniendo el código...';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Recuperando información de la API, por favor espera...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acceso denegado';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acceso exitoso, espere mientras la aplicación verifica...';
 

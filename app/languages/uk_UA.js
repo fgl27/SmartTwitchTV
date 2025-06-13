@@ -922,7 +922,7 @@ function uk_UALang() {
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Щоб відновити резервну копію, додайте обліковий запис, і застосунок покаже доступні варіанти відновлення.';
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Обліковий запис Google Drive додано';
 
-    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'отримання коду...';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Отримання інформації з API, будь ласка, зачекайте...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Доступ заборонено';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Доступ надано, зачекайте, поки додаток перевірить...';
 

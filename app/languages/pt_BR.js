@@ -904,7 +904,7 @@ function pt_BRLang() {
     STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar um backup, adicione uma conta e o app mostrará as opções disponíveis para restauração.';
 
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Conta do Google Drive adicionada';
-    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'obtendo o código...';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Recuperando informações da API, por favor, aguarde...';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acesso negado';
     STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acesso bem-sucedido, aguarde enquanto o aplicativo verifica...';
 
