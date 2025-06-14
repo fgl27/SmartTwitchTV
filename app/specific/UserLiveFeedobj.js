@@ -367,7 +367,7 @@ function UserLiveFeedobj_HistoryGetLiveSuccess(responseText) {
             len = responseObj.data.users.length;
 
         for (i; i < len; i++) {
-            if (responseObj.data.users[i].stream) {
+            if (responseObj.data.users[i] && responseObj.data.users[i].stream) {
                 response.push(responseObj.data.users[i]);
             }
         }
