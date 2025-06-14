@@ -105,7 +105,7 @@ function GDriveRefreshSuccess(obj) {
         GDriveSetHeader();
         GDriveSetExpires(data);
 
-        GDriveGetBackupFile();
+        GDriveRestoreStart();
     } else if (obj.status === 401) {
         //401 lost access need to erase the config let the user know
         Main_PlayMainShowWarning(STR_BACKUP_ACCOUNT_REFRESH_ERROR, 7500, true);
