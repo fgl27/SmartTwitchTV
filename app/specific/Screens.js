@@ -991,11 +991,11 @@ function Screens_loadDataSuccessFinish(key) {
             //if (SceneNotShowing || ScrollDocNotShowing) {
             if (ScrollDocNotShowing) {
                 // if (SceneNotShowing) {
-                //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                //     Main_AddClassWithEle(Main_Scene1Doc, 'opacity_zero');
                 //     Main_showScene1Doc();
                 // }
                 //if (ScrollDocNotShowing) {
-                Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                Main_AddClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
                 Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
                 //}
 
@@ -1316,7 +1316,7 @@ function Screens_LoadPreviewRestore(key) {
     Screens_ClearAnimation(key);
 
     if (Main_IsOn_OSInterface) {
-        Main_AddClassWitEle(img, 'opacity_zero');
+        Main_AddClassWithEle(img, 'opacity_zero');
     }
 }
 
@@ -1504,7 +1504,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                 );
 
                 Screens_ClearAnimation(x);
-                Main_AddClassWitEle(img, 'opacity_zero');
+                Main_AddClassWithEle(img, 'opacity_zero');
 
                 if (isClip || isVod) {
                     Screens_UpdatePlaybackTimeStart(x);

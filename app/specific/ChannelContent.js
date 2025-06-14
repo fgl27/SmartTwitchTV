@@ -688,7 +688,7 @@ function ChannelContent_LoadPreviewRestore() {
 
     OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, 4);
 
-    if (Main_IsOn_OSInterface) Main_AddClassWitEle(img, 'opacity_zero');
+    if (Main_IsOn_OSInterface) Main_AddClassWithEle(img, 'opacity_zero');
 }
 
 function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -757,7 +757,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {
                     1
                 );
 
-                Main_AddClassWitEle(img, 'opacity_zero');
+                Main_AddClassWithEle(img, 'opacity_zero');
             } else {
                 ChannelContent_LoadPreviewWarn(
                     StreamData.status === 1 || StreamData.status === 403 ? STR_FORBIDDEN : STR_LIVE + STR_IS_OFFLINE,

@@ -1537,7 +1537,7 @@ function Play_ShowPanelStatus(mwhocall) {
         }
 
         Main_ShowElementWithEle(Play_side_info_div);
-        Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
     } else {
         Main_clearTimeout(Play_ShowPanelStatusId);
         Main_HideElementWithEle(Play_side_info_div);
@@ -1576,7 +1576,7 @@ function Play_ForceHidePannel() {
     Play_PanneInfoDoclId.style.opacity = 0;
 
     if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-    else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+    else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
     Play_PanneInfoDoclId.style.pointerEvents = 'none';
 }

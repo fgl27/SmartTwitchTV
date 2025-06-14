@@ -689,10 +689,10 @@ function Main_isElementShowingWithEle(element) {
 }
 
 function Main_AddClass(element, mclass) {
-    Main_AddClassWitEle(Main_getElementById(element), mclass);
+    Main_AddClassWithEle(Main_getElementById(element), mclass);
 }
 
-function Main_AddClassWitEle(element, mclass) {
+function Main_AddClassWithEle(element, mclass) {
     if (element) element.classList.add(mclass);
 }
 

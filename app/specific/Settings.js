@@ -3171,7 +3171,7 @@ function Settings_DialogBackupSyncRefresh() {
 
             Settings_DialogValue.push(divArray[i]);
         } else if (!Settings_value.sync_enabled.defaultValue) {
-            Main_AddClassWitEle(div, 'hideimp');
+            Main_AddClassWithEle(div, 'hideimp');
 
             var index = Settings_DialogValue.indexOf(divArray[i]);
 

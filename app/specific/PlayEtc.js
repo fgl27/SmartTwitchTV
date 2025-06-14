@@ -4164,7 +4164,7 @@ function Play_BottomUpDown(PlayVodClip, adder) {
 }
 
 function Play_IconsAddFocus() {
-    Main_AddClassWitEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
+    Main_AddClassWithEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
 
     Play_controls[Play_PanelCounter].button_text.style.opacity = '1';
 
@@ -4396,7 +4396,7 @@ function Play_BottomIconsFocus(skipInfo, checkjump, skipHide) {
         if (PlayClip_EnterPos) Main_RemoveClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
 
         Play_BottonIconsHide(1);
-        Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+        Main_AddClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
         Play_IconsRemoveFocus();
 
         if (PlayVod_addToJump) {
@@ -4410,21 +4410,21 @@ function Play_BottomIconsFocus(skipInfo, checkjump, skipHide) {
             //pause
 
             Play_BottonIconsShow(skipInfo);
-            Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
         } else if (PlayClip_EnterPos === 1) {
             //next
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             if (!skipHide) Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
-            Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
         } else if (PlayClip_EnterPos === -1) {
             //back
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             if (!skipHide) Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Back_Img_holder);
-            Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
         }
 
         Play_IconsRemoveFocus();
@@ -4451,21 +4451,21 @@ function Play_BottomIconsFocusResetProgress() {
 
 function Play_BottonIconsHide(hideType) {
     if (!hideType) {
-        Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-        Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+        Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+        Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
     } else if (hideType === 1) {
-        Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+        Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+        Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
     } else if (hideType === 2) {
-        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
-        Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+        Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
+        Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
     }
 
     if (!Play_StayDialogVisible()) {
-        Main_AddClassWitEle(Play_info_div, 'opacity_zero');
+        Main_AddClassWithEle(Play_info_div, 'opacity_zero');
 
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-        else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
     }
 }
 

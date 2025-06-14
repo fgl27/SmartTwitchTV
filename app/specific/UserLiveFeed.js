@@ -343,17 +343,17 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //feedShow = UserLiveFeed_isPreviewShowing();
 
             // if (!feedShow) {
-            //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+            //     Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             //     UserLiveFeed_Show();
             // }
             if (feedtypeNotshow) {
-                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
             // if (!Main_isScene2DocVisible()) {
-            //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+            //     Main_AddClassWithEle(Main_Scene2Doc, 'opacity_zero');
             //     Main_showScene2Doc();
 
             //     UserLiveFeed_obj[pos].AddCellsize =
@@ -371,7 +371,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             // }
             if (feedtypeNotshow) {
-                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
+                Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
             }
         }
@@ -485,7 +485,7 @@ function UserLiveFeed_Hide(PreventCleanQualities) {
 function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+    Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     UserLiveFeed_PreviewShowing = false;
 }
 
