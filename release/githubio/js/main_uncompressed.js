@@ -8093,7 +8093,7 @@
             GDriveSetHeader();
             GDriveSetExpires(data);
 
-            GDriveGetBackupFile();
+            GDriveRestoreStart();
         } else if (obj.status === 401) {
             //401 lost access need to erase the config let the user know
             Main_PlayMainShowWarning(STR_BACKUP_ACCOUNT_REFRESH_ERROR, 7500, true);
@@ -10498,7 +10498,7 @@
 
         OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, 4);
 
-        if (Main_IsOn_OSInterface) Main_AddClassWitEle(img, 'opacity_zero');
+        if (Main_IsOn_OSInterface) Main_AddClassWithEle(img, 'opacity_zero');
     }
 
     function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -10567,7 +10567,7 @@
                         1
                     );
 
-                    Main_AddClassWitEle(img, 'opacity_zero');
+                    Main_AddClassWithEle(img, 'opacity_zero');
                 } else {
                     ChannelContent_LoadPreviewWarn(
                         StreamData.status === 1 || StreamData.status === 403 ? STR_FORBIDDEN : STR_LIVE + STR_IS_OFFLINE,
@@ -12845,7 +12845,7 @@
                         if (ChatLive_ClearChat) el.innerHTML = msg;
                         else el.innerHTML += STR_BR + STR_BR + msg;
 
-                        Main_AddClassWitEle(el.parentElement, 'chat_purged');
+                        Main_AddClassWithEle(el.parentElement, 'chat_purged');
                         //Prevent duplicate removal
                         Main_RemoveClassWithEle(el, classId);
                     }
@@ -12878,7 +12878,7 @@
                 if (ChatLive_ClearChat) el.innerHTML = STR_CHAT_MESSAGE_DELETED;
                 else el.innerHTML += STR_BR + STR_BR + STR_CHAT_MESSAGE_DELETED;
 
-                Main_AddClassWitEle(el.parentElement, 'chat_purged');
+                Main_AddClassWithEle(el.parentElement, 'chat_purged');
                 //Prevent duplicate removal
                 el.id = '_';
             }
@@ -13034,7 +13034,7 @@
             ChatLiveControls_inputFocusId = Main_setTimeout(
                 function () {
                     OSInterface_AvoidClicks(true);
-                    Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
+                    Main_AddClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
                     Main_ChatLiveInput.focus();
                     if (Main_IsOn_OSInterface) {
                         if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
@@ -13745,7 +13745,7 @@
 
     function ChatLiveControls_PreventInput() {
         Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
-        Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_block');
+        Main_AddClassWithEle(Main_ChatLiveInput, 'chat_input_class_block');
         Main_ChatLiveInput.value = ChatLiveControls_CanSendText;
         ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000);
         ChatLiveControls_UpdateResultTextEmpty();
@@ -15530,10 +15530,10 @@
     }
 
     function Main_AddClass(element, mclass) {
-        Main_AddClassWitEle(Main_getElementById(element), mclass);
+        Main_AddClassWithEle(Main_getElementById(element), mclass);
     }
 
-    function Main_AddClassWitEle(element, mclass) {
+    function Main_AddClassWithEle(element, mclass) {
         if (element) element.classList.add(mclass);
     }
 
@@ -21543,7 +21543,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
 
             Main_ShowElementWithEle(Play_side_info_div);
-            Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+            Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
         } else {
             Main_clearTimeout(Play_ShowPanelStatusId);
             Main_HideElementWithEle(Play_side_info_div);
@@ -21582,7 +21582,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_PanneInfoDoclId.style.opacity = 0;
 
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-        else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
         Play_PanneInfoDoclId.style.pointerEvents = 'none';
     }
@@ -27550,7 +27550,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Play_IconsAddFocus() {
-        Main_AddClassWitEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
+        Main_AddClassWithEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
 
         Play_controls[Play_PanelCounter].button_text.style.opacity = '1';
 
@@ -27782,7 +27782,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             if (PlayClip_EnterPos) Main_RemoveClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
 
             Play_BottonIconsHide(1);
-            Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
             Play_IconsRemoveFocus();
 
             if (PlayVod_addToJump) {
@@ -27796,21 +27796,21 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //pause
 
                 Play_BottonIconsShow(skipInfo);
-                Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+                Main_AddClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
             } else if (PlayClip_EnterPos === 1) {
                 //next
 
                 Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
                 if (!skipHide) Play_BottonIconsHide(2);
                 Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
-                Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+                Main_AddClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
             } else if (PlayClip_EnterPos === -1) {
                 //back
 
                 Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
                 if (!skipHide) Play_BottonIconsHide(2);
                 Main_ShowElementWithEle(Play_BottonIcons_Back_Img_holder);
-                Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+                Main_AddClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
             }
 
             Play_IconsRemoveFocus();
@@ -27837,21 +27837,21 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Play_BottonIconsHide(hideType) {
         if (!hideType) {
-            Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-            Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+            Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+            Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
         } else if (hideType === 1) {
-            Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-            Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+            Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+            Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
         } else if (hideType === 2) {
-            Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
-            Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+            Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
+            Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
         }
 
         if (!Play_StayDialogVisible()) {
-            Main_AddClassWitEle(Play_info_div, 'opacity_zero');
+            Main_AddClassWithEle(Play_info_div, 'opacity_zero');
 
             if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-            else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+            else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
         }
     }
 
@@ -32790,11 +32790,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //if (SceneNotShowing || ScrollDocNotShowing) {
                 if (ScrollDocNotShowing) {
                     // if (SceneNotShowing) {
-                    //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                    //     Main_AddClassWithEle(Main_Scene1Doc, 'opacity_zero');
                     //     Main_showScene1Doc();
                     // }
                     //if (ScrollDocNotShowing) {
-                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                    Main_AddClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
                     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
                     //}
 
@@ -33115,7 +33115,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Screens_ClearAnimation(key);
 
         if (Main_IsOn_OSInterface) {
-            Main_AddClassWitEle(img, 'opacity_zero');
+            Main_AddClassWithEle(img, 'opacity_zero');
         }
     }
 
@@ -33305,7 +33305,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     );
 
                     Screens_ClearAnimation(x);
-                    Main_AddClassWitEle(img, 'opacity_zero');
+                    Main_AddClassWithEle(img, 'opacity_zero');
 
                     if (isClip || isVod) {
                         Screens_UpdatePlaybackTimeStart(x);
@@ -43036,7 +43036,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
                 Settings_DialogValue.push(divArray[i]);
             } else if (!Settings_value.sync_enabled.defaultValue) {
-                Main_AddClassWitEle(div, 'hideimp');
+                Main_AddClassWithEle(div, 'hideimp');
 
                 var index = Settings_DialogValue.indexOf(divArray[i]);
 
@@ -44529,7 +44529,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 Main_getElementById('side_panel_warn').style.display = 'inline-block';
             }
 
-            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+            Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
             if (Sidepannel_isShowingUserLive()) {
                 Sidepannel_CheckIfIsLiveSTop();
@@ -45017,13 +45017,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Sidepannel_Showscenefeed() {
-        Main_AddClassWitEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+        Main_AddClassWithEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
         Main_RemoveClassWithEle(Sidepannel_scenefeed, 'feed_screen_input');
     }
 
     function Sidepannel_Hidecenefeed() {
         Main_RemoveClassWithEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-        Main_AddClassWitEle(Sidepannel_scenefeed, 'feed_screen_input');
+        Main_AddClassWithEle(Sidepannel_scenefeed, 'feed_screen_input');
     }
 
     function Sidepannel_SetLastRefresh() {
@@ -45066,7 +45066,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Sidepannel_HideMain();
             Sidepannel_RemoveFocusMain();
             Sidepannel_FixDiv.style.marginLeft = '';
-            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+            Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
             Sidepannel_Hidecenefeed();
         }
         Sidepannel_HideEle(PreventCleanQualities);
@@ -45079,10 +45079,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Sidepannel_RemoveFocusFeed(PreventCleanQualities);
 
         if (!PreventCleanQualities) {
-            Main_AddClassWitEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
-            Main_AddClassWitEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
-            Main_AddClassWitEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
-            Main_AddClassWitEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
+            Main_AddClassWithEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
+            Main_AddClassWithEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
+            Main_AddClassWithEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
+            Main_AddClassWithEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
         }
     }
 
@@ -45260,7 +45260,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Sidepannel_userLiveKeyRight() {
         Sidepannel_HideEle(false, true);
         Sidepannel_Hidecenefeed();
-        Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+        Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
         Main_removeEventListener('keydown', Sidepannel_handleKeyDown);
         Sidepannel_StartMain();
     }
@@ -45780,17 +45780,17 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //feedShow = UserLiveFeed_isPreviewShowing();
 
                 // if (!feedShow) {
-                //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+                //     Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 //     UserLiveFeed_Show();
                 // }
                 if (feedtypeNotshow) {
-                    Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                    Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
                 // if (!Main_isScene2DocVisible()) {
-                //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+                //     Main_AddClassWithEle(Main_Scene2Doc, 'opacity_zero');
                 //     Main_showScene2Doc();
 
                 //     UserLiveFeed_obj[pos].AddCellsize =
@@ -45808,7 +45808,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 // }
                 if (feedtypeNotshow) {
-                    Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
+                    Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 }
             }
@@ -45926,7 +45926,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function UserLiveFeed_HideAfter() {
         //return;//return;
         UserLiveFeed_Showloading(false);
-        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+        Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
         UserLiveFeed_PreviewShowing = false;
     }
 
