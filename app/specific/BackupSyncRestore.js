@@ -28,7 +28,10 @@ function GDriveRestore() {
 
     if (GDriveConfig.accessToken) {
         GDriveValidateToken();
+        return;
     }
+
+    GDriveCheckMainStarted();
 }
 
 function GDriveSyncEnabled() {
@@ -190,12 +193,12 @@ function GDriveGetBackupFileSuccess(obj) {
         var data = JSON.parse(obj.responseText);
 
         if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
-            console.log('GDriveGetBackupFileSuccess', data.error.message);
-
             GDriveConfig.fileID = null;
 
             GDriveSaveConfig();
             GDriveGetFileInfo();
+
+            console.log('GDriveGetBackupFileSuccess', data.error.message);
         }
 
         return;

@@ -56,12 +56,12 @@ function GDriveDownloadBackupFileSuccess(obj) {
         var data = JSON.parse(obj.responseText);
 
         if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
-            console.log('GDriveDownloadBackupFileSuccess', data.error.message);
-
             GDriveConfig.fileID = null;
 
             GDriveSaveConfig();
             GDriveBackupStart();
+
+            console.log('GDriveDownloadBackupFileSuccess', data.error.message);
         }
 
         return;
@@ -89,6 +89,8 @@ function GDriveUpFileSuccess(obj) {
 
             GDriveSaveConfig();
             GDriveBackupStart();
+
+            console.log('GDriveDownloadBackupFileSuccess', data.error.message);
         }
     } else {
         Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);

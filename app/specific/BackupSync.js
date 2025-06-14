@@ -124,7 +124,6 @@ function GDriveUpFileSuccessSave(obj) {
     GDriveConfig.fileID = data.id;
 
     GDriveSaveConfig();
-    console.log('GDriveUpFileSuccessSave data', data);
 }
 
 function GDriveGetBackupFileContent() {
