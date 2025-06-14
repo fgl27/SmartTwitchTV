@@ -219,6 +219,10 @@ function GDriveSyncBackupFile(backup) {
 
     if (AddUser_UserIsSet()) {
         GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
+
+        if (doUser) {
+            GDriveCheckMainUser(backup);
+        }
     } else {
         //we have no users update the storage items directly
         GDriveRestoreFromBackup(backup, doUser, doHistory, doSetting);
@@ -228,6 +232,18 @@ function GDriveSyncBackupFile(backup) {
     }
 
     GDriveCheckMainStarted();
+}
+
+function GDriveCheckMainUser(backup) {
+    var backupUsersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
+
+    if (backupUsersArray.length && AddUser_UsernameArray.length && backupUsersArray[0].id !== AddUser_UsernameArray[0].id) {
+        var position = AddUser_UserFindPos(backupUsersArray[0].id);
+
+        if (position > -1) {
+            AddUser_UserMakeOne(position, true);
+        }
+    }
 }
 
 function GDriveCheckMainStarted() {

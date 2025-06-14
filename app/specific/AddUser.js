@@ -401,7 +401,7 @@ function AddUser_SaveNewUser(responseText) {
 
         AddUser_SaveUserArray();
         Users_status = false;
-        Users_Userlastadded = AddUser_Username.login;
+        Users_Userlastadded = AddUser_Username.id;
         Users_ShowAuthentication = false;
         AddUser_exit();
         Main_values.Main_Go = Main_Users;
@@ -495,7 +495,7 @@ function AddUser_CleanUserData() {
     GDriveBackup();
 }
 
-function AddUser_UserMakeOne(position) {
+function AddUser_UserMakeOne(position, skipInit) {
     Main_clearTimeout(Main_CheckResumeFeedId);
 
     var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
@@ -505,7 +505,10 @@ function AddUser_UserMakeOne(position) {
     AddUser_SaveUserArray();
     Users_status = false;
     AddUser_UpdateSidePanel();
-    Users_init();
+
+    if (!skipInit) {
+        Users_init();
+    }
 
     OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
@@ -527,7 +530,7 @@ function AddUser_UserMakeOne(position) {
 
 function AddUser_UserFindPos(user) {
     return AddUser_UsernameArray.map(function (array) {
-        return array.name;
+        return array.id;
     }).indexOf(user);
 }
 
