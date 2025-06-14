@@ -3690,11 +3690,12 @@ function Main_Set() {
         AddCode_client_token = atob(AddCode_client_token);
         AddCode_backup_client_id = atob(AddCode_backup_client_id);
         Chat_token = atob(Chat_token);
-        GDriveClientKey = atob(GDriveClientKey);
-        GDriveKey = atob(GDriveKey);
 
         Play_Headers = JSON.stringify([['Client-ID', Chat_token]]);
     }
+
+    GDriveClientKey = atob(GDriveClientKey);
+    GDriveKey = atob(GDriveKey);
 }
 
 function Main_trimObject(obj, sizeLimit) {
