@@ -15096,11 +15096,12 @@
             Main_initClick();
             calculateFontSize();
             Main_RestoreValues();
-            Settings_SetDefaults();
             Settings_RestoreAppLang();
-            Main_SetWorker();
-
             DefaultLang();
+
+            Settings_SetDefaults();
+
+            Main_SetWorker();
 
             //AddCode_redirect_uri is different from default update
             if (!Main_A_includes_B(window.location.href.split('?code')[0], AddCode_redirect_uri)) {
@@ -41495,6 +41496,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         var enabled = Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable();
 
         OSInterface_upNotificationState(enabled);
+
+        console.log(STR_NOTIFICATION_BACKGROUND_WARNING);
 
         if (enabled && !OSInterface_hasNotificationPermission()) {
             OSInterface_showToast(STR_NOTIFICATION_BACKGROUND_WARNING);

@@ -1634,6 +1634,8 @@ function Settings_notification_background() {
 
     OSInterface_upNotificationState(enabled);
 
+    console.log(STR_NOTIFICATION_BACKGROUND_WARNING);
+
     if (enabled && !OSInterface_hasNotificationPermission()) {
         OSInterface_showToast(STR_NOTIFICATION_BACKGROUND_WARNING);
     }

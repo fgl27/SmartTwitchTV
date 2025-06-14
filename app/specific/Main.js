@@ -258,11 +258,12 @@ function Main_StartApp() {
         Main_initClick();
         calculateFontSize();
         Main_RestoreValues();
-        Settings_SetDefaults();
         Settings_RestoreAppLang();
-        Main_SetWorker();
-
         DefaultLang();
+
+        Settings_SetDefaults();
+
+        Main_SetWorker();
 
         //AddCode_redirect_uri is different from default update
         if (!Main_A_includes_B(window.location.href.split('?code')[0], AddCode_redirect_uri)) {
