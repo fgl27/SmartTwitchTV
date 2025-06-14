@@ -22,10 +22,12 @@ function GDriveRestore() {
     GDriveConfig = Main_getItemJson(GDriveConfigItemName, {});
     GDriveDoBackupCall = Main_getItemJson(GDriveDoBackupCallItemName, []);
 
-    if (GDriveConfig.accessToken && GDriveSyncEnabled()) {
-        GDriveValidateToken();
-    } else {
+    if (!GDriveSyncEnabled()) {
         GDriveCheckMainStarted();
+    }
+
+    if (GDriveConfig.accessToken) {
+        GDriveValidateToken();
     }
 }
 
@@ -40,9 +42,7 @@ function GDriveValidateToken() {
     if (GDriveConfig.backupExpiresTime > new Date().getTime()) {
         GDriveSetExpiresId(GDriveConfig.backupExpiresTime - new Date().getTime());
 
-        GDriveGetBackupFile();
-        GDriveGetUserInfo();
-
+        GDriveRestoreStart();
         return;
     }
 
@@ -53,14 +53,21 @@ function GDriveValidateTokenSuccess(obj) {
     if (obj.status === 200) {
         GDriveSetExpires(JSON.parse(obj.responseText));
 
-        GDriveGetBackupFile();
-        GDriveGetUserInfo();
+        GDriveRestoreStart();
     } else {
         //expired or no longer has access to Gdrive
         //Only on 401 we erase Gdrive configuration
         //GDriveValidateAccessToken only returns 200 or 400
         GDriveValidateTokenRefreshAccessToken();
     }
+}
+
+function GDriveRestoreStart() {
+    if (GDriveSyncEnabled()) {
+        GDriveGetBackupFile();
+    }
+
+    GDriveGetUserInfo();
 }
 
 function GDriveGetUserInfo() {
