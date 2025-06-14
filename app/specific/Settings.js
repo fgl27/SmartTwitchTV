@@ -2642,6 +2642,9 @@ function Settings_DialogShowExtraCodecs(click) {
             STR_PLAYER_EXTRA_CODEC_SUMMARY +
             STR_BR +
             STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY1 +
+            STR_BR +
+            STR_BR +
             STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA +
             STR_BR +
             STR_BR +

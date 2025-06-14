@@ -882,8 +882,10 @@ function en_USLang() {
     STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
     STR_PLAYER_EXTRA_CODEC = 'Enhanced Broadcasting HEVC, AV1, 1440p 4k support';
-    STR_PLAYER_EXTRA_CODEC_SUMMARY =
-        'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available (Not all streams are supported, it depends on the streamer enabling it and Twitch provide it to your region).';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available.';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+        'This feature only works for logged-in users. Not all streams are supported — it depends on the streamer enabling it and whether Twitch provides it in your region.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'The app checks if your device supports HEVC or AV1 for higher-quality streams.';
 
