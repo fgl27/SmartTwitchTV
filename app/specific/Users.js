@@ -212,7 +212,7 @@ function Users_loadDataSuccessFinish() {
         Users_loadingData = false;
         if (Users_ShowAuthentication) {
             Users_ShowAuthentication = false;
-            Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
+            Users_showUserDialogPos = AddUser_UserFindPos(Users_Userlastadded);
             Users_Isautentication = true;
             Users_showRemoveDialog();
         }

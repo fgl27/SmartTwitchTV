@@ -525,7 +525,7 @@ function AddUser_UserMakeOne(position) {
     }
 }
 
-function AddUser_UserFindpos(user) {
+function AddUser_UserFindPos(user) {
     return AddUser_UsernameArray.map(function (array) {
         return array.name;
     }).indexOf(user);
