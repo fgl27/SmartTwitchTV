@@ -6196,26 +6196,11 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 377, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/377/SmartTV_twitch_3_0_377.apk',
-        WebVersion: 'June 13 2025',
-        WebTag: 713, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 375, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/375/SmartTV_twitch_3_0_375.apk',
+        WebVersion: 'June 7 2025',
+        WebTag: 709, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
-            {
-                title: 'Version June 13',
-                changes: [
-                    'Added Sync across devices, Backup, and Restore using Google Drive',
-                    'Sync across devices is disabled by default. It is recommended to enable it only if you use the app on multiple devices with the same Google Drive account',
-                    'Notifications: Added background notification support for Android 11 and above. This uses a simplified single-line text notification while running in the background',
-                    'Chat VOD: Improved chat synchronization when starting playback. For VODs of an ongoing live stream, there was a chance the chat could take a long time to load and/or sync',
-                    'Player: Added rewind button for live streams. This plays the VOD of the current live (when available) stream starting from the most recent point',
-                    'User Live Feed (accessed by pressing Up on the player): Live history now shows the last 100 watched channels that are Live',
-                    'User Live Feed (accessed by pressing Up on the player): Re-added the User VODs section',
-                    'Player: Removed buffer settings since they no longer provide any benefit in the current player version',
-                    'Updated Ukrainian language translation by @sladkOy',
-                    'General performance improvements and bug fixes'
-                ]
-            },
             {
                 title: 'Version June 07',
                 changes: ['Add Ukraine application language by @sladkOy']
