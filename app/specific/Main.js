@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -135,7 +135,6 @@ var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 var Main_FirstLoad = false;
 var Main_RunningTime = 0;
-var Main_PreventCheckResume = false;
 
 var Main_base_string_header;
 var Main_base_array_header;
@@ -160,12 +159,10 @@ var Main_IsOn_OSInterfaceVersion = '';
 var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
 var Main_randomImg = '?' + Math.random();
-var Main_DoRestore = true;
-var Main_CanBackup = false;
-var Main_UserBackupFile = 'user.json';
-var Main_HistoryBackupFile = 'history.json';
+
 var Main_Scene1Doc;
 var Main_Scene2Doc;
+var Main_started = false;
 var Main_about_dialog_div;
 var Main_vodOffset = 0;
 var Main_body = document.body;
@@ -186,7 +183,7 @@ function Main_Start() {
 }
 
 function Main_StartApp() {
-    Main_Checktylesheet();
+    Main_CheckdStyleSheet();
 
     Main_ready(function () {
         try {
@@ -263,6 +260,7 @@ function Main_StartApp() {
         Main_RestoreValues();
         Settings_SetDefaults();
         Settings_RestoreAppLang();
+        Main_SetWorker();
 
         DefaultLang();
 
@@ -280,24 +278,7 @@ function Main_StartApp() {
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
-        Main_DoRestore = AddUser_RestoreUsers();
-
-        if (!Main_values.Restore_Backup_Check && Main_IsOn_OSInterface && OSInterface_getSDK() < 30) {
-            try {
-                OSInterface_requestWr();
-                Main_HideLoadDialog();
-                Main_innerHTML('main_dialog_remove', STR_BACKUP);
-                Main_textContent('yes_no_dialog_button_no', STR_NO);
-                Main_textContent('yes_no_dialog_button_yes', STR_YES);
-                Main_ShowElement('yes_no_dialog');
-                Main_values.Restore_Backup_Check = true;
-                Main_PreventCheckResume = true;
-                Main_addEventListener('keydown', Main_BackupDialogKeyDown);
-            } catch (e) {
-                Main_ready(Main_initWindows);
-                return;
-            }
-        } else Main_ready(Main_initWindows);
+        AddUser_RestoreUsers();
     });
 }
 
@@ -314,60 +295,8 @@ function Main_initClick() {
     OSInterface_initbodyClickSet();
 }
 
-function Main_BackupDialogKeyDown(event) {
-    switch (event.keyCode) {
-        case KEY_LEFT:
-            Users_RemoveCursor--;
-            if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
-            Users_RemoveCursorSet();
-            break;
-        case KEY_RIGHT:
-            Users_RemoveCursor++;
-            if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
-            Users_RemoveCursorSet();
-            break;
-        case KEY_ENTER:
-            Main_PreventCheckResume = false;
-            Main_showLoadDialog();
-            Main_HideElement('yes_no_dialog');
-            Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
-            if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
-            else Main_initWindows();
-            break;
-        default:
-            break;
-    }
-}
-
-function Main_initRestoreBackups() {
-    try {
-        if (OSInterface_HasBackupFile(Main_UserBackupFile)) {
-            var tempBackup = OSInterface_RestoreBackupFile(Main_UserBackupFile);
-
-            if (tempBackup !== null) {
-                var tempBackupArray = JSON.parse(tempBackup) || [];
-
-                if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
-                    Main_setItem('AddUser_UsernameArrayNew', tempBackup);
-
-                    tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
-                    var tempBackupObj = JSON.parse(tempBackup) || {};
-
-                    if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
-
-                    AddUser_RestoreUsers();
-                    if (AddUser_UserHasToken()) OSInterface_mCheckRefresh();
-                }
-            }
-        }
-
-        Main_initWindows();
-    } catch (e) {
-        Main_initWindows();
-    }
-}
-
 function Main_initWindows() {
+    Main_started = true;
     if (AddUser_UserHasToken()) {
         Main_initWindowsEnd();
     } else {
@@ -377,13 +306,11 @@ function Main_initWindows() {
 
 function Main_initWindowsEnd() {
     //Main_Log('Main_initWindows');
-    Main_CheckBackup();
 
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
     Main_CheckDevice();
 
-    Main_Setworker();
     Main_SetStringsMain();
 
     Main_GoBefore = Main_values.Main_Go;
@@ -416,19 +343,6 @@ function Main_initWindowsEnd() {
 
     Main_SetStringsSecondary();
     Main_checkVersion();
-}
-
-function Main_CheckBackup() {
-    if (Main_IsOn_OSInterface) {
-        Main_CanBackup = OSInterface_canBackupFile();
-
-        //Backup at start as a backup may never be done yet
-        if (Main_CanBackup && AddUser_IsUserSet()) {
-            Main_setTimeout(function () {
-                OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-            }, 10000);
-        }
-    } else Main_CanBackup = false;
 }
 
 function Main_CheckDevice() {
@@ -775,10 +689,10 @@ function Main_isElementShowingWithEle(element) {
 }
 
 function Main_AddClass(element, mclass) {
-    Main_AddClassWitEle(Main_getElementById(element), mclass);
+    Main_AddClassWithEle(Main_getElementById(element), mclass);
 }
 
-function Main_AddClassWitEle(element, mclass) {
+function Main_AddClassWithEle(element, mclass) {
     if (element) element.classList.add(mclass);
 }
 
@@ -879,6 +793,14 @@ function Main_CounterDialogRst() {
 function Main_CounterDialog(x, y, Columns, total) {
     if (total > 0) Main_textContent('dialog_counter_text', y * Columns + (x + 1) + '/' + total);
     else Main_CounterDialogRst();
+}
+
+function Main_PlayMainShowWarning(string, time, changePos) {
+    if (Main_isScene1DocVisible()) {
+        Main_showWarningDialog(string, time, changePos);
+    } else {
+        Play_showWarningDialog(string, time);
+    }
 }
 
 var Main_showWarningDialogId;
@@ -1038,10 +960,21 @@ function Main_ThumbNull(y, x, thumbnail) {
 function Main_ReStartScreens(preventRefresh) {
     if (Sidepannel_isShowingUserLive()) {
         Main_addEventListener('keydown', Sidepannel_handleKeyDown);
-        if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
-        if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
+
+        if (!Sidepannel_PlayerViewSidePanelSet) {
+            Sidepannel_SetPlayerViewSidePanel();
+        }
+
+        if (Play_PreviewId) {
+            OSInterface_SidePanelPlayerRestore();
+        }
+
         Sidepannel_AddFocusLiveFeed(true);
-    } else Main_SwitchScreen(false, preventRefresh);
+
+        Main_SaveValues(true);
+    } else {
+        Main_SwitchScreen(false, preventRefresh);
+    }
 }
 
 function Main_SwitchScreen(removekey, preventRefresh) {
@@ -1065,6 +998,8 @@ function Main_SwitchScreen(removekey, preventRefresh) {
     if (removekey) {
         Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
     }
+
+    Main_SaveValues(true);
 }
 
 //var used to allow to search in a search result,
@@ -1100,9 +1035,13 @@ function Main_SaveValuesWithTimeout() {
     Main_SaveValuesWithTimeoutId = Main_setTimeout(Main_SaveValues, 500, Main_SaveValuesWithTimeoutId);
 }
 
-function Main_SaveValues() {
+function Main_SaveValues(backup) {
     Main_setItem('Main_values', JSON.stringify(Main_values));
     Main_setItem('Play_data', JSON.stringify(Play_data));
+
+    if (backup) {
+        GDriveBackup();
+    }
 }
 
 function Main_RestoreValues() {
@@ -1265,11 +1204,7 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
         if (Main_IsOn_OSInterface) {
             OSInterface_showToast(updateString);
         } else {
-            if (Main_isScene1DocVisible()) {
-                Main_showWarningDialog(updateString, 3000);
-            } else {
-                Play_showWarningDialog(updateString, 3000);
-            }
+            Main_PlayMainShowWarning(updateString, 3000);
         }
 
         Main_update_show_toast = true;
@@ -1371,10 +1306,7 @@ function Main_UpdateDialogKeyEnter() {
                 Main_hideScene1Doc();
                 Main_hideScene2Doc();
 
-                //delay to make sure all was saved OK
-                Main_setTimeout(function () {
-                    OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
-                }, 250);
+                Main_RefreshPage();
             } else {
                 Main_showLoadDialog();
                 var fromPlay = OSInterface_getInstallFromPLay();
@@ -1388,6 +1320,13 @@ function Main_UpdateDialogKeyEnter() {
             Main_UpdateDialogStartCheck();
         }
     }
+}
+
+function Main_RefreshPage() {
+    //delay to make sure all was saved OK
+    Main_setTimeout(function () {
+        OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+    }, 250);
 }
 
 var Main_UpdateDialogLastCheck;
@@ -1890,7 +1829,7 @@ function Main_removeFocus(id, idArray) {
 // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
 // So in order to check if a css class is loaded one can check it's font-family
 // The simple test here it to remove the <link rel="stylesheet" href="https://werevere"> from index and see if the bellow funtion loads the css for you and vice versa
-function Main_Checktylesheet() {
+function Main_CheckdStyleSheet() {
     var span = document.createElement('span');
 
     span.className = 'fa';
@@ -1899,9 +1838,9 @@ function Main_Checktylesheet() {
 
     Main_ready(function () {
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-            Main_Log('Main_Checktylesheet reloading');
+            Main_Log('Main_CheckdStyleSheet reloading');
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-        } else Main_Log('Main_Checktylesheet loaded OK');
+        } else Main_Log('Main_CheckdStyleSheet loaded OK');
 
         Main_body.removeChild(span);
     });
@@ -2340,6 +2279,7 @@ function Main_Set_history(type, Data, skipUpdateDate) {
     }
 
     var ArrayPos = Main_history_GetById(type, Data[7]);
+    Main_history_Clean_deleted(type, Data[7]);
 
     if (ArrayPos) {
         ArrayPos.data = Main_Slice(Data);
@@ -2423,6 +2363,14 @@ function Main_history_Exist(type, id) {
     }
 
     return -1;
+}
+
+function Main_history_Clean_deleted(type, id) {
+    Screens_checkDeleteObj();
+
+    id = id.toString();
+
+    delete Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][id];
 }
 
 function Main_history_GetById(type, id) {
@@ -2533,11 +2481,30 @@ function Main_history_Exist_By_VOD_Id(id) {
     return -1;
 }
 
-function Main_Restore_history() {
-    Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+function Main_Restore_history(skipDrive) {
+    Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
+
+    Main_HistoryClean();
 
     Main_history_SetVod_Watched();
     Main_UpdateBlockedHomeScreen();
+
+    if (!skipDrive) {
+        GDriveRestore();
+    }
+}
+
+function Main_HistoryClean() {
+    var obj = Main_values_History_data;
+    var limit = 1000;
+
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key].deleted) {
+            for (var innerKey in obj[key].deleted) {
+                Main_trimObject(obj[key].deleted[innerKey], limit);
+            }
+        }
+    }
 }
 
 function Main_History_Sort(array, msort, direction) {
@@ -2561,11 +2528,8 @@ function Main_setHistoryItem(time) {
 
 function Main_SaveHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
-    Main_setItem('Main_values_History_data', string);
+    Main_setItem(Main_values_History_data_ItemName, string);
 
-    if (Main_CanBackup) {
-        OSInterface_BackupFile(Main_HistoryBackupFile, string);
-    }
     Main_UpdateBlockedHomeScreen();
 }
 
@@ -2606,7 +2570,7 @@ function Main_Slice(arrayTocopy) {
 }
 
 var Main_ImageLoaderWorker;
-function Main_Setworker() {
+function Main_SetWorker() {
     var blobURL = URL.createObjectURL(
         new Blob(
             [
@@ -2818,7 +2782,8 @@ function Main_SetHistoryworker() {
                                 AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers
                             );
                         } else {
-                            Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                            //delete the live entry as it doesn't have a VOD
+                            Screens_deleteFromHistory('live', Main_values_History_data[AddUser_UsernameArray[0].id].live, index, 1);
                         }
                     }
                 } else {
@@ -2832,7 +2797,7 @@ function Main_SetHistoryworker() {
 
                     if (index > -1) {
                         //delete the live that is now a vod entry as it no longer exist
-                        Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+                        Screens_deleteFromHistory(event.data.type, Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type], index, 1);
                     }
                 } else {
                     if (vodInfo && vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
@@ -2844,7 +2809,8 @@ function Main_SetHistoryworker() {
 
                 if (index > -1) {
                     //delete the entry as its content no longer exist
-                    Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                    Screens_deleteFromHistory(event.data.type, Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type], index, 1);
                 }
             }
             Main_setHistoryItem(10000);
@@ -2856,11 +2822,12 @@ var Main_StartHistoryworkerId;
 
 //Check if a live in history has become a VOD
 function Main_StartHistoryworker() {
-    if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (!AddUser_IsUserSet() || !BradcastCheckerWorker) {
+        return;
+    }
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-        i = 0,
-        len = array.length,
+        i = array.length,
         header;
 
     if (AddUser_UserHasToken()) {
@@ -2869,12 +2836,12 @@ function Main_StartHistoryworker() {
         header = Main_Bearer_Headers;
     }
 
-    for (i; i < len; i++) {
-        if (!array[i].forceVod) {
+    while (i--) {
+        if (array[i] && !array[i].forceVod) {
             if (array[i].data[14] && array[i].data[14] !== '') {
                 Main_StartHistoryworkerBradcast(array[i], 1, header);
             } else {
-                array.splice(i, 1);
+                Screens_deleteFromHistory('live', array, i, 1);
             }
         }
     }
@@ -2893,8 +2860,8 @@ function Main_RunVODWorker() {
     if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
-        i = 0,
         len = array.length,
+        i = len - 1,
         header;
 
     if (AddUser_UserHasToken()) {
@@ -2903,7 +2870,7 @@ function Main_RunVODWorker() {
         header = Main_Bearer_Headers;
     }
 
-    for (i; i < len; i++) {
+    for (i; i >= 0; i--) {
         //TODO remove this workaround after some updates
         if (array[i].data[2] && typeof array[i].data[2] === 'string') {
             array[i].data[2] = array[i].data[2].replace('Streamed', '');
@@ -2929,8 +2896,8 @@ function Main_RunLiveVODWorker() {
     if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-        i = 0,
         len = array.length,
+        i = len - 1,
         header;
 
     if (AddUser_UserHasToken()) {
@@ -2939,7 +2906,7 @@ function Main_RunLiveVODWorker() {
         header = Main_Bearer_Headers;
     }
 
-    for (i; i < len; i++) {
+    for (i; i >= 0; i--) {
         //TODO remove this workaround after some updates
         array[i].data[11] = array[i].data[11].replace('Since', '');
         array[i].data[4] = array[i].data[4].replace('Viewers', '');
@@ -2953,7 +2920,8 @@ function Main_RunLiveVODWorker() {
                     header: header
                 });
             } else {
-                Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(i, 1); //delete the live entry as it doesn't have a VOD
+                //delete the live entry as it doesn't have a VOD
+                Screens_deleteFromHistory('live', Main_values_History_data[AddUser_UsernameArray[0].id].live, i, 1);
             }
         }
     }
@@ -2965,8 +2933,8 @@ function Main_RunClipWorker() {
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
-    var i = 0,
-        len = array.length,
+    var len = array.length,
+        i = len - 1,
         header;
 
     if (AddUser_UserHasToken()) {
@@ -2975,7 +2943,7 @@ function Main_RunClipWorker() {
         header = Main_Bearer_Headers;
     }
 
-    for (i; i < len; i++) {
+    for (i; i >= 0; i--) {
         //TODO remove this workaround after some updates
         array[i].data[16] = array[i].data[16].replace('Created', '');
         array[i].data[14] = array[i].data[14].replace('Views', '');
@@ -3015,6 +2983,10 @@ function Main_CheckStop() {
     // Called only by JAVA
     Main_isStopped = true;
     Main_PreventClick(true, Main_PreventClickfun);
+
+    //sync backup, but prevent backup in background
+    GDriveBackup(true);
+    Main_clearTimeout(GDriveBackupTimeoutID);
 
     //Player related
     ChatLive_Clear(0);
@@ -3127,10 +3099,6 @@ function Main_CheckResume(skipPlay) {
     Main_PreventClick(false, Main_PreventClickfun);
     Main_isStopped = false;
 
-    //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
-    //but the aap is not ready for the rest of the check on this fun
-    if (Main_PreventCheckResume) return;
-
     if (Main_isUpdateDialogVisible()) {
         Main_HideLoadDialog();
         Main_values.IsUpDating = false;
@@ -3142,8 +3110,11 @@ function Main_CheckResume(skipPlay) {
 
     Main_SetUpdateclock();
 
-    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
-    else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
+    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) {
+        Play_CheckResume();
+    } else {
+        Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
+    }
 
     if (UserIsSet) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 2000, Main_CheckResumeFeedId);
@@ -3719,7 +3690,44 @@ function Main_Set() {
         AddCode_client_token = atob(AddCode_client_token);
         AddCode_backup_client_id = atob(AddCode_backup_client_id);
         Chat_token = atob(Chat_token);
+        GDriveClientKey = atob(GDriveClientKey);
+        GDriveKey = atob(GDriveKey);
 
         Play_Headers = JSON.stringify([['Client-ID', Chat_token]]);
     }
+}
+
+function Main_trimObject(obj, sizeLimit) {
+    var keys = Object.keys(obj);
+    var excess = keys.length - sizeLimit;
+
+    if (excess > 0) {
+        for (var i = 0; i < excess; i++) {
+            delete obj[keys[i]];
+        }
+    }
+
+    return obj;
+}
+
+function Main_removeMissingProps(obj, referenceArray) {
+    var i,
+        refIds = {},
+        key;
+
+    // Build a lookup map of reference IDs for faster checks
+    for (i = 0; i < referenceArray.length; i++) {
+        refIds[referenceArray[i].id] = true;
+    }
+
+    // Iterate over object keys and remove those not in reference
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            if (!refIds.hasOwnProperty(key)) {
+                delete obj[key];
+            }
+        }
+    }
+
+    return obj;
 }

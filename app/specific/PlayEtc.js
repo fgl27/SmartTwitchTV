@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -1323,9 +1323,13 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         }
     }
 
-    if (!PreventWarn) Play_showWarningMiddleDialog(error, 1500);
+    if (!PreventWarn) {
+        Play_showWarningMiddleDialog(error, 1500);
+    }
 
-    if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
+    if (!PreventResetFeed) {
+        UserLiveFeed_ResetFeedId();
+    }
 
     return null;
 }
@@ -1781,14 +1785,16 @@ function Play_handleKeyDown(e) {
 
                 Play_clearHidePanel();
                 Play_setHidePanel();
-            } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
-            else if (Play_MultiDialogVisible()) {
+            } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                UserLiveFeed_KeyRightLeft(1);
+            } else if (Play_MultiDialogVisible()) {
                 Play_MultiRemoveFocus();
                 Play_MultiDialogPos++;
                 if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
                 Play_MultiAddFocus();
-            } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
-            else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
+            } else if (Play_MultiEnable) {
+                Play_MultiEnableKeyRightLeft(1);
+            } else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                 Play_KeyChatSizeChage();
             } else if (Play_isEndDialogVisible()) {
                 Play_EndTextClear();
@@ -1802,9 +1808,13 @@ function Play_handleKeyDown(e) {
                 if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 0;
                 OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
                 Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
-            } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeftRight();
-            else if (!PlayExtra_PicturePicture && !Play_isFullScreen) Play_ChatFullScreenKeyRight();
-            else Play_FastBackForward(1);
+            } else if (PlayExtra_PicturePicture && !Play_isFullScreen) {
+                Play_AudioChangeLeftRight();
+            } else if (!PlayExtra_PicturePicture && !Play_isFullScreen) {
+                Play_ChatFullScreenKeyRight();
+            } else {
+                Play_FastBackForward(1);
+            }
             break;
         case KEY_UP:
             if (Play_isPanelShowing()) {
@@ -2022,6 +2032,7 @@ var Play_controlsOpenVod = temp_controls_pos++;
 var Play_controlsFollow = temp_controls_pos++;
 var Play_controlsSpeed = temp_controls_pos++;
 var Play_controlsExternal = temp_controls_pos++;
+var Play_controlsRewind = temp_controls_pos++;
 var Play_controlsQuality = temp_controls_pos++;
 var Play_controlsQualityMini = temp_controls_pos++;
 var Play_controlsQualityMulti = temp_controls_pos++;
@@ -2387,6 +2398,54 @@ function Play_MakeControls() {
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsRewind] = {
+        //open rewind
+        ShowInLive: true,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'rewind',
+        offsetY: -2,
+        string: STR_OPEN_REWIND,
+        values: null,
+        defaultValue: null,
+        enterKey: function () {
+            var rewindId = Play_RewindId[Play_data.data[7]];
+
+            if (rewindId) {
+                Main_values.ChannelVod_vodId = rewindId;
+            } else {
+                Play_showWarningMiddleDialog(STR_OPEN_REWIND_FAIL, 3000);
+                return;
+            }
+
+            Play_ForceHidePannel();
+            Main_vodOffset = 0;
+
+            Main_clearInterval(Play_ShowPanelStatusId);
+            Main_values.Play_WasPlaying = 0;
+            Play_ClearPlay(true);
+            Play_isOn = false;
+            Play_DurationSeconds = 0;
+
+            Play_handleKeyUpClear();
+            Play_OpenRewind = true; //used by PlayVod_Start and PlayVod_onPlayerStartPlay
+            Main_PlayVodHandleKeyDown();
+            Play_showBufferDialog();
+            PlayVod_Start();
+        },
+        setLabel: function () {
+            Main_textContent('controls_text_summary_' + this.position, STR_OPEN_REWIND_SUMMARY);
         }
     };
 
@@ -4037,7 +4096,8 @@ function Play_SetControlsArrows(key) {
     return (
         '<div id="controls_arrows_' +
         key +
-        '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+        '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;">' +
+        '<div style="display: inline-block;"><div id="control_arrow_up_' +
         key +
         '" class="up"></div><div id="control_arrow_down' +
         key +
@@ -4104,7 +4164,7 @@ function Play_BottomUpDown(PlayVodClip, adder) {
 }
 
 function Play_IconsAddFocus() {
-    Main_AddClassWitEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
+    Main_AddClassWithEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
 
     Play_controls[Play_PanelCounter].button_text.style.opacity = '1';
 
@@ -4336,7 +4396,7 @@ function Play_BottomIconsFocus(skipInfo, checkjump, skipHide) {
         if (PlayClip_EnterPos) Main_RemoveClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
 
         Play_BottonIconsHide(1);
-        Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+        Main_AddClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
         Play_IconsRemoveFocus();
 
         if (PlayVod_addToJump) {
@@ -4350,21 +4410,21 @@ function Play_BottomIconsFocus(skipInfo, checkjump, skipHide) {
             //pause
 
             Play_BottonIconsShow(skipInfo);
-            Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
         } else if (PlayClip_EnterPos === 1) {
             //next
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             if (!skipHide) Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
-            Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
         } else if (PlayClip_EnterPos === -1) {
             //back
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             if (!skipHide) Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Back_Img_holder);
-            Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
         }
 
         Play_IconsRemoveFocus();
@@ -4391,21 +4451,21 @@ function Play_BottomIconsFocusResetProgress() {
 
 function Play_BottonIconsHide(hideType) {
     if (!hideType) {
-        Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-        Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+        Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+        Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
     } else if (hideType === 1) {
-        Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+        Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+        Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
     } else if (hideType === 2) {
-        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
-        Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+        Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
+        Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
     }
 
     if (!Play_StayDialogVisible()) {
-        Main_AddClassWitEle(Play_info_div, 'opacity_zero');
+        Main_AddClassWithEle(Play_info_div, 'opacity_zero');
 
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-        else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
     }
 }
 

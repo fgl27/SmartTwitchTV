@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -25,10 +25,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
-
 import net.grandcentrix.tray.AppPreferences;
 
 public class SyncChannelJobService extends JobService {
@@ -37,7 +35,6 @@ public class SyncChannelJobService extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
-
         try {
             UpdateChannels(getApplicationContext(), jobParameters);
         } catch (Exception e) {
@@ -53,27 +50,17 @@ public class SyncChannelJobService extends JobService {
     }
 
     private void UpdateChannels(Context context, JobParameters jobParameters) {
-
         HandlerThread updateThread = new HandlerThread("UpdateThread");
         updateThread.start();
 
         new Handler(updateThread.getLooper()).post(() -> {
-
             try {
-
-                ChannelsUtils.UpdateAllChannels(
-                        context,
-                        new AppPreferences(context),
-                        Constants.CHANNELS_NAMES
-                );
-
+                ChannelsUtils.UpdateAllChannels(context, new AppPreferences(context), Constants.CHANNELS_NAMES);
             } catch (Exception e) {
                 Tools.recordException(TAG, "UpdateChannels e ", e);
             }
 
             new Handler(Looper.getMainLooper()).post(() -> jobFinished(jobParameters, false));
         });
-
     }
-
 }

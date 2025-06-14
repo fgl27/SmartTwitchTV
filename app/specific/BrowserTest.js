@@ -344,13 +344,17 @@ function BrowserTestFun() {
         if (!Settings_isVisible()) return;
 
         var id = event.target.id;
-        console.log(id);
+        //console.log(id);
 
         if (Main_A_includes_B(id, 'left')) {
             Settings_DialoghandleKeyLeft();
         } else if (Main_A_includes_B(id, 'right')) {
             Settings_DialoghandleKeyRight();
         } else if (Main_A_includes_B(id, 'dialog_settings')) {
+            if (Settings_DialogRestoreBackupShowing) {
+                return;
+            }
+
             Settings_DialoghandleKeyReturn();
         } else if (Main_A_includes_B(id, 'thumb_background')) {
             Main_showWarningDialog(STR_SPECIAL_FEATURE, 2000);
@@ -496,6 +500,10 @@ function BrowserTestFun() {
                     Users_cursorY = y;
                     Users_addFocus();
                 } else if (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x) {
+                    if (!Screens_ObjNotNull_YX(key, y, x)) {
+                        return;
+                    }
+
                     Screens_RemoveFocus(key);
                     ScreenObj[key].posY = y;
                     Screens_ChangeFocus(0, x, key);
@@ -532,7 +540,12 @@ function BrowserTestFun() {
                 if (Main_values.Main_Go === Main_Users) {
                     Users_handleKeyEnter();
                 } else if (Settings_isVisible()) {
-                    Settings_checkMatureKeyEnter();
+                    if (Settings_isMature) {
+                        Settings_checkMatureKeyEnter();
+                    } else {
+                        Settings_RemoveBackupAccountDone();
+                        GDriveClean();
+                    }
                 } else {
                     Screens_histDeleteKeyEnter(Main_values.Main_Go);
                 }
@@ -787,7 +800,7 @@ function BrowserTestFun() {
                 pos = parseInt(id.split('_')[2]) + 1;
 
                 if (isNaN(pos)) {
-                    console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
+                    // console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
                     return;
                 }
 
@@ -819,7 +832,7 @@ function BrowserTestFun() {
                     pos = parseInt(idArray[idArray.length - 1]);
 
                     if (isNaN(pos)) {
-                        console.log('Main_Scene2Doc.onclick ' + pos);
+                        // console.log('Main_Scene2Doc.onclick ' + pos);
                         return;
                     }
 
@@ -898,6 +911,12 @@ function BrowserTestFun() {
 
     Main_getElementById('dialog_about').onclick = function () {
         Main_CheckDialogs();
+    };
+
+    Main_getElementById('backup_dialog').onclick = function (event) {
+        if (Main_A_includes_B(event.target.id, 'backup_dialog') && !GDrivePreventClose) {
+            Main_HideElement('backup_dialog');
+        }
     };
 
     Main_getElementById('welcome_dialog').onclick = function () {

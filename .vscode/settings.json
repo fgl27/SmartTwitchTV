@@ -1,8 +1,16 @@
 {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "java.configuration.updateBuildConfiguration": "disabled",
-    "[json]": {
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/release/githubio": true,
+        "**/tmp": true
+    },
+    "[java]": {
+        "editor.defaultFormatter": "RudraPatel.prettier-plugin-java-vscode"
+    },
+    "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     }
 }

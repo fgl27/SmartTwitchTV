@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -28,7 +28,6 @@ var PlayClip_playingUrl = '';
 var PlayClip_replayOrNext = false;
 var PlayClip_replay = false;
 var PlayClip_HasVOD = false;
-var PlayClip_Buffer = 2000;
 
 var PlayClip_jumpTimers = [1];
 
@@ -143,6 +142,8 @@ function PlayClip_Start() {
     Play_controls[Play_controlsChanelCont].setLabel(Main_values.Main_selectedChannelDisplayname);
 
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
+
+    Main_SaveValues(true);
 }
 
 function PlayClip_SetProgressBarJumpers() {

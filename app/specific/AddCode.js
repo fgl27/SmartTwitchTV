@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -54,9 +54,12 @@ function AddCode_AppTokenCheckReady(obj) {
 
         var data = JSON.parse(obj.responseText);
 
-        window.setTimeout(function () {
-            AddCode_AppToken();
-        }, (parseInt(data.expires_in) - 60) * 1000);
+        window.setTimeout(
+            function () {
+                AddCode_AppToken();
+            },
+            (parseInt(data.expires_in) - 60) * 1000
+        );
     } else {
         AddCode_AppToken(0, Main_initWindowsEnd, Main_initWindowsEnd, 0, true);
 

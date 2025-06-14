@@ -9,6 +9,20 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Version June 13
+==============
+
+* Added Sync across devices, Backup, and Restore using Google Drive
+* Sync across devices is disabled by default. It is recommended to enable it only if you use the app on multiple devices with the same Google Drive account
+* Notifications: Added background notification support for Android 11 and above. This uses a simplified single-line text notification while running in the background
+* Chat VOD: Improved chat synchronization when starting playback. For VODs of an ongoing live stream, there was a chance the chat could take a long time to load and/or sync
+* Player: Added rewind button for live streams. This plays the VOD of the current live (when available) stream starting from the most recent point
+* User Live Feed (accessed by pressing Up on the player): Live history now shows the last 100 watched channels that are Live
+* User Live Feed (accessed by pressing Up on the player): Re-added the User VODs section
+* Player: Removed buffer settings since they no longer provide any benefit in the current player version
+* Updated Ukrainian language translation by @sladkOy
+* General performance improvements and bug fixes
+
 Version June 07
 ==============
 

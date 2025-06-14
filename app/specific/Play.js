@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -26,7 +26,6 @@ var Play_ChatSizeValue = 4;
 var Play_MaxChatSizeValue = 4;
 var Play_PanelHideID = null;
 var Play_isFullScreen = true;
-var Play_Buffer = 2000;
 var PlayVod_RefreshProgressBarrTimeout = 1000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
@@ -47,6 +46,8 @@ var Play_MaxInstances = 0;
 var Play_HasLive;
 var Play_HasVod;
 var Play_VodObj;
+var Play_OpenRewind;
+var Play_RewindId = {};
 
 var Play_ChatEnable = false;
 var Play_exitID = null;
@@ -247,11 +248,12 @@ function Play_Start(offline_chat) {
     Play_ShowPanelStatus(1);
 
     Main_values.Play_WasPlaying = 1;
-    Main_SaveValues();
+    Main_SaveValues(true);
     //Check the Play_UpdateMainStream fun when on a browser
     if (!Main_IsOn_OSInterface && !offline_chat && !skipTest) {
         Play_UpdateMainStream(true, true);
     }
+
     PlayClip_DontSkipStartAuto = false;
 
     if (!Main_IsOn_OSInterface) {
@@ -315,8 +317,11 @@ function Play_CheckIfIsLiveGetError(response, isVod) {
     } else if (response.status === 403) {
         error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
     } else {
-        if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-        else error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
+        if (isVod) {
+            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+        } else {
+            error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
+        }
     }
 
     return error;
@@ -626,6 +631,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 
         if (firstVod.stream_id.toString() === BroadcastID.toString()) {
             Main_history_UpdateLiveVod(BroadcastID, firstVod.id, null);
+            Play_RewindId[BroadcastID] = firstVod.id;
         }
     }
 }
@@ -1384,7 +1390,10 @@ function Play_ClearPlayer() {
     Main_clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_HideWarningDialog();
-    if (!Play_EndDialogEnter) Play_HideEndDialog();
+
+    if (!Play_EndDialogEnter) {
+        Play_HideEndDialog();
+    }
 
     if (Play_data.qualities[1] && Play_data.qualityIndex === Play_getQualitiesCount() - 1) {
         if (Play_data.qualities[1].hasOwnProperty('id')) {
@@ -1528,7 +1537,7 @@ function Play_ShowPanelStatus(mwhocall) {
         }
 
         Main_ShowElementWithEle(Play_side_info_div);
-        Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
     } else {
         Main_clearTimeout(Play_ShowPanelStatusId);
         Main_HideElementWithEle(Play_side_info_div);
@@ -1567,7 +1576,7 @@ function Play_ForceHidePannel() {
     Play_PanneInfoDoclId.style.opacity = 0;
 
     if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-    else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+    else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
     Play_PanneInfoDoclId.style.pointerEvents = 'none';
 }
@@ -2182,7 +2191,7 @@ function Play_RestorePlayData(error_410, Isforbiden) {
 
     Play_RestorePlayDataValues();
 
-    Main_SaveValues();
+    Main_SaveValues(true);
 }
 
 function Play_SavePlayData() {

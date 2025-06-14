@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -20,6 +20,7 @@
 
 package com.fgl27.twitch.notification;
 
+import static androidx.core.content.ContextCompat.getSystemService;
 import static com.fgl27.twitch.Tools.getBoolean;
 import static com.google.gson.JsonParser.parseString;
 
@@ -33,6 +34,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,19 +45,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.core.app.NotificationCompat;
-
 import com.fgl27.twitch.Constants;
+import com.fgl27.twitch.PlayerActivity;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-
-import net.grandcentrix.tray.AppPreferences;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
@@ -70,24 +69,25 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
+import net.grandcentrix.tray.AppPreferences;
 
 public final class NotificationUtils {
 
     private static final String TAG = "STTV_NotificationUtils";
 
-    private static final Type MapStringType = new TypeToken<Map<String, StreamObj>>() {
-    }.getType();
+    private static final Type MapStringType = new TypeToken<Map<String, StreamObj>>() {}.getType();
 
     private static final int[] ToastPositions = {
-            Gravity.RIGHT | Gravity.TOP,//0
-            Gravity.CENTER | Gravity.TOP,//1
-            Gravity.LEFT | Gravity.TOP,//2
-            Gravity.LEFT | Gravity.BOTTOM,//3
-            Gravity.CENTER | Gravity.BOTTOM,//4
-            Gravity.RIGHT | Gravity.BOTTOM//5
+        Gravity.RIGHT | Gravity.TOP, //0
+        Gravity.CENTER | Gravity.TOP, //1
+        Gravity.LEFT | Gravity.TOP, //2
+        Gravity.LEFT | Gravity.BOTTOM, //3
+        Gravity.CENTER | Gravity.BOTTOM, //4
+        Gravity.RIGHT | Gravity.BOTTOM //5
     };
 
     private static class StreamObj {
+
         private final String game_name;
         private final String title;
 
@@ -95,10 +95,10 @@ public final class NotificationUtils {
             this.game_name = game;
             this.title = title;
         }
-
     }
 
     private static class LogoObj {
+
         private final String logo;
         private final String display_name;
 
@@ -106,10 +106,10 @@ public final class NotificationUtils {
             this.logo = logo;
             this.display_name = display_name;
         }
-
     }
 
     private static class NotifyList {
+
         private final boolean isGame;
         private final String notificationTitle;
         private final String game;
@@ -127,15 +127,11 @@ public final class NotificationUtils {
             this.title = title;
             this.live = live;
         }
-
     }
 
     public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
-
         if (Tools.hasTokens(UserId, appPreferences)) {
-
             return GetUserLiveStreams(UserId, appPreferences, true);
-
         }
 
         return null;
@@ -163,31 +159,29 @@ public final class NotificationUtils {
             String url;
             String cursor = null;
             String[][] DEFAULT_HEADERS = {
-                    {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
-                    {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
+                { Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences) },
+                { Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) }
             };
 
-            do {//Get all user fallowed live channels
-
+            do { //Get all user fallowed live channels
                 url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/helix/streams/followed?first=100%s&user_id=%s",
-                        cursor != null ? "&after=" + cursor : "",
-                        UserId
+                    Locale.US,
+                    "https://api.twitch.tv/helix/streams/followed?first=100%s&user_id=%s",
+                    cursor != null ? "&after=" + cursor : "",
+                    UserId
                 );
 
                 StreamsSize = 0;
                 AddedToArray = 0;
 
                 for (int i = 0; i < 3; i++) {
-
                     response = Tools.Internal_MethodUrl(
-                            url,
-                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-                            null,
-                            null,
-                            0,
-                            DEFAULT_HEADERS
+                        url,
+                        Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        null,
+                        null,
+                        0,
+                        DEFAULT_HEADERS
                     );
 
                     if (response != null) {
@@ -198,56 +192,44 @@ public final class NotificationUtils {
 
                             obj = parseString(response.responseText).getAsJsonObject();
 
-
                             if (obj.isJsonObject() && obj.has("data") && !obj.get("data").isJsonNull()) {
-
-                                TempStreams = obj.get("data").getAsJsonArray();//Get the follows array
+                                TempStreams = obj.get("data").getAsJsonArray(); //Get the follows array
                                 StreamsSize = TempStreams.size();
                                 pagination = obj.get("pagination").getAsJsonObject();
 
-                                cursor = pagination.isJsonObject() && pagination.has("cursor") && !pagination.get("cursor").isJsonNull() ? pagination.get("cursor").getAsString() : null;
+                                cursor = pagination.isJsonObject() && pagination.has("cursor") && !pagination.get("cursor").isJsonNull()
+                                    ? pagination.get("cursor").getAsString()
+                                    : null;
 
                                 if (StreamsSize == 0) {
                                     break;
                                 }
 
                                 for (int j = 0; j < StreamsSize; j++) {
+                                    obj = TempStreams.get(j).getAsJsonObject(); //Get the position in the follows
 
-                                    obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
+                                    if (obj.isJsonObject() && !obj.get("id").isJsonNull()) { //Prevent null channelObj or Broadcast id
+                                        id = obj.get("id").getAsString(); //Broadcast id
 
-                                    if (obj.isJsonObject() && !obj.get("id").isJsonNull()) {//Prevent null channelObj or Broadcast id
-
-                                        id = obj.get("id").getAsString();//Broadcast id
-
-                                        if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
+                                        if (!TempArray.contains(id)) { //Prevent add duplicated or empty obj and infinity loop
                                             TempArray.add(id);
                                             AddedToArray++;
                                             StreamsResult.add(obj);
                                         }
-
                                     }
-
                                 }
-
                             }
                             break;
                         } else if (status == 401 || status == 403) {
-
                             if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
-
                                 return GetUserLiveStreams(UserId, appPreferences, false);
-
                             } else if (!tryAgain) {
                                 break;
                             }
-
                         }
-
                     }
                 }
-
-            } while (StreamsSize > 0 && AddedToArray > 0 && cursor != null && !cursor.equals(""));//last array was empty or didn't had noting new
-
+            } while (StreamsSize > 0 && AddedToArray > 0 && cursor != null && !cursor.equals("")); //last array was empty or didn't had noting new
         } catch (Exception e) {
             Tools.recordException(TAG, "GetLiveStreamsListToken e ", e);
         }
@@ -258,7 +240,12 @@ public final class NotificationUtils {
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
-    private static Map<String, LogoObj> GetStreamNotificationsLogo(JsonArray streams, String UserId, AppPreferences appPreferences, Boolean tryAgain) {
+    private static Map<String, LogoObj> GetStreamNotificationsLogo(
+        JsonArray streams,
+        String UserId,
+        AppPreferences appPreferences,
+        Boolean tryAgain
+    ) {
         Map<String, LogoObj> logoMap = new HashMap<>();
 
         String randomImg = "?" + ThreadLocalRandom.current().nextInt(1, 1000000);
@@ -275,95 +262,85 @@ public final class NotificationUtils {
         JsonArray TempStreams;
 
         String[][] DEFAULT_HEADERS = {
-                {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
-                {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
+            { Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences) },
+            { Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) }
         };
 
         for (int i = 0; i < StreamsSize; i++) {
-            obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
-            id = obj.get("user_id").getAsString();//channel id
+            obj = streams.get(i).getAsJsonObject(); //Get the position in the follows array
+            id = obj.get("user_id").getAsString(); //channel id
             channels.append("&id=").append(id);
             counter++;
 
             if (counter == 100 || counter == StreamsSize) {
-
-                url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/helix/users?first=100%s",
-                        channels
-                );
+                url = String.format(Locale.US, "https://api.twitch.tv/helix/users?first=100%s", channels);
                 channels = new StringBuilder();
                 StreamsSize = 0;
 
                 for (int y = 0; y < 3; y++) {
-
                     response = Tools.Internal_MethodUrl(
-                            url,
-                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-                            null,
-                            null,
-                            0,
-                            DEFAULT_HEADERS
+                        url,
+                        Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        null,
+                        null,
+                        0,
+                        DEFAULT_HEADERS
                     );
 
                     if (response != null) {
                         status = response.status;
 
                         if (status == 200) {
-
                             obj = parseString(response.responseText).getAsJsonObject();
 
                             if (obj.isJsonObject() && obj.has("data") && !obj.get("data").isJsonNull()) {
-
-                                TempStreams = obj.get("data").getAsJsonArray();//Get the follows array
+                                TempStreams = obj.get("data").getAsJsonArray(); //Get the follows array
                                 StreamsSize = TempStreams.size();
 
                                 for (int j = 0; j < StreamsSize; j++) {
+                                    obj = TempStreams.get(j).getAsJsonObject(); //Get the position in the array
 
-                                    obj = TempStreams.get(j).getAsJsonObject();//Get the position in the array
-
-                                    if (obj.isJsonObject() && obj.has("profile_image_url") && !obj.get("profile_image_url").isJsonNull()) {//Prevent null img
-
-                                        id = obj.get("id").getAsString();//Channel id
-                                        logoMap.put(id,
-                                                new LogoObj(
-                                                        obj.get("profile_image_url").getAsString() + randomImg,
-                                                        obj.has("display_name") ? obj.get("display_name").getAsString() : null
-                                                )
+                                    if (obj.isJsonObject() && obj.has("profile_image_url") && !obj.get("profile_image_url").isJsonNull()) { //Prevent null img
+                                        id = obj.get("id").getAsString(); //Channel id
+                                        logoMap.put(
+                                            id,
+                                            new LogoObj(
+                                                obj.get("profile_image_url").getAsString() + randomImg,
+                                                obj.has("display_name") ? obj.get("display_name").getAsString() : null
+                                            )
                                         );
-
                                     }
-
                                 }
-
                             }
                             break;
                         } else if (status == 401 || status == 403) {
-
                             if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
-
                                 return GetStreamNotificationsLogo(streams, UserId, appPreferences, false);
-
                             } else if (!tryAgain) {
                                 break;
                             }
-
                         }
-
                     }
                 }
             }
-
         }
 
         return logoMap;
     }
 
-    private static void GetStreamNotifications(Map<String, StreamObj> oldLive, JsonArray streams, String UserId,
-                                               AppPreferences appPreferences, int Repeat, long NotifySinceTimeMs,
-                                               Context context, boolean DoStreamLive, boolean DoStreamTitle, boolean DoStreamGame,
-                                               ArrayList<NotifyList> result) {
-
+    private static void GetStreamNotifications(
+        Map<String, StreamObj> oldLive,
+        JsonArray streams,
+        String UserId,
+        AppPreferences appPreferences,
+        int Repeat,
+        long NotifySinceTimeMs,
+        Context context,
+        boolean DoStreamLive,
+        boolean DoStreamTitle,
+        boolean DoStreamGame,
+        ArrayList<NotifyList> result
+    ) {
         Map<String, StreamObj> currentLive = new HashMap<>();
         Map<String, LogoObj> mapLogo = GetStreamNotificationsLogo(streams, UserId, appPreferences, true);
         boolean mapEmpty = mapLogo.isEmpty();
@@ -402,10 +379,9 @@ public final class NotificationUtils {
         try {
             //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() and etc here as was already checked before reaching here
             for (int i = 0; i < StreamsSize; i++) {
-
-                obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
-                id = obj.get("id").getAsString();//Broadcast id
-                user_id = obj.get("user_id").getAsString();//Channel id
+                obj = streams.get(i).getAsJsonObject(); //Get the position in the follows array
+                id = obj.get("id").getAsString(); //Broadcast id
+                user_id = obj.get("user_id").getAsString(); //Channel id
                 currentLogo = !mapEmpty && mapLogo.containsKey(user_id) ? mapLogo.get(user_id) : null;
 
                 display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
@@ -418,96 +394,66 @@ public final class NotificationUtils {
                 }
 
                 if (display_name != null) {
-
                     game = !obj.get("game_name").isJsonNull() ? obj.get("game_name").getAsString() : "";
                     title = !obj.get("title").isJsonNull() ? obj.get("title").getAsString() : "";
 
-                    currentLive.put(
-                            id,
-                            new StreamObj(
-                                    game,
-                                    title
-                            )
-                    );
+                    currentLive.put(id, new StreamObj(game, title));
                     isLive = !obj.get("type").isJsonNull() && (obj.get("type").getAsString()).contains("live");
 
                     NotificationTitle = null;
 
                     if (!oldLive.containsKey(id)) {
-
                         if (DoStreamLive) {
-
                             NotifyTime = true;
 
-                            if (NotifySinceTimeMs > 0) {//NotifySinceTimeMs == 0 check is disable
+                            if (NotifySinceTimeMs > 0) { //NotifySinceTimeMs == 0 check is disable
                                 StreamCreated_at = !obj.get("started_at").isJsonNull() ? obj.get("started_at").getAsString() : null;
 
                                 if (StreamCreated_at != null) {
-
                                     date = input.parse(StreamCreated_at);
 
                                     if (date != null) {
-
                                         NotifyTime = NotifySinceTimeMs > (timeMsNow - date.getTime());
-
                                     }
                                 }
-
                             }
 
                             if (NotifyTime) NotificationTitle = live_title;
-
                         }
-
                     } else if (DoStreamTitle || DoStreamGame) {
-
                         TempObj = oldLive.get(id);
                         gameChange = DoStreamGame && TempObj != null && !Objects.equals(TempObj.game_name, game);
                         titleChange = DoStreamTitle && TempObj != null && !Objects.equals(TempObj.title, title);
 
                         if (gameChange || titleChange) {
-
                             if (gameChange && titleChange) NotificationTitle = game_and_title;
                             else if (gameChange) NotificationTitle = game_title;
                             else NotificationTitle = title_title;
-
                         }
-
                     }
 
                     if (NotificationTitle != null) {
-
-
                         NotifyListResultAdd(
-                                new NotifyList(
-                                        false,
-                                        NotificationTitle,
-                                        game,
-                                        display_name,
-                                        GetBitmap(
-                                                currentLogo != null ? currentLogo.logo : Constants.LOGO_404
-                                        ),
-                                        title,
-                                        isLive
-                                ),
-                                Repeat,
-                                result
+                            new NotifyList(
+                                false,
+                                NotificationTitle,
+                                game,
+                                display_name,
+                                GetBitmap(currentLogo != null ? currentLogo.logo : Constants.LOGO_404),
+                                title,
+                                isLive
+                            ),
+                            Repeat,
+                            result
                         );
-
                     }
-
                 }
             }
         } catch (Exception e) {
             Tools.recordException(TAG, "GetNotifications e ", e);
         }
 
-        SaveOldStreamList(
-                currentLive,
-                appPreferences,
-                UserId
-        );
-
+        SaveOldStreamList(currentLive, appPreferences, UserId);
     }
 
     private static void NotifyListResultAdd(NotifyList notifyList, int Repeat, ArrayList<NotifyList> result) {
@@ -525,55 +471,41 @@ public final class NotificationUtils {
 
         try {
             for (int i = 0; i < StreamsSize; i++) {
-
                 //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() here as was already checked before reaching here
-                obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
+                obj = streams.get(i).getAsJsonObject(); //Get the position in the follows array
                 ChannelObj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
 
                 currentLive.put(
-                        obj.get("_id").getAsString(),
-                        new StreamObj(
-                                !ChannelObj.get("game_name").isJsonNull() ? ChannelObj.get("game_name").getAsString() : "",
-                                !ChannelObj.get("title").isJsonNull() ? ChannelObj.get("title").getAsString() : ""
-                        )
+                    obj.get("_id").getAsString(),
+                    new StreamObj(
+                        !ChannelObj.get("game_name").isJsonNull() ? ChannelObj.get("game_name").getAsString() : "",
+                        !ChannelObj.get("title").isJsonNull() ? ChannelObj.get("title").getAsString() : ""
+                    )
                 );
-
             }
         } catch (Exception e) {
             Tools.recordException(TAG, "SetOldList e ", e);
         }
 
-        SaveOldStreamList(
-                currentLive,
-                appPreferences,
-                UserId
-        );
+        SaveOldStreamList(currentLive, appPreferences, UserId);
     }
 
     private static void SaveOldStreamList(Map<String, StreamObj> currentLive, AppPreferences appPreferences, String UserId) {
-
-        appPreferences.put(
-                UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST,
-                new Gson().toJson(currentLive)
-        );
-
+        appPreferences.put(UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST, new Gson().toJson(currentLive));
     }
 
     private static Bitmap GetBitmap(String url) {
-
         URL newUrl = null;
         Bitmap bmp = null;
 
         try {
             newUrl = new URL(url);
-        } catch (MalformedURLException ignored) {
-        }
+        } catch (MalformedURLException ignored) {}
 
         if (newUrl != null) {
             try {
                 bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
 
         return bmp;
@@ -581,7 +513,6 @@ public final class NotificationUtils {
 
     public static void CheckNotifications(String UserId, AppPreferences appPreferences, Handler ToastHandler, Context context) {
         try {
-
             ArrayList<NotifyList> NotifyListResult = new ArrayList<>();
 
             boolean DoStreamLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_LIVE, false, appPreferences);
@@ -595,44 +526,36 @@ public final class NotificationUtils {
             String tempOldLiveList;
 
             if (DoStreamLive || DoStreamTitle || DoStreamGame) {
-
                 JsonArray streams = GetLiveStreamsList(UserId, appPreferences);
 
                 //If stream result is null the http request fail else even streams.size() < 1 that is the result
                 if (streams != null) {
-
                     tempOldLiveList = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST, null, appPreferences);
 
                     //Null list was never created or user changed
                     if (tempOldLiveList != null) {
-
                         GetStreamNotifications(
-                                new Gson().fromJson(tempOldLiveList, MapStringType),
-                                streams,
-                                UserId,
-                                appPreferences,
-                                Repeat,
-                                NotifySinceTimeMs,
-                                context,
-                                DoStreamLive,
-                                DoStreamTitle,
-                                DoStreamGame,
-                                NotifyListResult
+                            new Gson().fromJson(tempOldLiveList, MapStringType),
+                            streams,
+                            UserId,
+                            appPreferences,
+                            Repeat,
+                            NotifySinceTimeMs,
+                            context,
+                            DoStreamLive,
+                            DoStreamTitle,
+                            DoStreamGame,
+                            NotifyListResult
                         );
-
                     } else {
-
                         SetOldLiveList(streams, UserId, appPreferences);
-
                     }
                 }
-
             }
 
             int ResultSize = NotifyListResult.size();
 
             if (ResultSize > 0) {
-
                 int ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
 
                 //Get the width base on screen size and position
@@ -669,34 +592,44 @@ public final class NotificationUtils {
 
                 for (int i = 0; i < ResultSize; i++) {
                     ShowNotification(
-                            NotifyListResult.get(i),
-                            i,
-                            ToastHandler,
-                            context,
-                            ToastPosition,
-                            LayoutWidth,
-                            ImageSize,
-                            ImageSizeHeight,
-                            textSizeSmall,
-                            textSizeBig
+                        NotifyListResult.get(i),
+                        i,
+                        ToastHandler,
+                        context,
+                        ToastPosition,
+                        LayoutWidth,
+                        ImageSize,
+                        ImageSizeHeight,
+                        textSizeSmall,
+                        textSizeBig,
+                        appPreferences
                     );
                 }
 
                 appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (ResultSize * 5000L)));
             }
-
         } catch (Exception e) {
             Tools.recordException(TAG, "CheckNotifications e ", e);
         }
     }
 
-    private static void ShowNotification(NotifyList NotifyListResult, int delay,
-                                         Handler ToastHandler, Context context, int ToastPosition,
-                                         int LayoutWidth, int ImageSize, int ImageSizeHeight, float textSizeSmall, float textSizeBig) {
-
-        ToastHandler.postDelayed(() -> {
-            try {
-                DoToast(
+    private static void ShowNotification(
+        NotifyList NotifyListResult,
+        int delay,
+        Handler ToastHandler,
+        Context context,
+        int ToastPosition,
+        int LayoutWidth,
+        int ImageSize,
+        int ImageSizeHeight,
+        float textSizeSmall,
+        float textSizeBig,
+        AppPreferences appPreferences
+    ) {
+        ToastHandler.postDelayed(
+            () -> {
+                try {
+                    DoToast(
                         NotifyListResult,
                         context,
                         ToastPosition,
@@ -704,17 +637,41 @@ public final class NotificationUtils {
                         ImageSize,
                         ImageSizeHeight,
                         textSizeSmall,
-                        textSizeBig
-                );
-            } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
-                Tools.recordException(TAG, "ShowNotification e ", e);
-            }
-        }, 5000L * delay);
-
+                        textSizeBig,
+                        appPreferences
+                    );
+                } catch (Exception e) { //Exception caused on android 8.1 and up when notification fail to
+                    Tools.recordException(TAG, "ShowNotification e ", e);
+                }
+            },
+            5000L * delay
+        );
     }
 
     @SuppressLint("InflateParams")
-    private static void DoToast(NotifyList result, Context context, int ToastPosition, int LayoutWidth, int ImageSize, int ImageSizeHeight, float textSizeSmall, float textSizeBig) {
+    private static void DoToast(
+        NotifyList result,
+        Context context,
+        int ToastPosition,
+        int LayoutWidth,
+        int ImageSize,
+        int ImageSizeHeight,
+        float textSizeSmall,
+        float textSizeBig,
+        AppPreferences appPreferences
+    ) {
+        boolean isAppInBackGround = !Tools.getBoolean(Constants.PREF_APP_RUNNING, false, appPreferences);
+
+        //https://developer.android.com/about/versions/11/behavior-changes-11#toasts
+        if (isAppInBackGround && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Toast.makeText(
+                context,
+                String.format(Locale.US, "%s - %s: %s", context.getString(R.string.short_app_name), result.notificationTitle, result.name),
+                Toast.LENGTH_LONG
+            ).show();
+
+            return;
+        }
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -739,14 +696,7 @@ public final class NotificationUtils {
         TextView game = layout.findViewById(R.id.game);
 
         if (!result.isGame) {
-
-            name.setCompoundDrawablesWithIntrinsicBounds(
-                    result.live ? R.drawable.circle : R.drawable.ic_refresh,
-                    0,
-                    0,
-                    0
-            );
-
+            name.setCompoundDrawablesWithIntrinsicBounds(result.live ? R.drawable.circle : R.drawable.ic_refresh, 0, 0, 0);
         }
 
         not_title.setText(result.notificationTitle);
@@ -755,7 +705,6 @@ public final class NotificationUtils {
         game.setText(result.game);
 
         if (LayoutWidth > 0) {
-
             not_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
             name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
             title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
@@ -766,14 +715,7 @@ public final class NotificationUtils {
         Bitmap bmp = result.logo;
         if (bmp != null) {
             if (LayoutWidth > 0) {
-
-                bmp = Bitmap.createScaledBitmap(
-                        bmp,
-                        ImageSize,
-                        result.isGame ? ImageSizeHeight : ImageSize,
-                        true
-                );
-
+                bmp = Bitmap.createScaledBitmap(bmp, ImageSize, result.isGame ? ImageSizeHeight : ImageSize, true);
             }
 
             image.setImageBitmap(bmp);
@@ -788,32 +730,31 @@ public final class NotificationUtils {
     }
 
     public static boolean StartNotificationService(AppPreferences appPreferences) {
-        //https://developer.android.com/about/versions/11/behavior-changes-11#toasts
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.R &&
-                getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
-                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) != null;
+        return (
+            getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
+            Tools.getString(Constants.PREF_USER_ID, null, appPreferences) != null
+        );
     }
 
     @TargetApi(26)
-    static NotificationCompat.Builder NotificationBuilder(String title, String text, @SuppressWarnings("SameParameterValue") String id, Context context) {
+    static NotificationCompat.Builder NotificationBuilder(
+        String title,
+        String text,
+        @SuppressWarnings("SameParameterValue") String id,
+        Context context
+    ) {
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (mNotifyManager != null) {
-            mNotifyManager.createNotificationChannel(
-                    new NotificationChannel(
-                            id,
-                            title,
-                            NotificationManager.IMPORTANCE_NONE
-                    )
-            );
+            mNotifyManager.createNotificationChannel(new NotificationChannel(id, title, NotificationManager.IMPORTANCE_NONE));
         }
 
         return new NotificationCompat.Builder(context, id)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_refresh)
-                .setChannelId(id);
+            .setContentTitle(title)
+            .setContentText(text)
+            .setOngoing(true)
+            .setSmallIcon(R.drawable.ic_refresh)
+            .setChannelId(id);
     }
 
     public static void ResetNotificationList(AppPreferences appPreferences, String id) {

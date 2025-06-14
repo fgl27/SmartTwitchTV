@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -233,6 +233,9 @@ function pt_BRLang() {
     STR_OPEN_BROADCAST = 'Abra o Vídeo';
     STR_OPEN_LAST_BROADCAST = 'Abra o último Vídeo';
     STR_IS_LIVE = 'Agora Ao vivo';
+    STR_OPEN_REWIND = 'Abrir retrocesso';
+    STR_OPEN_REWIND_SUMMARY = 'Abrir o VOD com retrocesso completo';
+    STR_OPEN_REWIND_FAIL = 'Sem retrocesso para esta live';
     STR_SHOW_ISLIVE_WARNING = 'Mostrar aviso "Streamer Agora ao vivo"';
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
         'Ao assistir a um clipe ou VOD o aplicativo pode verificar quando o streamer está ao vivo, se estiver definido como SIM, um aviso aparecerá, para abrir ao vivo basta usar a opção de controles inferiores do player';
@@ -415,9 +418,10 @@ function pt_BRLang() {
     STR_TITLE_CHANGE_SHOW = 'Mostrar notificação de "Título alterado do Streamer" para canais seguidos';
     STR_GAME_CHANGE_SHOW = 'Mostrar notificação de "Streamer mudou jogo" para canais seguidos';
     STR_NOW_LIVE_GAME_SHOW = 'Mostrar notificação de "Jogo ao vivo" para jogos seguidos';
-    STR_NOW_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
-    STR_NOW_BACKGROUND_SUMMARY =
-        'Se você impedir a notificação para este aplicativo nas configurações do sistema, este recurso não funcionará, se as notificações do aplicativo já estiverem em execução e você sair do aplicativo, a notificação será exibida sobre outros aplicativos, mesmo se estiver desativado';
+    STR_NOTIFICATION_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
+    STR_NOTIFICATION_BACKGROUND_SUMMARY =
+        'Para ativar este recurso, verifique se o app tem permissão para notificações nas Configurações do Android. Em dispositivos com Android 11 ou superior, o app exibirá uma notificação simples de uma única linha quando estiver em segundo plano.';
+    STR_NOTIFICATION_BACKGROUND_WARNING = 'Permissão de notificações do sistema Android ausente!';
     STR_NOTIFICATION_REPEAT = 'Quantas vezes para mostrar notificação individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'O tempo limite de notificação individual é de cerca de 3 segundos, e não pode ser alterado porque esse tempo limite é controlado pelo sistema, mas você pode definir o número de vezes que a mesma notificação será exibida';
@@ -516,15 +520,7 @@ function pt_BRLang() {
     STR_OLDEST = 'Assistidos mais antigos';
     STR_PRESS_ENTER_D = 'Pressione enter para deletar';
     STR_LIVE_VOD = 'Esta transmissão ao vivo agora é um VOD <br> abrindo o VOD de onde você parou de assistir ao vivo: <br>';
-    STR_BACKUP =
-        'Permitir que o aplicativo faça e restaure backups? <br> (Os usuários e seu histórico serão backups)' +
-        '<br><br>' +
-        'Clique em Sim, o aplicativo salvará backups para uso futuro e restaurará um backup salvo se os dados do aplicativo estiverem vazios.' +
-        'É necessário dar permissão de armazenamento ao app para isso, então dê antes clique sim.' +
-        '<br><br>' +
-        'Se você não der permissão de armazenamento, nenhum backup será feito.' +
-        '<br><br>' +
-        'A pasta Backup é Main_Storage/data/com.fgl27.twitch/Backup';
+
     STR_DELETE_SURE = 'Tem certeza que deseja deletar tudo';
     STR_CREATED_NEWEST = 'Criado/Desde mais recente';
     STR_CREATED_OLDEST = 'Criado/Desde mais antigo';
@@ -891,6 +887,8 @@ function pt_BRLang() {
     STR_PLAYER_EXTRA_CODEC = 'Transmissão Avançada: suporte a HEVC, AV1, 1440p e 4K';
     STR_PLAYER_EXTRA_CODEC_SUMMARY =
         'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permite 1440p, 4K e mais de 60fps quando disponível (Nem todas as transmissões são compatíveis, depende do streamer ativar essa opção e do Twitch disponibilizá-la na sua região).';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+        'Este recurso funciona apenas para usuários conectados. Nem todas as transmissões são compatíveis — depende do streamer ativar e do Twitch disponibilizar na sua região.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'O app verifica se seu dispositivo suporta HEVC ou AV1 para transmissões de maior qualidade.';
 
@@ -902,4 +900,48 @@ function pt_BRLang() {
 
     STR_PLAYER_CODEC_SUPPORTED = 'dispositivo compatível';
     STR_PLAYER_CODEC_NOT_SUPPORTED = 'Dispositivo não compatível! Ativar este codec pode causar erros na reprodução.';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Remover conta do Google Drive';
+    STR_BACKUP_ACCOUNT_ADD = 'Adicionar conta do Google Drive para backup';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar um backup, adicione uma conta e o app mostrará as opções disponíveis para restauração.';
+
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Conta do Google Drive adicionada';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Recuperando informações da API, por favor, aguarde...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acesso negado';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acesso bem-sucedido, aguarde enquanto o aplicativo verifica...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'O aplicativo irá restaurar e fechar este diálogo em breve';
+    STR_BACKUP_NO_BACKUP_FOUND = 'Nenhum backup feito anteriormente encontrado, backup criado com sucesso';
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Perdeu acesso à conta de Backup e Sincronização, conta de backup removida!';
+
+    STR_BACKUP_NAME = 'Nome do backup:';
+    STR_BACKUP_SIZE = 'Tamanho do backup:';
+    STR_BACKUP_SYNC = 'Sincronizar, Backup e Restauração';
+    STR_BACKUP_SYNC_SUMMARY =
+        'O aplicativo poderá visualizar, criar, editar e excluir apenas os arquivos específicos do Google Drive que ele cria, NÃO poderá visualizar, modificar ou excluir quaisquer outros arquivos no seu Google Drive.' +
+        '<br><br>' +
+        'Também poderá ler seu endereço de e-mail e imagem de perfil para exibir a conta atualmente ativa. Essas informações serão apenas exibidas e NÃO serão modificadas.';
+    STR_BACKUP_USER_INFO = '(Informações do usuário: Usuários, histórico, bloqueados e configurações)';
+
+    STR_BACKUP_SYNC_USER = 'Sincronizar usuários';
+    STR_BACKUP_SYNC_HISTORY = 'Sincronizar histórico e bloqueados dos usuários.';
+    STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configurações';
+    STR_BACKUP_RESTORE_USER = 'Restaurar usuários';
+    STR_BACKUP_RESTORE_HISTORY = 'Restaurar histórico e lista de bloqueados dos usuários.';
+    STR_BACKUP_RESTORE_SETTINGS = 'Restaurar configurações';
+    STR_BACKUP_RESTORE_SUMMARY = 'Se você tiver problemas após a restauração, tente limpar os dados do app e restaurar pulando uma das opções.';
+
+    STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+        'O backup tem apenas um conjunto de configurações unificadas para todos os seus dispositivos. Qualquer alteração que você fizer será aplicada em seus outros dispositivos na próxima vez que abrir o aplicativo.';
+    STR_BACKUP_SYNC_RESTORE = 'Backup encontrado';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup encontrado. Escolha o que restaurar agora e pressione Enter para confirmar.';
+
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restauração bem-sucedida!';
+    STR_BACKUP_RESTORE_FAIL = 'Falha ao restaurar backup';
+
+    STR_BACKUP_ENABLE = 'Habilitar backup';
+    STR_BACKUP_ENABLE_SUMMARY = 'Se definido como SIM, o aplicativo manterá um backup de todas as informações do usuário ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Habilitar sincronização';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY = 'Se definido como SIM, o aplicativo sincronizará automaticamente as informações do usuário entre dispositivos';
 }

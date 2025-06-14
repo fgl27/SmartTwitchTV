@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -85,7 +85,7 @@ function Screens_InitScreens() {
         ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_histdelete = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
         //ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
         ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
@@ -145,7 +145,9 @@ function Screens_assign() {
             keys = Object.keys(obj),
             keys_length = keys.length;
 
-        for (j = 0; j < keys_length; j++) ret[keys[j]] = obj[keys[j]];
+        for (j = 0; j < keys_length; j++) {
+            ret[keys[j]] = obj[keys[j]];
+        }
     }
     return ret;
 }
@@ -989,11 +991,11 @@ function Screens_loadDataSuccessFinish(key) {
             //if (SceneNotShowing || ScrollDocNotShowing) {
             if (ScrollDocNotShowing) {
                 // if (SceneNotShowing) {
-                //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                //     Main_AddClassWithEle(Main_Scene1Doc, 'opacity_zero');
                 //     Main_showScene1Doc();
                 // }
                 //if (ScrollDocNotShowing) {
-                Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                Main_AddClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
                 Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
                 //}
 
@@ -1124,7 +1126,9 @@ function Screens_handleKeyControlsEnter(key) {
         CheckAccessibilityWasVisible = true;
         Main_removeEventListener('keydown', Main_CheckAccessibilityKey);
         Main_HideElement('dialog_accessibility');
-    } else CheckAccessibilityWasVisible = false;
+    } else {
+        CheckAccessibilityWasVisible = false;
+    }
 
     Main_HideWelcomeDialog();
     Main_HideControlsDialog();
@@ -1157,7 +1161,7 @@ function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
     Main_FirstRun = false;
     if (!SkipHidedialog) Main_HideLoadDialog();
 
-    AddUser_UpdateSidepanelAfterShow();
+    AddUser_UpdateSidePanelAfterShow();
 
     if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLabels();
     else Sidepannel_SetDefaultLabels();
@@ -1235,6 +1239,10 @@ function Screens_ObjNotNull(key) {
     return Boolean(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
 }
 
+function Screens_ObjNotNull_YX(key, y, x) {
+    return Boolean(ScreenObj[key].DataObj[y + '_' + x]);
+}
+
 var Screens_LoadPreviewId;
 //Clips load too fast, so only call this function after animations have ended
 //Also help to prevent lag on animation
@@ -1308,7 +1316,7 @@ function Screens_LoadPreviewRestore(key) {
     Screens_ClearAnimation(key);
 
     if (Main_IsOn_OSInterface) {
-        Main_AddClassWitEle(img, 'opacity_zero');
+        Main_AddClassWithEle(img, 'opacity_zero');
     }
 }
 
@@ -1496,7 +1504,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                 );
 
                 Screens_ClearAnimation(x);
-                Main_AddClassWitEle(img, 'opacity_zero');
+                Main_AddClassWithEle(img, 'opacity_zero');
 
                 if (isClip || isVod) {
                     Screens_UpdatePlaybackTimeStart(x);
@@ -2576,7 +2584,7 @@ function Screens_showDeleteDialog(text, key) {
     Main_innerHTML('main_dialog_remove', text);
     Main_ShowElementWithEle(Screens_dialog_thumb_delete_div);
     Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-    Main_addEventListener('keydown', ScreenObj[key].key_histdelet);
+    Main_addEventListener('keydown', ScreenObj[key].key_histdelete);
     Screens_setRemoveDialog(key);
 }
 
@@ -2592,7 +2600,7 @@ function Screens_setRemoveDialog(key) {
 
 function Screens_HideRemoveDialog(key) {
     Users_clearRemoveDialog();
-    Main_removeEventListener('keydown', ScreenObj[key].key_histdelet);
+    Main_removeEventListener('keydown', ScreenObj[key].key_histdelete);
     Main_addEventListener('keydown', ScreenObj[key].key_fun);
     Main_HideElementWithEle(Screens_dialog_thumb_delete_div);
     Users_RemoveCursor = 0;
@@ -2604,11 +2612,13 @@ function Screens_HideRemoveDialog(key) {
 function Screens_histDeleteKeyEnter(key) {
     var temp = Users_RemoveCursor;
     Screens_HideRemoveDialog(key);
-    if (temp) Screens_histDelete(key);
+    if (temp) {
+        Screens_histDelete(key);
+    }
 }
 
 function Screens_histDeleteKeyDown(key, event) {
-    //Main_Log('ScreenObj[key].key_histdelet ' + event.keyCode);
+    //Main_Log('ScreenObj[key].key_histdelete ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_LEFT:
@@ -2638,24 +2648,62 @@ function Screens_histDeleteKeyDown(key, event) {
 }
 
 function Screens_histDelete(key) {
+    var type = ScreenObj[key].Type;
+
     if (Screens_DeleteDialogAll) {
-        Main_values_History_data[AddUser_UsernameArray[0].id][ScreenObj[key].Type] = [];
+        Screens_addAllToDelete(JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][type])), type);
+
+        Main_values_History_data[AddUser_UsernameArray[0].id][type] = [];
+
         Main_setHistoryItem();
         Main_ReloadScreen();
     } else {
-        var type = 'live';
-
-        if (ScreenObj[key].screen === Main_HistoryVod) type = 'vod';
-        else if (ScreenObj[key].screen === Main_HistoryClip) type = 'clip';
-
         var index = Main_history_Exist(type, Screens_values_Play_data[7]);
+
         if (index > -1) {
-            Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
+            Screens_deleteFromHistory(type, Main_values_History_data[AddUser_UsernameArray[0].id][type], index, 1);
             Main_setHistoryItem();
         }
 
         Screens_deleteUpdateRows(key);
     }
+
+    GDriveBackup();
+}
+
+function Screens_deleteFromHistory(type, array, index, position) {
+    Screens_checkDeleteObj();
+
+    var value = JSON.parse(JSON.stringify(array[index]));
+
+    Screens_addToDelete(value, type);
+    array.splice(index, position);
+}
+
+function Screens_addAllToDelete(array, type) {
+    Screens_checkDeleteObj();
+
+    var index = 0,
+        len = array.length;
+
+    for (index; index < len; index++) {
+        Screens_addToDelete(array[index], type);
+    }
+}
+
+function Screens_checkDeleteObj() {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].deleted) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].deleted = {
+            live: {},
+            vod: {},
+            clip: {}
+        };
+    }
+}
+
+function Screens_addToDelete(value, type) {
+    Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][value.id] = value;
+    Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][value.id].date = new Date().getTime();
 }
 
 // Not an ideal way to delete a thumbnail
@@ -3369,6 +3417,12 @@ function Screens_BlockChannel(key) {
     Screens_BlockSetDefaultObj();
 
     if (Screens_getChannelIsBlocked(channelId)) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId] = JSON.parse(
+            JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId])
+        );
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId].date = new Date().getTime();
+
         delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
 
         if (ScreenObj[key].screen === Main_Blocked) {
@@ -3396,6 +3450,8 @@ function Screens_BlockChannel(key) {
         Screens_BlockChannelUpdateInfo(channelId);
 
         Screens_BlockCheckDeleteChannel(key);
+
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId];
     }
 
     Main_setHistoryItem();
@@ -3531,6 +3587,12 @@ function Screens_BlockGame(key) {
     Screens_BlockSetDefaultObj();
 
     if (Screens_getGameIsBlocked(gameId)) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId] = JSON.parse(
+            JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId])
+        );
+
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId].date = new Date().getTime();
+
         delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
 
         if (ScreenObj[key].screen === Main_Blocked) {
@@ -3559,6 +3621,8 @@ function Screens_BlockGame(key) {
         Screens_BlockGameUpdateInfo(gameId);
 
         Screens_BlockCheckDeleteGame(key);
+
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId];
     }
 
     Main_setHistoryItem();
@@ -3683,6 +3747,13 @@ function Screens_BlockSetDefaultObj() {
 
     if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel) {
         Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel = {};
+    }
+
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted = {
+            game: {},
+            channel: {}
+        };
     }
 }
 

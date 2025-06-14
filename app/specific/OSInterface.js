@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -68,6 +68,22 @@ function OSInterface_RunNotificationService() {
 //Allows to stop the notification service from js side
 function OSInterface_upNotificationState(Notify) {
     if (Main_IsOn_OSInterface) Android.upNotificationState(Notify);
+}
+
+//public void upNotificationState(boolean Notify)
+//Notify  background notification are enable
+//Android specific: true
+//Allows to stop the notification service from js side
+function OSInterface_hasNotificationPermission() {
+    try {
+        if (Main_IsOn_OSInterface) {
+            return Android.hasNotificationPermission();
+        }
+
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
 
 //public void SetNotificationLive(boolean Notify)
@@ -266,9 +282,9 @@ function OSInterface_msetPlayer(surface_view, FullScreen) {
 //buffer_size = buffer size in ms
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Change the player starting buffer
-function OSInterface_SetBuffer(who_called, buffer_size) {
-    if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
-}
+// function OSInterface_SetBuffer(who_called, buffer_size) {
+//     if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
+// }
 
 //public void mSetlatency(int LowLatency)
 //LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
@@ -449,15 +465,6 @@ function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
     }
 }
 
-//public void BackupFile(String file, String file_content)
-//file =  the file name and or path
-//file_content = the file content
-//Android specific: true
-//Backups user array and user history to a file
-function OSInterface_BackupFile(file, file_content) {
-    Android.BackupFile(file, file_content);
-}
-
 //public String mPageUrl()
 //Android specific: true
 //return the apk main url
@@ -551,36 +558,6 @@ function OSInterface_getversion() {
 //Allows to get the app debug state
 function OSInterface_getdebug() {
     return Android.getdebug();
-}
-
-//public void requestWr()
-//Android specific: true
-//Runs only once, this functions check for storage access and request the user to give the permission
-function OSInterface_requestWr() {
-    Android.requestWr();
-}
-
-//public boolean HasBackupFile(String file)
-//file =  the file path to check
-//Android specific: true
-//Check if the file exist before restore it
-function OSInterface_HasBackupFile(file) {
-    return Android.HasBackupFile(file);
-}
-
-//public String RestoreBackupFile(String file)
-//file =  the file path to restore
-//Android specific: true
-//Check if the file exist before restore it
-function OSInterface_RestoreBackupFile(file) {
-    return Android.RestoreBackupFile(file);
-}
-
-//public boolean canBackupFile()
-//Android specific: true
-//Check if storage access is available
-function OSInterface_canBackupFile() {
-    return Android.canBackupFile();
 }
 
 //public String getDevice()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -213,7 +213,9 @@ function UserLiveFeedobj_ShowFeed() {
 }
 
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
-    if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
+    if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) {
+        UserLiveFeed_Show();
+    }
 
     if (
         forceRefressh ||
@@ -242,7 +244,9 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
     UserLiveFeedobj_SetLastRefresh(pos);
 
-    if (UserLiveFeed_obj[pos].Screen) Main_EventScreen(UserLiveFeed_obj[pos].Screen);
+    if (UserLiveFeed_obj[pos].Screen) {
+        Main_EventScreen(UserLiveFeed_obj[pos].Screen);
+    }
 }
 
 function UserLiveFeedobj_SetLastRefresh(pos) {
@@ -266,65 +270,115 @@ function UserLiveFeedobj_ShowHistory() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserHistoryPos - 1);
 
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
-        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos);
     }
 }
 
 function UserLiveFeedobj_History() {
-    var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
+    var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
+        pos = UserLiveFeedobj_UserHistoryPos,
+        i = 0,
+        len = array.length,
+        idsObj = {},
+        objArray = [],
+        idsArray = [];
 
+    UserLiveFeedobj_StartDefault(pos);
+
+    // Sort by date descending
     array.sort(function (a, b) {
         return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
     });
 
-    var pos = UserLiveFeedobj_UserHistoryPos,
-        response = JSON.parse(JSON.stringify(array.slice(0, 100))), //first 100 only
-        len = response.length,
-        response_items = Math.min(len, 100),
-        cell,
-        id,
-        i = 0,
-        itemsCount = UserLiveFeed_itemsCount[pos],
-        streamerID = {};
+    // Get unique items by ID (up to 100)
+    for (i; i < len; i++) {
+        //keep original if exist as it has lower date
+        idsObj[array[i].data[14]] = idsObj[array[i].data[14]] ? idsObj[array[i].data[14]] : array[i];
 
-    response_items = Math.min(len, 100);
-
-    if (response_items) {
-        for (i; i < response_items; i++) {
-            cell = response[i];
-            id = cell.data[7];
-
-            if (!cell.forceVod) {
-                if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] && cell.data[14] !== '') {
-                    UserLiveFeed_idObject[pos][id] = itemsCount;
-
-                    UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(
-                        pos,
-                        itemsCount,
-                        pos + '_' + itemsCount,
-                        cell.data,
-                        cell.date,
-                        cell.vodimg,
-                        (streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
-                    );
-
-                    streamerID[cell.data[14]] = 1;
-                    itemsCount++;
-                }
-            } else if (len > response_items + 1) {
-                response_items++;
-            }
+        if (Object.keys(idsObj).length === 100) {
+            break;
         }
+    }
 
-        if (!itemsCount) UserLiveFeedobj_Empty(pos);
-    } else UserLiveFeedobj_Empty(pos);
+    // Convert object to array
+    for (var key in idsObj) {
+        if (idsObj.hasOwnProperty(key)) {
+            objArray.push(idsObj[key]);
+        }
+    }
 
-    UserLiveFeed_itemsCount[pos] = itemsCount;
+    // Sort array by date descending
+    objArray.sort(function (a, b) {
+        return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
+    });
+
+    // Extract IDs into array (ES5 compatible)
+    for (i = 0; i < objArray.length; i++) {
+        idsArray.push(objArray[i].data[14]);
+    }
+
+    var ids = JSON.stringify(idsArray).replace(/"/g, '\\"');
+
+    if (idsArray.length) {
+        UserLiveFeedobj_HistoryGetLives(ids, pos);
+        return;
+    }
+
+    UserLiveFeedobj_Empty(pos);
+
+    UserLiveFeed_itemsCount[pos] = 0;
 
     UserLiveFeedobj_SetLastPosition(pos);
 
     UserLiveFeed_loadDataSuccessFinish(pos);
+}
+
+function UserLiveFeedobj_HistoryGetLives(ids, pos) {
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        Main_OAuth_User_Headers,
+        UserLiveFeedobj_HistoryGetLivesEnd,
+        noop_fun,
+        pos,
+        pos, //checkResult
+        'POST', //Method, null for get
+        userLiveByIdsQuery.replace('%a', ids)
+    );
+}
+
+function UserLiveFeedobj_HistoryGetLivesEnd(resultObj) {
+    if (resultObj.status === 200) {
+        UserLiveFeedobj_HistoryGetLiveSuccess(resultObj.responseText);
+    } else {
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserHistoryPos);
+    }
+}
+
+function UserLiveFeedobj_HistoryGetLiveSuccess(responseText) {
+    var pos = UserLiveFeedobj_UserHistoryPos,
+        responseObj = JSON.parse(responseText),
+        response = [],
+        hasData = responseObj.data && responseObj.data.users;
+
+    if (hasData) {
+        UserLiveFeed_obj[pos].dataEnded = true;
+
+        var i = 0,
+            len = responseObj.data.users.length;
+
+        for (i; i < len; i++) {
+            if (responseObj.data.users[i].stream) {
+                response.push(responseObj.data.users[i]);
+            }
+        }
+    } else {
+        UserLiveFeed_obj[pos].dataEnded = true;
+        UserLiveFeed_obj[pos].cursor = null;
+    }
+
+    UserLiveFeed_itemsCount[pos] = 0;
+
+    UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, response.length, pos, UserLiveFeed_itemsCount[pos]);
 }
 
 //Live history end
@@ -917,7 +971,7 @@ function UserLiveFeedobj_SetBottomText(pos) {
     }
 }
 
-function UserLiveFeedobj_CreatSideFeed(id, data) {
+function UserLiveFeedobj_CreateSideFeed(id, data) {
     return (
         '<div id="' +
         UserLiveFeed_side_ids[3] +
@@ -1085,7 +1139,7 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
 //     return div;
 // }
 
-function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until) {
+function UserLiveFeedobj_CreateVodFeed(pos, x, id, data, Extra_when, Extra_until) {
     var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
@@ -1307,7 +1361,7 @@ function UserLiveFeed_loadDataSuccessEnd(response) {
                     mArray
                 );
 
-                Sidepannel_Html += UserLiveFeedobj_CreatSideFeed(itemsCount, mArray);
+                Sidepannel_Html += UserLiveFeedobj_CreateSideFeed(itemsCount, mArray);
 
                 itemsCount++;
             }
@@ -1390,24 +1444,25 @@ function UserLiveFeedobj_UserVod() {
 }
 
 function UserLiveFeedobj_loadUserVod() {
-    UserLiveFeedobj_loadUserVodGet(
-        Main_kraken_api +
-            'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
-            UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset +
-            Main_TwitchV5Flag
-    );
+    UserLiveFeedobj_loadUserVodGet();
 }
 
-function UserLiveFeedobj_loadUserVodGet(theUrl) {
+function UserLiveFeedobj_loadUserVodGet() {
     FullxmlHttpGet(
-        theUrl,
-        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+        PlayClip_BaseUrl,
+        Main_OAuth_User_Headers,
         UserLiveFeedobj_loadUserVodGetEnd,
         noop_fun,
         UserLiveFeedobj_UserVodPos,
-        UserLiveFeedobj_UserVodPos,
-        null,
-        null
+        UserLiveFeedobj_UserVodPos, //checkResult
+        'POST', //Method, null for get
+        userVodQuery
+            .replace('%x', 'ARCHIVE')
+            .replace('%t', 'TIME')
+            .replace(
+                '%y',
+                UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].cursor ? 'after: \\"' + UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].cursor + '\\",' : ''
+            )
     );
 }
 
@@ -1436,27 +1491,28 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
         id,
         mArray,
         i = 0,
-        itemsCount = UserLiveFeed_itemsCount[pos];
+        itemsCount = UserLiveFeed_itemsCount[pos],
+        hasData =
+            response.data && response.data.currentUser && response.data.currentUser.followedVideos && response.data.currentUser.followedVideos.edges;
 
-    //return;
+    if (hasData) {
+        if (UserLiveFeed_obj[pos].HasMore) {
+            UserLiveFeed_obj[pos].dataEnded = !response.data.currentUser.followedVideos.pageInfo.hasNextPage;
+        }
 
-    response = response.videos;
-    response_items = response.length;
+        response = response.data.currentUser.followedVideos.edges;
+        response_items = response.length;
 
-    if (response_items) {
+        UserLiveFeed_obj[pos].cursor = response && response && response.length ? response[response.length - 1].cursor : null;
+
         for (i; i < response_items; i++) {
-            mArray = ScreensObj_VodCellArray(response[i]);
+            mArray = ScreensObj_VodCellArray(response[i].node, true);
             id = mArray[7];
 
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[pos][id] = itemsCount;
 
-                // if (Main_A_includes_B(mArray[0] + '', '404_processing')) {
-                //     mArray[0] = 'https://static-cdn.jtvnw.net/s3_vods/' + mArray[8].split('/')[3] +
-                //         '/thumb/thumb0-' + Main_VideoSize + '.jpg'
-                // }
-
-                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatVodFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
+                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreateVodFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
 
                 itemsCount++;
             }
@@ -1464,12 +1520,6 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
     } else UserLiveFeedobj_Empty(pos);
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
-
-    if (UserLiveFeed_obj[pos].HasMore) {
-        UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
-
-        if (!response_items || response_items < Main_ItemsLimitMax - 5) UserLiveFeed_obj[pos].dataEnded = true;
-    }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
         UserLiveFeed_obj[pos].loadingMore = false;
@@ -1524,7 +1574,7 @@ function UserLiveFeedobj_UserVodHistory() {
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[pos][id] = itemsCount;
 
-                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatVodFeed(
+                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreateVodFeed(
                     pos,
                     itemsCount,
                     pos + '_' + itemsCount,
@@ -1591,6 +1641,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         id,
         mArray,
         i = 0,
+        isHistory = pos === UserLiveFeedobj_UserHistoryPos,
         isFeatured = pos === UserLiveFeedobj_FeaturedPos;
 
     if (response_items) {
@@ -1669,7 +1720,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         var useHelix = UserLiveFeed_obj[pos].useHelix;
 
         for (i; i < response_items; i++) {
-            if (isFeatured) {
+            if (isFeatured || isHistory) {
                 stream = response[i];
 
                 //stream or stream.stream may be null
@@ -1683,10 +1734,11 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 id = useHelix ? stream.user_id : stream.channel._id;
             }
 
-            if (!UserLiveFeed_idObject[pos][id] && (isFeatured || ScreensObj_CheckIsMature(stream))) {
-                mArray = isFeatured ? ScreensObj_LiveQueryCellArray(stream) : ScreensObj_LiveCellArray(stream);
+            if (!UserLiveFeed_idObject[pos][id] && (isFeatured || isHistory || ScreensObj_CheckIsMature(stream))) {
+                mArray = isFeatured || isHistory ? ScreensObj_LiveQueryCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
                 if (
+                    isHistory ||
                     Screens_isNotBlocked(
                         mArray[14],
                         pos === UserLiveFeedobj_CurrentGamePos ? null : mArray[18],
@@ -1759,7 +1811,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 
     if (UserLiveFeed_obj[pos].loadingMore) {
         UserLiveFeed_obj[pos].loadingMore = false;
-        if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+
+        if (pos === UserLiveFeed_FeedPosX) {
+            UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+        }
     } else {
         Main_setTimeout(function () {
             UserLiveFeedobj_SetLastPosition(pos);

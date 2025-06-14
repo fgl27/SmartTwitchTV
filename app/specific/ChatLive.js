@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -2209,7 +2209,7 @@ function ChatLive_CleanUser(chat_number, message) {
                     if (ChatLive_ClearChat) el.innerHTML = msg;
                     else el.innerHTML += STR_BR + STR_BR + msg;
 
-                    Main_AddClassWitEle(el.parentElement, 'chat_purged');
+                    Main_AddClassWithEle(el.parentElement, 'chat_purged');
                     //Prevent duplicate removal
                     Main_RemoveClassWithEle(el, classId);
                 }
@@ -2242,7 +2242,7 @@ function ChatLive_CleanMessage(message) {
             if (ChatLive_ClearChat) el.innerHTML = STR_CHAT_MESSAGE_DELETED;
             else el.innerHTML += STR_BR + STR_BR + STR_CHAT_MESSAGE_DELETED;
 
-            Main_AddClassWitEle(el.parentElement, 'chat_purged');
+            Main_AddClassWithEle(el.parentElement, 'chat_purged');
             //Prevent duplicate removal
             el.id = '_';
         }

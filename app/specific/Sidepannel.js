@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -85,7 +85,7 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
             Main_getElementById('side_panel_warn').style.display = 'inline-block';
         }
 
-        Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+        Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
         if (Sidepannel_isShowingUserLive()) {
             Sidepannel_CheckIfIsLiveSTop();
@@ -571,13 +571,13 @@ function Sidepannel_ShowFeed() {
 }
 
 function Sidepannel_Showscenefeed() {
-    Main_AddClassWitEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+    Main_AddClassWithEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     Main_RemoveClassWithEle(Sidepannel_scenefeed, 'feed_screen_input');
 }
 
 function Sidepannel_Hidecenefeed() {
     Main_RemoveClassWithEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-    Main_AddClassWitEle(Sidepannel_scenefeed, 'feed_screen_input');
+    Main_AddClassWithEle(Sidepannel_scenefeed, 'feed_screen_input');
 }
 
 function Sidepannel_SetLastRefresh() {
@@ -620,7 +620,7 @@ function Sidepannel_Hide(PreventCleanQualities) {
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
         Sidepannel_FixDiv.style.marginLeft = '';
-        Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+        Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
         Sidepannel_Hidecenefeed();
     }
     Sidepannel_HideEle(PreventCleanQualities);
@@ -633,10 +633,10 @@ function Sidepannel_HideEle(PreventCleanQualities, full) {
     Sidepannel_RemoveFocusFeed(PreventCleanQualities);
 
     if (!PreventCleanQualities) {
-        Main_AddClassWitEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
-        Main_AddClassWitEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
-        Main_AddClassWitEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
-        Main_AddClassWitEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
+        Main_AddClassWithEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
+        Main_AddClassWithEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
+        Main_AddClassWithEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
+        Main_AddClassWithEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
     }
 }
 
@@ -814,7 +814,7 @@ function Sidepannel_Scroll(skipAnimation) {
 function Sidepannel_userLiveKeyRight() {
     Sidepannel_HideEle(false, true);
     Sidepannel_Hidecenefeed();
-    Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+    Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
     Main_removeEventListener('keydown', Sidepannel_handleKeyDown);
     Sidepannel_StartMain();
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
  /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -32,6 +32,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <!-- Android 8.0 updater fix only needed for github release version of the apk
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
@@ -94,6 +98,7 @@
         <service
             android:enabled="true"
             android:process=":background"
+            android:foregroundServiceType="shortService"
             android:name=".notification.NotificationService" />
 
         <service

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -47,7 +47,7 @@
     // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
     // So in order to check if a css class is loaded one can check it's font-family
     // The simple test here it to remove the <link rel="stylesheet" href="https://werevere"> from index and see if the bellow funtion loads the css for you and vice versa
-    function Main_Checktylesheet() {
+    function Main_CheckdStyleSheet() {
         var span = document.createElement('span');
 
         span.className = 'fa';
@@ -70,7 +70,7 @@
     }
 
     function Main_load() {
-        Main_Checktylesheet();
+        Main_CheckdStyleSheet();
 
         try {
             Main_IsOn_OSInterface = OSInterface_getversion() !== '';

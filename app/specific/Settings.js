@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -512,6 +512,11 @@ var Settings_value = {
         set_values: [''],
         defaultValue: 1
     },
+    backup_sync: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
     warnings_opt: {
         values: ['None'],
         set_values: [''],
@@ -774,6 +779,31 @@ var Settings_value = {
     chat_show_badges_shared: {
         values: ['no', 'yes'],
         defaultValue: 2
+    },
+    backup_enabled: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    sync_enabled: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    sync_users: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    sync_history: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    sync_settings: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    backup_account: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
     }
 };
 
@@ -902,6 +932,7 @@ function Settings_SetSettings() {
     div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);
 
     //Dialog settings
+    div += Settings_Content('backup_sync', [STR_ENTER_TO_OPEN], STR_BACKUP_SYNC, null);
     div += Settings_Content('chat_opt', [STR_ENTER_TO_OPEN], STR_CHAT_OPTIONS, null);
     div += Settings_Content('ui_opt', [STR_ENTER_TO_OPEN], STR_UI_SETTINGS, null);
     div += Settings_Content('custom_opt', [STR_ENTER_TO_OPEN], STR_GENERAL_CUSTOM, null);
@@ -958,7 +989,6 @@ function Settings_SetSettings() {
     div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
     div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
-    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY);
 
     Main_innerHTML('settings_main', div);
     Settings_positions_length = Settings_value_keys.length;
@@ -1085,7 +1115,6 @@ function Settings_SetDefaults() {
         if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
     }
 
-    Settings_SetBuffers(0);
     Settings_ExtraCodecs(false);
     Settings_SetClock();
     Settings_HideMainClock();
@@ -1205,7 +1234,7 @@ function Settings_UpdateString() {
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_updateClock();
     Main_checkVersion(true);
-    AddUser_UpdateSidepanelAfterShow();
+    AddUser_UpdateSidePanelAfterShow();
     BrowserTestSetStrings();
 
     Main_SaveValues();
@@ -1309,6 +1338,7 @@ function Settings_ChangeSettings(position, skipDefault) {
     Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
     Settings_Setarrows(position);
+
     if (!skipDefault) {
         Settings_SetDefault(key);
     }
@@ -1348,10 +1378,7 @@ function Settings_SetDefault(position) {
     else if (position === 'since_notification') Settings_notification_sicetime();
     else if (position === 'ping_warn') Settings_SetPingWarning();
     else if (position === 'app_animations') Settings_SetAnimations();
-    else if (position === 'buffer_live') Settings_SetBuffers(1);
     else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
-    else if (position === 'buffer_vod') Settings_SetBuffers(2);
-    else if (position === 'buffer_clip') Settings_SetBuffers(3);
     else if (position === 'av1_codec' || position === 'hevc_codec') Settings_ExtraCodecs(true);
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
@@ -1367,7 +1394,7 @@ function Settings_SetDefault(position) {
     else if (position === 'enable_mature') Settings_checkMature();
     else if (position === 'global_font_offset') {
         calculateFontSize();
-        AddUser_UpdateSidepanelAfterShow();
+        AddUser_UpdateSidePanelAfterShow();
         UserLiveFeed_ResetAddCellsize();
         Sidepannel_Scroll(true);
     } else if (position === 'hide_screen_counter') Settings_ShowCounter();
@@ -1394,6 +1421,7 @@ function Settings_SetDefault(position) {
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
+    else if (position === 'sync_enabled') Settings_DialogBackupSyncRefresh();
     else if (
         position === 'block_qualities_43' ||
         position === 'block_qualities_21' ||
@@ -1411,9 +1439,11 @@ function Settings_SetDefault(position) {
 
 var Settings_cursorYBackup;
 var Settings_enable_matureBackup;
+var Settings_isMature;
 function Settings_checkMature() {
     var enabled = Settings_value.enable_mature.defaultValue;
     Settings_enable_matureBackup = enabled;
+    Settings_isMature = false;
 
     if (enabled) {
         if (Main_values.Password_data) {
@@ -1421,6 +1451,7 @@ function Settings_checkMature() {
         }
     } else if (!Main_values.Password_data) {
         Users_RemoveCursor = 0;
+        Settings_isMature = true;
         Users_RemoveCursorSet();
         Main_innerHTML('main_dialog_remove', STR_MATURE_PROTECT);
         Main_textContent('yes_no_dialog_button_no', STR_NO);
@@ -1599,7 +1630,13 @@ function Settings_notification_game() {
 }
 
 function Settings_notification_background() {
-    OSInterface_upNotificationState(Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable());
+    var enabled = Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable();
+
+    OSInterface_upNotificationState(enabled);
+
+    if (enabled && !OSInterface_hasNotificationPermission()) {
+        OSInterface_showToast(STR_NOTIFICATION_BACKGROUND_WARNING);
+    }
 }
 
 function Settings_notification_position() {
@@ -1822,26 +1859,6 @@ function Settings_ExtraCodecs(showWarning) {
     play_ExtraCodecsValues = ExtraCodecsValuesArray.join(',');
 }
 
-function Settings_SetBuffers(whocall) {
-    if (!whocall) {
-        Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
-        PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
-        PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
-        OSInterface_SetBuffer(1, Play_Buffer);
-        OSInterface_SetBuffer(2, PlayVod_Buffer);
-        OSInterface_SetBuffer(3, PlayClip_Buffer);
-    } else if (whocall === 1) {
-        Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
-        OSInterface_SetBuffer(1, Play_Buffer);
-    } else if (whocall === 2) {
-        PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
-        OSInterface_SetBuffer(2, PlayVod_Buffer);
-    } else if (whocall === 3) {
-        PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
-        OSInterface_SetBuffer(3, PlayClip_Buffer);
-    }
-}
-
 function Settings_SetClock() {
     var time = Settings_Obj_default('clock_offset');
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
@@ -2033,7 +2050,6 @@ function Settings_handleKeyDown(event) {
 function Settings_KeyEnter(click) {
     if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'playerend_opt')) Settings_PlayerEnd(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
-    else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_extracodecs')) Settings_DialogShowExtraCodecs(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'proxy_settings')) Settings_DialogShowProxy(click);
@@ -2047,6 +2063,7 @@ function Settings_KeyEnter(click) {
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'update_settings')) Settings_UpdateSettings(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat(click);
+    else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'backup_sync')) Settings_DialogBackupSync(click);
 }
 
 var Settings_CodecsValue = [];
@@ -2112,6 +2129,7 @@ function Settings_CodecsShow(click) {
             dialogContent += '</div></div>';
 
             Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
+
             Settings_CodecsDialogSet = true;
         }
     }
@@ -2169,6 +2187,7 @@ function Settings_handleKeyDownCodecsRight() {
 
 function Settings_handleKeyDownCodecs(event) {
     //console.log('event.keyCode ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_ENTER:
         case KEY_KEYBOARD_BACKSPACE:
@@ -2556,31 +2575,6 @@ function Settings_ForceEnableAnimations() {
     Settings_SetAnimations();
 }
 
-function Settings_DialogShowBuffer(ckick) {
-    var obj = {
-        buffer_live: {
-            defaultValue: Settings_value.buffer_live.defaultValue,
-            values: Settings_value.buffer_live.values,
-            title: STR_SETTINGS_BUFFER_LIVE,
-            summary: null
-        },
-        buffer_vod: {
-            defaultValue: Settings_value.buffer_vod.defaultValue,
-            values: Settings_value.buffer_vod.values,
-            title: STR_SETTINGS_BUFFER_VOD,
-            summary: null
-        },
-        buffer_clip: {
-            defaultValue: Settings_value.buffer_clip.defaultValue,
-            values: Settings_value.buffer_clip.values,
-            title: STR_SETTINGS_BUFFER_CLIP,
-            summary: null
-        }
-    };
-
-    Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY, ckick);
-}
-
 function Settings_DialogShowProxy(click) {
     var array_no_yes = [STR_NO, STR_YES];
     Settings_value.ttv_lolProxy.values = array_no_yes;
@@ -2646,6 +2640,9 @@ function Settings_DialogShowExtraCodecs(click) {
             '</div>' +
             STR_BR +
             STR_PLAYER_EXTRA_CODEC_SUMMARY +
+            STR_BR +
+            STR_BR +
+            STR_PLAYER_EXTRA_CODEC_SUMMARY1 +
             STR_BR +
             STR_BR +
             STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA +
@@ -2882,18 +2879,14 @@ function Settings_DialogShowNotification(click) {
             values: Settings_value.since_notification.values,
             title: STR_NOTIFICATION_SINCE,
             summary: STR_NOTIFICATION_SINCE_SUMMARY
-        }
-    };
-
-    //TODO remove comments when apk is updated
-    if (!Main_IsOn_OSInterface || OSInterface_getSDK() < 30) {
-        obj.live_notification_background = {
+        },
+        live_notification_background: {
             defaultValue: Settings_value.live_notification_background.defaultValue,
             values: Settings_value.live_notification_background.values,
-            title: STR_NOW_BACKGROUND,
-            summary: STR_NOW_BACKGROUND_SUMMARY
-        };
-    }
+            title: STR_NOTIFICATION_BACKGROUND,
+            summary: STR_NOTIFICATION_BACKGROUND_SUMMARY
+        }
+    };
 
     Settings_DialogShow(obj, STR_NOTIFICATION_OPT, click);
 }
@@ -3158,6 +3151,174 @@ function Settings_PlayerEnd(click) {
         }
     };
     Settings_DialogShow(obj, STR_END_DIALOG_OPT, click);
+}
+
+function Settings_DialogBackupSyncRefresh() {
+    var divArray = ['sync_users', 'sync_history', 'sync_settings'],
+        element,
+        div;
+
+    for (var i = 0; i < divArray.length; i++) {
+        element = divArray[i] + '_div';
+        div = Main_getElementById(element);
+
+        if (!div) {
+            continue;
+        }
+
+        if (Settings_value.sync_enabled.defaultValue && Main_A_includes_B(div.className, 'hideimp')) {
+            Main_RemoveClassWithEle(div, 'hideimp');
+
+            Settings_DialogValue.push(divArray[i]);
+        } else if (!Settings_value.sync_enabled.defaultValue) {
+            Main_AddClassWithEle(div, 'hideimp');
+
+            var index = Settings_DialogValue.indexOf(divArray[i]);
+
+            if (index > -1) {
+                Settings_DialogValue.splice(index, 1);
+            }
+        }
+    }
+}
+
+function Settings_DialogBackupSync(click) {
+    var yes_no = [STR_NO, STR_YES];
+    Settings_value.backup_enabled.values = yes_no;
+    Settings_value.sync_enabled.values = yes_no;
+    Settings_value.sync_users.values = yes_no;
+    Settings_value.sync_history.values = yes_no;
+    Settings_value.sync_settings.values = yes_no;
+
+    var obj = {
+        backup_account: {
+            defaultValue: Settings_value.backup_account.defaultValue,
+            values: Settings_value.backup_account.values,
+            title: GDriveConfig.accessToken ? STR_BACKUP_ACCOUNT_REMOVE : STR_BACKUP_ACCOUNT_ADD,
+            summary: GDriveConfig.accessToken ? null : STR_BACKUP_ACCOUNT_ADD_SUMMARY,
+            keyenter: true
+        },
+        backup_enabled: {
+            defaultValue: Settings_value.backup_enabled.defaultValue,
+            values: Settings_value.backup_enabled.values,
+            title: STR_BACKUP_ENABLE,
+            summary: STR_BACKUP_ENABLE_SUMMARY
+        },
+        sync_enabled: {
+            defaultValue: Settings_value.sync_enabled.defaultValue,
+            values: Settings_value.sync_enabled.values,
+            title: STR_BACKUP_SYNC_ENABLE,
+            summary: STR_BACKUP_SYNC_ENABLE_SUMMARY
+        },
+        sync_users: {
+            defaultValue: Settings_value.sync_users.defaultValue,
+            values: Settings_value.sync_users.values,
+            title: STR_BACKUP_SYNC_USER,
+            summary: null
+        },
+        sync_history: {
+            defaultValue: Settings_value.sync_history.defaultValue,
+            values: Settings_value.sync_history.values,
+            title: STR_BACKUP_SYNC_HISTORY,
+            summary: null
+        },
+        sync_settings: {
+            defaultValue: Settings_value.sync_settings.defaultValue,
+            values: Settings_value.sync_settings.values,
+            title: STR_BACKUP_SYNC_SETTINGS,
+            summary: STR_BACKUP_SYNC_SETTINGS_SUMMARY
+        }
+    };
+
+    Settings_DialogShow(
+        obj,
+        STR_BACKUP_SYNC +
+            STR_BR +
+            (GDriveConfig.userEmail
+                ? '<div style="min-height: 15vh;margin:0.6em;" > <img style="width: 7%; border-radius: 50%;" src="' +
+                  GDriveConfig.userImgURL +
+                  '" onerror="this.onerror=null;this.src=\'' +
+                  IMG_404_LOGO +
+                  '\';" /> <div > ' +
+                  DefaultMakeLink(GDriveConfig.userEmail, 'mailto:') +
+                  ' </div></div>'
+                : '') +
+            STR_BR +
+            STR_BACKUP_SYNC_SUMMARY +
+            STR_BR +
+            STR_BR +
+            STR_BACKUP_NAME +
+            STR_SPACE_HTML +
+            '<spam class="class_bold">' +
+            GDriveFileName +
+            '</spam>' +
+            STR_SPACE_HTML +
+            STR_SPACE_HTML +
+            (GDriveConfig.backupSize ? STR_BACKUP_SIZE + STR_SPACE + '<spam class="class_bold">' + GDriveConfig.backupSize + '</spam>' : ''),
+        click
+    );
+
+    Settings_DialogBackupSyncRefresh();
+}
+
+var Settings_RemoveBackupPos = 0;
+
+function Settings_RemoveBackupAccount() {
+    Main_innerHTML('main_dialog_remove', STR_DIV_TITLE + STR_BACKUP_ACCOUNT_REMOVE + '</div>');
+
+    Main_textContent('yes_no_dialog_button_no', STR_NO);
+    Main_textContent('yes_no_dialog_button_yes', STR_YES);
+    Settings_DialoghandleKeyReturnAfter();
+    Settings_RemoveBackupPos = 0;
+
+    Main_ShowElement('yes_no_dialog');
+
+    Main_addEventListener('keydown', Settings_handleRemoveDrive);
+}
+
+function Settings_RemoveBackupAccountDone() {
+    Main_HideElement('yes_no_dialog');
+    Main_removeEventListener('keydown', Settings_handleRemoveDrive);
+    Main_addEventListener('keydown', Settings_handleKeyDown);
+}
+
+function Settings_handleRemoveDrive(event) {
+    switch (event.keyCode) {
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Settings_RemoveBackupAccountDone();
+            break;
+        case KEY_LEFT:
+            Settings_handleRemoveDriveLeft();
+            break;
+        case KEY_RIGHT:
+            Main_RemoveClass('yes_no_dialog_button_no', 'button_dialog_focused');
+            Main_AddClass('yes_no_dialog_button_yes', 'button_dialog_focused');
+            Settings_RemoveBackupPos = 1;
+            break;
+        case KEY_ENTER:
+            Settings_RemoveBackupAccountDone();
+            if (Settings_RemoveBackupPos) {
+                Settings_handleRemoveDriveLeft();
+                GDriveClean();
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+function Settings_handleRemoveDriveLeft() {
+    Main_AddClass('yes_no_dialog_button_no', 'button_dialog_focused');
+    Main_RemoveClass('yes_no_dialog_button_yes', 'button_dialog_focused');
+    Settings_RemoveBackupPos = 0;
+}
+
+function Settings_DialogAddBackupAccount() {
+    Main_innerHTML('backup_dialog_text', STR_BACKUP_ACCOUNT_MAIN_0);
+
+    Main_ShowElement('backup_dialog');
+    GDriveStart();
 }
 
 function Settings_DialogShowChat(click) {
@@ -3437,7 +3598,7 @@ function Settings_DialogShow(obj, title, click, scroll) {
     for (var property in obj) {
         Settings_DialogValue.push(property);
         if (obj[property].keyenter) {
-            dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
+            dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, obj[property].summary);
         } else {
             dialogScroollHolder += obj[property].summary
                 ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73)
@@ -3449,7 +3610,11 @@ function Settings_DialogShow(obj, title, click, scroll) {
 
     Main_innerHTML(
         'dialog_settings_text',
-        dialogContent + dialogScroollHolder + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>'
+        dialogContent +
+            dialogScroollHolder +
+            '<div id="dialog_setting_close_text" class="about_text_title">' +
+            (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) +
+            '</div>'
     );
 
     Settings_DialogScrollCenter = scroll ? scroll : 0;
@@ -3463,10 +3628,14 @@ function Settings_DialogShow(obj, title, click, scroll) {
 }
 
 function Settings_DialoghandleKeyReturn() {
+    Settings_DialoghandleKeyReturnAfter();
+    Main_addEventListener('keydown', Settings_handleKeyDown);
+}
+
+function Settings_DialoghandleKeyReturnAfter() {
     Settings_RemoveInputFocusKey(Settings_DialogValue[Settings_DialogPos]);
     Main_HideElement('dialog_settings');
     Main_removeEventListener('keydown', Settings_DialoghandleKeyDown);
-    Main_addEventListener('keydown', Settings_handleKeyDown);
 }
 
 function Settings_DialoghandleKeyLeft() {
@@ -3479,16 +3648,48 @@ function Settings_DialoghandleKeyRight() {
     if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRightLeft(1);
 }
 
+function Settings_BackupDialogExit(event) {
+    if (Main_isElementShowing('backup_dialog')) {
+        if (event.keyCode === KEY_ENTER || event.keyCode === KEY_RETURN || event.keyCode === KEY_KEYBOARD_BACKSPACE) {
+            Main_HideElement('backup_dialog');
+
+            Main_clearTimeout(GDriveCheckCodeId);
+
+            return true;
+        }
+    }
+    return false;
+}
+
 function Settings_DialoghandleKeyDown(event) {
+    if (Settings_BackupDialogExit(event)) {
+        return;
+    }
+
     switch (event.keyCode) {
         case KEY_ENTER:
             if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background')) {
                 SettingsColor_DialogColorsShow();
                 break;
             }
+
+            if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'backup_account')) {
+                if (GDriveConfig.accessToken) {
+                    Settings_RemoveBackupAccount();
+                } else {
+                    Settings_DialogAddBackupAccount();
+                }
+
+                break;
+            }
+
+            Settings_DialogRestoreBackupShowingCheck();
+
         /* falls through */
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
+            Settings_DialogRestoreBackupShowingCheck();
+
             Settings_DialoghandleKeyReturn();
             break;
         case KEY_LEFT:
@@ -3560,5 +3761,50 @@ function Settings_DialogRightLeftAfter(key, offset, skipDefault) {
     if (!skipDefault) {
         Settings_SetarrowsKey(key);
         Settings_SetDefault(key);
+    }
+}
+
+var Settings_DialogRestoreBackupShowing = false;
+function Settings_DialogShowRestoreBackup(click) {
+    Settings_DialogRestoreBackupShowing = true;
+
+    var yes_no = [STR_NO, STR_YES];
+    Settings_value.sync_history.values = yes_no;
+    Settings_value.sync_settings.values = yes_no;
+    Settings_value.sync_users.values = yes_no;
+
+    var obj = {
+        sync_users: {
+            defaultValue: Settings_value.sync_users.defaultValue,
+            values: Settings_value.sync_users.values,
+            title: STR_BACKUP_RESTORE_USER,
+            summary: null
+        },
+        sync_history: {
+            defaultValue: Settings_value.sync_history.defaultValue,
+            values: Settings_value.sync_history.values,
+            title: STR_BACKUP_RESTORE_HISTORY,
+            summary: null
+        },
+        sync_settings: {
+            defaultValue: Settings_value.sync_settings.defaultValue,
+            values: Settings_value.sync_settings.values,
+            title: STR_BACKUP_RESTORE_SETTINGS,
+            summary: null
+        }
+    };
+
+    Settings_DialogShow(
+        obj,
+        STR_BACKUP_SYNC_RESTORE + STR_BR + STR_BR + STR_BACKUP_SYNC_RESTORE_SUMMARY + STR_BR + STR_BR + STR_BACKUP_RESTORE_SUMMARY + STR_BR,
+        click
+    );
+    Main_textContent('dialog_setting_close_text', '');
+}
+
+function Settings_DialogRestoreBackupShowingCheck() {
+    if (Settings_DialogRestoreBackupShowing) {
+        Settings_DialogRestoreBackupShowing = false;
+        GDriveBackupAndSyncRunRestore();
     }
 }

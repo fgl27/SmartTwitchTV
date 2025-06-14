@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -148,7 +148,7 @@ function ChatLiveControls_inputFocus() {
         ChatLiveControls_inputFocusId = Main_setTimeout(
             function () {
                 OSInterface_AvoidClicks(true);
-                Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
+                Main_AddClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
                 Main_ChatLiveInput.focus();
                 if (Main_IsOn_OSInterface) {
                     if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
@@ -851,7 +851,7 @@ function ChatLiveControls_CanSend() {
 
 function ChatLiveControls_PreventInput() {
     Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
-    Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_block');
+    Main_AddClassWithEle(Main_ChatLiveInput, 'chat_input_class_block');
     Main_ChatLiveInput.value = ChatLiveControls_CanSendText;
     ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000);
     ChatLiveControls_UpdateResultTextEmpty();

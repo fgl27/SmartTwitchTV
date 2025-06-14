@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -20,6 +20,7 @@
 
 //Variable initialization
 var AddUser_UsernameArray = [];
+var AddUser_UsernameArrayRemoved = {};
 var AddUser_Username = null;
 //Variable initialization end
 
@@ -231,13 +232,14 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
     if (EnaKeydown) Main_addEventListener('keydown', AddUser_handleKeyDown);
 }
 
-function AddUser_RestoreUsers() {
-    AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
+function AddUser_RestoreUsers(skipDrive) {
+    AddUser_UsernameArray = Main_getItemJson(AddUser_UserArrayItemName, []);
+    AddUser_UsernameArrayRemoved = Main_getItemJson(AddUser_UsernameArrayRemovedItemName, {});
 
     if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
-        AddUser_UpdateSidepanel();
+        AddUser_UpdateSidePanel();
 
         //Check and refresh all tokens at start
         var i = 0,
@@ -246,40 +248,52 @@ function AddUser_RestoreUsers() {
         for (i; i < len; i++) {
             AddUser_UsernameArray[i].timeout_id = null;
 
+            //originally the user was added without a date value with is needed to backup restore and sync
+            if (!AddUser_UsernameArray[i].date) {
+                AddUser_UsernameArray[i].date = new Date().getTime();
+            }
+
             //Set user history obj
             Main_values_History_data[AddUser_UsernameArray[i].id] = {
                 live: [],
                 vod: [],
-                clip: []
+                clip: [],
+                test: [],
+                deleted: {
+                    live: {},
+                    vod: {},
+                    clip: {}
+                }
             };
         }
 
-        Main_Restore_history();
+        Main_Restore_history(skipDrive);
         return true;
-    } else {
-        Main_Restore_history();
-        AddUser_UsernameArray = [];
-        AddUser_UpdateSidepanelDefault();
-        return false;
     }
+
+    Main_Restore_history(skipDrive);
+    AddUser_UsernameArray = [];
+    AddUser_UpdateSidePanelDefault();
+
+    return false;
 }
 
-function AddUser_UpdateSidepanel() {
+function AddUser_UpdateSidePanel() {
     if (AddUser_UserIsSet()) {
-        AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+        AddUser_UpdateSidePanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
     }
 }
 
-function AddUser_UpdateSidepanelDefault() {
-    AddUser_UpdateSidepanelSize(IMG_404_LOGO, STR_USER_ADD);
+function AddUser_UpdateSidePanelDefault() {
+    AddUser_UpdateSidePanelSize(IMG_404_LOGO, STR_USER_ADD);
 }
 
-function AddUser_UpdateSidepanelAfterShow() {
-    if (AddUser_IsUserSet()) AddUser_UpdateSidepanel();
-    else AddUser_UpdateSidepanelDefault();
+function AddUser_UpdateSidePanelAfterShow() {
+    if (AddUser_IsUserSet()) AddUser_UpdateSidePanel();
+    else AddUser_UpdateSidePanelDefault();
 }
 
-function AddUser_UpdateSidepanelSize(logo, username) {
+function AddUser_UpdateSidePanelSize(logo, username) {
     //remove transition to change size
     Sidepannel_MovelDiv.style.transition = 'none';
     var MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
@@ -338,10 +352,10 @@ function AddUser_UpdateUserAllUsers() {
 function AddUser_UpdateUser(position) {
     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
 
-    BaseXmlHttpGet(theUrl, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
+    BaseXmlHttpGet(theUrl, AddUser_UpdateUsersSuccess, noop_fun, position, null, true);
 }
 
-function AddUser_UpdateUsertSuccess(response, position) {
+function AddUser_UpdateUsersSuccess(response, position) {
     var user = JSON.parse(response);
 
     if (user.data.length) {
@@ -351,7 +365,7 @@ function AddUser_UpdateUsertSuccess(response, position) {
             AddUser_UsernameArray[position].display_name = user.display_name;
             AddUser_UsernameArray[position].logo = user.profile_image_url;
 
-            if (!position) AddUser_UpdateSidepanel();
+            if (!position) AddUser_UpdateSidePanel();
 
             AddUser_SaveUserArray();
         }
@@ -368,12 +382,14 @@ function AddUser_SaveNewUser(responseText) {
             display_name: AddUser_Username.display_name,
             logo: AddUser_Username.profile_image_url,
             access_token: AddUser_getDeviceCodeToken,
+            date: new Date().getTime(),
             refresh_token: 0,
             expires_in: 0,
             expires_when: 0,
             timeout_id: null
         };
         AddUser_UsernameArray.push(userObj);
+        delete AddUser_UsernameArrayRemoved[userObj.id];
 
         if (!Main_values_History_data[userObj.id]) {
             Main_values_History_data[userObj.id] = {
@@ -385,7 +401,7 @@ function AddUser_SaveNewUser(responseText) {
 
         AddUser_SaveUserArray();
         Users_status = false;
-        Users_Userlastadded = AddUser_Username.login;
+        Users_Userlastadded = AddUser_Username.id;
         Users_ShowAuthentication = false;
         AddUser_exit();
         Main_values.Main_Go = Main_Users;
@@ -402,7 +418,7 @@ function AddUser_SaveNewUser(responseText) {
 }
 
 function AddUser_SaveNewUserRefreshTokens(position) {
-    AddUser_UpdateSidepanel();
+    AddUser_UpdateSidePanel();
     OSInterface_UpdateUserId(AddUser_UsernameArray[position]);
     OSInterface_mCheckRefresh();
     HttpGetSetUserHeader();
@@ -412,7 +428,11 @@ function AddUser_SaveNewUserRefreshTokens(position) {
 function AddUser_removeUser(position, skipInitUser) {
     // remove the user
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
+
     if (index > -1) {
+        AddUser_UsernameArrayRemoved[AddUser_UsernameArray[index].id] = JSON.parse(JSON.stringify(AddUser_UsernameArray[index]));
+        AddUser_UsernameArrayRemoved[AddUser_UsernameArray[index].id].date = new Date().getTime();
+
         Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
         AddUser_UsernameArray.splice(index, 1);
     }
@@ -424,7 +444,7 @@ function AddUser_removeUser(position, skipInitUser) {
     if (AddUser_UsernameArray.length > 0) {
         //Reset main user if user is 0
         if (!position) {
-            AddUser_UpdateSidepanel();
+            AddUser_UpdateSidePanel();
 
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
         }
@@ -433,7 +453,7 @@ function AddUser_removeUser(position, skipInitUser) {
             Users_init();
         }
     } else {
-        AddUser_UpdateSidepanelDefault();
+        AddUser_UpdateSidePanelDefault();
         if (!skipInitUser) {
             Users_init();
         }
@@ -447,22 +467,35 @@ function AddUser_removeUser(position, skipInitUser) {
 function AddUser_SaveUserArray() {
     if (AddUser_UsernameArray.length > 0) {
         //Remove first user alphabetical sort and add first back
-        var mainuser = AddUser_UsernameArray.splice(0, 1);
+        var mainUser = AddUser_UsernameArray.splice(0, 1);
+
         AddUser_UsernameArray.sort(function (a, b) {
             return a.display_name.toLowerCase().localeCompare(b.display_name.toLowerCase());
         });
-        AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+
+        AddUser_UsernameArray.splice(0, 0, mainUser[0]);
     }
 
     var string = JSON.stringify(AddUser_UsernameArray);
-    Main_setItem('AddUser_UsernameArrayNew', string);
+    Main_setItem(AddUser_UserArrayItemName, string);
 
-    if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
+    Main_trimObject(AddUser_UsernameArrayRemoved, 100);
+
+    string = JSON.stringify(AddUser_UsernameArrayRemoved);
+    Main_setItem(AddUser_UsernameArrayRemovedItemName, string);
+
+    AddUser_CleanUserData();
 
     //Main_Log('AddUser_SaveUserArray');
 }
 
-function AddUser_UserMakeOne(position) {
+function AddUser_CleanUserData() {
+    Main_removeMissingProps(Main_values_History_data, AddUser_UsernameArray);
+    Main_SaveHistoryItem();
+    GDriveBackup();
+}
+
+function AddUser_UserMakeOne(position, skipInit) {
     Main_clearTimeout(Main_CheckResumeFeedId);
 
     var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
@@ -471,8 +504,11 @@ function AddUser_UserMakeOne(position) {
 
     AddUser_SaveUserArray();
     Users_status = false;
-    AddUser_UpdateSidepanel();
-    Users_init();
+    AddUser_UpdateSidePanel();
+
+    if (!skipInit) {
+        Users_init();
+    }
 
     OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
@@ -492,9 +528,9 @@ function AddUser_UserMakeOne(position) {
     }
 }
 
-function AddUser_UserFindpos(user) {
+function AddUser_UserFindPos(user) {
     return AddUser_UsernameArray.map(function (array) {
-        return array.name;
+        return array.id;
     }).indexOf(user);
 }
 

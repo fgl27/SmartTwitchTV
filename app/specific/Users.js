@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -212,7 +212,7 @@ function Users_loadDataSuccessFinish() {
         Users_loadingData = false;
         if (Users_ShowAuthentication) {
             Users_ShowAuthentication = false;
-            Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
+            Users_showUserDialogPos = AddUser_UserFindPos(Users_Userlastadded);
             Users_Isautentication = true;
             Users_showRemoveDialog();
         }

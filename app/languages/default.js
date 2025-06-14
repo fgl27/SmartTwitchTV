@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -34,6 +34,7 @@ var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
 var STR_SETTINGS_KEY = '';
+var STR_BACKUP_ACCOUNT_MAIN_0 = '';
 var STR_CONTROLS_MAIN_0 = '';
 var STR_CONTROLS_PLAYER_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
@@ -390,6 +391,22 @@ function DefaultLang() {
         STR_CLOSE_THIS +
         '</div>';
 
+    STR_BACKUP_ACCOUNT_MAIN_0 =
+        '<div id="backup_container">' + //mouse click outside to close this
+        STR_DIV_TITLE +
+        STR_BACKUP_ACCOUNT_ADD +
+        '</div>' +
+        STR_BR +
+        '<div id="backup_body">' +
+        STR_BACKUP_ACCOUNT_DIALOG_BODY +
+        '</div>' +
+        STR_BR +
+        '<div id="backup_body_checking"></div>' +
+        STR_BR +
+        '<div id="backup_end_info" class="about_text_title">' +
+        STR_CLOSE_THIS +
+        '</div></div>';
+
     STR_CONTROLS_PLAYER_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' + STR_CONTROLS_PLAY_0 + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ACCESSIBILITY_WARN_TEXT =
@@ -428,9 +445,6 @@ function DefaultLang() {
         '</div>' +
         OPEN_NEW_ISSUE +
         STR_BR +
-        STR_BR +
-        STR_PAYPAL +
-        STR_BITCOIN +
         STR_BR;
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -442,8 +456,9 @@ function DefaultLang() {
         STR_ABOUT_INFO_2 +
         (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
         STR_CONTACT +
-        // STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-        // STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
+        STR_PAYPAL +
+        STR_BITCOIN +
+        STR_BR +
         STR_DIV_TITLE +
         STR_ABOUT_INFO_18 +
         '</div>' +

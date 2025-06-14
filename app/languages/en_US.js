@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -240,6 +240,9 @@ function en_USLang() {
     STR_OPEN_BROADCAST = 'Open the VOD';
     STR_OPEN_LAST_BROADCAST = 'Open the Last VOD';
     STR_IS_LIVE = 'Is now live';
+    STR_OPEN_REWIND = 'Open rewind';
+    STR_OPEN_REWIND_SUMMARY = 'Open the full rewind VOD';
+    STR_OPEN_REWIND_FAIL = 'No rewind for this live';
     STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
         'While watching a clip or VOD, the app can check if the streamer is live. If enabled, a warning will appear. To watch the live stream, use the controls at the bottom of the player.';
@@ -427,9 +430,10 @@ function en_USLang() {
     STR_TITLE_CHANGE_SHOW = "Show 'Streamer changed title' notification for followed channels";
     STR_GAME_CHANGE_SHOW = "Show 'Streamer changed game' notification for followed channels";
     STR_NOW_LIVE_GAME_SHOW = "Show 'Game is live' notification for followed games";
-    STR_NOW_BACKGROUND = 'Notification over other apps when the app is running in the background';
-    STR_NOW_BACKGROUND_SUMMARY =
-        "If you disabled notifications for this app in the system settings, this feature won't work. If the app notifications are already running and you exit the app, the notification will show over other apps, even if this is disabled.";
+    STR_NOTIFICATION_BACKGROUND = 'Notification over other apps when the app is running in the background';
+    STR_NOTIFICATION_BACKGROUND_SUMMARY =
+        'To enable this feature, ensure the app has Notification permission in Android Settings. On devices running Android 11 or newer, the app will show a simple, single-line notification when running in the background.';
+    STR_NOTIFICATION_BACKGROUND_WARNING = 'Missing Android system Notification permission!';
     STR_NOTIFICATION_REPEAT = 'Number of times an individual notification in shown';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         "The individual notification timeout is around 3 seconds, and can't be changed, because this timeout is controlled by the system, but you can set the number of times the same notification shows with this option.";
@@ -488,7 +492,7 @@ function en_USLang() {
     STR_WARNINGS = 'Warnings';
     STR_WELCOME = 'Welcome to';
     STR_WELCOME_SUMMARY =
-        'This application has a lot of features and was designed to give the user full control of it, because of that it has many options, controls and customizations. Check the app settings and controls to understasnd how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.';
+        'This application has lots and lots of features. Check the app settings and controls to understand how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.';
     STR_WARNING_PHONE = 'Cellphones warning';
     STR_WARNING_PHONE_SUMMARY =
         "This app is designed to be used mainly on TVs, the support for other devices is limited and may never receive a better support. If you don't have a keyboard or a D-pad + enter and return controller (ESC works as a return on a computer), use the virtual on-screen keys to navigate (only visible on phone/tablet devices). In settings you can change the position and the opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad. When it's hidden, it doesn't work.";
@@ -526,15 +530,7 @@ function en_USLang() {
     STR_OLDEST = 'Oldest watched';
     STR_PRESS_ENTER_D = 'Press enter to delete';
     STR_LIVE_VOD = 'This live is now a VOD<br>opening the VOD from where you last stopped watching the live:<br>';
-    STR_BACKUP =
-        'Allow the app to make and restore backups?<br>(Users and their history will be backed up)' +
-        '<br><br>' +
-        'If you click Yes, the app will save backups for future use, and restore a saved backup if app data is empty.' +
-        'Is necessary to give the app storage permission for this, so give before click yes.' +
-        '<br><br>' +
-        "If you don't give storage permission, no backups will be ever made." +
-        '<br><br>' +
-        'The Backup folder path is Main_Storage/data/com.fgl27.twitch/Backup';
+
     STR_DELETE_SURE = 'Are you sure you want to delete all';
     STR_CREATED_NEWEST = 'Created / Uptime newest';
     STR_CREATED_OLDEST = 'Created / Uptime Oldest';
@@ -813,7 +809,7 @@ function en_USLang() {
     STR_WARNING_BROWSER_SUMMARY =
         'This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).';
     STR_THUMB_OPTIONS_CLICK = 'Click twice above an action (to open or apply it), click outside the dialog to exit without applying';
-    STR_CLOSE_THIS_BROWSER = 'Press return, enter or click outside to close this';
+    STR_CLOSE_THIS_BROWSER = 'Press return, enter or mouse click outside to close this';
 
     STR_DISABLE_EMBED = 'Enable Live and Vod Twitch player';
     STR_DISABLE_EMBED_SUMMARY =
@@ -886,8 +882,10 @@ function en_USLang() {
     STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
     STR_PLAYER_EXTRA_CODEC = 'Enhanced Broadcasting HEVC, AV1, 1440p 4k support';
-    STR_PLAYER_EXTRA_CODEC_SUMMARY =
-        'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available (Not all streams are supported, it depends on the streamer enabling it and Twitch provide it to your region).';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available.';
+
+    STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+        'This feature only works for logged-in users. Not all streams are supported — it depends on the streamer enabling it and whether Twitch provides it in your region.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'The app checks if your device supports HEVC or AV1 for higher-quality streams.';
 
@@ -925,4 +923,49 @@ function en_USLang() {
 
     STR_DISABLE_SHARED_CHAT = 'Disable shared chat';
     STR_DISABLE_SHARED_CHAT_SUMMARY = 'If set to yes will only show chat messages from the stream you open';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Remove Google Drive account';
+    STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'To restore a backup, add an account and the app will show you available restore options.';
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Add Google drive account';
+
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Retrieving API information please wait...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Access denied';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Access success, Please wait while the app verifies...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'The app will restore and close this dialog in a few';
+    STR_BACKUP_NO_BACKUP_FOUND = 'No previously made backup found, backup created with success';
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
+
+    STR_BACKUP_SIZE = 'Backup size:';
+    STR_BACKUP_NAME = 'Backup name:';
+    STR_BACKUP_SYNC = 'Sync, Backup and Restore';
+    STR_BACKUP_SYNC_SUMMARY =
+        'The app will be able to view, create, edit, and delete only the specific Google Drive files it creates, it will NOT be able to view, modify, or delete any other files in your Google Drive.' +
+        '<br><br>' +
+        'It will also be able to read your email address and profile image to display the currently active account, This information will only be displayed and will NOT be modified.';
+
+    STR_BACKUP_USER_INFO = '(User info: Users, history, blocked, and settings)';
+
+    STR_BACKUP_SYNC_USER = 'Sync users';
+    STR_BACKUP_SYNC_HISTORY = "Sync users' history and blocked list.";
+    STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
+    STR_BACKUP_RESTORE_USER = 'Restore users';
+    STR_BACKUP_RESTORE_HISTORY = "Restore users' history and blocked list.";
+    STR_BACKUP_RESTORE_SETTINGS = 'Restore settings';
+    STR_BACKUP_RESTORE_SUMMARY = 'If you experience issues after restoring, try clearing the app data and restoring with one option skipped.';
+
+    STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+        'The backup has only one set of unified settings for all your devices. Any changes you make will be applied on your other devices the next time you open the app.';
+    STR_BACKUP_SYNC_RESTORE = 'Backup found';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found. Select items to restore, then press Return or Enter to confirm.';
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
+    STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
+
+    STR_BACKUP_ENABLE = 'Backup enable';
+    STR_BACKUP_ENABLE_SUMMARY = 'If set to YES the app will keep a backup of all user info ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Sync across devices';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY =
+        "Enabling this will add a slight delay to the application's startup process, and is unnecessary if you are using the app in a single device. The app will sync all enabled options below between this device and others using the same Google Drive account. To switch devices and continue watching seamlessly, minimize the app on the current device by pressing the Home key. Then, make sure the app is fully closed on the other device before opening it.";
 }

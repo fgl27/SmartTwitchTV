@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
  /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -22,6 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="app_name">SmartTV Client for Twitch</string>
+    <string name="short_app_name">STTV</string>
 
     <!--Notification-->
     <string name="notification_service">Notification service running</string>

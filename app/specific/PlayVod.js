@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -27,7 +27,6 @@ var PlayVod_qualityIndex = 0;
 var PlayVod_playlist = null;
 
 var PlayVod_isOn = false;
-var PlayVod_Buffer = 2000;
 
 var Play_jumping = false;
 var PlayVod_SizeClearID;
@@ -133,7 +132,7 @@ function PlayVod_Start() {
 
     PlayVod_SetStart();
 
-    if (!Play_PreviewId) {
+    if (!Play_PreviewId && !Play_OpenRewind) {
         Play_showBufferDialog();
         var isFromVod = true;
         var ShowDialog = Settings_Obj_default('vod_dialog');
@@ -224,7 +223,7 @@ function PlayVod_PosStart() {
         if (Play_PreviewOffset) Main_vodOffset = Play_PreviewOffset;
         PlayVod_onPlayer();
 
-        if (!Play_PreviewOffset) {
+        if (!Play_PreviewOffset && !Play_OpenRewind) {
             Chat_offset = parseInt(OSInterface_gettime() / 1000);
 
             Chat_Init();
@@ -242,7 +241,7 @@ function PlayVod_PosStart() {
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id, true);
 
     Main_values.Play_WasPlaying = 2;
-    Main_SaveValues();
+    Main_SaveValues(true);
 }
 
 function PlayVod_convertHMS(value) {
@@ -484,6 +483,8 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_onPlayerStartPlay(time) {
+    time = Play_OpenRewind ? 0 : time; //at 0 if this is a vod that has not ended the player will auto start at the end
+
     if (Main_IsOn_OSInterface && PlayVod_isOn) {
         if (Play_SkipStartAuto) {
             OSInterface_FixViewPosition(0, 2);
@@ -513,11 +514,14 @@ function PlayVod_shutdownStream(SkipSaveOffset) {
 function PlayVod_PreshutdownStream(saveOffset) {
     PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
-    if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
+    if (Main_IsOn_OSInterface && !Play_PreviewId) {
+        OSInterface_stopVideo();
+    }
 
     Main_ShowElementWithEle(Play_Controls_Holder);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
+    Play_OpenRewind = false;
     PlayVod_isOn = false;
     PlayClip_OpenAVod = true;
     Main_clearInterval(PlayVod_SaveOffsetId);
@@ -808,6 +812,8 @@ function PlayVod_jump() {
         }
 
         if (!Play_isOn && PlayClip_HasVOD) Chat_Init();
+
+        Play_OpenRewind = false;
     }
     PlayVod_IsJumping = false;
     PlayVod_UpdateRemaining(PlayVod_TimeToJump, Play_DurationSeconds);
@@ -1442,6 +1448,11 @@ function PlayVod_updateVodInfoPanel(obj) {
 
     //Update the value only if the Play_UpdateDuration() has not yet
     if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
+
+    if (Play_OpenRewind && Play_DurationSeconds) {
+        Chat_offset = Math.max(0, Play_DurationSeconds - 100);
+        Chat_Init();
+    }
 
     ChannelVod_title = twemoji.parse(response.title, false, true);
 

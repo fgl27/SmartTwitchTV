@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -73,6 +73,9 @@ var gamesQuery = '{"query":"{games(first:100 %y){pageInfo{hasNextPage},edges{cur
 
 var userLiveQuery =
     '{"operationName":"FollowingLive_CurrentUser","query":"query,FollowingLive_CurrentUser{currentUser{followedLiveUsers(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}}"}';
+
+var userLiveByIdsQuery =
+    '{"query":"{users(ids: %a ){stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
 
 var userVodQuery =
     '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
@@ -3387,7 +3390,9 @@ function ScreensObj_ThumbInfoUpdate(obj, checkResult, check_1, check_2, check_3)
 }
 
 function ScreensObj_getStreamInfo(userId, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
-    if (!userId) return;
+    if (!userId) {
+        return;
+    }
 
     var theUrl = Main_helix_api + 'streams?user_id=' + userId;
 

@@ -9,7 +9,7 @@
         root = smartTwitchTVGlobal;
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -368,7 +368,6 @@
         STR_OLDEST,
         STR_PRESS_ENTER_D,
         STR_LIVE_VOD,
-        STR_BACKUP,
         STR_DELETE_SURE,
         STR_CREATED_NEWEST,
         STR_CREATED_OLDEST,
@@ -432,7 +431,7 @@
         STR_PLAYER_SOURCE,
         STR_CONTROLS_MEDIA_FF,
         STR_VOD_MUTED,
-        STR_NOW_BACKGROUND,
+        STR_NOTIFICATION_BACKGROUND,
         STR_GIFT_SUB,
         STR_CHAT_BANNED,
         STR_CHAT_WRITE,
@@ -573,7 +572,8 @@
         STR_PREVIEW_SIZE_SCREEN_ARRAY,
         STR_PREVIEW_SIZE_SCREEN,
         STR_PREVIEW_SIZE_SCREEN_SUMMARY,
-        STR_NOW_BACKGROUND_SUMMARY,
+        STR_NOTIFICATION_BACKGROUND_SUMMARY,
+        STR_NOTIFICATION_BACKGROUND_WARNING,
         STR_NOTIFICATION_POS_ARRAY,
         STR_NOTIFICATION_POS,
         STR_STAY_OPEN,
@@ -698,6 +698,9 @@
         STR_4_WAY_MULTI_INSTANCES,
         STR_PP_MODO,
         STR_IS_LIVE,
+        STR_OPEN_REWIND,
+        STR_OPEN_REWIND_SUMMARY,
+        STR_OPEN_REWIND_FAIL,
         STR_AS,
         STR_MILLISECONDS,
         STR_HOUR,
@@ -786,6 +789,7 @@
         STR_WRONG_PASS,
         STR_PLAYER_EXTRA_CODEC,
         STR_PLAYER_EXTRA_CODEC_SUMMARY,
+        STR_PLAYER_EXTRA_CODEC_SUMMARY1,
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA,
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2,
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3,
@@ -804,9 +808,41 @@
         STR_DISABLE_SHARED_CHAT,
         STR_DISABLE_SHARED_CHAT_SUMMARY,
         STR_CLOCK_AM_PM,
-        STR_CLOCK_AM_PM_SUMMARY;
+        STR_CLOCK_AM_PM_SUMMARY,
+        STR_BACKUP_SYNC,
+        STR_BACKUP_SYNC_SUMMARY,
+        STR_BACKUP_USER_INFO,
+        STR_BACKUP_ACCOUNT_REMOVE,
+        STR_BACKUP_NO_BACKUP_FOUND,
+        STR_BACKUP_NO_BACKUP_FOUND_SUMMARY,
+        STR_BACKUP_SYNC_USER,
+        STR_BACKUP_SYNC_HISTORY,
+        STR_BACKUP_SYNC_SETTINGS,
+        STR_BACKUP_RESTORE_USER,
+        STR_BACKUP_RESTORE_HISTORY,
+        STR_BACKUP_RESTORE_SETTINGS,
+        STR_BACKUP_SYNC_SETTINGS_SUMMARY,
+        STR_BACKUP_RESTORE_SUMMARY,
+        STR_BACKUP_SYNC_RESTORE_SUMMARY,
+        STR_BACKUP_SYNC_RESTORE,
+        STR_BACKUP_ENABLE,
+        STR_BACKUP_ENABLE_SUMMARY,
+        STR_BACKUP_ACCOUNT_ADD,
+        STR_BACKUP_ACCOUNT_ADD_SUMMARY,
+        STR_BACKUP_SYNC_ENABLE,
+        STR_BACKUP_SYNC_ENABLE_SUMMARY,
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE,
+        STR_BACKUP_ACCOUNT_DIALOG_BODY,
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL,
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS,
+        STR_BACKUP_ACCOUNT_REFRESH_ERROR,
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END,
+        STR_BACKUP_NAME,
+        STR_BACKUP_SIZE,
+        STR_BACKUP_SYNC_RESTORE_SUCCESS,
+        STR_BACKUP_RESTORE_FAIL;
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -841,6 +877,7 @@
     var STR_SEARCH_KEY = '';
     var STR_ABOUT_KEY = '';
     var STR_SETTINGS_KEY = '';
+    var STR_BACKUP_ACCOUNT_MAIN_0 = '';
     var STR_CONTROLS_MAIN_0 = '';
     var STR_CONTROLS_PLAYER_0 = '';
     var STR_ABOUT_INFO_HEADER = '';
@@ -1197,6 +1234,22 @@
             STR_CLOSE_THIS +
             '</div>';
 
+        STR_BACKUP_ACCOUNT_MAIN_0 =
+            '<div id="backup_container">' + //mouse click outside to close this
+            STR_DIV_TITLE +
+            STR_BACKUP_ACCOUNT_ADD +
+            '</div>' +
+            STR_BR +
+            '<div id="backup_body">' +
+            STR_BACKUP_ACCOUNT_DIALOG_BODY +
+            '</div>' +
+            STR_BR +
+            '<div id="backup_body_checking"></div>' +
+            STR_BR +
+            '<div id="backup_end_info" class="about_text_title">' +
+            STR_CLOSE_THIS +
+            '</div></div>';
+
         STR_CONTROLS_PLAYER_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' + STR_CONTROLS_PLAY_0 + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
         STR_ACCESSIBILITY_WARN_TEXT =
@@ -1235,9 +1288,6 @@
             '</div>' +
             OPEN_NEW_ISSUE +
             STR_BR +
-            STR_BR +
-            STR_PAYPAL +
-            STR_BITCOIN +
             STR_BR;
 
         STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -1249,8 +1299,9 @@
             STR_ABOUT_INFO_2 +
             (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
             STR_CONTACT +
-            // STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-            // STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
+            STR_PAYPAL +
+            STR_BITCOIN +
+            STR_BR +
             STR_DIV_TITLE +
             STR_ABOUT_INFO_18 +
             '</div>' +
@@ -1327,7 +1378,7 @@
         );
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -1568,6 +1619,9 @@
         STR_OPEN_BROADCAST = 'Open the VOD';
         STR_OPEN_LAST_BROADCAST = 'Open the Last VOD';
         STR_IS_LIVE = 'Is now live';
+        STR_OPEN_REWIND = 'Open rewind';
+        STR_OPEN_REWIND_SUMMARY = 'Open the full rewind VOD';
+        STR_OPEN_REWIND_FAIL = 'No rewind for this live';
         STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
         STR_SHOW_ISLIVE_WARNING_SUMMARY =
             'While watching a clip or VOD, the app can check if the streamer is live. If enabled, a warning will appear. To watch the live stream, use the controls at the bottom of the player.';
@@ -1755,9 +1809,10 @@
         STR_TITLE_CHANGE_SHOW = "Show 'Streamer changed title' notification for followed channels";
         STR_GAME_CHANGE_SHOW = "Show 'Streamer changed game' notification for followed channels";
         STR_NOW_LIVE_GAME_SHOW = "Show 'Game is live' notification for followed games";
-        STR_NOW_BACKGROUND = 'Notification over other apps when the app is running in the background';
-        STR_NOW_BACKGROUND_SUMMARY =
-            "If you disabled notifications for this app in the system settings, this feature won't work. If the app notifications are already running and you exit the app, the notification will show over other apps, even if this is disabled.";
+        STR_NOTIFICATION_BACKGROUND = 'Notification over other apps when the app is running in the background';
+        STR_NOTIFICATION_BACKGROUND_SUMMARY =
+            'To enable this feature, ensure the app has Notification permission in Android Settings. On devices running Android 11 or newer, the app will show a simple, single-line notification when running in the background.';
+        STR_NOTIFICATION_BACKGROUND_WARNING = 'Missing Android system Notification permission!';
         STR_NOTIFICATION_REPEAT = 'Number of times an individual notification in shown';
         STR_NOTIFICATION_REPEAT_SUMMARY =
             "The individual notification timeout is around 3 seconds, and can't be changed, because this timeout is controlled by the system, but you can set the number of times the same notification shows with this option.";
@@ -1816,7 +1871,7 @@
         STR_WARNINGS = 'Warnings';
         STR_WELCOME = 'Welcome to';
         STR_WELCOME_SUMMARY =
-            'This application has a lot of features and was designed to give the user full control of it, because of that it has many options, controls and customizations. Check the app settings and controls to understasnd how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.';
+            'This application has lots and lots of features. Check the app settings and controls to understand how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.';
         STR_WARNING_PHONE = 'Cellphones warning';
         STR_WARNING_PHONE_SUMMARY =
             "This app is designed to be used mainly on TVs, the support for other devices is limited and may never receive a better support. If you don't have a keyboard or a D-pad + enter and return controller (ESC works as a return on a computer), use the virtual on-screen keys to navigate (only visible on phone/tablet devices). In settings you can change the position and the opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad. When it's hidden, it doesn't work.";
@@ -1854,15 +1909,7 @@
         STR_OLDEST = 'Oldest watched';
         STR_PRESS_ENTER_D = 'Press enter to delete';
         STR_LIVE_VOD = 'This live is now a VOD<br>opening the VOD from where you last stopped watching the live:<br>';
-        STR_BACKUP =
-            'Allow the app to make and restore backups?<br>(Users and their history will be backed up)' +
-            '<br><br>' +
-            'If you click Yes, the app will save backups for future use, and restore a saved backup if app data is empty.' +
-            'Is necessary to give the app storage permission for this, so give before click yes.' +
-            '<br><br>' +
-            "If you don't give storage permission, no backups will be ever made." +
-            '<br><br>' +
-            'The Backup folder path is Main_Storage/data/com.fgl27.twitch/Backup';
+
         STR_DELETE_SURE = 'Are you sure you want to delete all';
         STR_CREATED_NEWEST = 'Created / Uptime newest';
         STR_CREATED_OLDEST = 'Created / Uptime Oldest';
@@ -2148,7 +2195,7 @@
         STR_WARNING_BROWSER_SUMMARY =
             'This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).';
         STR_THUMB_OPTIONS_CLICK = 'Click twice above an action (to open or apply it), click outside the dialog to exit without applying';
-        STR_CLOSE_THIS_BROWSER = 'Press return, enter or click outside to close this';
+        STR_CLOSE_THIS_BROWSER = 'Press return, enter or mouse click outside to close this';
 
         STR_DISABLE_EMBED = 'Enable Live and Vod Twitch player';
         STR_DISABLE_EMBED_SUMMARY =
@@ -2221,8 +2268,10 @@
         STR_PASS_MATURE_ENABLED = 'Mature content is enabled, old password deleted';
 
         STR_PLAYER_EXTRA_CODEC = 'Enhanced Broadcasting HEVC, AV1, 1440p 4k support';
-        STR_PLAYER_EXTRA_CODEC_SUMMARY =
-            'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available (Not all streams are supported, it depends on the streamer enabling it and Twitch provide it to your region).';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Most streams use AVC (H.264) up to 1080p60; HEVC/AV1 enable 1440p, 4K, and 60+fps where available.';
+
+        STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+            'This feature only works for logged-in users. Not all streams are supported — it depends on the streamer enabling it and whether Twitch provides it in your region.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'The app checks if your device supports HEVC or AV1 for higher-quality streams.';
 
@@ -2260,9 +2309,54 @@
 
         STR_DISABLE_SHARED_CHAT = 'Disable shared chat';
         STR_DISABLE_SHARED_CHAT_SUMMARY = 'If set to yes will only show chat messages from the stream you open';
+
+        STR_BACKUP_ACCOUNT_REMOVE = 'Remove Google Drive account';
+        STR_BACKUP_ACCOUNT_ADD = 'Add Google Drive account for backup';
+        STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'To restore a backup, add an account and the app will show you available restore options.';
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Add Google drive account';
+
+        STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Retrieving API information please wait...';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Access denied';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Access success, Please wait while the app verifies...';
+
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'The app will restore and close this dialog in a few';
+        STR_BACKUP_NO_BACKUP_FOUND = 'No previously made backup found, backup created with success';
+        STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Lost access the Backup and Sync account, backup account removed!';
+
+        STR_BACKUP_SIZE = 'Backup size:';
+        STR_BACKUP_NAME = 'Backup name:';
+        STR_BACKUP_SYNC = 'Sync, Backup and Restore';
+        STR_BACKUP_SYNC_SUMMARY =
+            'The app will be able to view, create, edit, and delete only the specific Google Drive files it creates, it will NOT be able to view, modify, or delete any other files in your Google Drive.' +
+            '<br><br>' +
+            'It will also be able to read your email address and profile image to display the currently active account, This information will only be displayed and will NOT be modified.';
+
+        STR_BACKUP_USER_INFO = '(User info: Users, history, blocked, and settings)';
+
+        STR_BACKUP_SYNC_USER = 'Sync users';
+        STR_BACKUP_SYNC_HISTORY = "Sync users' history and blocked list.";
+        STR_BACKUP_SYNC_SETTINGS = 'Sync settings';
+        STR_BACKUP_RESTORE_USER = 'Restore users';
+        STR_BACKUP_RESTORE_HISTORY = "Restore users' history and blocked list.";
+        STR_BACKUP_RESTORE_SETTINGS = 'Restore settings';
+        STR_BACKUP_RESTORE_SUMMARY = 'If you experience issues after restoring, try clearing the app data and restoring with one option skipped.';
+
+        STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+            'The backup has only one set of unified settings for all your devices. Any changes you make will be applied on your other devices the next time you open the app.';
+        STR_BACKUP_SYNC_RESTORE = 'Backup found';
+        STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup found. Select items to restore, then press Return or Enter to confirm.';
+        STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restore success!';
+        STR_BACKUP_RESTORE_FAIL = 'Fail to restore backup';
+
+        STR_BACKUP_ENABLE = 'Backup enable';
+        STR_BACKUP_ENABLE_SUMMARY = 'If set to YES the app will keep a backup of all user info ' + STR_BACKUP_USER_INFO;
+
+        STR_BACKUP_SYNC_ENABLE = 'Sync across devices';
+        STR_BACKUP_SYNC_ENABLE_SUMMARY =
+            "Enabling this will add a slight delay to the application's startup process, and is unnecessary if you are using the app in a single device. The app will sync all enabled options below between this device and others using the same Google Drive account. To switch devices and continue watching seamlessly, minimize the app on the current device by pressing the Home key. Then, make sure the app is fully closed on the other device before opening it.";
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -2587,9 +2681,10 @@
         STR_TITLE_CHANGE_SHOW = 'Mostrar la notificación "Streamer cambio de título" para los canales seguidos';
         STR_GAME_CHANGE_SHOW = 'Mostrar la notificación "Streamer cambió de juego" para los canales seguidos';
         STR_NOW_LIVE_GAME_SHOW = 'Mostrar la notificación "Juego en directo" para los juegos seguidos';
-        STR_NOW_BACKGROUND = 'Notificación sobre otras aplicaciones, cuando la aplicación está en segundo plano';
-        STR_NOW_BACKGROUND_SUMMARY =
-            'Si impides las notificaciones para esta aplicación en la configuración del sistema, esta característica no funcionará, si las notificaciones de la aplicación ya se están ejecutando y sales de la aplicación, la notificación se mostrará por encima de otras aplicaciones, incluso si está desactivada.';
+        STR_NOTIFICATION_BACKGROUND = 'Notificación sobre otras aplicaciones, cuando la aplicación está en segundo plano';
+        STR_NOTIFICATION_BACKGROUND_SUMMARY =
+            'Para activar esta función, asegúrate de que la aplicación tenga permiso para mostrar notificaciones en la configuración de Android. En dispositivos con Android 11 o versiones posteriores, la app mostrará una notificación simple de una sola línea cuando se ejecute en segundo plano.';
+        STR_NOTIFICATION_BACKGROUND_WARNING = '¡Falta el permiso de notificaciones del sistema Android!';
         STR_NOTIFICATION_REPEAT = 'Cuántas veces hay que mostrar la notificación individual';
         STR_NOTIFICATION_REPEAT_SUMMARY =
             'El tiempo de espera de las notificaciones individuales es de unos 3 segundos, y no se puede cambiar porque este tiempo de espera está controlado por el sistema, pero se puede establecer el número de veces que se mostrará la misma notificación';
@@ -2835,6 +2930,8 @@
         STR_PLAYER_EXTRA_CODEC = 'Transmisión Mejorada: soporte para HEVC, AV1, 1440p y 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
             'La mayoría de las transmisiones usan AVC (H.264) hasta 1080p60; HEVC/AV1 permite 1440p, 4K y más de 60fps cuando está disponible (No todas las transmisiones son compatibles, depende de que el streamer lo habilite y que Twitch lo ofrezca en tu región).';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+            'Esta función solo funciona para usuarios con sesión iniciada. No todas las transmisiones son compatibles — depende de que el streamer lo habilite y que Twitch lo ofrezca en tu región.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA =
             'La aplicación verifica si tu dispositivo es compatible con HEVC o AV1 para transmisiones de mayor calidad.';
@@ -2849,9 +2946,61 @@
         STR_PLAYER_CODEC_NOT_SUPPORTED = '¡Dispositivo no compatible! Activar este códec puede causar errores de reproducción.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Para comprender mejor las capacidades del dispositivo, revisa la opción de configuración: ';
+
+        STR_BACKUP_ACCOUNT_REMOVE = 'Eliminar cuenta de Google Drive';
+        STR_BACKUP_ACCOUNT_ADD = 'Añadir cuenta de Google Drive para copia de seguridad';
+        STR_BACKUP_ACCOUNT_ADD_SUMMARY =
+            'Para restaurar una copia de seguridad, agrega una cuenta y la aplicación te mostrará las opciones disponibles.';
+
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Cuenta de Google Drive añadida';
+        STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Recuperando información de la API, por favor espera...';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acceso denegado';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acceso exitoso, espere mientras la aplicación verifica...';
+
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'La aplicación restaurará y cerrará este diálogo en breve';
+        STR_BACKUP_NO_BACKUP_FOUND = 'No se encontró copia de seguridad previa, copia de seguridad creada con éxito';
+        STR_BACKUP_ACCOUNT_REFRESH_ERROR =
+            '¡Se perdió el acceso a la cuenta de Copia de seguridad y Sincronización, cuenta de copia de seguridad eliminada!';
+
+        STR_BACKUP_SIZE = 'Tamaño de la copia de seguridad:';
+        STR_BACKUP_NAME = 'Nombre de la copia de seguridad:';
+        STR_BACKUP_SYNC = 'Sincronización, Copia de seguridad y Restauración';
+        STR_BACKUP_SYNC_SUMMARY =
+            'La aplicación podrá ver, crear, editar y eliminar solo los archivos específicos de Google Drive que crea, NO podrá ver, modificar o eliminar ningún otro archivo en su Google Drive.' +
+            '<br><br>' +
+            'También podrá leer su dirección de correo electrónico e imagen de perfil para mostrar la cuenta activa actualmente. Esta información solo se mostrará y NO se modificará.';
+
+        STR_BACKUP_USER_INFO = '(Información del usuario: Usuarios, historial, bloqueados y configuración)';
+
+        STR_BACKUP_SYNC_USER = 'Sincronizar usuarios';
+        STR_BACKUP_SYNC_HISTORY = 'Sincronizar el historial y la lista de bloqueados de los usuarios.';
+        STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configuración';
+        STR_BACKUP_RESTORE_USER = 'Restaurar usuarios';
+        STR_BACKUP_RESTORE_HISTORY = 'Restaurar historial y lista de bloqueados de los usuarios.';
+        STR_BACKUP_RESTORE_SETTINGS = 'Restaurar configuración';
+        STR_BACKUP_RESTORE_SUMMARY =
+            'Si tienes problemas después de restaurar, intenta borrar los datos de la aplicación y restaurar omitiendo una de las opciones.';
+
+        STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+            'La copia de seguridad tiene solo un conjunto de configuraciones unificadas para todos sus dispositivos. Cualquier cambio que realice se aplicará en sus otros dispositivos la próxima vez que abra la aplicación.'; // New line to add
+        STR_BACKUP_SYNC_RESTORE = 'Copia de seguridad encontrada';
+        STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Copia de seguridad encontrada. Elige qué restaurar ahora, luego presiona Return o Enter para confirmar.';
+        STR_BACKUP_SYNC_RESTORE_SUCCESS = '¡Restauración exitosa!';
+        STR_BACKUP_RESTORE_FAIL = 'Error al restaurar la copia de seguridad';
+
+        STR_BACKUP_ENABLE = 'Habilitar copia de seguridad';
+        STR_BACKUP_ENABLE_SUMMARY =
+            'Si se establece en SÍ, la aplicación mantendrá una copia de seguridad de toda la información del usuario ' + STR_BACKUP_USER_INFO;
+
+        STR_BACKUP_SYNC_ENABLE = 'Habilitar sincronización';
+        STR_BACKUP_SYNC_ENABLE_SUMMARY =
+            'Si se establece en SÍ, la aplicación sincronizará automáticamente la información del usuario entre dispositivos';
+        STR_OPEN_REWIND = 'Abrir retroceso';
+        STR_OPEN_REWIND_SUMMARY = 'Abrir el VOD con retroceso completo';
+        STR_OPEN_REWIND_FAIL = 'Sin retroceso para esta transmisión en vivo';
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -3086,6 +3235,9 @@
         STR_OPEN_BROADCAST = 'Abra o Vídeo';
         STR_OPEN_LAST_BROADCAST = 'Abra o último Vídeo';
         STR_IS_LIVE = 'Agora Ao vivo';
+        STR_OPEN_REWIND = 'Abrir retrocesso';
+        STR_OPEN_REWIND_SUMMARY = 'Abrir o VOD com retrocesso completo';
+        STR_OPEN_REWIND_FAIL = 'Sem retrocesso para esta live';
         STR_SHOW_ISLIVE_WARNING = 'Mostrar aviso "Streamer Agora ao vivo"';
         STR_SHOW_ISLIVE_WARNING_SUMMARY =
             'Ao assistir a um clipe ou VOD o aplicativo pode verificar quando o streamer está ao vivo, se estiver definido como SIM, um aviso aparecerá, para abrir ao vivo basta usar a opção de controles inferiores do player';
@@ -3269,9 +3421,10 @@
         STR_TITLE_CHANGE_SHOW = 'Mostrar notificação de "Título alterado do Streamer" para canais seguidos';
         STR_GAME_CHANGE_SHOW = 'Mostrar notificação de "Streamer mudou jogo" para canais seguidos';
         STR_NOW_LIVE_GAME_SHOW = 'Mostrar notificação de "Jogo ao vivo" para jogos seguidos';
-        STR_NOW_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
-        STR_NOW_BACKGROUND_SUMMARY =
-            'Se você impedir a notificação para este aplicativo nas configurações do sistema, este recurso não funcionará, se as notificações do aplicativo já estiverem em execução e você sair do aplicativo, a notificação será exibida sobre outros aplicativos, mesmo se estiver desativado';
+        STR_NOTIFICATION_BACKGROUND = 'Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano';
+        STR_NOTIFICATION_BACKGROUND_SUMMARY =
+            'Para ativar este recurso, verifique se o app tem permissão para notificações nas Configurações do Android. Em dispositivos com Android 11 ou superior, o app exibirá uma notificação simples de uma única linha quando estiver em segundo plano.';
+        STR_NOTIFICATION_BACKGROUND_WARNING = 'Permissão de notificações do sistema Android ausente!';
         STR_NOTIFICATION_REPEAT = 'Quantas vezes para mostrar notificação individual';
         STR_NOTIFICATION_REPEAT_SUMMARY =
             'O tempo limite de notificação individual é de cerca de 3 segundos, e não pode ser alterado porque esse tempo limite é controlado pelo sistema, mas você pode definir o número de vezes que a mesma notificação será exibida';
@@ -3370,15 +3523,7 @@
         STR_OLDEST = 'Assistidos mais antigos';
         STR_PRESS_ENTER_D = 'Pressione enter para deletar';
         STR_LIVE_VOD = 'Esta transmissão ao vivo agora é um VOD <br> abrindo o VOD de onde você parou de assistir ao vivo: <br>';
-        STR_BACKUP =
-            'Permitir que o aplicativo faça e restaure backups? <br> (Os usuários e seu histórico serão backups)' +
-            '<br><br>' +
-            'Clique em Sim, o aplicativo salvará backups para uso futuro e restaurará um backup salvo se os dados do aplicativo estiverem vazios.' +
-            'É necessário dar permissão de armazenamento ao app para isso, então dê antes clique sim.' +
-            '<br><br>' +
-            'Se você não der permissão de armazenamento, nenhum backup será feito.' +
-            '<br><br>' +
-            'A pasta Backup é Main_Storage/data/com.fgl27.twitch/Backup';
+
         STR_DELETE_SURE = 'Tem certeza que deseja deletar tudo';
         STR_CREATED_NEWEST = 'Criado/Desde mais recente';
         STR_CREATED_OLDEST = 'Criado/Desde mais antigo';
@@ -3750,6 +3895,8 @@
         STR_PLAYER_EXTRA_CODEC = 'Transmissão Avançada: suporte a HEVC, AV1, 1440p e 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
             'A maioria das transmissões usa AVC (H.264) até 1080p60; HEVC/AV1 permite 1440p, 4K e mais de 60fps quando disponível (Nem todas as transmissões são compatíveis, depende do streamer ativar essa opção e do Twitch disponibilizá-la na sua região).';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+            'Este recurso funciona apenas para usuários conectados. Nem todas as transmissões são compatíveis — depende do streamer ativar e do Twitch disponibilizar na sua região.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'O app verifica se seu dispositivo suporta HEVC ou AV1 para transmissões de maior qualidade.';
 
@@ -3761,9 +3908,54 @@
 
         STR_PLAYER_CODEC_SUPPORTED = 'dispositivo compatível';
         STR_PLAYER_CODEC_NOT_SUPPORTED = 'Dispositivo não compatível! Ativar este codec pode causar erros na reprodução.';
+
+        STR_BACKUP_ACCOUNT_REMOVE = 'Remover conta do Google Drive';
+        STR_BACKUP_ACCOUNT_ADD = 'Adicionar conta do Google Drive para backup';
+        STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar um backup, adicione uma conta e o app mostrará as opções disponíveis para restauração.';
+
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Conta do Google Drive adicionada';
+        STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Recuperando informações da API, por favor, aguarde...';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acesso negado';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acesso bem-sucedido, aguarde enquanto o aplicativo verifica...';
+
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'O aplicativo irá restaurar e fechar este diálogo em breve';
+        STR_BACKUP_NO_BACKUP_FOUND = 'Nenhum backup feito anteriormente encontrado, backup criado com sucesso';
+        STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Perdeu acesso à conta de Backup e Sincronização, conta de backup removida!';
+
+        STR_BACKUP_NAME = 'Nome do backup:';
+        STR_BACKUP_SIZE = 'Tamanho do backup:';
+        STR_BACKUP_SYNC = 'Sincronizar, Backup e Restauração';
+        STR_BACKUP_SYNC_SUMMARY =
+            'O aplicativo poderá visualizar, criar, editar e excluir apenas os arquivos específicos do Google Drive que ele cria, NÃO poderá visualizar, modificar ou excluir quaisquer outros arquivos no seu Google Drive.' +
+            '<br><br>' +
+            'Também poderá ler seu endereço de e-mail e imagem de perfil para exibir a conta atualmente ativa. Essas informações serão apenas exibidas e NÃO serão modificadas.';
+        STR_BACKUP_USER_INFO = '(Informações do usuário: Usuários, histórico, bloqueados e configurações)';
+
+        STR_BACKUP_SYNC_USER = 'Sincronizar usuários';
+        STR_BACKUP_SYNC_HISTORY = 'Sincronizar histórico e bloqueados dos usuários.';
+        STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configurações';
+        STR_BACKUP_RESTORE_USER = 'Restaurar usuários';
+        STR_BACKUP_RESTORE_HISTORY = 'Restaurar histórico e lista de bloqueados dos usuários.';
+        STR_BACKUP_RESTORE_SETTINGS = 'Restaurar configurações';
+        STR_BACKUP_RESTORE_SUMMARY = 'Se você tiver problemas após a restauração, tente limpar os dados do app e restaurar pulando uma das opções.';
+
+        STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+            'O backup tem apenas um conjunto de configurações unificadas para todos os seus dispositivos. Qualquer alteração que você fizer será aplicada em seus outros dispositivos na próxima vez que abrir o aplicativo.';
+        STR_BACKUP_SYNC_RESTORE = 'Backup encontrado';
+        STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Backup encontrado. Escolha o que restaurar agora e pressione Enter para confirmar.';
+
+        STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Restauração bem-sucedida!';
+        STR_BACKUP_RESTORE_FAIL = 'Falha ao restaurar backup';
+
+        STR_BACKUP_ENABLE = 'Habilitar backup';
+        STR_BACKUP_ENABLE_SUMMARY = 'Se definido como SIM, o aplicativo manterá um backup de todas as informações do usuário ' + STR_BACKUP_USER_INFO;
+
+        STR_BACKUP_SYNC_ENABLE = 'Habilitar sincronização';
+        STR_BACKUP_SYNC_ENABLE_SUMMARY =
+            'Se definido como SIM, o aplicativo sincronizará automaticamente as informações do usuário entre dispositivos';
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -4004,6 +4196,9 @@
         STR_OPEN_BROADCAST = 'Открыть трансляцию';
         STR_OPEN_LAST_BROADCAST = 'Открыть последний VOD';
         STR_IS_LIVE = 'Онлайн';
+        STR_OPEN_REWIND = 'Открыть перемотку';
+        STR_OPEN_REWIND_SUMMARY = 'Открыть VOD с полной перемоткой';
+        STR_OPEN_REWIND_FAIL = 'Перемотка недоступна для этой трансляции';
         STR_SHOW_ISLIVE_WARNING = 'Показать "Стример Онлайн" Предупреждение';
         STR_SHOW_ISLIVE_WARNING_SUMMARY =
             'При просмотре клипа или видео, приложение может проверить онлайн ли этот стример, если да, появится предупреждение. Чтобы открыть прямую трансляцию, просто используйте опцию нижнего элемента управления плеером.';
@@ -4191,9 +4386,10 @@
         STR_TITLE_CHANGE_SHOW = 'Показать "Стример изменил заголовок" для отслеживаемых каналов';
         STR_GAME_CHANGE_SHOW = 'Показать "Стример изменил игру" для отслеживаемых каналов';
         STR_NOW_LIVE_GAME_SHOW = 'Показать "Игра запущена" для игр, за которые отслеживаются';
-        STR_NOW_BACKGROUND = 'Уведомление над другими приложениями, когда приложение работает в фоновом режиме';
-        STR_NOW_BACKGROUND_SUMMARY =
-            'Если вы запретите уведомления для этого приложения в настройках системы, эта функция не будет работать. Если уведомления приложения запущены, и вы выйдете из приложения, уведомление будет отображаться поверх других приложений, даже если это отключено.';
+        STR_NOTIFICATION_BACKGROUND = 'Уведомление над другими приложениями, когда приложение работает в фоновом режиме';
+        STR_NOTIFICATION_BACKGROUND_SUMMARY =
+            'Чтобы включить эту функцию, убедитесь, что у приложения есть разрешение на уведомления в настройках Android. На устройствах с Android 11 или новее приложение будет показывать простое однострочное уведомление при работе в фоновом режиме.';
+        STR_NOTIFICATION_BACKGROUND_WARNING = 'Отсутствует разрешение на уведомления в системе Android!';
         STR_NOTIFICATION_REPEAT = 'Сколько раз показывать уведомление';
         STR_NOTIFICATION_REPEAT_SUMMARY =
             'Тайм-аут отдельного уведомления составляет около 3 секунд и не может быть изменен, потому что этот тайм-аут контролируется системой, но вы можете установить, сколько раз будет отображаться одно и то же уведомление.';
@@ -4292,15 +4488,6 @@
         STR_PRESS_ENTER_D = 'Нажмите ОК, чтобы удалить';
         STR_LIVE_VOD =
             'Эта прямая трансляция теперь видео<br>открыть видео с того места, где вы в последний раз прекратили смотреть прямую трансляцию:<br>';
-        STR_BACKUP =
-            'Разрешить приложению создавать и восстанавливать резервные копии?<br>(Пользователи и их история будут зарезервированы)' +
-            '<br><br>' +
-            'Нажмите Да, приложение сохранит резервные копии для использования в будущем и восстановит сохраненную резервную копию, если данные приложения пусты..' +
-            'Необходимо предоставить для этого разрешение хранилища приложения, поэтому дайте, прежде чем нажать Да.' +
-            '<br><br>' +
-            'Если вы не дадите разрешение на хранение, резервное копирование не будет выполнено..' +
-            '<br><br>' +
-            'Папка резервного копирования Main_Storage/data/com.fgl27.twitch/Backup';
         STR_DELETE_SURE = 'Вы уверены, что хотите удалить все';
         STR_CREATED_NEWEST = 'Создано / Новейшее';
         STR_CREATED_OLDEST = 'Создано / Старое';
@@ -4668,6 +4855,8 @@
         STR_PLAYER_EXTRA_CODEC = 'Расширенная трансляция: поддержка HEVC, AV1, 1440p и 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
             'Большинство потоков используют AVC (H.264) до 1080p60; HEVC/AV1 позволяет 1440p, 4K и более 60 кадров/с, если доступно (Поддерживаются не все потоки — это зависит от того, включил ли стример эту функцию и предоставляет ли Twitch её в вашем регионе).';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+            'Эта функция работает только для пользователей, вошедших в аккаунт. Поддерживаются не все потоки — это зависит от того, включил ли стример эту функцию и предоставляет ли Twitch её в вашем регионе.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Приложение проверяет, поддерживает ли ваше устройство HEVC или AV1 для трансляций высокого качества.';
 
@@ -4708,9 +4897,56 @@
 
         STR_DISABLE_SHARED_CHAT = 'Отключить общий чат';
         STR_DISABLE_SHARED_CHAT_SUMMARY = 'Если установлено "да", будут отображаться только сообщения из чата открытого вами стрима';
+
+        STR_BACKUP_ACCOUNT_REMOVE = 'Удалить аккаунт Google Drive';
+        STR_BACKUP_ACCOUNT_ADD = 'Добавить аккаунт Google Drive для резервного копирования';
+        STR_BACKUP_ACCOUNT_ADD_SUMMARY =
+            'Чтобы восстановить резервную копию, добавьте аккаунт, и приложение покажет доступные варианты восстановления.';
+
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Аккаунт Google Drive добавлен';
+        STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Получение информации от API, пожалуйста, подождите...';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Доступ запрещен';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Доступ успешно получен, подождите, пока приложение проверяет...';
+
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'Приложение восстановит и закроет этот диалог в ближайшее время';
+        STR_BACKUP_NO_BACKUP_FOUND = 'Ранее созданная резервная копия не найдена, резервная копия успешно создана';
+        STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Потерян доступ к аккаунту Резервного копирования и Синхронизации, аккаунт резервного копирования удален!';
+
+        STR_BACKUP_NAME = 'Имя резервной копии:';
+        STR_BACKUP_SIZE = 'Размер резервной копии:';
+        STR_BACKUP_SYNC = 'Синхронизация, Резервное копирование и Восстановление';
+        STR_BACKUP_SYNC_SUMMARY =
+            'Приложение сможет просматривать, создавать, редактировать и удалять только те файлы Google Drive, которые оно создает, оно НЕ сможет просматривать, изменять или удалять любые другие файлы в вашем Google Drive.' +
+            '<br><br>' +
+            'Оно также сможет прочитать ваш адрес электронной почты и изображение профиля для отображения текущей активной учетной записи. Эта информация будет только отображаться и НЕ будет изменяться.';
+        STR_BACKUP_USER_INFO = '(Информация пользователя: Пользователи, история, заблокированные и настройки)';
+
+        STR_BACKUP_SYNC_USER = 'Синхронизировать пользователей';
+        STR_BACKUP_SYNC_HISTORY = 'Синхронизировать историю и список заблокированных пользователей.';
+        STR_BACKUP_SYNC_SETTINGS = 'Синхронизировать настройки';
+        STR_BACKUP_RESTORE_USER = 'Восстановить пользователей';
+        STR_BACKUP_RESTORE_HISTORY = 'Восстановить историю и список заблокированных пользователей.';
+        STR_BACKUP_RESTORE_SETTINGS = 'Восстановить настройки';
+        STR_BACKUP_RESTORE_SUMMARY =
+            'Если после восстановления возникли проблемы, попробуйте очистить данные приложения и выполнить восстановление, пропустив один из пунктов.';
+
+        STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+            'Резервная копия имеет только один набор унифицированных настроек для всех ваших устройств. Любые изменения, которые вы вносите, будут применены на других устройствах при следующем открытии приложения.';
+        STR_BACKUP_SYNC_RESTORE = 'Найдена резервная копия';
+        STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Найдена резервная копия. Выберите, что восстановить, и нажмите Enter для подтверждения.';
+        STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Восстановление успешно!';
+        STR_BACKUP_RESTORE_FAIL = 'Не удалось восстановить резервную копию';
+
+        STR_BACKUP_ENABLE = 'Включить резервное копирование';
+        STR_BACKUP_ENABLE_SUMMARY =
+            'Если установлено ДА, приложение будет хранить резервную копию всей информации пользователя ' + STR_BACKUP_USER_INFO;
+
+        STR_BACKUP_SYNC_ENABLE = 'Включить синхронизацию';
+        STR_BACKUP_SYNC_ENABLE_SUMMARY =
+            'Если установлено ДА, приложение будет автоматически синхронизировать информацию пользователя между устройствами';
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -5133,8 +5369,8 @@
         STR_TITLE_CHANGE_SHOW = "Показувати сповіщення 'Зміна заголовка' для підписаних каналів";
         STR_GAME_CHANGE_SHOW = "Показувати сповіщення 'Зміна гри' для підписаних каналів";
         STR_NOW_LIVE_GAME_SHOW = "Показувати сповіщення 'Гра в ефірі' для улюблених ігор";
-        STR_NOW_BACKGROUND = 'Показувати сповіщення поверх інших програм у фоні';
-        STR_NOW_BACKGROUND_SUMMARY =
+        STR_NOTIFICATION_BACKGROUND = 'Показувати сповіщення поверх інших програм у фоні';
+        STR_NOTIFICATION_BACKGROUND_SUMMARY =
             'Якщо ви вимкнули сповіщення в системних налаштуваннях, ця опція не працюватиме. Якщо сповіщення увімкнено і додаток згорнуто, сповіщення буде видно поверх інших програм навіть при вимкненій цій опції.';
         STR_NOTIFICATION_REPEAT = 'Кількість повторів одного сповіщення';
         STR_NOTIFICATION_REPEAT_SUMMARY = 'Тривалість сповіщення — приблизно 3 секунди (не змінюється), але можна встановити кількість повторень.';
@@ -5229,15 +5465,6 @@
         STR_OLDEST = 'Найстаріші перегляди';
         STR_PRESS_ENTER_D = 'Натисніть ОК для очищення';
         STR_LIVE_VOD = 'Цей ефір став VOD<br>відкриваємо VOD з моменту зупинки перегляду:<br>';
-        STR_BACKUP =
-            'Дозволити додатку створювати та відновлювати резервні копії?<br>(Користувачі та їх історія будуть збережені)' +
-            '<br><br>' +
-            'Якщо натиснете Так, додаток збереже копію на майбутнє і відновить її при відсутності даних.' +
-            'Для цього потрібен дозвіл на доступ до памʼяті. Надайте його перед підтвердженням.' +
-            '<br><br>' +
-            'Без дозволу на збереження резервні копії не створюватимуться.' +
-            '<br><br>' +
-            'Шлях до папки з копіями: Main_Storage/data/com.fgl27.twitch/Backup';
         STR_DELETE_SURE = 'Ви впевнені, що хочете видалити все';
         STR_CREATED_NEWEST = 'Дата створення / Найновіші';
         STR_CREATED_OLDEST = 'Дата створення / Найстаріші';
@@ -5602,6 +5829,8 @@
         STR_PLAYER_EXTRA_CODEC = 'Покращене мовлення HEVC, AV1, підтримка 1440p 4K';
         STR_PLAYER_EXTRA_CODEC_SUMMARY =
             'Більшість трансляцій використовують AVC (H.264) до 1080p60; HEVC/AV1 забезпечує 1440p, 4K і понад 60 кадрів/с за наявності (Підтримуються не всі трансляції — це залежить від того, чи ввімкнув це стрімер і чи доступно це від Twitch у вашому регіоні).';
+        STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+            'Ця функція працює лише для користувачів, які увійшли в систему. Підтримуються не всі трансляції — це залежить від того, чи ввімкнув це стрімер і чи доступно це від Twitch у вашому регіоні.';
 
         STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Додаток перевіряє, чи підтримує ваш пристрій HEVC або AV1 для відтворення високоякісного відео.';
 
@@ -5640,9 +5869,55 @@
 
         STR_DISABLE_SHARED_CHAT = 'Вимкнути спільний чат';
         STR_DISABLE_SHARED_CHAT_SUMMARY = 'Якщо встановити "так", буде показано лише чат того стріму, який ви відкрили';
+
+        STR_BACKUP_ACCOUNT_REMOVE = 'Видалити обліковий запис Google Drive';
+        STR_BACKUP_ACCOUNT_ADD = 'Додати обліковий запис Google Drive для резервного копіювання';
+        STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Щоб відновити резервну копію, додайте обліковий запис, і застосунок покаже доступні варіанти відновлення.';
+        STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Обліковий запис Google Drive додано';
+
+        STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Отримання інформації з API, будь ласка, зачекайте...';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Доступ заборонено';
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Доступ надано, зачекайте, поки додаток перевірить...';
+
+        STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'Додаток відновить дані та закриє це діалогове вікно за кілька секунд';
+        STR_BACKUP_NO_BACKUP_FOUND = 'Попередньої резервної копії не знайдено, резервну копію успішно створено';
+        STR_BACKUP_ACCOUNT_REFRESH_ERROR = 'Втрачено доступ до облікового запису резервного копіювання та синхронізації, обліковий запис видалено!';
+
+        STR_BACKUP_NAME = 'Назва резервної копії:';
+        STR_BACKUP_SIZE = 'Розмір резервної копії:';
+        STR_BACKUP_SYNC = 'Синхронізація, Резервне копіювання та Відновлення';
+        STR_BACKUP_SYNC_SUMMARY =
+            'Додаток зможе переглядати, створювати, редагувати та видаляти лише ті файли Google Drive, які він створює. Він НЕ зможе переглядати, змінювати або видаляти будь-які інші файли у вашому Google Drive.' +
+            '<br><br>' +
+            'Він також зможе отримати доступ до вашої електронної адреси та зображення профілю для відображення поточного активного облікового запису. Ця інформація буде лише відображатися і НЕ буде змінюватися.';
+
+        STR_BACKUP_USER_INFO = '(Інформація користувача: користувачі, історія, заблоковані та налаштування)';
+
+        STR_BACKUP_SYNC_USER = 'Синхронізувати користувачів';
+        STR_BACKUP_SYNC_HISTORY = 'Синхронізувати історію та список заблокованих користувачів.';
+        STR_BACKUP_SYNC_SETTINGS = 'Синхронізувати налаштування';
+        STR_BACKUP_RESTORE_USER = 'Відновити користувачів';
+        STR_BACKUP_RESTORE_HISTORY = 'Відновити історію та список заблокованих користувачів.';
+        STR_BACKUP_RESTORE_SETTINGS = 'Відновити налаштування';
+        STR_BACKUP_RESTORE_SUMMARY =
+            'Якщо після відновлення виникають проблеми, спробуйте очистити дані застосунку та відновити, пропустивши один із пунктів.';
+
+        STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+            'Резервна копія має лише один набір уніфікованих налаштувань для всіх ваших пристроїв. Будь-які зміни, які ви внесете, будуть застосовані на інших пристроях під час наступного відкриття додатка.';
+        STR_BACKUP_SYNC_RESTORE = 'Знайдено резервну копію';
+        STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Знайдено резервну копію. Виберіть, що відновити, і натисніть Enter для підтвердження.';
+        STR_BACKUP_SYNC_RESTORE_SUCCESS = 'Відновлення успішне!';
+        STR_BACKUP_RESTORE_FAIL = 'Не вдалося відновити резервну копію';
+
+        STR_BACKUP_ENABLE = 'Увімкнути резервне копіювання';
+        STR_BACKUP_ENABLE_SUMMARY = 'Якщо встановлено ТАК, додаток зберігатиме резервну копію всієї інформації користувача ' + STR_BACKUP_USER_INFO;
+
+        STR_BACKUP_SYNC_ENABLE = 'Увімкнути синхронізацію';
+        STR_BACKUP_SYNC_ENABLE_SUMMARY =
+            'Якщо встановлено ТАК, додаток синхронізуватиме всі ввімкнені опції нижче між цим пристроєм та іншими, що використовують той самий обліковий запис Google Drive. Щоб перемкнутися між пристроями та продовжити перегляд без проблем, згорніть додаток на поточному пристрої, натиснувши клавішу Home. Потім переконайтеся, що додаток повністю закрито на іншому пристрої, перш ніж відкривати його.';
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -5668,7 +5943,7 @@
     var emojis_string =
         '[{"unicode":"😀","code":"grin","id":"0_grin","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f600.png"},{"unicode":"😃","code":"smile","id":"1_smile","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f603.png"},{"unicode":"😄","code":"smile2","id":"2_smile2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f604.png"},{"unicode":"😁","code":"smile3","id":"3_smile3","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f601.png"},{"unicode":"😆","code":"satisfied","id":"4_satisfied","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f606.png"},{"unicode":"😅","code":"sweat","id":"5_sweat","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f605.png"},{"unicode":"🤣","code":"rolling","id":"6_rolling","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f923.png"},{"unicode":"😂","code":"tear","id":"7_tear","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f602.png"},{"unicode":"🙂","code":"smile4","id":"8_smile4","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f642.png"},{"unicode":"🙃","code":"smile-upside-down","id":"9_smile-upside-down","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f643.png"},{"unicode":"😉","code":"wink","id":"10_wink","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f609.png"},{"unicode":"😊","code":"smile-blush","id":"11_smile-blush","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60a.png"},{"unicode":"😇","code":"angel","id":"12_angel","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f607.png"},{"unicode":"🥰","code":"adore","id":"13_adore","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f970.png"},{"unicode":"😍","code":"smile-love","id":"14_smile-love","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60d.png"},{"unicode":"🤩","code":"smile-star","id":"15_smile-star","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f929.png"},{"unicode":"😘","code":"kiss","id":"16_kiss","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f618.png"},{"unicode":"😗","code":"kiss2","id":"17_kiss2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f617.png"},{"unicode":"☺️","code":"relaxed","id":"18_relaxed","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/263a.png"},{"unicode":"😚","code":"kiss3","id":"19_kiss3","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f61a.png"},{"unicode":"😙","code":"kis4","id":"20_kis4","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f619.png"},{"unicode":"😋","code":"delicious","id":"21_delicious","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60b.png"},{"unicode":"😛","code":"tongue","id":"22_tongue","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f61b.png"},{"unicode":"😜","code":"tongue-wink","id":"23_tongue-wink","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f61c.png"},{"unicode":"🤪","code":"goofy","id":"24_goofy","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f92a.png"},{"unicode":"😝","code":"tongue-><","id":"25_tongue-><","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f61d.png"},{"unicode":"🤑","code":"face-money","id":"26_face-money","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f911.png"},{"unicode":"🤗","code":"hugging","id":"27_hugging","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f917.png"},{"unicode":"🤭","code":"whoops","id":"28_whoops","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f92d.png"},{"unicode":"🤫","code":"quiet","id":"29_quiet","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f92b.png"},{"unicode":"🤔","code":"thinking","id":"30_thinking","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f914.png"},{"unicode":"🤐","code":"zipper","id":"31_zipper","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f910.png"},{"unicode":"🤨","code":"skeptic","id":"32_skeptic","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f928.png"},{"unicode":"😑","code":"unexpressive","id":"33_unexpressive","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f611.png"},{"unicode":"😶","code":"silent","id":"34_silent","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f636.png"},{"unicode":"😏","code":"smirk","id":"35_smirk","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60f.png"},{"unicode":"😒","code":"unhappy","id":"36_unhappy","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f612.png"},{"unicode":"🙄","code":"eyeroll","id":"37_eyeroll","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f644.png"},{"unicode":"😬","code":"grimace","id":"38_grimace","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f62c.png"},{"unicode":"🤥","code":"pinocchio","id":"39_pinocchio","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f925.png"},{"unicode":"😌","code":"relieved","id":"40_relieved","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60c.png"},{"unicode":"😔","code":"pensive","id":"41_pensive","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f614.png"},{"unicode":"😪","code":"sleep","id":"42_sleep","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f62a.png"},{"unicode":"🤤","code":"drooling-face","id":"43_drooling-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f924.png"},{"unicode":"😴","code":"sleep-face","id":"44_sleep-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f634.png"},{"unicode":"😷","code":"cold-face","id":"45_cold-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f637.png"},{"unicode":"🤒","code":"sick-face","id":"46_sick-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f912.png"},{"unicode":"🤕","code":"bandage-face","id":"47_bandage-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f915.png"},{"unicode":"🤢","code":"nauseated-face","id":"48_nauseated-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f922.png"},{"unicode":"🤮","code":"sick-face","id":"49_sick-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f92e.png"},{"unicode":"🤧","code":"sneeze","id":"50_sneeze","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f927.png"},{"unicode":"🥵","code":"feverish","id":"51_feverish","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f975.png"},{"unicode":"🥶","code":"blue-faced","id":"52_blue-faced","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f976.png"},{"unicode":"🥴","code":"intoxicated","id":"53_intoxicated","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f974.png"},{"unicode":"😵","code":"dizzy","id":"54_dizzy","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f635.png"},{"unicode":"🤯","code":"mind blown","id":"55_mind blown","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f92f.png"},{"unicode":"🤠","code":"cowboy","id":"56_cowboy","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f920.png"},{"unicode":"🥳","code":"celebration","id":"57_celebration","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f973.png"},{"unicode":"😎","code":"cool-face","id":"58_cool-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f60e.png"},{"unicode":"🤓","code":"cool","id":"59_cool","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f913.png"},{"unicode":"🧐","code":"stuffy","id":"60_stuffy","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9d0.png"},{"unicode":"😕","code":"confused","id":"61_confused","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f615.png"},{"unicode":"😟","code":"worried","id":"62_worried","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f61f.png"},{"unicode":"🙁","code":"frown","id":"63_frown","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f641.png"},{"unicode":"☹️","code":"frown","id":"64_frown","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2639.png"},{"unicode":"😮","code":"mouth-open","id":"65_mouth-open","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f62e.png"},{"unicode":"😯","code":"surprised","id":"66_surprised","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f62f.png"},{"unicode":"😲","code":"astonished","id":"67_astonished","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f632.png"},{"unicode":"😳","code":"dazed","id":"68_dazed","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f633.png"},{"unicode":"🥺","code":"puppy eyes","id":"69_puppy eyes","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f97a.png"},{"unicode":"😦","code":"frown","id":"70_frown","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f626.png"},{"unicode":"😧","code":"anguished","id":"71_anguished","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f627.png"},{"unicode":"😨","code":"fearful","id":"72_fearful","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f628.png"},{"unicode":"😰","code":"fearful2","id":"73_fearful2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f630.png"},{"unicode":"😥","code":"disappointed","id":"74_disappointed","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f625.png"},{"unicode":"😢","code":"cry-face","id":"75_cry-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f622.png"},{"unicode":"😭","code":"cry-face2","id":"76_cry-face2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f62d.png"},{"unicode":"😱","code":"fear-face","id":"77_fear-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f631.png"},{"unicode":"😖","code":"confounded","id":"78_confounded","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f616.png"},{"unicode":"😣","code":"persevere","id":"79_persevere","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f623.png"},{"unicode":"😞","code":"disappointed","id":"80_disappointed","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f61e.png"},{"unicode":"😓","code":"cold","id":"81_cold","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f613.png"},{"unicode":"😩","code":"weary","id":"82_weary","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f629.png"},{"unicode":"😫","code":"tired","id":"83_tired","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f62b.png"},{"unicode":"😤","code":"triumph","id":"84_triumph","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f624.png"},{"unicode":"😡","code":"angry","id":"85_angry","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f621.png"},{"unicode":"😠","code":"mad","id":"86_mad","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f620.png"},{"unicode":"🤬","code":"swearing","id":"87_swearing","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f92c.png"},{"unicode":"😈","code":"devil","id":"88_devil","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f608.png"},{"unicode":"👿","code":"demon","id":"89_demon","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f47f.png"},{"unicode":"💀","code":"death","id":"90_death","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f480.png"},{"unicode":"☠️","code":"crossbones","id":"91_crossbones","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2620.png"},{"unicode":"💩","code":"poop","id":"92_poop","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a9.png"},{"unicode":"🤡","code":"clown","id":"93_clown","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f921.png"},{"unicode":"👹","code":"creature","id":"94_creature","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f479.png"},{"unicode":"👺","code":"creature2","id":"95_creature2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f47a.png"},{"unicode":"👻","code":"ghost","id":"96_ghost","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f47b.png"},{"unicode":"👾","code":"alien","id":"97_alien","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f47e.png"},{"unicode":"🤖","code":"robot","id":"98_robot","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f916.png"},{"unicode":"😺","code":"cat-face","id":"99_cat-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f63a.png"},{"unicode":"😸","code":"cat-smile","id":"100_cat-smile","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f638.png"},{"unicode":"😹","code":"cat-tear","id":"101_cat-tear","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f639.png"},{"unicode":"😻","code":"cat-heart","id":"102_cat-heart","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f63b.png"},{"unicode":"😼","code":"cat-ironic","id":"103_cat-ironic","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f63c.png"},{"unicode":"😽","code":"cat-kiss","id":"104_cat-kiss","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f63d.png"},{"unicode":"🙀","code":"cat-surprised","id":"105_cat-surprised","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f640.png"},{"unicode":"😿","code":"cat-sad","id":"106_cat-sad","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f63f.png"},{"unicode":"😾","code":"cat-pouting","id":"107_cat-pouting","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f63e.png"},{"unicode":"👋","code":"hand-wave","id":"108_hand-wave","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f44b.png"},{"unicode":"🤚","code":"backhand","id":"109_backhand","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f91a.png"},{"unicode":"🖐️","code":"hand-open-finger","id":"110_hand-open-finger","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f590.png"},{"unicode":"✋","code":"hand","id":"111_hand","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/270b.png"},{"unicode":"🖖","code":"hand-vulcan","id":"112_hand-vulcan","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f596.png"},{"unicode":"👌","code":"hand-ok","id":"113_hand-ok","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f44c.png"},{"unicode":"✌️","code":"hand-v","id":"114_hand-v","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/270c.png"},{"unicode":"🤞","code":"hand-cross","id":"115_hand-cross","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f91e.png"},{"unicode":"🤟","code":"hand-ily","id":"116_hand-ily","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f91f.png"},{"unicode":"🤘","code":"hand-horns","id":"117_hand-horns","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f918.png"},{"unicode":"🤙","code":"hand-call","id":"118_hand-call","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f919.png"},{"unicode":"🖕","code":"hand-finger","id":"119_hand-finger","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f595.png"},{"unicode":"👈","code":"hand-point","id":"120_hand-point","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f448.png"},{"unicode":"👇","code":"hand-poin2","id":"121_hand-poin2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f447.png"},{"unicode":"☝️","code":"hand-point3","id":"122_hand-point3","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/261d.png"},{"unicode":"👍","code":"hand-thumb-up","id":"123_hand-thumb-up","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f44d.png"},{"unicode":"👎","code":"hand-thumb-down","id":"124_hand-thumb-down","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f44e.png"},{"unicode":"✊","code":"hand-punch","id":"125_hand-punch","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/270a.png"},{"unicode":"👊","code":"hand-punch2","id":"126_hand-punch2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f44a.png"},{"unicode":"🤛","code":"hand-punch3","id":"127_hand-punch3","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f91b.png"},{"unicode":"🤜","code":"hand-punch4","id":"128_hand-punch4","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f91c.png"},{"unicode":"👏","code":"hand-clap","id":"129_hand-clap","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f44f.png"},{"unicode":"🙌","code":"hand-celebration","id":"130_hand-celebration","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f64c.png"},{"unicode":"👐","code":"hand-open","id":"131_hand-open","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f450.png"},{"unicode":"🤲","code":"hand-prayer","id":"132_hand-prayer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f932.png"},{"unicode":"🤝","code":"hand-agreement","id":"133_hand-agreement","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f91d.png"},{"unicode":"🙏","code":"hand-please","id":"134_hand-please","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f64f.png"},{"unicode":"✍️","code":"hand-write","id":"135_hand-write","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/270d.png"},{"unicode":"💅","code":"cosmetics","id":"136_cosmetics","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f485.png"},{"unicode":"🤳","code":"self","id":"137_self","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f933.png"},{"unicode":"💪","code":"muscle","id":"138_muscle","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4aa.png"},{"unicode":"🦵","code":"kick","id":"139_kick","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9b5.png"},{"unicode":"🦶","code":"kick2","id":"140_kick2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9b6.png"},{"unicode":"👂","code":"ear","id":"141_ear","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f442.png"},{"unicode":"👃","code":"nose","id":"142_nose","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f443.png"},{"unicode":"🧠","code":"brain","id":"143_brain","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e0.png"},{"unicode":"🦷","code":"tooth","id":"144_tooth","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9b7.png"},{"unicode":"👀","code":"eyes","id":"145_eyes","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f440.png"},{"unicode":"👁️","code":"eye","id":"146_eye","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f441.png"},{"unicode":"👅","code":"tongue2","id":"147_tongue2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f445.png"},{"unicode":"👄","code":"lips","id":"148_lips","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f444.png"},{"unicode":"👶","code":"baby","id":"149_baby","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f476.png"},{"unicode":"👨‍🦲","code":"bald","id":"150_bald","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f468-200d-1f9b2.png"},{"unicode":"👴","code":"old-man","id":"151_old-man","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f474.png"},{"unicode":"👵","code":"old-woman","id":"152_old-woman","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f475.png"},{"unicode":"🔥","code":"fire","id":"153_fire","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f525.png"},{"unicode":"👨‍🚒","code":"firefighter","id":"154_firefighter","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f468-200d-1f692.png"},{"unicode":"👩‍🚒","code":"firefighter2","id":"155_firefighter2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f469-200d-1f692.png"},{"unicode":"👮‍♂️","code":"police-officer","id":"156_police-officer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f46e-200d-2642-fe0f.png"},{"unicode":"👮‍♀️","code":"police-officer-woman","id":"157_police-officer-woman","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f46e-200d-2640-fe0f.png"},{"unicode":"👨‍👩‍👧‍👦","code":"family","id":"158_family","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f468-200d-1f469-200d-1f467-200d-1f466.png"},{"unicode":"🙈","code":"monkey-see","id":"159_monkey-see","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f648.png"},{"unicode":"🙉","code":"monkey-hear","id":"160_monkey-hear","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f649.png"},{"unicode":"🙊","code":"monkey-speak","id":"161_monkey-speak","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f64a.png"},{"unicode":"💋","code":"kiss-lips","id":"162_kiss-lips","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f48b.png"},{"unicode":"💌","code":"heart-letter","id":"163_heart-letter","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f48c.png"},{"unicode":"💘","code":"arrow-cupid","id":"164_arrow-cupid","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f498.png"},{"unicode":"💝","code":"valentine","id":"165_valentine","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f49d.png"},{"unicode":"💖","code":"sparkle-heart","id":"166_sparkle-heart","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f496.png"},{"unicode":"💗","code":"pulse","id":"167_pulse","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f497.png"},{"unicode":"💓","code":"beating","id":"168_beating","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f493.png"},{"unicode":"💞","code":"revolving","id":"169_revolving","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f49e.png"},{"unicode":"💕","code":"love","id":"170_love","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f495.png"},{"unicode":"❣️","code":"exclamation","id":"171_exclamation","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2763.png"},{"unicode":"💔","code":"broken-heart","id":"172_broken-heart","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f494.png"},{"unicode":"💟","code":"heart-Decoration","id":"173_heart-Decoration","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f49f.png"},{"unicode":"🖤","code":"heart-black","id":"174_heart-black","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5a4.png"},{"unicode":"🤎","code":"heart-brown","id":"175_heart-brown","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f90e.png"},{"unicode":"💙","code":"heart-blue","id":"176_heart-blue","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f499.png"},{"unicode":"💚","code":"heart-green","id":"177_heart-green","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f49a.png"},{"unicode":"🧡","code":"heart-orange","id":"178_heart-orange","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e1.png"},{"unicode":"💜","code":"heart-purple","id":"179_heart-purple","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f49c.png"},{"unicode":"❤️","code":"heart-red","id":"180_heart-red","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2764.png"},{"unicode":"🤍","code":"black-white","id":"181_black-white","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f90d.png"},{"unicode":"💛","code":"heart-yellow","id":"182_heart-yellow","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f49b.png"},{"unicode":"💯","code":"hundred","id":"183_hundred","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4af.png"},{"unicode":"💢","code":"mad","id":"184_mad","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a2.png"},{"unicode":"💥","code":"boom","id":"185_boom","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a5.png"},{"unicode":"💫","code":"stars","id":"186_stars","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ab.png"},{"unicode":"💦","code":"splashing","id":"187_splashing","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a6.png"},{"unicode":"💨","code":"comic-dash","id":"188_comic-dash","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a8.png"},{"unicode":"🕳️","code":"hole","id":"189_hole","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f573.png"},{"unicode":"💬","code":"balloon-dialog","id":"190_balloon-dialog","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ac.png"},{"unicode":"🗨️","code":"dialog","id":"191_dialog","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5e8.png"},{"unicode":"🗯️","code":"angry-balloon","id":"192_angry-balloon","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5ef.png"},{"unicode":"💭","code":"balloon-bubble","id":"193_balloon-bubble","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ad.png"},{"unicode":"💤","code":"comic-sleep","id":"194_comic-sleep","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a4.png"},{"unicode":"🕶️","code":"glasses-dark","id":"195_glasses-dark","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f576.png"},{"unicode":"🥽","code":"glasses-swimming","id":"196_glasses-swimming","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f97d.png"},{"unicode":"🥼","code":"scientist","id":"197_scientist","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f97c.png"},{"unicode":"👔","code":"tie","id":"198_tie","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f454.png"},{"unicode":"👕","code":"tshirt","id":"199_tshirt","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f455.png"},{"unicode":"👖","code":"pants","id":"200_pants","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f456.png"},{"unicode":"🧣","code":"neck","id":"201_neck","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e3.png"},{"unicode":"🧤","code":"hand","id":"202_hand","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e4.png"},{"unicode":"🧥","code":"jacket","id":"203_jacket","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e5.png"},{"unicode":"🧦","code":"stocking","id":"204_stocking","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e6.png"},{"unicode":"👗","code":"clothing","id":"205_clothing","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f457.png"},{"unicode":"👘","code":"clothing2","id":"206_clothing2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f458.png"},{"unicode":"👙","code":"swim-clothing","id":"207_swim-clothing","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f459.png"},{"unicode":"👚","code":"woman-clothing","id":"208_woman-clothing","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f45a.png"},{"unicode":"👛","code":"coin-clothing","id":"209_coin-clothing","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f45b.png"},{"unicode":"👜","code":"purse","id":"210_purse","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f45c.png"},{"unicode":"👝","code":"pouch","id":"211_pouch","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f45d.png"},{"unicode":"🛍️","code":"shopping-bag","id":"212_shopping-bag","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6cd.png"},{"unicode":"🎒","code":"school-bag","id":"213_school-bag","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f392.png"},{"unicode":"👞","code":"shoe","id":"214_shoe","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f45e.png"},{"unicode":"👟","code":"sneaker","id":"215_sneaker","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f45f.png"},{"unicode":"🥾","code":"hiking-boot","id":"216_hiking-boot","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f97e.png"},{"unicode":"🥿","code":"ballet flat","id":"217_ballet flat","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f97f.png"},{"unicode":"👠","code":"woman-shoe","id":"218_woman-shoe","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f460.png"},{"unicode":"👡","code":"woman-shoe2","id":"219_woman-shoe2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f461.png"},{"unicode":"👢","code":"woman-boot","id":"220_woman-boot","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f462.png"},{"unicode":"👑","code":"king","id":"221_king","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f451.png"},{"unicode":"👒","code":"hat","id":"222_hat","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f452.png"},{"unicode":"🎩","code":"tophat","id":"223_tophat","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3a9.png"},{"unicode":"🧢","code":"baseball cap","id":"224_baseball cap","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9e2.png"},{"unicode":"⛑️","code":"aid","id":"225_aid","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/26d1.png"},{"unicode":"📿","code":"beads","id":"226_beads","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ff.png"},{"unicode":"💄","code":"lipstick","id":"227_lipstick","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f484.png"},{"unicode":"💍","code":"diamond-ring","id":"228_diamond-ring","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f48d.png"},{"unicode":"💎","code":"diamond","id":"229_diamond","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f48e.png"},{"unicode":"🔇","code":"mute","id":"230_mute","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f507.png"},{"unicode":"🔉","code":"medium","id":"231_medium","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f509.png"},{"unicode":"🔊","code":"loud","id":"232_loud","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f50a.png"},{"unicode":"📢","code":"loud2","id":"233_loud2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4e2.png"},{"unicode":"📣","code":"cheering","id":"234_cheering","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4e3.png"},{"unicode":"📯","code":"horn","id":"235_horn","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ef.png"},{"unicode":"🔔","code":"bell","id":"236_bell","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f514.png"},{"unicode":"🔕","code":"bell","id":"237_bell","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f515.png"},{"unicode":"🎼","code":"music-score","id":"238_music-score","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3bc.png"},{"unicode":"🎵","code":"music-note","id":"239_music-note","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3b5.png"},{"unicode":"🎶","code":"music-notes","id":"240_music-notes","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3b6.png"},{"unicode":"🎙️","code":"microphone","id":"241_microphone","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f399.png"},{"unicode":"🎤","code":"microphone2","id":"242_microphone2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3a4.png"},{"unicode":"🎷","code":"sax","id":"243_sax","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3b7.png"},{"unicode":"🎸","code":"guitar","id":"244_guitar","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3b8.png"},{"unicode":"🎹","code":"piano-keys","id":"245_piano-keys","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3b9.png"},{"unicode":"🎺","code":"trumpet","id":"246_trumpet","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3ba.png"},{"unicode":"🎻","code":"violin","id":"247_violin","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3bb.png"},{"unicode":"🥁","code":"drumsticks","id":"248_drumsticks","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f941.png"},{"unicode":"📱","code":"cellphone","id":"249_cellphone","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4f1.png"},{"unicode":"☎️","code":"phone","id":"250_phone","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/260e.png"},{"unicode":"📞","code":"phone2","id":"251_phone2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4de.png"},{"unicode":"📠","code":"fax","id":"252_fax","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4e0.png"},{"unicode":"🔋","code":"battery","id":"253_battery","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f50b.png"},{"unicode":"🔌","code":"plug","id":"254_plug","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f50c.png"},{"unicode":"🖥️","code":"computer-desktop","id":"255_computer-desktop","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5a5.png"},{"unicode":"🖨️","code":"printer","id":"256_printer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5a8.png"},{"unicode":"⌨️","code":"keyboard","id":"257_keyboard","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2328.png"},{"unicode":"🖱️","code":"mouse-computer","id":"258_mouse-computer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5b1.png"},{"unicode":"💽","code":"computer-disk","id":"259_computer-disk","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4bd.png"},{"unicode":"💾","code":"floppy-disk","id":"260_floppy-disk","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4be.png"},{"unicode":"📀","code":"blu-ray","id":"261_blu-ray","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4c0.png"},{"unicode":"🧮","code":"calculation","id":"262_calculation","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9ee.png"},{"unicode":"🎥","code":"camera","id":"263_camera","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3a5.png"},{"unicode":"🎞️","code":"cinema","id":"264_cinema","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f39e.png"},{"unicode":"📽️","code":"cinema2","id":"265_cinema2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4fd.png"},{"unicode":"📸","code":"camera-flash","id":"266_camera-flash","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4f8.png"},{"unicode":"📼","code":"vhs-tape","id":"267_vhs-tape","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4fc.png"},{"unicode":"🔎","code":"magnifying","id":"268_magnifying","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f50e.png"},{"unicode":"🕯️","code":"light","id":"269_light","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f56f.png"},{"unicode":"💡","code":"bulb","id":"270_bulb","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4a1.png"},{"unicode":"🔦","code":"electric-torch","id":"271_electric-torch","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f526.png"},{"unicode":"📒","code":"notebook","id":"272_notebook","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4d2.png"},{"unicode":"📃","code":"note","id":"273_note","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4c3.png"},{"unicode":"📰","code":"newspaper","id":"274_newspaper","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4f0.png"},{"unicode":"🗞️","code":"newspaper-rolled","id":"275_newspaper-rolled","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5de.png"},{"unicode":"💴","code":"money-rolled","id":"276_money-rolled","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4b4.png"},{"unicode":"💲","code":"dollar-sign","id":"277_dollar-sign","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4b2.png"},{"unicode":"✉️","code":"email","id":"278_email","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2709.png"},{"unicode":"✏️","code":"pencil","id":"279_pencil","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/270f.png"},{"unicode":"✒️","code":"pen","id":"280_pen","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2712.png"},{"unicode":"📝","code":"note-pencil","id":"281_note-pencil","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4dd.png"},{"unicode":"💼","code":"briefcase","id":"282_briefcase","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4bc.png"},{"unicode":"🗓️","code":"calendar","id":"283_calendar","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5d3.png"},{"unicode":"📌","code":"pin","id":"284_pin","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4cc.png"},{"unicode":"📍","code":"pin2","id":"285_pin2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4cd.png"},{"unicode":"📎","code":"paperclip","id":"286_paperclip","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4ce.png"},{"unicode":"📏","code":"ruler","id":"287_ruler","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4cf.png"},{"unicode":"📐","code":"ruler2","id":"288_ruler2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4d0.png"},{"unicode":"✂️","code":"cutting","id":"289_cutting","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2702.png"},{"unicode":"🗑️","code":"wastebasket","id":"290_wastebasket","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5d1.png"},{"unicode":"🔑","code":"key","id":"291_key","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f511.png"},{"unicode":"🗝️","code":"key-old","id":"292_key-old","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5dd.png"},{"unicode":"🔨","code":"hammer","id":"293_hammer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f528.png"},{"unicode":"⛏️","code":"pickaxe","id":"294_pickaxe","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/26cf.png"},{"unicode":"⚒️","code":"hammer2","id":"295_hammer2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2692.png"},{"unicode":"🛠️","code":"hammer-wrench","id":"296_hammer-wrench","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6e0.png"},{"unicode":"🗡️","code":"knife","id":"297_knife","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5e1.png"},{"unicode":"⚔️","code":"swords","id":"298_swords","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2694.png"},{"unicode":"🔫","code":"gun-tool","id":"299_gun-tool","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f52b.png"},{"unicode":"🏹","code":"archer","id":"300_archer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3f9.png"},{"unicode":"🛡️","code":"shield","id":"301_shield","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6e1.png"},{"unicode":"🔧","code":"spanner","id":"302_spanner","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f527.png"},{"unicode":"🔩","code":"bolt","id":"303_bolt","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f529.png"},{"unicode":"⚙️","code":"cog","id":"304_cog","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2699.png"},{"unicode":"⚖️","code":"balance","id":"305_balance","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2696.png"},{"unicode":"🔗","code":"link","id":"306_link","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f517.png"},{"unicode":"🧲","code":"magnetic","id":"307_magnetic","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9f2.png"},{"unicode":"⚗️","code":"chemistry","id":"308_chemistry","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2697.png"},{"unicode":"🧪","code":"chemist","id":"309_chemist","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9ea.png"},{"unicode":"🧬","code":"gene","id":"310_gene","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9ec.png"},{"unicode":"🔬","code":"microscope","id":"311_microscope","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f52c.png"},{"unicode":"🔭","code":"telescope","id":"312_telescope","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f52d.png"},{"unicode":"📡","code":"antenna-dish","id":"313_antenna-dish","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4e1.png"},{"unicode":"💉","code":"medicine","id":"314_medicine","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f489.png"},{"unicode":"💊","code":"medicine","id":"315_medicine","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f48a.png"},{"unicode":"🚪","code":"door","id":"316_door","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6aa.png"},{"unicode":"🛏️","code":"hotel-bed","id":"317_hotel-bed","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6cf.png"},{"unicode":"🚽","code":"toilet","id":"318_toilet","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6bd.png"},{"unicode":"🚿","code":"shower","id":"319_shower","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6bf.png"},{"unicode":"🛁","code":"bath","id":"320_bath","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6c1.png"},{"unicode":"🧴","code":"lotion","id":"321_lotion","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9f4.png"},{"unicode":"🧷","code":"diaper","id":"322_diaper","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9f7.png"},{"unicode":"🧹","code":"sweeping","id":"323_sweeping","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9f9.png"},{"unicode":"🧺","code":"farming","id":"324_farming","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9fa.png"},{"unicode":"🧻","code":"toilet paper","id":"325_toilet paper","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9fb.png"},{"unicode":"🧯","code":"extinguisher","id":"326_extinguisher","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9ef.png"},{"unicode":"🛒","code":"shopping-cart","id":"327_shopping-cart","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6d2.png"},{"unicode":"🚬","code":"smoking","id":"328_smoking","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6ac.png"},{"unicode":"✔️","code":"check","id":"329_check","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2714.png"},{"unicode":"⚰️","code":"death","id":"330_death","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/26b0.png"},{"unicode":"🗿","code":"statue-face","id":"331_statue-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f5ff.png"},{"unicode":"🐵","code":"monkey-face","id":"332_monkey-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f435.png"},{"unicode":"🐒","code":"monkey","id":"333_monkey","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f412.png"},{"unicode":"🦍","code":"gorilla","id":"334_gorilla","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f98d.png"},{"unicode":"🐶","code":"dog-face","id":"335_dog-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f436.png"},{"unicode":"🐩","code":"dog","id":"336_dog","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f429.png"},{"unicode":"🐺","code":"face","id":"337_face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43a.png"},{"unicode":"🦊","code":"face","id":"338_face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f98a.png"},{"unicode":"🦝","code":"curious","id":"339_curious","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f99d.png"},{"unicode":"🐱","code":"cat","id":"340_cat","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f431.png"},{"unicode":"🦁","code":"lion-face","id":"341_lion-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f981.png"},{"unicode":"🐯","code":"tiger-face","id":"342_tiger-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f42f.png"},{"unicode":"🐅","code":"tiger","id":"343_tiger","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f405.png"},{"unicode":"🐆","code":"leopard","id":"344_leopard","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f406.png"},{"unicode":"🐴","code":"horse-face","id":"345_horse-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f434.png"},{"unicode":"🐎","code":"racehorse","id":"346_racehorse","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f40e.png"},{"unicode":"🦄","code":"unicorn-face","id":"347_unicorn-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f984.png"},{"unicode":"🦓","code":"zebra","id":"348_zebra","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f993.png"},{"unicode":"🦌","code":"deer","id":"349_deer","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f98c.png"},{"unicode":"🐮","code":"cow","id":"350_cow","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f42e.png"},{"unicode":"🐂","code":"bull","id":"351_bull","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f402.png"},{"unicode":"🐃","code":"buffalo","id":"352_buffalo","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f403.png"},{"unicode":"🐄","code":"cow","id":"353_cow","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f404.png"},{"unicode":"🐷","code":"pig-face","id":"354_pig-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f437.png"},{"unicode":"🐖","code":"sow","id":"355_sow","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f416.png"},{"unicode":"🐗","code":"pig","id":"356_pig","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f417.png"},{"unicode":"🐽","code":"pig-nose","id":"357_pig-nose","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43d.png"},{"unicode":"🐏","code":"aries","id":"358_aries","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f40f.png"},{"unicode":"🐑","code":"sheep","id":"359_sheep","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f411.png"},{"unicode":"🐐","code":"capricorn","id":"360_capricorn","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f410.png"},{"unicode":"🐪","code":"dromedary","id":"361_dromedary","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f42a.png"},{"unicode":"🐫","code":"camel","id":"362_camel","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f42b.png"},{"unicode":"🦙","code":"alpaca","id":"363_alpaca","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f999.png"},{"unicode":"🦒","code":"spots","id":"364_spots","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f992.png"},{"unicode":"🐘","code":"elephant","id":"365_elephant","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f418.png"},{"unicode":"🦏","code":"rhinoceros","id":"366_rhinoceros","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f98f.png"},{"unicode":"🦛","code":"hippo","id":"367_hippo","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f99b.png"},{"unicode":"🐭","code":"mouse-face","id":"368_mouse-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f42d.png"},{"unicode":"🐁","code":"mouse","id":"369_mouse","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f401.png"},{"unicode":"🐀","code":"rat","id":"370_rat","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f400.png"},{"unicode":"🐹","code":"pet-face","id":"371_pet-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f439.png"},{"unicode":"🐰","code":"bunny-face","id":"372_bunny-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f430.png"},{"unicode":"🐇","code":"bunny","id":"373_bunny","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f407.png"},{"unicode":"🐿️","code":"squirrel","id":"374_squirrel","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43f.png"},{"unicode":"🦔","code":"spiny","id":"375_spiny","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f994.png"},{"unicode":"🦇","code":"vampire","id":"376_vampire","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f987.png"},{"unicode":"🐻","code":"face","id":"377_face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43b.png"},{"unicode":"🐨","code":"bear","id":"378_bear","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f428.png"},{"unicode":"🐼","code":"panda-face","id":"379_panda-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43c.png"},{"unicode":"🦘","code":"marsupial","id":"380_marsupial","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f998.png"},{"unicode":"🦡","code":"honey badger","id":"381_honey badger","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9a1.png"},{"unicode":"🐾","code":"paw","id":"382_paw","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f43e.png"},{"unicode":"🦃","code":"bird","id":"383_bird","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f983.png"},{"unicode":"🐔","code":"chicken","id":"384_chicken","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f414.png"},{"unicode":"🐓","code":"rooster","id":"385_rooster","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f413.png"},{"unicode":"🐣","code":"baby-bird","id":"386_baby-bird","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f423.png"},{"unicode":"🐤","code":"baby-chick","id":"387_baby-chick","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f424.png"},{"unicode":"🐥","code":"baby-chick2","id":"388_baby-chick2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f425.png"},{"unicode":"🐧","code":"penguin","id":"389_penguin","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f427.png"},{"unicode":"🕊️","code":"bird-fly","id":"390_bird-fly","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f54a.png"},{"unicode":"🦅","code":"eagle","id":"391_eagle","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f985.png"},{"unicode":"🦆","code":"duck","id":"392_duck","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f986.png"},{"unicode":"🦢","code":"swan","id":"393_swan","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9a2.png"},{"unicode":"🦉","code":"owl","id":"394_owl","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f989.png"},{"unicode":"🦚","code":"peahen","id":"395_peahen","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f99a.png"},{"unicode":"🦜","code":"macaw","id":"396_macaw","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f99c.png"},{"unicode":"🐸","code":"frog-face","id":"397_frog-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f438.png"},{"unicode":"🐊","code":"crocodile","id":"398_crocodile","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f40a.png"},{"unicode":"🐢","code":"turtle","id":"399_turtle","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f422.png"},{"unicode":"🦎","code":"reptile","id":"400_reptile","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f98e.png"},{"unicode":"🐍","code":"snake","id":"401_snake","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f40d.png"},{"unicode":"🐲","code":"dragon-face","id":"402_dragon-face","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f432.png"},{"unicode":"🐉","code":"dragon","id":"403_dragon","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f409.png"},{"unicode":"🦕","code":"brontosaurus","id":"404_brontosaurus","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f995.png"},{"unicode":"🦖","code":"t-rex","id":"405_t-rex","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f996.png"},{"unicode":"🐳","code":"whale","id":"406_whale","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f433.png"},{"unicode":"🐋","code":"whale2","id":"407_whale2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f40b.png"},{"unicode":"🐬","code":"flipper","id":"408_flipper","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f42c.png"},{"unicode":"🐠","code":"tropical-fish","id":"409_tropical-fish","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f420.png"},{"unicode":"🐡","code":"fish","id":"410_fish","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f421.png"},{"unicode":"🦈","code":"shark","id":"411_shark","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f988.png"},{"unicode":"🐙","code":"octopus","id":"412_octopus","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f419.png"},{"unicode":"🐚","code":"shell","id":"413_shell","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f41a.png"},{"unicode":"🐌","code":"snail","id":"414_snail","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f40c.png"},{"unicode":"🦋","code":"butterfly","id":"415_butterfly","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f98b.png"},{"unicode":"🐛","code":"insect","id":"416_insect","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f41b.png"},{"unicode":"🐜","code":"insect","id":"417_insect","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f41c.png"},{"unicode":"🐝","code":"bee","id":"418_bee","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f41d.png"},{"unicode":"🐞","code":"ladybug","id":"419_ladybug","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f41e.png"},{"unicode":"🦗","code":"grasshopper","id":"420_grasshopper","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f997.png"},{"unicode":"🕷️","code":"insect","id":"421_insect","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f577.png"},{"unicode":"🕸️","code":"spider-web","id":"422_spider-web","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f578.png"},{"unicode":"🦂","code":"scorpio","id":"423_scorpio","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f982.png"},{"unicode":"🦟","code":"mosquito","id":"424_mosquito","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f99f.png"},{"unicode":"🦠","code":"amoeba","id":"425_amoeba","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f9a0.png"},{"unicode":"💐","code":"flower","id":"426_flower","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f490.png"},{"unicode":"🌸","code":"blossom","id":"427_blossom","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f338.png"},{"unicode":"🌹","code":"flower","id":"428_flower","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f339.png"},{"unicode":"🥀","code":"flower-wilted","id":"429_flower-wilted","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f940.png"},{"unicode":"🌺","code":"flower2","id":"430_flower2","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f33a.png"},{"unicode":"🌻","code":"sun-flower","id":"431_sun-flower","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f33b.png"},{"unicode":"🌼","code":"flower3","id":"432_flower3","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f33c.png"},{"unicode":"🌷","code":"flower4","id":"433_flower4","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f337.png"},{"unicode":"🌱","code":"young-tree","id":"434_young-tree","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f331.png"},{"unicode":"🌲","code":"tree","id":"435_tree","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f332.png"},{"unicode":"🌳","code":"big-tree","id":"436_big-tree","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f333.png"},{"unicode":"🌵","code":"plant","id":"437_plant","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f335.png"},{"unicode":"🌿","code":"leaf","id":"438_leaf","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f33f.png"},{"unicode":"☘️","code":"three-leaf clover","id":"439_three-leaf clover","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2618.png"},{"unicode":"🍀","code":"four-leaf clover","id":"440_four-leaf clover","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f340.png"},{"unicode":"🍁","code":"falling-leaf","id":"441_falling-leaf","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f341.png"},{"unicode":"🏁","code":"checkered","id":"442_checkered","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3c1.png"},{"unicode":"🚩","code":"post","id":"443_post","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f6a9.png"},{"unicode":"🎌","code":"japanese-celebration","id":"444_japanese-celebration","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f38c.png"},{"unicode":"🏴","code":"flag-black","id":"445_flag-black","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3f4.png"},{"unicode":"🏳️","code":"flag-white","id":"446_flag-white","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3f3.png"},{"unicode":"🏳️‍🌈","code":"flag-pride","id":"447_flag-pride","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3f3-fe0f-200d-1f308.png"},{"unicode":"🏴‍☠️","code":"flag-pirate","id":"448_flag-pirate","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3f4-200d-2620-fe0f.png"},{"unicode":"🇦🇷","code":"AR","id":"449_AR","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e6-1f1f7.png"},{"unicode":"🇦🇺","code":"AU","id":"450_AU","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e6-1f1fa.png"},{"unicode":"🇧🇬","code":"BG","id":"451_BG","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e7-1f1ec.png"},{"unicode":"🇧🇷","code":"BR","id":"452_BR","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e7-1f1f7.png"},{"unicode":"🇨🇦","code":"CA","id":"453_CA","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e8-1f1e6.png"},{"unicode":"🇨🇳","code":"CN","id":"454_CN","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e8-1f1f3.png"},{"unicode":"🇨🇿","code":"CZ","id":"455_CZ","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e8-1f1ff.png"},{"unicode":"🇩🇪","code":"DE","id":"456_DE","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e9-1f1ea.png"},{"unicode":"🇩🇰","code":"DK","id":"457_DK","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e9-1f1f0.png"},{"unicode":"🇩🇲","code":"DM","id":"458_DM","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e9-1f1f2.png"},{"unicode":"🇩🇴","code":"DO","id":"459_DO","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e9-1f1f4.png"},{"unicode":"🇩🇿","code":"DZ","id":"460_DZ","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1e9-1f1ff.png"},{"unicode":"🇪🇦","code":"EA","id":"461_EA","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ea-1f1e6.png"},{"unicode":"🇪🇨","code":"EC","id":"462_EC","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ea-1f1e8.png"},{"unicode":"🇪🇸","code":"ES","id":"463_ES","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ea-1f1f8.png"},{"unicode":"🇫🇮","code":"FI","id":"464_FI","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1eb-1f1ee.png"},{"unicode":"🇫🇷","code":"FR","id":"465_FR","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1eb-1f1f7.png"},{"unicode":"🇬🇧","code":"GB","id":"466_GB","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ec-1f1e7.png"},{"unicode":"🇭🇰","code":"HK","id":"467_HK","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ed-1f1f0.png"},{"unicode":"🇮🇱","code":"IL","id":"468_IL","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ee-1f1f1.png"},{"unicode":"🇮🇹","code":"IT","id":"469_IT","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ee-1f1f9.png"},{"unicode":"🇯🇵","code":"JA","id":"470_JA","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1ef-1f1f5.png"},{"unicode":"🇰🇵","code":"KP","id":"471_KP","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f0-1f1f5.png"},{"unicode":"🇰🇷","code":"KR","id":"472_KR","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f0-1f1f7.png"},{"unicode":"🇳🇱","code":"NL","id":"473_NL","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f3-1f1f1.png"},{"unicode":"🇳🇴","code":"NO","id":"474_NO","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f3-1f1f4.png"},{"unicode":"🇵🇱","code":"PL","id":"475_PL","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f5-1f1f1.png"},{"unicode":"🇵🇹","code":"PT","id":"476_PT","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f5-1f1f9.png"},{"unicode":"🇷🇴","code":"RO","id":"477_RO","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f7-1f1f4.png"},{"unicode":"🇷🇺","code":"RU","id":"478_RU","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f7-1f1fa.png"},{"unicode":"🇸🇰","code":"SK","id":"479_SK","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f8-1f1f0.png"},{"unicode":"🇸🇻","code":"SV","id":"480_SV","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f8-1f1fb.png"},{"unicode":"🇹🇭","code":"TH","id":"481_TH","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f9-1f1ed.png"},{"unicode":"🇹🇷","code":"TR","id":"482_TR","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1f9-1f1f7.png"},{"unicode":"🇻🇮","code":"VI","id":"483_VI","4x":"https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f1fb-1f1ee.png"}]';
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -5706,7 +5981,7 @@
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMkAAADJCAYAAACJxhYFAAAOyUlEQVR42uydX4hcZxnG3+/bnYU2yia21F60ZBtLLUJJtqLEWpyuBtoI2qG5UFzqzCbVm1w4BWOuGpf2xkQh48WCmCYzQ1lJLwq7elEDLckUjQslmqVeaElilhXUQt1dadowszlHzuxsmJ3Mn/PnO9/f57lMk92ZM++v7/eced73cIIgqK8ACQQBErN0KPvaU7gKeonhEqhXPlseG6aRAuNUIKKdRLTke1RZp3qlWpu6jisESBzvGqzAOMv3+ju+51eJ/Mrp2vMXcMUAiStdY/sQjeQ4p+lW1wirJfL8UoMaQXdZxZUEJBbCMbtnmPwi4yxHRKMJftSa7/lz68RK1drkZVxZQGK8DmZnm16DEWVF/2yfqBZ4lzO1yQquNCAx1YgXE3aNCN2FSjD6gMQII844D8B4VuHLmPc9LzD6c/hEAIk2RjxDmQJxVoxoxNMWjD4g0caI53V/rb7nV2H0AYlkI86KjPzdpr12n9ii7/mlW1SfQ3cBJGkY8WLrG/FRC97SWusb/RKMPiBJasRzxHkxjdu3+nQXqpHnlWD0AUkkI97WNXY69NaRFwMkA7vGwByVK0JeDJBs6RpDNJIz1YjL6C6eR9OuG33mrhHPTAvIUbmiVl6sMe3iUcwpSNLMUTlzFHMwL8bc6BpbBpogYd3FjbwYs9mIa5CjckXz/sZt5AuAxAAjrmmOyhmjb2NejNkBh7CBJkiUd7EoL8bMN+K4fau30d/Ii5ls9JmhRtymHJVLRt/IvBgzyIjnGOcFGHFrjL4xg2EMRhxSafTbussqIInWNZCjctDo65oXYzp1DeSoIB0HwxiMOKSv0dcjL8bUHqtmS4zTj1APUP+jGP3ydG2y6BwkTVPOR66je0Bh1PDqO1Qdv5Q9eiHwHwAECqvmXU5FUgZJa2E0BIUsGFZ0CpLWg2rwvQcURTtVPeBIUSdhBXzmUOSq2Rh9sN+457PlsQwf+Qc+ciimgX9I9i1h6Z1kmEbQRSCj6ofLb5kESKAk9VO0GpKD2VnMmUNJNdqqIzshQReBTKwjBsMOmWngaVzWaDCXaLiK+GghcfXkF63qJMhpQSloreHVx2TkuaR0EuS0oDQMfKuu7DhuMYW5G8heycr/pQ5Jc5MiJg2hdCQlzyWhkyCnBZldX0yCYV/BBwmlqbTzXKl2EpWDMpA7SjvPle5xC4YdknHgSvkbeJ6iYc8hpwVJNPA54yBprSSFIDlKcSCLpWTYkdOCrDHwPCUjBS8CqTDwRWOOW4jEQ6oMfD5b3q49JK2BGOS0IBVKJc/FxdOM276Qym4ivv64WMM+uwc5LUgpJOTvFp3n4mKNk48uYrgefHgHfffwF01HpSAWPGFdBINVNgBy5OQ+umtbhi6eu0bl4wvGvheRC7aFdZJWTguAWABIoCee3kXHTu2nuz81YuT7EZkbFHfcgmE3VgEIh1/52m1AboPzuR3045PfMBMUgfUoBBIswDYbkACEez67rXuHMRcUYXkuIZCoWmQMiQEkAKHvUcxQUETlB5kAw46clsWAtGv56grNvPQOffjvGyYZ+MR5rsSdBAuw3QBks6P89NQ3mybfFInIc/HkLQ05LdP0ncOPRwZkU4G5P3JynzGgiKjPRJBgAbZ5mjq6t3l7N4kMAyXxgm2OLgJAbAclaZ0yGHYAkkSf3GjQ2ZlLdPH31zQ38PEXbPP4hiiDp+c6DshmR5n6yV564pldmhv4+LlCHrOLbGec5VB++iso3rQA2QKi5qAE9Rp3ICsWJFiAbQ4gQfFK61h6gzIaN88VCxJZi4ohcwDZ1L4Dn9f3osTMc0WGBDktANLPxM+89I7OlybWgu0YnQQLsHXW+JMPKAPk5y++ZUBkJXr9sqiGHQuw9VXnTIhsQJavmFEaUfNckToJ9mkBENMBoRh5w0iQ4Bt2AGI6IHHqmEcw7FiADUC26OzMJeMA2TTwUfJc4TsJBqu00z33b1MGSPnEgvZRFFHdhIc07GOMKIuy1Ee95tIBSEhIiLJBXQuDBIZdP0DiDE0BkM66Dpc/5DDsAMRFQChCnmsgJFiADUACXTx3zSpAWgq1YJuHoA1HLU0UeBBVgJi8zTFpffP+hh0LsHXR1NG99Mju+wCIcAM/eME2729ssABbF0BkzIS4BkgbKoX+IPXsIshpAZAFZ65zvwXbPTuJyIXDkFmALF9doddn/uzUte73NUfv4xYMu1J9O/+YMkB+8eLb9PFHdaeud7+vObpCgsEqtXrimV30rfxjAESuei7Y5t2pQk5LJSAqhqYcB2Sz7guhjDv2abkHyIf/uUEv/+BNpwFpM/B3DGTxLgYGht0hQDbn0gFIbwPPuxgYp45aOqzpDF6Dyrl0Q2dCpBn4LZC4ltMaf/IBOvbr/c1brSoBOXJyHwDRR3cs2OaDKLK5g0wd/crGUefpXUpAwditrt1k69cfvMPF73EFkM7iDEAJ/kzWI89Ujt0CkAGQkD/WExLf8+dcBGRTj+y+T8qzAVUCUj6xAEAGqJODLZCsU2PaVUBu/52UH6KJsVv9tU6s1BOSam3quk9Us/GNB8UZ+I4wxZkWKIMeBw1ANOgiRLXO55jwO1sNVWwEJOpEX/B3j53aL+wWMcZuTTlq3Vn/XaPyL0zMXrclu5W0OEXcCVIJyO+q79Fvq++h+sNp7dXzk3fMvPOwNLkICAl4NqDquXQAEqmLlLr9Oe9uXOpWQBJ4EBHFmQSUJI+DTgqIS0NTYgx797of6vaHi0vzq48/dGCciB41GZAvTYg7MWZGhujLXx+jtZWboY9emCo0SvPlC9//VehOstF6vJLJgKRRnFEeoglATDtqeT1PT32fT2KigZdVnP3uGKkC5P3FD5o3GaDIWnr1/GTPlaf99255vlHdRObIa6+OonIuXfNHsemrAXXeF5IGNYIWtGbC+1Qx8hqA0h6MlPU46G6AuD5VmEStOu+poX7/cXFp/ub4zuceZYxpHXx88OEdVPzZhLLffe/92+juT49g7NZIL+JXy7X82didhLrkWHTU8pWVpkdQ1sWexly6qQpT3wMhqdYmL5uQ5wpMtEpQZOuTGw0AkrSLEFvszGnFgoQM+gbeFVA2ozIAJPFRK9QpKRQkZ2qTxhh420HBVKEwrd2i+pwwSMiwPFcAyss/fLNZUAAE6lXPvXb/xoZknepGfWcSFFJQULaAAkBEG/bw9RwaktbCrnmAokbl438CIMIMO9U6F9AJgYQG5FsASoqAnFigv/zhn6huUYqYS2RRf76pA1kq5zqSAoKpQqHqm9NK3Ek2KPSNTAd//FG9+b3C8tUVAOK4YY/6byJDMijnAlAAiC2GPTYk1drUqu/5VdNBeX/xA21f49tv/B2ApNJF/GrY277Jjlsbv87o8d4AlMDMXzynXyEGr+nszCVUdDqYxKpbFvfXHZr4zWUbHl+tav6jFyCYKtTHsCfsJOFzL9qf/Y8vaNFRAEi68jyKvZ00NiSt3MuaLaAEPgCAWKvQOa1uGor7DzcGsg7czxjtteEq/vXdfzUfizb+1Qek/t7lqyt06pWL1KjfQimnZ9hfHzRYlUonIQPzXAP/jy45QYyhKTlKugg+ESQ2LtiWBQoAkdRFIua0hEPSckQl2y7sJihp5b0AiMyjVvIRDybihdi0YLtdaTxsB4DINezdFmDL7ySWPq6BUkgQBz+nfHwBgMjrIkJOOVyMMapXbL3QokDB0JQKwy6mLodE/JDFpfnV8Z3PPaT7fq64+t9/bzZvEe/6wr00+pm7AIgZ6rkAW0knaTW3is1XPCjwOAliAKLqqCXuhhIT+cJsNfDtijK8BUCUKXZOK+VOkiwfY4qizKScnbkEQFRIcK5QKCQ25bnCgHL5j73nzjE0pU6iBwOHRP4wUxZsC/kg6rfo3fNLzWXZnY+JAyAqvcjgBdhKOwkZsmBbpDqj9gBErdKoP5bGCz00MXuBEWVd+nCmju6l5Sur9NYbf0OlquoixBZPn/+e8FPMcDotjyqMuwUJ5kG0OGqlcophab3gFyZmV4loFB8dJElCclpSPElbNynhc4PkdZH08oM8PQNVr+Cjg+QZ9vQGAFODxMQF25Cxmk86WKUEEhKcn4GgPnWW6qmFpf0GXMhzQUolNKclvZM0Zcl+Lsg9wy4NEpMXbENuG3ZpkJi+YBvSuYvEW4Ct33HLwTwXJA0TKacUJuvt2LJgG9IEj5RyWso6CVm0YBvS5qglrZ6kQXKmNllxYSALkqJEC7C1hYQs3s8FSe8iczIMuxJIbFuwDalR0gXYWkNi44JtSLZhT74AW2tImkKeCzLsyM5UvFHkuaCYSj2npUcngYGHDKsbrsZ4wcBDserGHUiQ54Kid5FmTuu6M5C03jaOXJAR9cJUvm3kuSCdDbsGnYRo3fMLmIOHBmi+4VFO5QtgOlyFfLY8NkwjBcapiF1dEBGt+R5V1qleUuVDtIOkXQezswEsBdfWpEIb36YHcLTCsNqI6XrB8tnZPcPkFxlnOXQX27uGP7dOrFStTV7W8QUy3a9gPlvePkQjOc6bDwjCt/QWmXHy/FKDGhWZiV4rIWnXoexrTxGxAuMsjxoz14j7nlc6XXv+gikvmJl4lduMfgHdxYyu0TLiFR2MuBOQwOjDiAOS+N2l2OouMPrKjXhj2sSuYTUknUafcVbEt/kyuwZb9D2/dIvqc7obcechgdGXDEczqOpXTDLigKRHd8lQpkCcFWH0hRrxkm1dw1lIOrpLjnEe+JZnUevRjTht3L6dc+l9M1c/cBj9KEZcnxwVIFGkjdvIMPrdjLjpt28BifDugrxYYMR1zlEBEhh9ZUbclBwVINHT6D/FOC9aavSNy1EBEv2Nvg15scCIl0zNUQESo4y+WXkxW3JUgMTI7pKZ1tjoW5ejAiQGG33NBsOWPI+mbcxRARJLjL6qvJgLOSpAYll3aftGP83uYvRAEyCBNrtLjjgvijT6ruaoAIkTRj9RXsz5HBUgcUhR8mI2DzQBEihEd7mdF8t3M+LIUQESqM3oZyhT8DnLMc+fQ44KgiBjxHEJIAiQQFAi/T8AAP//NojMSb2rf6kAAAAASUVORK5CYII=';
     //empty
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -5823,7 +6098,7 @@
         if (!Main_IsOn_OSInterface) calculateFontSize();
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -5921,11 +6196,26 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 375, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/375/SmartTV_twitch_3_0_375.apk',
-        WebVersion: 'June 03 2025',
-        WebTag: 709, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 377, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/377/SmartTV_twitch_3_0_377.apk',
+        WebVersion: 'June 13 2025',
+        WebTag: 713, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'Version June 13',
+                changes: [
+                    'Added Sync across devices, Backup, and Restore using Google Drive',
+                    'Sync across devices is disabled by default. It is recommended to enable it only if you use the app on multiple devices with the same Google Drive account',
+                    'Notifications: Added background notification support for Android 11 and above. This uses a simplified single-line text notification while running in the background',
+                    'Chat VOD: Improved chat synchronization when starting playback. For VODs of an ongoing live stream, there was a chance the chat could take a long time to load and/or sync',
+                    'Player: Added rewind button for live streams. This plays the VOD of the current live (when available) stream starting from the most recent point',
+                    'User Live Feed (accessed by pressing Up on the player): Live history now shows the last 100 watched channels that are Live',
+                    'User Live Feed (accessed by pressing Up on the player): Re-added the User VODs section',
+                    'Player: Removed buffer settings since they no longer provide any benefit in the current player version',
+                    'Updated Ukrainian language translation by @sladkOy',
+                    'General performance improvements and bug fixes'
+                ]
+            },
             {
                 title: 'Version June 07',
                 changes: ['Add Ukraine application language by @sladkOy']
@@ -5940,29 +6230,11 @@
                     'Access the new setting in player options to enable/disable Enhanced Broadcasting support based on your preferences',
                     'General improvements to streaming performance and stability'
                 ]
-            },
-            {
-                title: 'Version May 27',
-                changes: [
-                    'Update player dependencies to latest version, this may solve some player related issue',
-                    'Fix support for VOD of current live, Twitch is now providing full replay of the live but you need to open it from the most recent VOD, when detected the playback will start from the end of the VOD and will continue update the duration',
-                    'Chat is not perfect in the VOD of current live if you are too close to where the live is, some chat messages may not show and the sync is a little off, recommended keep remaining time to 1 minute or longer',
-                    'Fix random scenario that after changing app the player stayed loading for ever when returning to the app',
-                    'General improves'
-                ]
-            },
-            {
-                title: 'Version March 9',
-                changes: [
-                    'Improve clock style',
-                    'Add 24, 12h AM PM and 12h clock styles to Settings > Customize interface, color style, animations and related',
-                    'General improves'
-                ]
             }
         ]
     };
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -6380,7 +6652,7 @@
     var AddCode_UrlToken = AddCode_Url + 'token?';
     var AddCode_ValidateUrl = AddCode_Url + 'validate';
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -6401,6 +6673,7 @@
 
     //Variable initialization
     var AddUser_UsernameArray = [];
+    var AddUser_UsernameArrayRemoved = {};
     var AddUser_Username = null;
     //Variable initialization end
 
@@ -6612,13 +6885,14 @@
         if (EnaKeydown) Main_addEventListener('keydown', AddUser_handleKeyDown);
     }
 
-    function AddUser_RestoreUsers() {
-        AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArrayNew', []);
+    function AddUser_RestoreUsers(skipDrive) {
+        AddUser_UsernameArray = Main_getItemJson(AddUser_UserArrayItemName, []);
+        AddUser_UsernameArrayRemoved = Main_getItemJson(AddUser_UsernameArrayRemovedItemName, {});
 
         if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
-            AddUser_UpdateSidepanel();
+            AddUser_UpdateSidePanel();
 
             //Check and refresh all tokens at start
             var i = 0,
@@ -6627,40 +6901,52 @@
             for (i; i < len; i++) {
                 AddUser_UsernameArray[i].timeout_id = null;
 
+                //originally the user was added without a date value with is needed to backup restore and sync
+                if (!AddUser_UsernameArray[i].date) {
+                    AddUser_UsernameArray[i].date = new Date().getTime();
+                }
+
                 //Set user history obj
                 Main_values_History_data[AddUser_UsernameArray[i].id] = {
                     live: [],
                     vod: [],
-                    clip: []
+                    clip: [],
+                    test: [],
+                    deleted: {
+                        live: {},
+                        vod: {},
+                        clip: {}
+                    }
                 };
             }
 
-            Main_Restore_history();
+            Main_Restore_history(skipDrive);
             return true;
-        } else {
-            Main_Restore_history();
-            AddUser_UsernameArray = [];
-            AddUser_UpdateSidepanelDefault();
-            return false;
         }
+
+        Main_Restore_history(skipDrive);
+        AddUser_UsernameArray = [];
+        AddUser_UpdateSidePanelDefault();
+
+        return false;
     }
 
-    function AddUser_UpdateSidepanel() {
+    function AddUser_UpdateSidePanel() {
         if (AddUser_UserIsSet()) {
-            AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+            AddUser_UpdateSidePanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
         }
     }
 
-    function AddUser_UpdateSidepanelDefault() {
-        AddUser_UpdateSidepanelSize(IMG_404_LOGO, STR_USER_ADD);
+    function AddUser_UpdateSidePanelDefault() {
+        AddUser_UpdateSidePanelSize(IMG_404_LOGO, STR_USER_ADD);
     }
 
-    function AddUser_UpdateSidepanelAfterShow() {
-        if (AddUser_IsUserSet()) AddUser_UpdateSidepanel();
-        else AddUser_UpdateSidepanelDefault();
+    function AddUser_UpdateSidePanelAfterShow() {
+        if (AddUser_IsUserSet()) AddUser_UpdateSidePanel();
+        else AddUser_UpdateSidePanelDefault();
     }
 
-    function AddUser_UpdateSidepanelSize(logo, username) {
+    function AddUser_UpdateSidePanelSize(logo, username) {
         //remove transition to change size
         Sidepannel_MovelDiv.style.transition = 'none';
         var MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
@@ -6719,10 +7005,10 @@
     function AddUser_UpdateUser(position) {
         var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
 
-        BaseXmlHttpGet(theUrl, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
+        BaseXmlHttpGet(theUrl, AddUser_UpdateUsersSuccess, noop_fun, position, null, true);
     }
 
-    function AddUser_UpdateUsertSuccess(response, position) {
+    function AddUser_UpdateUsersSuccess(response, position) {
         var user = JSON.parse(response);
 
         if (user.data.length) {
@@ -6732,7 +7018,7 @@
                 AddUser_UsernameArray[position].display_name = user.display_name;
                 AddUser_UsernameArray[position].logo = user.profile_image_url;
 
-                if (!position) AddUser_UpdateSidepanel();
+                if (!position) AddUser_UpdateSidePanel();
 
                 AddUser_SaveUserArray();
             }
@@ -6749,12 +7035,14 @@
                 display_name: AddUser_Username.display_name,
                 logo: AddUser_Username.profile_image_url,
                 access_token: AddUser_getDeviceCodeToken,
+                date: new Date().getTime(),
                 refresh_token: 0,
                 expires_in: 0,
                 expires_when: 0,
                 timeout_id: null
             };
             AddUser_UsernameArray.push(userObj);
+            delete AddUser_UsernameArrayRemoved[userObj.id];
 
             if (!Main_values_History_data[userObj.id]) {
                 Main_values_History_data[userObj.id] = {
@@ -6766,7 +7054,7 @@
 
             AddUser_SaveUserArray();
             Users_status = false;
-            Users_Userlastadded = AddUser_Username.login;
+            Users_Userlastadded = AddUser_Username.id;
             Users_ShowAuthentication = false;
             AddUser_exit();
             Main_values.Main_Go = Main_Users;
@@ -6783,7 +7071,7 @@
     }
 
     function AddUser_SaveNewUserRefreshTokens(position) {
-        AddUser_UpdateSidepanel();
+        AddUser_UpdateSidePanel();
         OSInterface_UpdateUserId(AddUser_UsernameArray[position]);
         OSInterface_mCheckRefresh();
         HttpGetSetUserHeader();
@@ -6793,7 +7081,11 @@
     function AddUser_removeUser(position, skipInitUser) {
         // remove the user
         var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
+
         if (index > -1) {
+            AddUser_UsernameArrayRemoved[AddUser_UsernameArray[index].id] = JSON.parse(JSON.stringify(AddUser_UsernameArray[index]));
+            AddUser_UsernameArrayRemoved[AddUser_UsernameArray[index].id].date = new Date().getTime();
+
             Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
             AddUser_UsernameArray.splice(index, 1);
         }
@@ -6805,7 +7097,7 @@
         if (AddUser_UsernameArray.length > 0) {
             //Reset main user if user is 0
             if (!position) {
-                AddUser_UpdateSidepanel();
+                AddUser_UpdateSidePanel();
 
                 OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
             }
@@ -6814,7 +7106,7 @@
                 Users_init();
             }
         } else {
-            AddUser_UpdateSidepanelDefault();
+            AddUser_UpdateSidePanelDefault();
             if (!skipInitUser) {
                 Users_init();
             }
@@ -6828,22 +7120,35 @@
     function AddUser_SaveUserArray() {
         if (AddUser_UsernameArray.length > 0) {
             //Remove first user alphabetical sort and add first back
-            var mainuser = AddUser_UsernameArray.splice(0, 1);
+            var mainUser = AddUser_UsernameArray.splice(0, 1);
+
             AddUser_UsernameArray.sort(function (a, b) {
                 return a.display_name.toLowerCase().localeCompare(b.display_name.toLowerCase());
             });
-            AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+
+            AddUser_UsernameArray.splice(0, 0, mainUser[0]);
         }
 
         var string = JSON.stringify(AddUser_UsernameArray);
-        Main_setItem('AddUser_UsernameArrayNew', string);
+        Main_setItem(AddUser_UserArrayItemName, string);
 
-        if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
+        Main_trimObject(AddUser_UsernameArrayRemoved, 100);
+
+        string = JSON.stringify(AddUser_UsernameArrayRemoved);
+        Main_setItem(AddUser_UsernameArrayRemovedItemName, string);
+
+        AddUser_CleanUserData();
 
         //Main_Log('AddUser_SaveUserArray');
     }
 
-    function AddUser_UserMakeOne(position) {
+    function AddUser_CleanUserData() {
+        Main_removeMissingProps(Main_values_History_data, AddUser_UsernameArray);
+        Main_SaveHistoryItem();
+        GDriveBackup();
+    }
+
+    function AddUser_UserMakeOne(position, skipInit) {
         Main_clearTimeout(Main_CheckResumeFeedId);
 
         var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
@@ -6852,8 +7157,11 @@
 
         AddUser_SaveUserArray();
         Users_status = false;
-        AddUser_UpdateSidepanel();
-        Users_init();
+        AddUser_UpdateSidePanel();
+
+        if (!skipInit) {
+            Users_init();
+        }
 
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
@@ -6873,9 +7181,9 @@
         }
     }
 
-    function AddUser_UserFindpos(user) {
+    function AddUser_UserFindPos(user) {
         return AddUser_UsernameArray.map(function (array) {
-            return array.name;
+            return array.id;
         }).indexOf(user);
     }
 
@@ -6885,6 +7193,1228 @@
 
     function AddUser_IsInUserScreen() {
         return Main_values.Main_Go === Main_addUser;
+    }
+    /*
+     * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    //Variable initialization
+    var GDriveValidateTokenUrl = 'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=';
+    var GDriveUserInfoURL = 'https://www.googleapis.com/oauth2/v3/userinfo';
+    var GDriveUpdateUrl = 'https://www.googleapis.com/upload/drive/v3/files/%x?uploadType=media';
+    var GDriveUploadNewUrl = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+    var GDriveFileIdUrl = 'https://www.googleapis.com/drive/v3/files?q=%x&fields=files(id,name,createdTime,modifiedTime,mimeType,size,trashed)';
+    var GDriveDownLoadUrl = 'https://www.googleapis.com/drive/v3/files/%x?alt=media';
+    var GDriveUrl = 'https://oauth2.googleapis.com/';
+
+    var GDriveScopes = 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email';
+
+    var GDriveToken = GDriveUrl + 'token?';
+    var GDriveCode = GDriveUrl + 'device/code?';
+
+    var GDriveClientKey = 'MTAwNTQzNzk3NDA3MC1yZ2I5bGIyNmk1OGJlN2picXM0b2V1MWliOHA2ZTI1cy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbQ==';
+    var GDriveKey = 'R09DU1BYLU1PaE1UTkd6bTZ2UVF5d3d2YUJaVFFiZlNhQXo=';
+    var GDriveDefaultBodyToken = [['Content-Type', 'application/x-www-form-urlencoded']];
+
+    var GDriveDeviceCodeTimeout = 5;
+    var GDriveBoundary = '--GDriveBoundary--';
+    var GDriveFileName = 'STTV_BACKUP.json';
+    var GDriveMetadata = JSON.stringify({
+        name: GDriveFileName,
+        mimeType: 'application/json'
+    });
+    var GDrivePreventClose = false;
+
+    var GDriveDeviceCode;
+    var GDriveCheckCodeId;
+    var GDriveBackupTimeoutID;
+    var GDriveBackupAsyncID;
+    var GDriveExpiresId;
+
+    var AddUser_UserArrayItemName = 'AddUser_UsernameArrayNew';
+    var AddUser_UsernameArrayRemovedItemName = 'AddUser_UsernameArrayRemoved';
+    var Main_values_History_data_ItemName = 'Main_values_History_data';
+
+    var GDriveDoBackupLimit = 100;
+    var GDriveDoBackupInterval = 100 * 1000;
+
+    var GDriveDoBackupCall = [];
+    var GDriveDoBackupCallItemName = 'GDriveDoBackupCall';
+
+    var GDriveConfig = {};
+    var GDriveConfigItemName = 'GDriveConfig';
+
+    function GDriveSetExpires(obj) {
+        GDriveConfig.tokenExpiresTime = (parseInt(obj.expires_in) - 60) * 1000;
+        GDriveConfig.backupExpiresTime = new Date().getTime() + GDriveConfig.tokenExpiresTime;
+
+        GDriveSaveConfig();
+        GDriveSetExpiresId(GDriveConfig.tokenExpiresTime);
+    }
+
+    function GDriveSetExpiresId(expiresTime) {
+        GDriveExpiresId = Main_setTimeout(GDriveDeviceRefresh, expiresTime, GDriveExpiresId);
+    }
+
+    function GDriveSetHeader() {
+        GDriveConfig.header = [['Authorization', 'Bearer ' + GDriveConfig.accessToken]];
+    }
+
+    function GDriveDeviceRefresh(sync) {
+        GDriveRefreshAccessToken(GDriveDeviceRefreshSuccess, noop_fun, sync, 0);
+    }
+
+    function GDriveDeviceRefreshSuccess(obj) {
+        if (obj.status === 200) {
+            var data = JSON.parse(obj.responseText);
+            GDriveConfig.accessToken = data.access_token;
+
+            GDriveSetHeader();
+            GDriveSetExpires(data);
+            GDriveSaveConfig();
+        } else {
+            GDriveGetBackupAPI_Fail();
+        }
+    }
+
+    function GDriveGetBackupAPI_Fail() {
+        Main_PlayMainShowWarning(STR_BACKUP_ACCOUNT_REFRESH_ERROR, 7500, true);
+        GDriveCheckMainStarted();
+    }
+
+    function GDriveClean() {
+        GDriveConfig = {};
+        GDriveDoBackupCall = [];
+
+        localStorage.removeItem(GDriveConfigItemName);
+        localStorage.removeItem(GDriveDoBackupCallItemName);
+
+        Main_clearTimeout(GDriveBackupTimeoutID);
+        Main_clearTimeout(GDriveSetExpiresId);
+    }
+
+    function GDriveErase() {
+        GDriveClean();
+
+        GDriveCheckMainStarted();
+    }
+
+    function GDriveUpFileSuccessSave(obj) {
+        var data = JSON.parse(obj.responseText);
+        GDriveConfig.fileID = data.id;
+
+        GDriveSaveConfig();
+    }
+
+    function GDriveGetBackupFileContent() {
+        GDriveConfig.lastBackupDate = new Date().getTime();
+        GDriveSaveConfig();
+
+        var backup = {},
+            i = 0,
+            len = localStorage.length,
+            key = '';
+
+        for (i; i < len; i++) {
+            key = localStorage.key(i);
+            backup[key] = localStorage.getItem(key);
+        }
+
+        var backupString = JSON.stringify(backup);
+        GDriveSetBackupSize(backupString);
+
+        return backupString;
+    }
+
+    function GDriveSetBackupSize(backupString) {
+        try {
+            var sizeInBytes = new Blob([backupString]).size;
+            GDriveConfig.backupSize = formatFileSize(sizeInBytes);
+            GDriveSaveConfig();
+        } catch (error) {}
+    }
+
+    var formatFileSizeArray = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+
+        var i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+        return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + formatFileSizeArray[i];
+    }
+
+    //api limit is 100 request per 100 seconds
+    function GDriveCanDoBackup() {
+        var now = new Date().getTime(),
+            result = false;
+
+        // Remove calls that are outside the time window
+        while (GDriveDoBackupCall.length > 0 && GDriveDoBackupCall[0] <= now - GDriveDoBackupInterval) {
+            GDriveDoBackupCall.shift();
+        }
+
+        if (GDriveDoBackupCall.length < GDriveDoBackupLimit) {
+            GDriveDoBackupCall.push(now);
+
+            result = true;
+        }
+
+        Main_setItem(GDriveDoBackupCallItemName, JSON.stringify(GDriveDoBackupCall));
+
+        return result;
+    }
+
+    function GDriveSyncBackupSetting(backup) {
+        GDriveRestoreSettings(backup);
+        Main_RestoreValues();
+    }
+
+    function GDriveRefresh() {
+        if (Main_IsOn_OSInterface) {
+            Main_RefreshPage();
+        } else {
+            //add timeout to avoid esc key prevent the page refresh
+            Main_setTimeout(function () {
+                window.location.reload();
+            }, 100);
+        }
+    }
+
+    function _syncHistoryCategory(userBackupObj, localHistoryData, category, saveAfter) {
+        return (
+            GDriveSyncBackupsByArray(
+                userBackupObj[category],
+                localHistoryData[category],
+                userBackupObj.deleted ? userBackupObj.deleted[category] : {},
+                localHistoryData.deleted ? localHistoryData.deleted[category] : {}
+            ) || saveAfter
+        );
+    }
+
+    function _syncBlockedCategory(userBackupObj, localHistoryData, category, saveAfter) {
+        var backupBlocked = userBackupObj.blocked || {};
+        var localBlocked = localHistoryData.blocked || {};
+
+        return (
+            GDriveSyncBackupsByObj(
+                backupBlocked[category] || {},
+                localBlocked[category] || {},
+                backupBlocked.deleted ? backupBlocked.deleted[category] : {},
+                localBlocked.deleted ? localBlocked.deleted[category] : {}
+            ) || saveAfter
+        );
+    }
+
+    function GDriveSyncBackups(backupsObj) {
+        var backupUsers = Object.keys(backupsObj),
+            i = 0,
+            len = backupUsers.length,
+            user = '',
+            userBackupObj,
+            saveAfter = false; // Initialize saveAfter to false
+
+        for (i; i < len; i++) {
+            user = backupUsers[i];
+            userBackupObj = backupsObj[user];
+
+            if (Main_values_History_data[user]) {
+                var localHistoryData = Main_values_History_data[user];
+
+                saveAfter = _syncHistoryCategory(userBackupObj, localHistoryData, 'clip', saveAfter);
+                saveAfter = _syncHistoryCategory(userBackupObj, localHistoryData, 'live', saveAfter);
+                saveAfter = _syncHistoryCategory(userBackupObj, localHistoryData, 'vod', saveAfter);
+
+                if (userBackupObj.blocked) {
+                    Screens_BlockSetDefaultObj();
+                    saveAfter = _syncBlockedCategory(userBackupObj, localHistoryData, 'channel', saveAfter);
+                    saveAfter = _syncBlockedCategory(userBackupObj, localHistoryData, 'game', saveAfter);
+                }
+            } else {
+                Main_values_History_data[user] = userBackupObj;
+                saveAfter = true;
+            }
+        }
+
+        if (saveAfter) {
+            Main_SaveHistoryItem();
+            Main_history_SetVod_Watched();
+        }
+    }
+
+    function GDriveSyncBackupsByObj(backupObj, localObj, backupDeleted, localDeleted) {
+        var saveAfter = false;
+        var key;
+
+        // Add new entries or update if backup is newer
+        for (key in backupObj) {
+            if (backupObj.hasOwnProperty(key)) {
+                if (!localObj[key]) {
+                    if (!localDeleted[key] || localDeleted[key].date < backupObj[key].date) {
+                        localObj[key] = backupObj[key];
+                        delete localDeleted[key];
+                        saveAfter = true;
+                    }
+                } else if (localObj[key].date < backupObj[key].date) {
+                    localObj[key] = backupObj[key];
+                    saveAfter = true;
+                }
+            }
+        }
+
+        // Remove entries from localObj if they are marked as deleted in backupDeleted and are newer
+        for (key in localObj) {
+            if (localObj.hasOwnProperty(key)) {
+                if (backupDeleted[key] && backupDeleted[key].date > localObj[key].date) {
+                    localDeleted[key] = backupDeleted[key];
+                    delete localObj[key];
+                    saveAfter = true;
+                }
+            }
+        }
+
+        return saveAfter;
+    }
+
+    function GDriveSyncBackupsByArray(backupArray, localArray, backupDeleted, localDeleted, isUser) {
+        var saveAfter = false;
+        var localObj = GDriveBackupObject(localArray); // Convert localArray to an object for easier lookup
+        var i;
+
+        // Add new entries or update if backup is newer
+        for (i = 0; i < backupArray.length; i++) {
+            var backupItem = backupArray[i];
+            if (!localObj[backupItem.id]) {
+                if (!localDeleted[backupItem.id] || localDeleted[backupItem.id].date < backupItem.date) {
+                    localArray.push(backupItem);
+                    delete localDeleted[backupItem.id];
+                    saveAfter = true;
+                }
+            } else if (localObj[backupItem.id].date < backupItem.date) {
+                // Update existing item in localArray
+                for (var j = 0; j < localArray.length; j++) {
+                    if (localArray[j].id === backupItem.id) {
+                        localArray[j] = backupItem;
+                        saveAfter = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Remove entries from localArray if they are marked as deleted in backupDeleted and are newer
+        i = localArray.length;
+        while (i--) {
+            var localItem = localArray[i];
+            // Skip removing main user if isUser and it's the first item (assuming main user is always at index 0)
+            if (isUser && i === 0) {
+                continue;
+            }
+
+            if (localItem && backupDeleted[localItem.id] && backupDeleted[localItem.id].date > localItem.date) {
+                if (localItem.timeout_id) {
+                    Main_clearTimeout(localItem.timeout_id);
+                }
+                localDeleted[localItem.id] = backupDeleted[localItem.id];
+                localArray.splice(i, 1);
+                saveAfter = true;
+            }
+        }
+
+        return saveAfter;
+    }
+
+    function GDriveBackupObject(mArray) {
+        var i = 0,
+            len = mArray.length,
+            obj = {};
+
+        for (i; i < len; i++) {
+            obj[mArray[i].id] = mArray[i];
+        }
+
+        return obj;
+    }
+
+    function GDriveRestoreSettings(backup) {
+        var backupItems = Object.keys(backup),
+            i = 0,
+            len = backupItems.length,
+            item = '';
+
+        for (i; i < len; i++) {
+            item = backupItems[i];
+
+            //Skip anything that is a app settings
+            if (
+                item === GDriveConfigItemName ||
+                item === AddUser_UserArrayItemName ||
+                item === AddUser_UsernameArrayRemovedItemName ||
+                item === Main_values_History_data_ItemName
+            ) {
+                continue;
+            }
+
+            Main_setItem(item, backup[item]);
+        }
+    }
+
+    // function deleteAllFiles() {
+    //     // Step 1: Get a list of all files
+    //     var xhr = new XMLHttpRequest();
+    //     var listUrl = 'https://www.googleapis.com/drive/v3/files?pageSize=1000';
+
+    //     xhr.open('GET', listUrl, true);
+    //     xhr.setRequestHeader('Authorization', 'Bearer ' + GDriveConfig.accessToken);
+
+    //     xhr.onload = function () {
+    //         if (xhr.status === 200) {
+    //             var fileList = JSON.parse(xhr.responseText);
+    //             var files = fileList.files;
+
+    //             // Step 2: Delete each file
+    //             files.forEach(function (file) {
+    //                 deleteFile(file.id);
+    //             });
+    //         } else {
+    //             console.error('Error listing files:', xhr.statusText, xhr.responseText);
+    //         }
+    //     };
+
+    //     xhr.onerror = function () {
+    //         console.error('Error with the request.');
+    //     };
+
+    //     xhr.send();
+
+    //     // Step 3: Delete each file by ID
+    // }
+
+    // function deleteFile(fileId) {
+    //     var deleteXhr = new XMLHttpRequest();
+    //     var deleteUrl = 'https://www.googleapis.com/drive/v3/files/' + fileId;
+
+    //     deleteXhr.open('DELETE', deleteUrl, true);
+    //     deleteXhr.setRequestHeader('Authorization', 'Bearer ' + GDriveConfig.accessToken);
+
+    //     deleteXhr.onload = function () {
+    //         if (deleteXhr.status === 204) {
+    //             console.log('File with ID ' + fileId + ' deleted successfully.');
+    //         } else {
+    //             console.error('Failed to delete file ' + fileId + ':', deleteXhr.statusText, deleteXhr.responseText);
+    //         }
+    //     };
+
+    //     deleteXhr.onerror = function () {
+    //         console.error('Error deleting file ' + fileId + '.');
+    //     };
+
+    //     deleteXhr.send();
+    // }
+
+    function GDriveNeedsSync(date) {
+        //skip sync if date is the same or smaller
+        if (GDriveConfig.lastBackupDate === date || GDriveConfig.lastBackupDate > date) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function GDriveSyncFromBackup(backup, doUser, doHistory, doSetting) {
+        if (doUser) {
+            GDriveSyncFromBackupSyncUser(backup);
+        }
+
+        if (doHistory) {
+            GDriveSyncFromBackupSyncHistoryBlocked(backup);
+        }
+
+        if (doSetting) {
+            GDriveSyncBackupSetting(backup);
+        }
+    }
+
+    function GDriveSyncFromBackupSyncUser(backup) {
+        var backupUsersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
+        var backupUsersDeletedArray = JSON.parse(backup[AddUser_UsernameArrayRemovedItemName] || '{}');
+
+        if (
+            backupUsersArray &&
+            backupUsersArray.length &&
+            GDriveSyncBackupsByArray(backupUsersArray, AddUser_UsernameArray, backupUsersDeletedArray, AddUser_UsernameArrayRemoved, true)
+        ) {
+            AddUser_SaveUserArray();
+        }
+    }
+
+    function GDriveSyncFromBackupSyncHistoryBlocked(backup) {
+        var historyBlocked = JSON.parse(backup[Main_values_History_data_ItemName] || '{}');
+
+        if (historyBlocked) {
+            GDriveSyncBackups(historyBlocked);
+        }
+    }
+
+    function GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
+        if (!restoreUser) {
+            backup[AddUser_UserArrayItemName] = null;
+        }
+
+        if (!restoreHistoryBlocked) {
+            backup[Main_values_History_data_ItemName] = null;
+        }
+
+        if (backup[AddUser_UserArrayItemName]) {
+            Main_setItem(AddUser_UserArrayItemName, backup[AddUser_UserArrayItemName]);
+        }
+
+        if (backup[AddUser_UsernameArrayRemovedItemName]) {
+            Main_setItem(AddUser_UsernameArrayRemovedItemName, backup[AddUser_UsernameArrayRemovedItemName]);
+        }
+
+        if (backup[Main_values_History_data_ItemName]) {
+            Main_setItem(Main_values_History_data_ItemName, backup[Main_values_History_data_ItemName]);
+        }
+
+        if (restoreSettings) {
+            GDriveRestoreSettings(backup);
+        }
+    }
+    /*
+     * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    function GDriveBackupTimeout() {
+        GDriveBackupTimeoutID = Main_setTimeout(GDriveBackup, 300 * 1000, GDriveBackupTimeoutID);
+    }
+
+    function GDriveBackup(skipAsync) {
+        if (!Settings_value.backup_enabled.defaultValue) {
+            return;
+        }
+
+        GDriveBackupAsyncID = Main_setTimeout(GDriveBackupStart, skipAsync ? 0 : 5000, GDriveBackupAsyncID);
+    }
+
+    function GDriveBackupStart() {
+        if (!GDriveConfig.accessToken || !GDriveCanDoBackup()) {
+            return;
+        }
+
+        if (!GDriveConfig.fileID) {
+            GDriveBackupGetFileInfo();
+        } else {
+            if (GDriveSyncEnabled()) {
+                GDriveDownloadBackupFile(GDriveDownloadBackupFileSuccess, noop_fun, 0, 0);
+            } else {
+                GDriveUpdateFile();
+            }
+        }
+
+        GDriveBackupTimeout();
+    }
+
+    function GDriveDownloadBackupFileSuccess(obj) {
+        //if has backup sync first
+        if (obj.status === 200) {
+            GDriveDownloadBackupFileSuccessSync(obj);
+        } else if (obj.status === 404) {
+            var data = JSON.parse(obj.responseText);
+
+            if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+                GDriveConfig.fileID = null;
+
+                GDriveSaveConfig();
+                GDriveBackupStart();
+
+                console.log('GDriveDownloadBackupFileSuccess', data.error.message);
+            }
+
+            return;
+        } else {
+            console.log('GDriveDownloadBackupFileSuccess fail', obj);
+        }
+
+        GDriveUpdateFile();
+    }
+
+    function GDriveUpdateFile() {
+        GDriveUpdateFileRequest(GDriveUpFileSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveUpFileSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveUpFileSuccessSave(obj);
+        } else if (obj.status === 404) {
+            var data = JSON.parse(obj.responseText);
+
+            if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+                console.log('GDriveUpFileSuccess', data.error.message);
+
+                GDriveConfig.fileID = null;
+
+                GDriveSaveConfig();
+                GDriveBackupStart();
+
+                console.log('GDriveDownloadBackupFileSuccess', data.error.message);
+            }
+        } else {
+            Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);
+        }
+    }
+
+    function GDriveDownloadBackupFileSuccessSync(obj) {
+        var backupObj;
+
+        try {
+            //The file can be empty or the user change it and/or bricked it
+            backupObj = JSON.parse(obj.responseText);
+        } catch (error) {
+            console.log('GDriveGetBackupFileSuccess try json', error);
+            return null;
+        }
+
+        var date = JSON.parse(backupObj[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime(),
+            syncEnabled = Settings_value.sync_enabled.defaultValue,
+            doUser = syncEnabled && Settings_value.sync_users.defaultValue,
+            doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
+            //do not sync settings as it will overwrite the changes
+            //we only sync setting on first app start at GDriveGetBackupFileSuccess()
+            doSetting = false;
+
+        //skip sync if date is the same or smaller
+        if (!GDriveNeedsSync(date)) {
+            return;
+        }
+
+        if (AddUser_UserIsSet()) {
+            GDriveSyncFromBackup(backupObj, doUser, doHistory, doSetting);
+        } else {
+            //we have no users update the storage items directly
+            GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
+            //after make sure to restore users and update the header
+            AddUser_RestoreUsers(true);
+            Play_SetUserHeader();
+        }
+    }
+
+    function GDriveBackupGetFileInfo() {
+        GDriveGetFileByName(GDriveBackupGetFileInfoSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveBackupGetFileInfoSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveSaveFileInfo(obj);
+        } else {
+            console.log('GDriveBackupGetFileInfoSuccess fail', obj.responseText);
+        }
+
+        if (GDriveConfig.fileID) {
+            GDriveBackup();
+        } else {
+            GDriveUploadFile(GDriveBackupFileSuccess, noop_fun, 0, 0);
+        }
+    }
+
+    function GDriveBackupFileSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveUpFileSuccessSave(obj);
+        } else {
+            console.log('GDriveBackupFileSuccess fail', obj.responseText);
+        }
+    }
+    /*
+     * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    function GDriveGetCodes(callbackSuccess, callbackError, key_1, key_2) {
+        var body = 'client_id=' + encodeURIComponent(GDriveClientKey) + '&' + 'scope=' + encodeURIComponent(GDriveScopes);
+
+        FullxmlHttpGet(GDriveCode, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
+    }
+
+    function GDriveCheckDeviceCode(callbackSuccess, callbackError, key_1, key_2) {
+        var body =
+            'grant_type=' +
+            encodeURIComponent('urn:ietf:params:oauth:grant-type:device_code') +
+            '&' +
+            'client_id=' +
+            encodeURIComponent(GDriveClientKey) +
+            '&' +
+            'client_secret=' +
+            GDriveKey +
+            '&' +
+            'device_code=' +
+            encodeURIComponent(GDriveDeviceCode);
+
+        FullxmlHttpGet(GDriveToken, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
+    }
+
+    function GDriveValidateAccessToken(callbackSuccess, callbackError, key_1, key_2) {
+        var theUrl = GDriveValidateTokenUrl + GDriveConfig.accessToken;
+
+        FullxmlHttpGet(theUrl, null, callbackSuccess, callbackError, key_1, key_2, 'POST', null);
+    }
+
+    function GDriveRefreshAccessToken(callbackSuccess, callbackError, key_1, key_2) {
+        var body =
+            'grant_type=refresh_token' +
+            '&' +
+            'client_id=' +
+            encodeURIComponent(GDriveClientKey) +
+            '&' +
+            'client_secret=' +
+            GDriveKey +
+            '&' +
+            'refresh_token=' +
+            encodeURIComponent(GDriveConfig.refreshToken);
+
+        FullxmlHttpGet(GDriveToken, GDriveDefaultBodyToken, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
+    }
+
+    function GDriveGetFileByName(callbackSuccess, callbackError, key_1, key_2) {
+        FullxmlHttpGet(
+            GDriveFileIdUrl.replace('%x', "name='" + encodeURIComponent(GDriveFileName) + "' and trashed=false"),
+            GDriveConfig.header,
+            callbackSuccess,
+            callbackError,
+            key_1,
+            key_2,
+            null, //null = GET
+            null
+        );
+    }
+
+    function GDriveUploadFile(callbackSuccess, callbackError, key_1, key_2) {
+        var header = JSON.parse(JSON.stringify(GDriveConfig.header));
+        header.push(['Content-Type', 'multipart/related; boundary=' + GDriveBoundary]);
+
+        var body =
+            '--' +
+            GDriveBoundary +
+            '\r\n' +
+            'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+            GDriveMetadata +
+            '\r\n' +
+            '--' +
+            GDriveBoundary +
+            '\r\n' +
+            'Content-Type: application/json\r\n\r\n' +
+            GDriveGetBackupFileContent() +
+            '\r\n' +
+            '--' +
+            GDriveBoundary +
+            '--';
+
+        FullxmlHttpGet(GDriveUploadNewUrl, header, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
+    }
+
+    function GDriveUpdateFileRequest(callbackSuccess, callbackError, key_1, key_2) {
+        FullxmlHttpGet(
+            GDriveUpdateUrl.replace('%x', encodeURIComponent(GDriveConfig.fileID)),
+            GDriveConfig.header,
+            callbackSuccess,
+            callbackError,
+            key_1,
+            key_2,
+            'PATCH',
+            GDriveGetBackupFileContent()
+        );
+    }
+
+    function GDriveDownloadBackupFile(callbackSuccess, callbackError, key_1, key_2) {
+        FullxmlHttpGet(
+            GDriveDownLoadUrl.replace('%x', GDriveConfig.fileID),
+            GDriveConfig.header,
+            callbackSuccess,
+            callbackError,
+            key_1,
+            key_2,
+            null,
+            null
+        );
+    }
+
+    function GDriveUserInfo(callbackSuccess, callbackError, key_1, key_2) {
+        FullxmlHttpGet(GDriveUserInfoURL, GDriveConfig.header, callbackSuccess, callbackError, key_1, key_2, null, null);
+    }
+    /*
+     * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    function GDriveRestore() {
+        GDriveConfig = Main_getItemJson(GDriveConfigItemName, {});
+        GDriveDoBackupCall = Main_getItemJson(GDriveDoBackupCallItemName, []);
+
+        if (!GDriveSyncEnabled()) {
+            GDriveCheckMainStarted();
+        }
+
+        if (GDriveConfig.accessToken) {
+            GDriveValidateToken();
+            return;
+        }
+
+        GDriveCheckMainStarted();
+    }
+
+    function GDriveSyncEnabled() {
+        return (
+            Settings_value.sync_enabled.defaultValue &&
+            (Settings_value.sync_users.defaultValue || Settings_value.sync_history.defaultValue || Settings_value.sync_settings.defaultValue)
+        );
+    }
+
+    function GDriveValidateToken() {
+        if (GDriveConfig.backupExpiresTime > new Date().getTime()) {
+            GDriveSetExpiresId(GDriveConfig.backupExpiresTime - new Date().getTime());
+
+            GDriveRestoreStart();
+            return;
+        }
+
+        GDriveValidateAccessToken(GDriveValidateTokenSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveValidateTokenSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveSetExpires(JSON.parse(obj.responseText));
+
+            GDriveRestoreStart();
+        } else {
+            //expired or no longer has access to Gdrive
+            //Only on 401 we erase Gdrive configuration
+            //GDriveValidateAccessToken only returns 200 or 400
+            GDriveValidateTokenRefreshAccessToken();
+        }
+    }
+
+    function GDriveRestoreStart() {
+        if (GDriveSyncEnabled()) {
+            GDriveGetBackupFile();
+        }
+
+        GDriveGetUserInfo();
+    }
+
+    function GDriveGetUserInfo() {
+        GDriveUserInfo(GDriveGetUserInfoSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveGetUserInfoSuccess(obj) {
+        if (obj.status === 200) {
+            var data = JSON.parse(obj.responseText);
+
+            GDriveConfig.userEmail = data.email;
+            GDriveConfig.userImgURL = data.picture;
+
+            GDriveSaveConfig();
+            Main_ImageLoaderWorker.postMessage(GDriveConfig.userImgURL);
+
+            if (Settings_Dialog_isVisible()) {
+                Settings_DialogBackupSync();
+            }
+        }
+    }
+
+    function GDriveValidateTokenRefreshAccessToken() {
+        GDriveRefreshAccessToken(GDriveRefreshSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveRefreshSuccess(obj) {
+        if (obj.status === 200) {
+            var data = JSON.parse(obj.responseText);
+            GDriveConfig.accessToken = data.access_token;
+
+            GDriveSetHeader();
+            GDriveSetExpires(data);
+
+            GDriveRestoreStart();
+        } else if (obj.status === 401) {
+            //401 lost access need to erase the config let the user know
+            Main_PlayMainShowWarning(STR_BACKUP_ACCOUNT_REFRESH_ERROR, 7500, true);
+            GDriveErase();
+        } else {
+            GDriveCheckMainStarted();
+        }
+    }
+
+    function GDriveGetBackupFile() {
+        if (!GDriveConfig.fileID) {
+            GDriveGetFileInfo();
+            return;
+        }
+
+        if (!GDriveCanDoBackup()) {
+            console.log('GDriveGetBackupFile GDriveCanDoBackup return');
+            GDriveCheckMainStarted();
+            return;
+        }
+
+        GDriveDownloadBackupFile(GDriveGetBackupFileSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveGetFileInfo() {
+        GDriveGetFileByName(GDriveGetFileInfoSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveSaveFileInfo(obj) {
+        var data = JSON.parse(obj.responseText);
+
+        if (!data.files || !data.files.length) {
+            return;
+        }
+
+        GDriveConfig.backupSize = formatFileSize(data.files[0].size);
+        GDriveConfig.fileID = data.files[0].id;
+
+        GDriveSaveConfig();
+    }
+
+    function GDriveGetFileInfoSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveSaveFileInfo(obj);
+        } else {
+            console.log('GDriveGetFileInfoSuccess fail', obj.responseText);
+            GDriveCheckMainStarted();
+        }
+
+        if (GDriveConfig.fileID) {
+            GDriveGetBackupFile();
+        } else {
+            GDriveUploadFile(GDriveBackupFileFromRestore, noop_fun, 0, 0);
+        }
+    }
+
+    function GDriveBackupFileFromRestore(obj) {
+        if (obj.status === 200) {
+            GDriveUpFileSuccessSave(obj);
+        } else {
+            console.log('GDriveUpFileSuccess fail', obj.responseText);
+        }
+
+        GDriveCheckMainStarted();
+    }
+
+    function GDriveGetBackupFileSuccess(obj) {
+        //if has backup sync first
+        if (obj.status === 200) {
+            var backupObj;
+
+            try {
+                //The file can be empty of the user change it and/or bricked it
+                backupObj = JSON.parse(obj.responseText);
+            } catch (error) {
+                console.log('GDriveGetBackupFileSuccess try json', error);
+                GDriveCheckMainStarted();
+                return;
+            }
+
+            GDriveSyncBackupFile(backupObj);
+
+            return;
+        } else if (obj.status === 404) {
+            var data = JSON.parse(obj.responseText);
+
+            if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+                GDriveConfig.fileID = null;
+
+                GDriveSaveConfig();
+                GDriveGetFileInfo();
+
+                console.log('GDriveGetBackupFileSuccess', data.error.message);
+            }
+
+            return;
+        }
+
+        GDriveCheckMainStarted();
+    }
+
+    function GDriveSyncBackupFile(backup) {
+        var date = JSON.parse(backup[GDriveConfigItemName] || '{}').lastBackupDate || new Date().getTime(),
+            syncEnabled = Settings_value.sync_enabled.defaultValue,
+            doUser = syncEnabled && Settings_value.sync_users.defaultValue,
+            doHistory = syncEnabled && Settings_value.sync_history.defaultValue,
+            doSetting = syncEnabled && Settings_value.sync_settings.defaultValue;
+
+        //skip sync if date is the same or smaller
+        if (!GDriveNeedsSync(date)) {
+            GDriveCheckMainStarted();
+            return;
+        }
+
+        if (AddUser_UserIsSet()) {
+            GDriveSyncFromBackup(backup, doUser, doHistory, doSetting);
+
+            if (doUser) {
+                GDriveCheckMainUser(backup);
+            }
+        } else {
+            //we have no users update the storage items directly
+            GDriveRestoreFromBackup(backup, doUser, doHistory, doSetting);
+            //after make sure to restore users and update the main values as they may have changed
+            AddUser_RestoreUsers(true);
+            Main_RestoreValues();
+        }
+
+        GDriveCheckMainStarted();
+    }
+
+    function GDriveCheckMainUser(backup) {
+        var backupUsersArray = JSON.parse(backup[AddUser_UserArrayItemName] || '[]');
+
+        if (backupUsersArray.length && AddUser_UsernameArray.length && backupUsersArray[0].id !== AddUser_UsernameArray[0].id) {
+            var position = AddUser_UserFindPos(backupUsersArray[0].id);
+
+            if (position > -1) {
+                AddUser_UserMakeOne(position, true);
+            }
+        }
+    }
+
+    function GDriveCheckMainStarted() {
+        if (Main_started) {
+            return;
+        }
+
+        Main_initWindows();
+    }
+    /*
+     * Copyright (c) 2017- Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    function GDriveStart() {
+        GDriveGetCodes(GDriveGetCodesSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveGetCodesSuccess(obj) {
+        if (obj.status === 200) {
+            var data = JSON.parse(obj.responseText);
+            GDriveDeviceCode = data.device_code;
+
+            //update instruction on the screen
+            var urlDiv = STR_DIV_LINK + DefaultMakeLink(data.verification_url) + '</div>',
+                codeDiv = STR_BR + STR_BR + data.user_code.replace(/-/g, '') + STR_BR + STR_BR;
+
+            Main_innerHTML('backup_body', STR_ADD_USER_TEXT.replace('%site', urlDiv).replace('%code', codeDiv));
+            GDriveCheckCode(GDriveDeviceCodeTimeout);
+        } else {
+            Main_innerHTML('backup_body', obj.responseText);
+        }
+    }
+
+    function GDriveCheckCode(counter) {
+        if (counter) {
+            Main_textContent('backup_body_checking', STR_ADD_USER_TEXT_COUNTER.replace('%d', counter));
+
+            GDriveCheckCodeId = Main_setTimeout(
+                function () {
+                    GDriveCheckCode(counter - 1);
+                },
+                1000,
+                GDriveCheckCodeId
+            );
+        } else {
+            Main_textContent('backup_body_checking', STR_ADD_USER_TEXT_COUNTER_NOW);
+            GDriveCheckDeviceCode(GDriveDeviceCodeSuccess, noop_fun, 0, 0);
+        }
+    }
+
+    function GDriveDeviceCodeSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveSave(JSON.parse(obj.responseText));
+        } else if (obj.status === 428) {
+            //authorization_pending
+            GDriveCheckCode(GDriveDeviceCodeTimeout);
+        } else {
+            //authorization_fail
+            Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);
+            Main_textContent('backup_body_checking', obj.responseText);
+        }
+    }
+
+    function GDriveSave(obj) {
+        GDriveConfig.refreshToken = obj.refresh_token;
+        GDriveConfig.accessToken = obj.access_token;
+
+        GDriveSetHeader();
+        GDriveSetExpires(obj);
+
+        Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS);
+        Main_textContent('backup_body_checking', '');
+        Main_textContent('backup_end_info', '');
+
+        //Used by browser clicks
+        GDrivePreventClose = true;
+
+        GDriveBackupAndSync();
+        GDriveGetUserInfo();
+        GDriveSaveConfig();
+    }
+
+    function GDriveSaveConfig() {
+        Main_setItem(GDriveConfigItemName, JSON.stringify(GDriveConfig));
+    }
+
+    function GDriveBackupAndSync() {
+        if (!GDriveCanDoBackup()) {
+            return;
+        }
+
+        if (!GDriveConfig.fileID) {
+            GDriveBackupAndSyncGetFileInfo();
+            return;
+        }
+
+        GDriveDownloadBackupFile(GDriveBackupAndSyncSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveBackupAndSyncSuccess(obj) {
+        GDriveBackupAndSyncValidate(obj);
+    }
+
+    var GDriveBackupAndSyncValidateBackup;
+    function GDriveBackupAndSyncValidate(obj) {
+        if (obj.status === 200) {
+            GDriveBackupAndSyncValidateBackup = JSON.parse(obj.responseText);
+
+            Main_HideElement('backup_dialog');
+            Settings_DialogShowRestoreBackup(!Main_IsOn_OSInterface);
+        } else {
+            console.log('GDriveDoBackupSuccess fail', obj);
+            Main_textContent('backup_body', STR_BACKUP_RESTORE_FAIL);
+            Main_textContent('backup_end_info', STR_CLOSE_THIS);
+        }
+    }
+
+    function GDriveBackupAndSyncRunRestore() {
+        var backupObj = GDriveBackupAndSyncValidateBackup,
+            doUser = Settings_value.sync_users.defaultValue,
+            doHistory = Settings_value.sync_history.defaultValue,
+            doSetting = Settings_value.sync_settings.defaultValue,
+            refresh;
+
+        if (AddUser_UserIsSet()) {
+            GDriveSyncFromBackup(backupObj, doUser, doHistory, doSetting);
+
+            refresh = doSetting;
+        } else {
+            GDriveRestoreFromBackup(backupObj, doUser, doHistory, doSetting);
+            refresh = true;
+        }
+
+        if (refresh) {
+            OSInterface_showToast(STR_BACKUP_SYNC_RESTORE_SUCCESS);
+            GDriveRefresh();
+        } else {
+            Main_showWarningDialog(STR_BACKUP_SYNC_RESTORE_SUCCESS, 3000);
+        }
+    }
+
+    function GDriveBackupAndSyncGetFileInfo() {
+        GDriveGetFileByName(GDriveBackupAndSyncGetFileInfoSuccess, noop_fun, 0, 0);
+    }
+
+    function GDriveBackupAndSyncGetFileInfoSuccess(obj) {
+        if (obj.status === 200) {
+            GDriveSaveFileInfo(obj);
+        } else {
+            console.log('GDriveGetFileInfoSuccess fail', obj.responseText);
+        }
+
+        if (GDriveConfig.fileID) {
+            GDriveBackupAndSync();
+        } else {
+            GDriveUploadFile(GDriveBackupFileSuccess, noop_fun, 0, 0);
+
+            var extraSummary = !Settings_Dialog_isVisible() ? STR_BR + STR_BR + STR_BACKUP_NO_BACKUP_FOUND_SUMMARY : '';
+
+            Main_innerHTML('backup_body', STR_BACKUP_NO_BACKUP_FOUND + extraSummary);
+            Main_textContent('backup_body_checking', '');
+            Main_textContent('backup_end_info', STR_CLOSE_THIS);
+            GDrivePreventClose = false;
+        }
     }
     var yOnwheel = 0;
     var OnwheelId;
@@ -7232,13 +8762,17 @@
             if (!Settings_isVisible()) return;
 
             var id = event.target.id;
-            console.log(id);
+            //console.log(id);
 
             if (Main_A_includes_B(id, 'left')) {
                 Settings_DialoghandleKeyLeft();
             } else if (Main_A_includes_B(id, 'right')) {
                 Settings_DialoghandleKeyRight();
             } else if (Main_A_includes_B(id, 'dialog_settings')) {
+                if (Settings_DialogRestoreBackupShowing) {
+                    return;
+                }
+
                 Settings_DialoghandleKeyReturn();
             } else if (Main_A_includes_B(id, 'thumb_background')) {
                 Main_showWarningDialog(STR_SPECIAL_FEATURE, 2000);
@@ -7384,6 +8918,10 @@
                         Users_cursorY = y;
                         Users_addFocus();
                     } else if (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x) {
+                        if (!Screens_ObjNotNull_YX(key, y, x)) {
+                            return;
+                        }
+
                         Screens_RemoveFocus(key);
                         ScreenObj[key].posY = y;
                         Screens_ChangeFocus(0, x, key);
@@ -7420,7 +8958,12 @@
                     if (Main_values.Main_Go === Main_Users) {
                         Users_handleKeyEnter();
                     } else if (Settings_isVisible()) {
-                        Settings_checkMatureKeyEnter();
+                        if (Settings_isMature) {
+                            Settings_checkMatureKeyEnter();
+                        } else {
+                            Settings_RemoveBackupAccountDone();
+                            GDriveClean();
+                        }
                     } else {
                         Screens_histDeleteKeyEnter(Main_values.Main_Go);
                     }
@@ -7675,7 +9218,7 @@
                     pos = parseInt(id.split('_')[2]) + 1;
 
                     if (isNaN(pos)) {
-                        console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
+                        // console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
                         return;
                     }
 
@@ -7707,7 +9250,7 @@
                         pos = parseInt(idArray[idArray.length - 1]);
 
                         if (isNaN(pos)) {
-                            console.log('Main_Scene2Doc.onclick ' + pos);
+                            // console.log('Main_Scene2Doc.onclick ' + pos);
                             return;
                         }
 
@@ -7786,6 +9329,12 @@
 
         Main_getElementById('dialog_about').onclick = function () {
             Main_CheckDialogs();
+        };
+
+        Main_getElementById('backup_dialog').onclick = function (event) {
+            if (Main_A_includes_B(event.target.id, 'backup_dialog') && !GDrivePreventClose) {
+                Main_HideElement('backup_dialog');
+            }
         };
 
         Main_getElementById('welcome_dialog').onclick = function () {
@@ -8257,7 +9806,7 @@
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -8949,7 +10498,7 @@
 
         OSInterface_ScreenPlayerRestore(Rect.bottom, Rect.right, Rect.left, window.innerHeight, 4);
 
-        if (Main_IsOn_OSInterface) Main_AddClassWitEle(img, 'opacity_zero');
+        if (Main_IsOn_OSInterface) Main_AddClassWithEle(img, 'opacity_zero');
     }
 
     function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -9018,7 +10567,7 @@
                         1
                     );
 
-                    Main_AddClassWitEle(img, 'opacity_zero');
+                    Main_AddClassWithEle(img, 'opacity_zero');
                 } else {
                     ChannelContent_LoadPreviewWarn(
                         StreamData.status === 1 || StreamData.status === 403 ? STR_FORBIDDEN : STR_LIVE + STR_IS_OFFLINE,
@@ -9074,7 +10623,7 @@
         );
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -11296,7 +12845,7 @@
                         if (ChatLive_ClearChat) el.innerHTML = msg;
                         else el.innerHTML += STR_BR + STR_BR + msg;
 
-                        Main_AddClassWitEle(el.parentElement, 'chat_purged');
+                        Main_AddClassWithEle(el.parentElement, 'chat_purged');
                         //Prevent duplicate removal
                         Main_RemoveClassWithEle(el, classId);
                     }
@@ -11329,14 +12878,14 @@
                 if (ChatLive_ClearChat) el.innerHTML = STR_CHAT_MESSAGE_DELETED;
                 else el.innerHTML += STR_BR + STR_BR + STR_CHAT_MESSAGE_DELETED;
 
-                Main_AddClassWitEle(el.parentElement, 'chat_purged');
+                Main_AddClassWithEle(el.parentElement, 'chat_purged');
                 //Prevent duplicate removal
                 el.id = '_';
             }
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -11485,7 +13034,7 @@
             ChatLiveControls_inputFocusId = Main_setTimeout(
                 function () {
                     OSInterface_AvoidClicks(true);
-                    Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
+                    Main_AddClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
                     Main_ChatLiveInput.focus();
                     if (Main_IsOn_OSInterface) {
                         if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
@@ -12196,7 +13745,7 @@
 
     function ChatLiveControls_PreventInput() {
         Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
-        Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_block');
+        Main_AddClassWithEle(Main_ChatLiveInput, 'chat_input_class_block');
         Main_ChatLiveInput.value = ChatLiveControls_CanSendText;
         ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000);
         ChatLiveControls_UpdateResultTextEmpty();
@@ -12376,7 +13925,7 @@
         ChatLiveControls_SetarrowsKey(key);
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -12846,7 +14395,10 @@
             Chat_loadChatId = Main_setTimeout(
                 function () {
                     var time = OSInterface_gettime() / 1000;
-                    if (time && time < Chat_offset) Chat_offset = time;
+
+                    if (time && time < Chat_offset) {
+                        Chat_offset = time;
+                    }
 
                     Chat_loadChatRequest(id, 0);
                 },
@@ -13286,7 +14838,7 @@
         return bright;
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -13422,7 +14974,6 @@
     var Main_FirstRun = true;
     var Main_FirstLoad = false;
     var Main_RunningTime = 0;
-    var Main_PreventCheckResume = false;
 
     var Main_base_string_header;
     var Main_base_array_header;
@@ -13447,12 +14998,10 @@
     var Main_ClockOffset = 0;
     var Main_IsOn_OSInterface = 0;
     var Main_randomImg = '?' + Math.random();
-    var Main_DoRestore = true;
-    var Main_CanBackup = false;
-    var Main_UserBackupFile = 'user.json';
-    var Main_HistoryBackupFile = 'history.json';
+
     var Main_Scene1Doc;
     var Main_Scene2Doc;
+    var Main_started = false;
     var Main_about_dialog_div;
     var Main_vodOffset = 0;
     var Main_body = document.body;
@@ -13472,7 +15021,7 @@
     }
 
     function Main_StartApp() {
-        Main_Checktylesheet();
+        Main_CheckdStyleSheet();
 
         Main_ready(function () {
             try {
@@ -13549,6 +15098,7 @@
             Main_RestoreValues();
             Settings_SetDefaults();
             Settings_RestoreAppLang();
+            Main_SetWorker();
 
             DefaultLang();
 
@@ -13566,24 +15116,7 @@
             Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
             Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
-            Main_DoRestore = AddUser_RestoreUsers();
-
-            if (!Main_values.Restore_Backup_Check && Main_IsOn_OSInterface && OSInterface_getSDK() < 30) {
-                try {
-                    OSInterface_requestWr();
-                    Main_HideLoadDialog();
-                    Main_innerHTML('main_dialog_remove', STR_BACKUP);
-                    Main_textContent('yes_no_dialog_button_no', STR_NO);
-                    Main_textContent('yes_no_dialog_button_yes', STR_YES);
-                    Main_ShowElement('yes_no_dialog');
-                    Main_values.Restore_Backup_Check = true;
-                    Main_PreventCheckResume = true;
-                    Main_addEventListener('keydown', Main_BackupDialogKeyDown);
-                } catch (e) {
-                    Main_ready(Main_initWindows);
-                    return;
-                }
-            } else Main_ready(Main_initWindows);
+            AddUser_RestoreUsers();
         });
     }
 
@@ -13600,60 +15133,8 @@
         OSInterface_initbodyClickSet();
     }
 
-    function Main_BackupDialogKeyDown(event) {
-        switch (event.keyCode) {
-            case KEY_LEFT:
-                Users_RemoveCursor--;
-                if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
-                Users_RemoveCursorSet();
-                break;
-            case KEY_RIGHT:
-                Users_RemoveCursor++;
-                if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
-                Users_RemoveCursorSet();
-                break;
-            case KEY_ENTER:
-                Main_PreventCheckResume = false;
-                Main_showLoadDialog();
-                Main_HideElement('yes_no_dialog');
-                Main_removeEventListener('keydown', Main_BackupDialogKeyDown);
-                if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
-                else Main_initWindows();
-                break;
-            default:
-                break;
-        }
-    }
-
-    function Main_initRestoreBackups() {
-        try {
-            if (OSInterface_HasBackupFile(Main_UserBackupFile)) {
-                var tempBackup = OSInterface_RestoreBackupFile(Main_UserBackupFile);
-
-                if (tempBackup !== null) {
-                    var tempBackupArray = JSON.parse(tempBackup) || [];
-
-                    if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
-                        Main_setItem('AddUser_UsernameArrayNew', tempBackup);
-
-                        tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
-                        var tempBackupObj = JSON.parse(tempBackup) || {};
-
-                        if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
-
-                        AddUser_RestoreUsers();
-                        if (AddUser_UserHasToken()) OSInterface_mCheckRefresh();
-                    }
-                }
-            }
-
-            Main_initWindows();
-        } catch (e) {
-            Main_initWindows();
-        }
-    }
-
     function Main_initWindows() {
+        Main_started = true;
         if (AddUser_UserHasToken()) {
             Main_initWindowsEnd();
         } else {
@@ -13663,13 +15144,11 @@
 
     function Main_initWindowsEnd() {
         //Main_Log('Main_initWindows');
-        Main_CheckBackup();
 
         Users_RemoveCursor = 0;
         Users_RemoveCursorSet();
         Main_CheckDevice();
 
-        Main_Setworker();
         Main_SetStringsMain();
 
         Main_GoBefore = Main_values.Main_Go;
@@ -13702,19 +15181,6 @@
 
         Main_SetStringsSecondary();
         Main_checkVersion();
-    }
-
-    function Main_CheckBackup() {
-        if (Main_IsOn_OSInterface) {
-            Main_CanBackup = OSInterface_canBackupFile();
-
-            //Backup at start as a backup may never be done yet
-            if (Main_CanBackup && AddUser_IsUserSet()) {
-                Main_setTimeout(function () {
-                    OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                }, 10000);
-            }
-        } else Main_CanBackup = false;
     }
 
     function Main_CheckDevice() {
@@ -14064,10 +15530,10 @@
     }
 
     function Main_AddClass(element, mclass) {
-        Main_AddClassWitEle(Main_getElementById(element), mclass);
+        Main_AddClassWithEle(Main_getElementById(element), mclass);
     }
 
-    function Main_AddClassWitEle(element, mclass) {
+    function Main_AddClassWithEle(element, mclass) {
         if (element) element.classList.add(mclass);
     }
 
@@ -14168,6 +15634,14 @@
     function Main_CounterDialog(x, y, Columns, total) {
         if (total > 0) Main_textContent('dialog_counter_text', y * Columns + (x + 1) + '/' + total);
         else Main_CounterDialogRst();
+    }
+
+    function Main_PlayMainShowWarning(string, time, changePos) {
+        if (Main_isScene1DocVisible()) {
+            Main_showWarningDialog(string, time, changePos);
+        } else {
+            Play_showWarningDialog(string, time);
+        }
     }
 
     var Main_showWarningDialogId;
@@ -14327,10 +15801,21 @@
     function Main_ReStartScreens(preventRefresh) {
         if (Sidepannel_isShowingUserLive()) {
             Main_addEventListener('keydown', Sidepannel_handleKeyDown);
-            if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
-            if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
+
+            if (!Sidepannel_PlayerViewSidePanelSet) {
+                Sidepannel_SetPlayerViewSidePanel();
+            }
+
+            if (Play_PreviewId) {
+                OSInterface_SidePanelPlayerRestore();
+            }
+
             Sidepannel_AddFocusLiveFeed(true);
-        } else Main_SwitchScreen(false, preventRefresh);
+
+            Main_SaveValues(true);
+        } else {
+            Main_SwitchScreen(false, preventRefresh);
+        }
     }
 
     function Main_SwitchScreen(removekey, preventRefresh) {
@@ -14354,6 +15839,8 @@
         if (removekey) {
             Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
         }
+
+        Main_SaveValues(true);
     }
 
     //var used to allow to search in a search result,
@@ -14389,9 +15876,13 @@
         Main_SaveValuesWithTimeoutId = Main_setTimeout(Main_SaveValues, 500, Main_SaveValuesWithTimeoutId);
     }
 
-    function Main_SaveValues() {
+    function Main_SaveValues(backup) {
         Main_setItem('Main_values', JSON.stringify(Main_values));
         Main_setItem('Play_data', JSON.stringify(Play_data));
+
+        if (backup) {
+            GDriveBackup();
+        }
     }
 
     function Main_RestoreValues() {
@@ -14554,11 +16045,7 @@
             if (Main_IsOn_OSInterface) {
                 OSInterface_showToast(updateString);
             } else {
-                if (Main_isScene1DocVisible()) {
-                    Main_showWarningDialog(updateString, 3000);
-                } else {
-                    Play_showWarningDialog(updateString, 3000);
-                }
+                Main_PlayMainShowWarning(updateString, 3000);
             }
 
             Main_update_show_toast = true;
@@ -14660,10 +16147,7 @@
                     Main_hideScene1Doc();
                     Main_hideScene2Doc();
 
-                    //delay to make sure all was saved OK
-                    Main_setTimeout(function () {
-                        OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
-                    }, 250);
+                    Main_RefreshPage();
                 } else {
                     Main_showLoadDialog();
                     var fromPlay = OSInterface_getInstallFromPLay();
@@ -14677,6 +16161,13 @@
                 Main_UpdateDialogStartCheck();
             }
         }
+    }
+
+    function Main_RefreshPage() {
+        //delay to make sure all was saved OK
+        Main_setTimeout(function () {
+            OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+        }, 250);
     }
 
     var Main_UpdateDialogLastCheck;
@@ -15179,7 +16670,7 @@
     // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
     // So in order to check if a css class is loaded one can check it's font-family
     // The simple test here it to remove the <link rel="stylesheet" href="https://werevere"> from index and see if the bellow funtion loads the css for you and vice versa
-    function Main_Checktylesheet() {
+    function Main_CheckdStyleSheet() {
         var span = document.createElement('span');
 
         span.className = 'fa';
@@ -15188,9 +16679,9 @@
 
         Main_ready(function () {
             if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-                Main_Log('Main_Checktylesheet reloading');
+                Main_Log('Main_CheckdStyleSheet reloading');
                 Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-            } else Main_Log('Main_Checktylesheet loaded OK');
+            } else Main_Log('Main_CheckdStyleSheet loaded OK');
 
             Main_body.removeChild(span);
         });
@@ -15629,6 +17120,7 @@
         }
 
         var ArrayPos = Main_history_GetById(type, Data[7]);
+        Main_history_Clean_deleted(type, Data[7]);
 
         if (ArrayPos) {
             ArrayPos.data = Main_Slice(Data);
@@ -15712,6 +17204,14 @@
         }
 
         return -1;
+    }
+
+    function Main_history_Clean_deleted(type, id) {
+        Screens_checkDeleteObj();
+
+        id = id.toString();
+
+        delete Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][id];
     }
 
     function Main_history_GetById(type, id) {
@@ -15822,11 +17322,30 @@
         return -1;
     }
 
-    function Main_Restore_history() {
-        Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+    function Main_Restore_history(skipDrive) {
+        Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson(Main_values_History_data_ItemName, {}));
+
+        Main_HistoryClean();
 
         Main_history_SetVod_Watched();
         Main_UpdateBlockedHomeScreen();
+
+        if (!skipDrive) {
+            GDriveRestore();
+        }
+    }
+
+    function Main_HistoryClean() {
+        var obj = Main_values_History_data;
+        var limit = 1000;
+
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key) && obj[key].deleted) {
+                for (var innerKey in obj[key].deleted) {
+                    Main_trimObject(obj[key].deleted[innerKey], limit);
+                }
+            }
+        }
     }
 
     function Main_History_Sort(array, msort, direction) {
@@ -15850,11 +17369,8 @@
 
     function Main_SaveHistoryItem() {
         var string = JSON.stringify(Main_values_History_data);
-        Main_setItem('Main_values_History_data', string);
+        Main_setItem(Main_values_History_data_ItemName, string);
 
-        if (Main_CanBackup) {
-            OSInterface_BackupFile(Main_HistoryBackupFile, string);
-        }
         Main_UpdateBlockedHomeScreen();
     }
 
@@ -15895,7 +17411,7 @@
     }
 
     var Main_ImageLoaderWorker;
-    function Main_Setworker() {
+    function Main_SetWorker() {
         var blobURL = URL.createObjectURL(
             new Blob(
                 [
@@ -16107,7 +17623,8 @@
                                     AddUser_UserHasToken() ? Main_Bearer_User_Headers : Main_Bearer_Headers
                                 );
                             } else {
-                                Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                                //delete the live entry as it doesn't have a VOD
+                                Screens_deleteFromHistory('live', Main_values_History_data[AddUser_UsernameArray[0].id].live, index, 1);
                             }
                         }
                     } else {
@@ -16121,7 +17638,12 @@
 
                         if (index > -1) {
                             //delete the live that is now a vod entry as it no longer exist
-                            Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+                            Screens_deleteFromHistory(
+                                event.data.type,
+                                Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type],
+                                index,
+                                1
+                            );
                         }
                     } else {
                         if (vodInfo && vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
@@ -16137,7 +17659,8 @@
 
                     if (index > -1) {
                         //delete the entry as its content no longer exist
-                        Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                        Screens_deleteFromHistory(event.data.type, Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type], index, 1);
                     }
                 }
                 Main_setHistoryItem(10000);
@@ -16149,11 +17672,12 @@
 
     //Check if a live in history has become a VOD
     function Main_StartHistoryworker() {
-        if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+        if (!AddUser_IsUserSet() || !BradcastCheckerWorker) {
+            return;
+        }
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-            i = 0,
-            len = array.length,
+            i = array.length,
             header;
 
         if (AddUser_UserHasToken()) {
@@ -16162,12 +17686,12 @@
             header = Main_Bearer_Headers;
         }
 
-        for (i; i < len; i++) {
-            if (!array[i].forceVod) {
+        while (i--) {
+            if (array[i] && !array[i].forceVod) {
                 if (array[i].data[14] && array[i].data[14] !== '') {
                     Main_StartHistoryworkerBradcast(array[i], 1, header);
                 } else {
-                    array.splice(i, 1);
+                    Screens_deleteFromHistory('live', array, i, 1);
                 }
             }
         }
@@ -16186,8 +17710,8 @@
         if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
-            i = 0,
             len = array.length,
+            i = len - 1,
             header;
 
         if (AddUser_UserHasToken()) {
@@ -16196,7 +17720,7 @@
             header = Main_Bearer_Headers;
         }
 
-        for (i; i < len; i++) {
+        for (i; i >= 0; i--) {
             //TODO remove this workaround after some updates
             if (array[i].data[2] && typeof array[i].data[2] === 'string') {
                 array[i].data[2] = array[i].data[2].replace('Streamed', '');
@@ -16222,8 +17746,8 @@
         if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-            i = 0,
             len = array.length,
+            i = len - 1,
             header;
 
         if (AddUser_UserHasToken()) {
@@ -16232,7 +17756,7 @@
             header = Main_Bearer_Headers;
         }
 
-        for (i; i < len; i++) {
+        for (i; i >= 0; i--) {
             //TODO remove this workaround after some updates
             array[i].data[11] = array[i].data[11].replace('Since', '');
             array[i].data[4] = array[i].data[4].replace('Viewers', '');
@@ -16246,7 +17770,8 @@
                         header: header
                     });
                 } else {
-                    Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(i, 1); //delete the live entry as it doesn't have a VOD
+                    //delete the live entry as it doesn't have a VOD
+                    Screens_deleteFromHistory('live', Main_values_History_data[AddUser_UsernameArray[0].id].live, i, 1);
                 }
             }
         }
@@ -16258,8 +17783,8 @@
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
-        var i = 0,
-            len = array.length,
+        var len = array.length,
+            i = len - 1,
             header;
 
         if (AddUser_UserHasToken()) {
@@ -16268,7 +17793,7 @@
             header = Main_Bearer_Headers;
         }
 
-        for (i; i < len; i++) {
+        for (i; i >= 0; i--) {
             //TODO remove this workaround after some updates
             array[i].data[16] = array[i].data[16].replace('Created', '');
             array[i].data[14] = array[i].data[14].replace('Views', '');
@@ -16308,6 +17833,10 @@
         // Called only by JAVA
         Main_isStopped = true;
         Main_PreventClick(true, Main_PreventClickfun);
+
+        //sync backup, but prevent backup in background
+        GDriveBackup(true);
+        Main_clearTimeout(GDriveBackupTimeoutID);
 
         //Player related
         ChatLive_Clear(0);
@@ -16422,10 +17951,6 @@
         Main_PreventClick(false, Main_PreventClickfun);
         Main_isStopped = false;
 
-        //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
-        //but the aap is not ready for the rest of the check on this fun
-        if (Main_PreventCheckResume) return;
-
         if (Main_isUpdateDialogVisible()) {
             Main_HideLoadDialog();
             Main_values.IsUpDating = false;
@@ -16437,8 +17962,11 @@
 
         Main_SetUpdateclock();
 
-        if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
-        else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
+        if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) {
+            Play_CheckResume();
+        } else {
+            Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
+        }
 
         if (UserIsSet) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 2000, Main_CheckResumeFeedId);
@@ -17014,12 +18542,49 @@
             AddCode_client_token = atob(AddCode_client_token);
             AddCode_backup_client_id = atob(AddCode_backup_client_id);
             Chat_token = atob(Chat_token);
+            GDriveClientKey = atob(GDriveClientKey);
+            GDriveKey = atob(GDriveKey);
 
             Play_Headers = JSON.stringify([['Client-ID', Chat_token]]);
         }
     }
+
+    function Main_trimObject(obj, sizeLimit) {
+        var keys = Object.keys(obj);
+        var excess = keys.length - sizeLimit;
+
+        if (excess > 0) {
+            for (var i = 0; i < excess; i++) {
+                delete obj[keys[i]];
+            }
+        }
+
+        return obj;
+    }
+
+    function Main_removeMissingProps(obj, referenceArray) {
+        var i,
+            refIds = {},
+            key;
+
+        // Build a lookup map of reference IDs for faster checks
+        for (i = 0; i < referenceArray.length; i++) {
+            refIds[referenceArray[i].id] = true;
+        }
+
+        // Iterate over object keys and remove those not in reference
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if (!refIds.hasOwnProperty(key)) {
+                    delete obj[key];
+                }
+            }
+        }
+
+        return obj;
+    }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -17088,6 +18653,22 @@
     //Allows to stop the notification service from js side
     function OSInterface_upNotificationState(Notify) {
         if (Main_IsOn_OSInterface) Android.upNotificationState(Notify);
+    }
+
+    //public void upNotificationState(boolean Notify)
+    //Notify  background notification are enable
+    //Android specific: true
+    //Allows to stop the notification service from js side
+    function OSInterface_hasNotificationPermission() {
+        try {
+            if (Main_IsOn_OSInterface) {
+                return Android.hasNotificationPermission();
+            }
+
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 
     //public void SetNotificationLive(boolean Notify)
@@ -17286,9 +18867,9 @@
     //buffer_size = buffer size in ms
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Change the player starting buffer
-    function OSInterface_SetBuffer(who_called, buffer_size) {
-        if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
-    }
+    // function OSInterface_SetBuffer(who_called, buffer_size) {
+    //     if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
+    // }
 
     //public void mSetlatency(int LowLatency)
     //LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
@@ -17469,15 +19050,6 @@
         }
     }
 
-    //public void BackupFile(String file, String file_content)
-    //file =  the file name and or path
-    //file_content = the file content
-    //Android specific: true
-    //Backups user array and user history to a file
-    function OSInterface_BackupFile(file, file_content) {
-        Android.BackupFile(file, file_content);
-    }
-
     //public String mPageUrl()
     //Android specific: true
     //return the apk main url
@@ -17571,36 +19143,6 @@
     //Allows to get the app debug state
     function OSInterface_getdebug() {
         return Android.getdebug();
-    }
-
-    //public void requestWr()
-    //Android specific: true
-    //Runs only once, this functions check for storage access and request the user to give the permission
-    function OSInterface_requestWr() {
-        Android.requestWr();
-    }
-
-    //public boolean HasBackupFile(String file)
-    //file =  the file path to check
-    //Android specific: true
-    //Check if the file exist before restore it
-    function OSInterface_HasBackupFile(file) {
-        return Android.HasBackupFile(file);
-    }
-
-    //public String RestoreBackupFile(String file)
-    //file =  the file path to restore
-    //Android specific: true
-    //Check if the file exist before restore it
-    function OSInterface_RestoreBackupFile(file) {
-        return Android.RestoreBackupFile(file);
-    }
-
-    //public boolean canBackupFile()
-    //Android specific: true
-    //Check if storage access is available
-    function OSInterface_canBackupFile() {
-        return Android.canBackupFile();
     }
 
     //public String getDevice()
@@ -18181,7 +19723,7 @@
         return Main_IsOn_OSInterface ? Android.getPlaybackState() : true;
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -18460,7 +20002,7 @@
         Password_refreshInputFocusTools();
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -18487,7 +20029,6 @@
     var Play_MaxChatSizeValue = 4;
     var Play_PanelHideID = null;
     var Play_isFullScreen = true;
-    var Play_Buffer = 2000;
     var PlayVod_RefreshProgressBarrTimeout = 1000;
     var Play_CurrentSpeed = 3;
     var Play_PicturePicturePos = 4;
@@ -18508,6 +20049,8 @@
     var Play_HasLive;
     var Play_HasVod;
     var Play_VodObj;
+    var Play_OpenRewind;
+    var Play_RewindId = {};
 
     var Play_ChatEnable = false;
     var Play_exitID = null;
@@ -18708,11 +20251,12 @@
         Play_ShowPanelStatus(1);
 
         Main_values.Play_WasPlaying = 1;
-        Main_SaveValues();
+        Main_SaveValues(true);
         //Check the Play_UpdateMainStream fun when on a browser
         if (!Main_IsOn_OSInterface && !offline_chat && !skipTest) {
             Play_UpdateMainStream(true, true);
         }
+
         PlayClip_DontSkipStartAuto = false;
 
         if (!Main_IsOn_OSInterface) {
@@ -18776,8 +20320,11 @@
         } else if (response.status === 403) {
             error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
         } else {
-            if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-            else error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
+            if (isVod) {
+                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+            } else {
+                error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
+            }
         }
 
         return error;
@@ -19089,6 +20636,7 @@
 
             if (firstVod.stream_id.toString() === BroadcastID.toString()) {
                 Main_history_UpdateLiveVod(BroadcastID, firstVod.id, null);
+                Play_RewindId[BroadcastID] = firstVod.id;
             }
         }
     }
@@ -19848,7 +21396,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_clearInterval(Play_ShowPanelStatusId);
         Play_hidePanel();
         Play_HideWarningDialog();
-        if (!Play_EndDialogEnter) Play_HideEndDialog();
+
+        if (!Play_EndDialogEnter) {
+            Play_HideEndDialog();
+        }
 
         if (Play_data.qualities[1] && Play_data.qualityIndex === Play_getQualitiesCount() - 1) {
             if (Play_data.qualities[1].hasOwnProperty('id')) {
@@ -19992,7 +21543,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
 
             Main_ShowElementWithEle(Play_side_info_div);
-            Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+            Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
         } else {
             Main_clearTimeout(Play_ShowPanelStatusId);
             Main_HideElementWithEle(Play_side_info_div);
@@ -20031,7 +21582,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_PanneInfoDoclId.style.opacity = 0;
 
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-        else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
         Play_PanneInfoDoclId.style.pointerEvents = 'none';
     }
@@ -20647,7 +22198,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         Play_RestorePlayDataValues();
 
-        Main_SaveValues();
+        Main_SaveValues(true);
     }
 
     function Play_SavePlayData() {
@@ -20718,7 +22269,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_setHidePanel();
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -20747,7 +22298,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var PlayClip_replayOrNext = false;
     var PlayClip_replay = false;
     var PlayClip_HasVOD = false;
-    var PlayClip_Buffer = 2000;
 
     var PlayClip_jumpTimers = [1];
 
@@ -20862,6 +22412,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_controls[Play_controlsChanelCont].setLabel(Main_values.Main_selectedChannelDisplayname);
 
         PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
+
+        Main_SaveValues(true);
     }
 
     function PlayClip_SetProgressBarJumpers() {
@@ -21825,7 +23377,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -23153,9 +24705,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
         }
 
-        if (!PreventWarn) Play_showWarningMiddleDialog(error, 1500);
+        if (!PreventWarn) {
+            Play_showWarningMiddleDialog(error, 1500);
+        }
 
-        if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
+        if (!PreventResetFeed) {
+            UserLiveFeed_ResetFeedId();
+        }
 
         return null;
     }
@@ -23611,14 +25167,16 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
-                else if (Play_MultiDialogVisible()) {
+                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                    UserLiveFeed_KeyRightLeft(1);
+                } else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos++;
                     if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
                     Play_MultiAddFocus();
-                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
-                else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
+                } else if (Play_MultiEnable) {
+                    Play_MultiEnableKeyRightLeft(1);
+                } else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
@@ -23632,9 +25190,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 0;
                     OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
-                } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeftRight();
-                else if (!PlayExtra_PicturePicture && !Play_isFullScreen) Play_ChatFullScreenKeyRight();
-                else Play_FastBackForward(1);
+                } else if (PlayExtra_PicturePicture && !Play_isFullScreen) {
+                    Play_AudioChangeLeftRight();
+                } else if (!PlayExtra_PicturePicture && !Play_isFullScreen) {
+                    Play_ChatFullScreenKeyRight();
+                } else {
+                    Play_FastBackForward(1);
+                }
                 break;
             case KEY_UP:
                 if (Play_isPanelShowing()) {
@@ -23852,6 +25414,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var Play_controlsFollow = temp_controls_pos++;
     var Play_controlsSpeed = temp_controls_pos++;
     var Play_controlsExternal = temp_controls_pos++;
+    var Play_controlsRewind = temp_controls_pos++;
     var Play_controlsQuality = temp_controls_pos++;
     var Play_controlsQualityMini = temp_controls_pos++;
     var Play_controlsQualityMulti = temp_controls_pos++;
@@ -24217,6 +25780,54 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             },
             bottomArrows: function () {
                 Play_BottomArrows(this.position);
+            }
+        };
+
+        Play_controls[Play_controlsRewind] = {
+            //open rewind
+            ShowInLive: true,
+            ShowInVod: false,
+            ShowInClip: false,
+            ShowInPP: false,
+            ShowInMulti: false,
+            ShowInChat: false,
+            ShowInAudio: false,
+            ShowInAudioPP: false,
+            ShowInAudioMulti: false,
+            ShowInPreview: false,
+            ShowInStay: false,
+            icons: 'rewind',
+            offsetY: -2,
+            string: STR_OPEN_REWIND,
+            values: null,
+            defaultValue: null,
+            enterKey: function () {
+                var rewindId = Play_RewindId[Play_data.data[7]];
+
+                if (rewindId) {
+                    Main_values.ChannelVod_vodId = rewindId;
+                } else {
+                    Play_showWarningMiddleDialog(STR_OPEN_REWIND_FAIL, 3000);
+                    return;
+                }
+
+                Play_ForceHidePannel();
+                Main_vodOffset = 0;
+
+                Main_clearInterval(Play_ShowPanelStatusId);
+                Main_values.Play_WasPlaying = 0;
+                Play_ClearPlay(true);
+                Play_isOn = false;
+                Play_DurationSeconds = 0;
+
+                Play_handleKeyUpClear();
+                Play_OpenRewind = true; //used by PlayVod_Start and PlayVod_onPlayerStartPlay
+                Main_PlayVodHandleKeyDown();
+                Play_showBufferDialog();
+                PlayVod_Start();
+            },
+            setLabel: function () {
+                Main_textContent('controls_text_summary_' + this.position, STR_OPEN_REWIND_SUMMARY);
             }
         };
 
@@ -25871,7 +27482,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         return (
             '<div id="controls_arrows_' +
             key +
-            '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+            '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;">' +
+            '<div style="display: inline-block;"><div id="control_arrow_up_' +
             key +
             '" class="up"></div><div id="control_arrow_down' +
             key +
@@ -25938,7 +27550,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Play_IconsAddFocus() {
-        Main_AddClassWitEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
+        Main_AddClassWithEle(Play_controls[Play_PanelCounter].button, Play_BottonIcons_Focus_Class);
 
         Play_controls[Play_PanelCounter].button_text.style.opacity = '1';
 
@@ -26170,7 +27782,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             if (PlayClip_EnterPos) Main_RemoveClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
 
             Play_BottonIconsHide(1);
-            Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+            Main_AddClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
             Play_IconsRemoveFocus();
 
             if (PlayVod_addToJump) {
@@ -26184,21 +27796,21 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //pause
 
                 Play_BottonIconsShow(skipInfo);
-                Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+                Main_AddClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
             } else if (PlayClip_EnterPos === 1) {
                 //next
 
                 Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
                 if (!skipHide) Play_BottonIconsHide(2);
                 Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
-                Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+                Main_AddClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
             } else if (PlayClip_EnterPos === -1) {
                 //back
 
                 Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
                 if (!skipHide) Play_BottonIconsHide(2);
                 Main_ShowElementWithEle(Play_BottonIcons_Back_Img_holder);
-                Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+                Main_AddClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
             }
 
             Play_IconsRemoveFocus();
@@ -26225,21 +27837,21 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Play_BottonIconsHide(hideType) {
         if (!hideType) {
-            Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-            Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+            Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+            Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
         } else if (hideType === 1) {
-            Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-            Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+            Main_AddClassWithEle(Play_pause_next_div, 'opacity_zero');
+            Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
         } else if (hideType === 2) {
-            Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
-            Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+            Main_AddClassWithEle(Play_Controls_Holder, 'opacity_zero');
+            Main_AddClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
         }
 
         if (!Play_StayDialogVisible()) {
-            Main_AddClassWitEle(Play_info_div, 'opacity_zero');
+            Main_AddClassWithEle(Play_info_div, 'opacity_zero');
 
             if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-            else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+            else if (Play_Status_Visible === 1) Main_AddClassWithEle(Play_side_info_div, 'playsideinfofocus');
         }
     }
 
@@ -26492,7 +28104,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -27018,7 +28630,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_updateStreamInfoGet(Main_helix_api + 'streams?user_id=' + PlayExtra_data.data[14], 0);
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -27372,7 +28984,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         return null;
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -28252,7 +29864,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_HideMultiDialogID = Main_setTimeout(Play_HideMultiDialog, 10000, Play_HideMultiDialogID);
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -28280,7 +29892,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var PlayVod_playlist = null;
 
     var PlayVod_isOn = false;
-    var PlayVod_Buffer = 2000;
 
     var Play_jumping = false;
     var PlayVod_SizeClearID;
@@ -28386,7 +29997,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         PlayVod_SetStart();
 
-        if (!Play_PreviewId) {
+        if (!Play_PreviewId && !Play_OpenRewind) {
             Play_showBufferDialog();
             var isFromVod = true;
             var ShowDialog = Settings_Obj_default('vod_dialog');
@@ -28478,7 +30089,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             if (Play_PreviewOffset) Main_vodOffset = Play_PreviewOffset;
             PlayVod_onPlayer();
 
-            if (!Play_PreviewOffset) {
+            if (!Play_PreviewOffset && !Play_OpenRewind) {
                 Chat_offset = parseInt(OSInterface_gettime() / 1000);
 
                 Chat_Init();
@@ -28496,7 +30107,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id, true);
 
         Main_values.Play_WasPlaying = 2;
-        Main_SaveValues();
+        Main_SaveValues(true);
     }
 
     function PlayVod_convertHMS(value) {
@@ -28738,6 +30349,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function PlayVod_onPlayerStartPlay(time) {
+        time = Play_OpenRewind ? 0 : time; //at 0 if this is a vod that has not ended the player will auto start at the end
+
         if (Main_IsOn_OSInterface && PlayVod_isOn) {
             if (Play_SkipStartAuto) {
                 OSInterface_FixViewPosition(0, 2);
@@ -28767,11 +30380,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function PlayVod_PreshutdownStream(saveOffset) {
         PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
-        if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
+        if (Main_IsOn_OSInterface && !Play_PreviewId) {
+            OSInterface_stopVideo();
+        }
 
         Main_ShowElementWithEle(Play_Controls_Holder);
         Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
+        Play_OpenRewind = false;
         PlayVod_isOn = false;
         PlayClip_OpenAVod = true;
         Main_clearInterval(PlayVod_SaveOffsetId);
@@ -29070,6 +30686,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
 
             if (!Play_isOn && PlayClip_HasVOD) Chat_Init();
+
+            Play_OpenRewind = false;
         }
         PlayVod_IsJumping = false;
         PlayVod_UpdateRemaining(PlayVod_TimeToJump, Play_DurationSeconds);
@@ -29714,6 +31332,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         //Update the value only if the Play_UpdateDuration() has not yet
         if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
 
+        if (Play_OpenRewind && Play_DurationSeconds) {
+            Chat_offset = Math.max(0, Play_DurationSeconds - 100);
+            Chat_Init();
+        }
+
         ChannelVod_title = twemoji.parse(response.title, false, true);
 
         Main_innerHTML(
@@ -30161,7 +31784,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     //     PlayVod_ProcessChapters(obj);
     // }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -30247,7 +31870,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_histdelete = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
             //ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
@@ -30307,7 +31930,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 keys = Object.keys(obj),
                 keys_length = keys.length;
 
-            for (j = 0; j < keys_length; j++) ret[keys[j]] = obj[keys[j]];
+            for (j = 0; j < keys_length; j++) {
+                ret[keys[j]] = obj[keys[j]];
+            }
         }
         return ret;
     }
@@ -31165,11 +32790,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //if (SceneNotShowing || ScrollDocNotShowing) {
                 if (ScrollDocNotShowing) {
                     // if (SceneNotShowing) {
-                    //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                    //     Main_AddClassWithEle(Main_Scene1Doc, 'opacity_zero');
                     //     Main_showScene1Doc();
                     // }
                     //if (ScrollDocNotShowing) {
-                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                    Main_AddClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
                     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
                     //}
 
@@ -31300,7 +32925,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             CheckAccessibilityWasVisible = true;
             Main_removeEventListener('keydown', Main_CheckAccessibilityKey);
             Main_HideElement('dialog_accessibility');
-        } else CheckAccessibilityWasVisible = false;
+        } else {
+            CheckAccessibilityWasVisible = false;
+        }
 
         Main_HideWelcomeDialog();
         Main_HideControlsDialog();
@@ -31333,7 +32960,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_FirstRun = false;
         if (!SkipHidedialog) Main_HideLoadDialog();
 
-        AddUser_UpdateSidepanelAfterShow();
+        AddUser_UpdateSidePanelAfterShow();
 
         if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLabels();
         else Sidepannel_SetDefaultLabels();
@@ -31411,6 +33038,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         return Boolean(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
     }
 
+    function Screens_ObjNotNull_YX(key, y, x) {
+        return Boolean(ScreenObj[key].DataObj[y + '_' + x]);
+    }
+
     var Screens_LoadPreviewId;
     //Clips load too fast, so only call this function after animations have ended
     //Also help to prevent lag on animation
@@ -31484,7 +33115,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Screens_ClearAnimation(key);
 
         if (Main_IsOn_OSInterface) {
-            Main_AddClassWitEle(img, 'opacity_zero');
+            Main_AddClassWithEle(img, 'opacity_zero');
         }
     }
 
@@ -31674,7 +33305,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     );
 
                     Screens_ClearAnimation(x);
-                    Main_AddClassWitEle(img, 'opacity_zero');
+                    Main_AddClassWithEle(img, 'opacity_zero');
 
                     if (isClip || isVod) {
                         Screens_UpdatePlaybackTimeStart(x);
@@ -32755,7 +34386,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_innerHTML('main_dialog_remove', text);
         Main_ShowElementWithEle(Screens_dialog_thumb_delete_div);
         Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-        Main_addEventListener('keydown', ScreenObj[key].key_histdelet);
+        Main_addEventListener('keydown', ScreenObj[key].key_histdelete);
         Screens_setRemoveDialog(key);
     }
 
@@ -32771,7 +34402,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Screens_HideRemoveDialog(key) {
         Users_clearRemoveDialog();
-        Main_removeEventListener('keydown', ScreenObj[key].key_histdelet);
+        Main_removeEventListener('keydown', ScreenObj[key].key_histdelete);
         Main_addEventListener('keydown', ScreenObj[key].key_fun);
         Main_HideElementWithEle(Screens_dialog_thumb_delete_div);
         Users_RemoveCursor = 0;
@@ -32783,11 +34414,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Screens_histDeleteKeyEnter(key) {
         var temp = Users_RemoveCursor;
         Screens_HideRemoveDialog(key);
-        if (temp) Screens_histDelete(key);
+        if (temp) {
+            Screens_histDelete(key);
+        }
     }
 
     function Screens_histDeleteKeyDown(key, event) {
-        //Main_Log('ScreenObj[key].key_histdelet ' + event.keyCode);
+        //Main_Log('ScreenObj[key].key_histdelete ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_LEFT:
@@ -32817,24 +34450,62 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Screens_histDelete(key) {
+        var type = ScreenObj[key].Type;
+
         if (Screens_DeleteDialogAll) {
-            Main_values_History_data[AddUser_UsernameArray[0].id][ScreenObj[key].Type] = [];
+            Screens_addAllToDelete(JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][type])), type);
+
+            Main_values_History_data[AddUser_UsernameArray[0].id][type] = [];
+
             Main_setHistoryItem();
             Main_ReloadScreen();
         } else {
-            var type = 'live';
-
-            if (ScreenObj[key].screen === Main_HistoryVod) type = 'vod';
-            else if (ScreenObj[key].screen === Main_HistoryClip) type = 'clip';
-
             var index = Main_history_Exist(type, Screens_values_Play_data[7]);
+
             if (index > -1) {
-                Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
+                Screens_deleteFromHistory(type, Main_values_History_data[AddUser_UsernameArray[0].id][type], index, 1);
                 Main_setHistoryItem();
             }
 
             Screens_deleteUpdateRows(key);
         }
+
+        GDriveBackup();
+    }
+
+    function Screens_deleteFromHistory(type, array, index, position) {
+        Screens_checkDeleteObj();
+
+        var value = JSON.parse(JSON.stringify(array[index]));
+
+        Screens_addToDelete(value, type);
+        array.splice(index, position);
+    }
+
+    function Screens_addAllToDelete(array, type) {
+        Screens_checkDeleteObj();
+
+        var index = 0,
+            len = array.length;
+
+        for (index; index < len; index++) {
+            Screens_addToDelete(array[index], type);
+        }
+    }
+
+    function Screens_checkDeleteObj() {
+        if (!Main_values_History_data[AddUser_UsernameArray[0].id].deleted) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].deleted = {
+                live: {},
+                vod: {},
+                clip: {}
+            };
+        }
+    }
+
+    function Screens_addToDelete(value, type) {
+        Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][value.id] = value;
+        Main_values_History_data[AddUser_UsernameArray[0].id].deleted[type][value.id].date = new Date().getTime();
     }
 
     // Not an ideal way to delete a thumbnail
@@ -33553,6 +35224,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Screens_BlockSetDefaultObj();
 
         if (Screens_getChannelIsBlocked(channelId)) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId] = JSON.parse(
+                JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId])
+            );
+
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId].date = new Date().getTime();
+
             delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel[channelId];
 
             if (ScreenObj[key].screen === Main_Blocked) {
@@ -33580,6 +35257,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Screens_BlockChannelUpdateInfo(channelId);
 
             Screens_BlockCheckDeleteChannel(key);
+
+            delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.channel[channelId];
         }
 
         Main_setHistoryItem();
@@ -33715,6 +35394,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Screens_BlockSetDefaultObj();
 
         if (Screens_getGameIsBlocked(gameId)) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId] = JSON.parse(
+                JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId])
+            );
+
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId].date = new Date().getTime();
+
             delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.game[gameId];
 
             if (ScreenObj[key].screen === Main_Blocked) {
@@ -33743,6 +35428,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Screens_BlockGameUpdateInfo(gameId);
 
             Screens_BlockCheckDeleteGame(key);
+
+            delete Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted.game[gameId];
         }
 
         Main_setHistoryItem();
@@ -33867,6 +35554,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel) {
             Main_values_History_data[AddUser_UsernameArray[0].id].blocked.channel = {};
+        }
+
+        if (!Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted) {
+            Main_values_History_data[AddUser_UsernameArray[0].id].blocked.deleted = {
+                game: {},
+                channel: {}
+            };
         }
     }
 
@@ -34405,7 +36099,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         AGame_setFollow();
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -34481,6 +36175,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     var userLiveQuery =
         '{"operationName":"FollowingLive_CurrentUser","query":"query,FollowingLive_CurrentUser{currentUser{followedLiveUsers(first:100 %y){pageInfo{hasNextPage},edges{cursor,node{stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}}}}"}';
+
+    var userLiveByIdsQuery =
+        '{"query":"{users(ids: %a ){stream{type,game{displayName,id},isMature,title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width:300)}}}}"}';
 
     var userVodQuery =
         '{"operationName":"FollowedVideos_CurrentUser","query":"query FollowedVideos_CurrentUser{currentUser{followedVideos(%y first:100,types:%x,sort:%t){pageInfo{hasNextPage},edges{cursor,node{game{displayName,id},duration,viewCount,language,title,animatedPreviewURL,createdAt,id,thumbnailURLs(width:640,height:360),creator{id,displayName,login}}}}}}"}';
@@ -37818,7 +39515,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function ScreensObj_getStreamInfo(userId, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError) {
-        if (!userId) return;
+        if (!userId) {
+            return;
+        }
 
         var theUrl = Main_helix_api + 'streams?user_id=' + userId;
 
@@ -37928,7 +39627,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     );
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -38151,7 +39850,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Search_refreshInputFocusTools();
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -38664,6 +40363,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             set_values: [''],
             defaultValue: 1
         },
+        backup_sync: {
+            values: ['None'],
+            set_values: [''],
+            defaultValue: 1
+        },
         warnings_opt: {
             values: ['None'],
             set_values: [''],
@@ -38926,6 +40630,31 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         chat_show_badges_shared: {
             values: ['no', 'yes'],
             defaultValue: 2
+        },
+        backup_enabled: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        sync_enabled: {
+            values: ['no', 'yes'],
+            defaultValue: 1
+        },
+        sync_users: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        sync_history: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        sync_settings: {
+            values: ['no', 'yes'],
+            defaultValue: 2
+        },
+        backup_account: {
+            values: ['None'],
+            set_values: [''],
+            defaultValue: 1
         }
     };
 
@@ -39054,6 +40783,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);
 
         //Dialog settings
+        div += Settings_Content('backup_sync', [STR_ENTER_TO_OPEN], STR_BACKUP_SYNC, null);
         div += Settings_Content('chat_opt', [STR_ENTER_TO_OPEN], STR_CHAT_OPTIONS, null);
         div += Settings_Content('ui_opt', [STR_ENTER_TO_OPEN], STR_UI_SETTINGS, null);
         div += Settings_Content('custom_opt', [STR_ENTER_TO_OPEN], STR_GENERAL_CUSTOM, null);
@@ -39115,7 +40845,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
         div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
         div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
-        div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY);
 
         Main_innerHTML('settings_main', div);
         Settings_positions_length = Settings_value_keys.length;
@@ -39242,7 +40971,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
         }
 
-        Settings_SetBuffers(0);
         Settings_ExtraCodecs(false);
         Settings_SetClock();
         Settings_HideMainClock();
@@ -39362,7 +41090,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ScreensObj_SetTopLable(STR_SETTINGS);
         Main_updateClock();
         Main_checkVersion(true);
-        AddUser_UpdateSidepanelAfterShow();
+        AddUser_UpdateSidePanelAfterShow();
         BrowserTestSetStrings();
 
         Main_SaveValues();
@@ -39466,6 +41194,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
         Settings_Setarrows(position);
+
         if (!skipDefault) {
             Settings_SetDefault(key);
         }
@@ -39505,10 +41234,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         else if (position === 'since_notification') Settings_notification_sicetime();
         else if (position === 'ping_warn') Settings_SetPingWarning();
         else if (position === 'app_animations') Settings_SetAnimations();
-        else if (position === 'buffer_live') Settings_SetBuffers(1);
         else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
-        else if (position === 'buffer_vod') Settings_SetBuffers(2);
-        else if (position === 'buffer_clip') Settings_SetBuffers(3);
         else if (position === 'av1_codec' || position === 'hevc_codec') Settings_ExtraCodecs(true);
         else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
         else if (position === 'default_quality') Play_SetQuality();
@@ -39524,7 +41250,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         else if (position === 'enable_mature') Settings_checkMature();
         else if (position === 'global_font_offset') {
             calculateFontSize();
-            AddUser_UpdateSidepanelAfterShow();
+            AddUser_UpdateSidePanelAfterShow();
             UserLiveFeed_ResetAddCellsize();
             Sidepannel_Scroll(true);
         } else if (position === 'hide_screen_counter') Settings_ShowCounter();
@@ -39551,6 +41277,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         else if (position === 'vod_seek_min') Settings_check_min_seek();
         else if (position === 'vod_seek_max') Settings_check_max_seek();
         else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
+        else if (position === 'sync_enabled') Settings_DialogBackupSyncRefresh();
         else if (
             position === 'block_qualities_43' ||
             position === 'block_qualities_21' ||
@@ -39568,9 +41295,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     var Settings_cursorYBackup;
     var Settings_enable_matureBackup;
+    var Settings_isMature;
     function Settings_checkMature() {
         var enabled = Settings_value.enable_mature.defaultValue;
         Settings_enable_matureBackup = enabled;
+        Settings_isMature = false;
 
         if (enabled) {
             if (Main_values.Password_data) {
@@ -39578,6 +41307,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
         } else if (!Main_values.Password_data) {
             Users_RemoveCursor = 0;
+            Settings_isMature = true;
             Users_RemoveCursorSet();
             Main_innerHTML('main_dialog_remove', STR_MATURE_PROTECT);
             Main_textContent('yes_no_dialog_button_no', STR_NO);
@@ -39756,7 +41486,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Settings_notification_background() {
-        OSInterface_upNotificationState(Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable());
+        var enabled = Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable();
+
+        OSInterface_upNotificationState(enabled);
+
+        if (enabled && !OSInterface_hasNotificationPermission()) {
+            OSInterface_showToast(STR_NOTIFICATION_BACKGROUND_WARNING);
+        }
     }
 
     function Settings_notification_position() {
@@ -39979,26 +41715,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         play_ExtraCodecsValues = ExtraCodecsValuesArray.join(',');
     }
 
-    function Settings_SetBuffers(whocall) {
-        if (!whocall) {
-            Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
-            PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
-            PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
-            OSInterface_SetBuffer(1, Play_Buffer);
-            OSInterface_SetBuffer(2, PlayVod_Buffer);
-            OSInterface_SetBuffer(3, PlayClip_Buffer);
-        } else if (whocall === 1) {
-            Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
-            OSInterface_SetBuffer(1, Play_Buffer);
-        } else if (whocall === 2) {
-            PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
-            OSInterface_SetBuffer(2, PlayVod_Buffer);
-        } else if (whocall === 3) {
-            PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
-            OSInterface_SetBuffer(3, PlayClip_Buffer);
-        }
-    }
-
     function Settings_SetClock() {
         var time = Settings_Obj_default('clock_offset');
         Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
@@ -40198,7 +41914,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Settings_KeyEnter(click) {
         if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'playerend_opt')) Settings_PlayerEnd(click);
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
-        else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_extracodecs')) Settings_DialogShowExtraCodecs(click);
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate(click);
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'proxy_settings')) Settings_DialogShowProxy(click);
@@ -40212,6 +41927,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings(click);
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'update_settings')) Settings_UpdateSettings(click);
         else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat(click);
+        else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'backup_sync')) Settings_DialogBackupSync(click);
     }
 
     var Settings_CodecsValue = [];
@@ -40278,6 +41994,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 dialogContent += '</div></div>';
 
                 Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
+
                 Settings_CodecsDialogSet = true;
             }
         }
@@ -40335,6 +42052,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Settings_handleKeyDownCodecs(event) {
         //console.log('event.keyCode ' + event.keyCode);
+
         switch (event.keyCode) {
             case KEY_ENTER:
             case KEY_KEYBOARD_BACKSPACE:
@@ -40722,31 +42440,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_SetAnimations();
     }
 
-    function Settings_DialogShowBuffer(ckick) {
-        var obj = {
-            buffer_live: {
-                defaultValue: Settings_value.buffer_live.defaultValue,
-                values: Settings_value.buffer_live.values,
-                title: STR_SETTINGS_BUFFER_LIVE,
-                summary: null
-            },
-            buffer_vod: {
-                defaultValue: Settings_value.buffer_vod.defaultValue,
-                values: Settings_value.buffer_vod.values,
-                title: STR_SETTINGS_BUFFER_VOD,
-                summary: null
-            },
-            buffer_clip: {
-                defaultValue: Settings_value.buffer_clip.defaultValue,
-                values: Settings_value.buffer_clip.values,
-                title: STR_SETTINGS_BUFFER_CLIP,
-                summary: null
-            }
-        };
-
-        Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY, ckick);
-    }
-
     function Settings_DialogShowProxy(click) {
         var array_no_yes = [STR_NO, STR_YES];
         Settings_value.ttv_lolProxy.values = array_no_yes;
@@ -40812,6 +42505,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 '</div>' +
                 STR_BR +
                 STR_PLAYER_EXTRA_CODEC_SUMMARY +
+                STR_BR +
+                STR_BR +
+                STR_PLAYER_EXTRA_CODEC_SUMMARY1 +
                 STR_BR +
                 STR_BR +
                 STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA +
@@ -41048,18 +42744,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 values: Settings_value.since_notification.values,
                 title: STR_NOTIFICATION_SINCE,
                 summary: STR_NOTIFICATION_SINCE_SUMMARY
-            }
-        };
-
-        //TODO remove comments when apk is updated
-        if (!Main_IsOn_OSInterface || OSInterface_getSDK() < 30) {
-            obj.live_notification_background = {
+            },
+            live_notification_background: {
                 defaultValue: Settings_value.live_notification_background.defaultValue,
                 values: Settings_value.live_notification_background.values,
-                title: STR_NOW_BACKGROUND,
-                summary: STR_NOW_BACKGROUND_SUMMARY
-            };
-        }
+                title: STR_NOTIFICATION_BACKGROUND,
+                summary: STR_NOTIFICATION_BACKGROUND_SUMMARY
+            }
+        };
 
         Settings_DialogShow(obj, STR_NOTIFICATION_OPT, click);
     }
@@ -41324,6 +43016,174 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
         };
         Settings_DialogShow(obj, STR_END_DIALOG_OPT, click);
+    }
+
+    function Settings_DialogBackupSyncRefresh() {
+        var divArray = ['sync_users', 'sync_history', 'sync_settings'],
+            element,
+            div;
+
+        for (var i = 0; i < divArray.length; i++) {
+            element = divArray[i] + '_div';
+            div = Main_getElementById(element);
+
+            if (!div) {
+                continue;
+            }
+
+            if (Settings_value.sync_enabled.defaultValue && Main_A_includes_B(div.className, 'hideimp')) {
+                Main_RemoveClassWithEle(div, 'hideimp');
+
+                Settings_DialogValue.push(divArray[i]);
+            } else if (!Settings_value.sync_enabled.defaultValue) {
+                Main_AddClassWithEle(div, 'hideimp');
+
+                var index = Settings_DialogValue.indexOf(divArray[i]);
+
+                if (index > -1) {
+                    Settings_DialogValue.splice(index, 1);
+                }
+            }
+        }
+    }
+
+    function Settings_DialogBackupSync(click) {
+        var yes_no = [STR_NO, STR_YES];
+        Settings_value.backup_enabled.values = yes_no;
+        Settings_value.sync_enabled.values = yes_no;
+        Settings_value.sync_users.values = yes_no;
+        Settings_value.sync_history.values = yes_no;
+        Settings_value.sync_settings.values = yes_no;
+
+        var obj = {
+            backup_account: {
+                defaultValue: Settings_value.backup_account.defaultValue,
+                values: Settings_value.backup_account.values,
+                title: GDriveConfig.accessToken ? STR_BACKUP_ACCOUNT_REMOVE : STR_BACKUP_ACCOUNT_ADD,
+                summary: GDriveConfig.accessToken ? null : STR_BACKUP_ACCOUNT_ADD_SUMMARY,
+                keyenter: true
+            },
+            backup_enabled: {
+                defaultValue: Settings_value.backup_enabled.defaultValue,
+                values: Settings_value.backup_enabled.values,
+                title: STR_BACKUP_ENABLE,
+                summary: STR_BACKUP_ENABLE_SUMMARY
+            },
+            sync_enabled: {
+                defaultValue: Settings_value.sync_enabled.defaultValue,
+                values: Settings_value.sync_enabled.values,
+                title: STR_BACKUP_SYNC_ENABLE,
+                summary: STR_BACKUP_SYNC_ENABLE_SUMMARY
+            },
+            sync_users: {
+                defaultValue: Settings_value.sync_users.defaultValue,
+                values: Settings_value.sync_users.values,
+                title: STR_BACKUP_SYNC_USER,
+                summary: null
+            },
+            sync_history: {
+                defaultValue: Settings_value.sync_history.defaultValue,
+                values: Settings_value.sync_history.values,
+                title: STR_BACKUP_SYNC_HISTORY,
+                summary: null
+            },
+            sync_settings: {
+                defaultValue: Settings_value.sync_settings.defaultValue,
+                values: Settings_value.sync_settings.values,
+                title: STR_BACKUP_SYNC_SETTINGS,
+                summary: STR_BACKUP_SYNC_SETTINGS_SUMMARY
+            }
+        };
+
+        Settings_DialogShow(
+            obj,
+            STR_BACKUP_SYNC +
+                STR_BR +
+                (GDriveConfig.userEmail
+                    ? '<div style="min-height: 15vh;margin:0.6em;" > <img style="width: 7%; border-radius: 50%;" src="' +
+                      GDriveConfig.userImgURL +
+                      '" onerror="this.onerror=null;this.src=\'' +
+                      IMG_404_LOGO +
+                      '\';" /> <div > ' +
+                      DefaultMakeLink(GDriveConfig.userEmail, 'mailto:') +
+                      ' </div></div>'
+                    : '') +
+                STR_BR +
+                STR_BACKUP_SYNC_SUMMARY +
+                STR_BR +
+                STR_BR +
+                STR_BACKUP_NAME +
+                STR_SPACE_HTML +
+                '<spam class="class_bold">' +
+                GDriveFileName +
+                '</spam>' +
+                STR_SPACE_HTML +
+                STR_SPACE_HTML +
+                (GDriveConfig.backupSize ? STR_BACKUP_SIZE + STR_SPACE + '<spam class="class_bold">' + GDriveConfig.backupSize + '</spam>' : ''),
+            click
+        );
+
+        Settings_DialogBackupSyncRefresh();
+    }
+
+    var Settings_RemoveBackupPos = 0;
+
+    function Settings_RemoveBackupAccount() {
+        Main_innerHTML('main_dialog_remove', STR_DIV_TITLE + STR_BACKUP_ACCOUNT_REMOVE + '</div>');
+
+        Main_textContent('yes_no_dialog_button_no', STR_NO);
+        Main_textContent('yes_no_dialog_button_yes', STR_YES);
+        Settings_DialoghandleKeyReturnAfter();
+        Settings_RemoveBackupPos = 0;
+
+        Main_ShowElement('yes_no_dialog');
+
+        Main_addEventListener('keydown', Settings_handleRemoveDrive);
+    }
+
+    function Settings_RemoveBackupAccountDone() {
+        Main_HideElement('yes_no_dialog');
+        Main_removeEventListener('keydown', Settings_handleRemoveDrive);
+        Main_addEventListener('keydown', Settings_handleKeyDown);
+    }
+
+    function Settings_handleRemoveDrive(event) {
+        switch (event.keyCode) {
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                Settings_RemoveBackupAccountDone();
+                break;
+            case KEY_LEFT:
+                Settings_handleRemoveDriveLeft();
+                break;
+            case KEY_RIGHT:
+                Main_RemoveClass('yes_no_dialog_button_no', 'button_dialog_focused');
+                Main_AddClass('yes_no_dialog_button_yes', 'button_dialog_focused');
+                Settings_RemoveBackupPos = 1;
+                break;
+            case KEY_ENTER:
+                Settings_RemoveBackupAccountDone();
+                if (Settings_RemoveBackupPos) {
+                    Settings_handleRemoveDriveLeft();
+                    GDriveClean();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    function Settings_handleRemoveDriveLeft() {
+        Main_AddClass('yes_no_dialog_button_no', 'button_dialog_focused');
+        Main_RemoveClass('yes_no_dialog_button_yes', 'button_dialog_focused');
+        Settings_RemoveBackupPos = 0;
+    }
+
+    function Settings_DialogAddBackupAccount() {
+        Main_innerHTML('backup_dialog_text', STR_BACKUP_ACCOUNT_MAIN_0);
+
+        Main_ShowElement('backup_dialog');
+        GDriveStart();
     }
 
     function Settings_DialogShowChat(click) {
@@ -41603,7 +43463,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         for (var property in obj) {
             Settings_DialogValue.push(property);
             if (obj[property].keyenter) {
-                dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
+                dialogScroollHolder += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, obj[property].summary);
             } else {
                 dialogScroollHolder += obj[property].summary
                     ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73)
@@ -41615,7 +43475,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         Main_innerHTML(
             'dialog_settings_text',
-            dialogContent + dialogScroollHolder + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>'
+            dialogContent +
+                dialogScroollHolder +
+                '<div id="dialog_setting_close_text" class="about_text_title">' +
+                (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) +
+                '</div>'
         );
 
         Settings_DialogScrollCenter = scroll ? scroll : 0;
@@ -41629,10 +43493,14 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Settings_DialoghandleKeyReturn() {
+        Settings_DialoghandleKeyReturnAfter();
+        Main_addEventListener('keydown', Settings_handleKeyDown);
+    }
+
+    function Settings_DialoghandleKeyReturnAfter() {
         Settings_RemoveInputFocusKey(Settings_DialogValue[Settings_DialogPos]);
         Main_HideElement('dialog_settings');
         Main_removeEventListener('keydown', Settings_DialoghandleKeyDown);
-        Main_addEventListener('keydown', Settings_handleKeyDown);
     }
 
     function Settings_DialoghandleKeyLeft() {
@@ -41645,16 +43513,48 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRightLeft(1);
     }
 
+    function Settings_BackupDialogExit(event) {
+        if (Main_isElementShowing('backup_dialog')) {
+            if (event.keyCode === KEY_ENTER || event.keyCode === KEY_RETURN || event.keyCode === KEY_KEYBOARD_BACKSPACE) {
+                Main_HideElement('backup_dialog');
+
+                Main_clearTimeout(GDriveCheckCodeId);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     function Settings_DialoghandleKeyDown(event) {
+        if (Settings_BackupDialogExit(event)) {
+            return;
+        }
+
         switch (event.keyCode) {
             case KEY_ENTER:
                 if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background')) {
                     SettingsColor_DialogColorsShow();
                     break;
                 }
+
+                if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'backup_account')) {
+                    if (GDriveConfig.accessToken) {
+                        Settings_RemoveBackupAccount();
+                    } else {
+                        Settings_DialogAddBackupAccount();
+                    }
+
+                    break;
+                }
+
+                Settings_DialogRestoreBackupShowingCheck();
+
             /* falls through */
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
+                Settings_DialogRestoreBackupShowingCheck();
+
                 Settings_DialoghandleKeyReturn();
                 break;
             case KEY_LEFT:
@@ -41728,8 +43628,53 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Settings_SetDefault(key);
         }
     }
+
+    var Settings_DialogRestoreBackupShowing = false;
+    function Settings_DialogShowRestoreBackup(click) {
+        Settings_DialogRestoreBackupShowing = true;
+
+        var yes_no = [STR_NO, STR_YES];
+        Settings_value.sync_history.values = yes_no;
+        Settings_value.sync_settings.values = yes_no;
+        Settings_value.sync_users.values = yes_no;
+
+        var obj = {
+            sync_users: {
+                defaultValue: Settings_value.sync_users.defaultValue,
+                values: Settings_value.sync_users.values,
+                title: STR_BACKUP_RESTORE_USER,
+                summary: null
+            },
+            sync_history: {
+                defaultValue: Settings_value.sync_history.defaultValue,
+                values: Settings_value.sync_history.values,
+                title: STR_BACKUP_RESTORE_HISTORY,
+                summary: null
+            },
+            sync_settings: {
+                defaultValue: Settings_value.sync_settings.defaultValue,
+                values: Settings_value.sync_settings.values,
+                title: STR_BACKUP_RESTORE_SETTINGS,
+                summary: null
+            }
+        };
+
+        Settings_DialogShow(
+            obj,
+            STR_BACKUP_SYNC_RESTORE + STR_BR + STR_BR + STR_BACKUP_SYNC_RESTORE_SUMMARY + STR_BR + STR_BR + STR_BACKUP_RESTORE_SUMMARY + STR_BR,
+            click
+        );
+        Main_textContent('dialog_setting_close_text', '');
+    }
+
+    function Settings_DialogRestoreBackupShowingCheck() {
+        if (Settings_DialogRestoreBackupShowing) {
+            Settings_DialogRestoreBackupShowing = false;
+            GDriveBackupAndSyncRunRestore();
+        }
+    }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -42498,7 +44443,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -42584,7 +44529,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 Main_getElementById('side_panel_warn').style.display = 'inline-block';
             }
 
-            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+            Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
             if (Sidepannel_isShowingUserLive()) {
                 Sidepannel_CheckIfIsLiveSTop();
@@ -43072,13 +45017,13 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function Sidepannel_Showscenefeed() {
-        Main_AddClassWitEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+        Main_AddClassWithEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
         Main_RemoveClassWithEle(Sidepannel_scenefeed, 'feed_screen_input');
     }
 
     function Sidepannel_Hidecenefeed() {
         Main_RemoveClassWithEle(Sidepannel_scenefeed, Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-        Main_AddClassWitEle(Sidepannel_scenefeed, 'feed_screen_input');
+        Main_AddClassWithEle(Sidepannel_scenefeed, 'feed_screen_input');
     }
 
     function Sidepannel_SetLastRefresh() {
@@ -43121,7 +45066,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Sidepannel_HideMain();
             Sidepannel_RemoveFocusMain();
             Sidepannel_FixDiv.style.marginLeft = '';
-            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+            Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
             Sidepannel_Hidecenefeed();
         }
         Sidepannel_HideEle(PreventCleanQualities);
@@ -43134,10 +45079,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Sidepannel_RemoveFocusFeed(PreventCleanQualities);
 
         if (!PreventCleanQualities) {
-            Main_AddClassWitEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
-            Main_AddClassWitEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
-            Main_AddClassWitEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
-            Main_AddClassWitEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
+            Main_AddClassWithEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
+            Main_AddClassWithEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
+            Main_AddClassWithEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
+            Main_AddClassWithEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
         }
     }
 
@@ -43315,7 +45260,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function Sidepannel_userLiveKeyRight() {
         Sidepannel_HideEle(false, true);
         Sidepannel_Hidecenefeed();
-        Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+        Main_AddClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
         Main_removeEventListener('keydown', Sidepannel_handleKeyDown);
         Sidepannel_StartMain();
     }
@@ -43491,7 +45436,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -43649,6 +45594,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].show = UserLiveFeedobj_ShowHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
+        UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].cell = UserLiveFeedobj_FeaturedCell;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = Main_getElementById('user_live_history_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
@@ -43834,17 +45780,17 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //feedShow = UserLiveFeed_isPreviewShowing();
 
                 // if (!feedShow) {
-                //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+                //     Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 //     UserLiveFeed_Show();
                 // }
                 if (feedtypeNotshow) {
-                    Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                    Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
                 // if (!Main_isScene2DocVisible()) {
-                //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+                //     Main_AddClassWithEle(Main_Scene2Doc, 'opacity_zero');
                 //     Main_showScene2Doc();
 
                 //     UserLiveFeed_obj[pos].AddCellsize =
@@ -43862,7 +45808,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 // }
                 if (feedtypeNotshow) {
-                    Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
+                    Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 }
             }
@@ -43898,8 +45844,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (
             Settings_Obj_default('auto_refresh_screen') &&
             Settings_Obj_default('auto_refresh_background') &&
-            pos !== UserLiveFeedobj_UserVodHistoryPos &&
-            pos !== UserLiveFeedobj_UserHistoryPos
+            pos !== UserLiveFeedobj_UserVodHistoryPos
         ) {
             UserLiveFeed_CheckRefresh(pos, Settings_GetAutoRefreshTimeout());
         } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
@@ -43945,8 +45890,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (
                     UserLiveFeed_lastRefresh[i] &&
                     i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
-                    i !== UserLiveFeedobj_UserVodHistoryPos &&
-                    i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
                     date > UserLiveFeed_lastRefresh[i] + Settings_GetAutoRefreshTimeout()
                 ) {
                     UserLiveFeed_CheckRefresh(i, run * 5000);
@@ -43983,7 +45926,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     function UserLiveFeed_HideAfter() {
         //return;//return;
         UserLiveFeed_Showloading(false);
-        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+        Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
         UserLiveFeed_PreviewShowing = false;
     }
 
@@ -43993,7 +45936,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function UserLiveFeed_ResetFeedId() {
         UserLiveFeed_clearHideFeed();
-        if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) UserLiveFeed_setHideFeed();
+
+        if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) {
+            UserLiveFeed_setHideFeed();
+        }
     }
 
     function UserLiveFeed_clearHideFeed() {
@@ -44152,7 +46098,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             }
         }
 
-        if (!Play_EndFocus && !isBanner) UserLiveFeed_CheckIfIsLiveStart(pos);
+        if (!Play_EndFocus && !isBanner) {
+            UserLiveFeed_CheckIfIsLiveStart(pos);
+        }
 
         if (pos === UserLiveFeed_FeedPosX) {
             UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
@@ -44252,16 +46200,18 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Settings_Obj_default('show_feed_player') &&
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
             (!Play_MultiEnable || !Settings_Obj_default('disable_feed_player_multi')) &&
-            UserLiveFeed_MaxInstances() &&
-            UserLiveFeed_CheckVod()
+            UserLiveFeed_MaxInstances()
         ) {
             var obj = Play_CheckLiveThumb(false, true);
 
             if (obj) {
                 var id;
 
-                if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
-                else id = obj[14];
+                if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+                    id = obj[7];
+                } else {
+                    id = obj[14];
+                }
 
                 if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
                     UserLiveFeed_LoadPreviewId = Main_setTimeout(
@@ -44669,7 +46619,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
             var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
-            if (NextPos > UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1 || NextPos < 0) return;
+
+            if (NextPos > UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1 || NextPos < 0) {
+                return;
+            }
 
             UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
             UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] = NextPos;
@@ -44688,14 +46641,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX]) {
             var NextPos = UserLiveFeed_FeedPosX + Adder,
                 userSet = AddUser_UserIsSet();
-
-            //Workaround for hiden options
-            if (NextPos === UserLiveFeedobj_UserVodPos) {
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
-                UserLiveFeed_FeedPosX = NextPos;
-                UserLiveFeed_KeyUpDown(Adder);
-                return;
-            }
 
             if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
                 NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
@@ -44766,6 +46711,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Main_AddClass('icon_feed_back', 'opacity_zero');
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
         }
+
+        GDriveBackup();
     }
 
     function UserLiveFeed_KeyEnter(pos) {
@@ -44911,7 +46858,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -45125,7 +47072,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
-        if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
+        if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) {
+            UserLiveFeed_Show();
+        }
 
         if (
             forceRefressh ||
@@ -45154,7 +47103,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         UserLiveFeedobj_SetLastRefresh(pos);
 
-        if (UserLiveFeed_obj[pos].Screen) Main_EventScreen(UserLiveFeed_obj[pos].Screen);
+        if (UserLiveFeed_obj[pos].Screen) {
+            Main_EventScreen(UserLiveFeed_obj[pos].Screen);
+        }
     }
 
     function UserLiveFeedobj_SetLastRefresh(pos) {
@@ -45178,65 +47129,115 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserHistoryPos - 1);
 
         if (AddUser_UserIsSet()) {
-            UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
-            UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);
+            UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos);
         }
     }
 
     function UserLiveFeedobj_History() {
-        var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
+            pos = UserLiveFeedobj_UserHistoryPos,
+            i = 0,
+            len = array.length,
+            idsObj = {},
+            objArray = [],
+            idsArray = [];
 
+        UserLiveFeedobj_StartDefault(pos);
+
+        // Sort by date descending
         array.sort(function (a, b) {
             return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
         });
 
-        var pos = UserLiveFeedobj_UserHistoryPos,
-            response = JSON.parse(JSON.stringify(array.slice(0, 100))), //first 100 only
-            len = response.length,
-            response_items = Math.min(len, 100),
-            cell,
-            id,
-            i = 0,
-            itemsCount = UserLiveFeed_itemsCount[pos],
-            streamerID = {};
+        // Get unique items by ID (up to 100)
+        for (i; i < len; i++) {
+            //keep original if exist as it has lower date
+            idsObj[array[i].data[14]] = idsObj[array[i].data[14]] ? idsObj[array[i].data[14]] : array[i];
 
-        response_items = Math.min(len, 100);
-
-        if (response_items) {
-            for (i; i < response_items; i++) {
-                cell = response[i];
-                id = cell.data[7];
-
-                if (!cell.forceVod) {
-                    if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] && cell.data[14] !== '') {
-                        UserLiveFeed_idObject[pos][id] = itemsCount;
-
-                        UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(
-                            pos,
-                            itemsCount,
-                            pos + '_' + itemsCount,
-                            cell.data,
-                            cell.date,
-                            cell.vodimg,
-                            (streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
-                        );
-
-                        streamerID[cell.data[14]] = 1;
-                        itemsCount++;
-                    }
-                } else if (len > response_items + 1) {
-                    response_items++;
-                }
+            if (Object.keys(idsObj).length === 100) {
+                break;
             }
+        }
 
-            if (!itemsCount) UserLiveFeedobj_Empty(pos);
-        } else UserLiveFeedobj_Empty(pos);
+        // Convert object to array
+        for (var key in idsObj) {
+            if (idsObj.hasOwnProperty(key)) {
+                objArray.push(idsObj[key]);
+            }
+        }
 
-        UserLiveFeed_itemsCount[pos] = itemsCount;
+        // Sort array by date descending
+        objArray.sort(function (a, b) {
+            return a.date > b.date ? -1 : a.date < b.date ? 1 : 0;
+        });
+
+        // Extract IDs into array (ES5 compatible)
+        for (i = 0; i < objArray.length; i++) {
+            idsArray.push(objArray[i].data[14]);
+        }
+
+        var ids = JSON.stringify(idsArray).replace(/"/g, '\\"');
+
+        if (idsArray.length) {
+            UserLiveFeedobj_HistoryGetLives(ids, pos);
+            return;
+        }
+
+        UserLiveFeedobj_Empty(pos);
+
+        UserLiveFeed_itemsCount[pos] = 0;
 
         UserLiveFeedobj_SetLastPosition(pos);
 
         UserLiveFeed_loadDataSuccessFinish(pos);
+    }
+
+    function UserLiveFeedobj_HistoryGetLives(ids, pos) {
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Main_OAuth_User_Headers,
+            UserLiveFeedobj_HistoryGetLivesEnd,
+            noop_fun,
+            pos,
+            pos, //checkResult
+            'POST', //Method, null for get
+            userLiveByIdsQuery.replace('%a', ids)
+        );
+    }
+
+    function UserLiveFeedobj_HistoryGetLivesEnd(resultObj) {
+        if (resultObj.status === 200) {
+            UserLiveFeedobj_HistoryGetLiveSuccess(resultObj.responseText);
+        } else {
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserHistoryPos);
+        }
+    }
+
+    function UserLiveFeedobj_HistoryGetLiveSuccess(responseText) {
+        var pos = UserLiveFeedobj_UserHistoryPos,
+            responseObj = JSON.parse(responseText),
+            response = [],
+            hasData = responseObj.data && responseObj.data.users;
+
+        if (hasData) {
+            UserLiveFeed_obj[pos].dataEnded = true;
+
+            var i = 0,
+                len = responseObj.data.users.length;
+
+            for (i; i < len; i++) {
+                if (responseObj.data.users[i].stream) {
+                    response.push(responseObj.data.users[i]);
+                }
+            }
+        } else {
+            UserLiveFeed_obj[pos].dataEnded = true;
+            UserLiveFeed_obj[pos].cursor = null;
+        }
+
+        UserLiveFeed_itemsCount[pos] = 0;
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, response.length, pos, UserLiveFeed_itemsCount[pos]);
     }
 
     //Live history end
@@ -45831,7 +47832,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
 
-    function UserLiveFeedobj_CreatSideFeed(id, data) {
+    function UserLiveFeedobj_CreateSideFeed(id, data) {
         return (
             '<div id="' +
             UserLiveFeed_side_ids[3] +
@@ -46001,7 +48002,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     //     return div;
     // }
 
-    function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until) {
+    function UserLiveFeedobj_CreateVodFeed(pos, x, id, data, Extra_when, Extra_until) {
         var div = document.createElement('div');
 
         div.setAttribute('id', UserLiveFeed_ids[3] + id);
@@ -46225,7 +48226,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                         mArray
                     );
 
-                    Sidepannel_Html += UserLiveFeedobj_CreatSideFeed(itemsCount, mArray);
+                    Sidepannel_Html += UserLiveFeedobj_CreateSideFeed(itemsCount, mArray);
 
                     itemsCount++;
                 }
@@ -46308,24 +48309,27 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function UserLiveFeedobj_loadUserVod() {
-        UserLiveFeedobj_loadUserVodGet(
-            Main_kraken_api +
-                'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
-                UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset +
-                Main_TwitchV5Flag
-        );
+        UserLiveFeedobj_loadUserVodGet();
     }
 
-    function UserLiveFeedobj_loadUserVodGet(theUrl) {
+    function UserLiveFeedobj_loadUserVodGet() {
         FullxmlHttpGet(
-            theUrl,
-            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+            PlayClip_BaseUrl,
+            Main_OAuth_User_Headers,
             UserLiveFeedobj_loadUserVodGetEnd,
             noop_fun,
             UserLiveFeedobj_UserVodPos,
-            UserLiveFeedobj_UserVodPos,
-            null,
-            null
+            UserLiveFeedobj_UserVodPos, //checkResult
+            'POST', //Method, null for get
+            userVodQuery
+                .replace('%x', 'ARCHIVE')
+                .replace('%t', 'TIME')
+                .replace(
+                    '%y',
+                    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].cursor
+                        ? 'after: \\"' + UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].cursor + '\\",'
+                        : ''
+                )
         );
     }
 
@@ -46354,27 +48358,31 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             id,
             mArray,
             i = 0,
-            itemsCount = UserLiveFeed_itemsCount[pos];
+            itemsCount = UserLiveFeed_itemsCount[pos],
+            hasData =
+                response.data &&
+                response.data.currentUser &&
+                response.data.currentUser.followedVideos &&
+                response.data.currentUser.followedVideos.edges;
 
-        //return;
+        if (hasData) {
+            if (UserLiveFeed_obj[pos].HasMore) {
+                UserLiveFeed_obj[pos].dataEnded = !response.data.currentUser.followedVideos.pageInfo.hasNextPage;
+            }
 
-        response = response.videos;
-        response_items = response.length;
+            response = response.data.currentUser.followedVideos.edges;
+            response_items = response.length;
 
-        if (response_items) {
+            UserLiveFeed_obj[pos].cursor = response && response && response.length ? response[response.length - 1].cursor : null;
+
             for (i; i < response_items; i++) {
-                mArray = ScreensObj_VodCellArray(response[i]);
+                mArray = ScreensObj_VodCellArray(response[i].node, true);
                 id = mArray[7];
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                     UserLiveFeed_idObject[pos][id] = itemsCount;
 
-                    // if (Main_A_includes_B(mArray[0] + '', '404_processing')) {
-                    //     mArray[0] = 'https://static-cdn.jtvnw.net/s3_vods/' + mArray[8].split('/')[3] +
-                    //         '/thumb/thumb0-' + Main_VideoSize + '.jpg'
-                    // }
-
-                    UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatVodFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
+                    UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreateVodFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
 
                     itemsCount++;
                 }
@@ -46382,12 +48390,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         } else UserLiveFeedobj_Empty(pos);
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
-
-        if (UserLiveFeed_obj[pos].HasMore) {
-            UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
-
-            if (!response_items || response_items < Main_ItemsLimitMax - 5) UserLiveFeed_obj[pos].dataEnded = true;
-        }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
             UserLiveFeed_obj[pos].loadingMore = false;
@@ -46442,7 +48444,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                     UserLiveFeed_idObject[pos][id] = itemsCount;
 
-                    UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatVodFeed(
+                    UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreateVodFeed(
                         pos,
                         itemsCount,
                         pos + '_' + itemsCount,
@@ -46509,6 +48511,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             id,
             mArray,
             i = 0,
+            isHistory = pos === UserLiveFeedobj_UserHistoryPos,
             isFeatured = pos === UserLiveFeedobj_FeaturedPos;
 
         if (response_items) {
@@ -46587,7 +48590,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             var useHelix = UserLiveFeed_obj[pos].useHelix;
 
             for (i; i < response_items; i++) {
-                if (isFeatured) {
+                if (isFeatured || isHistory) {
                     stream = response[i];
 
                     //stream or stream.stream may be null
@@ -46601,10 +48604,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     id = useHelix ? stream.user_id : stream.channel._id;
                 }
 
-                if (!UserLiveFeed_idObject[pos][id] && (isFeatured || ScreensObj_CheckIsMature(stream))) {
-                    mArray = isFeatured ? ScreensObj_LiveQueryCellArray(stream) : ScreensObj_LiveCellArray(stream);
+                if (!UserLiveFeed_idObject[pos][id] && (isFeatured || isHistory || ScreensObj_CheckIsMature(stream))) {
+                    mArray = isFeatured || isHistory ? ScreensObj_LiveQueryCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
                     if (
+                        isHistory ||
                         Screens_isNotBlocked(
                             mArray[14],
                             pos === UserLiveFeedobj_CurrentGamePos ? null : mArray[18],
@@ -46677,7 +48681,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         if (UserLiveFeed_obj[pos].loadingMore) {
             UserLiveFeed_obj[pos].loadingMore = false;
-            if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+
+            if (pos === UserLiveFeed_FeedPosX) {
+                UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+            }
         } else {
             Main_setTimeout(function () {
                 UserLiveFeedobj_SetLastPosition(pos);
@@ -46813,7 +48820,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         }
     }
     /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
      *
      * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
      *
@@ -47026,7 +49033,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Users_loadingData = false;
             if (Users_ShowAuthentication) {
                 Users_ShowAuthentication = false;
-                Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
+                Users_showUserDialogPos = AddUser_UserFindPos(Users_Userlastadded);
                 Users_Isautentication = true;
                 Users_showRemoveDialog();
             }

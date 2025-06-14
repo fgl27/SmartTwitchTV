@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -469,7 +469,10 @@ function Chat_loadChatError(id) {
         Chat_loadChatId = Main_setTimeout(
             function () {
                 var time = OSInterface_gettime() / 1000;
-                if (time && time < Chat_offset) Chat_offset = time;
+
+                if (time && time < Chat_offset) {
+                    Chat_offset = time;
+                }
 
                 Chat_loadChatRequest(id, 0);
             },

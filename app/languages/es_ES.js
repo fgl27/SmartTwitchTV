@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -323,9 +323,10 @@ function es_ESLang() {
     STR_TITLE_CHANGE_SHOW = 'Mostrar la notificación "Streamer cambio de título" para los canales seguidos';
     STR_GAME_CHANGE_SHOW = 'Mostrar la notificación "Streamer cambió de juego" para los canales seguidos';
     STR_NOW_LIVE_GAME_SHOW = 'Mostrar la notificación "Juego en directo" para los juegos seguidos';
-    STR_NOW_BACKGROUND = 'Notificación sobre otras aplicaciones, cuando la aplicación está en segundo plano';
-    STR_NOW_BACKGROUND_SUMMARY =
-        'Si impides las notificaciones para esta aplicación en la configuración del sistema, esta característica no funcionará, si las notificaciones de la aplicación ya se están ejecutando y sales de la aplicación, la notificación se mostrará por encima de otras aplicaciones, incluso si está desactivada.';
+    STR_NOTIFICATION_BACKGROUND = 'Notificación sobre otras aplicaciones, cuando la aplicación está en segundo plano';
+    STR_NOTIFICATION_BACKGROUND_SUMMARY =
+        'Para activar esta función, asegúrate de que la aplicación tenga permiso para mostrar notificaciones en la configuración de Android. En dispositivos con Android 11 o versiones posteriores, la app mostrará una notificación simple de una sola línea cuando se ejecute en segundo plano.';
+    STR_NOTIFICATION_BACKGROUND_WARNING = '¡Falta el permiso de notificaciones del sistema Android!';
     STR_NOTIFICATION_REPEAT = 'Cuántas veces hay que mostrar la notificación individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'El tiempo de espera de las notificaciones individuales es de unos 3 segundos, y no se puede cambiar porque este tiempo de espera está controlado por el sistema, pero se puede establecer el número de veces que se mostrará la misma notificación';
@@ -570,6 +571,8 @@ function es_ESLang() {
     STR_PLAYER_EXTRA_CODEC = 'Transmisión Mejorada: soporte para HEVC, AV1, 1440p y 4K';
     STR_PLAYER_EXTRA_CODEC_SUMMARY =
         'La mayoría de las transmisiones usan AVC (H.264) hasta 1080p60; HEVC/AV1 permite 1440p, 4K y más de 60fps cuando está disponible (No todas las transmisiones son compatibles, depende de que el streamer lo habilite y que Twitch lo ofrezca en tu región).';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
+        'Esta función solo funciona para usuarios con sesión iniciada. No todas las transmisiones son compatibles — depende de que el streamer lo habilite y que Twitch lo ofrezca en tu región.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA =
         'La aplicación verifica si tu dispositivo es compatible con HEVC o AV1 para transmisiones de mayor calidad.';
@@ -584,4 +587,55 @@ function es_ESLang() {
     STR_PLAYER_CODEC_NOT_SUPPORTED = '¡Dispositivo no compatible! Activar este códec puede causar errores de reproducción.';
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Para comprender mejor las capacidades del dispositivo, revisa la opción de configuración: ';
+
+    STR_BACKUP_ACCOUNT_REMOVE = 'Eliminar cuenta de Google Drive';
+    STR_BACKUP_ACCOUNT_ADD = 'Añadir cuenta de Google Drive para copia de seguridad';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Para restaurar una copia de seguridad, agrega una cuenta y la aplicación te mostrará las opciones disponibles.';
+
+    STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Cuenta de Google Drive añadida';
+    STR_BACKUP_ACCOUNT_DIALOG_BODY = 'Recuperando información de la API, por favor espera...';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL = 'Acceso denegado';
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS = 'Acceso exitoso, espere mientras la aplicación verifica...';
+
+    STR_BACKUP_ACCOUNT_DIALOG_CODE_SUCCESS_END = 'La aplicación restaurará y cerrará este diálogo en breve';
+    STR_BACKUP_NO_BACKUP_FOUND = 'No se encontró copia de seguridad previa, copia de seguridad creada con éxito';
+    STR_BACKUP_ACCOUNT_REFRESH_ERROR =
+        '¡Se perdió el acceso a la cuenta de Copia de seguridad y Sincronización, cuenta de copia de seguridad eliminada!';
+
+    STR_BACKUP_SIZE = 'Tamaño de la copia de seguridad:';
+    STR_BACKUP_NAME = 'Nombre de la copia de seguridad:';
+    STR_BACKUP_SYNC = 'Sincronización, Copia de seguridad y Restauración';
+    STR_BACKUP_SYNC_SUMMARY =
+        'La aplicación podrá ver, crear, editar y eliminar solo los archivos específicos de Google Drive que crea, NO podrá ver, modificar o eliminar ningún otro archivo en su Google Drive.' +
+        '<br><br>' +
+        'También podrá leer su dirección de correo electrónico e imagen de perfil para mostrar la cuenta activa actualmente. Esta información solo se mostrará y NO se modificará.';
+
+    STR_BACKUP_USER_INFO = '(Información del usuario: Usuarios, historial, bloqueados y configuración)';
+
+    STR_BACKUP_SYNC_USER = 'Sincronizar usuarios';
+    STR_BACKUP_SYNC_HISTORY = 'Sincronizar el historial y la lista de bloqueados de los usuarios.';
+    STR_BACKUP_SYNC_SETTINGS = 'Sincronizar configuración';
+    STR_BACKUP_RESTORE_USER = 'Restaurar usuarios';
+    STR_BACKUP_RESTORE_HISTORY = 'Restaurar historial y lista de bloqueados de los usuarios.';
+    STR_BACKUP_RESTORE_SETTINGS = 'Restaurar configuración';
+    STR_BACKUP_RESTORE_SUMMARY =
+        'Si tienes problemas después de restaurar, intenta borrar los datos de la aplicación y restaurar omitiendo una de las opciones.';
+
+    STR_BACKUP_SYNC_SETTINGS_SUMMARY =
+        'La copia de seguridad tiene solo un conjunto de configuraciones unificadas para todos sus dispositivos. Cualquier cambio que realice se aplicará en sus otros dispositivos la próxima vez que abra la aplicación.'; // New line to add
+    STR_BACKUP_SYNC_RESTORE = 'Copia de seguridad encontrada';
+    STR_BACKUP_SYNC_RESTORE_SUMMARY = 'Copia de seguridad encontrada. Elige qué restaurar ahora, luego presiona Return o Enter para confirmar.';
+    STR_BACKUP_SYNC_RESTORE_SUCCESS = '¡Restauración exitosa!';
+    STR_BACKUP_RESTORE_FAIL = 'Error al restaurar la copia de seguridad';
+
+    STR_BACKUP_ENABLE = 'Habilitar copia de seguridad';
+    STR_BACKUP_ENABLE_SUMMARY =
+        'Si se establece en SÍ, la aplicación mantendrá una copia de seguridad de toda la información del usuario ' + STR_BACKUP_USER_INFO;
+
+    STR_BACKUP_SYNC_ENABLE = 'Habilitar sincronización';
+    STR_BACKUP_SYNC_ENABLE_SUMMARY =
+        'Si se establece en SÍ, la aplicación sincronizará automáticamente la información del usuario entre dispositivos';
+    STR_OPEN_REWIND = 'Abrir retroceso';
+    STR_OPEN_REWIND_SUMMARY = 'Abrir el VOD con retroceso completo';
+    STR_OPEN_REWIND_FAIL = 'Sin retroceso para esta transmisión en vivo';
 }

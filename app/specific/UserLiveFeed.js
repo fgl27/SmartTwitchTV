@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -157,6 +157,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].show = UserLiveFeedobj_ShowHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].cell = UserLiveFeedobj_FeaturedCell;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = Main_getElementById('user_live_history_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
@@ -342,17 +343,17 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //feedShow = UserLiveFeed_isPreviewShowing();
 
             // if (!feedShow) {
-            //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+            //     Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             //     UserLiveFeed_Show();
             // }
             if (feedtypeNotshow) {
-                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
             // if (!Main_isScene2DocVisible()) {
-            //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+            //     Main_AddClassWithEle(Main_Scene2Doc, 'opacity_zero');
             //     Main_showScene2Doc();
 
             //     UserLiveFeed_obj[pos].AddCellsize =
@@ -370,7 +371,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             // }
             if (feedtypeNotshow) {
-                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
+                Main_AddClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
             }
         }
@@ -403,12 +404,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 }
 
 function UserLiveFeed_SetRefresh(pos) {
-    if (
-        Settings_Obj_default('auto_refresh_screen') &&
-        Settings_Obj_default('auto_refresh_background') &&
-        pos !== UserLiveFeedobj_UserVodHistoryPos &&
-        pos !== UserLiveFeedobj_UserHistoryPos
-    ) {
+    if (Settings_Obj_default('auto_refresh_screen') && Settings_Obj_default('auto_refresh_background') && pos !== UserLiveFeedobj_UserVodHistoryPos) {
         UserLiveFeed_CheckRefresh(pos, Settings_GetAutoRefreshTimeout());
     } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
 }
@@ -453,8 +449,6 @@ function UserLiveFeed_CheckRefreshAfterResume() {
             if (
                 UserLiveFeed_lastRefresh[i] &&
                 i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
-                i !== UserLiveFeedobj_UserVodHistoryPos &&
-                i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
                 date > UserLiveFeed_lastRefresh[i] + Settings_GetAutoRefreshTimeout()
             ) {
                 UserLiveFeed_CheckRefresh(i, run * 5000);
@@ -491,7 +485,7 @@ function UserLiveFeed_Hide(PreventCleanQualities) {
 function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+    Main_AddClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     UserLiveFeed_PreviewShowing = false;
 }
 
@@ -501,7 +495,10 @@ function UserLiveFeed_ShowFeed() {
 
 function UserLiveFeed_ResetFeedId() {
     UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) UserLiveFeed_setHideFeed();
+
+    if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) {
+        UserLiveFeed_setHideFeed();
+    }
 }
 
 function UserLiveFeed_clearHideFeed() {
@@ -655,7 +652,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (!Play_EndFocus && !isBanner) UserLiveFeed_CheckIfIsLiveStart(pos);
+    if (!Play_EndFocus && !isBanner) {
+        UserLiveFeed_CheckIfIsLiveStart(pos);
+    }
 
     if (pos === UserLiveFeed_FeedPosX) {
         UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
@@ -755,16 +754,18 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
         Settings_Obj_default('show_feed_player') &&
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
         (!Play_MultiEnable || !Settings_Obj_default('disable_feed_player_multi')) &&
-        UserLiveFeed_MaxInstances() &&
-        UserLiveFeed_CheckVod()
+        UserLiveFeed_MaxInstances()
     ) {
         var obj = Play_CheckLiveThumb(false, true);
 
         if (obj) {
             var id;
 
-            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
-            else id = obj[14];
+            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+                id = obj[7];
+            } else {
+                id = obj[14];
+            }
 
             if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
                 UserLiveFeed_LoadPreviewId = Main_setTimeout(
@@ -1155,7 +1156,10 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
     if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
-        if (NextPos > UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1 || NextPos < 0) return;
+
+        if (NextPos > UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1 || NextPos < 0) {
+            return;
+        }
 
         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] = NextPos;
@@ -1174,14 +1178,6 @@ function UserLiveFeed_KeyUpDown(Adder) {
     if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX]) {
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();
-
-        //Workaround for hiden options
-        if (NextPos === UserLiveFeedobj_UserVodPos) {
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
-            UserLiveFeed_FeedPosX = NextPos;
-            UserLiveFeed_KeyUpDown(Adder);
-            return;
-        }
 
         if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
             NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
@@ -1252,6 +1248,8 @@ function UserLiveFeed_KeyUpDown(Adder) {
         Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
+
+    GDriveBackup();
 }
 
 function UserLiveFeed_KeyEnter(pos) {

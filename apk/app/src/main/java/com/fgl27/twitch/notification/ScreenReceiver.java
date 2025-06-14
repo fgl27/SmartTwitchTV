@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
  *
@@ -23,7 +23,6 @@ package com.fgl27.twitch.notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
 
@@ -31,14 +30,11 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         String action = intent.getAction();
         boolean screenOff = Intent.ACTION_SCREEN_OFF.equals(action);
 
         if ((screenOff || Intent.ACTION_SCREEN_ON.equals(action))) {
             Tools.SendNotificationIntent(screenOff ? Constants.ACTION_SCREEN_OFF : Constants.ACTION_SCREEN_ON, context);
         }
-
     }
-
 }
