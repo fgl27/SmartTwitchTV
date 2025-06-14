@@ -786,7 +786,7 @@ var Settings_value = {
     },
     sync_enabled: {
         values: ['no', 'yes'],
-        defaultValue: 2
+        defaultValue: 1
     },
     sync_users: {
         values: ['no', 'yes'],
