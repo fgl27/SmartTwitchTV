@@ -17956,6 +17956,11 @@
             Main_values.IsUpDating = false;
         }
 
+        if (Main_isElementShowing('backup_dialog')) {
+            Main_HideElement('backup_dialog');
+            Main_clearTimeout(GDriveCheckCodeId);
+        }
+
         var UserIsSet = AddUser_UserHasToken();
 
         //Main_CheckResumeUpdateToken(UserIsSet);
