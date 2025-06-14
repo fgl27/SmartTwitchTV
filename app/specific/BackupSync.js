@@ -119,18 +119,6 @@ function GDriveErase() {
     GDriveCheckMainStarted();
 }
 
-function GDriveUpdateFile() {
-    GDriveUpdateFile2(GDriveUpFileSuccess, noop_fun, 0, 0);
-}
-
-function GDriveUpFileSuccess(obj) {
-    if (obj.status === 200) {
-        GDriveUpFileSuccessSave(obj);
-    } else {
-        Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);
-    }
-}
-
 function GDriveUpFileSuccessSave(obj) {
     var data = JSON.parse(obj.responseText);
     GDriveConfig.fileID = data.id;

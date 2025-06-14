@@ -38,7 +38,11 @@ function GDriveBackupStart() {
     if (!GDriveConfig.fileID) {
         GDriveBackupGetFileInfo();
     } else {
-        GDriveDownloadBackupFile(GDriveDownloadBackupFileSuccess, noop_fun, 0, 0);
+        if (GDriveSyncEnabled()) {
+            GDriveDownloadBackupFile(GDriveDownloadBackupFileSuccess, noop_fun, 0, 0);
+        } else {
+            GDriveUpdateFile();
+        }
     }
 
     GDriveBackupTimeout();
@@ -52,6 +56,8 @@ function GDriveDownloadBackupFileSuccess(obj) {
         var data = JSON.parse(obj.responseText);
 
         if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+            console.log('GDriveDownloadBackupFileSuccess', data.error.message);
+
             GDriveConfig.fileID = null;
 
             GDriveSaveConfig();
@@ -64,6 +70,29 @@ function GDriveDownloadBackupFileSuccess(obj) {
     }
 
     GDriveUpdateFile();
+}
+
+function GDriveUpdateFile() {
+    GDriveUpdateFileRequest(GDriveUpFileSuccess, noop_fun, 0, 0);
+}
+
+function GDriveUpFileSuccess(obj) {
+    if (obj.status === 200) {
+        GDriveUpFileSuccessSave(obj);
+    } else if (obj.status === 404) {
+        var data = JSON.parse(obj.responseText);
+
+        if (data && data.error && data.error.message && Main_A_includes_B(data.error.message, 'File not found')) {
+            console.log('GDriveUpFileSuccess', data.error.message);
+
+            GDriveConfig.fileID = null;
+
+            GDriveSaveConfig();
+            GDriveBackupStart();
+        }
+    } else {
+        Main_textContent('backup_body', STR_BACKUP_ACCOUNT_DIALOG_CODE_FAIL);
+    }
 }
 
 function GDriveDownloadBackupFileSuccessSync(obj) {

@@ -100,7 +100,7 @@ function GDriveUploadFile(callbackSuccess, callbackError, key_1, key_2) {
     FullxmlHttpGet(GDriveUploadNewUrl, header, callbackSuccess, callbackError, key_1, key_2, 'POST', body);
 }
 
-function GDriveUpdateFile2(callbackSuccess, callbackError, key_1, key_2) {
+function GDriveUpdateFileRequest(callbackSuccess, callbackError, key_1, key_2) {
     FullxmlHttpGet(
         GDriveUpdateUrl.replace('%x', encodeURIComponent(GDriveConfig.fileID)),
         GDriveConfig.header,
