@@ -64,6 +64,9 @@ var GDriveDoBackupCallItemName = 'GDriveDoBackupCall';
 var GDriveConfig = {};
 var GDriveConfigItemName = 'GDriveConfig';
 
+//device specific or general settings that we don't wanna to sync between devices
+var GDriveSettingsToSkip = {av1_codec: true, hevc_codec: true, Settings_DisableCodecs: true};
+
 function GDriveSetExpires(obj) {
     GDriveConfig.tokenExpiresTime = (parseInt(obj.expires_in) - 60) * 1000;
     GDriveConfig.backupExpiresTime = new Date().getTime() + GDriveConfig.tokenExpiresTime;
@@ -369,7 +372,8 @@ function GDriveRestoreSettings(backup) {
             item === GDriveConfigItemName ||
             item === AddUser_UserArrayItemName ||
             item === AddUser_UsernameArrayRemovedItemName ||
-            item === Main_values_History_data_ItemName
+            item === Main_values_History_data_ItemName ||
+            GDriveSettingsToSkip[item]
         ) {
             continue;
         }
@@ -476,6 +480,12 @@ function GDriveSyncFromBackupSyncHistoryBlocked(backup) {
 }
 
 function GDriveRestoreFromBackup(backup, restoreUser, restoreHistoryBlocked, restoreSettings) {
+    for (var key in GDriveSettingsToSkip) {
+        if (backup.hasOwnProperty(key)) {
+            delete backup[key];
+        }
+    }
+
     if (!restoreUser) {
         backup[AddUser_UserArrayItemName] = null;
     }
