@@ -28,4 +28,6 @@
     <string name="channel_refreshed">%s ana ekran kanalı yenilendi</string>
     <string name="channel_live_title">%s %s beri %s için %s izleyici\n%s</string>
     <string name="channel_game_title">%s Kanal\n%s izleyici için</string>
+    <string name="playing">Oynuyor</string>
+    <string name="streaming">Yayında</string>
 </resources>
