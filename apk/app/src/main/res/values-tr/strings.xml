@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Uygulama Bilgileri -->
+    <string name="app_name">Twitch için SmartTV İstemcisi</string>
+    <string name="short_app_name">STTV</string>
+
+    <!-- Bildirimler -->
+    <string name="notification_service">Bildirim servisi çalışıyor</string>
+    <string name="notification_live">Yayıncı Canlı</string>
+    <string name="notification_live_game">Oyun Canlı</string>
+    <string name="notification_game">Yayıncı oyunu değiştirdi</string>
+    <string name="notification_title">Yayıncı başlığı değiştirdi</string>
+    <string name="notification_title_game">Yayıncı oyun ve başlığı değiştirdi</string>
+    <string name="notification_text">Arka planda bildirimlerin gösterilmesi için gereklidir</string>
+
+    <!-- Sistem Uyarıları -->
+    <string name="external_player_fail">Harici video oynatıcı uygulaması yok</string>
+    <string name="webview_exception">Uygulama yüklenemedi çünkü sistem Webview mevcut değil (olası değil) YA DA güncelleniyor, birkaç saniye sonra tekrar deneyin</string>
+    <string name="no_network">İnternet bağlantısı yok!\n\nUygulamanın yüklenmesi için bir ağa bağlanın\n\nveya\n\nUygulamayı kapatmak için geri tuşunu basılı tutun.</string>
+    <string name="no_internet">Son 30 saniyede Twitch\'e ping başarısız!\n\nUygulama düzgün çalışmıyorsa yerel internet bağlantınızı kontrol edin\n\nUygulama donarsa veya çalışmazsa geri tuşunu basılı tutarak kapatın.\n\nBağlantı geri gelirse bu uyarı otomatik olarak gizlenecek, aksi halde 30 saniye sonra gizlenecek\n\nBu uyarı ayarlardan devre dışı bırakılabilir</string>
+
+    <!-- Ana Ekran ve Kanal -->
+    <string name="channel_empty">Liste boş</string>
+    <string name="channel_no_user">Bu içeriği yüklemek için önce bir kullanıcı eklenmesi gerekir</string>
+    <string name="channel_disable">Bu devre dışı bırakıldı veya içerik yüklenemedi. Şimdi yenilemek için enter\'a basın (yenileme sadece uygulama görünürken gerçekleşir)</string>
+    <string name="channel_refresh">Yenilemek için enter\'a basın (bu arka planda her 30 dakikada bir otomatik olarak yenilenir), manuel yenileme sadece uygulama görünürken gerçekleşir</string>
+    <string name="channel_last_refresh">Son yenileme - %s %s %02d:%02d</string>
+    <string name="channel_refreshed">%s ana ekran kanalı yenilendi</string>
+    <string name="channel_live_title">%s %s beri %s için %s izleyici\n%s</string>
+    <string name="channel_game_title">%s Kanal\n%s izleyici için</string>
+    <string name="playing">Oynuyor</string>
+    <string name="streaming">Yayında</string>
+</resources>
