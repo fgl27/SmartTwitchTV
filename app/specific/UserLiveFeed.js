@@ -867,7 +867,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
                         var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
                         UserLiveFeed_PreviewOffset = VodIdex > -1 ? Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
 
-                        //Check if the vod saved position is bigger then 0 means thisvod was already watched
+                        //Check if the vod saved position is bigger then 0 means this vod was already watched
                         if (!UserLiveFeed_PreviewOffset) {
                             VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
 

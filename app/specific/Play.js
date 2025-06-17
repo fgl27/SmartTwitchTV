@@ -383,7 +383,6 @@ function Play_CheckIfIsLiveClean(fail_type, errorCode) {
 
             if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
                 //Save as we have watched it all
-
                 var data = Screens_GetObj(Main_values.Main_Go);
 
                 Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + id).style.width = '100%';
@@ -585,16 +584,16 @@ function Play_updateStreamInfoEnd(response) {
 
         Play_UpdateMainStreamDiv();
 
-        if (!Play_StayDialogVisible()) {
-            Main_Set_history('live', Play_data.data);
-        }
+        Main_Set_history('live', Play_data.data, !Play_isPlaying());
     }
 }
 
 function Play_updateStreamInfoStartError() {
-    if (Play_isOn && Play_data.data.length > 0 && !Play_StayDialogVisible()) {
-        Main_Set_history('live', Play_data.data);
-    }
+    Main_Set_history('live', Play_data.data, !Play_isPlaying());
+}
+
+function Play_isPlaying() {
+    return Play_isOn && Play_data.data.length > 0 && !Play_isEndDialogVisible() && !Play_StayDialogVisible() && OSInterface_getPlaybackState();
 }
 
 function Play_CheckFollow(id) {
@@ -753,7 +752,8 @@ function Play_updateStreamInfoValues(response, Is_play, ID) {
             }
         } else {
             var tempData = ScreensObj_LiveCellArray(obj.data[0]);
-            if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
+
+            Main_Set_history('live', tempData, !Play_isPlaying());
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
             if (PlayExtra_data.data.length > 0 && Main_A_equals_B(tempData[14], PlayExtra_data.data[14])) {
@@ -770,9 +770,9 @@ function Play_updateStreamInfoGetError(Is_play) {
 
     //we fail but we still watching so update the time
     if (Is_play && Play_data.data.length > 0) {
-        Main_Set_history('live', Play_data.data);
+        Main_Set_history('live', Play_data.data, !Play_isPlaying());
     } else if (!Is_play && PlayExtra_data.data.length > 0) {
-        Main_Set_history('live', PlayExtra_data.data);
+        Main_Set_history('live', PlayExtra_data.data, !Play_isPlaying());
     }
 }
 
@@ -2198,7 +2198,7 @@ function Play_SavePlayData() {
     if (Play_data.data && Play_data.data.length > 0) {
         Play_data_old = JSON.parse(JSON.stringify(Play_data));
 
-        if (!Play_StayDialogVisible()) {
+        if (Play_isPlaying()) {
             Main_Set_history('live', Play_data.data);
         }
     }

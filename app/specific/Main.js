@@ -3007,7 +3007,7 @@ function Main_CheckStop() {
             Main_setItem('Main_vodOffset', vodOffset);
         }
     } else if (PlayClip_isOn) PlayClip_Resume();
-    else if (Play_isOn) {
+    else if (Play_isOn && !Play_isEndDialogVisible() && !Play_StayDialogVisible()) {
         if (Play_MultiEnable) {
             var i = 0;
 
@@ -3017,9 +3017,15 @@ function Main_CheckStop() {
                 }
             }
         } else if (PlayExtra_PicturePicture) {
-            if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
-            if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
-        } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+            if (PlayExtra_data.data.length > 0) {
+                Main_Set_history('live', PlayExtra_data.data);
+            }
+            if (Play_data.data.length > 0) {
+                Main_Set_history('live', Play_data.data);
+            }
+        } else if (Play_data.data.length > 0) {
+            Main_Set_history('live', Play_data.data);
+        }
     }
 
     Play_screeOn();
