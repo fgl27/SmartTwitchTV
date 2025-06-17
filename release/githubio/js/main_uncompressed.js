@@ -18866,7 +18866,7 @@
                 Main_setItem('Main_vodOffset', vodOffset);
             }
         } else if (PlayClip_isOn) PlayClip_Resume();
-        else if (Play_isOn) {
+        else if (Play_isOn && !Play_isEndDialogVisible() && !Play_StayDialogVisible()) {
             if (Play_MultiEnable) {
                 var i = 0;
 
@@ -18876,9 +18876,15 @@
                     }
                 }
             } else if (PlayExtra_PicturePicture) {
-                if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
-                if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
-            } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+                if (PlayExtra_data.data.length > 0) {
+                    Main_Set_history('live', PlayExtra_data.data);
+                }
+                if (Play_data.data.length > 0) {
+                    Main_Set_history('live', Play_data.data);
+                }
+            } else if (Play_data.data.length > 0) {
+                Main_Set_history('live', Play_data.data);
+            }
         }
 
         Play_screeOn();
@@ -21402,7 +21408,6 @@
 
                 if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
                     //Save as we have watched it all
-
                     var data = Screens_GetObj(Main_values.Main_Go);
 
                     Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + id).style.width = '100%';
@@ -21604,16 +21609,16 @@
 
             Play_UpdateMainStreamDiv();
 
-            if (!Play_StayDialogVisible()) {
-                Main_Set_history('live', Play_data.data);
-            }
+            Main_Set_history('live', Play_data.data, !Play_isPlaying());
         }
     }
 
     function Play_updateStreamInfoStartError() {
-        if (Play_isOn && Play_data.data.length > 0 && !Play_StayDialogVisible()) {
-            Main_Set_history('live', Play_data.data);
-        }
+        Main_Set_history('live', Play_data.data, !Play_isPlaying());
+    }
+
+    function Play_isPlaying() {
+        return Play_isOn && Play_data.data.length > 0 && !Play_isEndDialogVisible() && !Play_StayDialogVisible() && OSInterface_getPlaybackState();
     }
 
     function Play_CheckFollow(id) {
@@ -21774,7 +21779,8 @@
                 }
             } else {
                 var tempData = ScreensObj_LiveCellArray(obj.data[0]);
-                if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
+
+                Main_Set_history('live', tempData, !Play_isPlaying());
 
                 //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
                 if (PlayExtra_data.data.length > 0 && Main_A_equals_B(tempData[14], PlayExtra_data.data[14])) {
@@ -21791,9 +21797,9 @@
 
         //we fail but we still watching so update the time
         if (Is_play && Play_data.data.length > 0) {
-            Main_Set_history('live', Play_data.data);
+            Main_Set_history('live', Play_data.data, !Play_isPlaying());
         } else if (!Is_play && PlayExtra_data.data.length > 0) {
-            Main_Set_history('live', PlayExtra_data.data);
+            Main_Set_history('live', PlayExtra_data.data, !Play_isPlaying());
         }
     }
 
@@ -23221,7 +23227,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (Play_data.data && Play_data.data.length > 0) {
             Play_data_old = JSON.parse(JSON.stringify(Play_data));
 
-            if (!Play_StayDialogVisible()) {
+            if (Play_isPlaying()) {
                 Main_Set_history('live', Play_data.data);
             }
         }
@@ -25860,9 +25866,9 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Play_CheckPreview() {
         if (Play_isOn && Play_data.data.length > 0 && !Play_isEndDialogVisible() && !Play_StayDialogVisible()) {
-            if (!Play_StayDialogVisible()) {
+            if (OSInterface_getPlaybackState()) {
                 //skip update the date if not playing, this can an scenario the live has ended during Java onStop
-                Main_Set_history('live', Play_data.data, !OSInterface_getPlaybackState());
+                Main_Set_history('live', Play_data.data);
             }
 
             if (Main_IsOn_OSInterface && Play_CheckPreviewLive()) {
@@ -47344,7 +47350,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                             UserLiveFeed_PreviewOffset =
                                 VodIdex > -1 ? Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
 
-                            //Check if the vod saved position is bigger then 0 means thisvod was already watched
+                            //Check if the vod saved position is bigger then 0 means this vod was already watched
                             if (!UserLiveFeed_PreviewOffset) {
                                 VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
 
