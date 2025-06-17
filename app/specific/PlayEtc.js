@@ -1462,9 +1462,9 @@ function Play_KeyReturnSetExit() {
 
 function Play_CheckPreview() {
     if (Play_isOn && Play_data.data.length > 0 && !Play_isEndDialogVisible() && !Play_StayDialogVisible()) {
-        if (!Play_StayDialogVisible()) {
+        if (OSInterface_getPlaybackState()) {
             //skip update the date if not playing, this can an scenario the live has ended during Java onStop
-            Main_Set_history('live', Play_data.data, !OSInterface_getPlaybackState());
+            Main_Set_history('live', Play_data.data);
         }
 
         if (Main_IsOn_OSInterface && Play_CheckPreviewLive()) {
