@@ -66,11 +66,12 @@ function tr_TRLang() {
     STR_CHECK_HOST = ', host kontrol ediliyor';
     STR_IS_SUB_ONLY = 'Bu video yalnızca abonelere açıktır';
     STR_IS_SUB_ONLY_ERROR = 'sadece abonelere özel içeriktir.';
-    STR_NOKEY_GENERAL_WARN = ', yan panele gidin (Üst seçenek) Kullanıcı Ekle veya Kullanıcı: Değiştir, ekle, anahtar, kullanıcı üzerinde enter\'a basın';
+    STR_NOKEY_GENERAL_WARN =
+        ", yan panele gidin (Üst seçenek) Kullanıcı Ekle veya Kullanıcı: Değiştir, ekle, anahtar, kullanıcı üzerinde enter'a basın";
     STR_REFRESH_PROBLEM = 'Bağlantı başarısız veya içerik yok. Yenilemeyi deneyin';
     STR_REFRESH_PROBLEM_ENTER = 'Bağlanılamadı veya içerik yok. Yenilemeyi deneyin.';
     STR_REFRESH_PROBLEM_ENTER_LANG =
-        'Bağlantı başarısız veya bu dil için içerik yok. İçerik dilini değiştirin (sol tuşa basılı tutun) veya Yenilemek için enter\'a basın';
+        "Bağlantı başarısız veya bu dil için içerik yok. İçerik dilini değiştirin (sol tuşa basılı tutun) veya Yenilemek için enter'a basın";
     STR_NO = 'Hayır';
     STR_FOR_THIS = 'bunun için';
     STR_PLAYER_PROBLEM = 'Bağlantı başarısız, video içeriği yüklenemiyor, çıkılıyor...';
@@ -110,7 +111,7 @@ function tr_TRLang() {
     STR_UPDATE_SHOW = 'Güncellemeler mevcut olduğunda güncelleme penceresini göster';
     STR_UPDATE_SHOW_ARRAY = ['Evet', 'Sadece bir bildirim mesajı', 'Hayır'];
     STR_UPDATE_START = 'Güncelleme işlemi başladı. Bu birkaç saniye sürebilir, lütfen bekleyin!';
-    STR_UPDATE_PLAY = "Play Store güncellemeyi göstermiyorsa, birkaç dakika sonra tekrar deneyin!";
+    STR_UPDATE_PLAY = 'Play Store güncellemeyi göstermiyorsa, birkaç dakika sonra tekrar deneyin!';
     STR_UPDATE_ERROR = 'Bunu kullanabilmek için APK sürüm 3.0.303 veya daha yenisine ihtiyacınız var, lütfen eski yöntemle güncelleyin!';
     STR_UPDATE_WARNING_OK = 'Uygulama başarıyla güncellendi';
     STR_CLOSE = 'Kapat';
@@ -154,35 +155,37 @@ function tr_TRLang() {
     STR_CHAT_SHOW = 'Sohbeti göster';
     STR_CURRENT_VERSION = 'Mevcut yüklü sürüm';
     STR_LATEST_VERSION = 'mevcut en son sürüm';
-    STR_CONTROLS_MAIN_2 = 'Bir video oynat: (yukarı/aşağı/sol/sağ) D-pad kullanarak gezinin, enter, oynat/duraklat, önizleme medya tuşları veya 1 tuşuna basın';
+    STR_CONTROLS_MAIN_2 =
+        'Bir video oynat: (yukarı/aşağı/sol/sağ) D-pad kullanarak gezinin, enter, oynat/duraklat, önizleme medya tuşları veya 1 tuşuna basın';
     STR_CONTROLS_MAIN_3 = 'Ekran içeriğini yenile:';
     STR_CONTROLS_MAIN_4 = 'Uygulamadan çık: Yan paneldeki çıkışa tıklayın';
     STR_CONTROLS_MAIN_5 = 'Uygulamayı kapanmaya zorla: Otomatik olarak kapanana kadar geri tuşunu basılı tutun';
     STR_CONTROLS_MAIN_6 = 'Ekranları değiştir: Geri tuşuna, ardından yukarı/aşağı D-Pad veya ' + STR_KEY_UP_DOWN + ' ' + STR_KEY_MEDIA_FF;
     STR_CONTROLS_MAIN_10 =
-        'Arama başlat: Yan panelde ara\'ya tıklayın, sorgunuzu yazın ve sanal klavyede enter\'a basın, ardından arama seçeneklerinden birini seçin';
-    STR_CONTROLS_MAIN_14 = 'Bu uygulama hakkında: Yan paneldeki hakkında\'ya tıklayın';
+        "Arama başlat: Yan panelde ara'ya tıklayın, sorgunuzu yazın ve sanal klavyede enter'a basın, ardından arama seçeneklerinden birini seçin";
+    STR_CONTROLS_MAIN_14 = "Bu uygulama hakkında: Yan paneldeki hakkında'ya tıklayın";
     STR_ABOUT_INFO_1 = 'Bu, kullanmak isteyen herkes için ücretsiz olarak yayınlanan bir Android TV Twitch İstemcisidir.';
     STR_ABOUT_INFO_2 =
-        'Bu uygulamanın Twitch ile bir bağlantısı yoktur; bu kullanıcı tarafından yapılmış bir uygulamadır. Ancak bu, yalnızca Twitch\'in, uygulamanın içeriğini göstermesine olanak tanıyan API\'leri sağlaması sayesinde mümkün olmuştur.';
+        "Bu uygulamanın Twitch ile bir bağlantısı yoktur; bu kullanıcı tarafından yapılmış bir uygulamadır. Ancak bu, yalnızca Twitch'in, uygulamanın içeriğini göstermesine olanak tanıyan API'leri sağlaması sayesinde mümkün olmuştur.";
     STR_ABOUT_INFO_2_SOURCE = 'Uygulamanın bu sürümü yalnızca tarayıcıda test amaçlıdır!';
     STR_ABOUT_INFO_3 = 'İletişim bilgileri:';
-    STR_ABOUT_INFO_4 = 'Bu, GNU Genel Kamu Lisansı v3.0 altında lisanslanmış açık kaynaklı bir uygulamadır, GitHub\'da göz atın:';
+    STR_ABOUT_INFO_4 = "Bu, GNU Genel Kamu Lisansı v3.0 altında lisanslanmış açık kaynaklı bir uygulamadır, GitHub'da göz atın:";
 
     STR_ABOUT_INFO_6 = 'Uygulama bağımlılıklarını görmek için bağlantıyı kullanın:';
     STR_ABOUT_INFO_18 = 'Telefon ve tablet desteği:';
     STR_ABOUT_INFO_19 =
-        'Bu uygulamayı telefonlarda ve tabletlerde kullanmak mümkündür, ancak uygulama esas olarak TV\'lerde kullanılmak üzere tasarlanmıştır. Diğer cihazlar için destek sınırlıdır ve bu nedenle Play Store\'da yayınlanmamıştır. En son APK\'yı indirmek ve uygulamayı bir telefona veya tablete manuel olarak yüklemek için aşağıdaki bağlantıyı kullanın:';
+        "Bu uygulamayı telefonlarda ve tabletlerde kullanmak mümkündür, ancak uygulama esas olarak TV'lerde kullanılmak üzere tasarlanmıştır. Diğer cihazlar için destek sınırlıdır ve bu nedenle Play Store'da yayınlanmamıştır. En son APK'yı indirmek ve uygulamayı bir telefona veya tablete manuel olarak yüklemek için aşağıdaki bağlantıyı kullanın:";
 
     STR_CONTROLS_PLAY_0 = 'veya oynatıcının altındaki kontrollerde';
-    STR_CONTROLS_PLAY_1 = "Bilgi panelini göster: Sohbet ve canlı kanal akışı görünmüyorsa enter veya D-pad tuşlarına basın";
+    STR_CONTROLS_PLAY_1 = 'Bilgi panelini göster: Sohbet ve canlı kanal akışı görünmüyorsa enter veya D-pad tuşlarına basın';
     STR_CONTROLS_PLAY_2 = 'Videoyu kapat: İki kez geri tuşuna veya durdurma medya tuşuna basın';
     STR_CONTROLS_PLAY_3 = 'Bir videoyu duraklat/oynat: Bilgi panelini açın ve duraklatma simgesine tıklayın';
     STR_CONTROLS_PLAY_4 = 'Önizleme akışını göster: Yukarı D-pad';
     STR_CONTROLS_PLAY_5 = "Video kalitesini değiştir: Oynatıcının altındaki 'Kalite' seçeneğini seçin";
     STR_CONTROLS_PLAY_6 = 'Bir videoyu yenilemeye zorla (donması durumunda): Video kalitesini aynı değere değiştirin';
     STR_CONTROLS_PLAY_7 = 'Sohbeti göster veya gizle: Aşağı D-pad veya 3 tuşu ' + STR_CONTROLS_PLAY_0;
-    STR_CONTROLS_PLAY_8 = 'Sohbet konumunu değiştir: Sol D-pad, PG yukarı veya geri sarma tuşları (yalnızca VODlar ve klipler) ' + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_8 =
+        'Sohbet konumunu değiştir: Sol D-pad, PG yukarı veya geri sarma tuşları (yalnızca VODlar ve klipler) ' + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_9 = 'Sohbet boyutunu değiştir: Sağ D-pad, PG aşağı ' + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_10 = 'Sohbet arka plan parlaklığını değiştir: Oynatıcının altındaki kontrollerden değiştirin';
     STR_CONTROLS_PLAY_11 =
@@ -202,11 +205,11 @@ function tr_TRLang() {
     STR_OAUTH_WRONG2 = 'ancak bu anahtar şu kullanıcıya ait';
     STR_FOLLOWING = 'Takip Ediliyor';
     STR_FOLLOW = 'Takip Edilmiyor';
-    STR_IS_SUB_NOOAUTH = "ve bir yetkilendirme anahtarı eklemediniz, bu yüzden uygulama abonelik durumunuzu kontrol edemiyor.";
-    STR_IS_SUB_NOT_SUB = "ve bu kanalın abonesi değilsiniz";
+    STR_IS_SUB_NOOAUTH = 've bir yetkilendirme anahtarı eklemediniz, bu yüzden uygulama abonelik durumunuzu kontrol edemiyor.';
+    STR_IS_SUB_NOT_SUB = 've bu kanalın abonesi değilsiniz';
     STR_IS_SUB_IS_SUB = 'Bu kanalın bir abonesisiniz, ancak bilinmeyen bir sorun videonun oynatılmasını engelledi.';
     STR_OAUTH_FAIL = 'Sağlanan anahtarla yetkilendirme kontrolü başarısız oldu, lütfen kontrol edip tekrar deneyin';
-    STR_OAUTH_FAIL_USER = "Eklenen anahtar bu kullanıcıya ait değil";
+    STR_OAUTH_FAIL_USER = 'Eklenen anahtar bu kullanıcıya ait değil';
     STR_NOKEY = 'Kullanıcı yok';
     STR_NOKEY_WARN = 'Kanalları takip etmek veya takibi bırakmak için bir kullanıcı ayarlamalısınız.';
     STR_FOLLOW_ISSUE =
@@ -219,7 +222,7 @@ function tr_TRLang() {
     STR_NET_UP = 'Ağ bağlantısı geri yüklendi';
     STR_FOLLOWERS = 'Takipçiler';
     STR_FOLLOWER = 'Takipçi';
-    STR_CANT_FOLLOW = ", Takip edilemiyor veya takipten çıkılamıyor";
+    STR_CANT_FOLLOW = ', Takip edilemiyor veya takipten çıkılamıyor';
     STR_GAME_CONT = 'Oyun içeriği';
     STR_YES = 'Evet';
     STR_REMOVE_USER = 'Kullanıcıyı kaldırmak istediğinizden emin misiniz';
@@ -236,11 +239,11 @@ function tr_TRLang() {
     STR_STREAM_END_EXIT = "Çıkmak için 'Geri' tuşuna basın";
     STR_FEATURED = 'Ana Sayfa';
     STR_CREATED_AT = 'Oluşturuldu';
-    STR_OPEN_BROADCAST = 'VOD\'u Aç';
-    STR_OPEN_LAST_BROADCAST = 'Son VOD\'u Aç';
+    STR_OPEN_BROADCAST = "VOD'u Aç";
+    STR_OPEN_LAST_BROADCAST = "Son VOD'u Aç";
     STR_IS_LIVE = 'Şimdi canlı yayında';
     STR_OPEN_REWIND = 'Geri sarmayı aç';
-    STR_OPEN_REWIND_SUMMARY = 'Tam geri sarma VOD\'unu aç';
+    STR_OPEN_REWIND_SUMMARY = "Tam geri sarma VOD'unu aç";
     STR_OPEN_REWIND_FAIL = 'Bu canlı yayın için geri sarma yok';
     STR_SHOW_ISLIVE_WARNING = "'Yayıncı canlı yayında' uyarısını göster";
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
@@ -261,7 +264,7 @@ function tr_TRLang() {
     STR_SETTINGS_BUFFER_SIZE = 'Başlangıç arabellek boyutu:';
     STR_SETTINGS_BUFFER_SIZE_SHORT_SUMMARY = 'Başlangıç arabellek boyutunu kontrol eder';
     STR_SETTINGS_BUFFER_SIZE_SUMMARY =
-        'Oynatmaya başlamadan önce arabelleğe alınması gereken veri miktarını belirtir. Bu değer, cihazın kullanılabilir RAM\'ine bağlı olan maksimum arabellek boyutuyla ilişkili değildir. Daha düşük bir ayar oynatmayı daha erken başlatır ki bu genellikle tavsiye edilir. Bu değeri artırmak performansı nadiren iyileştirir ve gecikmelere neden olabilir.';
+        "Oynatmaya başlamadan önce arabelleğe alınması gereken veri miktarını belirtir. Bu değer, cihazın kullanılabilir RAM'ine bağlı olan maksimum arabellek boyutuyla ilişkili değildir. Daha düşük bir ayar oynatmayı daha erken başlatır ki bu genellikle tavsiye edilir. Bu değeri artırmak performansı nadiren iyileştirir ve gecikmelere neden olabilir.";
     STR_SETTINGS_BUFFER_LIVE = 'Canlı yayınlar başlangıç arabelleği';
     STR_SETTINGS_BUFFER_VOD = 'Videolar (geçmiş yayınlar ve öne çıkanlar) başlangıç arabelleği';
     STR_SETTINGS_BUFFER_CLIP = 'Klipler başlangıç arabelleği';
@@ -272,7 +275,7 @@ function tr_TRLang() {
     STR_CHAT_SEND_DELAY = 'Mesaj gönderildi. Sohbet gecikme ayarları nedeniyle kısa süre içinde sohbette görünecektir.';
     STR_CHAT_DELAY = 'Sohbet: gecikme';
     STR_VOD_HISTORY_BASE = 'Oynatmayı baştan başlatın veya en son izlemeyi bıraktığınız yerden devam edin.';
-    STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + ' VOD\'u?';
+    STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " VOD'u?";
     STR_VOD_HISTORY_FORM_LIVE = STR_VOD_HISTORY_BASE + ' CANLI YAYINI?';
     STR_FROM = 'Kimden:' + STR_BR;
     STR_FROM_START = STR_FROM + 'Başlangıç';
@@ -302,23 +305,23 @@ function tr_TRLang() {
     STR_JUMPING_STEP = 'Atlama adımı';
     STR_SECOND = 'saniye';
     STR_SECONDS = 'saniye';
-        STR_MINUTE = 'dakika';
+    STR_MINUTE = 'dakika';
     STR_MINUTES = 'dakika';
     STR_CLOCK_OFFSET = 'Saat Farkı';
     STR_CLOCK_OFFSET_SUMMARY = 'Uygulamanın ana saatini tercih ettiğiniz saat farkına göre ayarlayın.';
     STR_CLOCK_AM_PM = 'Saat Stili';
     STR_CLOCK_AM_PM_SUMMARY = '24S, 12S (ÖÖ/ÖS) veya 12S olarak ayarlayın.';
     STR_CONTENT_LANG = 'İçerik Dili';
-    STR_CONTENT_LANG_SUMMARY = 'Ekrandaki içeriğin, canlı yayınların, VOD\'ların ve kliplerin dili.';
+    STR_CONTENT_LANG_SUMMARY = "Ekrandaki içeriğin, canlı yayınların, VOD'ların ve kliplerin dili.";
     STR_APP_LANG = 'Uygulama Dili';
-    STR_APP_LANG_SUMMARY = "Uygulamanın metinlerinin dili.";
-    STR_ENTER_TO_OPEN = 'Erişmek için enter\'a basın';
+    STR_APP_LANG_SUMMARY = 'Uygulamanın metinlerinin dili.';
+    STR_ENTER_TO_OPEN = "Erişmek için enter'a basın";
     STR_LANG_ALL = 'Tümü';
-    STR_NO_GAME = "Bundan oyun bilgisi alınamıyor";
+    STR_NO_GAME = 'Bundan oyun bilgisi alınamıyor';
     STR_EMPTY = 'Boş';
-    STR_JUMP_BUFFER_WARNING = "Arabelleğe alma sırasında atlamak mümkün değil";
+    STR_JUMP_BUFFER_WARNING = 'Arabelleğe alma sırasında atlamak mümkün değil';
     STR_CHAT_DISABLE = "Sohbet şu anda devre dışı. Oynatıcının altındaki 'Sohbeti zorla devre dışı bırak' seçeneğiyle etkinleştirebilirsiniz.";
-    STR_CLIP_FAIL = "Bu klip/video yüklenemedi. Tekrar oynatılamıyor";
+    STR_CLIP_FAIL = 'Bu klip/video yüklenemedi. Tekrar oynatılamıyor';
     STR_CHAT_BRIGHTNESS = 'Sohbet arka plan parlaklığı';
     STR_PLAY_NEXT = 'Sıradakini Oynat';
     STR_PLAY_NEXT_IN = 'Sıradaki oynatılıyor';
@@ -356,7 +359,7 @@ function tr_TRLang() {
     STR_VERY_HIGH = 'Çok yüksek';
     STR_THUMB_RESOLUTION = 'Küçük resim kalitesi';
     STR_THUMB_RESOLUTION_SUMMARY =
-        "Canlı yayınlar, videolar ve oyunlar için varsayılan küçük resim çözünürlüğü (klipler için uygulanamaz). Düşük bir değer uygulamanın daha hızlı yüklenmesine yardımcı olur, ancak küçük resim bulanık görünebilir.";
+        'Canlı yayınlar, videolar ve oyunlar için varsayılan küçük resim çözünürlüğü (klipler için uygulanamaz). Düşük bir değer uygulamanın daha hızlı yüklenmesine yardımcı olur, ancak küçük resim bulanık görünebilir.';
     STR_PAYPAL_SUMMARY = 'Paypal bağışları için bağlantıyı veya QR kodunu kullanın:';
     STR_BITCOIN_SUMMARY = 'Bitcoin bağışları için cüzdan adresini kullanın veya QR Kodunu okutun:';
     STR_PLAYER_PROBLEM_2 = 'Bağlantı başarısız, yayın bilgisi yüklenemiyor';
@@ -381,9 +384,9 @@ function tr_TRLang() {
     STR_BLOCK_RES = 'Engellenen çözünürlükler';
     STR_BLOCK_RES_SHORT_SUMMARY = 'Bir veya daha fazla çözünürlüğün kullanılmasını engellemeye izin verir';
     STR_BLOCK_RES_SUMMARY =
-        "Otomatik kalite kullanırken, bir veya daha fazla çözünürlüğün kullanılmasını engellemek mümkündür. Bu, belirli bir çözünürlükte oynatırken gecikme yaşayan cihazlar için kullanışlıdır. Klipler otomatik modda oynatılamadığından, bu aynı zamanda bir klipteki bu çözünürlüğün otomatik kısmını da engelleyecektir.";
+        'Otomatik kalite kullanırken, bir veya daha fazla çözünürlüğün kullanılmasını engellemek mümkündür. Bu, belirli bir çözünürlükte oynatırken gecikme yaşayan cihazlar için kullanışlıdır. Klipler otomatik modda oynatılamadığından, bu aynı zamanda bir klipteki bu çözünürlüğün otomatik kısmını da engelleyecektir.';
     STR_BLOCK_RES_SUMMARY_EXTRA =
-        'Kullanıcı, oynatma sırasında seçimi manuel olarak geçersiz kılabilir.<br><br>XX, o çözünürlük engellenmiş olarak işaretlenirse, XX\'ten önce aynı değerle başlayan tüm çözünürlüklerin kullanılmasının reddedileceği anlamına gelir.';
+        "Kullanıcı, oynatma sırasında seçimi manuel olarak geçersiz kılabilir.<br><br>XX, o çözünürlük engellenmiş olarak işaretlenirse, XX'ten önce aynı değerle başlayan tüm çözünürlüklerin kullanılmasının reddedileceği anlamına gelir.";
     STR_BLOCKED = 'Engellendi';
     STR_BLOCKED_NOT = 'Engellenmedi';
     STR_AUDIO_SOURCE = 'Ses kaynağı';
@@ -430,11 +433,11 @@ function tr_TRLang() {
     STR_NOW_LIVE_GAME_SHOW = "Takip edilen oyunlar için 'Oyun canlı yayında' bildirimini göster";
     STR_NOTIFICATION_BACKGROUND = 'Uygulama arka planda çalışırken diğer uygulamaların üzerinde bildirim göster';
     STR_NOTIFICATION_BACKGROUND_SUMMARY =
-        'Bu özelliği etkinleştirmek için, uygulamanın Android Ayarları\'nda Bildirim iznine sahip olduğundan emin olun. Android 11 veya daha yeni sürüm çalıştıran cihazlarda, uygulama arka planda çalışırken basit, tek satırlık bir bildirim gösterecektir.';
+        "Bu özelliği etkinleştirmek için, uygulamanın Android Ayarları'nda Bildirim iznine sahip olduğundan emin olun. Android 11 veya daha yeni sürüm çalıştıran cihazlarda, uygulama arka planda çalışırken basit, tek satırlık bir bildirim gösterecektir.";
     STR_NOTIFICATION_BACKGROUND_WARNING = 'Android sistem Bildirim izni eksik!';
     STR_NOTIFICATION_REPEAT = 'Bireysel bir bildirimin gösterilme sayısı';
     STR_NOTIFICATION_REPEAT_SUMMARY =
-        "Bireysel bildirim zaman aşımı yaklaşık 3 saniyedir ve değiştirilemez, çünkü bu zaman aşımı sistem tarafından kontrol edilir, ancak aynı bildirimin kaç kez gösterileceğini bu seçenekle ayarlayabilirsiniz.";
+        'Bireysel bildirim zaman aşımı yaklaşık 3 saniyedir ve değiştirilemez, çünkü bu zaman aşımı sistem tarafından kontrol edilir, ancak aynı bildirimin kaç kez gösterileceğini bu seçenekle ayarlayabilirsiniz.';
     STR_NOTIFICATION_SINCE = "Şu süreden daha uzun süredir canlı olan yayınlar için 'Yayıncı canlı yayında' bildirimini göstermeyi engelle:";
     STR_NOTIFICATION_SINCE_SUMMARY =
         'Bu, uygulama bir süre kullanılmadığında (örneğin cihazı kapattığınızda) veya ekran kapalıyken (cihaz açık ama ekran kapalıysa uygulama bildirim göstermez) uygulamanın uzun bir bildirim listesi göstermesini önlemek için kullanışlıdır.';
@@ -453,7 +456,7 @@ function tr_TRLang() {
     STR_SWITCH_POS_SUMMARY =
         'Mümkün olan ilk videodan başlamak yerine, listede daha alt bir konumdan başlayın, böylece daha eski bir video bulmak için aşağı inmeye gerek kalmaz.';
     STR_USER_OPTION = 'Kullanıcı için bir seçenek seçin';
-        STR_MAIN_USER = 'Ana Kullanıcı';
+    STR_MAIN_USER = 'Ana Kullanıcı';
     STR_USER_TOP_LABEL = 'Seçenekleri görmek için bir kullanıcıya tıklayın';
     STR_USER_EXTRAS = 'Kullanıcı: Değiştir, ekle, anahtar';
     STR_LOW_LATENCY = 'Düşük gecikme';
@@ -475,9 +478,9 @@ function tr_TRLang() {
     STR_GENERAL_CUSTOM = 'İçeriği, sıralamayı, otomatik yenilemeyi, zaman aşımlarını ve ilgili ayarları özelleştirin';
     STR_RUNNINGTIME = 'Uygulamanın çalışma süresi:';
     STR_410_ERROR = 'Video bağlantısı alınamadı';
-    STR_PRESS_ENTER_TO_CHANGE = 'Şuna değiştirmek için enter\'a basın -';
-    STR_CLICK_UNFOLLOW = '(Takipten çıkmak için enter\'a basın)';
-    STR_CLICK_FOLLOW = '(Takip etmek için enter\'a basın)';
+    STR_PRESS_ENTER_TO_CHANGE = "Şuna değiştirmek için enter'a basın -";
+    STR_CLICK_UNFOLLOW = "(Takipten çıkmak için enter'a basın)";
+    STR_CLICK_FOLLOW = "(Takip etmek için enter'a basın)";
     STR_TODAY = 'Bugün';
     STR_DROOPED_FRAMES = 'Atlanan Kareler:';
     STR_BUFFER_HEALT = 'Arabellek Boyutu (Sn):';
@@ -486,7 +489,7 @@ function tr_TRLang() {
     STR_LATENCY_TO_BROADCASTER = 'Yayıncıya Gecikme';
     STR_LATENCY = 'Yayıncıya Gecikme (Sn):';
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = STR_LATENCY_TO_BROADCASTER + ' temel alınarak';
-    STR_PING = 'Twitch\'e Ping (Ms):';
+    STR_PING = "Twitch'e Ping (Ms):";
     STR_WARNINGS = 'Uyarılar';
     STR_WELCOME = 'Hoş geldiniz:';
     STR_WELCOME_SUMMARY =
@@ -507,7 +510,7 @@ function tr_TRLang() {
     STR_USER_LIVE = 'Kullanıcı canlı yan paneli: Yan panelden Sol D-pad veya herhangi bir yerden 3 tuşu';
     STR_PP_WORKAROUND = 'Çoklu oyuncu, RİR ve önizleme modu geçici çözümü';
     STR_PP_WORKAROUND_SUMMARY =
-        "Bazı cihazlarda, çoklu oyuncu modunun düzgün çalışması için bunu etkinleştirmek gerekir. Sorun genellikle iki oynatıcıdan birinin siyah ekran olmasıdır. Sorun yaşamıyorsanız etkinleştirmeyin, çünkü bu daha düşük görüntü kalitesine ve zayıf performansa neden olur.";
+        'Bazı cihazlarda, çoklu oyuncu modunun düzgün çalışması için bunu etkinleştirmek gerekir. Sorun genellikle iki oynatıcıdan birinin siyah ekran olmasıdır. Sorun yaşamıyorsanız etkinleştirmeyin, çünkü bu daha düşük görüntü kalitesine ve zayıf performansa neden olur.';
     STR_HISTORY = 'Geçmiş';
     STR_WATCHED = 'İzlenme tarihi';
     STR_UNTIL = 'kadar';
@@ -515,7 +518,7 @@ function tr_TRLang() {
     STR_DELETE_HISTORY = 'Bu geçmişi sil';
     STR_DELETE_UNREACHABLE = 'Erişilemeyen içeriği otomatik olarak sil';
     STR_DELETE_UNREACHABLE_SUMMARY =
-        'Bu EVET olarak ayarlanırsa, uygulama erişilemeyen (yayıncı/içerik oluşturucu tarafından silinmiş) VOD\'ları ve klipleri geçmişten otomatik olarak kaldırır';
+        "Bu EVET olarak ayarlanırsa, uygulama erişilemeyen (yayıncı/içerik oluşturucu tarafından silinmiş) VOD'ları ve klipleri geçmişten otomatik olarak kaldırır";
     STR_NAME_A_Z = 'İsim A - Z';
     STR_NAME_Z_A = 'İsim Z - A';
     STR_GAME_A_Z = 'Oyun A - Z';
@@ -526,7 +529,7 @@ function tr_TRLang() {
     STR_CHANNELS_LOWEST = 'En düşük kanal miktarı';
     STR_NEWEST = 'En son izlenen';
     STR_OLDEST = 'En eski izlenen';
-    STR_PRESS_ENTER_D = 'Silmek için enter\'a basın';
+    STR_PRESS_ENTER_D = "Silmek için enter'a basın";
     STR_LIVE_VOD = 'Bu canlı yayın artık bir VOD<br>VOD, canlı yayını en son izlemeyi bıraktığınız yerden açılıyor:<br>';
 
     STR_DELETE_SURE = 'Tümünü silmek istediğinizden emin misiniz';
@@ -538,28 +541,31 @@ function tr_TRLang() {
     STR_HISTORY_CLIP_DIS = 'Klip geçmişini etkinleştir';
     STR_OPEN_GAME = 'Oyunu aç';
     STR_OPEN_CHANNEL = 'Kanalı aç';
-    STR_THUMB_OPTIONS_KEY = 'Bir eylemin üzerinde enter\'a basın (açmak veya uygulamak için), uygulamadan çıkmak için geri tuşuna basın';
+    STR_THUMB_OPTIONS_KEY = "Bir eylemin üzerinde enter'a basın (açmak veya uygulamak için), uygulamadan çıkmak için geri tuşuna basın";
     STR_DELETE_FROM_HISTORY = 'Bunu geçmişten sil';
     STR_CHECK_FOLLOW = 'Takip durumu kontrol ediliyor ...';
     STR_REFRESH_DELETE = 'Değişikliği görmek için sildikten sonra ekranı yenileyin.';
     STR_THUMB_OPTIONS_TOP = 'Küçük resim seçenekleri için solu basılı tutun';
     STR_REPLACE_MULTI = 'Yukarıdaki ile değiştirmek için hangisini seçersiniz?';
-    STR_REPLACE_MULTI_ENTER = 'Değiştirmek için enter\'a basın veya çıkmak için geri tuşuna basın.';
+    STR_REPLACE_MULTI_ENTER = "Değiştirmek için enter'a basın veya çıkmak için geri tuşuna basın.";
     STR_ALREDY_PLAYING = 'Bu zaten oynatılıyor';
     STR_STREAM_ERROR = 'Önizleme açılamadı';
     STR_PP_MODO = 'Resim içinde resim modu';
-    STR_4_WAY_MULTI_INSTANCES = "Cihazınız aynı anda sadece %x codec örneği (oynatıcı) destekliyor, kullanılamıyor";
+    STR_4_WAY_MULTI_INSTANCES = 'Cihazınız aynı anda sadece %x codec örneği (oynatıcı) destekliyor, kullanılamıyor';
     STR_MULTI_EMPTY = 'Bitti ve/veya boş';
-    STR_4_WAY_MULTI = '4\'lü çoklu yayın';
+    STR_4_WAY_MULTI = "4'lü çoklu yayın";
     STR_CONTROLS_MULTI_0 = 'Çoklu yayın yardımı:';
     STR_CONTROLS_MULTI_1 =
         "Çoklu yayını etkinleştirdikten sonra gecikme sorunları yaşıyorsanız, ayarlarda 'Küçük oynatıcı bit hızı' değerini düşürmeyi deneyin; atlanan karelerin birikmesi veya sürekli arabelleğe alma, çok yüksek bit hızının veya çok yavaş internetin bir göstergesidir";
     STR_CONTROLS_MULTI_2 = 'Yayın ekle: önizleme akışını yukarı tuşuyla açın ve bir canlı yayına tıklayın';
-    STR_CONTROLS_MULTI_3 = 'Yayınları değiştir: çoklu yayın dolduktan sonra, önizleme akışından birini seçin ve iletişim kutusundan değiştirmek için birini seçin';
-    STR_CONTROLS_MULTI_4 = 'Ses kaynağını değiştir: D-pad sağ veya sol veya medya tuşları sonraki/önceki parça, tüm videoların ses kaynağı için aşağı tuşunu basılı tutun';
+    STR_CONTROLS_MULTI_3 =
+        'Yayınları değiştir: çoklu yayın dolduktan sonra, önizleme akışından birini seçin ve iletişim kutusundan değiştirmek için birini seçin';
+    STR_CONTROLS_MULTI_4 =
+        'Ses kaynağını değiştir: D-pad sağ veya sol veya medya tuşları sonraki/önceki parça, tüm videoların ses kaynağı için aşağı tuşunu basılı tutun';
     STR_CONTROLS_MULTI_5 = 'Çoklu yayından çık: İki kez geri tuşuna basın veya oynatıcının altındaki seçenekten çıkın.';
     STR_CONTROLS_MULTI_6 = 'Bunu kapatmak için 4 canlı yayın açın';
-    STR_PICTURE_LIVE_FEED = 'Resim içinde resim: Enter\'ı basılı tutun veya 1 tuşuna basın, ardından taşımak için D-Pad sol, yeniden boyutlandırmak için sağ veya videoları değiştirmek için aşağı tuşunu kullanın';
+    STR_PICTURE_LIVE_FEED =
+        "Resim içinde resim: Enter'ı basılı tutun veya 1 tuşuna basın, ardından taşımak için D-Pad sol, yeniden boyutlandırmak için sağ veya videoları değiştirmek için aşağı tuşunu kullanın";
     STR_MULTI_TITLE = ', Bir yayını açmak veya değiştirmek için bir küçük resme tıklayın, ses kaynağını değiştirmek için D-pad sol/sağ kullanın';
     STR_FEED_END_DIALOG = ', Üst menüye geri dönmek için geri tuşuna basın';
     STR_BACK_USER_GAMES = 'Geri dönmek için geri tuşuna basın:';
@@ -570,7 +576,7 @@ function tr_TRLang() {
     STR_PREVIEW_CLIP_NEXT = 'Bir klip önizlemesi bittiğinde, otomatik olarak bir sonraki mevcut klibe geçin.';
     STR_SHOW_SIDE_PLAYER = 'Yan panelde önizlemeyi göster';
     STR_SHOW_FEED_PLAYER = 'Oynatıcı önizleme küçük resimlerinde önizlemeyi göster';
-    STR_SHOW_FEED_PLAYER_SUMMARY = "İstemiyorsanız veya birden fazla oynatıcı etkin olduğunda cihazınız gecikiyorsa, bunu HAYIR olarak ayarlayın.";
+    STR_SHOW_FEED_PLAYER_SUMMARY = 'İstemiyorsanız veya birden fazla oynatıcı etkin olduğunda cihazınız gecikiyorsa, bunu HAYIR olarak ayarlayın.';
     STR_DISABLED_FEED_PLAYER_MULTI = 'Çoklu yayın etkinken önizlemeyi devre dışı bırak';
     STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY =
         'Performans nedenleriyle, bazı cihazlar birden fazla oynatıcıyla gecikebilir. Cihazınız çoklu yayın için uygunsa ancak önizleme oynatıcı ve bir çoklu yayın etkin olduğunda gecikiyorsa, bu seçeneği HAYIR olarak ayarlayın.';
@@ -582,30 +588,32 @@ function tr_TRLang() {
     STR_PLAYER_ERROR = 'Oynatıcı hatası nedeniyle oynatılamıyor';
     STR_PLAYER_ERROR_MULTI = ', ayarlarda küçük oynatıcı bit hızı değerini düşürmeyi deneyin';
     STR_PREVIEW_SIZE = 'Oynatıcı önizleme boyutu';
-    STR_PREVIEW_SIZE_SUMMARY =
-        'Bir Canlı, VOD veya klip açıkken yukarı basıldığında gösterilen küçük önizleme oynatıcısının boyutunu ayarlayın.';
+    STR_PREVIEW_SIZE_SUMMARY = 'Bir Canlı, VOD veya klip açıkken yukarı basıldığında gösterilen küçük önizleme oynatıcısının boyutunu ayarlayın.';
     STR_PREVIEW_SIZE_ARRAY = ['Küçük', 'Orta', 'Büyük', 'Ekstra Büyük'];
     STR_PREVIEW_SIZE_SCREEN = 'Ekran önizleme boyutu';
     STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Ana uygulama ekranlarının üzerinde gösterilen önizleme oynatıcısının boyutunu ayarlayın.';
     STR_PREVIEW_VOLUME_SCREEN = 'Ekran önizleme ses seviyesi';
-    STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Ana uygulama ekranlarının ve yan panelin üzerinde gösterilen önizleme oynatıcısının ses seviyesini ayarlayın.';
+    STR_PREVIEW_VOLUME_SCREEN_SUMMARY =
+        'Ana uygulama ekranlarının ve yan panelin üzerinde gösterilen önizleme oynatıcısının ses seviyesini ayarlayın.';
     STR_PREVIEW_SIZE_SCREEN_ARRAY = ['Küçük Resim Boyutu', 'Daha Büyük'];
     STR_SIDE_PANEL_PLAYER_DELAY = 'Önizleme gecikmesi';
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY =
         'Bir küçük resim seçildikten sonra önizlemenin yüklenmeye başlaması için gecikme süresini ayarlayın. Bu, kaydırma sırasında geciken yavaş cihazlara yardımcı olur.';
     STR_PREVIEW_VOLUME = 'Oynatıcı Önizleme ses seviyesi';
-    STR_PREVIEW_VOLUME_SUMMARY = 'Bir Canlı, VOD veya klip açıkken yukarı basıldığında gösterilen küçük önizleme oynatıcısının ses seviyesini ayarlayın.';
+    STR_PREVIEW_VOLUME_SUMMARY =
+        'Bir Canlı, VOD veya klip açıkken yukarı basıldığında gösterilen küçük önizleme oynatıcısının ses seviyesini ayarlayın.';
     STR_PREVIEW_OTHERS_VOLUME = 'Ana oynatıcı ses seviyesi (Önizleme gösterilirken)';
-        STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
+    STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
         'Ana oynatıcının (tüm resim içinde resim oynatıcıları, çoklu yayın oynatıcıları) ses seviyesi, önizleme oynatıcısı gösterilirken düşürülebilir.';
     STR_SIDE_PANEL_PLAYER = 'Önizleme küçük resim oynatıcısı ayarları';
     STR_START_AT_USER = 'Uygulamayı her zaman kullanıcı ekranında başlat';
-    STR_START_AT_USER_SUMMARY = "Bu seçenek 'Oynatmayı geri yükle' seçeneğini devre dışı bırakır, ancak uygulamayı açtığınızda kullanıcıyı seçmenize olanak tanır.";
+    STR_START_AT_USER_SUMMARY =
+        "Bu seçenek 'Oynatmayı geri yükle' seçeneğini devre dışı bırakır, ancak uygulamayı açtığınızda kullanıcıyı seçmenize olanak tanır.";
     STR_LAST_REFRESH = 'Son yenileme:';
-    STR_PP_VOD_ERROR = 'Bu VOD\'u açmak için resim içinde resim veya çoklu yayından çıkın';
+    STR_PP_VOD_ERROR = "Bu VOD'u açmak için resim içinde resim veya çoklu yayından çıkın";
     STR_SETTINGS_ACCESSIBILITY = "'Bir erişilebilirlik hizmeti çalışıyor' uyarısını göster";
     STR_SETTINGS_ACCESSIBILITY_SUMMARY =
-        "Cihazda bir erişilebilirlik hizmeti etkinse, uygulama bir uyarı gösterecektir. Erişilebilirlik hizmetinin bazı cihazları yavaşlatabildiği ve bu uygulamada donmalara veya gecikmelere neden olabildiği bilinen bir android sorunudur.";
+        'Cihazda bir erişilebilirlik hizmeti etkinse, uygulama bir uyarı gösterecektir. Erişilebilirlik hizmetinin bazı cihazları yavaşlatabildiği ve bu uygulamada donmalara veya gecikmelere neden olabildiği bilinen bir android sorunudur.';
     STR_ACCESSIBILITY_WARN = 'Erişilebilirlik hizmeti/hizmetleri algılandı';
     STR_ACCESSIBILITY_WARN_EXTRA = 'Bu bağlantıdan daha fazlasını okuyun:';
     STR_ACCESSIBILITY_WARN_EXTRA2 =
@@ -619,22 +627,24 @@ function tr_TRLang() {
     STR_MULTI_MAIN_WINDOW = 'Çoklu yayın ana videosu';
     STR_MAIN_MULTI_BIG =
         STR_MULTI_MAIN_WINDOW + ' daha büyük ve sohbet: Aşağı tuşuna basın ve ardından büyük videoyu değiştirmek için sol/sağ tuşlarını kullanın';
-    STR_SOURCE_CHECK = 'Oynatıcı geciktiğinde oynatıcı kalitesini otomatik olarak Kaynak\'tan Otomatik\'e değiştirin';
+    STR_SOURCE_CHECK = "Oynatıcı geciktiğinde oynatıcı kalitesini otomatik olarak Kaynak'tan Otomatik'e değiştirin";
     STR_SOURCE_CHECK_SUMMARY =
         'Etkinleştirildiğinde ve otomatik kalite kullanılmadığında, oynatıcı gecikiyorsa otomatik kaliteye geçer ve bu konuda uyarır. Oynatıcı gecikmesi, oynatıcının birkaç saniye oynatılamamasıdır (algoritma sadece zamandan daha karmaşıktır), başka bir şey oynatırsanız orijinal kaliteye geri döner.';
     STR_PLAYER_LAG = "Oynatıcı gecikiyor, kalite 'Otomatik mod' olarak değiştirildi";
     STR_PLAYER_SOURCE = 'Oynatıcı gecikiyor, kalite düşürüldü';
     STR_TOO_ERRORS = 'veya çok fazla hata';
     STR_STREAM_ERROR_SMALL = 'Önizleme, yayın sona erdi' + STR_TOO_ERRORS;
-    STR_CONTROLS_MEDIA_FF = 'İleri veya geri sarma (yalnızca VODlar ve klipler için): Sol/sağ D-pad veya hızlı ileri/geri sarma medya tuşlarını kullanın';
-    STR_VOD_MUTED = 'Telif hakkıyla korunan içerik barındırdığı için bu bölümün bir kısmı sessize alınmıştır ve oynatma çubuğundaki daha koyu renkli kısımlarla belirtilmiştir';
+    STR_CONTROLS_MEDIA_FF =
+        'İleri veya geri sarma (yalnızca VODlar ve klipler için): Sol/sağ D-pad veya hızlı ileri/geri sarma medya tuşlarını kullanın';
+    STR_VOD_MUTED =
+        'Telif hakkıyla korunan içerik barındırdığı için bu bölümün bir kısmı sessize alınmıştır ve oynatma çubuğundaki daha koyu renkli kısımlarla belirtilmiştir';
     STR_GIFT_SUB = 'size bir abonelik hediye etti!';
     STR_ANONYMOUS = 'Anonim';
     STR_CHAT_BANNED = 'Şurada konuşmaktan kalıcı olarak yasaklandınız:';
     STR_CHAT_WRITE = 'Sohbete yaz';
     STR_CHAT_EXTRA = 'Sohbet ekstra ayarları';
     STR_PLACEHOLDER_CHAT =
-        'Bu seçiliyken, ekran klavyesini göstermek için enter\'a basın. Fiziksel bir klavyeniz bağlıysa, ekran klavyesini gizlemek için geri veya esc tuşuna basın';
+        "Bu seçiliyken, ekran klavyesini göstermek için enter'a basın. Fiziksel bir klavyeniz bağlıysa, ekran klavyesini gizlemek için geri veya esc tuşuna basın";
     STR_CHAT_ROOMSTATE = 'Sohbet ROOMSTATE:';
     STR_CHAT_NO_RESTRICTIONS = 'Kısıtlama yok';
     STR_OPTIONS = 'Seçenekler';
@@ -696,7 +706,7 @@ function tr_TRLang() {
     STR_CHAT_TIMESTAMP = 'Mesaj zaman damgasını göster';
     STR_CHAT_NICK_COLOR = 'Okunabilir takma ad renkleri';
     STR_CHAT_NICK_COLOR_SUMMARY =
-        "Bazen koyu bir arka planda okunamayan varsayılan takma ad rengini kullanmak yerine, özel, kolayca görülebilen bir renk kullanın.";
+        'Bazen koyu bir arka planda okunamayan varsayılan takma ad rengini kullanmak yerine, özel, kolayca görülebilen bir renk kullanın.';
     STR_CHAT_CLEAR_MSG = 'Sohbeti temizle, kullanıcı mesajlarını sil';
     STR_CHAT_SHOW_BADGES = 'Kullanıcı rozetlerini göster (aşağıdakiler hariç)';
     STR_CHAT_SHOW_BADGES_MOD = 'Moderatör rozetlerini göster';
@@ -704,20 +714,21 @@ function tr_TRLang() {
     STR_CHAT_SHOW_BADGES_SHARED = 'Paylaşılan sohbet rozetlerini göster';
     STR_CHAT_MESSAGE_DELETED = 'Bu tek kullanıcı mesajının silinmesi istendi';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Bu kullanıcının tüm mesajlarının silinmesi istendi';
-    STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", şu süreyle zaman aşımına uğratıldılar:";
+    STR_CHAT_MESSAGE_DELETED_TIMEOUT = ', şu süreyle zaman aşımına uğratıldılar:';
     STR_CHAT_CLEAR_MSG_SUMMARY =
         'Belirli kullanıcılardan gelen mesajları silin (ör. bir zaman aşımı veya yasaklamadan sonra). Etkinleştirilirse mesajlar kaldırılır; aksi takdirde sadece arka plan maviye döner.';
     STR_OPEN_HOST_SETTINGS = 'Mümkünse, yayının sonunda her zaman hostlanan canlı yayını aç';
     STR_ALWAYS_STAY = 'Bir canlı yayın bittikten sonra her zaman oynatıcı açık kalsın';
     STR_PING_WARNING = "'Twitch'e ping başarısız' uyarısını göster";
     STR_PING_WARNING_SUMMARY =
-        "Uygulama, bir ping aracılığıyla Twitch ile bağlantıyı sürekli kontrol eder. Çok fazla kez başarısız olursa bir uyarı gösterilir. Bu uyarının istemeden gösterildiğine inanıyorsanız, bu seçeneği HAYIR olarak ayarlayın.";
+        'Uygulama, bir ping aracılığıyla Twitch ile bağlantıyı sürekli kontrol eder. Çok fazla kez başarısız olursa bir uyarı gösterilir. Bu uyarının istemeden gösterildiğine inanıyorsanız, bu seçeneği HAYIR olarak ayarlayın.';
     STR_KEY_UP_TIMEOUT = 'Tuş basılı tutma zaman aşımı (milisaniye cinsinden)';
     STR_KEY_UP_TIMEOUT_SUMMARY =
         'Bir basılı tutma eyleminin gerçekleşmesi için bir tuşu ne kadar süreyle basılı tutmanız gerektiğini belirler. Ekranı yenileme, küçük resim seçeneklerini gösterme vb. eylemler.';
     STR_CURRENT_THUMB_STYLE = 'Mevcut odak stili';
     STR_NEW_THUMB_STYLE = 'Yeni odak stili';
-    STR_COLOR_STYLE_TEXT = "Bir seçenek belirlemek için yukarı/aşağı tuşlarına, buradan çıkmak için geri tuşuna, çıkmadan önce onaylamak için 'Değişiklikleri uygula' üzerinde enter'a basın.";
+    STR_COLOR_STYLE_TEXT =
+        "Bir seçenek belirlemek için yukarı/aşağı tuşlarına, buradan çıkmak için geri tuşuna, çıkmadan önce onaylamak için 'Değişiklikleri uygula' üzerinde enter'a basın.";
     STR_SHADOWS = 'Gölgeler';
     STR_SHADOWS_NONE = 'Hiçbiri';
     STR_SHADOWS_WHITE = 'Beyaz';
@@ -728,7 +739,7 @@ function tr_TRLang() {
     STR_APPLY = 'Değişiklikleri uygula';
     STR_COLOR_TYPE = 'Renk türü';
     STR_STYLES = 'Stiller';
-    STR_ENTER = 'Enter\'a basın';
+    STR_ENTER = "Enter'a basın";
     STR_COLOR_ARRAY = 'Arka Plan,Metin,Kenarlık,İzlenen ilerleme çubuğu';
     STR_STYLES_ARRAY = 'Varsayılan,Özel,Beyaz,Gri,Kırmızı,Turuncu,Sarı,Yeşil,Mavi,Mor,Pembe';
     STR_ENTER_RGB = 'RGB değişikliğini kabul etmek için ' + STR_ENTER;
@@ -739,11 +750,15 @@ function tr_TRLang() {
     STR_CHAT_100_ARRAY = ['Sağ', 'Orta', 'Sol'];
     STR_NOTIFICATION_POS = 'Ekrandaki bildirim konumu';
     STR_NOTIFICATION_POS_ARRAY = ['Sağ üst', 'Orta üst', 'Sol üst', 'Sol alt', 'Orta alt', 'Sağ alt'];
-    STR_LOWLATENCY_ARRAY = [STR_DISABLE, 'Normal mod, yeniden arabelleğe almaya neden olabilir', 'En düşük mod, daha da fazla yeniden arabelleğe almaya neden olabilir'];
+    STR_LOWLATENCY_ARRAY = [
+        STR_DISABLE,
+        'Normal mod, yeniden arabelleğe almaya neden olabilir',
+        'En düşük mod, daha da fazla yeniden arabelleğe almaya neden olabilir'
+    ];
     STR_LOWLATENCY_ENABLE_ARRAY = [STR_LOW_LATENCY + ' - ' + STR_DISABLED, STR_LOW_LATENCY + ' - Normal mod', STR_LOW_LATENCY + ' - En düşük mod'];
     STR_VOD_SEEK = 'VOD hızlı geri/ileri sarma kontrolleri';
     STR_VOD_SEEK_SUMMARY =
-        'Geri/ileri adımların ne kadar hızlı çalışacağını kontrol eder. Sol/sağ tuşlarına tıklayıp basılı tuttuğunuzda, adım süresi artar. Artış zaman aşımı geçtikten sonra, maksimum adım süresine kadar artar. Ardından, tuşu bıraktıktan ve bir saniye tıklamadıktan sonra, adım süresi minimum adım süresine geri döner.<br><br>Yukarı tuşuna basmak min/maks değerini geçersiz kılar, tüm olası adımlardan geçmenize ve ilerleme çubuğu kapanana kadar değeri kilitlemenize olanak tanır.<br><br>Tuşu basılı tutmadan tek tıklamalar yapmak süreyi artırmaz.<br><br>Bu seçenekler yalnızca VOD\'larla çalışır. Klipler için adım her zaman 1 saniyedir.';
+        "Geri/ileri adımların ne kadar hızlı çalışacağını kontrol eder. Sol/sağ tuşlarına tıklayıp basılı tuttuğunuzda, adım süresi artar. Artış zaman aşımı geçtikten sonra, maksimum adım süresine kadar artar. Ardından, tuşu bıraktıktan ve bir saniye tıklamadıktan sonra, adım süresi minimum adım süresine geri döner.<br><br>Yukarı tuşuna basmak min/maks değerini geçersiz kılar, tüm olası adımlardan geçmenize ve ilerleme çubuğu kapanana kadar değeri kilitlemenize olanak tanır.<br><br>Tuşu basılı tutmadan tek tıklamalar yapmak süreyi artırmaz.<br><br>Bu seçenekler yalnızca VOD'larla çalışır. Klipler için adım her zaman 1 saniyedir.";
     STR_VOD_SEEK_MIN = 'Minimum (başlangıç) adım süresi';
     STR_VOD_SEEK_MAX = 'Maksimum adım süresi';
     STR_VOD_SEEK_TIME = 'Şu süreyle basılı tuttuktan sonra artış zaman aşımı';
@@ -758,7 +773,7 @@ function tr_TRLang() {
     STR_SHOW_IN_CHAT_CHATTERS = 'Sohbetçileri göster';
     STR_PLAYED = 'Oynatıldı';
     STR_CHAPTERS = 'Bölümler';
-        STR_FROM_SIMPLE = 'konumundan';
+    STR_FROM_SIMPLE = 'konumundan';
     STR_HIDE_MAIN_CLOCK = 'Ana ekran saatini gizle';
     STR_HIDE_PLAYER_CLOCK = 'Oynatıcı saatini gizle';
     STR_HIDE_MAIN_SCREEN_TITLE = 'Ana ekran başlığını gizle';
@@ -768,7 +783,8 @@ function tr_TRLang() {
     STR_INACTIVE_SETTINGS = 'Şu süre boyunca etkileşim olmadığında uygulamayı otomatik olarak simge durumuna küçült:';
     STR_INACTIVE_SETTINGS_SUMMARY =
         'Kimse izlemiyorken uygulamanın çalışmaya devam etmesini önler. Bir uyarı belirir ve kullanıcıya simge durumuna küçültmeyi önlemek için herhangi bir tuşa basması için 15 saniye verir.';
-    STR_INACTIVE_WARNING = 'Uygulama, etkileşimsizlik nedeniyle şu sürede otomatik olarak simge durumuna küçülecek:<br><br>%x<br><br>İptal etmek için herhangi bir tuşa basın';
+    STR_INACTIVE_WARNING =
+        'Uygulama, etkileşimsizlik nedeniyle şu sürede otomatik olarak simge durumuna küçülecek:<br><br>%x<br><br>İptal etmek için herhangi bir tuşa basın';
     STR_REMAINING = 'Kalan:';
     STR_PLAYER_INFO_VISIBILITY = 'Oynatıcı durumu görünürlüğü';
     STR_PREVIEW_SET = 'Önizleme ayarları';
@@ -789,7 +805,7 @@ function tr_TRLang() {
     STR_OFFSET = 'Fark';
 
     STR_AFFILIATE = 'Ortaklık içeriği';
-    STR_AFFILIATE_SUMMARY = "Ortaklık içeriğini görmek istemiyorsanız bunu devre dışı olarak ayarlayın.";
+    STR_AFFILIATE_SUMMARY = 'Ortaklık içeriğini görmek istemiyorsanız bunu devre dışı olarak ayarlayın.';
     STR_AFFILIATE_ABOUT =
         'Bu uygulama, şiddetle tavsiye edilen ürünlere sahip ortaklardan bazı ortaklık bağlantıları ve resimleri içerir. Uygulama sahibi, bu bağlantılar aracılığıyla yapılan satın alımlar için komisyon alabilir. Bir ürünle ilgili tüm bağlantılar, resimler veya herhangi bir şey, uygulamada görüntülenmeden önce uygun şekilde doğrulanır ve/veya kullanılır.';
     STR_AFFILIATE_ABOUT_DIS = 'Ortaklık içeriği ayarlardan devre dışı bırakılabilir.';
@@ -800,12 +816,12 @@ function tr_TRLang() {
     STR_EMBED = 'Gömülü oynatıcı ';
     STR_CLICK_EXIT = 'Oynatıcıdan çıkmak için buraya tıklayın';
     STR_GO_FULL = 'Tam ekran';
-    STR_GO_FULL_HELP = 'Tıklayın, 9 veya F11\'e basın';
+    STR_GO_FULL_HELP = "Tıklayın, 9 veya F11'e basın";
     STR_NOT_SUPPORT_BROWSER = 'Bu, bir tarayıcıda desteklenmiyor';
 
     STR_WARNING_BROWSER = 'Tarayıcı uyarısı';
     STR_WARNING_BROWSER_SUMMARY =
-        'Bu uygulama esas olarak TV\'lerde kullanılmak üzere tasarlanmıştır, diğer cihazlar için destek sınırlıdır. Uygulamayı bir fare kullanarak kontrol edebilirsiniz ancak klavye tuşları olan yukarı, aşağı, sol, sağ, enter ve geri tuşu (ESC geri tuşu olarak çalışır) ile daha iyi çalışır.';
+        "Bu uygulama esas olarak TV'lerde kullanılmak üzere tasarlanmıştır, diğer cihazlar için destek sınırlıdır. Uygulamayı bir fare kullanarak kontrol edebilirsiniz ancak klavye tuşları olan yukarı, aşağı, sol, sağ, enter ve geri tuşu (ESC geri tuşu olarak çalışır) ile daha iyi çalışır.";
     STR_THUMB_OPTIONS_CLICK = 'Bir eylemin üzerinde iki kez tıklayın (açmak veya uygulamak için), uygulamadan çıkmak için pencerenin dışına tıklayın';
     STR_CLOSE_THIS_BROWSER = 'Bunu kapatmak için geri, enter tuşuna basın veya dışarıya fare ile tıklayın';
 
@@ -840,14 +856,14 @@ function tr_TRLang() {
     SEEK_PREVIEW_SINGLE = 'Tek resim';
     SEEK_PREVIEW_CAROUSEL = 'Resim döngüsü';
 
-    OPEN_NEW_ISSUE = '(Yeni sorun\'a tıklayın)';
+    OPEN_NEW_ISSUE = "(Yeni sorun'a tıklayın)";
 
     STR_CONFIRM = 'Onayla';
 
     STR_MATURE_NO_CHANGES = 'Eksik şifre nedeniyle yetişkin içeriğinde değişiklik yapılmadı';
     STR_MATURE_PROTECT = 'Yetişkin içeriği değişikliklerini bir şifreyle koru';
-    STR_MATURE_HELP_SET_PASS = 'Bir şifre belirleyin ve Onayla\'ya tıklayın, çıkış yapmak yetişkin ayarlarını sıfırlayacaktır';
-    STR_MATURE_HELP_CHECK_PASS = 'Kaydedilmiş şifreyi girin ve Onayla\'ya tıklayın, çıkış yapmak yetişkin ayarlarını sıfırlayacaktır';
+    STR_MATURE_HELP_SET_PASS = "Bir şifre belirleyin ve Onayla'ya tıklayın, çıkış yapmak yetişkin ayarlarını sıfırlayacaktır";
+    STR_MATURE_HELP_CHECK_PASS = "Kaydedilmiş şifreyi girin ve Onayla'ya tıklayın, çıkış yapmak yetişkin ayarlarını sıfırlayacaktır";
 
     STR_MATURE_DISABLED = 'Yetişkin içeriği devre dışı';
     STR_ENABLE_MATURE = 'Yetişkin içeriği';
@@ -864,7 +880,7 @@ function tr_TRLang() {
     STR_BLOCK_NO_CHANNEL = 'Bunun için kanal bilgisi alınamıyor';
     STR_BLOCK_OVERWRITE = 'Engellenenleri göster';
     STR_BLOCK_SORT_DATE = 'Engellenme tarihine göre sıralandı';
-    STR_BLOCK_SORT_NAME = 'İsme göre A\'dan Z\'ye sıralandı';
+    STR_BLOCK_SORT_NAME = "İsme göre A'dan Z'ye sıralandı";
     STR_BLOCK_EMPTY_CONTENT = 'Bu türde engellenmiş içerik yok';
 
     STR_NO_TOKEN_WARNING = 'Bir kullanıcı eklemeden uygulama içeriği yükleyemeyebilir, bu bir Twitch API sınırlamasıdır';
@@ -880,26 +896,29 @@ function tr_TRLang() {
     STR_PASS_MATURE_ENABLED = 'Yetişkin içeriği etkinleştirildi, eski şifre silindi';
 
     STR_PLAYER_EXTRA_CODEC = 'Gelişmiş Yayın HEVC, AV1, 1440p 4k desteği';
-    STR_PLAYER_EXTRA_CODEC_SUMMARY = 'Çoğu yayın 1080p60\'a kadar AVC (H.264) kullanır; HEVC/AV1, mevcut olduğunda 1440p, 4K ve 60+fps\'yi etkinleştirir.';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY =
+        "Çoğu yayın 1080p60'a kadar AVC (H.264) kullanır; HEVC/AV1, mevcut olduğunda 1440p, 4K ve 60+fps'yi etkinleştirir.";
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY1 =
-        'Bu özellik yalnızca oturum açmış kullanıcılar için çalışır. Tüm yayınlar desteklenmez — bu, yayıncının etkinleştirmesine ve Twitch\'in bölgenizde bunu sağlayıp sağlamadığına bağlıdır.';
+        "Bu özellik yalnızca oturum açmış kullanıcılar için çalışır. Tüm yayınlar desteklenmez — bu, yayıncının etkinleştirmesine ve Twitch'in bölgenizde bunu sağlayıp sağlamadığına bağlıdır.";
 
-    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA = 'Uygulama, daha yüksek kaliteli yayınlar için cihazınızın HEVC veya AV1\'i destekleyip desteklemediğini kontrol eder.';
+    STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA =
+        "Uygulama, daha yüksek kaliteli yayınlar için cihazınızın HEVC veya AV1'i destekleyip desteklemediğini kontrol eder.";
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA2 = 'Cihaz desteği olmadan, oynatma sınırlı olacak ve gelişmiş yayınlar için çalışmayabilir.';
 
     STR_PLAYER_CODEC_AV1 = 'AV1';
     STR_PLAYER_CODEC_HEVC = 'HEVC';
-        STR_PLAYER_CODEC_SUPPORTED = 'cihaz tarafından destekleniyor';
-    STR_PLAYER_CODEC_NOT_SUPPORTED = 'Cihaz desteklemiyor! Bu codec\'i etkinleştirmek oynatma hatalarına neden olabilir.';
+    STR_PLAYER_CODEC_SUPPORTED = 'cihaz tarafından destekleniyor';
+    STR_PLAYER_CODEC_NOT_SUPPORTED = "Cihaz desteklemiyor! Bu codec'i etkinleştirmek oynatma hatalarına neden olabilir.";
 
     STR_PLAYER_EXTRA_CODEC_SUMMARY_EXTRA3 = 'Cihazın yeteneklerini daha iyi anlamak için ayarlar seçeneğini kontrol edin: ';
 
     STR_BLOCKED_CODEC = 'Codec yeteneği ve Engellenen kodekler';
     STR_BLOCKED_CODEC_SUMMARY = 'Kullanılan codec yeteneklerini listeler ve kodeklerin kullanılmasını engellemeye izin verir.';
 
-    STR_CODEC_DIALOG_SUMMARY_1 = 'Bu bölüm, bu uygulama tarafından kullanılan tüm cihaz destekli codec türlerini (AVC H.264, HEVC H.265 ve AV1) listeler.';
+    STR_CODEC_DIALOG_SUMMARY_1 =
+        'Bu bölüm, bu uygulama tarafından kullanılan tüm cihaz destekli codec türlerini (AVC H.264, HEVC H.265 ve AV1) listeler.';
 
     STR_CODEC_DIALOG_SUMMARY_2 =
         'Yazılım kodekleri (OMX.google), bir donanım kodeği mevcutsa varsayılan olarak devre dışı bırakılır. Bir oynatma sorununuz varsa, yazılım kodeğini devre dışı bırakmayı ve donanımı etkinleştirmeyi veya tam tersini deneyin (Sürekli atlanan karelerin birikmesi bir codec sorununun göstergesidir).';
@@ -923,7 +942,8 @@ function tr_TRLang() {
 
     STR_BACKUP_ACCOUNT_REMOVE = 'Google Drive hesabını kaldır';
     STR_BACKUP_ACCOUNT_ADD = 'Yedekleme için Google Drive hesabı ekle';
-    STR_BACKUP_ACCOUNT_ADD_SUMMARY = 'Bir yedeği geri yüklemek için bir hesap ekleyin; uygulama size mevcut geri yükleme seçeneklerini gösterecektir.';
+    STR_BACKUP_ACCOUNT_ADD_SUMMARY =
+        'Bir yedeği geri yüklemek için bir hesap ekleyin; uygulama size mevcut geri yükleme seçeneklerini gösterecektir.';
     STR_BACKUP_ACCOUNT_DIALOG_TITLE = 'Google Drive hesabı ekle';
 
     STR_BACKUP_ACCOUNT_DIALOG_BODY = 'API bilgileri alınıyor, lütfen bekleyin...';
@@ -938,7 +958,7 @@ function tr_TRLang() {
     STR_BACKUP_NAME = 'Yedek adı:';
     STR_BACKUP_SYNC = 'Senkronizasyon, Yedekleme ve Geri Yükleme';
     STR_BACKUP_SYNC_SUMMARY =
-        'Uygulama, yalnızca oluşturduğu belirli Google Drive dosyalarını görüntüleyebilir, oluşturabilir, düzenleyebilir ve silebilir; Google Drive\'ınızdaki diğer dosyaları görüntüleyemez, değiştiremez veya silemez.' +
+        "Uygulama, yalnızca oluşturduğu belirli Google Drive dosyalarını görüntüleyebilir, oluşturabilir, düzenleyebilir ve silebilir; Google Drive'ınızdaki diğer dosyaları görüntüleyemez, değiştiremez veya silemez." +
         '<br><br>' +
         'Ayrıca, mevcut aktif hesabı görüntülemek için e-posta adresinizi ve profil resminizi okuyabilir. Bu bilgiler yalnızca görüntülenecek ve DEĞİŞTİRİLMEYECEKTİR.';
 
@@ -950,7 +970,8 @@ function tr_TRLang() {
     STR_BACKUP_RESTORE_USER = 'Kullanıcıları geri yükle';
     STR_BACKUP_RESTORE_HISTORY = 'Kullanıcıların geçmişini ve engellenenler listesini geri yükle.';
     STR_BACKUP_RESTORE_SETTINGS = 'Ayarları geri yükle';
-    STR_BACKUP_RESTORE_SUMMARY = 'Geri yüklemeden sonra sorun yaşarsanız, uygulama verilerini temizlemeyi ve bir seçeneği atlayarak geri yüklemeyi deneyin.';
+    STR_BACKUP_RESTORE_SUMMARY =
+        'Geri yüklemeden sonra sorun yaşarsanız, uygulama verilerini temizlemeyi ve bir seçeneği atlayarak geri yüklemeyi deneyin.';
 
     STR_BACKUP_SYNC_SETTINGS_SUMMARY =
         'Yedek, tüm cihazlarınız için yalnızca bir birleşik ayar setine sahiptir. Yaptığınız herhangi bir değişiklik, uygulamayı bir sonraki açışınızda diğer cihazlarınıza uygulanacaktır.';
