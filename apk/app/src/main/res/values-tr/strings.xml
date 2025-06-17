@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Uygulama Bilgileri -->
     <string name="app_name">Twitch için SmartTV İstemcisi</string>
-    <string name="short_app_name">STTV</string>
 
     <!-- Bildirimler -->
     <string name="notification_service">Bildirim servisi çalışıyor</string>
