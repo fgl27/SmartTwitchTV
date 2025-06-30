@@ -44427,7 +44427,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         //Use off set if there is too many options
         //Ajust the value as per setting option by trying diff Global app font size offset
-        var fontOffset = Settings_Obj_default('global_font_offset') + 3,
+        var fontOffset = Settings_Obj_default('global_font_offset') + 4,
             offset = Object.keys(obj).length - fontOffset;
 
         Settings_DialogShow(obj, STR_CHAT_OPTIONS, click, offset);
