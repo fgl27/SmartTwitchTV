@@ -65,6 +65,14 @@ function GDriveValidateTokenSuccess(obj) {
     }
 }
 
+function GDriveRestoreStart() {
+    if (GDriveSyncEnabled()) {
+        GDriveGetBackupFile();
+    }
+
+    GDriveGetUserInfo();
+}
+
 function GDriveGetUserInfo() {
     GDriveUserInfo(GDriveGetUserInfoSuccess, noop_fun, 0, 0);
 }
