@@ -586,6 +586,8 @@
         STR_NOTIFICATION_REPEAT,
         STR_NOTIFICATION_REPEAT_SUMMARY,
         STR_CHAT_TIMESTAMP,
+        STR_CHAT_USER_NOTICE,
+        STR_CHAT_USER_NOTICE_SUMMARY,
         STR_PLAYER_INFO_VISIBILITY_ARRAY,
         STR_OPEN_CHAT,
         STR_WAITING,
@@ -2077,6 +2079,9 @@
             "When an authorization key is provided, the app logs into chat as the current user unless chat is disabled in the player's controls. If this is net to NO, it logs in anonymously, allowing messages but hiding bans and ROOMSTATE.";
         STR_CHAT_BOTS = 'Block bots and bot commands (!command) from show in chat';
         STR_CHAT_TIMESTAMP = 'Show message timestamp';
+        STR_CHAT_USER_NOTICE = 'Display chat user notification warning';
+        STR_CHAT_USER_NOTICE_SUMMARY =
+            'Show an on-screen warning when the chat receives an indirect user notification. Eg.: Chat: This room is now in emote-only mode.';
         STR_CHAT_NICK_COLOR = 'Readable nick colors';
         STR_CHAT_NICK_COLOR_SUMMARY =
             "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";
@@ -2842,6 +2847,9 @@
         STR_CHAT_LOGGING_SUMMARY =
             'La aplicación siempre iniciará sesión en el chat con el usuario actual cuando se proporcione una clave de autorización, a menos que el chat esté desactivado en los controles inferiores del reproductor, pero si esta opción está configurada en NO, evitará el inicio de sesión con el nombre de usuario actual y en su lugar, iniciará sesión como anónimo, incluso proporcionando una clave de autorización. Esto no evita que se envíe un mensaje de chat para este usuario si se agrega una clave, pero evita que se sepa si está prohibido en el chat y evita que se conozca el estado del chat ROOMSTATE';
         STR_CHAT_TIMESTAMP = 'Mostrar la marca de tiempo del mensaje';
+        STR_CHAT_USER_NOTICE = 'Mostrar advertencia de notificación indirecta en el chat';
+        STR_CHAT_USER_NOTICE_SUMMARY =
+            'Mostrar una advertencia en pantalla cuando el chat reciba una notificación indirecta. Ej.: Chat: Esta sala ahora está en modo solo emoticonos.';
         STR_CHAT_NICK_COLOR = 'Colores de nick legibles';
         STR_CHAT_NICK_COLOR_SUMMARY =
             'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
@@ -3688,6 +3696,10 @@
             'O aplicativo sempre fará login no chat usando o usuário atual quando uma chave de autorização for fornecida, a menos que o chat seja desabilitado nos controles da parte inferior do player, mas se esta opção for definida como NÃO, impedirá o login usando o nome de usuário atual e, em vez disso, será registrado como anônimo , mesmo que forneça uma chave de autorização. Isso não impede o envio de mensagem de chat para este usuário se uma chave for adicionada, mas impede o app de saber se você está banido do chat e impede o status do chat ROOMSTATE';
         STR_CHAT_BOTS = 'Bloquear bots e comandos de bot (!comando) de serem exibidos no chat';
         STR_CHAT_TIMESTAMP = 'Mostrar data e hora da mensagem';
+        STR_CHAT_USER_NOTICE = 'Exibir aviso de notificação indireta no chat';
+        STR_CHAT_USER_NOTICE_SUMMARY =
+            'Mostrar um aviso na tela quando o chat receber uma notificação indireta. Ex.: Chat: Esta sala agora está no modo somente emotes.';
+
         STR_CHAT_NICK_COLOR = 'Cores de nick legíveis';
         STR_CHAT_NICK_COLOR_SUMMARY =
             'Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar';
@@ -4657,6 +4669,9 @@
             'Приложение всегда будет входить в чат с использованием текущего пользователя, если предоставлен ключ авторизации (если только чат не отключен на нижних элементах управления плеера). Но если для этого параметра установлено значение НЕТ, это предотвратит вход с использованием текущего имени пользователя и вместо этого будет входить как анонимный, даже если предоставлен ключ авторизации. Это не препятствует отправке сообщений в чат (если добавлен ключ), но не позволяет узнать Twitch, заблокированы ли вы в чате, и не позволяет узнать нахождение в чате';
         STR_CHAT_BOTS = 'Блокировать отображение ботов и команды ботов (!команда) в чате';
         STR_CHAT_TIMESTAMP = 'Показать время сообщения';
+        STR_CHAT_USER_NOTICE = 'Показать предупреждение о непрямом уведомлении в чате';
+        STR_CHAT_USER_NOTICE_SUMMARY =
+            'Показать предупреждение на экране, когда чат получает непрямое уведомление. Например: Чат: Этот канал теперь в режиме только эмодзи.';
         STR_CHAT_NICK_COLOR = 'Читаемые цвета ников';
         STR_CHAT_NICK_COLOR_SUMMARY =
             'Вместо использования цвета ников по умолчанию, который иногда не читается на темном фоне, использовать настраиваемый, удобный для чтения цвет.';
@@ -6625,6 +6640,10 @@
             'Вхід у чат відбуватиметься від імені поточного користувача, якщо надано ключ авторизації. Якщо «Ні» - вхід здійснюватиметься анонімно. Це не заважає надсилати повідомлення, але Twitch не зможе визначити, чи вас заблоковано, або чи ви присутні в чаті.';
         STR_CHAT_BOTS = 'Блокувати ботів і команди (!command) у чаті';
         STR_CHAT_TIMESTAMP = 'Показувати час повідомлень';
+        STR_CHAT_USER_NOTICE = 'Показати попередження про непряме сповіщення в чаті';
+        STR_CHAT_USER_NOTICE_SUMMARY =
+            'Показувати попередження на екрані, коли чат отримує непряме сповіщення. Наприклад: Чат: Ця кімната тепер у режимі лише емодзі.';
+
         STR_CHAT_NICK_COLOR = 'Читабельні кольори ніків';
         STR_CHAT_NICK_COLOR_SUMMARY = 'Замість стандартних кольорів ніків (які іноді погано видно), використовуються яскраві кольори';
         STR_CHAT_CLEAR_MSG = 'Очистити чат — видалити повідомлення користувачів';
@@ -13035,7 +13054,9 @@
         //Main_Log('ChatLive_UpdateRoomState');
         //Main_Log(message);
         if (message.tags) {
-            if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
+            if (!ChatLive_RoomState[chat_number]) {
+                ChatLive_RoomState[chat_number] = {};
+            }
 
             var tags = message.tags;
 
@@ -13233,6 +13254,7 @@
             ChatLive_UserNoticeWarn(message);
         } else if (msgId && useToken[chat_number] && Main_A_includes_B(message.tags['msg-id'] + '', 'msg_banned')) {
             var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
+
             ChatLive_Warn(text, 3500);
 
             ChatLive_Banned[chat_number] = true;
@@ -13244,7 +13266,9 @@
             if (useToken[chat_number] && AddUser_UserHasToken()) {
                 AddCode_validateToken(0);
             }
-        } else ChatLive_UserNoticeWarn(message);
+        } else if (Settings_value.chat_showUserNotice.defaultValue) {
+            ChatLive_UserNoticeWarn(message);
+        }
     }
 
     function ChatLive_UserNoticeWarn(message) {
@@ -14001,15 +14025,19 @@
     function ChatLiveControls_RefreshRoomState(chat_number) {
         if (chat_number === ChatLiveControls_Channel) {
             ChatLiveControls_SetRoomState();
-            if (Main_isElementShowing('chat_send') && !ChatLiveControls_CanSend()) ChatLiveControls_CantSend();
+
+            if (Main_isElementShowing('chat_send') && !ChatLiveControls_CanSend()) {
+                ChatLiveControls_CantSend();
+            }
         }
     }
 
     function ChatLiveControls_SetRoomState() {
         var text = '';
 
-        if (!ChatLive_RoomState[ChatLiveControls_Channel]) text = STR_UNKNOWN;
-        else {
+        if (!ChatLive_RoomState[ChatLiveControls_Channel]) {
+            text = STR_UNKNOWN;
+        } else {
             var tags = ChatLive_RoomState[ChatLiveControls_Channel];
 
             if (tags.hasOwnProperty('emote-only') && tags['emote-only']) text += 'Emote-only, ';
@@ -15902,7 +15930,6 @@
     var Main_SearchVod = 26;
 
     var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
-    var Main_HistoryPos = 0;
 
     var Main_GoBefore = '';
     var Main_values = {
@@ -15956,7 +15983,8 @@
         Password_data: null,
         OverwriteBlock: 0,
         BlockSort: false,
-        checkedEnhancedStream: false
+        checkedEnhancedStream: false,
+        HistoryPos: 0
     };
 
     var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
@@ -35030,7 +35058,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     Screens_RemoveAllFocus(key);
 
                     if (ScreenObj[key].screen === Main_Blocked) {
-                        Sidepannel_Go(Main_History[Main_HistoryPos]);
+                        Sidepannel_Go(Main_History[Main_values.HistoryPos]);
                     } else if (
                         ScreenObj[key].screen === Main_aGame ||
                         ScreenObj[key].screen === Main_AGameVod ||
@@ -35054,7 +35082,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     Screens_RemoveAllFocus(key);
 
                     if (ScreenObj[key].screen === Main_UserChannels) {
-                        Sidepannel_Go(Main_History[Main_HistoryPos]);
+                        Sidepannel_Go(Main_History[Main_values.HistoryPos]);
                     } else if (
                         ScreenObj[key].screen === Main_aGame ||
                         ScreenObj[key].screen === Main_AGameVod ||
@@ -36855,7 +36883,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Main_usergames,
             Main_UserVod,
             Main_UserChannels,
-            Main_History[Main_HistoryPos],
+            Main_History[Main_values.HistoryPos],
             Main_Blocked
         ];
     }
@@ -39362,7 +39390,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 table: 'stream_table_user_channels',
                 screen: key,
                 IsUser: true,
-                key_pgDown: Main_History[Main_HistoryPos],
+                key_pgDown: Main_History[Main_values.HistoryPos],
                 key_pgUp: Main_UserVod,
                 getFollowed: true,
                 object: 'edges',
@@ -39558,7 +39586,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     }
                 },
                 label_init: function () {
-                    Main_HistoryPos = 0;
+                    Main_values.HistoryPos = 0;
                     ScreensObj_TopLableUserInit(this.screen);
                     ScreensObj_SetTopLable(
                         STR_USER,
@@ -39663,7 +39691,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     return STR_VIDEOS;
                 },
                 label_init: function () {
-                    Main_HistoryPos = 1;
+                    Main_values.HistoryPos = 1;
                     ScreensObj_TopLableUserInit(this.screen);
 
                     ScreensObj_SetTopLable(
@@ -39752,7 +39780,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                     return STR_CLIPS;
                 },
                 label_init: function () {
-                    Main_HistoryPos = 2;
+                    Main_values.HistoryPos = 2;
                     ScreensObj_TopLableUserInit(this.screen);
 
                     ScreensObj_SetTopLable(
@@ -41532,6 +41560,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             //Migrated to dialog
             values: ['disabled', 'enabled', 'bright', 'dark'],
             defaultValue: 1
+        },
+        chat_showUserNotice: {
+            //Migrated to dialog
+            values: ['no', 'yes'],
+            defaultValue: 2
         },
         disabled_shared: {
             //Migrated to dialog
@@ -44235,6 +44268,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Settings_value.chat_nickcolor.values = yes_no;
         Settings_value.chat_line_animation.values = yes_no;
         Settings_value.chat_timestamp.values = yes_no;
+        Settings_value.chat_showUserNotice.values = yes_no;
         Settings_value.clear_chat.values = yes_no;
         Settings_value.show_chatters.values = [STR_DISABLED, STR_SHOW_IN_CHAT_CHATTERS, STR_SHOW_IN_CHAT_VIEWERS];
 
@@ -44275,9 +44309,15 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 title: STR_CHAT_TIMESTAMP,
                 summary: null
             },
+            chat_showUserNotice: {
+                defaultValue: Settings_value.chat_showUserNotice.defaultValue,
+                values: Settings_value.chat_showUserNotice.values,
+                title: STR_CHAT_USER_NOTICE,
+                summary: STR_CHAT_USER_NOTICE_SUMMARY
+            },
             show_chatters: {
-                defaultValue: Settings_value.chat_timestamp.defaultValue,
-                values: Settings_value.chat_timestamp.values,
+                defaultValue: Settings_value.show_chatters.defaultValue,
+                values: Settings_value.show_chatters.values,
                 title: STR_SHOW_IN_CHAT,
                 summary: STR_SHOW_IN_CHAT_SUMMARY
             },
@@ -45902,7 +45942,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Main_values.My_channel = true;
             Main_SwitchScreen();
         } else if (Sidepannel_Sidepannel_Pos === 8) {
-            Sidepannel_Go(Main_History[Main_HistoryPos]);
+            Sidepannel_Go(Main_History[Main_values.HistoryPos]);
         } else if (Sidepannel_Sidepannel_Pos === 9) {
             Sidepannel_Go(Main_Blocked);
         } else {
