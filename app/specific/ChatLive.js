@@ -1390,7 +1390,9 @@ function ChatLive_UpdateRoomState(message, chat_number) {
     //Main_Log('ChatLive_UpdateRoomState');
     //Main_Log(message);
     if (message.tags) {
-        if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
+        if (!ChatLive_RoomState[chat_number]) {
+            ChatLive_RoomState[chat_number] = {};
+        }
 
         var tags = message.tags;
 
@@ -1588,6 +1590,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
         ChatLive_UserNoticeWarn(message);
     } else if (msgId && useToken[chat_number] && Main_A_includes_B(message.tags['msg-id'] + '', 'msg_banned')) {
         var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
+
         ChatLive_Warn(text, 3500);
 
         ChatLive_Banned[chat_number] = true;
@@ -1599,7 +1602,9 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
         if (useToken[chat_number] && AddUser_UserHasToken()) {
             AddCode_validateToken(0);
         }
-    } else ChatLive_UserNoticeWarn(message);
+    } else if (Settings_value.chat_showUserNotice.defaultValue) {
+        ChatLive_UserNoticeWarn(message);
+    }
 }
 
 function ChatLive_UserNoticeWarn(message) {

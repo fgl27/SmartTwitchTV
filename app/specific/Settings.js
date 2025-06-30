@@ -660,6 +660,11 @@ var Settings_value = {
         values: ['disabled', 'enabled', 'bright', 'dark'],
         defaultValue: 1
     },
+    chat_showUserNotice: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
     disabled_shared: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -3348,6 +3353,7 @@ function Settings_DialogShowChat(click) {
     Settings_value.chat_nickcolor.values = yes_no;
     Settings_value.chat_line_animation.values = yes_no;
     Settings_value.chat_timestamp.values = yes_no;
+    Settings_value.chat_showUserNotice.values = yes_no;
     Settings_value.clear_chat.values = yes_no;
     Settings_value.show_chatters.values = [STR_DISABLED, STR_SHOW_IN_CHAT_CHATTERS, STR_SHOW_IN_CHAT_VIEWERS];
 
@@ -3388,9 +3394,15 @@ function Settings_DialogShowChat(click) {
             title: STR_CHAT_TIMESTAMP,
             summary: null
         },
+        chat_showUserNotice: {
+            defaultValue: Settings_value.chat_showUserNotice.defaultValue,
+            values: Settings_value.chat_showUserNotice.values,
+            title: STR_CHAT_USER_NOTICE,
+            summary: STR_CHAT_USER_NOTICE_SUMMARY
+        },
         show_chatters: {
-            defaultValue: Settings_value.chat_timestamp.defaultValue,
-            values: Settings_value.chat_timestamp.values,
+            defaultValue: Settings_value.show_chatters.defaultValue,
+            values: Settings_value.show_chatters.values,
             title: STR_SHOW_IN_CHAT,
             summary: STR_SHOW_IN_CHAT_SUMMARY
         },

@@ -483,6 +483,9 @@ function es_ESLang() {
     STR_CHAT_LOGGING_SUMMARY =
         'La aplicación siempre iniciará sesión en el chat con el usuario actual cuando se proporcione una clave de autorización, a menos que el chat esté desactivado en los controles inferiores del reproductor, pero si esta opción está configurada en NO, evitará el inicio de sesión con el nombre de usuario actual y en su lugar, iniciará sesión como anónimo, incluso proporcionando una clave de autorización. Esto no evita que se envíe un mensaje de chat para este usuario si se agrega una clave, pero evita que se sepa si está prohibido en el chat y evita que se conozca el estado del chat ROOMSTATE';
     STR_CHAT_TIMESTAMP = 'Mostrar la marca de tiempo del mensaje';
+    STR_CHAT_USER_NOTICE = 'Mostrar advertencia de notificación indirecta en el chat';
+    STR_CHAT_USER_NOTICE_SUMMARY =
+        'Mostrar una advertencia en pantalla cuando el chat reciba una notificación indirecta. Ej.: Chat: Esta sala ahora está en modo solo emoticonos.';
     STR_CHAT_NICK_COLOR = 'Colores de nick legibles';
     STR_CHAT_NICK_COLOR_SUMMARY =
         'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';

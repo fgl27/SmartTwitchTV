@@ -684,6 +684,10 @@ function pt_BRLang() {
         'O aplicativo sempre fará login no chat usando o usuário atual quando uma chave de autorização for fornecida, a menos que o chat seja desabilitado nos controles da parte inferior do player, mas se esta opção for definida como NÃO, impedirá o login usando o nome de usuário atual e, em vez disso, será registrado como anônimo , mesmo que forneça uma chave de autorização. Isso não impede o envio de mensagem de chat para este usuário se uma chave for adicionada, mas impede o app de saber se você está banido do chat e impede o status do chat ROOMSTATE';
     STR_CHAT_BOTS = 'Bloquear bots e comandos de bot (!comando) de serem exibidos no chat';
     STR_CHAT_TIMESTAMP = 'Mostrar data e hora da mensagem';
+    STR_CHAT_USER_NOTICE = 'Exibir aviso de notificação indireta no chat';
+    STR_CHAT_USER_NOTICE_SUMMARY =
+        'Mostrar um aviso na tela quando o chat receber uma notificação indireta. Ex.: Chat: Esta sala agora está no modo somente emotes.';
+
     STR_CHAT_NICK_COLOR = 'Cores de nick legíveis';
     STR_CHAT_NICK_COLOR_SUMMARY =
         'Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar';

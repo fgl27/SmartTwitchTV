@@ -696,6 +696,9 @@ function en_USLang() {
         "When an authorization key is provided, the app logs into chat as the current user unless chat is disabled in the player's controls. If this is net to NO, it logs in anonymously, allowing messages but hiding bans and ROOMSTATE.";
     STR_CHAT_BOTS = 'Block bots and bot commands (!command) from show in chat';
     STR_CHAT_TIMESTAMP = 'Show message timestamp';
+    STR_CHAT_USER_NOTICE = 'Display chat user notification warning';
+    STR_CHAT_USER_NOTICE_SUMMARY =
+        'Show an on-screen warning when the chat receives an indirect user notification. Eg.: Chat: This room is now in emote-only mode.';
     STR_CHAT_NICK_COLOR = 'Readable nick colors';
     STR_CHAT_NICK_COLOR_SUMMARY =
         "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";

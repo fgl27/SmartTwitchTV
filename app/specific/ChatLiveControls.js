@@ -106,15 +106,19 @@ function ChatLiveControls_Hide() {
 function ChatLiveControls_RefreshRoomState(chat_number) {
     if (chat_number === ChatLiveControls_Channel) {
         ChatLiveControls_SetRoomState();
-        if (Main_isElementShowing('chat_send') && !ChatLiveControls_CanSend()) ChatLiveControls_CantSend();
+
+        if (Main_isElementShowing('chat_send') && !ChatLiveControls_CanSend()) {
+            ChatLiveControls_CantSend();
+        }
     }
 }
 
 function ChatLiveControls_SetRoomState() {
     var text = '';
 
-    if (!ChatLive_RoomState[ChatLiveControls_Channel]) text = STR_UNKNOWN;
-    else {
+    if (!ChatLive_RoomState[ChatLiveControls_Channel]) {
+        text = STR_UNKNOWN;
+    } else {
         var tags = ChatLive_RoomState[ChatLiveControls_Channel];
 
         if (tags.hasOwnProperty('emote-only') && tags['emote-only']) text += 'Emote-only, ';
