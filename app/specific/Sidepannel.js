@@ -434,7 +434,7 @@ function Sidepannel_KeyEnterUser() {
         Main_values.My_channel = true;
         Main_SwitchScreen();
     } else if (Sidepannel_Sidepannel_Pos === 8) {
-        Sidepannel_Go(Main_History[Main_HistoryPos]);
+        Sidepannel_Go(Main_History[Main_values.HistoryPos]);
     } else if (Sidepannel_Sidepannel_Pos === 9) {
         Sidepannel_Go(Main_Blocked);
     } else {

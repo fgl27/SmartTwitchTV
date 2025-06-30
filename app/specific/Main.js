@@ -54,7 +54,6 @@ var Main_Blocked = 25;
 var Main_SearchVod = 26;
 
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
-var Main_HistoryPos = 0;
 
 var Main_GoBefore = '';
 var Main_values = {
@@ -108,7 +107,8 @@ var Main_values = {
     Password_data: null,
     OverwriteBlock: 0,
     BlockSort: false,
-    checkedEnhancedStream: false
+    checkedEnhancedStream: false,
+    HistoryPos: 0
 };
 
 var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];

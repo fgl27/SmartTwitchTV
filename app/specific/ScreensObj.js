@@ -2225,7 +2225,7 @@ function ScreensObj_InitUserChannels() {
             table: 'stream_table_user_channels',
             screen: key,
             IsUser: true,
-            key_pgDown: Main_History[Main_HistoryPos],
+            key_pgDown: Main_History[Main_values.HistoryPos],
             key_pgUp: Main_UserVod,
             getFollowed: true,
             object: 'edges',
@@ -2414,7 +2414,7 @@ function ScreensObj_HistoryLive() {
                 }
             },
             label_init: function () {
-                Main_HistoryPos = 0;
+                Main_values.HistoryPos = 0;
                 ScreensObj_TopLableUserInit(this.screen);
                 ScreensObj_SetTopLable(
                     STR_USER,
@@ -2519,7 +2519,7 @@ function ScreensObj_HistoryVod() {
                 return STR_VIDEOS;
             },
             label_init: function () {
-                Main_HistoryPos = 1;
+                Main_values.HistoryPos = 1;
                 ScreensObj_TopLableUserInit(this.screen);
 
                 ScreensObj_SetTopLable(
@@ -2608,7 +2608,7 @@ function ScreensObj_HistoryClip() {
                 return STR_CLIPS;
             },
             label_init: function () {
-                Main_HistoryPos = 2;
+                Main_values.HistoryPos = 2;
                 ScreensObj_TopLableUserInit(this.screen);
 
                 ScreensObj_SetTopLable(

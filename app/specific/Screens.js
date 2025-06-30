@@ -2206,7 +2206,7 @@ function Screens_handleKeyDown(key, event) {
                 Screens_RemoveAllFocus(key);
 
                 if (ScreenObj[key].screen === Main_Blocked) {
-                    Sidepannel_Go(Main_History[Main_HistoryPos]);
+                    Sidepannel_Go(Main_History[Main_values.HistoryPos]);
                 } else if (
                     ScreenObj[key].screen === Main_aGame ||
                     ScreenObj[key].screen === Main_AGameVod ||
@@ -2230,7 +2230,7 @@ function Screens_handleKeyDown(key, event) {
                 Screens_RemoveAllFocus(key);
 
                 if (ScreenObj[key].screen === Main_UserChannels) {
-                    Sidepannel_Go(Main_History[Main_HistoryPos]);
+                    Sidepannel_Go(Main_History[Main_values.HistoryPos]);
                 } else if (
                     ScreenObj[key].screen === Main_aGame ||
                     ScreenObj[key].screen === Main_AGameVod ||
@@ -4016,7 +4016,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
         Main_usergames,
         Main_UserVod,
         Main_UserChannels,
-        Main_History[Main_HistoryPos],
+        Main_History[Main_values.HistoryPos],
         Main_Blocked
     ];
 }
