@@ -82,7 +82,7 @@ dependencies {
     //implementation project(':media-lib-decoder-av1')
 
     //Crashlytics
-    implementation platform('com.google.firebase:firebase-bom:34.0.0')
+    implementation platform('com.google.firebase:firebase-bom:33.14.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     //Crashlytics end
