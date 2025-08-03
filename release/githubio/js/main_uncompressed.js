@@ -7185,6 +7185,8 @@
     var KEY_A = 65;
     var KEY_C = 67;
     var KEY_E = 69;
+    var KEY_J = 74;
+    var KEY_K = 75;
     var KEY_T = 84;
     var KEY_U = 85;
     /*
@@ -22366,6 +22368,16 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         return Play_timeMs(dateNow - new Date(time).getTime());
     }
 
+    function Play_MinFromSec(seconds) {
+        var min = Math.floor(seconds / 60);
+        var sec = seconds % 60;
+        return min + ':' + Play_lessthanten(sec);
+    }
+
+    function Play_didSignChange(prev, current) {
+        return prev * current < 0;
+    }
+
     function Play_timeDay(time) {
         var minutes, hours, days;
 
@@ -32168,9 +32180,11 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 else Play_controls[Play_controlsChatSide].enterKey(2);
 
                 break;
+            case KEY_K:
             case KEY_MEDIA_NEXT:
                 PlayVod_QuickJump(30);
                 break;
+            case KEY_J:
             case KEY_MEDIA_PREVIOUS:
                 PlayVod_QuickJump(-30);
                 break;
@@ -32307,10 +32321,34 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         PlayVod_NumberKeyOldKey = null;
     }
 
+    var PlayVod_QuickJump_Time = 0;
+    var PlayVod_QuickJump_TimeId;
     function PlayVod_QuickJump(time) {
+        if (Play_didSignChange(PlayVod_QuickJump_Time, time)) {
+            PlayVod_QuickJump_Time = time;
+        } else {
+            PlayVod_QuickJump_Time += time;
+        }
+
+        var duration = 1000;
+
         //hard covert to string to avoid addition braking the value
-        var timeToJump = time + '';
-        Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + timeToJump + STR_SPACE_HTML + STR_SECONDS, 1000);
+        var timeToJump = PlayVod_QuickJump_Time + '';
+
+        PlayVod_QuickJump_TimeId = Main_setTimeout(
+            function () {
+                PlayVod_QuickJump_Time = 0;
+            },
+            duration,
+            PlayVod_QuickJump_TimeId
+        );
+
+        var timeToDisplay = timeToJump + STR_SECONDS;
+        if (PlayVod_QuickJump_Time > 90) {
+            timeToDisplay = Play_MinFromSec(PlayVod_QuickJump_Time) + STR_MINUTES;
+        }
+
+        Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + timeToDisplay, duration);
 
         PlayVod_TimeToJump = OSInterface_gettime() / 1000 + time;
         PlayVod_jump();
