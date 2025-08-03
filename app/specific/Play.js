@@ -1310,6 +1310,16 @@ function Play_streamLiveAtWitDate(dateNow, time) {
     return Play_timeMs(dateNow - new Date(time).getTime());
 }
 
+function Play_MinFromSec(seconds) {
+    var min = Math.floor(seconds / 60);
+    var sec = seconds % 60;
+    return min + ':' + Play_lessthanten(sec);
+}
+
+function Play_didSignChange(prev, current) {
+    return prev * current < 0;
+}
+
 function Play_timeDay(time) {
     var minutes, hours, days;
 

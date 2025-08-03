@@ -1379,7 +1379,12 @@ function PlayVod_NumberKey_QuickJumpClear() {
 var PlayVod_QuickJump_Time = 0;
 var PlayVod_QuickJump_TimeId;
 function PlayVod_QuickJump(time) {
-    PlayVod_QuickJump_Time += time;
+    if (Play_didSignChange(PlayVod_QuickJump_Time, time)) {
+        PlayVod_QuickJump_Time = time;
+    } else {
+        PlayVod_QuickJump_Time += time;
+    }
+
     var duration = 1000;
 
     //hard covert to string to avoid addition braking the value
@@ -1393,7 +1398,12 @@ function PlayVod_QuickJump(time) {
         PlayVod_QuickJump_TimeId
     );
 
-    Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + timeToJump + STR_SECONDS, duration);
+    var timeToDisplay = timeToJump + STR_SECONDS;
+    if (PlayVod_QuickJump_Time > 90) {
+        timeToDisplay = Play_MinFromSec(PlayVod_QuickJump_Time) + STR_MINUTES;
+    }
+
+    Play_showWarningDialog(STR_JUMP_TIME + STR_SPACE_HTML + timeToDisplay, duration);
 
     PlayVod_TimeToJump = OSInterface_gettime() / 1000 + time;
     PlayVod_jump();
