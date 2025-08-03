@@ -72,5 +72,7 @@ var KEY_NUMPAD_9 = 105;
 var KEY_A = 65;
 var KEY_C = 67;
 var KEY_E = 69;
+var KEY_J = 74;
+var KEY_K = 75;
 var KEY_T = 84;
 var KEY_U = 85;
