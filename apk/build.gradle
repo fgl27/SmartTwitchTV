@@ -9,11 +9,11 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.10.1'//update gradlew -> ./gradlew wrapper
+        classpath 'com.android.tools.build:gradle:8.13.0'//update gradlew -> ./gradlew wrapper
 
         //Crashlytics
-        classpath 'com.google.gms:google-services:4.4.2'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.3'
+        classpath 'com.google.gms:google-services:4.4.3'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.6'
         //Crashlytics end
 
         // NOTE: Do not place your application dependencies here; they belong
