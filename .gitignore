@@ -44,3 +44,4 @@ firebase-debug.log
 node_modules/*
 package-lock.json
 todo.txt
+apk/.idea/deviceManager.xml
