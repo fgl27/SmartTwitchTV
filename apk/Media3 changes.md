@@ -10,6 +10,7 @@ AndroidX Media3 has the same support as Exoplayer just the way the project is de
 
 ### [Disabled performance check](https://github.com/fgl27/media/commit/82df34f3627d56397c71cd1762b1f422c18eadf5)
 Some devices don’t report proper Capabilities, which causes the player to select the wrong quality at a lower resolution then the device is capable of playing, we can skip the check as is not needed.
+Update [Remove Util.SDK_INT usage in MediaCodecInfo](https://github.com/fgl27/media/commit/4d0e6705a28d55c82787ed4c2870dd3efa8b5749)
 
 ### [Improve DEFAULT_INITIAL_BITRATE_ESTIMATES_WIFI](https://github.com/fgl27/media/commit/82df34f3627d56397c71cd1762b1f422c18eadf5)
 The default values are too low for standard 1080p streams, when the app first start the playback starts at a lower resolution, the problem also happens after the user changes the content being played, in this change we  just change the initial values to be higher if the player does identify that the internet bandwidth is too low it will lower the quality otherwise will just play the best possible,
