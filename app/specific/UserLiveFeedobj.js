@@ -1506,7 +1506,7 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
         UserLiveFeed_obj[pos].cursor = response && response && response.length ? response[response.length - 1].cursor : null;
 
         for (i; i < response_items; i++) {
-            mArray = ScreensObj_VodCellArray(response[i].node, true);
+            mArray = ScreensObj_VodCellArray(response[i].node, true, response[i].node.game.id, response[i].node.game.displayName);
             id = mArray[7];
 
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
