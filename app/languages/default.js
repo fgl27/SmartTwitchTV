@@ -198,7 +198,7 @@ function DefaultLang() {
         ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' +
         STR_SPACE_HTML +
         STR_SPACE_HTML +
-        DefaultMakeLink('http://tiny.cc/help27') +
+        DefaultMakeLink('http://tiny.cc/donatetofgl27') +
         STR_SPACE_HTML +
         '</div></div></div>';
 
