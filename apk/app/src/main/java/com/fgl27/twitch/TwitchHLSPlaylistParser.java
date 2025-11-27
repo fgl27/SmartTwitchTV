@@ -21,10 +21,15 @@ package com.fgl27.twitch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.util.Log;
+import com.fgl27.twitch.BuildConfig;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,21 +60,31 @@ public class TwitchHLSPlaylistParser {
     public static class DateRange {
         public final String classname;
         public final String id;
-        public final long startDate;
-        public final long duration;
+        public final long startDate; // Absolute timestamp in milliseconds
+        public final long duration; // Duration in milliseconds
         public final Map<String, String> attributes;
+        public final double relativeStartTime; // Relative time in seconds when this daterange appears in playlist
 
-        public DateRange(String classname, String id, long startDate, long duration, Map<String, String> attributes) {
+        public DateRange(String classname, String id, long startDate, long duration, Map<String, String> attributes, double relativeStartTime) {
             this.classname = classname;
             this.id = id;
             this.startDate = startDate;
             this.duration = duration;
             this.attributes = attributes;
+            this.relativeStartTime = relativeStartTime;
         }
 
         public boolean isAd() {
             return DATERANGE_CLASSNAME_AD.equals(classname) ||
                    (id != null && id.startsWith(DATERANGE_ID_PREFIX_AD));
+        }
+        
+        /**
+         * Check if a relative time (in seconds) falls within this daterange's window
+         */
+        public boolean containsTime(double relativeTime) {
+            double endTime = relativeStartTime + (duration / 1000.0);
+            return relativeTime >= relativeStartTime && relativeTime < endTime;
         }
     }
 
@@ -159,7 +174,7 @@ public class TwitchHLSPlaylistParser {
                     }
                 }
 
-                // Check if this is an ad date range
+                // Check if this is an ad date range (using the same logic as streamlink)
                 if (DATERANGE_CLASSNAME_AD.equals(currentDateRangeClassname) ||
                     (currentDateRangeId != null && currentDateRangeId.startsWith(DATERANGE_ID_PREFIX_AD))) {
                     DateRange adRange = new DateRange(
@@ -167,9 +182,21 @@ public class TwitchHLSPlaylistParser {
                         currentDateRangeId,
                         currentDateRangeStart,
                         currentDateRangeDuration,
-                        currentDateRangeAttrs
+                        currentDateRangeAttrs,
+                        currentTime // Track relative time when this daterange appears
                     );
                     adDateRanges.add(adRange);
+                    
+                    if (BuildConfig.DEBUG) {
+                        String adsId = currentDateRangeAttrs.get("X-TV-TWITCH-AD-COMMERCIAL-ID");
+                        if (adsId == null || adsId.isEmpty()) {
+                            adsId = currentDateRangeAttrs.get("X-TV-TWITCH-AD-ROLL-TYPE");
+                        }
+                        double durationSeconds = currentDateRangeDuration / 1000.0;
+                        Log.d(TAG, "Detected ad daterange: ID=" + currentDateRangeId + 
+                              ", duration=" + durationSeconds + "s" +
+                              (adsId != null ? ", adId=" + adsId : ""));
+                    }
                 }
                 continue;
             }
@@ -260,6 +287,7 @@ public class TwitchHLSPlaylistParser {
 
     /**
      * Check if a segment is an ad based on title, time, and date ranges
+     * Similar to streamlink's _is_segment_ad method
      * @param title The segment title (from EXTINF tag)
      * @param currentTime The cumulative time of this segment in the playlist (in seconds)
      * @param adDateRanges List of ad date ranges from EXT-X-DATERANGE tags
@@ -267,17 +295,29 @@ public class TwitchHLSPlaylistParser {
      * @return true if this segment is an ad
      */
     private static boolean isSegmentAd(@Nullable String title, double currentTime, List<DateRange> adDateRanges, boolean discontinuity) {
-        // Check title for "Amazon" - this is a clear indicator of an ad
+        // Check title for "Amazon" - this is a clear indicator of an ad (like streamlink)
         if (title != null && title.contains(SEGMENT_TITLE_AMAZON)) {
             return true;
+        }
+        
+        // Check if segment time falls within any ad daterange (like streamlink's is_date_in_daterange check)
+        for (DateRange adRange : adDateRanges) {
+            if (adRange.containsTime(currentTime)) {
+                return true;
+            }
+        }
+        
+        // Fallback: Check if title contains "AD" or "ADVERT" (case-insensitive) - common ad indicators
+        // Examples: "AdServer", "Advertisement", etc.
+        if (title != null) {
+            String titleUpper = title.toUpperCase();
+            if (titleUpper.contains("AD") || titleUpper.contains("ADVERT")) {
+                return true;
+            }
         }
 
         // Don't mark segments as ads just because there's a discontinuity
         // Discontinuity can occur at ad boundaries, but also at stream boundaries (e.g., when transitioning back to live)
-        // We only mark as ad if the title explicitly indicates it (e.g., "Amazon")
-        // The date ranges use absolute timestamps which don't directly map to relative playlist time
-        // For now, we rely primarily on title to detect ads
-        // Date ranges are stored for reference but not used for segment-by-segment detection
         return false;
     }
 
@@ -298,13 +338,31 @@ public class TwitchHLSPlaylistParser {
     }
 
     /**
-     * Parse ISO 8601 date string to timestamp (simplified)
-     * For ad detection, we use relative time comparison, so exact parsing isn't critical
+     * Parse ISO 8601 date string to timestamp in milliseconds
+     * Format: "2025-11-27T09:48:43.684Z" or similar ISO 8601 formats
      */
     private static long parseISO8601(@NonNull String dateStr) {
-        // For ad detection purposes, we don't need exact timestamps
-        // We'll use the date range duration and check segments within that range
-        // Return 0 to indicate we'll use duration-based detection instead
+        try {
+            // Try parsing with different ISO 8601 formats
+            // Format: "2025-11-27T09:48:43.684Z"
+            SimpleDateFormat[] formats = {
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US),
+            };
+            
+            for (SimpleDateFormat format : formats) {
+                format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                try {
+                    return format.parse(dateStr).getTime();
+                } catch (Exception e) {
+                    // Try next format
+                }
+            }
+        } catch (Exception e) {
+            // If all parsing fails, return 0
+        }
         return 0;
     }
 
