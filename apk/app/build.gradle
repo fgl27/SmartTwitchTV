@@ -2,8 +2,8 @@ apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
 
 //Crashlytics
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.firebase.crashlytics'
 //Crashlytics end
 
 android {

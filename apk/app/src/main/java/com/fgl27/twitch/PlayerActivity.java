@@ -79,6 +79,8 @@ import androidx.media3.exoplayer.DefaultLivePlaybackSpeedControl;
 import androidx.media3.exoplayer.DefaultRenderersFactory;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.analytics.AnalyticsListener;
+import androidx.media3.exoplayer.source.LoadEventInfo;
+import androidx.media3.exoplayer.source.MediaLoadData;
 import androidx.media3.exoplayer.source.MediaSource;
 import androidx.media3.exoplayer.source.TrackGroupArray;
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
@@ -87,7 +89,7 @@ import androidx.media3.ui.PlayerView;
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +156,7 @@ public class PlayerActivity extends Activity {
     private boolean MultiStreamEnable;
     private boolean isFullScreen = true;
     private boolean CheckSource = true;
+    private int volReducerMode = 2; // 0 = None, 1 = Half, 2 = Full (default: Full/mute)
     private int PicturePicturePosition = 0;
     private int PicturePictureSize = 1; //sizes are 0 , 1 , 2, 3, 4
     private int PreviewSize = 1; //sizes are 0 , 1 , 2, 3
@@ -264,6 +267,35 @@ public class PlayerActivity extends Activity {
 
     private final boolean[] AudioEnabled = { true, false, false, false, true };
 
+    // Volume reducer state
+    // Store multiple playlists per player to handle large buffers and multiple quality variants
+    // Each playlist is stored with its URI, parse timestamp, and metadata
+    private static class PlaylistWithTimestamp {
+        final TwitchHLSPlaylistParser.ParsedPlaylist playlist;
+        final String playlistUri; // URI of the playlist (to identify duplicates and match segments)
+        final long parseTimeMs; // When this playlist was parsed
+        final double totalDuration; // Total duration of all segments in this playlist
+        
+        PlaylistWithTimestamp(TwitchHLSPlaylistParser.ParsedPlaylist playlist, String playlistUri, long parseTimeMs) {
+            this.playlist = playlist;
+            this.playlistUri = playlistUri;
+            this.parseTimeMs = parseTimeMs;
+            // Calculate total duration
+            double duration = 0.0;
+            for (TwitchHLSPlaylistParser.Segment segment : playlist.segments) {
+                duration += segment.duration;
+            }
+            this.totalDuration = duration;
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private final java.util.List<PlaylistWithTimestamp>[] volReducerPlaylists = new java.util.List[PlayerAccountPlus];
+    private final boolean[] isVolReducerActive = new boolean[PlayerAccountPlus];
+    private final float[] savedVolumes = new float[PlayerAccountPlus];
+    private final float[] previousVolumes = new float[PlayerAccountPlus];
+    private final Handler[] volReducerHandlers = new Handler[PlayerAccountPlus];
+
     public class PlayerObj {
 
         boolean IsPlaying;
@@ -368,8 +400,8 @@ public class PlayerActivity extends Activity {
             intent.setAction(null);
             setIntent(intent);
 
-            FirebaseApp.initializeApp(this);
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+            //FirebaseApp.initializeApp(this);
+            //FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
             try {
                 setContentView(R.layout.activity_player);
@@ -406,6 +438,7 @@ public class PlayerActivity extends Activity {
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerObj[i] = new PlayerObj(false, false, null, 0, 2, 0, 0, 1.0f, null, 0, null, null, null, null, 0);
                 PlayerObj[i].CheckHandler = new Handler(MainLooper);
+                volReducerHandlers[i] = new Handler(MainLooper);
             }
 
             //BackGroundThread Etc threads that may or may not use delay to start
@@ -443,7 +476,7 @@ public class PlayerActivity extends Activity {
             initializeWebview();
 
             StopNotificationService();
-            FirebaseCrashlytics.getInstance().sendUnsentReports();
+            //FirebaseCrashlytics.getInstance().sendUnsentReports();
 
             DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
 
@@ -540,6 +573,9 @@ public class PlayerActivity extends Activity {
     }
 
     private void ReUsePlayer(int PlayerObjPosition) {
+        // Reset volume reducer when reusing a player (switching streams)
+        resetVolReducer(PlayerObjPosition);
+        
         if (PlayerObj[PlayerObjPosition].player != null) {
             PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
         }
@@ -629,11 +665,16 @@ public class PlayerActivity extends Activity {
             PlayerObj[PlayerObjPosition].Listener = new PlayerEventListener(PlayerObjPosition);
             PlayerObj[PlayerObjPosition].player.addListener(PlayerObj[PlayerObjPosition].Listener);
 
-            PlayerObj[PlayerObjPosition].player.addAnalyticsListener(new AnalyticsEventListener());
+            AnalyticsEventListener analyticsListener = new AnalyticsEventListener();
+            analyticsListener.setPlayerPosition(PlayerObjPosition);
+            PlayerObj[PlayerObjPosition].player.addAnalyticsListener(analyticsListener);
 
             PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         }
 
+        // Reset volume reducer when setting a new media source (switching streams)
+        resetVolReducer(PlayerObjPosition);
+        
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
         PlayerObj[PlayerObjPosition].player.setMediaSource(PlayerObj[PlayerObjPosition].mediaSources, PlayerObj[PlayerObjPosition].ResumePosition);
 
@@ -720,6 +761,7 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "Clear_PreviewPlayer");
         }
 
+        resetVolReducer(4);
         releasePlayer(4);
         ApplyAudioAll();
 
@@ -744,6 +786,7 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearPlayer position " + position);
         }
 
+        resetVolReducer(position);
         releasePlayer(position);
 
         CheckKeepScreenOn();
@@ -763,6 +806,7 @@ public class PlayerActivity extends Activity {
         PicturePicture = false;
 
         for (int i = 0; i < PlayerAccount; i++) {
+            resetVolReducer(i);
             releasePlayer(i);
             clearResumePosition(i);
         }
@@ -1098,9 +1142,9 @@ public class PlayerActivity extends Activity {
             .buildUpon()
             .setMaxVideoBitrate(PlayerBitrate[ParametersPos])
             .setMaxVideoSize(width, PlayerResolution[ParametersPos])
-            .setAllowVideoNonSeamlessAdaptiveness(true)
-            .setAllowVideoMixedMimeTypeAdaptiveness(true)
-            .setAllowVideoMixedDecoderSupportAdaptiveness(true)
+            .setAllowVideoNonSeamlessAdaptiveness(false) // Disable to ensure single video stream
+            .setAllowVideoMixedMimeTypeAdaptiveness(false) // Disable to ensure single video stream
+            .setAllowVideoMixedDecoderSupportAdaptiveness(false) // Disable to ensure single video stream
             .setViewportSize(
                 //set this to play resolution bigger then current screen resolution
                 Integer.MAX_VALUE,
@@ -1120,16 +1164,426 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    // Volume reducer callback implementation
+    private final VolReducerCallback volReducerCallback = new VolReducerCallback() {
+        @Override
+        public void onAdDetected(int playerPosition) {
+            handleVolReducerStart(playerPosition);
+        }
+
+        @Override
+        public void onAdEnded(int playerPosition) {
+            handleVolReducerEnd(playerPosition);
+        }
+
+        @Override
+        public void onPlaylistParsed(int playerPosition, @NonNull TwitchHLSPlaylistParser.ParsedPlaylist parsedPlaylist, @NonNull String playlistUri) {
+            if (playerPosition >= 0 && playerPosition < PlayerAccountPlus) {
+                // Always run on UI thread to ensure player access is safe
+                runOnUiThread(() -> {
+                    try {
+                        // Initialize list if needed
+                        if (volReducerPlaylists[playerPosition] == null) {
+                            volReducerPlaylists[playerPosition] = new java.util.ArrayList<>();
+                        }
+                        
+                        // Check if we already have this playlist (same URI) - replace it if so
+                        // This handles playlist updates for the same quality variant
+                        java.util.Iterator<PlaylistWithTimestamp> iterator = volReducerPlaylists[playerPosition].iterator();
+                        while (iterator.hasNext()) {
+                            PlaylistWithTimestamp existing = iterator.next();
+                            if (playlistUri.equals(existing.playlistUri)) {
+                                iterator.remove();
+                                break;
+                            }
+                        }
+                        
+                        // Only store playlists that have segments (skip master playlists and empty playlists)
+                        if (parsedPlaylist.segments.isEmpty()) {
+                            return; // Don't store empty playlists
+                        }
+                        
+                        // Add new playlist with URI and current timestamp
+                        long currentTime = System.currentTimeMillis();
+                        volReducerPlaylists[playerPosition].add(new PlaylistWithTimestamp(parsedPlaylist, playlistUri, currentTime));
+                        
+                        // Start/restart position-based volume reducer when playlist is parsed/updated
+                        startVolReducerPositionChecker(playerPosition);
+                    } catch (Exception e) {
+                        Log.e(TAG, "VolReducer: Error in onPlaylistParsed for player " + playerPosition, e);
+                    }
+                });
+            }
+        }
+    };
+
     public void SetAudio(int pos, float volume) {
-        if (PlayerObj[pos].player != null) PlayerObj[pos].player.setVolume(volume);
+        if (PlayerObj[pos].player != null) {
+            // Only log when volume actually changes
+            if (BuildConfig.DEBUG && Math.abs(previousVolumes[pos] - volume) > 0.001f) {
+                Log.i(TAG, "SetAudio: player " + pos + " volume changed from " + 
+                      String.format("%.0f%%", previousVolumes[pos] * 100f) + " to " + 
+                      String.format("%.0f%%", volume * 100f));
+            }
+            previousVolumes[pos] = volume;
+            PlayerObj[pos].player.setVolume(volume);
+        }
     }
 
     public void ApplyAudioAll() {
         float MaxVolume = PlayerObj[4].player == null ? 1f : AudioMaxPreviewVisible;
 
         for (int i = 0; i < PlayerAccount; i++) {
-            SetAudio(i, AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxVolume) : 0f);
+            float baseVolume = AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxVolume) : 0f;
+            float targetVolume = baseVolume;
+            boolean volReducerApplied = false;
+            String volReducerModeStr = "none";
+            
+            // Apply volume reduction based on mode
+            if (isVolReducerActive[i] && volReducerMode > 0) {
+                if (volReducerMode == 2) {
+                    // Full: mute completely
+                    targetVolume = 0f;
+                    volReducerApplied = true;
+                    volReducerModeStr = "full (mute)";
+                } else if (volReducerMode == 1) {
+                    // Half: reduce by 50%
+                    targetVolume = baseVolume * 0.5f;
+                    volReducerApplied = true;
+                    volReducerModeStr = "half (50%)";
+                }
+                // Mode 0 (None): no reduction, use baseVolume
+            }
+            
+            
+            SetAudio(i, targetVolume);
         }
+    }
+
+    private void handleVolReducerStart(int playerPosition) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
+        
+        if (!isVolReducerActive[playerPosition]) {
+            isVolReducerActive[playerPosition] = true;
+            savedVolumes[playerPosition] = PlayerObj[playerPosition].volume;
+            
+            // Apply volume reduction only to this specific player
+            float baseVolume = PlayerObj[playerPosition].volume;
+            float targetVolume = baseVolume;
+            
+            if (volReducerMode == 2) {
+                // Full reduction (mute)
+                targetVolume = 0.0f;
+            } else if (volReducerMode == 1) {
+                // Half reduction (50%)
+                targetVolume = baseVolume * 0.5f;
+            }
+            // volReducerMode == 0 means no reduction, keep baseVolume
+            
+            
+            SetAudio(playerPosition, targetVolume);
+        }
+    }
+
+    private void handleVolReducerEnd(int playerPosition) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
+        
+        if (isVolReducerActive[playerPosition]) {
+            isVolReducerActive[playerPosition] = false;
+            
+            // Restore volume only for this specific player
+            float restoredVolume = savedVolumes[playerPosition];
+            
+            SetAudio(playerPosition, restoredVolume);
+        }
+    }
+
+    private void resetVolReducer(int playerPosition) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
+        
+        // Stop position checking
+        stopVolReducerPositionChecker(playerPosition);
+        
+        // Restore volume if volume reducer was active
+        if (isVolReducerActive[playerPosition] && savedVolumes[playerPosition] >= 0) {
+            float restoredVolume = savedVolumes[playerPosition];
+            SetAudio(playerPosition, restoredVolume);
+        }
+        
+        isVolReducerActive[playerPosition] = false;
+        if (volReducerPlaylists[playerPosition] != null) {
+            volReducerPlaylists[playerPosition].clear();
+        }
+        savedVolumes[playerPosition] = -1; // Reset saved volume
+    }
+
+    /**
+     * Extract segment ID/filename from URI for logging
+     */
+    private String extractSegmentId(String uri) {
+        try {
+            // Remove query parameters and fragments
+            String uriToCheck = uri;
+            int queryIndex = uriToCheck.indexOf('?');
+            if (queryIndex > 0) {
+                uriToCheck = uriToCheck.substring(0, queryIndex);
+            }
+            int fragmentIndex = uriToCheck.indexOf('#');
+            if (fragmentIndex > 0) {
+                uriToCheck = uriToCheck.substring(0, fragmentIndex);
+            }
+            
+            // Extract just the filename part
+            int lastSlash = uriToCheck.lastIndexOf('/');
+            return lastSlash >= 0 ? uriToCheck.substring(lastSlash + 1) : uriToCheck;
+        } catch (Exception e) {
+            return "unknown";
+        }
+    }
+
+    /**
+     * Get segment info (index, start time) and EXT_X tag information for a segment from the parsed playlist
+     * Returns a pair: [segmentInfo, extXInfo]
+     */
+    private String[] getSegmentInfo(TwitchHLSPlaylistParser.ParsedPlaylist playlist, String segmentUri) {
+        if (playlist == null || segmentUri == null || playlist.segments.isEmpty()) {
+            return new String[]{"", ""};
+        }
+        
+        try {
+            // Extract the segment filename/identifier from the URI
+            String uriToCheck = segmentUri;
+            int queryIndex = uriToCheck.indexOf('?');
+            if (queryIndex > 0) {
+                uriToCheck = uriToCheck.substring(0, queryIndex);
+            }
+            int fragmentIndex = uriToCheck.indexOf('#');
+            if (fragmentIndex > 0) {
+                uriToCheck = uriToCheck.substring(0, fragmentIndex);
+            }
+            
+            int lastSlash = uriToCheck.lastIndexOf('/');
+            String filename = lastSlash >= 0 ? uriToCheck.substring(lastSlash + 1) : uriToCheck;
+            
+            // Find matching segment in playlist and calculate start time
+            double startTime = 0.0;
+            for (int i = 0; i < playlist.segments.size(); i++) {
+                TwitchHLSPlaylistParser.Segment segment = playlist.segments.get(i);
+                String segmentUriToCheck = segment.uri;
+                int segQueryIndex = segmentUriToCheck.indexOf('?');
+                if (segQueryIndex > 0) {
+                    segmentUriToCheck = segmentUriToCheck.substring(0, segQueryIndex);
+                }
+                int segLastSlash = segmentUriToCheck.lastIndexOf('/');
+                String segmentFilename = segLastSlash >= 0 ? segmentUriToCheck.substring(segLastSlash + 1) : segmentUriToCheck;
+                
+                // Match by filename (most reliable) or full URI - try multiple matching strategies
+                boolean matches = filename.equals(segmentFilename) || 
+                    segmentFilename.equals(filename) ||
+                    uriToCheck.equals(segmentUriToCheck) ||
+                    uriToCheck.endsWith(segmentUriToCheck) ||
+                    segmentUriToCheck.endsWith(uriToCheck) ||
+                    filename.contains(segmentFilename) ||
+                    segmentFilename.contains(filename);
+                
+                if (matches) {
+                    // Build segment info (index and start time)
+                    String segmentInfo = String.format("seg[%d]@%.2fs", i, startTime);
+                    
+                    // Build EXT_X info
+                    StringBuilder extXInfo = new StringBuilder();
+                    extXInfo.append("EXTINF: ").append(String.format("%.2f", segment.duration));
+                    if (segment.title != null && !segment.title.isEmpty()) {
+                        extXInfo.append(", title: ").append(segment.title);
+                    }
+                    if (segment.hasDiscontinuity) {
+                        extXInfo.append(", DISCONTINUITY");
+                    }
+                    if (segment.isPrefetch) {
+                        extXInfo.append(", PREFETCH");
+                    }
+                    
+                    return new String[]{segmentInfo, extXInfo.toString()};
+                }
+                
+                // Accumulate start time for next segment
+                startTime += segment.duration;
+            }
+        } catch (Exception e) {
+            // Ignore exceptions
+        }
+        return new String[]{"", ""};
+    }
+
+    /**
+     * Check if the current playback position (in milliseconds) is within a segment that requires volume reduction
+     * Returns true if position is within such a segment, false otherwise
+     * Checks all stored playlists and removes ones that are completely in the past
+     */
+    private boolean isPositionInVolumeReduction(int playerPosition, long positionMs) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return false;
+        if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) return false;
+        
+        // Convert position from milliseconds to seconds
+        double positionSeconds = positionMs / 1000.0;
+        
+        // Check all playlists and remove outdated ones
+        // We need to find the playlist that contains the current position
+        // For HLS live streams, playlists are sliding windows, so we should check the most recent playlist first
+        java.util.List<PlaylistWithTimestamp> playlists = volReducerPlaylists[playerPosition];
+        java.util.Iterator<PlaylistWithTimestamp> iterator = playlists.iterator();
+        boolean foundMatch = false;
+        PlaylistWithTimestamp matchingPlaylist = null;
+        
+        // First pass: find which playlist contains the current position
+        // Check playlists in reverse order (most recent first) since newer playlists are more likely to match
+        for (int i = playlists.size() - 1; i >= 0; i--) {
+            PlaylistWithTimestamp playlistWithTimestamp = playlists.get(i);
+            TwitchHLSPlaylistParser.ParsedPlaylist playlist = playlistWithTimestamp.playlist;
+            
+            if (playlist.segments.isEmpty()) {
+                continue;
+            }
+            
+            // Calculate cumulative start times and check if position is within this playlist
+            double currentTime = 0.0;
+            boolean positionInThisPlaylist = false;
+            
+            for (int segIndex = 0; segIndex < playlist.segments.size(); segIndex++) {
+                TwitchHLSPlaylistParser.Segment segment = playlist.segments.get(segIndex);
+                double segmentStart = currentTime;
+                double segmentEnd = currentTime + segment.duration;
+                
+                // Check if position is within this segment
+                if (positionSeconds >= segmentStart && positionSeconds < segmentEnd) {
+                    foundMatch = segment.isAd;
+                    positionInThisPlaylist = true;
+                    matchingPlaylist = playlistWithTimestamp;
+                    if (BuildConfig.DEBUG) {
+                        Log.d(TAG, "VolReducer: isPositionInVolumeReduction: player " + playerPosition + 
+                              " at " + String.format("%.2f", positionSeconds) + "s " +
+                              "matches seg[" + segIndex + "] in playlist (parseTime: " + 
+                              String.format("%.2f", (playlistWithTimestamp.parseTimeMs / 1000.0)) + "s) " +
+                              String.format("%.2f", segmentStart) + "s-" + String.format("%.2f", segmentEnd) + "s, " +
+                              "isAd: " + segment.isAd + ", title: " + 
+                              (segment.title != null ? segment.title : "null"));
+                    }
+                    break; // Found the segment in this playlist
+                }
+                
+                currentTime = segmentEnd;
+            }
+            
+            if (positionInThisPlaylist) {
+                // Found a match, use this playlist and stop checking others
+                break;
+            }
+        }
+        
+        // Second pass: remove outdated playlists that don't contain the current position
+        iterator = playlists.iterator();
+        while (iterator.hasNext()) {
+            PlaylistWithTimestamp playlistWithTimestamp = iterator.next();
+            TwitchHLSPlaylistParser.ParsedPlaylist playlist = playlistWithTimestamp.playlist;
+            
+            if (playlist.segments.isEmpty()) {
+                // Remove empty playlists
+                iterator.remove();
+                continue;
+            }
+            
+            // If this playlist is not the matching one and position is past its end, remove it
+            // But keep it for a bit longer in case player seeks back (remove if >30s past)
+            if (playlistWithTimestamp != matchingPlaylist && 
+                positionSeconds > playlistWithTimestamp.totalDuration + 30.0) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "VolReducer: Removing outdated playlist for player " + playerPosition + 
+                          " (position " + String.format("%.2f", positionSeconds) + "s > playlist end " + 
+                          String.format("%.2f", playlistWithTimestamp.totalDuration) + "s)");
+                }
+                iterator.remove();
+            }
+        }
+        
+        return foundMatch;
+    }
+
+    /**
+     * Check volume reducer based on current playback position and update volume accordingly
+     * This should be called periodically to ensure volume changes happen at the right time
+     */
+    private void checkVolReducerByPosition(int playerPosition) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) {
+            return;
+        }
+        
+        // Ensure we're on the main thread before accessing player
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            volReducerHandlers[playerPosition].post(() -> checkVolReducerByPosition(playerPosition));
+            return;
+        }
+        
+        if (PlayerObj[playerPosition].player == null) {
+            return;
+        }
+        if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) {
+            return;
+        }
+        
+        long currentPositionMs = PlayerObj[playerPosition].player.getCurrentPosition();
+        boolean currentlyReducingVolume = isPositionInVolumeReduction(playerPosition, currentPositionMs);
+        
+        // Only trigger volume changes when we actually enter/exit segments requiring volume reduction
+        if (currentlyReducingVolume && !isVolReducerActive[playerPosition]) {
+            // Entering a segment requiring volume reduction
+            handleVolReducerStart(playerPosition);
+        } else if (!currentlyReducingVolume && isVolReducerActive[playerPosition]) {
+            // Exiting a segment requiring volume reduction
+            handleVolReducerEnd(playerPosition);
+        }
+        
+        // Schedule next check (check every 500ms for responsive volume reducer)
+        // Only check when actually playing to avoid unnecessary checks that might cause audio issues
+        volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
+        if (PlayerObj[playerPosition].player != null && PlayerObj[playerPosition].player.isPlaying()) {
+            volReducerHandlers[playerPosition].postDelayed(
+                () -> checkVolReducerByPosition(playerPosition),
+                500
+            );
+        }
+    }
+
+    /**
+     * Start volume reducer position checking for a player
+     */
+    private void startVolReducerPositionChecker(int playerPosition) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) {
+            return;
+        }
+        if (volReducerHandlers[playerPosition] == null) {
+            return;
+        }
+        
+        // Stop any existing checker
+        volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
+        
+        // Start checking immediately (don't wait for next scheduled check)
+        // This ensures we catch the current position right away
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            checkVolReducerByPosition(playerPosition);
+        } else {
+            volReducerHandlers[playerPosition].post(() -> checkVolReducerByPosition(playerPosition));
+        }
+    }
+
+    /**
+     * Stop volume reducer position checking for a player
+     */
+    private void stopVolReducerPositionChecker(int playerPosition) {
+        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
+        if (volReducerHandlers[playerPosition] == null) return;
+        
+        volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
     }
 
     public void UpdateSizePosSmall(int pos, boolean animate) {
@@ -2104,11 +2558,9 @@ public class PlayerActivity extends Activity {
                             if (len >= groupIndex_len) len = groupIndex_len - 1;
 
                             if (len > 0) {
+                                // Ensure only single video stream is selected - use only the first (highest quality) track
                                 List<Integer> ret = new ArrayList<>();
-
-                                for (int i = 0; i < len; i++) {
-                                    ret.add(result.get(i));
-                                }
+                                ret.add(result.get(0)); // Only select the first track to ensure single stream
 
                                 builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), ret)); //getTrackGroups.get(0) as the length of trackGroups in trackGroupArray is always 1
                             }
@@ -2438,6 +2890,22 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void SetVolReducer(int mode) {
+            // mode: 0 = None, 1 = Half, 2 = Full
+            volReducerMode = mode;
+            // Apply the setting immediately if an ad is currently playing
+            if (volReducerMode == 0) {
+                // None - restore all volumes
+                for (int i = 0; i < PlayerAccountPlus; i++) {
+                    if (isVolReducerActive[i]) {
+                        isVolReducerActive[i] = false;
+                    }
+                }
+            }
+            ApplyAudioAll();
+        }
+
+        @JavascriptInterface
         public void SetNotificationPosition(int position) {
             appPreferences.put(Constants.PREF_NOTIFICATION_POSITION, position);
         }
@@ -2698,7 +3166,9 @@ public class PlayerActivity extends Activity {
                                 getLowLatency(Type),
                                 speedAdjustment,
                                 mainPlaylistString,
-                                userAgent
+                                userAgent,
+                                volReducerCallback,
+                                PlayerObjPosition
                             );
 
                             SetupPlayer(PlayerObjPosition);
@@ -2740,7 +3210,9 @@ public class PlayerActivity extends Activity {
                         getLowLatency(Type),
                         speedAdjustment,
                         mainPlaylistString,
-                        userAgent
+                        userAgent,
+                        volReducerCallback,
+                        position
                     );
 
                     SetupPlayer(position);
@@ -3054,7 +3526,9 @@ public class PlayerActivity extends Activity {
                     getLowLatency(Type),
                     speedAdjustment,
                     mainPlaylistString,
-                    userAgent
+                    userAgent,
+                    volReducerCallback,
+                    4
                 );
 
                 Set_PlayerObj(
@@ -3101,7 +3575,9 @@ public class PlayerActivity extends Activity {
                     getLowLatency(1),
                     speedAdjustment,
                     mainPlaylistString,
-                    userAgent
+                    userAgent,
+                    volReducerCallback,
+                    0
                 );
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
@@ -3133,7 +3609,9 @@ public class PlayerActivity extends Activity {
                     getLowLatency(Type),
                     speedAdjustment,
                     mainPlaylistString,
-                    userAgent
+                    userAgent,
+                    volReducerCallback,
+                    0
                 );
 
                 PlayerViewScreensLayout = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
@@ -3226,7 +3704,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
-            PicturePictureSize = mPicturePictureSize;
+            PicturePictureSize = mPicturePictureSize;d
             runOnUiThread(() -> UpdateSizePosSmall(1, false));
         }
 
@@ -3552,7 +4030,9 @@ public class PlayerActivity extends Activity {
                     getLowLatency(1),
                     speedAdjustment,
                     mainPlaylistString,
-                    userAgent
+                    userAgent,
+                    volReducerCallback,
+                    position
                 );
 
                 SetupPlayer(position);
@@ -3671,6 +4151,12 @@ public class PlayerActivity extends Activity {
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
             PlayerObj[position].IsPlaying = isPlaying;
+            // Stop position checking when paused, resume when playing
+            if (isPlaying && volReducerPlaylists[position] != null && !volReducerPlaylists[position].isEmpty()) {
+                startVolReducerPositionChecker(position);
+            } else {
+                stopVolReducerPositionChecker(position);
+            }
         }
 
         @Override
@@ -3683,6 +4169,7 @@ public class PlayerActivity extends Activity {
 
             if (playbackState == Player.STATE_ENDED) {
                 PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
+                stopVolReducerPositionChecker(position);
                 PlayerObj[position].player.setPlayWhenReady(false);
 
                 PlayerEventListenerClear(position, 0, 0); //player_Ended
@@ -3701,6 +4188,23 @@ public class PlayerActivity extends Activity {
                     );
             } else if (playbackState == Player.STATE_READY) {
                 PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
+                // Resume volume reducer position checking when player is ready
+                // This ensures we check the position immediately when playback becomes ready,
+                // even if the player isn't playing yet (e.g., during buffering)
+                if (volReducerPlaylists[position] != null && !volReducerPlaylists[position].isEmpty()) {
+                    startVolReducerPositionChecker(position);
+                } else {
+                    // Even if no playlists yet, check position to ensure volume is correct
+                    // This handles the case where volume was reduced from a previous stream
+                    // and we need to restore it when starting a new stream
+                    if (isVolReducerActive[position]) {
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, "Player " + position + " ready but no playlists - checking if volume should be restored");
+                        }
+                        // Check position immediately to restore volume if needed
+                        checkVolReducerByPosition(position);
+                    }
+                }
 
                 if (position < 4) {
                     //Main players
@@ -3753,15 +4257,20 @@ public class PlayerActivity extends Activity {
     }
 
     private class AnalyticsEventListener implements AnalyticsListener {
+        private int playerPosition = -1;
+
+        public void setPlayerPosition(int position) {
+            this.playerPosition = position;
+        }
 
         @Override
-        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
+        public final void onDroppedVideoFrames(@NonNull AnalyticsListener.EventTime eventTime, int count, long elapsedMs) {
             droppedFrames += count;
             DroppedFramesTotal += count;
         }
 
         @Override
-        public void onBandwidthEstimate(@NonNull EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
+        public void onBandwidthEstimate(@NonNull AnalyticsListener.EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
             conSpeed = (float) bitrateEstimate / 1000000;
             if (conSpeed > 0) {
                 SpeedCounter++;
@@ -3772,6 +4281,85 @@ public class PlayerActivity extends Activity {
             if (netActivity > 0) {
                 NetCounter++;
                 NetActivityAVG += netActivity;
+            }
+        }
+
+        @Override
+        public void onLoadStarted(@NonNull AnalyticsListener.EventTime eventTime, @NonNull LoadEventInfo loadEventInfo, @NonNull MediaLoadData mediaLoadData, int retryCount) {
+            if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
+            
+            // Playlist parsing is handled in DefaultHttpDataSource when it processes the mainPlaylist
+            // No need to fetch/parse playlists here - the callback will be triggered from DefaultHttpDataSource
+            if (mediaLoadData.dataType == 4) {
+                // This is a playlist load - just log it for debugging, parsing happens in DefaultHttpDataSource
+                if (BuildConfig.DEBUG) {
+                    String playlistUri = loadEventInfo.uri != null ? loadEventInfo.uri.toString() : null;
+                    Log.d(TAG, "onLoadStarted: playlist load detected for player " + playerPosition + 
+                          (playlistUri != null ? ", URI: " + playlistUri : "") +
+                          " (parsing handled by DefaultHttpDataSource)");
+                }
+                return;
+            }
+            
+            // Only process media segments (dataType:1) for volume reducer
+            if (mediaLoadData.dataType != 1) {
+                return;
+            }
+            
+            if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) {
+                if (BuildConfig.DEBUG) {
+                    Log.w(TAG, "onLoadStarted: player " + playerPosition + " - no playlist available for volume reducer" +
+                          " (volReducerPlaylists[" + playerPosition + "] is " + 
+                          (volReducerPlaylists[playerPosition] == null ? "null" : "empty") + 
+                          ", callback is " + (volReducerCallback != null ? "set" : "null") + ")");
+                }
+                return;
+            }
+
+            // Check if the loaded URI is a segment requiring volume reduction
+            // Check all playlists to find the segment
+            String uri = loadEventInfo.uri != null ? loadEventInfo.uri.toString() : null;
+            if (uri != null) {
+                boolean shouldReduceVolume = false;
+                String[] segmentInfo = new String[]{"", ""};
+                
+                // Check all playlists to find the segment
+                for (PlaylistWithTimestamp playlistWithTimestamp : volReducerPlaylists[playerPosition]) {
+                    if (TwitchHLSPlaylistParser.isSegmentAd(playlistWithTimestamp.playlist, uri)) {
+                        shouldReduceVolume = true;
+                    }
+                    // Get segment info from first playlist that contains it
+                    if (segmentInfo[0].isEmpty()) {
+                        segmentInfo = getSegmentInfo(playlistWithTimestamp.playlist, uri);
+                    }
+                }
+                
+                if (BuildConfig.DEBUG) {
+                    String segmentInfoStr = segmentInfo[0];
+                    String extXInfo = segmentInfo[1];
+                    
+                    // Get MediaLoadData info
+                    String dataTypeStr = "dataType:" + mediaLoadData.dataType;
+                    String trackFormatInfo = "";
+                    if (mediaLoadData.trackFormat != null) {
+                        Format format = mediaLoadData.trackFormat;
+                        trackFormatInfo = String.format(", format: %dx%d@%.0f", 
+                            format.width, format.height, format.frameRate);
+                    }
+                    
+                    Log.d(TAG, "onLoadStarted: player " + playerPosition + 
+                          (segmentInfoStr.isEmpty() ? "" : " - " + segmentInfoStr) +
+                          ", VolReducer: shouldReduceVolume: " + shouldReduceVolume + 
+                          ", VolReducer: currentlyReducingVolume: " + isVolReducerActive[playerPosition] +
+                          ", retryCount: " + retryCount +
+                          ", " + dataTypeStr +
+                          trackFormatInfo +
+                          (extXInfo.isEmpty() ? "" : ", " + extXInfo));
+                }
+                
+                // Note: We don't trigger volume reducer here anymore - it's now based on playback position
+                // This is just for logging/debugging purposes
+                // The actual volume changes happen in checkVolReducerByPosition() based on current playback position
             }
         }
     }

@@ -810,6 +810,10 @@ var Settings_value = {
         values: ['None'],
         set_values: [''],
         defaultValue: 1
+    },
+    vol_reducer: {
+        values: ['None', 'Half', 'Full'],
+        defaultValue: 3  // 1-indexed, so 3 = "Full" (index 2)
     }
 };
 
@@ -972,6 +976,10 @@ function Settings_SetSettings() {
 
     div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
 
+    // TODO: these settings content need to be updated to the strings files so they can be translated!
+    // TODO: why does the selection on the website menu not work?
+    div += Settings_Content('vol_reducer', ['None', 'Half', 'Full'], STR_VOLUME_REDUCER, STR_VOLUME_REDUCER_SUMMARY);
+
     div += Settings_Content('seek_preview', SEEK_PREVIEW_ARRAY, SEEK_PREVIEW, SEEK_PREVIEW_SUMMARY);
 
     key = 'default_quality';
@@ -1050,7 +1058,10 @@ function Settings_SetSettings() {
 
 function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
     Settings_value_keys.push(key);
-    if (valuesArray) Settings_value[key].values = valuesArray;
+    if (valuesArray) {
+        if (!Settings_value[key]) Settings_value[key] = {};
+        Settings_value[key].values = valuesArray;
+    }
 
     return STR_SUMMARY ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR);
 }
@@ -1148,6 +1159,7 @@ function Settings_SetDefaults() {
     OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
     OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
+    OSInterface_SetVolReducer(Settings_Obj_default('vol_reducer'));
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
     //Settings_proxy_set_start();
@@ -1392,6 +1404,7 @@ function Settings_SetDefault(position) {
     else if (position === 'speed_adjust') Settings_SetSpeed_adjust();
     else if (position === 'seek_preview') PlayVod_SetPreviewType();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
+    else if (position === 'vol_reducer') OSInterface_SetVolReducer(Settings_Obj_default('vol_reducer'));
     else if (position === 'thumb_quality') Main_SetThumb();
     else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
     else if (position === 'preview_volume_new') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));

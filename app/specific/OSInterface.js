@@ -118,6 +118,16 @@ function OSInterface_Settings_SetPingWarning(warning) {
     if (Main_IsOn_OSInterface) Android.Settings_SetPingWarning(Boolean(warning));
 }
 
+//public void SetVolReducer(int mode)
+//mode = 0: None, 1: Half, 2: Full
+//Android specific: true
+//Sets the volume reducer mode
+function OSInterface_SetVolReducer(mode) {
+    if (Main_IsOn_OSInterface) {
+        Android.SetVolReducer(mode);
+    }
+}
+
 //public void SetQuality(int position)
 //position = the track position of the track group, the array of current available qualities of the player, -1 equals auto
 //Android specific: false
