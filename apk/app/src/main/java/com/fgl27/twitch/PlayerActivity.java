@@ -1282,6 +1282,19 @@ public class PlayerActivity extends Activity {
             
             
             SetAudio(playerPosition, targetVolume);
+            
+            // Notify user about mute/reduction state with Android overlay
+            runOnUiThread(() -> {
+                String message;
+                if (volReducerMode == 2) {
+                    message = String.format(Locale.US, getString(R.string.volume_muted), playerPosition);
+                } else if (volReducerMode == 1) {
+                    message = String.format(Locale.US, getString(R.string.volume_reduced), playerPosition);
+                } else {
+                    return; // No reduction, no notification
+                }
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            });
         }
     }
 
@@ -1295,6 +1308,19 @@ public class PlayerActivity extends Activity {
             float restoredVolume = savedVolumes[playerPosition];
             
             SetAudio(playerPosition, restoredVolume);
+            
+            // Notify user about unmute/restore state with Android overlay
+            runOnUiThread(() -> {
+                String message;
+                if (volReducerMode == 2) {
+                    message = String.format(Locale.US, getString(R.string.volume_unmuted), playerPosition);
+                } else if (volReducerMode == 1) {
+                    message = String.format(Locale.US, getString(R.string.volume_restored), playerPosition);
+                } else {
+                    return; // No reduction was active, no notification
+                }
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            });
         }
     }
 
@@ -1305,7 +1331,8 @@ public class PlayerActivity extends Activity {
         stopVolReducerPositionChecker(playerPosition);
         
         // Restore volume if volume reducer was active
-        if (isVolReducerActive[playerPosition] && savedVolumes[playerPosition] >= 0) {
+        boolean wasActive = isVolReducerActive[playerPosition];
+        if (wasActive && savedVolumes[playerPosition] >= 0) {
             float restoredVolume = savedVolumes[playerPosition];
             SetAudio(playerPosition, restoredVolume);
         }
@@ -1315,6 +1342,14 @@ public class PlayerActivity extends Activity {
             volReducerPlaylists[playerPosition].clear();
         }
         savedVolumes[playerPosition] = -1; // Reset saved volume
+        
+        // Notify user about reset if volume reducer was active
+        if (wasActive) {
+            runOnUiThread(() -> {
+                String message = String.format(Locale.US, getString(R.string.volume_reset), playerPosition);
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     /**
@@ -3704,7 +3739,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
-            PicturePictureSize = mPicturePictureSize;d
+            PicturePictureSize = mPicturePictureSize;
             runOnUiThread(() -> UpdateSizePosSmall(1, false));
         }
 

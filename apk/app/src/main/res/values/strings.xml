@@ -51,4 +51,11 @@
     <string name="playing">Playing</string>
     <string name="streaming">Streaming</string>
 
+    <!--Volume reducer notifications-->
+    <string name="volume_muted">Player %d: Audio muted (ad detected)</string>
+    <string name="volume_unmuted">Player %d: Audio restored</string>
+    <string name="volume_reduced">Player %d: Audio reduced (ad detected)</string>
+    <string name="volume_restored">Player %d: Audio restored</string>
+    <string name="volume_reset">Player %d: Volume reducer reset</string>
+
 </resources>
