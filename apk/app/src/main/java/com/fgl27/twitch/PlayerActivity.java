@@ -1490,18 +1490,48 @@ public class PlayerActivity extends Activity {
                 double segmentEnd = currentTime + segment.duration;
                 
                 // Check if position is within this segment
-                if (positionSeconds >= segmentStart && positionSeconds < segmentEnd) {
+                // Use <= for segmentEnd to include the exact boundary (helps catch transitions immediately)
+                if (positionSeconds >= segmentStart && positionSeconds <= segmentEnd) {
                     foundMatch = segment.isAd;
                     positionInThisPlaylist = true;
                     matchingPlaylist = playlistWithTimestamp;
+                    
+                    // Early transition detection: check the next segment when we're close to segment boundary
+                    // This ensures we mute before ad audio starts and unmute as soon as ad ends
+                    double timeToSegmentEnd = segmentEnd - positionSeconds;
+                    if (timeToSegmentEnd <= 0.15 && segIndex + 1 < playlist.segments.size()) {
+                        TwitchHLSPlaylistParser.Segment nextSegment = playlist.segments.get(segIndex + 1);
+                        
+                        // Case 1: Transitioning INTO an ad (non-ad -> ad)
+                        // Mute early to prevent any ad audio from playing
+                        if (!segment.isAd && nextSegment.isAd) {
+                            foundMatch = true; // Mute early before ad starts
+                        }
+                        // Case 2: Transitioning OUT of an ad (ad -> non-ad)
+                        // Unmute early as soon as we're transitioning out
+                        else if (segment.isAd && !nextSegment.isAd) {
+                            foundMatch = false; // Unmute early when ad ends
+                        }
+                    }
+                    
                     if (BuildConfig.DEBUG) {
+                        String transitionNote = "";
+                        if (timeToSegmentEnd <= 0.15 && segIndex + 1 < playlist.segments.size()) {
+                            TwitchHLSPlaylistParser.Segment nextSegment = playlist.segments.get(segIndex + 1);
+                            if (!segment.isAd && nextSegment.isAd && foundMatch) {
+                                transitionNote = " (early mute - entering ad)";
+                            } else if (segment.isAd && !nextSegment.isAd && !foundMatch) {
+                                transitionNote = " (early unmute - exiting ad)";
+                            }
+                        }
                         Log.d(TAG, "VolReducer: isPositionInVolumeReduction: player " + playerPosition + 
                               " at " + String.format("%.2f", positionSeconds) + "s " +
                               "matches seg[" + segIndex + "] in playlist (parseTime: " + 
                               String.format("%.2f", (playlistWithTimestamp.parseTimeMs / 1000.0)) + "s) " +
                               String.format("%.2f", segmentStart) + "s-" + String.format("%.2f", segmentEnd) + "s, " +
                               "isAd: " + segment.isAd + ", title: " + 
-                              (segment.title != null ? segment.title : "null"));
+                              (segment.title != null ? segment.title : "null") +
+                              transitionNote);
                     }
                     break; // Found the segment in this playlist
                 }
@@ -1577,13 +1607,13 @@ public class PlayerActivity extends Activity {
             handleVolReducerEnd(playerPosition);
         }
         
-        // Schedule next check (check every 500ms for responsive volume reducer)
+        // Schedule next check (check every 100ms for more responsive volume reducer)
         // Only check when actually playing to avoid unnecessary checks that might cause audio issues
         volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
         if (PlayerObj[playerPosition].player != null && PlayerObj[playerPosition].player.isPlaying()) {
             volReducerHandlers[playerPosition].postDelayed(
                 () -> checkVolReducerByPosition(playerPosition),
-                500
+                100
             );
         }
     }
@@ -4392,9 +4422,16 @@ public class PlayerActivity extends Activity {
                           (extXInfo.isEmpty() ? "" : ", " + extXInfo));
                 }
                 
-                // Note: We don't trigger volume reducer here anymore - it's now based on playback position
-                // This is just for logging/debugging purposes
-                // The actual volume changes happen in checkVolReducerByPosition() based on current playback position
+                // Trigger immediate volume reducer check when a segment loads
+                // This ensures we detect ad/non-ad transitions as soon as segments are loaded
+                // The position-based check will also run, but this gives us immediate feedback
+                if (volReducerHandlers[playerPosition] != null) {
+                    volReducerHandlers[playerPosition].post(() -> {
+                        if (PlayerObj[playerPosition].player != null && PlayerObj[playerPosition].player.isPlaying()) {
+                            checkVolReducerByPosition(playerPosition);
+                        }
+                    });
+                }
             }
         }
     }
