@@ -19,7 +19,8 @@
  */
 
 // Keep this file named as (zero)*** so it loads first in release_maker
-var STR_REFRESH,
+var STR_NUMBER_SEPARATOR,
+    STR_REFRESH,
     STR_SEARCH,
     STR_SETTINGS,
     STR_CONTROLS,

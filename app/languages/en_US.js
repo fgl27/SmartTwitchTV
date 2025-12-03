@@ -29,6 +29,7 @@ function en_USLang() {
     Sidepannel_MoveldefaultMargin = 14.5;
 
     //Below are variables to translate
+    STR_NUMBER_SEPARATOR = ',';
     STR_KEY_UP_DOWN = 'PG up/down';
     STR_KEY_MEDIA_FF = 'or fast forward rewind media key';
     STR_GUIDE_EXTRA = 'or press key 2';

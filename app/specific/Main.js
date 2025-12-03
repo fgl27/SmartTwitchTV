@@ -920,9 +920,9 @@ function Main_isControlsDialogVisible() {
     return Main_isElementShowing('dialog_controls');
 }
 
-function Main_addCommas(value) {
+function Main_formatNumber(value) {
     if (!value) return value;
-    return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, STR_NUMBER_SEPARATOR);
 }
 
 function Main_GetViewerStrings(value) {

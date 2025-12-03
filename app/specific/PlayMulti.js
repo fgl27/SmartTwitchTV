@@ -659,7 +659,7 @@ function Play_MultiUpdateInfo(pos, game, views, title, extraText) {
     if (extraChanged || streamViewersMulti[pos] !== views) {
         Main_innerHTML(
             'stream_info_multi_views' + extraText + pos,
-            views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
+            views > 0 ? STR_SPACE_HTML + STR_FOR + Main_formatNumber(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
         );
     }
     streamViewersMulti[pos] = views;

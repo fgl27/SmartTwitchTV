@@ -1906,12 +1906,12 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
 
                 UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                     game.displayName, //0
-                    (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                    (cell.channelsCount ? Main_formatNumber(cell.channelsCount) : 0) +
                         STR_SPACE_HTML +
                         STR_CHANNELS +
                         STR_BR +
                         STR_FOR +
-                        (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                        (cell.viewersCount ? Main_formatNumber(cell.viewersCount) : 0) +
                         STR_SPACE_HTML +
                         Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //1
                     id_cell, //2

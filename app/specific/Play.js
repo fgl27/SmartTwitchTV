@@ -520,7 +520,7 @@ function Play_UpdateMainStreamDiv() {
     if (streamViewers !== Play_data.data[13]) {
         Main_innerHTML(
             'stream_live_viewers',
-            STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
+            STR_SPACE_HTML + STR_FOR + Main_formatNumber(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
         );
     }
     streamViewers = Play_data.data[13];
