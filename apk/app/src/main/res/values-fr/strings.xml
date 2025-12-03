@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ /*
+ * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+ *
+ * SmartTwitchTV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SmartTwitchTV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SmartTwitchTV.  If not, see
+<https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+ *
+ */
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">SmartTV Client for Twitch</string>
+    <string name="short_app_name">STTV</string>
+    <!--Notification-->
+    <string name="notification_service">Service de notifications en cours d&#39;exécution</string>
+    <string name="notification_live_game">Le jeu est en live</string>
+    <string name="notification_live">Le streamer est en live</string>
+    <string name="notification_title">Le streamer a changé de titre</string>
+    <string name="notification_game">Le streamer a changé de jeu</string>
+    <string name="notification_title_game">Le streamer a changé de jeu et de titre</string>
+    <string name="notification_text">Sans ceci, les notifications en arrière-plan ne
+        s&#39;afficheront pas</string>
+    <!--Warnings-->
+    <string name="no_network">Aucune connexion Internet disponible !\n\nConnectez-vous à un réseau
+        pour que l&#39;application termine son chargement\n\nou\n\nmaintenez la touche Retour pour
+        fermer l&#39;application.</string>
+    <string name="no_internet">Le ping vers Twitch a échoué durant les 30 dernières secondes !\n\nSi
+        l&#39;application ne fonctionne pas correctement, vérifiez votre connexion Internet
+        locale\n\nMaintenez la touche Retour pour fermer l&#39;application si elle se fige ou ne
+        répond plus.\n\nSi la connexion revient, cet avertissement se masquera automatiquement,
+        sinon il se masquera dans 30 secondes\n\nCet avertissement peut être désactivé dans les
+        paramètres</string>
+    <string name="external_player_fail">Aucune application de lecture vidéo externe disponible</string>
+    <string name="webview_exception">L&#39;application n&#39;a pas pu se charger car WebView système
+        est soit absent (peu probable), soit en cours de mise à jour ; réessayez dans quelques
+        secondes</string>
+    <!--Home
+    screen channel-->
+    <string name="channel_disable">Ce contenu a été désactivé ou n&#39;a pas pu être chargé. Appuyez
+        sur OK pour actualiser maintenant (l&#39;actualisation ne se produit que lorsque
+        l&#39;application est visible)</string>
+    <string name="channel_refresh">Appuyez sur OK pour actualiser (mise à jour automatique toutes
+        les 30 minutes en arrière-plan), l&#39;actualisation manuelle ne se produit que lorsque
+        l&#39;application est visible</string>
+    <string name="channel_no_user">Il est nécessaire d&#39;ajouter un utilisateur avant de charger
+        ce contenu</string>
+    <string name="channel_empty">Liste vide</string>
+    <string name="channel_last_refresh">Dernière actualisation - %s %s %02d:%02d</string>
+    <string name="channel_refreshed">%s canal de l&#39;écran d&#39;accueil actualisé</string>
+    <string name="channel_live_title">%s %s depuis %s pour %s spectateurs\n%s</string>
+    <string name="channel_game_title">%s chaînes\nPour %s spectateurs</string>
+    <string name="playing">Joue à</string>
+    <string name="streaming">En live</string>
+</resources>
