@@ -11920,7 +11920,7 @@
     function ChannelContent_loadDataRequestSuccess(response) {
         var obj = JSON.parse(response);
 
-        if (obj.data && obj.data.length) {
+        if (obj && obj.data && obj.data.length) {
             ChannelContent_responseText = obj.data;
             ChannelContent_GetStreamerInfo();
         } else if (!ChannelContent_TargetId) {
@@ -11952,7 +11952,7 @@
             if (responseObj.status === 200) {
                 var data = JSON.parse(responseObj.responseText).data;
 
-                if (data.user && data.user.hosting) {
+                if (data && data.user && data.user.hosting) {
                     var response = data.user.hosting;
 
                     ChannelContent_TargetId = response.id;
@@ -11974,7 +11974,7 @@
 
     function ChannelContent_GetStreamerInfoSuccess(responseText) {
         var obj = JSON.parse(responseText);
-        if (obj.data && obj.data.length) {
+        if (obj && obj.data && obj.data.length) {
             var channel = obj.data[0];
             ChannelContent_offline_image = channel.offline_image_url;
             //ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
@@ -41186,7 +41186,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Main_addCommas(cell.viewer_count), //4
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.user_login, //6
-            cell.id.toString(), //7 broadcast id
+            cell.id ? cell.id.toString() : '', //7 broadcast id
             Main_is_rerun(cell.type), //8
             logo ? logo : null, //9
             partner ? partner : null, //10
