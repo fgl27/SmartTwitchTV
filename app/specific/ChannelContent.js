@@ -135,7 +135,7 @@ function ChannelContent_loadDataRequest() {
 function ChannelContent_loadDataRequestSuccess(response) {
     var obj = JSON.parse(response);
 
-    if (obj.data && obj.data.length) {
+    if (obj && obj.data && obj.data.length) {
         ChannelContent_responseText = obj.data;
         ChannelContent_GetStreamerInfo();
     } else if (!ChannelContent_TargetId) {
@@ -167,7 +167,7 @@ function ChannelContent_CheckHost(responseObj, key, id) {
         if (responseObj.status === 200) {
             var data = JSON.parse(responseObj.responseText).data;
 
-            if (data.user && data.user.hosting) {
+            if (data && data.user && data.user.hosting) {
                 var response = data.user.hosting;
 
                 ChannelContent_TargetId = response.id;
@@ -189,7 +189,7 @@ function ChannelContent_GetStreamerInfo() {
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
     var obj = JSON.parse(responseText);
-    if (obj.data && obj.data.length) {
+    if (obj && obj.data && obj.data.length) {
         var channel = obj.data[0];
         ChannelContent_offline_image = channel.offline_image_url;
         //ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;

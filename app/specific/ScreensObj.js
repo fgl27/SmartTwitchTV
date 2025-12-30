@@ -3029,7 +3029,7 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
         Main_addCommas(cell.viewer_count), //4
         cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
-        cell.id.toString(), //7 broadcast id
+        cell.id ? cell.id.toString() : '', //7 broadcast id
         Main_is_rerun(cell.type), //8
         logo ? logo : null, //9
         partner ? partner : null, //10
