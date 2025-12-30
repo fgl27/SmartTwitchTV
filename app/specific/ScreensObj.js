@@ -611,7 +611,7 @@ function ScreensObj_StartAllVars() {
                 return;
             }
 
-            var id_cell = cell.stream.broadcaster.id;
+            var id_cell = cell.stream.broadcaster ? cell.stream.broadcaster.id : null;
             var id = cell.stream.id;
             var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
 
