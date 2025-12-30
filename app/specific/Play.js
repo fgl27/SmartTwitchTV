@@ -211,8 +211,6 @@ function Play_Start(offline_chat) {
 
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
-    Play_loadDataCheckHostId = 0;
-    Play_StayCheckHostId = 0;
     Play_HasLive = false;
 
     Play_BufferSize = 0;
@@ -885,7 +883,7 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         if (Isforbiden) {
             Play_ForbiddenLive();
         } else {
-            Play_CheckHostStart(error_410);
+            Play_EndErrorStart(error_410);
         }
     } else {
         Play_CloseBigAndSwich(error_410);
@@ -901,7 +899,7 @@ function Play_ForbiddenLive() {
     Play_showWarningMiddleDialog(STR_FORBIDDEN, 3000);
 
     Main_setTimeout(function () {
-        if (Play_isOn) Play_CheckHostStart();
+        if (Play_isOn) Play_EndErrorStart();
     }, 4000);
 }
 
@@ -1347,10 +1345,6 @@ function Play_shutdownStream() {
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-
-        Play_loadDataCheckHostId = 0;
-        Play_StayCheckHostId = 0;
-        PlayExtra_loadDataCheckHostId = 0;
     }
 }
 
@@ -1992,7 +1986,7 @@ function Play_PannelEndStart(PlayVodClip, fail_type, errorCode) {
             if (PlayVodClip === 1) {
                 //live
                 PlayExtra_ClearExtra();
-                Play_CheckHostStart();
+                Play_EndErrorStart();
             } else {
                 Play_PlayEndStart(PlayVodClip);
             }
@@ -2013,43 +2007,19 @@ function Play_PlayEndStart(PlayVodClip) {
     Play_showEndDialog(PlayVodClip);
 }
 
-function Play_CheckHostStart(error_410) {
+function Play_EndErrorStart(error_410) {
     if (error_410) {
         Play_IsWarning = true;
         Play_showWarningDialog(STR_410_ERROR);
     }
 
-    Play_showBufferDialog();
     Play_SetControlsVisibility('ShowInStay');
 
     ChatLive_Clear(0);
     ChatLive_Clear(1);
 
-    Main_setTimeout(Play_loadDataCheckHost, 50);
-}
-
-var Play_loadDataCheckHostId;
-function Play_loadDataCheckHost() {
-    Play_loadDataCheckHostId = new Date().getTime();
-
-    Main_setTimeout(
-        function () {
-            Main_GetHost(Play_CheckHost, 0, Play_loadDataCheckHostId, Play_data.data[6]);
-        },
-        100 //Delay as the stream just ended and may not show as host yet
-    );
-}
-
-function Play_CheckHost(responseObj, key, id) {
-    if (Play_isOn && Play_loadDataCheckHostId === id) {
-        if (Play_CheckHostResult(responseObj)) {
-            if (Settings_value.open_host.defaultValue) return;
-        } else {
-            Play_EndSet(1);
-        }
-
-        Play_PlayEndStart(1);
-    }
+    Play_EndSet(1);
+    Play_PlayEndStart(1);
 }
 
 function Play_UpdateDuration(duration) {
@@ -2086,7 +2056,7 @@ function Play_CloseBigAndSwich(error_410) {
         Play_CloseSmall();
     } else {
         if (Main_IsOn_OSInterface) OSInterface_mClearSmallPlayer();
-        Play_CheckHostStart(error_410);
+        Play_EndErrorStart(error_410);
     }
     PlayExtra_UnSetPanel();
 }

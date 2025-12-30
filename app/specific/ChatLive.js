@@ -1552,33 +1552,6 @@ function ChatLive_socketSendCheck(chat_number, id, timeout, silent) {
     }
 }
 
-function ChatLive_CheckHost(chat_number, id) {
-    //If on multi or auto open host not enable, let the player end and do the checks
-    if (id !== Chat_Id[chat_number] || Play_MultiEnable || !Settings_value.open_host.defaultValue) return;
-
-    Main_GetHost(ChatLive_CheckHostResult, chat_number, id, ChatLive_selectedChannel[chat_number]);
-}
-
-function ChatLive_CheckHostResult(responseObj, chat_number, id) {
-    if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
-
-    if (responseObj.status === 200) {
-        var data = JSON.parse(responseObj.responseText).data;
-
-        if (data.user && data.user.hosting) {
-            if (PlayExtra_PicturePicture) {
-                PlayExtra_loadDataCheckHostId = new Date().getTime();
-
-                PlayExtra_CheckHost(responseObj, chat_number ^ 1, PlayExtra_loadDataCheckHostId);
-            } else {
-                Play_loadDataCheckHostId = new Date().getTime();
-
-                Play_CheckHost(responseObj, 0, Play_loadDataCheckHostId);
-            }
-        }
-    }
-}
-
 //possible messages
 //https://dev.twitch.tv/docs/irc/msg-id/#notice-message-ids
 function ChatLive_UserNoticeCheck(message, chat_number, id) {
@@ -1586,7 +1559,6 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
     var msgId = message.tags && message.tags.hasOwnProperty('msg-id');
 
     if (msgId && Main_A_includes_B(message.tags['msg-id'] + '', 'host_on')) {
-        ChatLive_CheckHost(chat_number, id);
         ChatLive_UserNoticeWarn(message);
     } else if (msgId && useToken[chat_number] && Main_A_includes_B(message.tags['msg-id'] + '', 'msg_banned')) {
         var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];

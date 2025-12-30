@@ -2236,21 +2236,6 @@ function Main_CheckFullxmlHttpGet(result, key, callbackSuccess, callBackError, c
     );
 }
 
-var Main_GetHostBaseUrl =
-    '{"operationName":"UseHosting","variables":{"channelLogin":"%x"},"extensions":{"persistedQuery":{"version": 1,"sha256Hash":"427f55a3daca510f726c02695a898ef3a0de4355b39af328848876052ea6b337"}}}';
-function Main_GetHost(callbackSuccess, key, checkResult, channel) {
-    FullxmlHttpGet(
-        PlayClip_BaseUrl,
-        Play_base_backup_headers_Array,
-        callbackSuccess,
-        noop_fun,
-        key,
-        checkResult,
-        'POST', //Method, null for get
-        Main_GetHostBaseUrl.replace('%x', channel) //postMessage, null for get
-    );
-}
-
 function Main_SetThumb() {
     Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];
     Main_GameSize = Main_GameSizeAll[Settings_value.thumb_quality.defaultValue];

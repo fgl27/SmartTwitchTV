@@ -27,7 +27,6 @@ var PlayExtra_WasPicturePicture = false;
 
 function PlayExtra_KeyEnter() {
     PlayExtra_clear = true;
-    PlayExtra_loadDataCheckHostId = 0;
 
     if (Play_MaxInstances < 2) {
         Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO, 3000);
@@ -239,12 +238,7 @@ function PlayExtra_End(doSwitch, fail_type) {
     if (!fail_type && Settings_value.open_host.defaultValue) {
         Play_showWarningMiddleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
 
-        Main_setTimeout(
-            function () {
-                PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
-            },
-            2000 //Delay as the stream just ended and may not show as host yet
-        );
+        PlayExtra_End_success(doSwitch ? 1 : 0);
     } else PlayExtra_End_success(doSwitch, fail_type);
 }
 
@@ -264,64 +258,6 @@ function PlayExtra_End_success(doSwitch, fail_type, errorCode) {
     Play_showWarningMiddleDialog(reason + Play_GetErrorCode(errorCode), 2500 + (fail_type ? 2500 : 0));
 
     Play_CloseSmall();
-}
-
-var PlayExtra_loadDataCheckHostId;
-function PlayExtra_loadDataCheckHost(doSwitch) {
-    PlayExtra_loadDataCheckHostId = new Date().getTime();
-
-    //Check in case both players end at same time, internet error or something that can cause it
-    var Channel_Name = doSwitch ? Play_data.data[14] : PlayExtra_data.data[14];
-
-    if (Channel_Name) {
-        Main_GetHost(PlayExtra_CheckHost, doSwitch, PlayExtra_loadDataCheckHostId, Channel_Name);
-    } else PlayExtra_End_success(doSwitch);
-}
-
-function PlayExtra_CheckHost(responseObj, doSwitch, id) {
-    if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
-        if (responseObj.status === 200) {
-            var data = JSON.parse(responseObj.responseText).data,
-                warning_text;
-
-            if (data.user && data.user.hosting) {
-                var TargetHost = data.user.hosting;
-
-                TargetHost.id = TargetHost.id.toString();
-
-                if (TargetHost.id !== PlayExtra_data.data[14].toString() && TargetHost.id !== Play_data.data[14].toString()) {
-                    Play_IsWarning = true;
-                    warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
-
-                    if (doSwitch) {
-                        Main_values.Play_isHost = true;
-
-                        Play_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
-                        Play_data.data[6] = TargetHost.login;
-                        Play_data.data[1] = TargetHost.displayName;
-                        Play_data.data[14] = TargetHost.id;
-
-                        Play_Start();
-
-                        Play_AudioReset(0);
-                    } else if (PlayExtra_PicturePicture) {
-                        PlayExtra_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
-                        PlayExtra_data.data[6] = TargetHost.login;
-                        PlayExtra_data.data[1] = TargetHost.displayName;
-                        PlayExtra_data.data[14] = TargetHost.id;
-                        PlayExtra_data.isHost = true;
-
-                        PlayExtra_Resume();
-                    }
-
-                    Play_showWarningDialog(warning_text, 4000);
-                    return;
-                }
-            }
-        }
-
-        PlayExtra_End_success(doSwitch);
-    }
 }
 
 function PlayExtra_SetPanel() {
