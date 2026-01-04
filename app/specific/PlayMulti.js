@@ -210,7 +210,7 @@ function Play_MultiEnd(position, fail_type, errorCode) {
         OSInterface_DisableMultiStream();
         Play_Multi_UnSetPanelDiv(true);
         PlayExtra_ClearExtra();
-        Play_CheckHostStart();
+        Play_EndErrorStart();
     } else {
         if (Play_Multi_MainBig && !position) {
             //If main ended find a new main
@@ -348,7 +348,7 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
             OSInterface_DisableMultiStream();
             Play_Multi_UnSetPanelDiv(true);
             PlayExtra_ClearExtra();
-            Play_CheckHostStart();
+            Play_EndErrorStart();
         }
     }
 }

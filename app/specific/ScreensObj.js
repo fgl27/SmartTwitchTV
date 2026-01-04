@@ -611,7 +611,7 @@ function ScreensObj_StartAllVars() {
                 return;
             }
 
-            var id_cell = cell.stream.broadcaster.id;
+            var id_cell = cell.stream.broadcaster ? cell.stream.broadcaster.id : null;
             var id = cell.stream.id;
             var isNotBlocked = Screens_isNotBlocked(id_cell, cell.stream.game ? cell.stream.game.id : null, this.IsUser);
 
@@ -3029,7 +3029,7 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
         Main_formatNumber(cell.viewer_count), //4
         cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
-        cell.id.toString(), //7 broadcast id
+        cell.id ? cell.id.toString() : '', //7 broadcast id
         Main_is_rerun(cell.type), //8
         logo ? logo : null, //9
         partner ? partner : null, //10

@@ -18,7 +18,6 @@
             <option value="$PROJECT_DIR$/../../media/libraries/database" />
             <option value="$PROJECT_DIR$/../../media/libraries/datasource" />
             <option value="$PROJECT_DIR$/../../media/libraries/datasource_cronet" />
-            <option value="$PROJECT_DIR$/../../media/libraries/datasource_httpengine" />
             <option value="$PROJECT_DIR$/../../media/libraries/datasource_okhttp" />
             <option value="$PROJECT_DIR$/../../media/libraries/datasource_rtmp" />
             <option value="$PROJECT_DIR$/../../media/libraries/decoder" />

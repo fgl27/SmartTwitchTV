@@ -94,7 +94,6 @@ function ChannelContent_exit() {
     Main_HideElement('channel_content_scroll');
     Main_values.My_channel = false;
     ChannelContent_removeFocus();
-    ChannelContent_loadDataCheckHostId = 0;
 }
 
 function ChannelContent_StartLoad() {
@@ -135,50 +134,17 @@ function ChannelContent_loadDataRequest() {
 function ChannelContent_loadDataRequestSuccess(response) {
     var obj = JSON.parse(response);
 
-    if (obj.data && obj.data.length) {
+    if (obj && obj.data && obj.data.length) {
         ChannelContent_responseText = obj.data;
         ChannelContent_GetStreamerInfo();
-    } else if (!ChannelContent_TargetId) {
-        ChannelContent_loadDataCheckHost();
     } else {
-        ChannelContent_loadDataCheckHostError();
+        ChannelContent_loadDataError();
     }
 }
 
 function ChannelContent_loadDataError() {
     ChannelContent_responseText = null;
     ChannelContent_GetStreamerInfo();
-}
-
-var ChannelContent_loadDataCheckHostId;
-function ChannelContent_loadDataCheckHost() {
-    ChannelContent_loadDataCheckHostId = new Date().getTime();
-
-    Main_GetHost(ChannelContent_CheckHost, 0, ChannelContent_loadDataCheckHostId, Main_values.Main_selectedChannel);
-}
-
-function ChannelContent_loadDataCheckHostError() {
-    ChannelContent_responseText = null;
-    ChannelContent_GetStreamerInfo();
-}
-
-function ChannelContent_CheckHost(responseObj, key, id) {
-    if (ChannelContent_loadDataCheckHostId === id) {
-        if (responseObj.status === 200) {
-            var data = JSON.parse(responseObj.responseText).data;
-
-            if (data.user && data.user.hosting) {
-                var response = data.user.hosting;
-
-                ChannelContent_TargetId = response.id;
-                ChannelContent_loadDataRequest();
-
-                return;
-            }
-        }
-
-        ChannelContent_loadDataCheckHostError();
-    }
 }
 
 function ChannelContent_GetStreamerInfo() {
@@ -189,7 +155,7 @@ function ChannelContent_GetStreamerInfo() {
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
     var obj = JSON.parse(responseText);
-    if (obj.data && obj.data.length) {
+    if (obj && obj.data && obj.data.length) {
         var channel = obj.data[0];
         ChannelContent_offline_image = channel.offline_image_url;
         //ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
