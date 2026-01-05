@@ -830,12 +830,12 @@ function ScreensObj_StartAllVars() {
                             [
                                 game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
                                 game.displayName, //1
-                                (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                                (cell.channelsCount ? Main_formatNumber(cell.channelsCount) : 0) +
                                     STR_SPACE_HTML +
                                     STR_CHANNELS +
                                     STR_BR +
                                     STR_FOR +
-                                    (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                                    (cell.viewersCount ? Main_formatNumber(cell.viewersCount) : 0) +
                                     STR_SPACE_HTML +
                                     Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //2
                                 id_cell //3
@@ -852,12 +852,12 @@ function ScreensObj_StartAllVars() {
                                 game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
                                 game.name, //1
                                 hasLive
-                                    ? Main_addCommas(cell.channels) +
+                                    ? Main_formatNumber(cell.channels) +
                                       STR_SPACE_HTML +
                                       STR_CHANNELS +
                                       STR_BR +
                                       STR_FOR +
-                                      Main_addCommas(cell.viewers) +
+                                      Main_formatNumber(cell.viewers) +
                                       STR_SPACE_HTML +
                                       Main_GetViewerStrings(cell.viewers)
                                     : '', //2
@@ -3002,7 +3002,7 @@ function ScreensObj_LiveQueryCellArray(cell) {
         broadcaster ? broadcaster.displayName : '', //1
         cell.stream.title, //2
         game ? game.displayName : '', //3
-        Main_addCommas(cell.stream.viewersCount), //4
+        Main_formatNumber(cell.stream.viewersCount), //4
         broadcaster && broadcaster.language ? '[' + broadcaster.language.toUpperCase() + ']' : '', //5
         broadcaster ? broadcaster.login : '', //6
         cell.stream.id.toString(), //7 broadcast id
@@ -3026,7 +3026,7 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
         cell.user_name, //1
         cell.title, //2
         cell.game_name, //3
-        Main_addCommas(cell.viewer_count), //4
+        Main_formatNumber(cell.viewer_count), //4
         cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
         cell.id ? cell.id.toString() : '', //7 broadcast id
@@ -3051,7 +3051,7 @@ function ScreensObj_VodCellArray(cell, isQuery, game_id, game_name) {
             cell.creator ? cell.creator.displayName : '', //1
             Main_videoCreatedAt(cell.createdAt), //2
             cell.game_name ? cell.game_name : game_name, //3
-            Main_addCommas(cell.viewCount), //4
+            Main_formatNumber(cell.viewCount), //4
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.creator ? cell.creator.login : '', //6
             cell.id, //7
@@ -3072,7 +3072,7 @@ function ScreensObj_VodCellArray(cell, isQuery, game_id, game_name) {
         cell.user_name, //1
         Main_videoCreatedAt(cell.created_at), //2
         cell.game_name ? cell.game_name : game_name, //3
-        Main_addCommas(cell.view_count), //4
+        Main_formatNumber(cell.view_count), //4
         cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
         cell.id, //7
@@ -3105,7 +3105,7 @@ function ScreensObj_ClipCellArray(cell, isQuery, game_name) {
             '[' + cell.language.toUpperCase() + ']', //11
             cell.created_at, //12
             cell.viewCount, //13
-            Main_addCommas(cell.viewCount), //14
+            Main_formatNumber(cell.viewCount), //14
             cell.thumbnailURL ? cell.thumbnailURL.replace('/preview.jpg', '/preview-' + Main_VideoSize + '.jpg') : cell.thumbnailURL, //15
             Main_videoCreatedAt(cell.createdAt), //16
             cell.language, //17
@@ -3128,7 +3128,7 @@ function ScreensObj_ClipCellArray(cell, isQuery, game_name) {
         cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //11
         cell.created_at, //12
         cell.view_count, //13
-        Main_addCommas(cell.view_count), //14
+        Main_formatNumber(cell.view_count), //14
         cell.thumbnail_url, //15
         Main_videoCreatedAt(cell.created_at), //16
         cell.language, //17

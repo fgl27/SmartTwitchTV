@@ -29,6 +29,7 @@ function fr_FRLang() {
     Sidepannel_MoveldefaultMargin = 14.5;
 
     //Below are variables to translate
+    STR_NUMBER_SEPARATOR = ' ';
     STR_KEY_UP_DOWN = 'Pg préc/suiv';
     STR_KEY_MEDIA_FF = 'ou la touche média avance/retour rapide';
     STR_GUIDE_EXTRA = 'ou appuyez sur la touche 2';

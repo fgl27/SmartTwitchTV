@@ -522,7 +522,7 @@ function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
             if (resultObj.data && resultObj.data.length) {
                 var viewers = resultObj.data[0].viewer_count;
 
-                Main_innerHTML('chat_loggedin' + chat_number, Main_addCommas(viewers) + STR_SPACE_HTML + Main_GetViewerStrings(viewers));
+                Main_innerHTML('chat_loggedin' + chat_number, Main_formatNumber(viewers) + STR_SPACE_HTML + Main_GetViewerStrings(viewers));
             }
         }
     } catch (e) {
@@ -554,7 +554,7 @@ function ChatLive_loadChattersSuccess(responseObj, chat_number, id) {
 
                 Main_innerHTML(
                     'chat_loggedin' + chat_number,
-                    Main_addCommas(counter) + (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT)
+                    Main_formatNumber(counter) + (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT)
                 );
             }
         } catch (e) {

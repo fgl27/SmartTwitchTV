@@ -256,13 +256,13 @@ function ChannelContent_loadDataSuccess() {
 
     streamer_bio +=
         ChannelContent_selectedChannelViews !== ''
-            ? STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + Main_GetViewsStrings(ChannelContent_selectedChannelViews)
+            ? STR_BR + Main_formatNumber(ChannelContent_selectedChannelViews) + Main_GetViewsStrings(ChannelContent_selectedChannelViews)
             : '';
 
     streamer_bio +=
         ChannelContent_selectedChannelFollower !== ''
             ? STR_BR +
-              Main_addCommas(ChannelContent_selectedChannelFollower) +
+              Main_formatNumber(ChannelContent_selectedChannelFollower) +
               (ChannelContent_selectedChannelFollower === 1 ? STR_FOLLOWER : STR_FOLLOWERS)
             : '';
 

@@ -320,7 +320,7 @@ function PlayExtra_UpdatePanel() {
     if (streamViewers1 !== Play_data.data[13]) {
         Main_innerHTML(
             'stream_info_pp_viewers0',
-            STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
+            STR_FOR + Main_formatNumber(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
         );
     }
     streamViewers1 = Play_data.data[13];
@@ -344,7 +344,7 @@ function PlayExtra_UpdatePanel() {
     if (streamViewers2 !== PlayExtra_data.data[13]) {
         Main_innerHTML(
             'stream_info_pp_viewers1',
-            STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
+            STR_FOR + Main_formatNumber(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
         );
     }
     streamViewers2 = PlayExtra_data.data[13];
