@@ -931,6 +931,82 @@ function Main_GetViewsStrings(value) {
     return value === 1 ? STR_VIEW : STR_VIEWS;
 }
 
+const TWITCH_LANGUAGE_TO_COUNTRY = {
+    // Europe
+    fr: "FR",
+    en: "GB",
+    ca: "ES",
+    da: "DK",
+    de: "DE",
+    es: "ES",
+    it: "IT",
+    hu: "HU",
+    nl: "NL",
+    no: "NO",
+    pl: "PL",
+    pt: "PT",
+    ro: "RO",
+    sk: "SK",
+    fi: "FI",
+    sv: "SE",
+    tr: "TR",
+    cs: "CZ",
+    el: "GR",
+    bg: "BG",
+    ru: "RU",
+    uk: "UA",
+
+    // Asia / Middle-East
+    id: "ID",
+    vi: "VN",
+    ms: "MY",
+    hi: "IN",
+    th: "TH",
+    zh: "CN",
+    "zh-hk": "HK",
+    ja: "JP",
+    ko: "KR",
+    ar: "SA",
+
+    // Other
+    tl: "PH",
+    asl: "US",
+    other: null
+};
+
+function countryCodeToFlagEmoji(code) {
+    if (!code || typeof code !== "string") return null;
+
+    const cc = code.toUpperCase();
+    if (!/^[A-Z]{2}$/.test(cc)) return null;
+
+    const A = 0x1f1e6;
+    return String.fromCodePoint(
+        A + cc.charCodeAt(0) - 65,
+        A + cc.charCodeAt(1) - 65
+    );
+}
+
+function Main_FormatLanguage(code) {
+    if (!code) return "[??]";
+
+    const normalized = code.toLowerCase();
+    const base = normalized.split("-")[0];
+
+    const countryCode =
+        TWITCH_LANGUAGE_TO_COUNTRY[normalized] ??
+        TWITCH_LANGUAGE_TO_COUNTRY[base];
+
+    const flag = countryCode
+        ? countryCodeToFlagEmoji(countryCode)
+        : null;
+
+    if (flag) return flag;
+
+    return `[${base.toUpperCase()}]`;
+}
+
+
 // function Main_videoqualitylang(video_height, average_fps, language) {
 //     video_height = video_height + ''; //stringfy doesnot work 8|
 //     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
