@@ -9,6 +9,23 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+January 27 2026
+==============
+
+* Add more fast forward speeds
+* General performance improvements and bug fixes
+
+December 30 2025
+==============
+
+* Add French application language by @UnicodeApocalypse
+* General performance improvements and bug fixes
+
+June 17 2025
+==============
+
+* Add Turkish application language by @G-35
+
 Version June 13
 ==============
 
