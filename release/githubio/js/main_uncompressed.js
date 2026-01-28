@@ -29,7 +29,8 @@
      */
 
     // Keep this file named as (zero)*** so it loads first in release_maker
-    var STR_REFRESH,
+    var STR_NUMBER_SEPARATOR,
+        STR_REFRESH,
         STR_SEARCH,
         STR_SETTINGS,
         STR_CONTROLS,
@@ -1406,6 +1407,7 @@
         Sidepannel_MoveldefaultMargin = 14.5;
 
         //Below are variables to translate
+        STR_NUMBER_SEPARATOR = ',';
         STR_KEY_UP_DOWN = 'PG up/down';
         STR_KEY_MEDIA_FF = 'or fast forward rewind media key';
         STR_GUIDE_EXTRA = 'or press key 2';
@@ -3028,6 +3030,7 @@
         Sidepannel_MoveldefaultMargin = 14.5;
 
         //Below are variables to translate
+        STR_NUMBER_SEPARATOR = ' ';
         STR_KEY_UP_DOWN = 'Pg préc/suiv';
         STR_KEY_MEDIA_FF = 'ou la touche média avance/retour rapide';
         STR_GUIDE_EXTRA = 'ou appuyez sur la touche 2';
@@ -8167,9 +8170,13 @@
         VersionBase: '3.0',
         publishVersionCode: 377, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/377/SmartTV_twitch_3_0_377.apk',
-        WebVersion: 'December 30 2025',
-        WebTag: 723, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'January 27 2025',
+        WebTag: 727, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [
+            {
+                title: 'January 27 2025',
+                changes: ['Add more fast forward speeds', 'General performance improvements and bug fixes']
+            },
             {
                 title: 'Version December 30',
                 changes: ['Add French application language by @UnicodeApocalypse', 'General performance improvements and bug fixes']
@@ -11877,7 +11884,6 @@
         Main_HideElement('channel_content_scroll');
         Main_values.My_channel = false;
         ChannelContent_removeFocus();
-        ChannelContent_loadDataCheckHostId = 0;
     }
 
     function ChannelContent_StartLoad() {
@@ -11923,47 +11929,14 @@
         if (obj && obj.data && obj.data.length) {
             ChannelContent_responseText = obj.data;
             ChannelContent_GetStreamerInfo();
-        } else if (!ChannelContent_TargetId) {
-            ChannelContent_loadDataCheckHost();
         } else {
-            ChannelContent_loadDataCheckHostError();
+            ChannelContent_loadDataError();
         }
     }
 
     function ChannelContent_loadDataError() {
         ChannelContent_responseText = null;
         ChannelContent_GetStreamerInfo();
-    }
-
-    var ChannelContent_loadDataCheckHostId;
-    function ChannelContent_loadDataCheckHost() {
-        ChannelContent_loadDataCheckHostId = new Date().getTime();
-
-        Main_GetHost(ChannelContent_CheckHost, 0, ChannelContent_loadDataCheckHostId, Main_values.Main_selectedChannel);
-    }
-
-    function ChannelContent_loadDataCheckHostError() {
-        ChannelContent_responseText = null;
-        ChannelContent_GetStreamerInfo();
-    }
-
-    function ChannelContent_CheckHost(responseObj, key, id) {
-        if (ChannelContent_loadDataCheckHostId === id) {
-            if (responseObj.status === 200) {
-                var data = JSON.parse(responseObj.responseText).data;
-
-                if (data && data.user && data.user.hosting) {
-                    var response = data.user.hosting;
-
-                    ChannelContent_TargetId = response.id;
-                    ChannelContent_loadDataRequest();
-
-                    return;
-                }
-            }
-
-            ChannelContent_loadDataCheckHostError();
-        }
     }
 
     function ChannelContent_GetStreamerInfo() {
@@ -12075,13 +12048,13 @@
 
         streamer_bio +=
             ChannelContent_selectedChannelViews !== ''
-                ? STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + Main_GetViewsStrings(ChannelContent_selectedChannelViews)
+                ? STR_BR + Main_formatNumber(ChannelContent_selectedChannelViews) + Main_GetViewsStrings(ChannelContent_selectedChannelViews)
                 : '';
 
         streamer_bio +=
             ChannelContent_selectedChannelFollower !== ''
                 ? STR_BR +
-                  Main_addCommas(ChannelContent_selectedChannelFollower) +
+                  Main_formatNumber(ChannelContent_selectedChannelFollower) +
                   (ChannelContent_selectedChannelFollower === 1 ? STR_FOLLOWER : STR_FOLLOWERS)
                 : '';
 
@@ -13134,7 +13107,7 @@
                 if (resultObj.data && resultObj.data.length) {
                     var viewers = resultObj.data[0].viewer_count;
 
-                    Main_innerHTML('chat_loggedin' + chat_number, Main_addCommas(viewers) + STR_SPACE_HTML + Main_GetViewerStrings(viewers));
+                    Main_innerHTML('chat_loggedin' + chat_number, Main_formatNumber(viewers) + STR_SPACE_HTML + Main_GetViewerStrings(viewers));
                 }
             }
         } catch (e) {
@@ -13166,7 +13139,7 @@
 
                     Main_innerHTML(
                         'chat_loggedin' + chat_number,
-                        Main_addCommas(counter) + (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT)
+                        Main_formatNumber(counter) + (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT)
                     );
                 }
             } catch (e) {
@@ -14164,33 +14137,6 @@
         }
     }
 
-    function ChatLive_CheckHost(chat_number, id) {
-        //If on multi or auto open host not enable, let the player end and do the checks
-        if (id !== Chat_Id[chat_number] || Play_MultiEnable || !Settings_value.open_host.defaultValue) return;
-
-        Main_GetHost(ChatLive_CheckHostResult, chat_number, id, ChatLive_selectedChannel[chat_number]);
-    }
-
-    function ChatLive_CheckHostResult(responseObj, chat_number, id) {
-        if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
-
-        if (responseObj.status === 200) {
-            var data = JSON.parse(responseObj.responseText).data;
-
-            if (data.user && data.user.hosting) {
-                if (PlayExtra_PicturePicture) {
-                    PlayExtra_loadDataCheckHostId = new Date().getTime();
-
-                    PlayExtra_CheckHost(responseObj, chat_number ^ 1, PlayExtra_loadDataCheckHostId);
-                } else {
-                    Play_loadDataCheckHostId = new Date().getTime();
-
-                    Play_CheckHost(responseObj, 0, Play_loadDataCheckHostId);
-                }
-            }
-        }
-    }
-
     //possible messages
     //https://dev.twitch.tv/docs/irc/msg-id/#notice-message-ids
     function ChatLive_UserNoticeCheck(message, chat_number, id) {
@@ -14198,7 +14144,6 @@
         var msgId = message.tags && message.tags.hasOwnProperty('msg-id');
 
         if (msgId && Main_A_includes_B(message.tags['msg-id'] + '', 'host_on')) {
-            ChatLive_CheckHost(chat_number, id);
             ChatLive_UserNoticeWarn(message);
         } else if (msgId && useToken[chat_number] && Main_A_includes_B(message.tags['msg-id'] + '', 'msg_banned')) {
             var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
@@ -17744,9 +17689,9 @@
         return Main_isElementShowing('dialog_controls');
     }
 
-    function Main_addCommas(value) {
+    function Main_formatNumber(value) {
         if (!value) return value;
-        return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, STR_NUMBER_SEPARATOR);
     }
 
     function Main_GetViewerStrings(value) {
@@ -19060,21 +19005,6 @@
         checkResult
         //eval(callBackError)// jshint ignore:line
     );
-    }
-
-    var Main_GetHostBaseUrl =
-        '{"operationName":"UseHosting","variables":{"channelLogin":"%x"},"extensions":{"persistedQuery":{"version": 1,"sha256Hash":"427f55a3daca510f726c02695a898ef3a0de4355b39af328848876052ea6b337"}}}';
-    function Main_GetHost(callbackSuccess, key, checkResult, channel) {
-        FullxmlHttpGet(
-            PlayClip_BaseUrl,
-            Play_base_backup_headers_Array,
-            callbackSuccess,
-            noop_fun,
-            key,
-            checkResult,
-            'POST', //Method, null for get
-            Main_GetHostBaseUrl.replace('%x', channel) //postMessage, null for get
-        );
     }
 
     function Main_SetThumb() {
@@ -22210,8 +22140,6 @@
 
         Play_data.isHost = Main_values.Play_isHost;
         Main_values.Play_isHost = false;
-        Play_loadDataCheckHostId = 0;
-        Play_StayCheckHostId = 0;
         Play_HasLive = false;
 
         Play_BufferSize = 0;
@@ -22519,7 +22447,7 @@
         if (streamViewers !== Play_data.data[13]) {
             Main_innerHTML(
                 'stream_live_viewers',
-                STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
+                STR_SPACE_HTML + STR_FOR + Main_formatNumber(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
             );
         }
         streamViewers = Play_data.data[13];
@@ -22886,7 +22814,7 @@
             if (Isforbiden) {
                 Play_ForbiddenLive();
             } else {
-                Play_CheckHostStart(error_410);
+                Play_EndErrorStart(error_410);
             }
         } else {
             Play_CloseBigAndSwich(error_410);
@@ -22902,7 +22830,7 @@
         Play_showWarningMiddleDialog(STR_FORBIDDEN, 3000);
 
         Main_setTimeout(function () {
-            if (Play_isOn) Play_CheckHostStart();
+            if (Play_isOn) Play_EndErrorStart();
         }, 4000);
     }
 
@@ -23349,10 +23277,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Main_values.Play_WasPlaying = 0;
             Play_exitMain();
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-
-            Play_loadDataCheckHostId = 0;
-            Play_StayCheckHostId = 0;
-            PlayExtra_loadDataCheckHostId = 0;
         }
     }
 
@@ -23995,7 +23919,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 if (PlayVodClip === 1) {
                     //live
                     PlayExtra_ClearExtra();
-                    Play_CheckHostStart();
+                    Play_EndErrorStart();
                 } else {
                     Play_PlayEndStart(PlayVodClip);
                 }
@@ -24016,43 +23940,19 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_showEndDialog(PlayVodClip);
     }
 
-    function Play_CheckHostStart(error_410) {
+    function Play_EndErrorStart(error_410) {
         if (error_410) {
             Play_IsWarning = true;
             Play_showWarningDialog(STR_410_ERROR);
         }
 
-        Play_showBufferDialog();
         Play_SetControlsVisibility('ShowInStay');
 
         ChatLive_Clear(0);
         ChatLive_Clear(1);
 
-        Main_setTimeout(Play_loadDataCheckHost, 50);
-    }
-
-    var Play_loadDataCheckHostId;
-    function Play_loadDataCheckHost() {
-        Play_loadDataCheckHostId = new Date().getTime();
-
-        Main_setTimeout(
-            function () {
-                Main_GetHost(Play_CheckHost, 0, Play_loadDataCheckHostId, Play_data.data[6]);
-            },
-            100 //Delay as the stream just ended and may not show as host yet
-        );
-    }
-
-    function Play_CheckHost(responseObj, key, id) {
-        if (Play_isOn && Play_loadDataCheckHostId === id) {
-            if (Play_CheckHostResult(responseObj)) {
-                if (Settings_value.open_host.defaultValue) return;
-            } else {
-                Play_EndSet(1);
-            }
-
-            Play_PlayEndStart(1);
-        }
+        Play_EndSet(1);
+        Play_PlayEndStart(1);
     }
 
     function Play_UpdateDuration(duration) {
@@ -24089,7 +23989,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             Play_CloseSmall();
         } else {
             if (Main_IsOn_OSInterface) OSInterface_mClearSmallPlayer();
-            Play_CheckHostStart(error_410);
+            Play_EndErrorStart(error_410);
         }
         PlayExtra_UnSetPanel();
     }
@@ -26329,7 +26229,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         ChatLive_Latency[1] = 0;
         Play_showChat();
         Play_data.watching_time = new Date().getTime();
-        Play_StayCheckHostId = 0;
 
         Main_innerHTML('play_dialog_retry_text', STR_STAY_CHECK + STR_BR + 1);
         Main_ShowElement('play_dialog_retry');
@@ -26376,55 +26275,8 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function Play_StartStayStartCheck() {
         Main_innerHTML('play_dialog_retry_text', STR_STAY_CHECKING);
-        if (Main_IsOn_OSInterface) Play_StayCheckHost();
+        if (Main_IsOn_OSInterface) Play_StayCheckLive();
         else Play_StayCheckLiveErrorFinish();
-    }
-
-    var Play_StayCheckHostId;
-    function Play_StayCheckHost() {
-        Play_StayCheckHostId = new Date().getTime();
-
-        Main_GetHost(Play_StayCheckHostSuccess, 0, Play_StayCheckHostId, Play_data.data[6]);
-    }
-
-    function Play_StayCheckHostSuccess(responseObj, key, id) {
-        if (Play_StayDialogVisible() && Play_StayCheckHostId === id) {
-            if (Play_CheckHostResult(responseObj)) {
-                if (!Settings_value.open_host.defaultValue) Play_PlayEndStart(1);
-            } else {
-                Play_StayCheckLive();
-            }
-        }
-    }
-
-    function Play_CheckHostResult(responseObj) {
-        if (responseObj.status === 200) {
-            var data = JSON.parse(responseObj.responseText).data;
-
-            if (data.user && data.user.hosting) {
-                var response = data.user.hosting;
-
-                if (response && response.id.toString() !== Play_data.data[14].toString()) {
-                    Play_TargetHost = response;
-
-                    Play_IsWarning = true;
-                    var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + response.displayName;
-
-                    Main_values.Play_isHost = true;
-
-                    if (Settings_value.open_host.defaultValue) {
-                        Play_OpenHost();
-                    } else Play_EndSet(0);
-
-                    Play_showWarningDialog(warning_text, 4000);
-
-                    return true;
-                }
-            }
-        }
-
-        Main_values.Play_isHost = false;
-        return false;
     }
 
     function Play_StayCheckLive() {
@@ -27717,7 +27569,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             icons: 'speedometer',
             offsetY: -5,
             string: STR_SPEED,
-            values: [0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.5, 1.75, 2],
+            values: [0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 5, 6, 7, 8],
             defaultValue: 3,
             enterKey: function () {
                 if (Play_StayDialogVisible()) return;
@@ -30138,7 +29990,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
     function PlayExtra_KeyEnter() {
         PlayExtra_clear = true;
-        PlayExtra_loadDataCheckHostId = 0;
 
         if (Play_MaxInstances < 2) {
             Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO, 3000);
@@ -30350,12 +30201,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (!fail_type && Settings_value.open_host.defaultValue) {
             Play_showWarningMiddleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
 
-            Main_setTimeout(
-                function () {
-                    PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
-                },
-                2000 //Delay as the stream just ended and may not show as host yet
-            );
+            PlayExtra_End_success(doSwitch ? 1 : 0);
         } else PlayExtra_End_success(doSwitch, fail_type);
     }
 
@@ -30375,65 +30221,6 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         Play_showWarningMiddleDialog(reason + Play_GetErrorCode(errorCode), 2500 + (fail_type ? 2500 : 0));
 
         Play_CloseSmall();
-    }
-
-    var PlayExtra_loadDataCheckHostId;
-    function PlayExtra_loadDataCheckHost(doSwitch) {
-        PlayExtra_loadDataCheckHostId = new Date().getTime();
-
-        //Check in case both players end at same time, internet error or something that can cause it
-        var Channel_Name = doSwitch ? Play_data.data[14] : PlayExtra_data.data[14];
-
-        if (Channel_Name) {
-            Main_GetHost(PlayExtra_CheckHost, doSwitch, PlayExtra_loadDataCheckHostId, Channel_Name);
-        } else PlayExtra_End_success(doSwitch);
-    }
-
-    function PlayExtra_CheckHost(responseObj, doSwitch, id) {
-        if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
-            if (responseObj.status === 200) {
-                var data = JSON.parse(responseObj.responseText).data,
-                    warning_text;
-
-                if (data.user && data.user.hosting) {
-                    var TargetHost = data.user.hosting;
-
-                    TargetHost.id = TargetHost.id.toString();
-
-                    if (TargetHost.id !== PlayExtra_data.data[14].toString() && TargetHost.id !== Play_data.data[14].toString()) {
-                        Play_IsWarning = true;
-                        warning_text =
-                            (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
-
-                        if (doSwitch) {
-                            Main_values.Play_isHost = true;
-
-                            Play_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
-                            Play_data.data[6] = TargetHost.login;
-                            Play_data.data[1] = TargetHost.displayName;
-                            Play_data.data[14] = TargetHost.id;
-
-                            Play_Start();
-
-                            Play_AudioReset(0);
-                        } else if (PlayExtra_PicturePicture) {
-                            PlayExtra_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
-                            PlayExtra_data.data[6] = TargetHost.login;
-                            PlayExtra_data.data[1] = TargetHost.displayName;
-                            PlayExtra_data.data[14] = TargetHost.id;
-                            PlayExtra_data.isHost = true;
-
-                            PlayExtra_Resume();
-                        }
-
-                        Play_showWarningDialog(warning_text, 4000);
-                        return;
-                    }
-                }
-            }
-
-            PlayExtra_End_success(doSwitch);
-        }
     }
 
     function PlayExtra_SetPanel() {
@@ -30496,7 +30283,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (streamViewers1 !== Play_data.data[13]) {
             Main_innerHTML(
                 'stream_info_pp_viewers0',
-                STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
+                STR_FOR + Main_formatNumber(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
             );
         }
         streamViewers1 = Play_data.data[13];
@@ -30520,7 +30307,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (streamViewers2 !== PlayExtra_data.data[13]) {
             Main_innerHTML(
                 'stream_info_pp_viewers1',
-                STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
+                STR_FOR + Main_formatNumber(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
             );
         }
         streamViewers2 = PlayExtra_data.data[13];
@@ -31204,7 +30991,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             OSInterface_DisableMultiStream();
             Play_Multi_UnSetPanelDiv(true);
             PlayExtra_ClearExtra();
-            Play_CheckHostStart();
+            Play_EndErrorStart();
         } else {
             if (Play_Multi_MainBig && !position) {
                 //If main ended find a new main
@@ -31342,7 +31129,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 OSInterface_DisableMultiStream();
                 Play_Multi_UnSetPanelDiv(true);
                 PlayExtra_ClearExtra();
-                Play_CheckHostStart();
+                Play_EndErrorStart();
             }
         }
     }
@@ -31653,7 +31440,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
         if (extraChanged || streamViewersMulti[pos] !== views) {
             Main_innerHTML(
                 'stream_info_multi_views' + extraText + pos,
-                views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
+                views > 0 ? STR_SPACE_HTML + STR_FOR + Main_formatNumber(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
             );
         }
         streamViewersMulti[pos] = views;
@@ -33392,7 +33179,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 Main_videoCreatedAt(response.createdAt) +
                 ',' +
                 STR_SPACE_HTML +
-                Main_addCommas(response.viewCount) +
+                Main_formatNumber(response.viewCount) +
                 Main_GetViewsStrings(response.viewCount)
         );
         Main_textContent('stream_live_viewers', '');
@@ -38974,12 +38761,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                                 [
                                     game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
                                     game.displayName, //1
-                                    (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                                    (cell.channelsCount ? Main_formatNumber(cell.channelsCount) : 0) +
                                         STR_SPACE_HTML +
                                         STR_CHANNELS +
                                         STR_BR +
                                         STR_FOR +
-                                        (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                                        (cell.viewersCount ? Main_formatNumber(cell.viewersCount) : 0) +
                                         STR_SPACE_HTML +
                                         Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //2
                                     id_cell //3
@@ -38996,12 +38783,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                                     game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
                                     game.name, //1
                                     hasLive
-                                        ? Main_addCommas(cell.channels) +
+                                        ? Main_formatNumber(cell.channels) +
                                           STR_SPACE_HTML +
                                           STR_CHANNELS +
                                           STR_BR +
                                           STR_FOR +
-                                          Main_addCommas(cell.viewers) +
+                                          Main_formatNumber(cell.viewers) +
                                           STR_SPACE_HTML +
                                           Main_GetViewerStrings(cell.viewers)
                                         : '', //2
@@ -41159,7 +40946,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             broadcaster ? broadcaster.displayName : '', //1
             cell.stream.title, //2
             game ? game.displayName : '', //3
-            Main_addCommas(cell.stream.viewersCount), //4
+            Main_formatNumber(cell.stream.viewersCount), //4
             broadcaster && broadcaster.language ? '[' + broadcaster.language.toUpperCase() + ']' : '', //5
             broadcaster ? broadcaster.login : '', //6
             cell.stream.id.toString(), //7 broadcast id
@@ -41183,7 +40970,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cell.user_name, //1
             cell.title, //2
             cell.game_name, //3
-            Main_addCommas(cell.viewer_count), //4
+            Main_formatNumber(cell.viewer_count), //4
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.user_login, //6
             cell.id ? cell.id.toString() : '', //7 broadcast id
@@ -41208,7 +40995,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 cell.creator ? cell.creator.displayName : '', //1
                 Main_videoCreatedAt(cell.createdAt), //2
                 cell.game_name ? cell.game_name : game_name, //3
-                Main_addCommas(cell.viewCount), //4
+                Main_formatNumber(cell.viewCount), //4
                 cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
                 cell.creator ? cell.creator.login : '', //6
                 cell.id, //7
@@ -41229,7 +41016,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cell.user_name, //1
             Main_videoCreatedAt(cell.created_at), //2
             cell.game_name ? cell.game_name : game_name, //3
-            Main_addCommas(cell.view_count), //4
+            Main_formatNumber(cell.view_count), //4
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.user_login, //6
             cell.id, //7
@@ -41262,7 +41049,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
                 '[' + cell.language.toUpperCase() + ']', //11
                 cell.created_at, //12
                 cell.viewCount, //13
-                Main_addCommas(cell.viewCount), //14
+                Main_formatNumber(cell.viewCount), //14
                 cell.thumbnailURL ? cell.thumbnailURL.replace('/preview.jpg', '/preview-' + Main_VideoSize + '.jpg') : cell.thumbnailURL, //15
                 Main_videoCreatedAt(cell.createdAt), //16
                 cell.language, //17
@@ -41285,7 +41072,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //11
             cell.created_at, //12
             cell.view_count, //13
-            Main_addCommas(cell.view_count), //14
+            Main_formatNumber(cell.view_count), //14
             cell.thumbnail_url, //15
             Main_videoCreatedAt(cell.created_at), //16
             cell.language, //17
@@ -50827,12 +50614,12 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                         game.displayName, //0
-                        (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                        (cell.channelsCount ? Main_formatNumber(cell.channelsCount) : 0) +
                             STR_SPACE_HTML +
                             STR_CHANNELS +
                             STR_BR +
                             STR_FOR +
-                            (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                            (cell.viewersCount ? Main_formatNumber(cell.viewersCount) : 0) +
                             STR_SPACE_HTML +
                             Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //1
                         id_cell, //2
