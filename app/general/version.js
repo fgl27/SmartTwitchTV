@@ -23,11 +23,11 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 377, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/377/SmartTV_twitch_3_0_377.apk',
-    WebVersion: 'January 27 2025',
+    WebVersion: 'January 27 2026',
     WebTag: 727, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'January 27 2025',
+            title: 'January 27 2026',
             changes: ['Add more fast forward speeds', 'General performance improvements and bug fixes']
         },
         {
