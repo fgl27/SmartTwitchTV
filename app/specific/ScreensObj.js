@@ -3003,7 +3003,7 @@ function ScreensObj_LiveQueryCellArray(cell) {
         cell.stream.title, //2
         game ? game.displayName : '', //3
         Main_formatNumber(cell.stream.viewersCount), //4
-        broadcaster && broadcaster.language ? '[' + broadcaster.language.toUpperCase() + ']' : '', //5
+        broadcaster && broadcaster.language ? Main_FormatLanguage(broadcaster.language) : '', //5
         broadcaster ? broadcaster.login : '', //6
         cell.stream.id.toString(), //7 broadcast id
         Main_is_rerun(cell.stream.type), //8
