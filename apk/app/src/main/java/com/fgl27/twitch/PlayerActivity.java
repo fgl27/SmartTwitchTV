@@ -33,6 +33,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,6 +55,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -1890,6 +1892,16 @@ public class PlayerActivity extends Activity {
                     CheckURL(request.getUrl().toString());
                 }
 
+                @SuppressLint("WebViewClientOnReceivedSslError")
+                @Override
+                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                    if (Objects.equals(error.getUrl(), Constants.PageUrl)) {
+                        handler.proceed();
+                    }
+
+                    handler.cancel();
+                }
+
                 void CheckURL(String url) {
                     if (Objects.equals(url, Constants.PageUrl)) {
                         AppUrl = Constants.PageUrlBackup;
@@ -1969,6 +1981,8 @@ public class PlayerActivity extends Activity {
         //prevent open it on a external browser
         mWebViewKey.setWebViewClient(
             new WebViewClient() {
+
+
                 @SuppressWarnings({ "deprecation", "RedundantSuppression" })
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -2005,6 +2019,16 @@ public class PlayerActivity extends Activity {
                 @Override
                 public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                     CheckURL(request.getUrl().toString());
+                }
+
+                @SuppressLint("WebViewClientOnReceivedSslError")
+                @Override
+                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                    if (Objects.equals(error.getUrl(), Constants.KeyPageUrl)) {
+                        handler.proceed();
+                    }
+
+                    handler.cancel();
                 }
 
                 void CheckURL(String url) {
