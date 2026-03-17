@@ -12,7 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 March 17 2026
 ==============
 
-* Allow devices running android 7.0 and older to run the app again (5.0 and up only)
+* Allow devices running android 7.0 and older to run the app again (5.0 and up only), GitHub update they encryption done on the application page, the new encryption wasn't supported by old devices.
 
 January 27 2026
 ==============

@@ -28,7 +28,7 @@ var version = {
     changelog: [
         {
             title: 'March 17 2026',
-            changes: ['Allow devices running android 7.0 and older to run the app again (5.0 and up only)']
+            changes: ['Allow devices running android 7.0 and older to run the app again (5.0 and up only), GitHub update they encryption done on the application page, the new encryption wasn't supported by old devices.']
         },
         {
             title: 'January 27 2026',
