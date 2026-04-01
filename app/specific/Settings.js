@@ -611,6 +611,21 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
+    pin_mentions: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    pin_mentions_count: {
+        //Migrated to dialog
+        values: ['1', '2', '3', '4', '5'],
+        defaultValue: 2
+    },
+    pin_mentions_time: {
+        //Migrated to dialog
+        values: ['30 seconds', '1 minute', '2 minutes', '5 minutes', '10 minutes', '15 minutes', '30 minutes'],
+        defaultValue: 2
+    },
     highlight_user_send: {
         //Migrated to dialog
         values: ['no', 'yes'],
