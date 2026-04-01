@@ -59,6 +59,8 @@ var ChatLive_StartSharedId = [];
 var ChatLive_PingId = [];
 var ChatLive_SendPingId;
 var ChatLive_selectedChannel = [];
+var ChatLive_PinnedMessages = [];
+var ChatLive_PinnedCleanupId = [];
 var ChatLive_sub_replace = new RegExp('\\\\s', 'gi');
 var ChatLive_chat_line_class = '';
 
@@ -151,6 +153,14 @@ function ChatLive_Switch() {
     Chat_div[1].innerHTML = Chat_div[0].innerHTML;
     Chat_div[0].innerHTML = innerHTMLTemp;
 
+    innerHTMLTemp = ChatPinned_div[1].innerHTML;
+    ChatPinned_div[1].innerHTML = ChatPinned_div[0].innerHTML;
+    ChatPinned_div[0].innerHTML = innerHTMLTemp;
+
+    innerHTMLTemp = ChatLive_PinnedMessages[1];
+    ChatLive_PinnedMessages[1] = ChatLive_PinnedMessages[0];
+    ChatLive_PinnedMessages[0] = innerHTMLTemp;
+
     var logged0 = Main_getElementById('chat_loggedin0'),
         logged1 = Main_getElementById('chat_loggedin1');
 
@@ -159,6 +169,9 @@ function ChatLive_Switch() {
     logged0.innerHTML = innerHTMLTemp;
 
     for (var i = 0; i < 2; i++) {
+        ChatLive_RenderPinnedMessages(i);
+        ChatLive_SchedulePinnedCleanup(i);
+        ChatLive_UpdateLayout(i);
         ChatLive_Close(i);
         ChatLive_Init(i, true);
     }
@@ -178,8 +191,12 @@ var ChatLive_Individual_Background_flip = [];
 var ChatLive_Highlight_Actions;
 var ChatLive_Highlight_Bits;
 var ChatLive_Show_SUB;
+var ChatLive_PinMentions;
+var ChatLive_PinMentionsCount;
+var ChatLive_PinMentionsTimeout;
 var ChatLive_User_Set;
 var chat_lineChatLive_Individual_Lines;
+var ChatLive_PinMentionsTimeVal = [30000, 60000, 120000, 300000, 600000, 900000, 1800000];
 var chat_Line_highlight_green = ' style="color: #4eff42;" ';
 var chat_Line_highlight_blue = ' style="color: #4AA4FD;" ';
 var ChatLive_User_Regex_Search;
@@ -193,6 +210,30 @@ var ChatLive_HideBots;
 var ChatLive_ShowBadges;
 var ChatLive_ShowBadgesMod;
 var ChatLive_ShowBadgesVIP;
+
+function ChatLive_RefreshPinSettings() {
+    var pinDefault = Settings_value.pin_mentions.defaultValue,
+        countDefault = Settings_value.pin_mentions_count.defaultValue,
+        timeDefault = Settings_value.pin_mentions_time.defaultValue,
+        i;
+
+    ChatLive_PinMentions = ChatLive_User_Set && Main_getItemInt('Play_ChatPinMentions', pinDefault);
+    ChatLive_PinMentionsCount = Main_getItemInt('Play_ChatPinMentionsCount', countDefault) + 1;
+    ChatLive_PinMentionsTimeout =
+        ChatLive_PinMentionsTimeVal[Main_getItemInt('Play_ChatPinMentionsTime', timeDefault)] || ChatLive_PinMentionsTimeVal[2];
+
+    for (i = 0; i < 2; i++) {
+        if (!ChatLive_PinMentions) {
+            Main_clearTimeout(ChatLive_PinnedCleanupId[i]);
+            ChatLive_PinnedMessages[i] = [];
+        }
+
+        if (typeof ChatPinned_div !== 'undefined' && ChatPinned_div[i]) {
+            ChatLive_RenderPinnedMessages(i);
+            ChatLive_SchedulePinnedCleanup(i);
+        }
+    }
+}
 
 function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     extraEmotes[chat_number] = {};
@@ -215,6 +256,7 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_Highlight_Mod = Settings_value.highlight_mod.defaultValue;
     ChatLive_Highlight_AtUser = ChatLive_User_Set && Settings_value.highlight_atuser.defaultValue;
     ChatLive_Highlight_User_send = ChatLive_User_Set && Settings_value.highlight_user_send.defaultValue;
+    ChatLive_RefreshPinSettings();
     ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
     ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
     ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
@@ -464,8 +506,7 @@ function ChatLive_loadBadgesChannelSuccess(obj, id, chat_number, channelId) {
 function ChatLive_resetChatters(chat_number) {
     Main_textContent('chat_loggedin' + chat_number, '');
     Main_AddClass('chat_loggedin' + chat_number, 'hide');
-    Main_getElementById('chat_box_holder' + chat_number).style.height = '';
-    Main_getElementById('chat_container_name' + chat_number).style.top = '';
+    ChatLive_UpdateLayout(chat_number);
 }
 
 function ChatLive_loadChatters(chat_number, id) {
@@ -476,12 +517,7 @@ function ChatLive_loadChatters(chat_number, id) {
                 (Settings_value.show_chatters.defaultValue === 1 ? (ChatLive_isShared[chat_number] ? STR_IN_SHARED_CHAT : STR_IN_CHAT) : STR_VIEWERS)
         );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
-
-        Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.9vh)';
-
-        if (!chat_number) {
-            Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
-        }
+        ChatLive_UpdateLayout(chat_number);
 
         ChatLive_loadChattersCheckType(chat_number, id);
     }
@@ -1799,18 +1835,20 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
             .trim();
     }
 
+    var mentionsUser = ChatLive_User_Set && ChatLive_User_Regex_Search.test(mmessage),
+        isFromUser =
+            ChatLive_User_Set &&
+            Main_A_equals_B(tags['display-name'].toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase());
+
     if (ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[chat_number].test(mmessage)) {
         atstreamer = true;
     } else if (ChatLive_Highlight_FromStreamer && Main_A_equals_B(tags['display-name'].toLowerCase(), ChatLive_selectedChannel[chat_number])) {
         fromstreamer = true;
     } else if (ChatLive_Highlight_Mod && tags.mod && tags.mod !== '0') {
         mod = true;
-    } else if (ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(mmessage)) {
+    } else if (ChatLive_Highlight_AtUser && mentionsUser) {
         atuser = true;
-    } else if (
-        ChatLive_Highlight_User_send &&
-        Main_A_equals_B(tags['display-name'].toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())
-    ) {
+    } else if (ChatLive_Highlight_User_send && isFromUser) {
         atuser = true;
     }
 
@@ -1850,6 +1888,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         atuser: atuser,
         fromstreamer: fromstreamer,
         mod: mod,
+        mentionsUser: mentionsUser,
         firstTimer: firstTimer,
         hasbits: hasbits && ChatLive_Highlight_Bits,
         extraMessage: extraMessage,
@@ -1980,6 +2019,9 @@ function ChatLive_LineAddSimple(message) {
 function ChatLive_LineAdd(messageObj) {
     if (ChatLive_Playing) {
         ChatLive_ElementAdd(messageObj);
+        if (ChatLive_PinMentions && messageObj.mentionsUser) {
+            ChatLive_PinMessage(messageObj);
+        }
 
         if (ChatLive_LineAddCounter[messageObj.chat_number]++ > Chat_CleanMax) {
             ChatLive_LineAddCounter[messageObj.chat_number] = 0;
@@ -1988,6 +2030,121 @@ function ChatLive_LineAdd(messageObj) {
     } else {
         ChatLive_Messages[messageObj.chat_number].push(messageObj);
     }
+}
+
+function ChatLive_UpdateLayout(chat_number) {
+    var logged = Main_getElementById('chat_loggedin' + chat_number),
+        pinned = ChatPinned_div[chat_number],
+        boxHolder = Main_getElementById('chat_box_holder' + chat_number),
+        nameHolder = Main_getElementById('chat_container_name' + chat_number),
+        extraHeight = 0;
+
+    if (!Main_A_includes_B(logged.className, 'hide')) {
+        extraHeight += logged.offsetHeight;
+    }
+
+    if (pinned) {
+        pinned.style.top = extraHeight ? extraHeight + 'px' : '0';
+    }
+
+    if (extraHeight) {
+        boxHolder.style.height = 'calc(100% - ' + extraHeight + 'px)';
+        if (nameHolder) {
+            nameHolder.style.top = extraHeight + 2 + 'px';
+        }
+    } else {
+        boxHolder.style.height = '';
+        if (nameHolder) {
+            nameHolder.style.top = '';
+        }
+    }
+}
+
+function ChatLive_PrunePinnedMessages(chat_number) {
+    var messages = ChatLive_PinnedMessages[chat_number],
+        now = new Date().getTime();
+
+    if (!messages || !messages.length) {
+        return;
+    }
+
+    ChatLive_PinnedMessages[chat_number] = messages.filter(function (item) {
+        return item.expiresAt > now;
+    });
+
+    if (ChatLive_PinnedMessages[chat_number].length > ChatLive_PinMentionsCount) {
+        ChatLive_PinnedMessages[chat_number].length = ChatLive_PinMentionsCount;
+    }
+}
+
+function ChatLive_RenderPinnedMessages(chat_number) {
+    var pinnedHolder = ChatPinned_div[chat_number],
+        messages = ChatLive_PinnedMessages[chat_number],
+        markup = '';
+
+    if (!pinnedHolder) {
+        return;
+    }
+
+    ChatLive_PrunePinnedMessages(chat_number);
+    messages = ChatLive_PinnedMessages[chat_number];
+
+    if (messages && messages.length) {
+        markup =
+            '<div class="chat_pinned_header"><span class="chat_pinned_label">Pinned mentions</span><span class="chat_pinned_count">' +
+            messages.length +
+            '</span></div>' +
+            messages
+            .map(function (item) {
+                return ChatLive_BuildPinnedLineMarkup(item);
+            })
+            .join('');
+        Main_innerHTMLWithEle(pinnedHolder, markup);
+        Main_RemoveClass('chat_pinned_holder' + chat_number, 'hide');
+    } else {
+        Main_emptyWithEle(pinnedHolder);
+        Main_AddClass('chat_pinned_holder' + chat_number, 'hide');
+    }
+
+    ChatLive_UpdateLayout(chat_number);
+}
+
+function ChatLive_SchedulePinnedCleanup(chat_number) {
+    var messages = ChatLive_PinnedMessages[chat_number],
+        nextTimeout = 1000,
+        now = new Date().getTime();
+
+    Main_clearTimeout(ChatLive_PinnedCleanupId[chat_number]);
+
+    if (!messages || !messages.length) {
+        return;
+    }
+
+    ChatLive_PinnedCleanupId[chat_number] = Main_setTimeout(function () {
+        ChatLive_RenderPinnedMessages(chat_number);
+        ChatLive_SchedulePinnedCleanup(chat_number);
+    }, nextTimeout, ChatLive_PinnedCleanupId[chat_number]);
+}
+
+function ChatLive_PinMessage(messageObj) {
+    var chat_number = messageObj.chat_number,
+        messages = ChatLive_PinnedMessages[chat_number];
+
+    if (!messages) {
+        messages = [];
+        ChatLive_PinnedMessages[chat_number] = messages;
+    }
+
+    messages.unshift({
+        message: messageObj.message,
+        mentionsUser: messageObj.mentionsUser,
+        createdAt: new Date().getTime(),
+        expiresAt: new Date().getTime() + ChatLive_PinMentionsTimeout
+    });
+
+    ChatLive_PrunePinnedMessages(chat_number);
+    ChatLive_RenderPinnedMessages(chat_number);
+    ChatLive_SchedulePinnedCleanup(chat_number);
 }
 
 //Full messageObj current is
@@ -2043,7 +2200,7 @@ function ChatLive_ElementAdd(messageObj) {
     if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
     else classname += ' chat_line_slim';
 
-    var chat_line = '<div style="' + style + '" class="' + classname + '">' + messageObj.message + '</div>';
+    var chat_line = ChatLive_BuildLineMarkup(messageObj, style, classname);
 
     // <div class="chat_line chat_line_ind">
     // <span style="color: #D463FF;">USER Name</span>:&nbsp;
@@ -2064,6 +2221,35 @@ function ChatLive_ElementAdd(messageObj) {
         Chat_div[messageObj.chat_number].insertBefore(chat_line_holder, Chat_div[messageObj.chat_number].childNodes[0]);
         ChatLive_ElementAddCheckExtra(messageObj);
     }
+}
+
+function ChatLive_BuildLineMarkup(messageObj, style, classname) {
+    return '<div style="' + style + '" class="' + classname + '">' + messageObj.message + '</div>';
+}
+
+function ChatLive_GetPinnedAge(createdAt) {
+    var seconds = Math.max(Math.floor((new Date().getTime() - createdAt) / 1000), 0);
+
+    if (seconds < 60) {
+        return seconds + 's ago';
+    }
+
+    if (seconds < 3600) {
+        return Math.floor(seconds / 60) + 'm ago';
+    }
+
+    return Math.floor(seconds / 3600) + 'h ago';
+}
+
+function ChatLive_BuildPinnedLineMarkup(messageObj) {
+    var message = messageObj.message,
+        age = ChatLive_GetPinnedAge(messageObj.createdAt);
+
+    if (messageObj.mentionsUser && ChatLive_User_Regex_Replace) {
+        message = message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+    }
+
+    return '<div class="chat_line chat_atuser chat_line_slim"><span class="chat_pinned_age">' + age + '</span>' + message + '</div>';
 }
 
 function ChatLive_ElementAddCheckExtra(messageObj) {
@@ -2134,13 +2320,18 @@ function ChatLive_ClearIds(chat_number) {
 
 function ChatLive_Clear(chat_number) {
     ChatLive_ClearIds(chat_number);
+    Main_clearTimeout(ChatLive_PinnedCleanupId[chat_number]);
 
     Chat_Id[chat_number] = 0;
     ChatLive_LineAddCounter[chat_number] = 0;
     ChatLive_Messages[chat_number] = [];
+    ChatLive_PinnedMessages[chat_number] = [];
 
     ChatLive_resetChatters(chat_number);
     Main_emptyWithEle(Chat_div[chat_number]);
+    Main_emptyWithEle(ChatPinned_div[chat_number]);
+    Main_AddClass('chat_pinned_holder' + chat_number, 'hide');
+    ChatLive_UpdateLayout(chat_number);
 
     ChatLive_loaded[chat_number] = false;
     ChatLive_Banned[chat_number] = false;

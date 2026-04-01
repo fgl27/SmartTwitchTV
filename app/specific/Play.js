@@ -22,8 +22,11 @@
 var Play_ChatPositions = 0;
 var Play_ChatPositionConvertBefore = Play_ChatPositions;
 var Play_ChatBackground = 0.55;
-var Play_ChatSizeValue = 4;
-var Play_MaxChatSizeValue = 4;
+var Play_ChatSizeValue = 99;
+var Play_MaxChatSizeValue = 99;
+var Play_ChatWidthValue = 24;
+var Play_ChatOffsetXValue = 0;
+var Play_ChatOffsetYValue = 0;
 var Play_PanelHideID = null;
 var Play_isFullScreen = true;
 var PlayVod_RefreshProgressBarrTimeout = 1000;
@@ -78,47 +81,38 @@ var Play_base_chat_headers_Array = [];
 var Play_base_kraken_headers_Array = [];
 
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
-//sizeOffset in relation to the size
 var Play_ChatPositionVal = [
     {
-        top: 51.8, // Bottom/right 0
-        left: 75.1,
-        sizeOffset: [31, 16, 0, -25.2, 0] // top - sizeOffset is the defaul top for it chat position
+        vertical: 'bottom',
+        horizontal: 'right'
     },
     {
-        top: 33, // Middle/right 1
-        left: 75.1,
-        sizeOffset: [12.5, 0, -6.25, -19.5, 0]
+        vertical: 'center',
+        horizontal: 'right'
     },
     {
-        top: 0.2, // Top/right 2
-        left: 75.1,
-        sizeOffset: [0, 0, 0, 0, 0]
+        vertical: 'top',
+        horizontal: 'right'
     },
     {
-        top: 0.2, // Top/center 3
-        left: 38.3,
-        sizeOffset: [0, 0, 0, 0, 0]
+        vertical: 'top',
+        horizontal: 'center'
     },
     {
-        top: 0.2, // Top/left 4
-        left: 0.2,
-        sizeOffset: [0, 0, 0, 0, 0]
+        vertical: 'top',
+        horizontal: 'left'
     },
     {
-        top: 33, // Middle/left 5
-        left: 0.2,
-        sizeOffset: [12.5, 0, -6.25, -19.5, 0]
+        vertical: 'center',
+        horizontal: 'left'
     },
     {
-        top: 51.8, // Bottom/left 6
-        left: 0.2,
-        sizeOffset: [31, 16, 0, -25.2, 0]
+        vertical: 'bottom',
+        horizontal: 'left'
     },
     {
-        top: 51.8, // Bottom/center 7
-        left: 38.3,
-        sizeOffset: [31, 16, 0, -25.2, 0]
+        vertical: 'bottom',
+        horizontal: 'center'
     }
 ];
 
@@ -131,35 +125,33 @@ var Play_ChatPositionsAfter = [
     [6, 5, 4, 4, 4, 5, 6, 6]
 ];
 
-var Play_ChatSizeVal = [
-    {
-        containerHeight: 17, // 12.5%
-        percentage: '12.5%',
-        dialogTop: -25
-    },
-    {
-        containerHeight: 32, // 25%
-        percentage: '25%',
-        dialogTop: -40
-    },
-    {
-        containerHeight: 48, // 50%
-        percentage: '50%',
-        dialogTop: -60
-    },
-    {
-        containerHeight: 73, // 75%
-        percentage: '75%',
-        dialogTop: -80
-    },
-    {
-        containerHeight: 99.6, // 100%
-        percentage: '100%',
-        dialogTop: -120
-    }
-];
+var Play_ChatSizeVal = [];
 
 var Play_ChatFontObj = [];
+
+var Play_ChatSizeLegacyMap = [9, 24, 49, 74, 99];
+var Play_ChatSizeLabels = [];
+var Play_ChatOffsetLabels = [];
+var Play_TempCounter = 0;
+
+for (Play_TempCounter = 1; Play_TempCounter <= 100; Play_TempCounter++) {
+    Play_ChatSizeVal.push({
+        containerHeight: Play_TempCounter - 0.4,
+        containerWidth: Play_TempCounter - 0.3,
+        percentage: Play_TempCounter + '%',
+        dialogTop: Play_TempCounter === 100 ? -120 : -(Play_TempCounter + 12)
+    });
+}
+
+for (Play_TempCounter = 0; Play_TempCounter < Play_ChatSizeVal.length; Play_TempCounter++) {
+    Play_ChatSizeLabels.push(Play_ChatSizeVal[Play_TempCounter].percentage);
+}
+
+for (Play_TempCounter = -20; Play_TempCounter <= 20; Play_TempCounter++) {
+    Play_ChatOffsetLabels.push((Play_TempCounter > 0 ? '+' : '') + Play_TempCounter + '%');
+}
+
+Play_MaxChatSizeValue = Play_ChatSizeVal.length - 1;
 
 //Variable initialization end
 
@@ -1822,6 +1814,7 @@ function Play_showChat() {
     Play_ChatPosition();
     Play_ChatBackgroundChange(false);
     Play_chat_container.classList.remove('hide');
+    ChatLive_UpdateLayout(0);
 
     Play_controls[Play_controlsChat].setLabel();
 
@@ -1867,6 +1860,101 @@ function Play_ChatSize(showDialog) {
     Play_SetChatPosString();
 }
 
+function Play_ChatWidth(showDialog) {
+    if (Play_ChatWidthValue > Play_MaxChatSizeValue) Play_ChatWidthValue = Play_MaxChatSizeValue;
+    Play_chat_container.style.width = Play_ChatSizeVal[Play_ChatWidthValue].containerWidth + '%';
+    Play_ChatPosition();
+
+    if (showDialog) Play_showChatBackgroundDialog('Width ' + Play_ChatSizeVal[Play_ChatWidthValue].percentage);
+
+    Main_setItem('ChatWidthValue', Play_ChatWidthValue);
+}
+
+function Play_ChatOffsetFormat(value) {
+    return (value > 0 ? '+' : '') + value + '%';
+}
+
+function Play_ChatOffsetClamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+}
+
+function Play_GetChatHeight() {
+    return Play_ChatSizeVal[Play_ChatSizeValue].containerHeight;
+}
+
+function Play_GetChatWidth() {
+    return Play_ChatSizeVal[Play_ChatWidthValue].containerWidth;
+}
+
+function Play_GetChatBaseTop(isFullSize) {
+    var height = Play_GetChatHeight(),
+        position = Play_ChatPositionVal[Play_ChatPositions];
+
+    if (isFullSize || position.vertical === 'top') {
+        return 0.2;
+    }
+
+    if (position.vertical === 'center') {
+        return 50 - height / 2;
+    }
+
+    return 99.8 - height;
+}
+
+function Play_GetChatBaseLeft(isFullSize) {
+    var width = Play_GetChatWidth(),
+        position = Play_ChatPositionVal[Play_ChatPositions + (isFullSize ? 2 : 0)];
+
+    if (position.horizontal === 'left') {
+        return 0.2;
+    }
+
+    if (position.horizontal === 'center') {
+        return 50 - width / 2;
+    }
+
+    return 99.8 - width;
+}
+
+function Play_MigrateLegacyChatSizeValue(value) {
+    var version = Main_getItemInt('ChatSizeValueVersion', 0);
+
+    if (version >= 3) {
+        return Play_ChatOffsetClamp(value, 0, Play_MaxChatSizeValue);
+    }
+
+    if (version >= 2) {
+        value = value * 5 + 4;
+    } else if (value < 0) {
+        value = 0;
+    } else if (value >= 0 && value < Play_ChatSizeLegacyMap.length) {
+        value = Play_ChatSizeLegacyMap[value];
+    } else if (value > Play_MaxChatSizeValue) {
+        value = Play_MaxChatSizeValue;
+    }
+
+    value = Play_ChatOffsetClamp(value, 0, Play_MaxChatSizeValue);
+
+    Main_setItem('ChatSizeValue', value);
+    Main_setItem('ChatSizeValueVersion', 3);
+
+    return value;
+}
+
+function Play_MigrateLegacyChatWidthValue(value) {
+    if (Main_getItemInt('ChatWidthValueVersion', 0) >= 1) {
+        return Play_ChatOffsetClamp(value, 0, Play_MaxChatSizeValue);
+    }
+
+    value = value * 5 + 4;
+    value = Play_ChatOffsetClamp(value, 0, Play_MaxChatSizeValue);
+
+    Main_setItem('ChatWidthValue', value);
+    Main_setItem('ChatWidthValueVersion', 1);
+
+    return value;
+}
+
 function Play_SetChatPosString() {
     if (Play_ChatSizeValue === Play_MaxChatSizeValue) {
         Play_controls[Play_controlsChatPos].values = STR_CHAT_100_ARRAY;
@@ -1892,15 +1980,23 @@ function Play_ChatPositionConvert(up) {
 }
 
 function Play_ChatPosition() {
-    var bool = Play_ChatSizeValue === Play_MaxChatSizeValue;
+    var bool, height, width, top, left;
+
+    bool = Play_ChatSizeValue === Play_MaxChatSizeValue;
 
     if (Play_ChatPositions < 0) Play_ChatPositions = bool ? 2 : 7;
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
-    Play_chat_container.style.top =
-        (bool ? 0.2 : Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue]) + '%';
+    height = Play_GetChatHeight();
+    width = Play_GetChatWidth();
+    top = Play_GetChatBaseTop(bool) + Play_ChatOffsetYValue;
+    left = Play_GetChatBaseLeft(bool) + Play_ChatOffsetXValue;
 
-    Play_chat_container.style.left = Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
+    top = Play_ChatOffsetClamp(top, 0.2, 99.8 - height);
+    left = Play_ChatOffsetClamp(left, 0.2, 99.8 - width);
+
+    Play_chat_container.style.top = top + '%';
+    Play_chat_container.style.left = left + '%';
 
     Main_setItem('ChatPositionsValue', Play_ChatPositions);
 }
