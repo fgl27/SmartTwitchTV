@@ -1500,7 +1500,7 @@ function PlayVod_updateVodInfoPanel(obj) {
             Main_videoCreatedAt(response.createdAt) +
             ',' +
             STR_SPACE_HTML +
-            Main_addCommas(response.viewCount) +
+            Main_formatNumber(response.viewCount) +
             Main_GetViewsStrings(response.viewCount)
     );
     Main_textContent('stream_live_viewers', '');

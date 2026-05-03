@@ -941,7 +941,6 @@ function Play_StartStay() {
     ChatLive_Latency[1] = 0;
     Play_showChat();
     Play_data.watching_time = new Date().getTime();
-    Play_StayCheckHostId = 0;
 
     Main_innerHTML('play_dialog_retry_text', STR_STAY_CHECK + STR_BR + 1);
     Main_ShowElement('play_dialog_retry');
@@ -988,55 +987,8 @@ function Play_StartStayCheck(time) {
 
 function Play_StartStayStartCheck() {
     Main_innerHTML('play_dialog_retry_text', STR_STAY_CHECKING);
-    if (Main_IsOn_OSInterface) Play_StayCheckHost();
+    if (Main_IsOn_OSInterface) Play_StayCheckLive();
     else Play_StayCheckLiveErrorFinish();
-}
-
-var Play_StayCheckHostId;
-function Play_StayCheckHost() {
-    Play_StayCheckHostId = new Date().getTime();
-
-    Main_GetHost(Play_StayCheckHostSuccess, 0, Play_StayCheckHostId, Play_data.data[6]);
-}
-
-function Play_StayCheckHostSuccess(responseObj, key, id) {
-    if (Play_StayDialogVisible() && Play_StayCheckHostId === id) {
-        if (Play_CheckHostResult(responseObj)) {
-            if (!Settings_value.open_host.defaultValue) Play_PlayEndStart(1);
-        } else {
-            Play_StayCheckLive();
-        }
-    }
-}
-
-function Play_CheckHostResult(responseObj) {
-    if (responseObj.status === 200) {
-        var data = JSON.parse(responseObj.responseText).data;
-
-        if (data.user && data.user.hosting) {
-            var response = data.user.hosting;
-
-            if (response && response.id.toString() !== Play_data.data[14].toString()) {
-                Play_TargetHost = response;
-
-                Play_IsWarning = true;
-                var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + response.displayName;
-
-                Main_values.Play_isHost = true;
-
-                if (Settings_value.open_host.defaultValue) {
-                    Play_OpenHost();
-                } else Play_EndSet(0);
-
-                Play_showWarningDialog(warning_text, 4000);
-
-                return true;
-            }
-        }
-    }
-
-    Main_values.Play_isHost = false;
-    return false;
 }
 
 function Play_StayCheckLive() {
@@ -2329,7 +2281,7 @@ function Play_MakeControls() {
         icons: 'speedometer',
         offsetY: -5,
         string: STR_SPEED,
-        values: [0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.5, 1.75, 2],
+        values: [0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 5, 6, 7, 8],
         defaultValue: 3,
         enterKey: function () {
             if (Play_StayDialogVisible()) return;

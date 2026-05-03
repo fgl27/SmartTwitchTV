@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "crass": "^0.12.3",
-    "firebase": "^11.0.2",
+    "firebase": "^12.8.0",
     "html-minifier": "^4.0.0",
     "jshint": "^2.13.6",
-    "prettier": "^3.3.3",
-    "shelljs": "^0.8.5",
+    "prettier": "^3.8.1",
+    "shelljs": "^0.10.0",
     "uglify-js": "^3.19.3"
   }
 }

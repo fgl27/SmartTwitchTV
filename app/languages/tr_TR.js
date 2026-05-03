@@ -804,12 +804,6 @@ function tr_TRLang() {
     STR_AVG = 'Ort';
     STR_OFFSET = 'Fark';
 
-    STR_AFFILIATE = 'Ortaklık içeriği';
-    STR_AFFILIATE_SUMMARY = 'Ortaklık içeriğini görmek istemiyorsanız bunu devre dışı olarak ayarlayın.';
-    STR_AFFILIATE_ABOUT =
-        'Bu uygulama, şiddetle tavsiye edilen ürünlere sahip ortaklardan bazı ortaklık bağlantıları ve resimleri içerir. Uygulama sahibi, bu bağlantılar aracılığıyla yapılan satın alımlar için komisyon alabilir. Bir ürünle ilgili tüm bağlantılar, resimler veya herhangi bir şey, uygulamada görüntülenmeden önce uygun şekilde doğrulanır ve/veya kullanılır.';
-    STR_AFFILIATE_ABOUT_DIS = 'Ortaklık içeriği ayarlardan devre dışı bırakılabilir.';
-
     STR_HISTORY_EMPTY_CONTENT = 'Uygulama geçmişi, yalnızca geçmiş etkinse uygulamada ne izlediğinizi gösterir';
     STR_PREVIEW = 'önizleme';
 

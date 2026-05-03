@@ -19,7 +19,8 @@
  */
 
 // Keep this file named as (zero)*** so it loads first in release_maker
-var STR_REFRESH,
+var STR_NUMBER_SEPARATOR,
+    STR_REFRESH,
     STR_SEARCH,
     STR_SETTINGS,
     STR_CONTROLS,
@@ -703,11 +704,7 @@ var STR_REFRESH,
     STR_TOP,
     STR_AVG,
     STR_OFFSET,
-    STR_AFFILIATE,
-    STR_AFFILIATE_SUMMARY,
-    STR_AFFILIATE_ABOUT,
     STR_CHAT_BOTS,
-    STR_AFFILIATE_ABOUT_DIS,
     STR_HISTORY_EMPTY_CONTENT,
     STR_PREVIEW,
     STR_CLICK_EXIT,

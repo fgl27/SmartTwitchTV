@@ -21,11 +21,25 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 377, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/377/SmartTV_twitch_3_0_377.apk',
-    WebVersion: 'June 17 2025',
-    WebTag: 719, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 379, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/379/SmartTV_twitch_3_0_379.apk',
+    WebVersion: 'March 17 2026',
+    WebTag: 727, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'March 17 2026',
+            changes: [
+                "Allow devices running android 7.0 and older to run the app again (5.0 and up only), GitHub update they encryption done on the application page, the new encryption wasn't supported by old devices."
+            ]
+        },
+        {
+            title: 'January 27 2026',
+            changes: ['Add more fast forward speeds', 'General performance improvements and bug fixes']
+        },
+        {
+            title: 'Version December 30',
+            changes: ['Add French application language by @UnicodeApocalypse', 'General performance improvements and bug fixes']
+        },
         {
             title: 'Version June 17',
             changes: ['Add Turkish application language by @G-35']
@@ -48,17 +62,6 @@ var version = {
         {
             title: 'Version June 07',
             changes: ['Add Ukraine application language by @sladkOy']
-        },
-        {
-            title: 'Version June 03',
-            changes: [
-                'Enhanced Broadcasting support for HEVC/AV1 codecs now enabled by default on compatible devices',
-                'Upgraded from "Extra codec support" to "Enhanced Broadcasting" with improved HEVC/AV1 implementation',
-                'Most streams use AVC (H.264) up to 1080p60, while HEVC/AV1 enable higher quality 1440p, 4K, and 60+fps streams where available',
-                'Device compatibility is automatically detected to ensure optimal streaming performance',
-                'Access the new setting in player options to enable/disable Enhanced Broadcasting support based on your preferences',
-                'General improvements to streaming performance and stability'
-            ]
         }
     ]
 };

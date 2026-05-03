@@ -800,11 +800,6 @@ function pt_BRLang() {
     STR_AVG = 'Méd';
     STR_OFFSET = 'Offset';
 
-    STR_AFFILIATE = 'Conteúdo afiliado';
-    STR_AFFILIATE_SUMMARY = 'Se você não quiser ver o conteúdo de afiliado, desative esta opção.';
-    STR_AFFILIATE_ABOUT =
-        'Este aplicativo possui alguns links afiliados e imagens, de parceiros que possuem produtos altamente recomendados, o proprietário do aplicativo pode receber comissões por compras feitas através desses links, todos os links, imagens ou qualquer coisa relacionada ao produto são devidamente verificados e / ou usados antes de serem exibidos no aplicativo.';
-    STR_AFFILIATE_ABOUT_DIS = 'O conteúdo afiliado pode ser desabilitado nas configurações.';
     STR_HISTORY_EMPTY_CONTENT = 'O histórico do aplicativo mostra o que você assistiu no aplicativo apenas, se o histórico estiver habilitada';
     STR_PREVIEW = 'a pré-visualização';
 

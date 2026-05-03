@@ -210,7 +210,7 @@ function Play_MultiEnd(position, fail_type, errorCode) {
         OSInterface_DisableMultiStream();
         Play_Multi_UnSetPanelDiv(true);
         PlayExtra_ClearExtra();
-        Play_CheckHostStart();
+        Play_EndErrorStart();
     } else {
         if (Play_Multi_MainBig && !position) {
             //If main ended find a new main
@@ -348,7 +348,7 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
             OSInterface_DisableMultiStream();
             Play_Multi_UnSetPanelDiv(true);
             PlayExtra_ClearExtra();
-            Play_CheckHostStart();
+            Play_EndErrorStart();
         }
     }
 }
@@ -659,7 +659,7 @@ function Play_MultiUpdateInfo(pos, game, views, title, extraText) {
     if (extraChanged || streamViewersMulti[pos] !== views) {
         Main_innerHTML(
             'stream_info_multi_views' + extraText + pos,
-            views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
+            views > 0 ? STR_SPACE_HTML + STR_FOR + Main_formatNumber(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
         );
     }
     streamViewersMulti[pos] = views;

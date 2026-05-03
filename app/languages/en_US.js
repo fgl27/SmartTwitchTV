@@ -29,6 +29,7 @@ function en_USLang() {
     Sidepannel_MoveldefaultMargin = 14.5;
 
     //Below are variables to translate
+    STR_NUMBER_SEPARATOR = ',';
     STR_KEY_UP_DOWN = 'PG up/down';
     STR_KEY_MEDIA_FF = 'or fast forward rewind media key';
     STR_GUIDE_EXTRA = 'or press key 2';
@@ -794,12 +795,6 @@ function en_USLang() {
     STR_TOP = 'Top';
     STR_AVG = 'Avg';
     STR_OFFSET = 'Offset';
-
-    STR_AFFILIATE = 'Affiliate content';
-    STR_AFFILIATE_SUMMARY = "If you don't wanna to see the affiliate content set this to disabled.";
-    STR_AFFILIATE_ABOUT =
-        'This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.';
-    STR_AFFILIATE_ABOUT_DIS = 'The affiliated content can be disabled in settings.';
 
     STR_HISTORY_EMPTY_CONTENT = 'The app history shows what you have watched in the app only if history is enabled';
     STR_PREVIEW = 'the preview';
