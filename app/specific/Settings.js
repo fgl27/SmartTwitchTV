@@ -813,8 +813,12 @@ var Settings_value = {
         defaultValue: 1
     },
     vol_reducer: {
+        // Twitch HLS ad volume reducer. defaultValue here is 1-indexed like every other entry in
+        // Settings_value (Settings_SetDefaults converts it to 0-indexed at boot, which then maps
+        // 1:1 onto StreamAdVolumeHelper.MODE_NONE/HALF/FULL). Defaulting to 3 ("Full") for now
+        // while the feature is being validated; flip back to 1 ("None") before releasing.
         values: ['None', 'Half', 'Full'],
-        defaultValue: 3  // 1-indexed, so 3 = "Full" (index 2)
+        defaultValue: 3
     }
 };
 
@@ -977,8 +981,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
 
-    // TODO: these settings content need to be updated to the strings files so they can be translated!
-    // TODO: why does the selection on the website menu not work?
+    // TODO localize 'None'/'Half'/'Full' once the language strings are added in app/languages/.
     div += Settings_Content('vol_reducer', ['None', 'Half', 'Full'], STR_VOLUME_REDUCER, STR_VOLUME_REDUCER_SUMMARY);
 
     div += Settings_Content('seek_preview', SEEK_PREVIEW_ARRAY, SEEK_PREVIEW, SEEK_PREVIEW_SUMMARY);
@@ -1059,10 +1062,7 @@ function Settings_SetSettings() {
 
 function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
     Settings_value_keys.push(key);
-    if (valuesArray) {
-        if (!Settings_value[key]) Settings_value[key] = {};
-        Settings_value[key].values = valuesArray;
-    }
+    if (valuesArray) Settings_value[key].values = valuesArray;
 
     return STR_SUMMARY ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR);
 }

@@ -81,8 +81,6 @@ import androidx.media3.exoplayer.DefaultLivePlaybackSpeedControl;
 import androidx.media3.exoplayer.DefaultRenderersFactory;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.analytics.AnalyticsListener;
-import androidx.media3.exoplayer.source.LoadEventInfo;
-import androidx.media3.exoplayer.source.MediaLoadData;
 import androidx.media3.exoplayer.source.MediaSource;
 import androidx.media3.exoplayer.source.TrackGroupArray;
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
@@ -158,7 +156,6 @@ public class PlayerActivity extends Activity {
     private boolean MultiStreamEnable;
     private boolean isFullScreen = true;
     private boolean CheckSource = true;
-    private int volReducerMode = 2; // 0 = None, 1 = Half, 2 = Full (default: Full/mute)
     private int PicturePicturePosition = 0;
     private int PicturePictureSize = 1; //sizes are 0 , 1 , 2, 3, 4
     private int PreviewSize = 1; //sizes are 0 , 1 , 2, 3
@@ -269,38 +266,32 @@ public class PlayerActivity extends Activity {
 
     private final boolean[] AudioEnabled = { true, false, false, false, true };
 
-    // Volume reducer state
-    // Store multiple playlists per player to handle large buffers and multiple quality variants
-    // Each playlist is stored with its URI, parse timestamp, metadata, and MediaSource reference
-    private static class PlaylistWithTimestamp {
-        final TwitchHLSPlaylistParser.ParsedPlaylist playlist;
-        final String playlistUri; // URI of the playlist (to identify duplicates and match segments)
-        final long parseTimeMs; // When this playlist was parsed
-        final double totalDuration; // Total duration of all segments in this playlist
-        final MediaSource mediaSource; // Reference to the MediaSource this playlist belongs to
-        
-        PlaylistWithTimestamp(TwitchHLSPlaylistParser.ParsedPlaylist playlist, String playlistUri, long parseTimeMs, MediaSource mediaSource) {
-            this.playlist = playlist;
-            this.playlistUri = playlistUri;
-            this.parseTimeMs = parseTimeMs;
-            this.mediaSource = mediaSource;
-            // Calculate total duration
-            double duration = 0.0;
-            for (TwitchHLSPlaylistParser.Segment segment : playlist.segments) {
-                duration += segment.duration;
-            }
-            this.totalDuration = duration;
-        }
+    // Twitch HLS ad volume reducer: helper holds parsed-playlist state per stream session and decides
+    // whether the slot's playback position is currently inside an ad window. PlayerActivity drives
+    // volume through ApplyAudioAll; the helper just classifies. State is keyed by adSessionIds[slot]
+    // so it survives ReUsePlayer moving a MediaSource between slots without manual state migration.
+    private StreamAdVolumeHelper streamAdVolume;
+    private final int[] adSessionIds = new int[PlayerAccountPlus];
+
+    private final StreamAdVolumeHelper.Host streamAdVolumeHost = new StreamAdVolumeHelper.Host() {
+        @Override public ExoPlayer playerForSlot(int slot) { return PlayerObj[slot].player; }
+        @Override public int sessionForSlot(int slot) { return adSessionIds[slot]; }
+        @Override public void applyAudioAll() { runOnUiThread(PlayerActivity.this::ApplyAudioAll); }
+    };
+
+    /**
+     * Builds a Twitch-aware HLS MediaSource and binds it to a fresh ad-detection session for the slot.
+     * Releasing the previous session keeps the helper's playlist state bounded and avoids stale data
+     * being matched against the new stream's playback timeline.
+     */
+    private MediaSource buildAdAwareMediaSource(int slot, Uri uri, int Type, int LowLatency, String mainPlaylistString) {
+        streamAdVolume.releaseSession(adSessionIds[slot]);
+        adSessionIds[slot] = streamAdVolume.newSession();
+        return Tools.buildMediaSource(
+            uri, this, Type, LowLatency, speedAdjustment, mainPlaylistString, userAgent,
+            streamAdVolume, adSessionIds[slot]
+        );
     }
-    
-    @SuppressWarnings("unchecked")
-    private final java.util.List<PlaylistWithTimestamp>[] volReducerPlaylists = new java.util.List[PlayerAccountPlus];
-    private final boolean[] isVolReducerActive = new boolean[PlayerAccountPlus];
-    private final float[] savedVolumes = new float[PlayerAccountPlus];
-    private final float[] previousVolumes = new float[PlayerAccountPlus];
-    private final Handler[] volReducerHandlers = new Handler[PlayerAccountPlus];
-    // Map MediaSource objects to their current player position (for handling moved preview player)
-    private final java.util.Map<MediaSource, Integer> mediaSourceToPosition = new java.util.HashMap<>();
 
     public class PlayerObj {
 
@@ -444,8 +435,9 @@ public class PlayerActivity extends Activity {
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerObj[i] = new PlayerObj(false, false, null, 0, 2, 0, 0, 1.0f, null, 0, null, null, null, null, 0);
                 PlayerObj[i].CheckHandler = new Handler(MainLooper);
-                volReducerHandlers[i] = new Handler(MainLooper);
             }
+
+            streamAdVolume = new StreamAdVolumeHelper(this, streamAdVolumeHost);
 
             //BackGroundThread Etc threads that may or may not use delay to start
             HandlerThread backGroundThread = new HandlerThread("BGT");
@@ -579,21 +571,6 @@ public class PlayerActivity extends Activity {
     }
 
     private void ReUsePlayer(int PlayerObjPosition) {
-        // Reset VolReducer state for target position first (in case it had a previous player)
-        // This ensures we don't have conflicting state when transferring from position 4
-        resetVolReducer(PlayerObjPosition);
-        
-        // Remove old MediaSource mapping for target position if it exists
-        // (the old player will be moved to position 4 and cleared)
-        if (PlayerObj[PlayerObjPosition].mediaSources != null) {
-            mediaSourceToPosition.remove(PlayerObj[PlayerObjPosition].mediaSources);
-        }
-        
-        // Transfer volume reducer state from preview player (4) to target position
-        // The MediaSource from player 4 will still call back with position 4, but we need
-        // to track the state at the actual player position
-        transferVolReducerState(4, PlayerObjPosition);
-        
         if (PlayerObj[PlayerObjPosition].player != null) {
             PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
         }
@@ -602,6 +579,13 @@ public class PlayerActivity extends Activity {
         if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE) {
             PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
         }
+
+        // Ad volume reducer: the MediaSource (and therefore its parsed-playlist state) is moving from
+        // the preview slot to PlayerObjPosition; transfer the session id and release whatever the
+        // destination slot was using before.
+        streamAdVolume.releaseSession(adSessionIds[PlayerObjPosition]);
+        adSessionIds[PlayerObjPosition] = adSessionIds[4];
+        adSessionIds[4] = 0;
 
         PlayerObj[4].Listener.UpdatePosition(PlayerObjPosition);
         PlayerObj[PlayerObjPosition].Listener = PlayerObj[4].Listener;
@@ -629,30 +613,7 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerObj[4].playerView.setPlayer(null);
-        
-        // Update MediaSource references in transferred playlists now that MediaSource is at new position
-        if (volReducerPlaylists[PlayerObjPosition] != null && !volReducerPlaylists[PlayerObjPosition].isEmpty()) {
-            MediaSource newMediaSource = PlayerObj[PlayerObjPosition].mediaSources;
-            java.util.List<PlaylistWithTimestamp> updatedPlaylists = new java.util.ArrayList<>();
-            for (PlaylistWithTimestamp old : volReducerPlaylists[PlayerObjPosition]) {
-                // Update MediaSource reference to match new position
-                updatedPlaylists.add(new PlaylistWithTimestamp(
-                    old.playlist,
-                    old.playlistUri,
-                    old.parseTimeMs,
-                    newMediaSource
-                ));
-            }
-            volReducerPlaylists[PlayerObjPosition].clear();
-            volReducerPlaylists[PlayerObjPosition].addAll(updatedPlaylists);
-        }
-        
         Clear_PreviewPlayer();
-
-        // Restart position checker for the new position to ensure ad detection works
-        if (volReducerPlaylists[PlayerObjPosition] != null && !volReducerPlaylists[PlayerObjPosition].isEmpty()) {
-            startVolReducerPositionChecker(PlayerObjPosition);
-        }
 
         ApplyAudioAll();
     }
@@ -706,16 +667,11 @@ public class PlayerActivity extends Activity {
             PlayerObj[PlayerObjPosition].Listener = new PlayerEventListener(PlayerObjPosition);
             PlayerObj[PlayerObjPosition].player.addListener(PlayerObj[PlayerObjPosition].Listener);
 
-            AnalyticsEventListener analyticsListener = new AnalyticsEventListener();
-            analyticsListener.setPlayerPosition(PlayerObjPosition);
-            PlayerObj[PlayerObjPosition].player.addAnalyticsListener(analyticsListener);
+            PlayerObj[PlayerObjPosition].player.addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         }
 
-        // Reset volume reducer when setting a new media source (switching streams)
-        resetVolReducer(PlayerObjPosition);
-        
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
         PlayerObj[PlayerObjPosition].player.setMediaSource(PlayerObj[PlayerObjPosition].mediaSources, PlayerObj[PlayerObjPosition].ResumePosition);
 
@@ -802,12 +758,7 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "Clear_PreviewPlayer");
         }
 
-        resetVolReducer(4);
         releasePlayer(4);
-        // Clear MediaSource mapping for preview player
-        if (PlayerObj[4].mediaSources != null) {
-            mediaSourceToPosition.remove(PlayerObj[4].mediaSources);
-        }
         ApplyAudioAll();
 
         //Try to prevent... The specified child already has a parent. You must call removeView() on the child's parent first.
@@ -831,7 +782,6 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearPlayer position " + position);
         }
 
-        resetVolReducer(position);
         releasePlayer(position);
 
         CheckKeepScreenOn();
@@ -851,7 +801,6 @@ public class PlayerActivity extends Activity {
         PicturePicture = false;
 
         for (int i = 0; i < PlayerAccount; i++) {
-            resetVolReducer(i);
             releasePlayer(i);
             clearResumePosition(i);
         }
@@ -864,6 +813,10 @@ public class PlayerActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "releasePlayer start position " + position);
         }
+
+        // Ad volume reducer: drop any parsed-playlist state for this slot's session.
+        streamAdVolume.releaseSession(adSessionIds[position]);
+        adSessionIds[position] = 0;
 
         PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
         PlayerObj[position].playerView.setVisibility(View.GONE);
@@ -1187,9 +1140,9 @@ public class PlayerActivity extends Activity {
             .buildUpon()
             .setMaxVideoBitrate(PlayerBitrate[ParametersPos])
             .setMaxVideoSize(width, PlayerResolution[ParametersPos])
-            .setAllowVideoNonSeamlessAdaptiveness(false) // Disable to ensure single video stream
-            .setAllowVideoMixedMimeTypeAdaptiveness(false) // Disable to ensure single video stream
-            .setAllowVideoMixedDecoderSupportAdaptiveness(false) // Disable to ensure single video stream
+            .setAllowVideoNonSeamlessAdaptiveness(true)
+            .setAllowVideoMixedMimeTypeAdaptiveness(true)
+            .setAllowVideoMixedDecoderSupportAdaptiveness(true)
             .setViewportSize(
                 //set this to play resolution bigger then current screen resolution
                 Integer.MAX_VALUE,
@@ -1209,832 +1162,24 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    // Volume reducer callback implementation
-    private final VolReducerCallback volReducerCallback = new VolReducerCallback() {
-        /**
-         * Find the actual player position for a callback by checking which player has playlists
-         * that match the MediaSource. This is more reliable than position mapping.
-         */
-        private int findPlayerPositionForMediaSourceFromCallback(int reportedPosition) {
-            // First, check if reported position has a player with MediaSource
-            if (reportedPosition < PlayerAccountPlus && 
-                PlayerObj[reportedPosition].player != null && 
-                PlayerObj[reportedPosition].mediaSources != null) {
-                // Check if playlists at this position match this MediaSource
-                if (volReducerPlaylists[reportedPosition] != null && !volReducerPlaylists[reportedPosition].isEmpty()) {
-                    PlaylistWithTimestamp firstPlaylist = volReducerPlaylists[reportedPosition].get(0);
-                    if (firstPlaylist.mediaSource == PlayerObj[reportedPosition].mediaSources) {
-                        return reportedPosition;
-                    }
-                }
-            }
-            
-            // MediaSource was moved or playlists are at different position
-            // Find which position has playlists with matching MediaSource
-            for (int i = 0; i < PlayerAccountPlus; i++) {
-                if (volReducerPlaylists[i] != null && !volReducerPlaylists[i].isEmpty()) {
-                    PlaylistWithTimestamp firstPlaylist = volReducerPlaylists[i].get(0);
-                    if (firstPlaylist.mediaSource != null && 
-                        PlayerObj[i].mediaSources == firstPlaylist.mediaSource) {
-                        return i;
-                    }
-                }
-            }
-            
-            // Fallback: use reported position
-            return reportedPosition;
-        }
-        
-        @Override
-        public void onAdDetected(int playerPosition) {
-            // Find which position actually has the MediaSource that triggered this callback
-            int actualPosition = findPlayerPositionForMediaSourceFromCallback(playerPosition);
-            if (actualPosition >= 0) {
-                handleVolReducerStart(actualPosition);
-            }
-        }
-
-        @Override
-        public void onAdEnded(int playerPosition) {
-            // Find which position actually has the MediaSource that triggered this callback
-            int actualPosition = findPlayerPositionForMediaSourceFromCallback(playerPosition);
-            if (actualPosition >= 0) {
-                handleVolReducerEnd(actualPosition);
-            }
-        }
-
-        @Override
-        public void onPlaylistParsed(int playerPosition, @NonNull TwitchHLSPlaylistParser.ParsedPlaylist parsedPlaylist, @NonNull String playlistUri) {
-            if (playerPosition >= 0 && playerPosition < PlayerAccountPlus) {
-                // Always run on UI thread to ensure player access is safe
-                runOnUiThread(() -> {
-                    try {
-                        // Find which position actually has the MediaSource that triggered this callback
-                        // The reported position might be outdated if MediaSource was moved
-                        int actualPosition = playerPosition;
-                        MediaSource mediaSource = null;
-                        
-                        // If reported position has a MediaSource, use it
-                        if (playerPosition < PlayerAccountPlus && PlayerObj[playerPosition].mediaSources != null) {
-                            actualPosition = playerPosition;
-                            mediaSource = PlayerObj[playerPosition].mediaSources;
-                        } else {
-                            // MediaSource was moved - find which position has it now
-                            // Strategy: Find position with playlists that have matching MediaSource
-                            // When MediaSource is moved, playlists are transferred with it
-                            for (int i = 0; i < PlayerAccountPlus; i++) {
-                                if (volReducerPlaylists[i] != null && !volReducerPlaylists[i].isEmpty()) {
-                                    PlaylistWithTimestamp existing = volReducerPlaylists[i].get(0);
-                                    if (existing.mediaSource != null && 
-                                        PlayerObj[i].mediaSources == existing.mediaSource) {
-                                        // This position has playlists with matching MediaSource
-                                        // If reported position doesn't have a player, this is the moved MediaSource
-                                        if (playerPosition < PlayerAccountPlus && 
-                                            (PlayerObj[playerPosition].player == null || 
-                                             PlayerObj[playerPosition].mediaSources == null)) {
-                                            actualPosition = i;
-                                            mediaSource = PlayerObj[i].mediaSources;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            // If still not found, find any position with MediaSource (fallback for new streams)
-                            if (mediaSource == null) {
-                                for (int i = 0; i < PlayerAccountPlus; i++) {
-                                    if (PlayerObj[i].mediaSources != null) {
-                                        actualPosition = i;
-                                        mediaSource = PlayerObj[i].mediaSources;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // Initialize list if needed
-                        if (volReducerPlaylists[actualPosition] == null) {
-                            volReducerPlaylists[actualPosition] = new java.util.ArrayList<>();
-                        }
-                        
-                        // Check if we already have this playlist (same URI) - replace it if so
-                        // This handles playlist updates for the same quality variant
-                        java.util.Iterator<PlaylistWithTimestamp> iterator = volReducerPlaylists[actualPosition].iterator();
-                        while (iterator.hasNext()) {
-                            PlaylistWithTimestamp existing = iterator.next();
-                            if (playlistUri.equals(existing.playlistUri)) {
-                                iterator.remove();
-                                break;
-                            }
-                        }
-                        
-                        // Only store playlists that have segments (skip master playlists and empty playlists)
-                        if (parsedPlaylist.segments.isEmpty()) {
-                            return; // Don't store empty playlists
-                        }
-                        
-                        // Add new playlist with URI, current timestamp, and MediaSource reference
-                        long currentTime = System.currentTimeMillis();
-                        volReducerPlaylists[actualPosition].add(new PlaylistWithTimestamp(parsedPlaylist, playlistUri, currentTime, mediaSource));
-                        
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "VolReducer: onPlaylistParsed: callback reported position " + playerPosition + 
-                                  ", storing at actual position " + actualPosition + 
-                                  (mediaSource != null ? " (MediaSource found)" : " (no MediaSource)"));
-                        }
-                        
-                        // Start/restart position-based volume reducer when playlist is parsed/updated
-                        startVolReducerPositionChecker(actualPosition);
-                    } catch (Exception e) {
-                        Log.e(TAG, "VolReducer: Error in onPlaylistParsed for player " + playerPosition, e);
-                    }
-                });
-            }
-        }
-    };
-
     public void SetAudio(int pos, float volume) {
-        if (PlayerObj[pos].player != null) {
-            // Only log when volume actually changes
-            if (BuildConfig.DEBUG && Math.abs(previousVolumes[pos] - volume) > 0.001f) {
-                Log.i(TAG, "SetAudio: player " + pos + " volume changed from " + 
-                      String.format("%.0f%%", previousVolumes[pos] * 100f) + " to " + 
-                      String.format("%.0f%%", volume * 100f));
-            }
-            previousVolumes[pos] = volume;
-            PlayerObj[pos].player.setVolume(volume);
-        }
+        if (PlayerObj[pos].player != null) PlayerObj[pos].player.setVolume(volume);
     }
 
     public void ApplyAudioAll() {
-        float MaxVolume = PlayerObj[4].player == null ? 1f : AudioMaxPreviewVisible;
+        boolean previewActive = PlayerObj[4].player != null;
+        // Main grid players cap at AudioMaxPreviewVisible while a preview is showing so the preview
+        // isn't drowned out; the preview itself uses that cap unconditionally.
+        float MaxMainVolume = previewActive ? AudioMaxPreviewVisible : 1f;
 
-        // Apply to main players (0-3)
         for (int i = 0; i < PlayerAccount; i++) {
-            float baseVolume = AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxVolume) : 0f;
-            float targetVolume = baseVolume;
-            boolean volReducerApplied = false;
-            String volReducerModeStr = "none";
-            
-            // Apply volume reduction based on mode
-            if (isVolReducerActive[i] && volReducerMode > 0) {
-                if (volReducerMode == 2) {
-                    // Full: mute completely
-                    targetVolume = 0f;
-                    volReducerApplied = true;
-                    volReducerModeStr = "full (mute)";
-                } else if (volReducerMode == 1) {
-                    // Half: reduce by 50%
-                    targetVolume = baseVolume * 0.5f;
-                    volReducerApplied = true;
-                    volReducerModeStr = "half (50%)";
-                }
-                // Mode 0 (None): no reduction, use baseVolume
-            }
-            
-            SetAudio(i, targetVolume);
+            float base = AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxMainVolume) : 0f;
+            SetAudio(i, streamAdVolume.adjustVolume(i, base));
         }
-        
-        // Apply to preview player (4) if it exists
-        if (PlayerObj[4].player != null) {
-            float baseVolume = AudioEnabled[4] ? Math.min(PlayerObj[4].volume, AudioMaxPreviewVisible) : 0f;
-            float targetVolume = baseVolume;
-            
-            // Apply volume reduction based on mode
-            if (isVolReducerActive[4] && volReducerMode > 0) {
-                if (volReducerMode == 2) {
-                    // Full: mute completely
-                    targetVolume = 0f;
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "VolReducer: ApplyAudioAll: player 4 muted (isVolReducerActive=" + 
-                              isVolReducerActive[4] + ", baseVolume=" + baseVolume + ", targetVolume=" + targetVolume + ")");
-                    }
-                } else if (volReducerMode == 1) {
-                    // Half: reduce by 50%
-                    targetVolume = baseVolume * 0.5f;
-                }
-                // Mode 0 (None): no reduction, use baseVolume
-            } else if (BuildConfig.DEBUG) {
-                Log.d(TAG, "VolReducer: ApplyAudioAll: player 4 NOT muted (isVolReducerActive=" + 
-                      isVolReducerActive[4] + ", volReducerMode=" + volReducerMode + ", baseVolume=" + baseVolume + 
-                      ", targetVolume=" + targetVolume + ")");
-            }
-            
-            SetAudio(4, targetVolume);
+        if (previewActive) {
+            float base = AudioEnabled[4] ? Math.min(PlayerObj[4].volume, AudioMaxPreviewVisible) : 0f;
+            SetAudio(4, streamAdVolume.adjustVolume(4, base));
         }
-    }
-
-    private void handleVolReducerStart(int playerPosition) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
-        
-        if (!isVolReducerActive[playerPosition]) {
-            isVolReducerActive[playerPosition] = true;
-            savedVolumes[playerPosition] = PlayerObj[playerPosition].volume;
-            
-            // Only apply volume reduction if this player's audio is currently enabled
-            // We still track the ad state for all players, but only mute/unmute active ones
-            boolean shouldApply = false;
-            if (playerPosition < PlayerAccount) {
-                // Main players (0-3): check AudioEnabled array
-                shouldApply = AudioEnabled[playerPosition];
-            } else if (playerPosition == 4) {
-                // Preview player (4): check if player exists and is active
-                // Preview player audio is enabled by default (AudioEnabled[4] = true)
-                // and should be muted if it's playing
-                shouldApply = PlayerObj[4].player != null && AudioEnabled[4];
-            }
-            
-            if (shouldApply) {
-                // Apply volume reduction only to this specific player
-                float baseVolume = PlayerObj[playerPosition].volume;
-                float targetVolume = baseVolume;
-                
-                if (volReducerMode == 2) {
-                    // Full reduction (mute)
-                    targetVolume = 0.0f;
-                } else if (volReducerMode == 1) {
-                    // Half reduction (50%)
-                    targetVolume = baseVolume * 0.5f;
-                }
-                // volReducerMode == 0 means no reduction, keep baseVolume
-                
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "VolReducer: handleVolReducerStart: setting player " + playerPosition + 
-                          " volume to " + targetVolume + " (baseVolume=" + baseVolume + 
-                          ", volReducerMode=" + volReducerMode + ", isVolReducerActive=" + isVolReducerActive[playerPosition] + ")");
-                }
-                
-                SetAudio(playerPosition, targetVolume);
-                
-                // Also call ApplyAudioAll to ensure consistency (it will respect isVolReducerActive)
-                ApplyAudioAll();
-                
-                // Notify user about mute/reduction state with Android overlay
-                runOnUiThread(() -> {
-                    String message;
-                    if (volReducerMode == 2) {
-                        message = String.format(Locale.US, getString(R.string.volume_muted), playerPosition);
-                    } else if (volReducerMode == 1) {
-                        message = String.format(Locale.US, getString(R.string.volume_reduced), playerPosition);
-                    } else {
-                        return; // No reduction, no notification
-                    }
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-        }
-    }
-
-    private void handleVolReducerEnd(int playerPosition) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
-        
-        if (isVolReducerActive[playerPosition]) {
-            isVolReducerActive[playerPosition] = false;
-            
-            // Only restore volume if this player's audio is currently enabled
-            // We still track the ad state for all players, but only mute/unmute active ones
-            boolean shouldRestore = false;
-            if (playerPosition < PlayerAccount) {
-                // Main players (0-3): check AudioEnabled array
-                shouldRestore = AudioEnabled[playerPosition];
-            } else if (playerPosition == 4) {
-                // Preview player (4): check if player exists and is active
-                // Preview player audio is enabled by default (AudioEnabled[4] = true)
-                // and should be restored if it's playing
-                shouldRestore = PlayerObj[4].player != null && AudioEnabled[4];
-            }
-            
-            if (shouldRestore) {
-                // Restore volume only for this specific player
-                float restoredVolume = savedVolumes[playerPosition];
-                
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "VolReducer: handleVolReducerEnd: restoring player " + playerPosition + 
-                          " volume to " + restoredVolume + " (isVolReducerActive=" + isVolReducerActive[playerPosition] + ")");
-                }
-                
-                SetAudio(playerPosition, restoredVolume);
-                
-                // Also call ApplyAudioAll to ensure consistency
-                ApplyAudioAll();
-                
-                // Notify user about unmute/restore state with Android overlay
-                runOnUiThread(() -> {
-                    String message;
-                    if (volReducerMode == 2) {
-                        message = String.format(Locale.US, getString(R.string.volume_unmuted), playerPosition);
-                    } else if (volReducerMode == 1) {
-                        message = String.format(Locale.US, getString(R.string.volume_restored), playerPosition);
-                    } else {
-                        return; // No reduction was active, no notification
-                    }
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                });
-            }
-        }
-    }
-
-    private void resetVolReducer(int playerPosition) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
-        
-        // Stop position checking
-        stopVolReducerPositionChecker(playerPosition);
-        
-        // Restore volume if volume reducer was active
-        boolean wasActive = isVolReducerActive[playerPosition];
-        if (wasActive && savedVolumes[playerPosition] >= 0) {
-            float restoredVolume = savedVolumes[playerPosition];
-            SetAudio(playerPosition, restoredVolume);
-        }
-        
-        isVolReducerActive[playerPosition] = false;
-        if (volReducerPlaylists[playerPosition] != null) {
-            volReducerPlaylists[playerPosition].clear();
-        }
-        savedVolumes[playerPosition] = -1; // Reset saved volume
-        
-        // Notify user about reset if volume reducer was active
-        if (wasActive) {
-            runOnUiThread(() -> {
-                String message = String.format(Locale.US, getString(R.string.volume_reset), playerPosition);
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            });
-        }
-    }
-
-    /**
-     * Transfer VolReducer state from source position to target position
-     * Used when reusing the preview player (4) in a main player position
-     */
-    private void transferVolReducerState(int fromPosition, int toPosition) {
-        if (fromPosition < 0 || fromPosition >= PlayerAccountPlus) return;
-        if (toPosition < 0 || toPosition >= PlayerAccountPlus) return;
-        
-        // Stop position checking for both positions
-        stopVolReducerPositionChecker(fromPosition);
-        stopVolReducerPositionChecker(toPosition);
-        
-        // Transfer playlist data
-        // Get MediaSource from source position (it will be moved to target position after this)
-        MediaSource mediaSourceToTransfer = PlayerObj[fromPosition].mediaSources;
-        if (volReducerPlaylists[fromPosition] != null && !volReducerPlaylists[fromPosition].isEmpty()) {
-            if (volReducerPlaylists[toPosition] == null) {
-                volReducerPlaylists[toPosition] = new java.util.ArrayList<>();
-            }
-            volReducerPlaylists[toPosition].clear();
-            // Update MediaSource reference in playlists to point to the MediaSource being moved
-            // (it will be at toPosition after ReUsePlayer completes)
-            for (PlaylistWithTimestamp playlist : volReducerPlaylists[fromPosition]) {
-                // Create new PlaylistWithTimestamp with updated MediaSource reference
-                volReducerPlaylists[toPosition].add(new PlaylistWithTimestamp(
-                    playlist.playlist, 
-                    playlist.playlistUri, 
-                    playlist.parseTimeMs, 
-                    mediaSourceToTransfer
-                ));
-            }
-            volReducerPlaylists[fromPosition].clear();
-        }
-        
-        // Transfer active state and saved volume
-        if (isVolReducerActive[fromPosition]) {
-            isVolReducerActive[toPosition] = true;
-            isVolReducerActive[fromPosition] = false;
-            
-            if (savedVolumes[fromPosition] >= 0) {
-                savedVolumes[toPosition] = savedVolumes[fromPosition];
-                savedVolumes[fromPosition] = -1;
-            }
-        } else {
-            isVolReducerActive[toPosition] = false;
-        }
-        
-        // Update MediaSource position mapping to point to its new current position
-        // This MediaSource was moved from fromPosition to toPosition
-        if (PlayerObj[toPosition].mediaSources != null) {
-            mediaSourceToPosition.put(PlayerObj[toPosition].mediaSources, toPosition);
-        }
-        
-        // Ensure position 4 playlists are cleared (in case transfer didn't work correctly)
-        if (fromPosition == 4 && volReducerPlaylists[4] != null) {
-            volReducerPlaylists[4].clear();
-            isVolReducerActive[4] = false;
-        }
-        
-        // Restart position checker for the target position
-        if (volReducerPlaylists[toPosition] != null && !volReducerPlaylists[toPosition].isEmpty()) {
-            startVolReducerPositionChecker(toPosition);
-        }
-    }
-
-    /**
-     * Extract segment ID/filename from URI for logging
-     */
-    private String extractSegmentId(String uri) {
-        try {
-            // Remove query parameters and fragments
-            String uriToCheck = uri;
-            int queryIndex = uriToCheck.indexOf('?');
-            if (queryIndex > 0) {
-                uriToCheck = uriToCheck.substring(0, queryIndex);
-            }
-            int fragmentIndex = uriToCheck.indexOf('#');
-            if (fragmentIndex > 0) {
-                uriToCheck = uriToCheck.substring(0, fragmentIndex);
-            }
-            
-            // Extract just the filename part
-            int lastSlash = uriToCheck.lastIndexOf('/');
-            return lastSlash >= 0 ? uriToCheck.substring(lastSlash + 1) : uriToCheck;
-        } catch (Exception e) {
-            return "unknown";
-        }
-    }
-
-    /**
-     * Get segment info (index, start time) and EXT_X tag information for a segment from the parsed playlist
-     * Returns a pair: [segmentInfo, extXInfo]
-     */
-    private String[] getSegmentInfo(TwitchHLSPlaylistParser.ParsedPlaylist playlist, String segmentUri) {
-        if (playlist == null || segmentUri == null || playlist.segments.isEmpty()) {
-            return new String[]{"", ""};
-        }
-        
-        try {
-            // Extract the segment filename/identifier from the URI
-            String uriToCheck = segmentUri;
-            int queryIndex = uriToCheck.indexOf('?');
-            if (queryIndex > 0) {
-                uriToCheck = uriToCheck.substring(0, queryIndex);
-            }
-            int fragmentIndex = uriToCheck.indexOf('#');
-            if (fragmentIndex > 0) {
-                uriToCheck = uriToCheck.substring(0, fragmentIndex);
-            }
-            
-            int lastSlash = uriToCheck.lastIndexOf('/');
-            String filename = lastSlash >= 0 ? uriToCheck.substring(lastSlash + 1) : uriToCheck;
-            
-            // Find matching segment in playlist and calculate start time
-            double startTime = 0.0;
-            for (int i = 0; i < playlist.segments.size(); i++) {
-                TwitchHLSPlaylistParser.Segment segment = playlist.segments.get(i);
-                String segmentUriToCheck = segment.uri;
-                int segQueryIndex = segmentUriToCheck.indexOf('?');
-                if (segQueryIndex > 0) {
-                    segmentUriToCheck = segmentUriToCheck.substring(0, segQueryIndex);
-                }
-                int segLastSlash = segmentUriToCheck.lastIndexOf('/');
-                String segmentFilename = segLastSlash >= 0 ? segmentUriToCheck.substring(segLastSlash + 1) : segmentUriToCheck;
-                
-                // Match by filename (most reliable) or full URI - try multiple matching strategies
-                boolean matches = filename.equals(segmentFilename) || 
-                    segmentFilename.equals(filename) ||
-                    uriToCheck.equals(segmentUriToCheck) ||
-                    uriToCheck.endsWith(segmentUriToCheck) ||
-                    segmentUriToCheck.endsWith(uriToCheck) ||
-                    filename.contains(segmentFilename) ||
-                    segmentFilename.contains(filename);
-                
-                if (matches) {
-                    // Build segment info (index and start time)
-                    String segmentInfo = String.format("seg[%d]@%.2fs", i, startTime);
-                    
-                    // Build EXT_X info
-                    StringBuilder extXInfo = new StringBuilder();
-                    extXInfo.append("EXTINF: ").append(String.format("%.2f", segment.duration));
-                    if (segment.title != null && !segment.title.isEmpty()) {
-                        extXInfo.append(", title: ").append(segment.title);
-                    }
-                    if (segment.hasDiscontinuity) {
-                        extXInfo.append(", DISCONTINUITY");
-                    }
-                    if (segment.isPrefetch) {
-                        extXInfo.append(", PREFETCH");
-                    }
-                    
-                    return new String[]{segmentInfo, extXInfo.toString()};
-                }
-                
-                // Accumulate start time for next segment
-                startTime += segment.duration;
-            }
-        } catch (Exception e) {
-            // Ignore exceptions
-        }
-        return new String[]{"", ""};
-    }
-
-    /**
-     * Find which player position has the given MediaSource
-     */
-    private int findPlayerPositionForMediaSource(MediaSource mediaSource) {
-        if (mediaSource == null) return -1;
-        for (int i = 0; i < PlayerAccountPlus; i++) {
-            if (PlayerObj[i].mediaSources == mediaSource) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Check if the current playback position (in milliseconds) is within a segment that requires volume reduction
-     * Returns true if position is within such a segment, false otherwise
-     * Checks all stored playlists and removes ones that are completely in the past
-     * playerPosition is the position where playlists are stored, but we verify it matches the actual MediaSource location
-     */
-    private boolean isPositionInVolumeReduction(int playerPosition, long positionMs) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return false;
-        if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) return false;
-        
-        // Verify that the playlists at this position actually belong to a player with the matching MediaSource
-        // If not, find the correct position
-        PlaylistWithTimestamp firstPlaylist = volReducerPlaylists[playerPosition].get(0);
-        if (firstPlaylist.mediaSource != null) {
-            int actualPosition = findPlayerPositionForMediaSource(firstPlaylist.mediaSource);
-            if (actualPosition >= 0 && actualPosition != playerPosition) {
-                // Playlists are stored at wrong position, use the actual position
-                playerPosition = actualPosition;
-                if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) return false;
-            }
-        }
-        
-        // Convert position from milliseconds to seconds
-        double positionSeconds = positionMs / 1000.0;
-        
-        // Check all playlists and remove outdated ones
-        // We need to find the playlist that contains the current position
-        // For HLS live streams, playlists are sliding windows, so we should check the most recent playlist first
-        java.util.List<PlaylistWithTimestamp> playlists = volReducerPlaylists[playerPosition];
-        java.util.Iterator<PlaylistWithTimestamp> iterator = playlists.iterator();
-        boolean foundMatch = false;
-        PlaylistWithTimestamp matchingPlaylist = null;
-        
-        // First pass: find which playlist contains the current position
-        // Check playlists in reverse order (most recent first) since newer playlists are more likely to match
-        for (int i = playlists.size() - 1; i >= 0; i--) {
-            PlaylistWithTimestamp playlistWithTimestamp = playlists.get(i);
-            TwitchHLSPlaylistParser.ParsedPlaylist playlist = playlistWithTimestamp.playlist;
-            
-            if (playlist.segments.isEmpty()) {
-                continue;
-            }
-            
-            // Calculate cumulative start times and check if position is within this playlist
-            double currentTime = 0.0;
-            boolean positionInThisPlaylist = false;
-            
-            for (int segIndex = 0; segIndex < playlist.segments.size(); segIndex++) {
-                TwitchHLSPlaylistParser.Segment segment = playlist.segments.get(segIndex);
-                double segmentStart = currentTime;
-                double segmentEnd = currentTime + segment.duration;
-                
-                // Check if position is within this segment
-                // Use < for segmentEnd to avoid boundary issues (we'll handle transitions separately)
-                if (positionSeconds >= segmentStart && positionSeconds < segmentEnd) {
-                    foundMatch = segment.isAd;
-                    positionInThisPlaylist = true;
-                    matchingPlaylist = playlistWithTimestamp;
-                    
-                    // Early transition detection: only when very close to segment boundary (within 0.05s)
-                    // This prevents toggling while still in the middle of a segment
-                    double timeToSegmentEnd = segmentEnd - positionSeconds;
-                    if (timeToSegmentEnd <= 0.05 && segIndex + 1 < playlist.segments.size()) {
-                        TwitchHLSPlaylistParser.Segment nextSegment = playlist.segments.get(segIndex + 1);
-                        
-                        // Case 1: Transitioning INTO an ad (non-ad -> ad)
-                        // Mute early to prevent any ad audio from playing
-                        if (!segment.isAd && nextSegment.isAd) {
-                            foundMatch = true; // Mute early before ad starts
-                        }
-                        // Case 2: Transitioning OUT of an ad (ad -> non-ad)
-                        // Keep muted until we're actually past the boundary to prevent toggling
-                        // Don't unmute early - wait until we're in the next segment
-                    }
-                    
-                    if (BuildConfig.DEBUG) {
-                        String transitionNote = "";
-                        if (timeToSegmentEnd <= 0.05 && segIndex + 1 < playlist.segments.size()) {
-                            TwitchHLSPlaylistParser.Segment nextSegment = playlist.segments.get(segIndex + 1);
-                            if (!segment.isAd && nextSegment.isAd && foundMatch) {
-                                transitionNote = " (early mute - entering ad)";
-                            }
-                        }
-                        Log.d(TAG, "VolReducer: isPositionInVolumeReduction: player " + playerPosition + 
-                              " at " + String.format("%.2f", positionSeconds) + "s " +
-                              "matches seg[" + segIndex + "] in playlist (parseTime: " + 
-                              String.format("%.2f", (playlistWithTimestamp.parseTimeMs / 1000.0)) + "s) " +
-                              String.format("%.2f", segmentStart) + "s-" + String.format("%.2f", segmentEnd) + "s, " +
-                              "isAd: " + segment.isAd + ", title: " + 
-                              (segment.title != null ? segment.title : "null") +
-                              transitionNote + ", foundMatch: " + foundMatch);
-                    }
-                    break; // Found the segment in this playlist
-                }
-                
-                currentTime = segmentEnd;
-            }
-            
-            if (positionInThisPlaylist) {
-                // Found a match, use this playlist and stop checking others
-                break;
-            }
-        }
-        
-        // Second pass: remove outdated playlists that don't contain the current position
-        iterator = playlists.iterator();
-        while (iterator.hasNext()) {
-            PlaylistWithTimestamp playlistWithTimestamp = iterator.next();
-            TwitchHLSPlaylistParser.ParsedPlaylist playlist = playlistWithTimestamp.playlist;
-            
-            if (playlist.segments.isEmpty()) {
-                // Remove empty playlists
-                iterator.remove();
-                continue;
-            }
-            
-            // If this playlist is not the matching one and position is past its end, remove it
-            // But keep it for a bit longer in case player seeks back (remove if >30s past)
-            if (playlistWithTimestamp != matchingPlaylist && 
-                positionSeconds > playlistWithTimestamp.totalDuration + 30.0) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "VolReducer: Removing outdated playlist for player " + playerPosition + 
-                          " (position " + String.format("%.2f", positionSeconds) + "s > playlist end " + 
-                          String.format("%.2f", playlistWithTimestamp.totalDuration) + "s)");
-                }
-                iterator.remove();
-            }
-        }
-        
-        return foundMatch;
-    }
-
-    /**
-     * Check volume reducer based on current playback position and update volume accordingly
-     * This should be called periodically to ensure volume changes happen at the right time
-     * playerPosition is where playlists are stored, but we verify it matches the actual MediaSource location
-     */
-    private void checkVolReducerByPosition(int playerPosition) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) {
-            return;
-        }
-        
-        // Ensure we're on the main thread before accessing player
-        if (Looper.myLooper() != Looper.getMainLooper()) {
-            volReducerHandlers[playerPosition].post(() -> checkVolReducerByPosition(playerPosition));
-            return;
-        }
-        
-        if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) {
-            return;
-        }
-        
-        // Find which position actually has the MediaSource for these playlists
-        PlaylistWithTimestamp firstPlaylist = volReducerPlaylists[playerPosition].get(0);
-        int actualPosition = playerPosition;
-        int playlistPosition = playerPosition; // Where playlists are actually stored
-        
-        if (firstPlaylist.mediaSource != null) {
-            int foundPosition = findPlayerPositionForMediaSource(firstPlaylist.mediaSource);
-            if (foundPosition >= 0) {
-                actualPosition = foundPosition;
-                // If MediaSource is at a different position, check if playlists are also there
-                if (foundPosition != playerPosition) {
-                    // MediaSource was moved - check if playlists are at the new position
-                    if (volReducerPlaylists[foundPosition] != null && !volReducerPlaylists[foundPosition].isEmpty()) {
-                        // Playlists are at the new position, use those
-                        playlistPosition = foundPosition;
-                        // Stop checking the old position since playlists moved
-                        stopVolReducerPositionChecker(playerPosition);
-                        // Start checking the new position if not already running
-                        startVolReducerPositionChecker(foundPosition);
-                        return; // Exit and let the new position checker handle it
-                    } else {
-                        // Playlists are still at old position but MediaSource moved
-                        // This shouldn't happen after transfer, but stop checking old position
-                        stopVolReducerPositionChecker(playerPosition);
-                        return;
-                    }
-                }
-            } else {
-                // MediaSource not found, might have been released, stop checking
-                stopVolReducerPositionChecker(playerPosition);
-                return;
-            }
-        }
-        
-        if (PlayerObj[actualPosition].player == null) {
-            return;
-        }
-        
-        long currentPositionMs = PlayerObj[actualPosition].player.getCurrentPosition();
-        // Check if position is in volume reduction - use playlistPosition where playlists are actually stored
-        boolean currentlyReducingVolume = isPositionInVolumeReduction(playlistPosition, currentPositionMs);
-        
-        if (BuildConfig.DEBUG && currentlyReducingVolume) {
-            Log.d(TAG, "VolReducer: checkVolReducerByPosition: player " + actualPosition + 
-                  " at " + (currentPositionMs / 1000.0) + "s, checking playlists at position " + playlistPosition);
-        }
-        
-        // Only trigger volume changes when we actually enter/exit segments requiring volume reduction
-        // Use actualPosition for the state tracking and volume changes
-        // Add a small delay/hysteresis to prevent rapid toggling near boundaries
-        if (currentlyReducingVolume && !isVolReducerActive[actualPosition]) {
-            // Entering a segment requiring volume reduction
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "VolReducer: checkVolReducerByPosition: detected ad, calling handleVolReducerStart for position " + actualPosition);
-            }
-            handleVolReducerStart(actualPosition);
-        } else if (!currentlyReducingVolume && isVolReducerActive[actualPosition]) {
-            // Exiting a segment requiring volume reduction
-            // Always delay unmute by 0.4 seconds to prevent toggling at boundaries and handle playlist updates
-            // This gives time for new playlists to be parsed and prevents rapid toggling
-            final int finalActualPosition = actualPosition;
-            final int finalPlayerPosition = playerPosition;
-            
-            Runnable delayedUnmute = () -> {
-                // Re-check current state with latest playlists before unmuting
-                if (PlayerObj[finalActualPosition].player != null && isVolReducerActive[finalActualPosition]) {
-                    long checkPositionMs = PlayerObj[finalActualPosition].player.getCurrentPosition();
-                    // Find current playlist position (may have changed if playlists were updated)
-                    int currentPlaylistPosition = finalPlayerPosition;
-                    if (volReducerPlaylists[finalPlayerPosition] != null && !volReducerPlaylists[finalPlayerPosition].isEmpty()) {
-                        PlaylistWithTimestamp playlistCheck = volReducerPlaylists[finalPlayerPosition].get(0);
-                        if (playlistCheck.mediaSource != null) {
-                            int foundPosition = findPlayerPositionForMediaSource(playlistCheck.mediaSource);
-                            if (foundPosition >= 0 && volReducerPlaylists[foundPosition] != null && !volReducerPlaylists[foundPosition].isEmpty()) {
-                                currentPlaylistPosition = foundPosition;
-                            }
-                        }
-                    }
-                    // Re-check with current playlists (may have been updated since delay started)
-                    boolean stillNotInAd = !isPositionInVolumeReduction(currentPlaylistPosition, checkPositionMs);
-                    if (stillNotInAd && isVolReducerActive[finalActualPosition]) {
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "VolReducer: delayed unmute: ad ended (confirmed), calling handleVolReducerEnd for position " + finalActualPosition);
-                        }
-                        handleVolReducerEnd(finalActualPosition);
-                    } else if (BuildConfig.DEBUG && isVolReducerActive[finalActualPosition]) {
-                        Log.d(TAG, "VolReducer: delayed unmute: cancelled (still in ad, stillNotInAd=" + stillNotInAd + ")");
-                    }
-                    // Schedule next check
-                    if (PlayerObj[finalActualPosition].player != null && PlayerObj[finalActualPosition].player.isPlaying()) {
-                        volReducerHandlers[finalPlayerPosition].postDelayed(
-                            () -> checkVolReducerByPosition(finalPlayerPosition),
-                            100
-                        );
-                    }
-                }
-            };
-            
-            // Post delayed unmute (400ms delay - gives time for playlist updates)
-            volReducerHandlers[playerPosition].postDelayed(delayedUnmute, 400);
-            return; // Don't schedule next check yet - wait for delayed unmute
-        }
-        
-        // Schedule next check (check every 100ms for more responsive volume reducer)
-        // Only check when actually playing to avoid unnecessary checks that might cause audio issues
-        volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
-        if (PlayerObj[actualPosition].player != null && PlayerObj[actualPosition].player.isPlaying()) {
-            volReducerHandlers[playerPosition].postDelayed(
-                () -> checkVolReducerByPosition(playerPosition),
-                100
-            );
-        }
-    }
-
-    /**
-     * Start volume reducer position checking for a player
-     */
-    private void startVolReducerPositionChecker(int playerPosition) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) {
-            return;
-        }
-        if (volReducerHandlers[playerPosition] == null) {
-            return;
-        }
-        
-        // Stop any existing checker
-        volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
-        
-        // Start checking immediately (don't wait for next scheduled check)
-        // This ensures we catch the current position right away
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            checkVolReducerByPosition(playerPosition);
-        } else {
-            volReducerHandlers[playerPosition].post(() -> checkVolReducerByPosition(playerPosition));
-        }
-    }
-
-    /**
-     * Stop volume reducer position checking for a player
-     */
-    private void stopVolReducerPositionChecker(int playerPosition) {
-        if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
-        if (volReducerHandlers[playerPosition] == null) return;
-        
-        volReducerHandlers[playerPosition].removeCallbacksAndMessages(null);
     }
 
     public void UpdateSizePosSmall(int pos, boolean animate) {
@@ -3031,9 +2176,11 @@ public class PlayerActivity extends Activity {
                             if (len >= groupIndex_len) len = groupIndex_len - 1;
 
                             if (len > 0) {
-                                // Ensure only single video stream is selected - use only the first (highest quality) track
                                 List<Integer> ret = new ArrayList<>();
-                                ret.add(result.get(0)); // Only select the first track to ensure single stream
+
+                                for (int i = 0; i < len; i++) {
+                                    ret.add(result.get(i));
+                                }
 
                                 builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), ret)); //getTrackGroups.get(0) as the length of trackGroups in trackGroupArray is always 1
                             }
@@ -3362,20 +2509,12 @@ public class PlayerActivity extends Activity {
             CheckSource = mCheckSource;
         }
 
+        /** Twitch HLS ad volume reducer mode from JS. {@code mode} is 0=None, 1=Half, 2=Full mute. */
         @JavascriptInterface
         public void SetVolReducer(int mode) {
-            // mode: 0 = None, 1 = Half, 2 = Full
-            volReducerMode = mode;
-            // Apply the setting immediately if an ad is currently playing
-            if (volReducerMode == 0) {
-                // None - restore all volumes
-                for (int i = 0; i < PlayerAccountPlus; i++) {
-                    if (isVolReducerActive[i]) {
-                        isVolReducerActive[i] = false;
-                    }
-                }
-            }
-            ApplyAudioAll();
+            if (BuildConfig.DEBUG) Log.d(TAG, "JS->SetVolReducer mode=" + mode);
+            // JS settings UI runs on the WebView thread; hop to UI before mutating ExoPlayer state.
+            runOnUiThread(() -> streamAdVolume.setMode(mode));
         }
 
         @JavascriptInterface
@@ -3630,32 +2769,11 @@ public class PlayerActivity extends Activity {
 
                             ReUsePlayer(PlayerObjPosition);
                         } else {
-                            // Reset VolReducer state for target position before creating new MediaSource
-                            // This ensures clean state when replacing an existing player
-                            resetVolReducer(PlayerObjPosition);
-                            
-                            // Remove old MediaSource mapping if it exists
-                            if (PlayerObj[PlayerObjPosition].mediaSources != null) {
-                                mediaSourceToPosition.remove(PlayerObj[PlayerObjPosition].mediaSources);
-                            }
-                            
                             if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
-                            PlayerObj[PlayerObjPosition].mediaSources = Tools.buildMediaSource(
-                                Uri.parse(uri),
-                                mWebViewContext,
-                                Type,
-                                getLowLatency(Type),
-                                speedAdjustment,
-                                mainPlaylistString,
-                                userAgent,
-                                volReducerCallback,
-                                PlayerObjPosition
+                            PlayerObj[PlayerObjPosition].mediaSources = buildAdAwareMediaSource(
+                                PlayerObjPosition, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString
                             );
-                            // Register MediaSource with its position for callback routing
-                            if (PlayerObj[PlayerObjPosition].mediaSources != null) {
-                                mediaSourceToPosition.put(PlayerObj[PlayerObjPosition].mediaSources, PlayerObjPosition);
-                            }
 
                             SetupPlayer(PlayerObjPosition);
                         }
@@ -3689,21 +2807,9 @@ public class PlayerActivity extends Activity {
                         position
                     );
 
-                    PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                        Uri.parse(uri),
-                        mWebViewContext,
-                        Type,
-                        getLowLatency(Type),
-                        speedAdjustment,
-                        mainPlaylistString,
-                        userAgent,
-                        volReducerCallback,
-                        position
+                    PlayerObj[position].mediaSources = buildAdAwareMediaSource(
+                        position, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString
                     );
-                    // Register MediaSource with its position for callback routing
-                    if (PlayerObj[position].mediaSources != null) {
-                        mediaSourceToPosition.put(PlayerObj[position].mediaSources, position);
-                    }
 
                     SetupPlayer(position);
 
@@ -4009,25 +3115,7 @@ public class PlayerActivity extends Activity {
 
                 PreviewPlayerPlaylist = mainPlaylistString;
                 int Type = isVod ? 2 : 1;
-                // Don't clear old mappings here - we need them to route old callbacks correctly
-                // Old MediaSources that were moved will be mapped to their new positions
-                // New MediaSource will be mapped to 4, so new callbacks will correctly use 4
-                
-                PlayerObj[4].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    Type,
-                    getLowLatency(Type),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent,
-                    volReducerCallback,
-                    4
-                );
-                // Register MediaSource with its position for callback routing
-                if (PlayerObj[4].mediaSources != null) {
-                    mediaSourceToPosition.put(PlayerObj[4].mediaSources, 4);
-                }
+                PlayerObj[4].mediaSources = buildAdAwareMediaSource(4, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
 
                 Set_PlayerObj(
                     false,
@@ -4066,17 +3154,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartSidePanelPlayer(String uri, String mainPlaylistString) {
             runOnUiThread(() -> {
-                PlayerObj[0].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    1,
-                    getLowLatency(1),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent,
-                    volReducerCallback,
-                    0
-                );
+                PlayerObj[0].mediaSources = buildAdAwareMediaSource(0, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel);
@@ -4100,17 +3178,7 @@ public class PlayerActivity extends Activity {
             boolean bigger
         ) {
             runOnUiThread(() -> {
-                PlayerObj[0].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    Type,
-                    getLowLatency(Type),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent,
-                    volReducerCallback,
-                    0
-                );
+                PlayerObj[0].mediaSources = buildAdAwareMediaSource(0, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
 
                 PlayerViewScreensLayout = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
@@ -4521,17 +3589,7 @@ public class PlayerActivity extends Activity {
 
                 Set_PlayerObj(false, 1, 0, 1, position);
 
-                PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    1,
-                    getLowLatency(1),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent,
-                    volReducerCallback,
-                    position
-                );
+                PlayerObj[position].mediaSources = buildAdAwareMediaSource(position, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
 
                 SetupPlayer(position);
 
@@ -4649,12 +3707,6 @@ public class PlayerActivity extends Activity {
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
             PlayerObj[position].IsPlaying = isPlaying;
-            // Stop position checking when paused, resume when playing
-            if (isPlaying && volReducerPlaylists[position] != null && !volReducerPlaylists[position].isEmpty()) {
-                startVolReducerPositionChecker(position);
-            } else {
-                stopVolReducerPositionChecker(position);
-            }
         }
 
         @Override
@@ -4667,7 +3719,6 @@ public class PlayerActivity extends Activity {
 
             if (playbackState == Player.STATE_ENDED) {
                 PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
-                stopVolReducerPositionChecker(position);
                 PlayerObj[position].player.setPlayWhenReady(false);
 
                 PlayerEventListenerClear(position, 0, 0); //player_Ended
@@ -4686,23 +3737,6 @@ public class PlayerActivity extends Activity {
                     );
             } else if (playbackState == Player.STATE_READY) {
                 PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
-                // Resume volume reducer position checking when player is ready
-                // This ensures we check the position immediately when playback becomes ready,
-                // even if the player isn't playing yet (e.g., during buffering)
-                if (volReducerPlaylists[position] != null && !volReducerPlaylists[position].isEmpty()) {
-                    startVolReducerPositionChecker(position);
-                } else {
-                    // Even if no playlists yet, check position to ensure volume is correct
-                    // This handles the case where volume was reduced from a previous stream
-                    // and we need to restore it when starting a new stream
-                    if (isVolReducerActive[position]) {
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "Player " + position + " ready but no playlists - checking if volume should be restored");
-                        }
-                        // Check position immediately to restore volume if needed
-                        checkVolReducerByPosition(position);
-                    }
-                }
 
                 if (position < 4) {
                     //Main players
@@ -4755,20 +3789,15 @@ public class PlayerActivity extends Activity {
     }
 
     private class AnalyticsEventListener implements AnalyticsListener {
-        private int playerPosition = -1;
-
-        public void setPlayerPosition(int position) {
-            this.playerPosition = position;
-        }
 
         @Override
-        public final void onDroppedVideoFrames(@NonNull AnalyticsListener.EventTime eventTime, int count, long elapsedMs) {
+        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
             droppedFrames += count;
             DroppedFramesTotal += count;
         }
 
         @Override
-        public void onBandwidthEstimate(@NonNull AnalyticsListener.EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
+        public void onBandwidthEstimate(@NonNull EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
             conSpeed = (float) bitrateEstimate / 1000000;
             if (conSpeed > 0) {
                 SpeedCounter++;
@@ -4781,92 +3810,5 @@ public class PlayerActivity extends Activity {
                 NetActivityAVG += netActivity;
             }
         }
-
-        @Override
-        public void onLoadStarted(@NonNull AnalyticsListener.EventTime eventTime, @NonNull LoadEventInfo loadEventInfo, @NonNull MediaLoadData mediaLoadData, int retryCount) {
-            if (playerPosition < 0 || playerPosition >= PlayerAccountPlus) return;
-            
-            // Playlist parsing is handled in DefaultHttpDataSource when it processes the mainPlaylist
-            // No need to fetch/parse playlists here - the callback will be triggered from DefaultHttpDataSource
-            if (mediaLoadData.dataType == 4) {
-                // This is a playlist load - just log it for debugging, parsing happens in DefaultHttpDataSource
-                if (BuildConfig.DEBUG) {
-                    String playlistUri = loadEventInfo.uri != null ? loadEventInfo.uri.toString() : null;
-                    Log.d(TAG, "onLoadStarted: playlist load detected for player " + playerPosition + 
-                          (playlistUri != null ? ", URI: " + playlistUri : "") +
-                          " (parsing handled by DefaultHttpDataSource)");
-                }
-                return;
-            }
-            
-            // Only process media segments (dataType:1) for volume reducer
-            if (mediaLoadData.dataType != 1) {
-                return;
-            }
-            
-            if (volReducerPlaylists[playerPosition] == null || volReducerPlaylists[playerPosition].isEmpty()) {
-                if (BuildConfig.DEBUG) {
-                    Log.w(TAG, "onLoadStarted: player " + playerPosition + " - no playlist available for volume reducer" +
-                          " (volReducerPlaylists[" + playerPosition + "] is " + 
-                          (volReducerPlaylists[playerPosition] == null ? "null" : "empty") + 
-                          ", callback is " + (volReducerCallback != null ? "set" : "null") + ")");
-                }
-                return;
-            }
-
-            // Check if the loaded URI is a segment requiring volume reduction
-            // Check all playlists to find the segment
-            String uri = loadEventInfo.uri != null ? loadEventInfo.uri.toString() : null;
-            if (uri != null) {
-                boolean shouldReduceVolume = false;
-                String[] segmentInfo = new String[]{"", ""};
-                
-                // Check all playlists to find the segment
-                for (PlaylistWithTimestamp playlistWithTimestamp : volReducerPlaylists[playerPosition]) {
-                    if (TwitchHLSPlaylistParser.isSegmentAd(playlistWithTimestamp.playlist, uri)) {
-                        shouldReduceVolume = true;
-                    }
-                    // Get segment info from first playlist that contains it
-                    if (segmentInfo[0].isEmpty()) {
-                        segmentInfo = getSegmentInfo(playlistWithTimestamp.playlist, uri);
-                    }
-                }
-                
-                if (BuildConfig.DEBUG) {
-                    String segmentInfoStr = segmentInfo[0];
-                    String extXInfo = segmentInfo[1];
-                    
-                    // Get MediaLoadData info
-                    String dataTypeStr = "dataType:" + mediaLoadData.dataType;
-                    String trackFormatInfo = "";
-                    if (mediaLoadData.trackFormat != null) {
-                        Format format = mediaLoadData.trackFormat;
-                        trackFormatInfo = String.format(", format: %dx%d@%.0f", 
-                            format.width, format.height, format.frameRate);
-                    }
-                    
-                    Log.d(TAG, "onLoadStarted: player " + playerPosition + 
-                          (segmentInfoStr.isEmpty() ? "" : " - " + segmentInfoStr) +
-                          ", VolReducer: shouldReduceVolume: " + shouldReduceVolume + 
-                          ", VolReducer: currentlyReducingVolume: " + isVolReducerActive[playerPosition] +
-                          ", retryCount: " + retryCount +
-                          ", " + dataTypeStr +
-                          trackFormatInfo +
-                          (extXInfo.isEmpty() ? "" : ", " + extXInfo));
-                }
-                
-                // Trigger immediate volume reducer check when a segment loads
-                // This ensures we detect ad/non-ad transitions as soon as segments are loaded
-                // The position-based check will also run, but this gives us immediate feedback
-                if (volReducerHandlers[playerPosition] != null) {
-                    volReducerHandlers[playerPosition].post(() -> {
-                        if (PlayerObj[playerPosition].player != null && PlayerObj[playerPosition].player.isPlaying()) {
-                            checkVolReducerByPosition(playerPosition);
-                        }
-                    });
-                }
-            }
-        }
     }
 }
-

@@ -57,7 +57,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.NoRouteToHostException;
 import java.net.URL;
-import com.fgl27.twitch.BuildConfig;
+import com.fgl27.twitch.StreamAdHLSPlaylistParser;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,8 +100,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
         private boolean keepPostFor302Redirects;
         private Uri uri;
         private byte[] mainPlaylist;
-        private com.fgl27.twitch.VolReducerCallback adCallback;
-        private int playerPosition;
+        @Nullable private StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener;
+        private int adSessionId;
 
         /** Creates an instance. */
         public Factory() {
@@ -250,9 +252,15 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
             return this;
         }
 
-        public Factory setAdDetectionCallback(com.fgl27.twitch.VolReducerCallback adCallback, int playerPosition) {
-            this.adCallback = adCallback;
-            this.playerPosition = playerPosition;
+        /**
+         * Forward parsed Twitch media playlists (mainPlaylist + live network refreshes) to the
+         * volume reducer. {@code sessionId} is a stable id minted per MediaSource so listener state
+         * survives moving the source between player slots in multi-stream / preview swaps.
+         */
+        @CanIgnoreReturnValue
+        public Factory setAdPlaylistListener(@Nullable StreamAdHLSPlaylistParser.PlaylistListener listener, int sessionId) {
+            this.adPlaylistListener = listener;
+            this.adSessionId = sessionId;
             return this;
         }
 
@@ -270,8 +278,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
                 keepPostFor302Redirects,
                 mainPlaylist,
                 uri,
-                adCallback,
-                playerPosition
+                adPlaylistListener,
+                adSessionId
             );
             if (transferListener != null) {
                 dataSource.addTransferListener(transferListener);
@@ -330,11 +338,36 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     private boolean isPlaylist;
     private int readPosition;
     private int bytesRemaining;
-    private final com.fgl27.twitch.VolReducerCallback adCallback;
-    private final int playerPosition;
-    private boolean playlistParsed = false; // Track if we've already parsed and notified callback
-    private byte[] playlistResponseBuffer = null; // Buffer for playlist response content (when intercepting media playlists)
-    private int playlistBufferPosition = 0; // Current read position in playlist buffer
+
+    /*
+     * SmartTwitchTV — Twitch HLS ad detection plumbing.
+     *
+     * ExoPlayer reads media playlists through this DataSource. To label ad segments before the
+     * chunks themselves load, we forward parsed playlist text to {@link StreamAdHLSPlaylistParser}
+     * and notify the {@link StreamAdHLSPlaylistParser.PlaylistListener} (i.e. the volume reducer):
+     *
+     *   - mainPlaylist branch (isPlaylist == true): the full playlist body was supplied up-front
+     *     via setMainPlaylistBytes; we parse it once on first open() and serve the same bytes to
+     *     ExoPlayer.
+     *   - HTTP branch (live playlist refresh, isPlaylist == false): we buffer the response body
+     *     in playlistResponseBuffer (bounded to 1 MiB), parse it, then serve those exact bytes
+     *     back to ExoPlayer from the buffer instead of the live socket.
+     *
+     * adSessionId is stable per MediaSource lifetime, so listener state stays correctly bound to
+     * a stream even when PlayerActivity moves the source between player slots.
+     *
+     * The listener is invoked on this DataSource's calling thread (not the UI thread), so the
+     * listener implementation must hop to the UI thread before touching ExoPlayer.
+     */
+    @Nullable private final StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener;
+    private final int adSessionId;
+    private boolean adPlaylistParsedThisOpen;
+    @Nullable private byte[] playlistResponseBuffer;
+    private int playlistBufferPosition;
+
+    /** Hard cap on the playlist body we will buffer for parsing — Twitch playlists are tiny. */
+    private static final int MAX_PLAYLIST_INTERCEPT_BYTES = 1024 * 1024;
+    private static final int PLAYLIST_INTERCEPT_CHUNK = 8192;
 
     private DefaultHttpDataSource(
         @Nullable String userAgent,
@@ -347,8 +380,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
         boolean keepPostFor302Redirects,
         byte[] mainPlaylist,
         Uri uri,
-        @Nullable com.fgl27.twitch.VolReducerCallback adCallback,
-        int playerPosition
+        @Nullable StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener,
+        int adSessionId
     ) {
         super(/* isNetwork= */true);
         this.userAgent = userAgent;
@@ -365,8 +398,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
         this.keepPostFor302Redirects = keepPostFor302Redirects;
         this.mainPlaylist = mainPlaylist;
         this.uri = uri;
-        this.adCallback = adCallback;
-        this.playerPosition = playerPosition;
+        this.adPlaylistListener = adPlaylistListener;
+        this.adSessionId = adSessionId;
     }
 
     @UnstableApi
@@ -445,21 +478,14 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
             if (dataSpec.length != C.LENGTH_UNSET) {
                 bytesRemaining = (int) min(bytesRemaining, dataSpec.length);
             }
-            
-            // Parse playlist for volume reducer on first read and pass directly to callback
-            // The callback will store it in PlayerActivity for position-based checking
-            if (!playlistParsed && adCallback != null && dataSpec.position == 0) {
-                try {
-                    String playlistContent = new String(mainPlaylist, java.nio.charset.StandardCharsets.UTF_8);
-                    String playlistUriForCallback = uri != null ? uri.toString() : "";
-                    parseAndNotifyPlaylist(playlistContent, playlistUriForCallback, mainPlaylist.length, "mainPlaylist");
-                } catch (Exception e) {
-                    // Ignore parsing errors, volume reducer is optional
-                    Log.w(TAG, "Failed to parse playlist for volume reducer", e);
-                }
-                playlistParsed = true;
+
+            // Parse the bundled mainPlaylist on first open so the volume reducer has data
+            // before any media segment loads.
+            if (!adPlaylistParsedThisOpen && dataSpec.position == 0) {
+                notifyAdPlaylistListener(mainPlaylist, uri == null ? "" : uri.toString());
+                adPlaylistParsedThisOpen = true;
             }
-            
+
             opened = true;
             transferStarted(dataSpec);
             return dataSpec.length != C.LENGTH_UNSET ? dataSpec.length : bytesRemaining;
@@ -509,26 +535,13 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
                 throw new InvalidContentTypeException(contentType, dataSpec);
             }
 
-            // Check if this is a playlist request that we should intercept for parsing
-            // We want to intercept and parse media playlists to detect ad segments
+            // Intercept Twitch live media playlist refreshes so we can parse them for ads.
+            // We only intercept whole-body fetches at offset 0 to keep ranged reads working untouched.
             String requestUri = dataSpec.uri.toString();
-            boolean isPlaylistRequest = requestUri.endsWith(".m3u8") || 
-                                       (contentType != null && (contentType.contains("mpegurl") || contentType.contains("m3u8")));
-            
-            if (BuildConfig.DEBUG && isPlaylistRequest) {
-                Log.d(TAG, "Playlist request detected in else branch for player " + playerPosition + 
-                      ", URI: " + (requestUri.length() > 100 ? requestUri.substring(0, 100) + "..." : requestUri) +
-                      ", contentType: " + contentType +
-                      ", position: " + dataSpec.position +
-                      ", adCallback: " + (adCallback != null) +
-                      ", playlistParsed: " + playlistParsed);
-            }
-            
-            // Intercept playlist requests to parse for ad detection
-            // Note: playlistParsed flag is per-DataSource instance, so each new instance can intercept
-            // Only intercept if this is a full read (position == 0) to avoid partial reads
-            // We allow intercepting even if playlistParsed is true, as this might be a new playlist update
-            boolean shouldInterceptPlaylist = isPlaylistRequest && adCallback != null && dataSpec.position == 0;
+            boolean shouldInterceptPlaylist = adPlaylistListener != null
+                && dataSpec.position == 0
+                && (requestUri.endsWith(".m3u8")
+                    || (contentType != null && (contentType.contains("mpegurl") || contentType.contains("m3u8"))));
 
             // If we requested a range starting from a non-zero position and received a 200 rather than a
             // 206, then the server does not support partial requests. We'll need to manually skip to the
@@ -564,74 +577,27 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
                 throw new HttpDataSourceException(e, dataSpec, PlaybackException.ERROR_CODE_IO_UNSPECIFIED, HttpDataSourceException.TYPE_OPEN);
             }
 
-            // If this is a media playlist request, buffer the content for parsing
-            // Note: This only runs when isPlaylist is false (not using mainPlaylist)
-            
+            // When intercepting, drain the response into playlistResponseBuffer, parse it for ad
+            // markers, then have read() serve those exact bytes back to ExoPlayer. If anything
+            // goes wrong we leave playlistResponseBuffer null and fall back to the live socket.
             if (shouldInterceptPlaylist) {
-                // Handle both known length and unknown length (C.LENGTH_UNSET) cases
-                // For unknown length, we'll read in chunks up to 1MB
-                int maxBufferSize = 1024 * 1024; // 1MB max
-                int bufferSize;
-                boolean readUntilEOF = false;
-                
-                if (bytesToRead == C.LENGTH_UNSET) {
-                    // Unknown length - use a reasonable buffer size and read until EOF
-                    bufferSize = 64 * 1024; // Start with 64KB, will grow if needed
-                    readUntilEOF = true;
-                } else if (bytesToRead > 0 && bytesToRead < maxBufferSize) {
-                    bufferSize = (int) bytesToRead;
-                } else {
-                    bufferSize = 0; // Skip
-                }
-                
-                if (bufferSize > 0) {
-                    // Only buffer playlists up to 1MB to avoid memory issues
-                    try {
-                        java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream(bufferSize);
-                        byte[] tempBuffer = new byte[8192]; // 8KB read chunks
-                        int totalRead = 0;
-                        
-                        while (totalRead < maxBufferSize) {
-                            int bytesToReadThisChunk = Math.min(tempBuffer.length, bufferSize - totalRead);
-                            if (readUntilEOF) {
-                                bytesToReadThisChunk = tempBuffer.length;
-                            }
-                            int read = inputStream.read(tempBuffer, 0, bytesToReadThisChunk);
-                            if (read == -1) break;
-                            buffer.write(tempBuffer, 0, read);
-                            totalRead += read;
-                            if (!readUntilEOF && totalRead >= bufferSize) break;
-                        }
-                        
-                        playlistResponseBuffer = buffer.toByteArray();
-                        int actualSize = playlistResponseBuffer.length;
-                        
-                        // Parse the buffered playlist content
-                        String playlistContent = new String(playlistResponseBuffer, 0, actualSize, java.nio.charset.StandardCharsets.UTF_8);
-                        
-                        // Check if it's a media playlist (contains EXTINF) not a master playlist
-                        if (playlistContent.contains("#EXTINF:")) {
-                            parseAndNotifyPlaylist(playlistContent, requestUri, actualSize, "intercepted");
-                            playlistParsed = true;
-                        }
-                        
-                        // We've buffered the playlist, so we'll serve it from the buffer
-                        // No need to reset the stream - we'll read from playlistResponseBuffer instead
-                        playlistBufferPosition = 0;
-                        // Close the original stream since we're using the buffer
-                        inputStream.close();
-                        inputStream = null;
-                    } catch (Exception e) {
-                        // If buffering/parsing fails, continue normally - volume reducer is optional
-                        playlistResponseBuffer = null;
+                try {
+                    playlistResponseBuffer = drainStreamForPlaylist(inputStream, bytesToRead);
+                    inputStream.close();
+                    inputStream = null;
+                    playlistBufferPosition = 0;
+                    if (containsMediaPlaylistMarker(playlistResponseBuffer)) {
+                        notifyAdPlaylistListener(playlistResponseBuffer, requestUri);
                     }
+                } catch (Exception ignored) {
+                    // Volume reducer is optional — fall through and read from the network instead.
+                    playlistResponseBuffer = null;
                 }
             }
 
             opened = true;
             transferStarted(dataSpec);
 
-            // Only skip if we're not using a buffered playlist response
             if (playlistResponseBuffer == null) {
                 try {
                     skipFully(bytesToSkip, dataSpec);
@@ -643,11 +609,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
                     }
                     throw new HttpDataSourceException(e, dataSpec, PlaybackException.ERROR_CODE_IO_UNSPECIFIED, HttpDataSourceException.TYPE_OPEN);
                 }
-            } else {
-                // For buffered playlist, adjust buffer position if needed
-                if (bytesToSkip > 0 && bytesToSkip < playlistResponseBuffer.length) {
-                    playlistBufferPosition = (int) bytesToSkip;
-                }
+            } else if (bytesToSkip > 0 && bytesToSkip < playlistResponseBuffer.length) {
+                playlistBufferPosition = (int) bytesToSkip;
             }
 
             return bytesToRead;
@@ -671,20 +634,15 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
             bytesTransferred(length);
             return length;
         } else if (playlistResponseBuffer != null) {
-            // Serve data from buffered playlist response
-            if (length == 0) {
-                return 0;
-            }
-            if (playlistBufferPosition >= playlistResponseBuffer.length) {
-                return C.RESULT_END_OF_INPUT;
-            }
-            
-            int bytesToRead = min(length, playlistResponseBuffer.length - playlistBufferPosition);
-            System.arraycopy(playlistResponseBuffer, playlistBufferPosition, buffer, offset, bytesToRead);
-            playlistBufferPosition += bytesToRead;
-            bytesRead += bytesToRead;
-            bytesTransferred(bytesToRead);
-            return bytesToRead;
+            // Serve the intercepted playlist body to ExoPlayer.
+            if (length == 0) return 0;
+            if (playlistBufferPosition >= playlistResponseBuffer.length) return C.RESULT_END_OF_INPUT;
+            int n = min(length, playlistResponseBuffer.length - playlistBufferPosition);
+            System.arraycopy(playlistResponseBuffer, playlistBufferPosition, buffer, offset, n);
+            playlistBufferPosition += n;
+            bytesRead += n;
+            bytesTransferred(n);
+            return n;
         } else {
             try {
                 return readInternal(buffer, offset, length);
@@ -698,6 +656,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     @Override
     public void close() throws HttpDataSourceException {
         if (isPlaylist) {
+            // Re-arm the mainPlaylist parse for the next open() in this DataSource.
+            adPlaylistParsedThisOpen = false;
             if (opened) {
                 opened = false;
                 transferEnded();
@@ -720,9 +680,10 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
                 }
             } finally {
                 inputStream = null;
-                playlistResponseBuffer = null; // Clear buffered playlist on close
+                // Drop the intercepted body and re-arm parsing for the next open().
+                playlistResponseBuffer = null;
                 playlistBufferPosition = 0;
-                playlistParsed = false; // Reset to allow parsing updated playlists on next open()
+                adPlaylistParsedThisOpen = false;
                 closeConnectionQuietly();
                 if (opened) {
                     opened = false;
@@ -1074,25 +1035,53 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     }
 
     /**
-     * Parse playlist content and notify callback if parsing succeeds
-     * @param playlistContent The playlist content as a string
-     * @param playlistUri The URI of the playlist (for identifying duplicates)
-     * @param contentLength The length of the content in bytes (for logging)
-     * @param source Description of where the playlist came from (for logging)
+     * Parses M3U8 text and forwards the result to the volume reducer. Called from open() on this
+     * DataSource's thread (not UI). Listener implementations must hop to the UI thread before
+     * touching ExoPlayer.
      */
-    private void parseAndNotifyPlaylist(String playlistContent, String playlistUri, int contentLength, String source) {
-        if (adCallback == null) {
-            return;
+    private void notifyAdPlaylistListener(byte[] body, String playlistUri) {
+        if (adPlaylistListener == null || body == null || body.length == 0) return;
+        try {
+            String content = new String(body, StandardCharsets.UTF_8);
+            adPlaylistListener.onPlaylistParsed(adSessionId, StreamAdHLSPlaylistParser.parsePlaylist(content), playlistUri);
+        } catch (Exception ignored) {
+            // Volume reducer is best-effort; never break playback if parsing throws.
         }
+    }
 
-        // Parse and pass directly to callback - no need to cache here
-        com.fgl27.twitch.TwitchHLSPlaylistParser.ParsedPlaylist parsed = 
-            com.fgl27.twitch.TwitchHLSPlaylistParser.parsePlaylist(playlistContent);
-        
-        if (parsed != null) {
-            // Callback will handle thread switching internally
-            adCallback.onPlaylistParsed(playerPosition, parsed, playlistUri);
+    /** Reads up to {@link #MAX_PLAYLIST_INTERCEPT_BYTES} into a byte array; honors a known length when present. */
+    private static byte[] drainStreamForPlaylist(InputStream in, long bytesToRead) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream(
+            bytesToRead > 0 && bytesToRead < MAX_PLAYLIST_INTERCEPT_BYTES ? (int) bytesToRead : PLAYLIST_INTERCEPT_CHUNK
+        );
+        byte[] tmp = new byte[PLAYLIST_INTERCEPT_CHUNK];
+        int total = 0;
+        int max = bytesToRead > 0 && bytesToRead < MAX_PLAYLIST_INTERCEPT_BYTES ? (int) bytesToRead : MAX_PLAYLIST_INTERCEPT_BYTES;
+        while (total < max) {
+            int read = in.read(tmp, 0, Math.min(tmp.length, max - total));
+            if (read == -1) break;
+            out.write(tmp, 0, read);
+            total += read;
         }
+        return out.toByteArray();
+    }
+
+    /**
+     * Cheap check: a Twitch master playlist has no EXTINF lines. We only want to forward media
+     * playlists (the ones with ad segments) to the volume reducer.
+     */
+    private static boolean containsMediaPlaylistMarker(byte[] body) {
+        if (body == null || body.length == 0) return false;
+        // ASCII-safe scan for "#EXTINF:".
+        byte[] needle = { '#', 'E', 'X', 'T', 'I', 'N', 'F', ':' };
+        outer:
+        for (int i = 0; i + needle.length <= body.length; i++) {
+            for (int j = 0; j < needle.length; j++) {
+                if (body[i + j] != needle[j]) continue outer;
+            }
+            return true;
+        }
+        return false;
     }
 
 

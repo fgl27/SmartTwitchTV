@@ -487,17 +487,17 @@ public final class Tools {
         boolean speedAdjustment,
         String mainPlaylist,
         String userAgent,
-        VolReducerCallback adCallback,
-        int playerPosition
+        StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener,
+        int adSessionId
     ) {
         if (Type == 1) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, adCallback, playerPosition))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, adPlaylistListener, adSessionId))
                 .setAllowChunklessPreparation(true)
                 .setLowLatency(LowLatency)
                 .setspeedAdjustment(speedAdjustment)
                 .createMediaSource(MediaItemBuilder(uri));
         } else if (Type == 2) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, adCallback, playerPosition))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, adPlaylistListener, adSessionId))
                 .setAllowChunklessPreparation(true)
                 .setLowLatency(LowLatency) //For VODs that the live has not yet ended and the user has not yet watched
                 .createMediaSource(MediaItemBuilder(uri));
@@ -506,7 +506,13 @@ public final class Tools {
         );
     }
 
-    private static DefaultHttpDataSource.Factory getDefaultDataSourceFactory(String mainPlaylist, Uri uri, String userAgent, VolReducerCallback adCallback, int playerPosition) {
+    private static DefaultHttpDataSource.Factory getDefaultDataSourceFactory(
+        String mainPlaylist,
+        Uri uri,
+        String userAgent,
+        StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener,
+        int adSessionId
+    ) {
         if (mainPlaylist == null) mainPlaylist = ""; //technically should not happen but check to prevent exception when converting to byte[]
 
         return new DefaultHttpDataSource.Factory()
@@ -516,7 +522,9 @@ public final class Tools {
             .setAllowCrossProtocolRedirects(false)
             .setMainPlaylistBytes(mainPlaylist.getBytes())
             .setUri(uri)
-            .setAdDetectionCallback(adCallback, playerPosition);
+            // Twitch HLS only: forward parsed media playlists to the volume reducer so it can flag ad segments.
+            // adSessionId is a stable id minted per MediaSource so listener state survives moving the source between player slots.
+            .setAdPlaylistListener(adPlaylistListener, adSessionId);
     }
 
     static boolean deviceIsTV(@NonNull Context context) {
