@@ -73,7 +73,7 @@ import androidx.media3.extractor.text.SubtitleParser;
 import androidx.webkit.WebViewCompat;
 import com.fgl27.twitch.DataSource.DefaultHttpDataSource;
 import com.fgl27.twitch.notification.NotificationService;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.ByteArrayOutputStream;
@@ -486,16 +486,18 @@ public final class Tools {
         int LowLatency,
         boolean speedAdjustment,
         String mainPlaylist,
-        String userAgent
+        String userAgent,
+        VolReducerPlaylistParser.PlaylistListener playlistListener,
+        int playlistSessionId
     ) {
         if (Type == 1) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, playlistListener, playlistSessionId))
                 .setAllowChunklessPreparation(true)
                 .setLowLatency(LowLatency)
                 .setspeedAdjustment(speedAdjustment)
                 .createMediaSource(MediaItemBuilder(uri));
         } else if (Type == 2) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, playlistListener, playlistSessionId))
                 .setAllowChunklessPreparation(true)
                 .setLowLatency(LowLatency) //For VODs that the live has not yet ended and the user has not yet watched
                 .createMediaSource(MediaItemBuilder(uri));
@@ -504,7 +506,13 @@ public final class Tools {
         );
     }
 
-    private static DefaultHttpDataSource.Factory getDefaultDataSourceFactory(String mainPlaylist, Uri uri, String userAgent) {
+    private static DefaultHttpDataSource.Factory getDefaultDataSourceFactory(
+        String mainPlaylist,
+        Uri uri,
+        String userAgent,
+        VolReducerPlaylistParser.PlaylistListener playlistListener,
+        int playlistSessionId
+    ) {
         if (mainPlaylist == null) mainPlaylist = ""; //technically should not happen but check to prevent exception when converting to byte[]
 
         return new DefaultHttpDataSource.Factory()
@@ -513,7 +521,10 @@ public final class Tools {
             .setReadTimeoutMs(10000)
             .setAllowCrossProtocolRedirects(false)
             .setMainPlaylistBytes(mainPlaylist.getBytes())
-            .setUri(uri);
+            .setUri(uri)
+            // Twitch HLS only: forward parsed media playlists to the volume reducer so it can classify blocked segments.
+            // playlistSessionId is a stable id minted per MediaSource so listener state survives moving the source between player slots.
+            .setPlaylistListener(playlistListener, playlistSessionId);
     }
 
     static boolean deviceIsTV(@NonNull Context context) {
@@ -909,17 +920,17 @@ public final class Tools {
 
     public static void recordException(String TAG, String message, Throwable e) {
         try {
-            FirebaseCrashlytics.getInstance().log(TAG + " " + message);
+            //FirebaseCrashlytics.getInstance().log(TAG + " " + message);
 
             if (e != null) {
-                FirebaseCrashlytics.getInstance().recordException(e);
+                //FirebaseCrashlytics.getInstance().recordException(e);
                 Log.w(TAG, message, e);
             } else {
-                FirebaseCrashlytics.getInstance().recordException(new RuntimeException(TAG + " e " + message));
+                //FirebaseCrashlytics.getInstance().recordException(new RuntimeException(TAG + " e " + message));
                 Log.w(TAG, message);
             }
 
-            FirebaseCrashlytics.getInstance().sendUnsentReports();
+            //FirebaseCrashlytics.getInstance().sendUnsentReports();
         } catch (Exception ignore) { //Just in case prevent a crash sending a crash
         }
     }
