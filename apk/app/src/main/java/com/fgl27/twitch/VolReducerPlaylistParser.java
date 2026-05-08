@@ -33,12 +33,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Pure playlist + segment labeling for the Twitch HLS ad-volume feature.
+ * Pure playlist + segment labeling for the volume-reducer feature.
  *
- * <p>SmartTwitchTV can lower or mute audio while Twitch HLS segments are classified as ads. This
- * file is the parsing layer only: it turns raw M3U8 text into structured segments (URI, duration,
- * ad flag) and ad date ranges. It does not change ExoPlayer volume; {@link StreamAdVolumeHelper}
- * consumes the parsed data together with playback position to decide when to mute or restore.
+ * <p>SmartTwitchTV can lower or mute audio while certain Twitch HLS segments are classified as
+ * blocked. This file is the parsing layer only: it turns raw M3U8 text into structured segments
+ * (URI, duration, blocked flag) and blocked date ranges. It does not change ExoPlayer volume;
+ * {@link VolReducer} consumes the parsed data together with playback position to decide when to
+ * mute or restore.
  *
  * <p>Pipeline: ExoPlayer reads HLS through {@code DefaultHttpDataSource}. For Twitch playlists the
  * data source captures the media playlist body, calls {@link #parsePlaylist} here, then forwards
@@ -47,18 +48,19 @@ import java.util.regex.Pattern;
  * thread hop before touching ExoPlayer.
  *
  * <p>Detection heuristics align with streamlink's Twitch plugin (TwitchM3U8Parser in
- * twitch.py): EXT-X-DATERANGE (stitched-ad class names / id prefixes), EXTINF titles (e.g. Amazon),
+ * twitch.py): EXT-X-DATERANGE class names / id prefixes, EXTINF titles (e.g. Amazon),
  * EXT-X-DISCONTINUITY, EXT-X-TWITCH-LIVE-SEQUENCE and prefetch lines, and whether a segment time
- * falls inside an ad date range.
+ * falls inside a blocked date range.
  * Reference: https://github.com/streamlink/streamlink/blob/master/src/streamlink/plugins/twitch.py
  */
-public class StreamAdHLSPlaylistParser {
+public class VolReducerPlaylistParser {
 
-    private static final String TAG = "StreamAd";
+    // Same value as VolReducer.LOG_TAG — keep in sync so "adb logcat -s VolReducer" catches parser summaries.
+    private static final String TAG = "VolReducer";
     /**
      * Flip to {@code true} (locally — never commit) to log a one-line summary on every parsed
-     * playlist. Useful when an ad isn't being detected and you need to confirm whether the parser
-     * actually saw any EXT-X-DATERANGE / EXTINF ad markers in the body.
+     * playlist. Useful when a segment isn't being detected and you need to confirm whether the
+     * parser actually saw any blocked EXT-X-DATERANGE / EXTINF markers in the body.
      */
     private static final boolean LOG_VERBOSE = false;
 
@@ -68,13 +70,14 @@ public class StreamAdHLSPlaylistParser {
     private static final Pattern EXT_X_DISCONTINUITY = Pattern.compile("#EXT-X-DISCONTINUITY");
     private static final Pattern EXT_X_TWITCH_LIVE_SEQUENCE = Pattern.compile("#EXT-X-TWITCH-LIVE-SEQUENCE:(.+)");
 
-    // Ad detection patterns
-    private static final String DATERANGE_CLASSNAME_AD = "twitch-stitched-ad";
-    private static final String DATERANGE_ID_PREFIX_AD = "stitched-ad-";
+    // Twitch protocol literals used to classify segments — keep these strings exactly as Twitch
+    // emits them in HLS playlists. The Java symbol names are generic; only the literals match.
+    private static final String DATERANGE_CLASS_BLOCKED = "twitch-stitched-ad";
+    private static final String DATERANGE_ID_PREFIX_BLOCKED = "stitched-ad-";
     private static final String SEGMENT_TITLE_AMAZON = "Amazon";
 
     /**
-     * Represents a date range from EXT-X-DATERANGE tag
+     * Represents a date range from EXT-X-DATERANGE tag.
      */
     public static class DateRange {
         public final String classname;
@@ -93,13 +96,13 @@ public class StreamAdHLSPlaylistParser {
             this.relativeStartTime = relativeStartTime;
         }
 
-        public boolean isAd() {
-            return DATERANGE_CLASSNAME_AD.equals(classname) ||
-                   (id != null && id.startsWith(DATERANGE_ID_PREFIX_AD));
+        public boolean isBlocked() {
+            return DATERANGE_CLASS_BLOCKED.equals(classname) ||
+                   (id != null && id.startsWith(DATERANGE_ID_PREFIX_BLOCKED));
         }
 
         /**
-         * Check if a relative time (in seconds) falls within this daterange's window
+         * Check if a relative time (in seconds) falls within this daterange's window.
          */
         public boolean containsTime(double relativeTime) {
             double endTime = relativeStartTime + (duration / 1000.0);
@@ -108,37 +111,38 @@ public class StreamAdHLSPlaylistParser {
     }
 
     /**
-     * Represents an HLS segment
+     * Represents an HLS segment. {@code isBlocked} is set by {@link #isSegmentBlocked} during
+     * parsing; the consumer ({@link VolReducer}) uses it to decide when to reduce volume.
      */
     public static class Segment {
         public final String uri;
         public final double duration;
         public final String title;
-        public final boolean isAd;
+        public final boolean isBlocked;
         public final boolean isPrefetch;
         public final boolean hasDiscontinuity;
 
-        public Segment(String uri, double duration, String title, boolean isAd, boolean isPrefetch, boolean hasDiscontinuity) {
+        public Segment(String uri, double duration, String title, boolean isBlocked, boolean isPrefetch, boolean hasDiscontinuity) {
             this.uri = uri;
             this.duration = duration;
             this.title = title;
-            this.isAd = isAd;
+            this.isBlocked = isBlocked;
             this.isPrefetch = isPrefetch;
             this.hasDiscontinuity = hasDiscontinuity;
         }
     }
 
     /**
-     * Parsed playlist result
+     * Parsed playlist result.
      */
     public static class ParsedPlaylist {
         public final List<Segment> segments;
-        public final List<DateRange> adDateRanges;
+        public final List<DateRange> blockedDateRanges;
         public final boolean hasContent;
 
-        public ParsedPlaylist(List<Segment> segments, List<DateRange> adDateRanges, boolean hasContent) {
+        public ParsedPlaylist(List<Segment> segments, List<DateRange> blockedDateRanges, boolean hasContent) {
             this.segments = segments;
-            this.adDateRanges = adDateRanges;
+            this.blockedDateRanges = blockedDateRanges;
             this.hasContent = hasContent;
         }
     }
@@ -156,15 +160,16 @@ public class StreamAdHLSPlaylistParser {
     }
 
     /**
-     * Parses raw M3U8 text into segments and ad dateranges (same role as streamlink's TwitchM3U8Parser).
+     * Parses raw M3U8 text into segments and blocked dateranges (same role as streamlink's
+     * TwitchM3U8Parser).
      *
      * @param playlistContent full playlist body as returned by the server
-     * @return parsed segments, ad dateranges, and whether non-ad content was seen
+     * @return parsed segments, blocked dateranges, and whether non-blocked content was seen
      */
     @NonNull
     public static ParsedPlaylist parsePlaylist(@NonNull String playlistContent) {
         List<Segment> segments = new ArrayList<>();
-        List<DateRange> adDateRanges = new ArrayList<>();
+        List<DateRange> blockedDateRanges = new ArrayList<>();
         boolean hasContent = false;
         boolean discontinuity = false;
         double currentTime = 0.0;
@@ -175,13 +180,13 @@ public class StreamAdHLSPlaylistParser {
             String line = lines[i].trim();
             if (line.isEmpty()) continue;
 
-            // EXT-X-DATERANGE: a stitched-ad range tells us which timeline window is an ad.
+            // EXT-X-DATERANGE: a stitched range marks a timeline window that should be blocked.
             Matcher daterangeMatcher = EXT_X_DATERANGE.matcher(line);
             if (daterangeMatcher.matches()) {
                 Map<String, String> attrs = parseAttributes(daterangeMatcher.group(1));
                 String classname = attrs.get("CLASS");
                 String id = attrs.get("ID");
-                if (DATERANGE_CLASSNAME_AD.equals(classname) || (id != null && id.startsWith(DATERANGE_ID_PREFIX_AD))) {
+                if (DATERANGE_CLASS_BLOCKED.equals(classname) || (id != null && id.startsWith(DATERANGE_ID_PREFIX_BLOCKED))) {
                     long startMs = 0;
                     long durationMs = 0;
                     String startDateStr = attrs.get("START-DATE");
@@ -190,7 +195,7 @@ public class StreamAdHLSPlaylistParser {
                     if (durationStr != null) {
                         try { durationMs = (long) (Double.parseDouble(durationStr) * 1000); } catch (NumberFormatException ignored) {}
                     }
-                    adDateRanges.add(new DateRange(classname, id, startMs, durationMs, attrs, currentTime));
+                    blockedDateRanges.add(new DateRange(classname, id, startMs, durationMs, attrs, currentTime));
                 }
                 continue;
             }
@@ -202,13 +207,13 @@ public class StreamAdHLSPlaylistParser {
 
             // EXT-X-TWITCH-LIVE-SEQUENCE: a return-to-live marker; clear discontinuity if we were on real content.
             if (EXT_X_TWITCH_LIVE_SEQUENCE.matcher(line).matches()) {
-                if (!segments.isEmpty() && !segments.get(segments.size() - 1).isAd) {
+                if (!segments.isEmpty() && !segments.get(segments.size() - 1).isBlocked) {
                     discontinuity = false;
                 }
                 continue;
             }
 
-            // EXTINF + URI on next line: a real segment; classify as ad/content and advance the timeline.
+            // EXTINF + URI on next line: a real segment; classify it and advance the timeline.
             Matcher extinfMatcher = EXTINF.matcher(line);
             if (extinfMatcher.matches()) {
                 try {
@@ -217,9 +222,9 @@ public class StreamAdHLSPlaylistParser {
                     if (i + 1 < lines.length) {
                         String uri = lines[i + 1].trim();
                         if (!uri.isEmpty() && !uri.startsWith("#")) {
-                            boolean isAd = isSegmentAd(title, currentTime, adDateRanges);
-                            segments.add(new Segment(uri, duration, title, isAd, false, discontinuity));
-                            if (!isAd) {
+                            boolean isBlocked = isSegmentBlocked(title, currentTime, blockedDateRanges);
+                            segments.add(new Segment(uri, duration, title, isBlocked, false, discontinuity));
+                            if (!isBlocked) {
                                 hasContent = true;
                                 discontinuity = false;
                             }
@@ -244,20 +249,20 @@ public class StreamAdHLSPlaylistParser {
                     .mapToDouble(s -> s.duration)
                     .average()
                     .orElse(lastSegmentDuration);
-                boolean isAd = discontinuity || isSegmentAd(null, currentTime, adDateRanges);
-                segments.add(new Segment(uri, avgDuration, null, isAd, true, isAd != lastSegment.isAd));
+                boolean isBlocked = discontinuity || isSegmentBlocked(null, currentTime, blockedDateRanges);
+                segments.add(new Segment(uri, avgDuration, null, isBlocked, true, isBlocked != lastSegment.isBlocked));
                 currentTime += avgDuration;
             }
         }
 
-        ParsedPlaylist result = new ParsedPlaylist(segments, adDateRanges, hasContent);
+        ParsedPlaylist result = new ParsedPlaylist(segments, blockedDateRanges, hasContent);
         if (LOG_VERBOSE && BuildConfig.DEBUG) {
-            int adSegs = 0;
-            for (Segment s : segments) if (s.isAd) adSegs++;
+            int blockedSegs = 0;
+            for (Segment s : segments) if (s.isBlocked) blockedSegs++;
             Log.d(TAG, "parsePlaylist bytes=" + playlistContent.length()
                 + " segs=" + segments.size()
-                + " adSegs=" + adSegs
-                + " adRanges=" + adDateRanges.size()
+                + " blockedSegs=" + blockedSegs
+                + " blockedRanges=" + blockedDateRanges.size()
                 + " hasContent=" + hasContent);
         }
         return result;
@@ -265,13 +270,13 @@ public class StreamAdHLSPlaylistParser {
 
     /**
      * Streamlink-style segment classification: title heuristic ("Amazon" / "AD" / "ADVERT") OR
-     * the cumulative segment time falls inside a known ad daterange. Discontinuity alone is not
-     * enough — it can also fire at non-ad stream boundaries.
+     * the cumulative segment time falls inside a matched daterange. Discontinuity alone is not
+     * enough — it can also fire at non-blocked stream boundaries.
      */
-    private static boolean isSegmentAd(@Nullable String title, double currentTime, List<DateRange> adDateRanges) {
+    private static boolean isSegmentBlocked(@Nullable String title, double currentTime, List<DateRange> blockedDateRanges) {
         if (title != null && title.contains(SEGMENT_TITLE_AMAZON)) return true;
-        for (DateRange adRange : adDateRanges) {
-            if (adRange.containsTime(currentTime)) return true;
+        for (DateRange range : blockedDateRanges) {
+            if (range.containsTime(currentTime)) return true;
         }
         if (title != null) {
             String upper = title.toUpperCase(Locale.US);

@@ -627,7 +627,7 @@ function en_USLang() {
         'When enabled, and not using auto quality, the player will switch to auto quality and warn about it if the player is lagging. A Player lag is when the player is unable to play for a few seconds (the algorithm is more complex than just time), if you play something else it will go back to the original quality.';
     STR_VOLUME_REDUCER = 'Volume Reducer';
     STR_VOLUME_REDUCER_SUMMARY =
-        'Automatically reduce or mute volume during Twitch ad segments. None: no action, Half: reduce by 50%, Full: mute completely.';
+        'Automatically reduce or mute volume during certain playback segments. None: no action, Half: reduce by 50%, Full: mute completely.';
     STR_PLAYER_LAG = "Player is lagging, quality changed to 'Auto mode'";
     STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
     STR_TOO_ERRORS = 'or too many errors';

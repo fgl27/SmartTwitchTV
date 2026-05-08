@@ -487,17 +487,17 @@ public final class Tools {
         boolean speedAdjustment,
         String mainPlaylist,
         String userAgent,
-        StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener,
-        int adSessionId
+        VolReducerPlaylistParser.PlaylistListener playlistListener,
+        int playlistSessionId
     ) {
         if (Type == 1) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, adPlaylistListener, adSessionId))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, playlistListener, playlistSessionId))
                 .setAllowChunklessPreparation(true)
                 .setLowLatency(LowLatency)
                 .setspeedAdjustment(speedAdjustment)
                 .createMediaSource(MediaItemBuilder(uri));
         } else if (Type == 2) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, adPlaylistListener, adSessionId))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent, playlistListener, playlistSessionId))
                 .setAllowChunklessPreparation(true)
                 .setLowLatency(LowLatency) //For VODs that the live has not yet ended and the user has not yet watched
                 .createMediaSource(MediaItemBuilder(uri));
@@ -510,8 +510,8 @@ public final class Tools {
         String mainPlaylist,
         Uri uri,
         String userAgent,
-        StreamAdHLSPlaylistParser.PlaylistListener adPlaylistListener,
-        int adSessionId
+        VolReducerPlaylistParser.PlaylistListener playlistListener,
+        int playlistSessionId
     ) {
         if (mainPlaylist == null) mainPlaylist = ""; //technically should not happen but check to prevent exception when converting to byte[]
 
@@ -522,9 +522,9 @@ public final class Tools {
             .setAllowCrossProtocolRedirects(false)
             .setMainPlaylistBytes(mainPlaylist.getBytes())
             .setUri(uri)
-            // Twitch HLS only: forward parsed media playlists to the volume reducer so it can flag ad segments.
-            // adSessionId is a stable id minted per MediaSource so listener state survives moving the source between player slots.
-            .setAdPlaylistListener(adPlaylistListener, adSessionId);
+            // Twitch HLS only: forward parsed media playlists to the volume reducer so it can classify blocked segments.
+            // playlistSessionId is a stable id minted per MediaSource so listener state survives moving the source between player slots.
+            .setPlaylistListener(playlistListener, playlistSessionId);
     }
 
     static boolean deviceIsTV(@NonNull Context context) {

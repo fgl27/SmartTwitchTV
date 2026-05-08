@@ -27,8 +27,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.ExoPlayer;
-import com.fgl27.twitch.StreamAdHLSPlaylistParser.ParsedPlaylist;
-import com.fgl27.twitch.StreamAdHLSPlaylistParser.Segment;
+import com.fgl27.twitch.VolReducerPlaylistParser.ParsedPlaylist;
+import com.fgl27.twitch.VolReducerPlaylistParser.Segment;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,11 +37,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Drives ExoPlayer audio reduction during Twitch HLS ad segments.
+ * Drives ExoPlayer audio reduction during certain playback segments of a Twitch HLS stream.
  *
- * <p>{@link StreamAdHLSPlaylistParser} produces ad-flagged segment timelines from media playlists;
- * this helper consumes them and decides per player slot whether the current playback position sits
- * inside an ad window. When it does, {@link #adjustVolume} returns a reduced or muted gain that
+ * <p>{@link VolReducerPlaylistParser} produces blocked-segment timelines from media playlists; this
+ * helper consumes them and decides per player slot whether the current playback position sits
+ * inside a blocked window. When it does, {@link #adjustVolume} returns a reduced or muted gain that
  * {@link PlayerActivity#ApplyAudioAll} applies via ExoPlayer.
  *
  * <h3>Why session ids, not slot ids</h3>
@@ -59,12 +59,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  * State maps are concurrent, but ExoPlayer touches and Toasts hop to the main thread via the
  * shared {@link #handler}. The position checker also runs on the main thread.
  */
-public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.PlaylistListener {
+public final class VolReducer implements VolReducerPlaylistParser.PlaylistListener {
 
-    private static final String TAG = "StreamAd";
+    /** Use for logcat (e.g. {@code adb logcat -s VolReducer}). Shared with bridging logs in PlayerActivity. */
+    public static final String LOG_TAG = "VolReducer";
+    private static final String TAG = LOG_TAG;
     /**
      * Flip to {@code true} (locally — never commit) when chasing a parsing or polling bug. Logs
-     * every intercepted playlist and every position-vs-segment evaluation. Lifecycle and ad
+     * every intercepted playlist and every position-vs-segment evaluation. Lifecycle and segment
      * transitions are always logged in debug builds regardless of this flag.
      */
     private static final boolean LOG_VERBOSE = false;
@@ -74,9 +76,9 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
     public static final int MODE_HALF = 1;
     public static final int MODE_FULL = 2;
 
-    /** Delay before unmuting after a position leaves an ad window — avoids flicker on playlist refresh. */
+    /** Delay before unmuting after a position leaves a blocked segment — avoids flicker on playlist refresh. */
     private static final long DELAYED_UNMUTE_MS = 400L;
-    /** Poll interval for the segment-vs-position check while at least one slot is playing an ad-aware session. */
+    /** Poll interval for the segment-vs-position check while at least one slot has an active session. */
     private static final long POSITION_POLL_MS = 100L;
     /** A live playlist is "stale" once playback has moved this far past its end — drop it. */
     private static final double PLAYLIST_STALE_MARGIN_S = 30.0;
@@ -84,7 +86,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
     private static final int TOTAL_SLOTS = 5;
     /**
      * If playback is within this many milliseconds of the end of a content segment that is followed
-     * by an ad segment, mute slightly early to avoid a brief audio blast at the boundary.
+     * by a blocked segment, mute slightly early to avoid a brief audio blast at the boundary.
      */
     private static final long SEGMENT_BOUNDARY_PRE_MUTE_MS = 50L;
 
@@ -95,7 +97,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
         /** @return ExoPlayer for the slot, or null if released. */
         @Nullable ExoPlayer playerForSlot(int slot);
 
-        /** @return the ad sessionId for the slot, or 0 if no ad-aware session is bound there. */
+        /** @return the sessionId for the slot, or 0 if no session is bound there. */
         int sessionForSlot(int slot);
 
         /** Re-apply audio for every slot using {@link #adjustVolume}. */
@@ -138,7 +140,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
 
     private boolean pollScheduled;
 
-    public StreamAdVolumeHelper(@NonNull Context context, @NonNull Host host) {
+    public VolReducer(@NonNull Context context, @NonNull Host host) {
         // Hold the application context for Toast lifetime safety: this helper outlives a single
         // ExoPlayer setup but is bound to PlayerActivity, and Toasts that fire after Activity
         // teardown should still display cleanly without leaking the Activity.
@@ -175,7 +177,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
         if (newMode == MODE_NONE) {
             for (Session session : sessions.values()) session.reducerActive = false;
         } else {
-            // Re-arm the poll so the user sees ad detection apply on the next position check
+            // Re-arm the poll so the user sees segment detection apply on the next position check
             // rather than waiting for the next live playlist refresh.
             schedulePoll();
         }
@@ -185,7 +187,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
 
     /**
      * Returns the volume to actually apply for the given slot, given the user setting and whether
-     * the slot's session is currently inside an ad window. Called from {@code ApplyAudioAll}.
+     * the slot's session is currently inside a blocked segment. Called from {@code ApplyAudioAll}.
      */
     public float adjustVolume(int slot, float baseVolume) {
         if (mode == MODE_NONE) return baseVolume;
@@ -199,12 +201,12 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
     @Override
     public void onPlaylistParsed(int sessionId, @NonNull ParsedPlaylist parsedPlaylist, @NonNull String playlistUri) {
         if (LOG_VERBOSE && BuildConfig.DEBUG) {
-            int adCount = 0;
-            for (Segment seg : parsedPlaylist.segments) if (seg.isAd) adCount++;
+            int blockedCount = 0;
+            for (Segment seg : parsedPlaylist.segments) if (seg.isBlocked) blockedCount++;
             Log.d(TAG, "onPlaylistParsed session=" + sessionId
                 + " segs=" + parsedPlaylist.segments.size()
-                + " adSegs=" + adCount
-                + " adRanges=" + parsedPlaylist.adDateRanges.size()
+                + " blockedSegs=" + blockedCount
+                + " blockedRanges=" + parsedPlaylist.blockedDateRanges.size()
                 + " hasContent=" + parsedPlaylist.hasContent);
         }
         if (sessionId == 0 || parsedPlaylist.segments.isEmpty()) return;
@@ -235,7 +237,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
 
     // region Position checker
 
-    /** Schedules the periodic position-vs-ad-segment check on the main thread. */
+    /** Schedules the periodic position-vs-segment check on the main thread. */
     private void schedulePoll() {
         if (pollScheduled) return;
         pollScheduled = true;
@@ -264,38 +266,39 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
 
     private void evaluateSlot(int slot, ExoPlayer player, Session session) {
         long posMs = player.getCurrentPosition();
-        boolean inAd = isPositionInAd(session, posMs);
+        boolean inBlocked = isPositionInBlockedSegment(session, posMs);
         if (LOG_VERBOSE && BuildConfig.DEBUG) {
-            Log.d(TAG, "evaluateSlot slot=" + slot + " posMs=" + posMs + " inAd=" + inAd
+            Log.d(TAG, "evaluateSlot slot=" + slot + " posMs=" + posMs + " inBlocked=" + inBlocked
                 + " reducerActive=" + session.reducerActive
                 + " pendingUnmute=" + (session.pendingUnmute != null)
                 + " playlists=" + session.playlists.size());
         }
 
-        if (inAd && !session.reducerActive) {
+        if (inBlocked && !session.reducerActive) {
             session.reducerActive = true;
             host.applyAudioAll();
             showToast(slot, mode == MODE_FULL ? R.string.volume_muted : R.string.volume_reduced);
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, "ad ENTER slot=" + slot + " mode=" + modeName(mode) + " posMs=" + posMs
+                Log.d(TAG, "segment ENTER slot=" + slot + " mode=" + modeName(mode) + " posMs=" + posMs
                     + " playlists=" + session.playlists.size());
             }
-        } else if (!inAd && session.reducerActive && session.pendingUnmute == null) {
-            // Confirm we're still out of an ad after a short delay; live playlists can refresh every
-            // few seconds and we don't want to flap. The callback re-checks position before unmuting.
+        } else if (!inBlocked && session.reducerActive && session.pendingUnmute == null) {
+            // Confirm we're still out of a blocked segment after a short delay; live playlists can
+            // refresh every few seconds and we don't want to flap. The callback re-checks position
+            // before unmuting.
             session.pendingUnmute = () -> {
                 session.pendingUnmute = null;
                 ExoPlayer p = host.playerForSlot(slot);
                 if (p == null || !session.reducerActive) return;
                 long unmutePosMs = p.getCurrentPosition();
-                if (!isPositionInAd(session, unmutePosMs)) {
+                if (!isPositionInBlockedSegment(session, unmutePosMs)) {
                     session.reducerActive = false;
                     host.applyAudioAll();
                     showToast(slot, R.string.volume_unmuted);
-                    if (BuildConfig.DEBUG) Log.d(TAG, "ad EXIT slot=" + slot + " posMs=" + unmutePosMs);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "segment EXIT slot=" + slot + " posMs=" + unmutePosMs);
                 } else if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "ad EXIT cancelled slot=" + slot + " posMs=" + unmutePosMs
-                        + " (still in ad after debounce)");
+                    Log.d(TAG, "segment EXIT cancelled slot=" + slot + " posMs=" + unmutePosMs
+                        + " (still in blocked segment after debounce)");
                 }
             };
             handler.postDelayed(session.pendingUnmute, DELAYED_UNMUTE_MS);
@@ -304,15 +307,15 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
 
     /**
      * Walks the most recently parsed playlists newest first and finds the segment containing the
-     * current playback position. Returns true when that segment is an ad, or when the playback
-     * position is on the cusp of entering one (early-mute on segment boundary).
+     * current playback position. Returns true when that segment is blocked, or when the playback
+     * position is on the cusp of entering a blocked one (early-mute on segment boundary).
      *
      * <p>Also drops playlists whose timelines have been overrun by playback (live playlists are
      * appended each refresh, but old ones become obsolete once we're past their end).
      */
-    private static boolean isPositionInAd(Session session, long positionMs) {
+    private static boolean isPositionInBlockedSegment(Session session, long positionMs) {
         double positionSec = positionMs / 1000.0;
-        boolean foundAd = false;
+        boolean foundBlocked = false;
         TimedPlaylist matched = null;
 
         for (int i = session.playlists.size() - 1; i >= 0 && matched == null; i--) {
@@ -323,14 +326,15 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
                 double end = t + seg.duration;
                 if (positionSec >= t && positionSec < end) {
                     matched = tp;
-                    foundAd = seg.isAd;
-                    // Pre-mute the tail of a content segment that is immediately followed by an ad
-                    // (see SEGMENT_BOUNDARY_PRE_MUTE_MS) — prevents a brief audio blast at the boundary.
-                    if (!seg.isAd
+                    foundBlocked = seg.isBlocked;
+                    // Pre-mute the tail of a content segment that is immediately followed by a
+                    // blocked one (see SEGMENT_BOUNDARY_PRE_MUTE_MS) — prevents a brief audio
+                    // blast at the boundary.
+                    if (!seg.isBlocked
                         && (end - positionSec) * 1000 <= SEGMENT_BOUNDARY_PRE_MUTE_MS
                         && s + 1 < tp.playlist.segments.size()
-                        && tp.playlist.segments.get(s + 1).isAd) {
-                        foundAd = true;
+                        && tp.playlist.segments.get(s + 1).isBlocked) {
+                        foundBlocked = true;
                     }
                     break;
                 }
@@ -345,7 +349,7 @@ public final class StreamAdVolumeHelper implements StreamAdHLSPlaylistParser.Pla
             }
         }
 
-        return foundAd;
+        return foundBlocked;
     }
 
     // endregion

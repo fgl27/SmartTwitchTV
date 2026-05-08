@@ -813,10 +813,10 @@ var Settings_value = {
         defaultValue: 1
     },
     vol_reducer: {
-        // Twitch HLS ad volume reducer. defaultValue here is 1-indexed like every other entry in
+        // Volume reducer mode. defaultValue here is 1-indexed like every other entry in
         // Settings_value (Settings_SetDefaults converts it to 0-indexed at boot, which then maps
-        // 1:1 onto StreamAdVolumeHelper.MODE_NONE/HALF/FULL). Defaulting to 3 ("Full") for now
-        // while the feature is being validated; flip back to 1 ("None") before releasing.
+        // 1:1 onto VolReducer.MODE_NONE/HALF/FULL). Defaulting to 3 ("Full") for now while the
+        // feature is being validated; flip back to 1 ("None") before releasing.
         values: ['None', 'Half', 'Full'],
         defaultValue: 3
     }

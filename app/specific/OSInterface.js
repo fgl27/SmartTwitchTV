@@ -121,7 +121,7 @@ function OSInterface_Settings_SetPingWarning(warning) {
 // public void SetVolReducer(int mode)
 // mode is already 0-indexed here: Settings_SetDefaults runs `defaultValue -= 1` on every
 // Settings_value entry at boot, so callers passing Settings_Obj_default('vol_reducer') are
-// already sending 0=None / 1=Half / 2=Full, which matches StreamAdVolumeHelper.MODE_*.
+// already sending 0=None / 1=Half / 2=Full, which matches VolReducer.MODE_*.
 // Android specific: true
 function OSInterface_SetVolReducer(mode) {
     if (Main_IsOn_OSInterface) Android.SetVolReducer(mode);

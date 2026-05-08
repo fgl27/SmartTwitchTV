@@ -266,30 +266,31 @@ public class PlayerActivity extends Activity {
 
     private final boolean[] AudioEnabled = { true, false, false, false, true };
 
-    // Twitch HLS ad volume reducer: helper holds parsed-playlist state per stream session and decides
-    // whether the slot's playback position is currently inside an ad window. PlayerActivity drives
-    // volume through ApplyAudioAll; the helper just classifies. State is keyed by adSessionIds[slot]
-    // so it survives ReUsePlayer moving a MediaSource between slots without manual state migration.
-    private StreamAdVolumeHelper streamAdVolume;
-    private final int[] adSessionIds = new int[PlayerAccountPlus];
+    // Volume reducer: helper holds parsed-playlist state per stream session and decides whether
+    // the slot's playback position is currently inside a blocked segment. PlayerActivity drives
+    // volume through ApplyAudioAll; the helper just classifies. State is keyed by
+    // volReducerSessionIds[slot] so it survives ReUsePlayer moving a MediaSource between slots
+    // without manual state migration.
+    private VolReducer volReducer;
+    private final int[] volReducerSessionIds = new int[PlayerAccountPlus];
 
-    private final StreamAdVolumeHelper.Host streamAdVolumeHost = new StreamAdVolumeHelper.Host() {
+    private final VolReducer.Host volReducerHost = new VolReducer.Host() {
         @Override public ExoPlayer playerForSlot(int slot) { return PlayerObj[slot].player; }
-        @Override public int sessionForSlot(int slot) { return adSessionIds[slot]; }
+        @Override public int sessionForSlot(int slot) { return volReducerSessionIds[slot]; }
         @Override public void applyAudioAll() { runOnUiThread(PlayerActivity.this::ApplyAudioAll); }
     };
 
     /**
-     * Builds a Twitch-aware HLS MediaSource and binds it to a fresh ad-detection session for the slot.
-     * Releasing the previous session keeps the helper's playlist state bounded and avoids stale data
-     * being matched against the new stream's playback timeline.
+     * Builds a Twitch-aware HLS MediaSource and binds it to a fresh volume-reducer session for the
+     * slot. Releasing the previous session keeps the helper's playlist state bounded and avoids
+     * stale data being matched against the new stream's playback timeline.
      */
-    private MediaSource buildAdAwareMediaSource(int slot, Uri uri, int Type, int LowLatency, String mainPlaylistString) {
-        streamAdVolume.releaseSession(adSessionIds[slot]);
-        adSessionIds[slot] = streamAdVolume.newSession();
+    private MediaSource buildVolReducerMediaSource(int slot, Uri uri, int Type, int LowLatency, String mainPlaylistString) {
+        volReducer.releaseSession(volReducerSessionIds[slot]);
+        volReducerSessionIds[slot] = volReducer.newSession();
         return Tools.buildMediaSource(
             uri, this, Type, LowLatency, speedAdjustment, mainPlaylistString, userAgent,
-            streamAdVolume, adSessionIds[slot]
+            volReducer, volReducerSessionIds[slot]
         );
     }
 
@@ -437,7 +438,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[i].CheckHandler = new Handler(MainLooper);
             }
 
-            streamAdVolume = new StreamAdVolumeHelper(this, streamAdVolumeHost);
+            volReducer = new VolReducer(this, volReducerHost);
 
             //BackGroundThread Etc threads that may or may not use delay to start
             HandlerThread backGroundThread = new HandlerThread("BGT");
@@ -580,12 +581,12 @@ public class PlayerActivity extends Activity {
             PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
         }
 
-        // Ad volume reducer: the MediaSource (and therefore its parsed-playlist state) is moving from
+        // Volume reducer: the MediaSource (and therefore its parsed-playlist state) is moving from
         // the preview slot to PlayerObjPosition; transfer the session id and release whatever the
         // destination slot was using before.
-        streamAdVolume.releaseSession(adSessionIds[PlayerObjPosition]);
-        adSessionIds[PlayerObjPosition] = adSessionIds[4];
-        adSessionIds[4] = 0;
+        volReducer.releaseSession(volReducerSessionIds[PlayerObjPosition]);
+        volReducerSessionIds[PlayerObjPosition] = volReducerSessionIds[4];
+        volReducerSessionIds[4] = 0;
 
         PlayerObj[4].Listener.UpdatePosition(PlayerObjPosition);
         PlayerObj[PlayerObjPosition].Listener = PlayerObj[4].Listener;
@@ -814,9 +815,9 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "releasePlayer start position " + position);
         }
 
-        // Ad volume reducer: drop any parsed-playlist state for this slot's session.
-        streamAdVolume.releaseSession(adSessionIds[position]);
-        adSessionIds[position] = 0;
+        // Volume reducer: drop any parsed-playlist state for this slot's session.
+        volReducer.releaseSession(volReducerSessionIds[position]);
+        volReducerSessionIds[position] = 0;
 
         PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
         PlayerObj[position].playerView.setVisibility(View.GONE);
@@ -1174,11 +1175,11 @@ public class PlayerActivity extends Activity {
 
         for (int i = 0; i < PlayerAccount; i++) {
             float base = AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxMainVolume) : 0f;
-            SetAudio(i, streamAdVolume.adjustVolume(i, base));
+            SetAudio(i, volReducer.adjustVolume(i, base));
         }
         if (previewActive) {
             float base = AudioEnabled[4] ? Math.min(PlayerObj[4].volume, AudioMaxPreviewVisible) : 0f;
-            SetAudio(4, streamAdVolume.adjustVolume(4, base));
+            SetAudio(4, volReducer.adjustVolume(4, base));
         }
     }
 
@@ -2509,12 +2510,12 @@ public class PlayerActivity extends Activity {
             CheckSource = mCheckSource;
         }
 
-        /** Twitch HLS ad volume reducer mode from JS. {@code mode} is 0=None, 1=Half, 2=Full mute. */
+        /** Volume reducer mode from JS. {@code mode} is 0=None, 1=Half, 2=Full mute. */
         @JavascriptInterface
         public void SetVolReducer(int mode) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "JS->SetVolReducer mode=" + mode);
+            if (BuildConfig.DEBUG) Log.d(VolReducer.LOG_TAG, "JS->SetVolReducer mode=" + mode);
             // JS settings UI runs on the WebView thread; hop to UI before mutating ExoPlayer state.
-            runOnUiThread(() -> streamAdVolume.setMode(mode));
+            runOnUiThread(() -> volReducer.setMode(mode));
         }
 
         @JavascriptInterface
@@ -2771,7 +2772,7 @@ public class PlayerActivity extends Activity {
                         } else {
                             if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
-                            PlayerObj[PlayerObjPosition].mediaSources = buildAdAwareMediaSource(
+                            PlayerObj[PlayerObjPosition].mediaSources = buildVolReducerMediaSource(
                                 PlayerObjPosition, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString
                             );
 
@@ -2807,7 +2808,7 @@ public class PlayerActivity extends Activity {
                         position
                     );
 
-                    PlayerObj[position].mediaSources = buildAdAwareMediaSource(
+                    PlayerObj[position].mediaSources = buildVolReducerMediaSource(
                         position, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString
                     );
 
@@ -3115,7 +3116,7 @@ public class PlayerActivity extends Activity {
 
                 PreviewPlayerPlaylist = mainPlaylistString;
                 int Type = isVod ? 2 : 1;
-                PlayerObj[4].mediaSources = buildAdAwareMediaSource(4, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
+                PlayerObj[4].mediaSources = buildVolReducerMediaSource(4, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
 
                 Set_PlayerObj(
                     false,
@@ -3154,7 +3155,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartSidePanelPlayer(String uri, String mainPlaylistString) {
             runOnUiThread(() -> {
-                PlayerObj[0].mediaSources = buildAdAwareMediaSource(0, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
+                PlayerObj[0].mediaSources = buildVolReducerMediaSource(0, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel);
@@ -3178,7 +3179,7 @@ public class PlayerActivity extends Activity {
             boolean bigger
         ) {
             runOnUiThread(() -> {
-                PlayerObj[0].mediaSources = buildAdAwareMediaSource(0, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
+                PlayerObj[0].mediaSources = buildVolReducerMediaSource(0, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
 
                 PlayerViewScreensLayout = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
@@ -3589,7 +3590,7 @@ public class PlayerActivity extends Activity {
 
                 Set_PlayerObj(false, 1, 0, 1, position);
 
-                PlayerObj[position].mediaSources = buildAdAwareMediaSource(position, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
+                PlayerObj[position].mediaSources = buildVolReducerMediaSource(position, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
 
                 SetupPlayer(position);
 
