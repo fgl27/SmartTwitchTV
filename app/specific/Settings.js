@@ -811,6 +811,14 @@ var Settings_value = {
         values: ['None'],
         set_values: [''],
         defaultValue: 1
+    },
+    vol_reducer: {
+        // Volume reducer mode. defaultValue here is 1-indexed like every other entry in
+        // Settings_value (Settings_SetDefaults converts it to 0-indexed at boot, which then maps
+        // 1:1 onto VolReducer.MODE_NONE/HALF/FULL). Defaulting to 3 ("Full") for now while the
+        // feature is being validated; flip back to 1 ("None") before releasing.
+        values: ['None', 'Half', 'Full'],
+        defaultValue: 3
     }
 };
 
@@ -972,6 +980,9 @@ function Settings_SetSettings() {
     div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
 
     div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
+
+    // TODO localize 'None'/'Half'/'Full' once the language strings are added in app/languages/.
+    div += Settings_Content('vol_reducer', ['None', 'Half', 'Full'], STR_VOLUME_REDUCER, STR_VOLUME_REDUCER_SUMMARY);
 
     div += Settings_Content('seek_preview', SEEK_PREVIEW_ARRAY, SEEK_PREVIEW, SEEK_PREVIEW_SUMMARY);
 
@@ -1149,6 +1160,7 @@ function Settings_SetDefaults() {
     OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
     OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
+    OSInterface_SetVolReducer(Settings_Obj_default('vol_reducer'));
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
     //Settings_proxy_set_start();
@@ -1394,6 +1406,7 @@ function Settings_SetDefault(position) {
     else if (position === 'speed_adjust') Settings_SetSpeed_adjust();
     else if (position === 'seek_preview') PlayVod_SetPreviewType();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
+    else if (position === 'vol_reducer') OSInterface_SetVolReducer(Settings_Obj_default('vol_reducer'));
     else if (position === 'thumb_quality') Main_SetThumb();
     else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
     else if (position === 'preview_volume_new') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));

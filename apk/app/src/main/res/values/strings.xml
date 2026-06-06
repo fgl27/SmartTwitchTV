@@ -51,4 +51,9 @@
     <string name="playing">Playing</string>
     <string name="streaming">Streaming</string>
 
+    <!-- Volume reducer toasts -->
+    <string name="volume_muted">Player %d: audio muted</string>
+    <string name="volume_reduced">Player %d: audio reduced</string>
+    <string name="volume_unmuted">Player %d: audio restored</string>
+
 </resources>

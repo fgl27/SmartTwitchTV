@@ -89,7 +89,7 @@ import androidx.media3.ui.PlayerView;
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -266,6 +266,34 @@ public class PlayerActivity extends Activity {
 
     private final boolean[] AudioEnabled = { true, false, false, false, true };
 
+    // Volume reducer: helper holds parsed-playlist state per stream session and decides whether
+    // the slot's playback position is currently inside a blocked segment. PlayerActivity drives
+    // volume through ApplyAudioAll; the helper just classifies. State is keyed by
+    // volReducerSessionIds[slot] so it survives ReUsePlayer moving a MediaSource between slots
+    // without manual state migration.
+    private VolReducer volReducer;
+    private final int[] volReducerSessionIds = new int[PlayerAccountPlus];
+
+    private final VolReducer.Host volReducerHost = new VolReducer.Host() {
+        @Override public ExoPlayer playerForSlot(int slot) { return PlayerObj[slot].player; }
+        @Override public int sessionForSlot(int slot) { return volReducerSessionIds[slot]; }
+        @Override public void applyAudioAll() { runOnUiThread(PlayerActivity.this::ApplyAudioAll); }
+    };
+
+    /**
+     * Builds a Twitch-aware HLS MediaSource and binds it to a fresh volume-reducer session for the
+     * slot. Releasing the previous session keeps the helper's playlist state bounded and avoids
+     * stale data being matched against the new stream's playback timeline.
+     */
+    private MediaSource buildVolReducerMediaSource(int slot, Uri uri, int Type, int LowLatency, String mainPlaylistString) {
+        volReducer.releaseSession(volReducerSessionIds[slot]);
+        volReducerSessionIds[slot] = volReducer.newSession();
+        return Tools.buildMediaSource(
+            uri, this, Type, LowLatency, speedAdjustment, mainPlaylistString, userAgent,
+            volReducer, volReducerSessionIds[slot]
+        );
+    }
+
     public class PlayerObj {
 
         boolean IsPlaying;
@@ -370,8 +398,8 @@ public class PlayerActivity extends Activity {
             intent.setAction(null);
             setIntent(intent);
 
-            FirebaseApp.initializeApp(this);
-            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+            //FirebaseApp.initializeApp(this);
+            //FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
             try {
                 setContentView(R.layout.activity_player);
@@ -410,6 +438,8 @@ public class PlayerActivity extends Activity {
                 PlayerObj[i].CheckHandler = new Handler(MainLooper);
             }
 
+            volReducer = new VolReducer(this, volReducerHost);
+
             //BackGroundThread Etc threads that may or may not use delay to start
             HandlerThread backGroundThread = new HandlerThread("BGT");
             backGroundThread.start();
@@ -445,7 +475,7 @@ public class PlayerActivity extends Activity {
             initializeWebview();
 
             StopNotificationService();
-            FirebaseCrashlytics.getInstance().sendUnsentReports();
+            //FirebaseCrashlytics.getInstance().sendUnsentReports();
 
             DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
 
@@ -550,6 +580,13 @@ public class PlayerActivity extends Activity {
         if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE) {
             PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
         }
+
+        // Volume reducer: the MediaSource (and therefore its parsed-playlist state) is moving from
+        // the preview slot to PlayerObjPosition; transfer the session id and release whatever the
+        // destination slot was using before.
+        volReducer.releaseSession(volReducerSessionIds[PlayerObjPosition]);
+        volReducerSessionIds[PlayerObjPosition] = volReducerSessionIds[4];
+        volReducerSessionIds[4] = 0;
 
         PlayerObj[4].Listener.UpdatePosition(PlayerObjPosition);
         PlayerObj[PlayerObjPosition].Listener = PlayerObj[4].Listener;
@@ -777,6 +814,10 @@ public class PlayerActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "releasePlayer start position " + position);
         }
+
+        // Volume reducer: drop any parsed-playlist state for this slot's session.
+        volReducer.releaseSession(volReducerSessionIds[position]);
+        volReducerSessionIds[position] = 0;
 
         PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
         PlayerObj[position].playerView.setVisibility(View.GONE);
@@ -1127,10 +1168,18 @@ public class PlayerActivity extends Activity {
     }
 
     public void ApplyAudioAll() {
-        float MaxVolume = PlayerObj[4].player == null ? 1f : AudioMaxPreviewVisible;
+        boolean previewActive = PlayerObj[4].player != null;
+        // Main grid players cap at AudioMaxPreviewVisible while a preview is showing so the preview
+        // isn't drowned out; the preview itself uses that cap unconditionally.
+        float MaxMainVolume = previewActive ? AudioMaxPreviewVisible : 1f;
 
         for (int i = 0; i < PlayerAccount; i++) {
-            SetAudio(i, AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxVolume) : 0f);
+            float base = AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxMainVolume) : 0f;
+            SetAudio(i, volReducer.adjustVolume(i, base));
+        }
+        if (previewActive) {
+            float base = AudioEnabled[4] ? Math.min(PlayerObj[4].volume, AudioMaxPreviewVisible) : 0f;
+            SetAudio(4, volReducer.adjustVolume(4, base));
         }
     }
 
@@ -2461,6 +2510,14 @@ public class PlayerActivity extends Activity {
             CheckSource = mCheckSource;
         }
 
+        /** Volume reducer mode from JS. {@code mode} is 0=None, 1=Half, 2=Full mute. */
+        @JavascriptInterface
+        public void SetVolReducer(int mode) {
+            if (BuildConfig.DEBUG) Log.d(VolReducer.LOG_TAG, "JS->SetVolReducer mode=" + mode);
+            // JS settings UI runs on the WebView thread; hop to UI before mutating ExoPlayer state.
+            runOnUiThread(() -> volReducer.setMode(mode));
+        }
+
         @JavascriptInterface
         public void SetNotificationPosition(int position) {
             appPreferences.put(Constants.PREF_NOTIFICATION_POSITION, position);
@@ -2715,14 +2772,8 @@ public class PlayerActivity extends Activity {
                         } else {
                             if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
-                            PlayerObj[PlayerObjPosition].mediaSources = Tools.buildMediaSource(
-                                Uri.parse(uri),
-                                mWebViewContext,
-                                Type,
-                                getLowLatency(Type),
-                                speedAdjustment,
-                                mainPlaylistString,
-                                userAgent
+                            PlayerObj[PlayerObjPosition].mediaSources = buildVolReducerMediaSource(
+                                PlayerObjPosition, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString
                             );
 
                             SetupPlayer(PlayerObjPosition);
@@ -2757,14 +2808,8 @@ public class PlayerActivity extends Activity {
                         position
                     );
 
-                    PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                        Uri.parse(uri),
-                        mWebViewContext,
-                        Type,
-                        getLowLatency(Type),
-                        speedAdjustment,
-                        mainPlaylistString,
-                        userAgent
+                    PlayerObj[position].mediaSources = buildVolReducerMediaSource(
+                        position, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString
                     );
 
                     SetupPlayer(position);
@@ -3071,15 +3116,7 @@ public class PlayerActivity extends Activity {
 
                 PreviewPlayerPlaylist = mainPlaylistString;
                 int Type = isVod ? 2 : 1;
-                PlayerObj[4].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    Type,
-                    getLowLatency(Type),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent
-                );
+                PlayerObj[4].mediaSources = buildVolReducerMediaSource(4, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
 
                 Set_PlayerObj(
                     false,
@@ -3118,15 +3155,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartSidePanelPlayer(String uri, String mainPlaylistString) {
             runOnUiThread(() -> {
-                PlayerObj[0].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    1,
-                    getLowLatency(1),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent
-                );
+                PlayerObj[0].mediaSources = buildVolReducerMediaSource(0, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel);
@@ -3150,15 +3179,7 @@ public class PlayerActivity extends Activity {
             boolean bigger
         ) {
             runOnUiThread(() -> {
-                PlayerObj[0].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    Type,
-                    getLowLatency(Type),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent
-                );
+                PlayerObj[0].mediaSources = buildVolReducerMediaSource(0, Uri.parse(uri), Type, getLowLatency(Type), mainPlaylistString);
 
                 PlayerViewScreensLayout = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
@@ -3569,15 +3590,7 @@ public class PlayerActivity extends Activity {
 
                 Set_PlayerObj(false, 1, 0, 1, position);
 
-                PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                    Uri.parse(uri),
-                    mWebViewContext,
-                    1,
-                    getLowLatency(1),
-                    speedAdjustment,
-                    mainPlaylistString,
-                    userAgent
-                );
+                PlayerObj[position].mediaSources = buildVolReducerMediaSource(position, Uri.parse(uri), 1, getLowLatency(1), mainPlaylistString);
 
                 SetupPlayer(position);
 
