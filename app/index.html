@@ -1682,6 +1682,7 @@
                 width: 24.7%;
                 height: 48%;
                 background-color: rgba(0, 0, 0, 0.5);
+                overflow: hidden;
             }
 
             .chat_container1 {
@@ -2291,7 +2292,7 @@
             }
 
             .chat_line_holder {
-                overflow: hidden;
+                overflow: visible;
             }
 
             .chat_line_animation {
@@ -2320,10 +2321,10 @@
             }
 
             .chat_line_slim {
-                padding-bottom: 0 !important;
+                padding-bottom: 0.22em !important;
                 padding-top: 0.12em !important;
                 margin-bottom: 0 !important;
-                line-height: 1em !important;
+                line-height: 1.2em !important;
             }
 
             .chat_loggedin {
@@ -2345,10 +2346,73 @@
                 overflow: hidden;
             }
 
+            .chat_pinned_holder {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 4;
+                overflow: hidden;
+                padding: 0.18em 0.22em 0.24em 0.22em;
+                border: 0.05em solid rgba(255, 214, 74, 0.45);
+                border-radius: 0 0 0.2em 0.2em;
+                background: linear-gradient(180deg, rgba(57, 69, 15, 0.96) 0%, rgba(17, 48, 10, 0.92) 100%);
+                box-shadow: 0 0.12em 0.4em rgba(0, 0, 0, 0.35);
+                box-sizing: border-box;
+            }
+
+            .chat_pinned_holder.hide {
+                display: none;
+            }
+
+            .chat_pinned_holder .chat_line {
+                margin-bottom: 0.1em;
+                padding-top: 0.08em !important;
+                padding-bottom: 0.08em !important;
+                background: rgba(0, 0, 0, 0.18);
+                border-left: 0.18em solid rgba(255, 214, 74, 0.7);
+            }
+
+            .chat_pinned_header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.12em;
+                color: #ffe892;
+                font-family: 'Roboto-Bold';
+                font-size: 0.82em;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+
+            .chat_pinned_label {
+                display: inline-block;
+            }
+
+            .chat_pinned_count {
+                color: rgba(255, 255, 255, 0.72);
+                font-size: 0.92em;
+            }
+
+            .chat_pinned_age {
+                float: right;
+                margin-left: 0.5em;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.78em;
+                font-family: 'Roboto-Bold';
+            }
+
             .chat_box_holder {
                 height: 100%;
                 transform: rotate(180deg);
                 overflow: hidden;
+            }
+
+            .chat_box_stack {
+                transform: rotate(180deg);
+                min-height: 100%;
+                box-sizing: border-box;
+                padding-bottom: 0;
             }
 
             .tag {
@@ -2389,6 +2453,7 @@
             }
 
             .chat_size {
+                position: relative;
                 width: 100%;
                 height: 100%;
             }
@@ -3501,8 +3566,9 @@
                 <div id="chat_container0" class="chat_container hide">
                     <div id="chat_inner_container0" class="chat_size">
                         <div id="chat_loggedin0" class="chat_loggedin hide"></div>
+                        <div id="chat_pinned_holder0" class="chat_pinned_holder hide"></div>
                         <div id="chat_box_holder0" class="chat_box_holder">
-                            <div style="transform: rotate(180deg)">
+                            <div class="chat_box_stack">
                                 <div id="chat_box0"></div>
                             </div>
                         </div>
@@ -3514,8 +3580,9 @@
                 <div id="chat_container1" class="chat_container1 hide">
                     <div id="chat_inner_container1" class="chat_size">
                         <div id="chat_loggedin1" class="chat_loggedin hide"></div>
+                        <div id="chat_pinned_holder1" class="chat_pinned_holder hide"></div>
                         <div id="chat_box_holder1" class="chat_box_holder">
-                            <div style="transform: rotate(180deg)">
+                            <div class="chat_box_stack">
                                 <div id="chat_box1"></div>
                             </div>
                         </div>

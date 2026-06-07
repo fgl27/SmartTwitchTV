@@ -55,6 +55,7 @@ var defaultColors = [
 
 var defaultColorsLength = defaultColors.length;
 var Chat_div = [];
+var ChatPinned_div = [];
 var Chat_Position = 0;
 var Chat_hasEnded = false;
 var Chat_CleanMax = 60;
@@ -74,6 +75,8 @@ var Chat_UserJPKRegex = new RegExp('[^\x00-\x7F]', 'g');
 function Chat_Preinit() {
     Chat_div[0] = Main_getElementById('chat_box0');
     Chat_div[1] = Main_getElementById('chat_box1');
+    ChatPinned_div[0] = Main_getElementById('chat_pinned_holder0');
+    ChatPinned_div[1] = Main_getElementById('chat_pinned_holder1');
     ChatLive_LineAddCounter[0] = 0;
     ChatLive_LineAddCounter[1] = 0;
     ChatLive_Messages[0] = [];

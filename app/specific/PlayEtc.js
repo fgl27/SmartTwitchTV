@@ -24,6 +24,11 @@ var Play_isFullScreenOld = null;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
 var Play_ScreeIsOff = false;
+var Play_ChatPinMentionsValue = 1;
+var Play_ChatPinMentionsCountValue = 2;
+var Play_ChatPinMentionsTimeValue = 2;
+var Play_ChatPinMentionsCountLabels = ['1', '2', '3', '4', '5'];
+var Play_ChatPinMentionsTimeLabels = ['30 seconds', '1 minute', '2 minutes', '5 minutes', '10 minutes', '15 minutes', '30 minutes'];
 
 function Play_screeOn() {
     if (!Play_ScreeIsOff) {
@@ -321,7 +326,7 @@ function Play_SetChatSideBySide() {
 
         //Default values
         Play_chat_container.style.height = '99.6%';
-        Main_getElementById('play_chat_dialog').style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Main_getElementById('play_chat_dialog').style.marginTop = '-80%';
         Play_chat_container.style.top = '0.2%';
     } else {
         Play_chat_container.style.width = Play_ChatFullScreenSizes[Play_FullScreenPosition][Play_FullScreenSize].width;
@@ -329,7 +334,7 @@ function Play_SetChatSideBySide() {
 
         //Default values
         Play_chat_container.style.height = '99.6%';
-        Main_getElementById('play_chat_dialog').style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Main_getElementById('play_chat_dialog').style.marginTop = '-80%';
         Play_chat_container.style.top = '0.2%';
 
         if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
@@ -347,6 +352,7 @@ function Play_SetChatSideBySide() {
 
     Play_ChatEnable = true;
     Play_chat_container.classList.remove('hide');
+    ChatLive_UpdateLayout(0);
 
     if (!Main_IsOn_OSInterface) {
         BrowserTestSetVideoSize();
@@ -358,6 +364,7 @@ function Play_SetChatSideBySide() {
 }
 
 var Play_ChatFullScreenObj = {
+    width: '',
     height: '',
     marginTop: '',
     top: '',
@@ -374,6 +381,7 @@ function Play_StoreChatFullScreen() {
     Play_ChatFullScreenObj.controlsSizeDefault = Play_controls[Play_controlsChatPos].defaultValue;
 
     Play_ChatFullScreenObj.WasEnable = Play_ChatEnable;
+    Play_ChatFullScreenObj.width = Play_chat_container.style.width;
     Play_ChatFullScreenObj.height = Play_chat_container.style.height;
     Play_ChatFullScreenObj.marginTop = Main_getElementById('play_chat_dialog').style.marginTop;
     Play_ChatFullScreenObj.top = Play_chat_container.style.top;
@@ -397,6 +405,7 @@ function Play_ResStoreChatFullScreen() {
         Play_chat_container.style.width = '';
         if (!Play_ChatEnable) Play_hideChat();
         else Play_showChat();
+        Play_chat_container.style.width = Play_ChatFullScreenObj.width;
         Play_chat_container.style.height = Play_ChatFullScreenObj.height;
         Main_getElementById('play_chat_dialog').style.marginTop = Play_ChatFullScreenObj.marginTop;
         Play_chat_container.style.top = Play_ChatFullScreenObj.top;
@@ -1618,7 +1627,7 @@ function Play_MultiKeyDown() {
         Play_showChat();
         Play_chat_container.style.width = '32.8%';
         Play_chat_container.style.height = '65.8%';
-        Main_getElementById('play_chat_dialog').style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Main_getElementById('play_chat_dialog').style.marginTop = '-80%';
         Play_chat_container.style.top = '0.2%';
         Play_chat_container.style.left = '67%';
 
@@ -2007,6 +2016,12 @@ var Play_controlsChatDisShared = temp_controls_pos++;
 var Play_controlsChatDelay = temp_controls_pos++;
 var Play_controlsChatPos = temp_controls_pos++;
 var Play_controlsChatSize = temp_controls_pos++;
+var Play_controlsChatWidth = temp_controls_pos++;
+var Play_controlsChatOffsetX = temp_controls_pos++;
+var Play_controlsChatOffsetY = temp_controls_pos++;
+var Play_controlsChatPinMentions = temp_controls_pos++;
+var Play_controlsChatPinMentionsCount = temp_controls_pos++;
+var Play_controlsChatPinMentionsTime = temp_controls_pos++;
 var Play_controlsChatBright = temp_controls_pos++;
 var Play_controlsChatFont = temp_controls_pos++;
 
@@ -3352,7 +3367,7 @@ function Play_MakeControls() {
         icons: 'chat-size',
         offsetY: -5,
         string: STR_CHAT_SIZE,
-        values: ['12.5%', '25%', '50%', '75%', '100%'],
+        values: Play_ChatSizeLabels,
         defaultValue: Play_ChatSizeValue,
         isChat: true,
         updown: function (adder) {
@@ -3393,6 +3408,248 @@ function Play_MakeControls() {
                 Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]
             );
 
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsChatWidth] = {
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'resize-up',
+        offsetY: -5,
+        string: 'Chat width',
+        values: Play_ChatSizeLabels,
+        defaultValue: Play_ChatWidthValue,
+        isChat: true,
+        updown: function (adder) {
+            if (!Play_isChatShown() || !Play_isFullScreen || Play_MultiEnable || Play_Multi_MainBig || PlayExtra_PicturePicture) {
+                return;
+            }
+
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+
+            Play_ChatWidthValue = this.defaultValue;
+            Play_ChatWidth(true);
+
+            this.setLabel();
+            this.bottomArrows();
+        },
+        setLabel: function () {
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsChatOffsetX] = {
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'offset',
+        offsetY: -5,
+        string: STR_CHAT_POS + ' ' + STR_LEFT + '/' + STR_RIGHT + ' ' + STR_OFFSET,
+        values: Play_ChatOffsetLabels,
+        defaultValue: Play_ChatOffsetXValue + 20,
+        isChat: true,
+        updown: function (adder) {
+            if (!Play_isChatShown() || !Play_isFullScreen || Play_MultiEnable || Play_Multi_MainBig || PlayExtra_PicturePicture) {
+                return;
+            }
+
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) {
+                this.defaultValue = 0;
+            } else if (this.defaultValue > this.values.length - 1) {
+                this.defaultValue = this.values.length - 1;
+            }
+
+            Play_ChatOffsetXValue = this.defaultValue - 20;
+            Play_ChatPosition();
+            Main_setItem('ChatOffsetXValue', Play_ChatOffsetXValue);
+
+            this.setLabel();
+            this.bottomArrows();
+        },
+        setLabel: function () {
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsChatOffsetY] = {
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'offset',
+        offsetY: -5,
+        string: STR_CHAT_POS + ' ' + STR_TOP + '/' + STR_BOTTOM + ' ' + STR_OFFSET,
+        values: Play_ChatOffsetLabels,
+        defaultValue: Play_ChatOffsetYValue + 20,
+        isChat: true,
+        updown: function (adder) {
+            if (!Play_isChatShown() || !Play_isFullScreen || Play_MultiEnable || Play_Multi_MainBig || PlayExtra_PicturePicture) {
+                return;
+            }
+
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) {
+                this.defaultValue = 0;
+            } else if (this.defaultValue > this.values.length - 1) {
+                this.defaultValue = this.values.length - 1;
+            }
+
+            Play_ChatOffsetYValue = this.defaultValue - 20;
+            Play_ChatPosition();
+            Main_setItem('ChatOffsetYValue', Play_ChatOffsetYValue);
+
+            this.setLabel();
+            this.bottomArrows();
+        },
+        setLabel: function () {
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsChatPinMentions] = {
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'chat',
+        offsetY: -5,
+        string: 'Pin mentions',
+        values: [STR_NO, STR_YES],
+        defaultValue: Play_ChatPinMentionsValue,
+        isChat: true,
+        enterKey: function () {
+            this.defaultValue = this.defaultValue ? 0 : 1;
+            Play_ChatPinMentionsValue = this.defaultValue;
+            Main_setItem('Play_ChatPinMentions', Play_ChatPinMentionsValue);
+            ChatLive_RefreshPinSettings();
+            this.setLabel();
+        },
+        setLabel: function () {
+            Main_textContent('controls_text_summary_' + this.position, '(' + this.values[this.defaultValue] + ')');
+        }
+    };
+
+    Play_controls[Play_controlsChatPinMentionsCount] = {
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'chat-size',
+        offsetY: -5,
+        string: 'Pinned mentions count',
+        values: Play_ChatPinMentionsCountLabels,
+        defaultValue: Play_ChatPinMentionsCountValue,
+        isChat: true,
+        updown: function (adder) {
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+
+            Play_ChatPinMentionsCountValue = this.defaultValue;
+            Main_setItem('Play_ChatPinMentionsCount', Play_ChatPinMentionsCountValue);
+            ChatLive_RefreshPinSettings();
+
+            this.setLabel();
+            this.bottomArrows();
+        },
+        setLabel: function () {
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position);
+        }
+    };
+
+    Play_controls[Play_controlsChatPinMentionsTime] = {
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'chat-delay',
+        offsetY: -5,
+        string: 'Pinned mentions duration',
+        values: Play_ChatPinMentionsTimeLabels,
+        defaultValue: Play_ChatPinMentionsTimeValue,
+        isChat: true,
+        updown: function (adder) {
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+
+            Play_ChatPinMentionsTimeValue = this.defaultValue;
+            Main_setItem('Play_ChatPinMentionsTime', Play_ChatPinMentionsTimeValue);
+            ChatLive_RefreshPinSettings();
+
+            this.setLabel();
+            this.bottomArrows();
+        },
+        setLabel: function () {
             Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
         },
         bottomArrows: function () {
@@ -4513,11 +4770,17 @@ function Play_PreStart() {
     Play_MultiDialogElem = Main_getElementById('dialog_multi');
 
     Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
-    Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 4);
+    Play_ChatSizeValue = Play_MigrateLegacyChatSizeValue(Main_getItemInt('ChatSizeValue', 4));
+    Play_ChatWidthValue = Play_MigrateLegacyChatWidthValue(Main_getItemInt('ChatWidthValue', 4));
     Play_ChatEnable = Main_getItemBool('ChatEnable', false);
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
     Play_ChatDelayValue = Main_getItemInt('Play_ChatDelayValue', 0);
+    Play_ChatOffsetXValue = Play_ChatOffsetClamp(Main_getItemInt('ChatOffsetXValue', 0), -20, 20);
+    Play_ChatOffsetYValue = Play_ChatOffsetClamp(Main_getItemInt('ChatOffsetYValue', 0), -20, 20);
+    Play_ChatPinMentionsValue = Main_getItemInt('Play_ChatPinMentions', Settings_value.pin_mentions.defaultValue);
+    Play_ChatPinMentionsCountValue = Main_getItemInt('Play_ChatPinMentionsCount', Settings_value.pin_mentions_count.defaultValue);
+    Play_ChatPinMentionsTimeValue = Main_getItemInt('Play_ChatPinMentionsTime', Settings_value.pin_mentions_time.defaultValue);
 
     Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 4);
     Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 2);
@@ -4555,6 +4818,7 @@ function Play_PreStart() {
     Play_MultiSetPanelInfo();
 
     Play_MakeControls();
+    Play_ChatWidth(false);
     Play_ChatSize(false);
 
     Play_ChatBackgroundChange(false);

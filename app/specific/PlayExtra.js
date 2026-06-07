@@ -224,6 +224,8 @@ function PlayExtra_ShowChat() {
     Main_ShowElement('chat_container1');
     Main_ShowElement('chat_container_name0');
     Main_ShowElement('chat_container_name1');
+    ChatLive_UpdateLayout(0);
+    ChatLive_UpdateLayout(1);
 }
 
 function PlayExtra_HideChat() {
