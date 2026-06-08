@@ -97,3 +97,62 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
 }
+
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
+def constantsFile = layout.projectDirectory.file(
+        "src/main/java/com/fgl27/twitch/Constants.java"
+).asFile
+
+def assetsDir = layout.projectDirectory.dir(
+        "src/main/assets"
+).asFile
+
+def appFromDir = layout.projectDirectory.dir("../../app").asFile
+def appToDir = layout.projectDirectory.dir("src/main/assets/app").asFile
+def cssFromDir = layout.projectDirectory.dir("../../release/githubio/css").asFile
+def cssToDir = layout.projectDirectory.dir("src/main/assets/release/githubio/css").asFile
+
+tasks.register('cleanAssets') {
+    doLast {
+        if (constantsFile.exists()) {
+            constantsFile.text = constantsFile.text.replace('LoadFromAssets = true', 'LoadFromAssets = false')
+        }
+        if (assetsDir.exists()) {
+            assetsDir.deleteDir()
+        }
+        println 'Default assets restored'
+    }
+}
+
+tasks.register('enableAssets') {
+    doLast {
+        if (constantsFile.exists()) {
+            constantsFile.text = constantsFile.text.replace('LoadFromAssets = false', 'LoadFromAssets = true')
+        }
+        if (assetsDir.exists()) {
+            assetsDir.deleteDir()
+        }
+
+        def copyDir = { File from, File to ->
+            def src = from.toPath()
+            def dst = to.toPath()
+            if (!Files.exists(src)) return
+            Files.createDirectories(dst)
+            Files.walk(src).forEach { f ->
+                def t = dst.resolve(src.relativize(f))
+                if (Files.isDirectory(f)) {
+                    t.toFile().mkdirs()
+                } else {
+                    t.toFile().parentFile.mkdirs()
+                    Files.copy(f, t, StandardCopyOption.REPLACE_EXISTING)
+                }
+            }
+        }
+
+        copyDir(appFromDir, appToDir)
+        copyDir(cssFromDir, cssToDir)
+        println 'Enable custom assets directory'
+    }
+}
