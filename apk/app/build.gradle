@@ -2,8 +2,11 @@ apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
 
 //Crashlytics
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+def hasCrashlytics = file('google-services.json').exists()
+if (hasCrashlytics) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
+}
 //Crashlytics end
 
 android {
@@ -12,6 +15,14 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += hasCrashlytics
+                ? ['src/crashlytics/java']
+                : ['src/noop/java']
+        }
     }
 
     defaultConfig {
@@ -82,9 +93,11 @@ dependencies {
     //implementation project(':media-lib-decoder-av1')
 
     //Crashlytics
+if (hasCrashlytics) {
     implementation platform('com.google.firebase:firebase-bom:33.14.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
+}
     //Crashlytics end
 
     implementation 'androidx.leanback:leanback:1.2.0'
