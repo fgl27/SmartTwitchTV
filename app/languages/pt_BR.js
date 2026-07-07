@@ -629,6 +629,10 @@ function pt_BRLang() {
     STR_GIFT_SUB = 'tem de presente um sub!';
     STR_ANONYMOUS = 'Anônimo';
     STR_CHAT_BANNED = 'Você está permanentemente proibido de escrever em';
+    STR_AUTO_OPEN_RAID = 'Abrir raids automaticamente';
+    STR_AUTO_OPEN_RAID_SUMMARY = 'É preciso estar conectado.';
+    STR_RAID_OPENING = '%from fez uma raid para %to. Abrindo a raid...';
+    STR_RAID_OPEN_FAILED = '%to não está ao vivo ou não pôde ser aberto.';
     STR_CHAT_WRITE = 'Escreva no chat';
     STR_CHAT_EXTRA = 'Configurações extras de chat';
     STR_PLACEHOLDER_CHAT =

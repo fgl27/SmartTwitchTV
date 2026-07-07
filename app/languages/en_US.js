@@ -634,6 +634,10 @@ function en_USLang() {
     STR_GIFT_SUB = 'has gifted you a sub!';
     STR_ANONYMOUS = 'Anonymous';
     STR_CHAT_BANNED = 'You are permanently banned from talking in';
+    STR_AUTO_OPEN_RAID = 'Automatically open raids';
+    STR_AUTO_OPEN_RAID_SUMMARY = 'Only works when logged in.';
+    STR_RAID_OPENING = '%from raided %to. Opening the raid...';
+    STR_RAID_OPEN_FAILED = '%to is not live or could not be opened.';
     STR_CHAT_WRITE = 'Write to chat';
     STR_CHAT_EXTRA = 'Chat extra settings';
     STR_PLACEHOLDER_CHAT =

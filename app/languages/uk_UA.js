@@ -617,6 +617,10 @@ function uk_UALang() {
     STR_GIFT_SUB = 'подарував(ла) вам підписку!';
     STR_ANONYMOUS = 'Анонім';
     STR_CHAT_BANNED = 'Вас назавжди заблоковано у чаті';
+    STR_AUTO_OPEN_RAID = 'Автоматично відкривати рейди';
+    STR_AUTO_OPEN_RAID_SUMMARY = 'Потрібен вхід в акаунт.';
+    STR_RAID_OPENING = '%from зробив(ла) рейд на %to. Відкриваємо рейд...';
+    STR_RAID_OPEN_FAILED = '%to не в ефірі або не вдалося відкрити.';
     STR_CHAT_WRITE = 'Написати у чат';
     STR_CHAT_EXTRA = 'Додаткові налаштування чату';
     STR_PLACEHOLDER_CHAT =

@@ -641,6 +641,10 @@ function tr_TRLang() {
     STR_GIFT_SUB = 'size bir abonelik hediye etti!';
     STR_ANONYMOUS = 'Anonim';
     STR_CHAT_BANNED = 'Şurada konuşmaktan kalıcı olarak yasaklandınız:';
+    STR_AUTO_OPEN_RAID = 'Raidleri otomatik aç';
+    STR_AUTO_OPEN_RAID_SUMMARY = 'Giriş yapılması gerekir.';
+    STR_RAID_OPENING = '%from, %to kanalına raid attı. Raid açılıyor...';
+    STR_RAID_OPEN_FAILED = '%to canlı değil veya açılamadı.';
     STR_CHAT_WRITE = 'Sohbete yaz';
     STR_CHAT_EXTRA = 'Sohbet ekstra ayarları';
     STR_PLACEHOLDER_CHAT =

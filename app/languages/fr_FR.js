@@ -634,6 +634,10 @@ function fr_FRLang() {
     STR_GIFT_SUB = 'vous a offert un sub !';
     STR_ANONYMOUS = 'Anonyme';
     STR_CHAT_BANNED = 'Vous êtes banni définitivement du chat de';
+    STR_AUTO_OPEN_RAID = 'Ouvrir les raids automatiquement';
+    STR_AUTO_OPEN_RAID_SUMMARY = "Nécessite d'être connecté.";
+    STR_RAID_OPENING = '%from lance un raid vers %to. Ouverture du raid...';
+    STR_RAID_OPEN_FAILED = '%to n’est pas en direct ou n’a pas pu être ouvert.';
     STR_CHAT_WRITE = 'Écrire dans le chat';
     STR_CHAT_EXTRA = 'Paramètres supplémentaires du chat';
     STR_PLACEHOLDER_CHAT =

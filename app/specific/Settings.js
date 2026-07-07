@@ -327,6 +327,10 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 1
     },
+    auto_open_raid: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
     live_notification: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -1393,6 +1397,7 @@ function Settings_SetDefault(position) {
     else if (position === 'default_quality') Play_SetQuality();
     else if (position === 'speed_adjust') Settings_SetSpeed_adjust();
     else if (position === 'seek_preview') PlayVod_SetPreviewType();
+    else if (position === 'auto_open_raid') PlayRaid_UpdateSetting();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     else if (position === 'thumb_quality') Main_SetThumb();
     else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
@@ -3130,6 +3135,7 @@ function Settings_PlayerEnd(click) {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.open_host.values = yes_no;
     Settings_value.play_stay.values = yes_no;
+    Settings_value.auto_open_raid.values = yes_no;
     Settings_value.clip_autoPlayNext.values = yes_no;
     Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
@@ -3145,6 +3151,12 @@ function Settings_PlayerEnd(click) {
             values: Settings_value.play_stay.values,
             title: STR_ALWAYS_STAY,
             summary: null
+        },
+        auto_open_raid: {
+            defaultValue: Settings_value.auto_open_raid.defaultValue,
+            values: Settings_value.auto_open_raid.values,
+            title: STR_AUTO_OPEN_RAID,
+            summary: STR_AUTO_OPEN_RAID_SUMMARY
         },
         clip_autoPlayNext: {
             defaultValue: Settings_value.clip_autoPlayNext.defaultValue,

@@ -634,6 +634,10 @@ function ru_RULang() {
     STR_GIFT_SUB = 'подарил вам подписку!';
     STR_ANONYMOUS = 'анонимный';
     STR_CHAT_BANNED = 'Вы забанены на этом канале';
+    STR_AUTO_OPEN_RAID = 'Автоматически открывать рейды';
+    STR_AUTO_OPEN_RAID_SUMMARY = 'Требуется вход в аккаунт.';
+    STR_RAID_OPENING = '%from отправил рейд на %to. Открываем рейд...';
+    STR_RAID_OPEN_FAILED = '%to не в эфире или не удалось открыть.';
     STR_CHAT_WRITE = 'Написать в чат';
     STR_CHAT_EXTRA = 'Доп. настройки чата';
     STR_PLACEHOLDER_CHAT =

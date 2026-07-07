@@ -451,6 +451,10 @@ function es_ESLang() {
     STR_SOURCE_CHECK = 'Cambiar automáticamente la calidad del reproductor de Fuente a Auto cuando el reproductor se retrasa';
     STR_SOURCE_CHECK_SUMMARY =
         'Cuando esta opción está activada y no se utiliza la calidad automática, si el reproductor se retrasa cambiará a la calidad automática y advertirá de ello, un retraso en el reproductor es, por ejemplo, cuando el reproductor es incapaz de jugar durante más de 15 segundos (el algoritmo es más complejo que el tiempo, por supuesto), después de este cambio, el reproductor volverá automáticamente a la fuente cuando se inicie un nuevo flujo de vod.';
+    STR_AUTO_OPEN_RAID = 'Abrir raids automáticamente';
+    STR_AUTO_OPEN_RAID_SUMMARY = 'Requiere iniciar sesión.';
+    STR_RAID_OPENING = '%from hizo raid a %to. Abriendo la raid...';
+    STR_RAID_OPEN_FAILED = '%to no está en directo o no se pudo abrir.';
     STR_CHAT_WRITE = 'Escribir para chatear';
     STR_CHAT_EXTRA = 'Ajustes adicionales del chat';
     STR_CHAT_ROOMSTATE = 'Chat ROOMSTATE:';

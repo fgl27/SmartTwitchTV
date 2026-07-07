@@ -266,6 +266,7 @@ function Play_Start(offline_chat) {
     }
 
     //Play_ResetProxy();
+    PlayRaid_Start();
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -1350,6 +1351,8 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream(closePlayer) {
     //Main_Log('Play_PreshutdownStream ' + closePlayer);
+
+    if (closePlayer) PlayRaid_Stop();
 
     if (Main_IsOn_OSInterface) {
         if (closePlayer) {
