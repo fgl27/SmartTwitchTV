@@ -1688,6 +1688,7 @@ function Main_openStream() {
 }
 
 function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
+    PlayClip_DeeplinkStandalone = false;
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
 
     Main_clearAllPlayerEvents();
@@ -3270,13 +3271,235 @@ function Main_onNewIntentClearPlay() {
 function Main_HandleDeeplinkIntent(obj) {
     console.log('Main_HandleDeeplinkIntent', obj);
 
-    var objContent = Main_GetDeeplinkObj(obj);
+    var objContent = Main_GetDeeplinkObj(obj),
+        type = objContent.type ? objContent.type.toLowerCase() : '',
+        content = objContent.content ? objContent.content : '';
+
+    try {
+        content = decodeURIComponent(content);
+    } catch (e) {}
 
     console.log('objContent', objContent);
 
-    //TODO make the handle for the objContent
+    if (type === 'live' && content) {
+        Main_DeeplinkOpenLive(content);
+    } else if (type === 'video' && content) {
+        Main_DeeplinkOpenVod(content);
+    } else if (type === 'clip' && content) {
+        Main_DeeplinkOpenClip(content);
+    }
 
-    Main_EventDEEPLINK(obj);
+    Main_EventDEEPLINK(type, content);
+}
+
+var Main_DeeplinkVodOffset = 1;
+
+function Main_DeeplinkOpenVod(content) {
+    var vod = Main_DeeplinkParseVod(content),
+        theUrl;
+
+    if (!vod.id) {
+        Main_DeeplinkOpenVodError();
+        return;
+    }
+
+    Main_DeeplinkVodOffset = vod.offset;
+    theUrl = Main_helix_api + 'videos?id=' + encodeURIComponent(vod.id);
+
+    BaseXmlHttpGet(theUrl, Main_DeeplinkOpenVodSuccess, Main_DeeplinkOpenVodError, null, null, true);
+}
+
+function Main_DeeplinkParseVod(content) {
+    var parts = content.split('?'),
+        id = parts[0],
+        offset = 1,
+        query,
+        params,
+        i,
+        pair;
+
+    if (parts.length > 1) {
+        query = parts.slice(1).join('?');
+        params = query.split('&');
+
+        for (i = 0; i < params.length; i++) {
+            pair = params[i].split('=');
+
+            if (pair[0].toLowerCase() === 't' && pair.length > 1) {
+                offset = Main_DeeplinkParseVodTime(decodeURIComponent(pair.slice(1).join('=')));
+                break;
+            }
+        }
+    }
+
+    return {
+        id: id,
+        offset: offset
+    };
+}
+
+function Main_DeeplinkParseVodTime(value) {
+    var hours = 0,
+        minutes = 0,
+        seconds = 0,
+        match;
+
+    if (/^\d+$/.test(value)) {
+        seconds = parseInt(value, 10);
+        return seconds > 0 ? seconds : 1;
+    }
+
+    match = value.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i);
+
+    if (!match) return 1;
+
+    hours = parseInt(match[1] || 0, 10);
+    minutes = parseInt(match[2] || 0, 10);
+    seconds = parseInt(match[3] || 0, 10);
+
+    seconds += minutes * 60 + hours * 3600;
+
+    return seconds > 0 ? seconds : 1;
+}
+
+function Main_DeeplinkOpenVodSuccess(response) {
+    response = JSON.parse(response);
+
+    if (!response.data || !response.data.length) {
+        Main_DeeplinkOpenVodError();
+        return;
+    }
+
+    var data = ScreensObj_VodCellArray(response.data[0], false, null, null);
+
+    Main_clearAllPlayerEvents();
+
+    Play_data = JSON.parse(JSON.stringify(Play_data_base));
+    Main_values_Play_data = data;
+
+    Main_values.Main_selectedChannelDisplayname = data[1];
+    ChannelVod_createdAt = data[2];
+
+    Play_data.data[3] = data[3] ? data[3] : '';
+    ChannelVod_game = Play_data.data[3] ? STR_STARTED + STR_PLAYING + Play_data.data[3] : '';
+    ChannelVod_views = data[4];
+
+    if (data[16]) {
+        Play_data.data[18] = data[16];
+    }
+
+    Main_values.Main_selectedChannel = data[6];
+    Main_values.ChannelVod_vodId = data[7];
+    Main_vodOffset = Main_DeeplinkVodOffset;
+
+    ChannelVod_language = data[9];
+    ChannelVod_title = data[10];
+    Play_DurationSeconds = parseInt(data[11]);
+
+    Main_values.Main_selectedChannel_id = data[14];
+    Main_values.Main_selectedChannelLogo = data[15];
+
+    Main_openVod();
+
+    Main_EventPlay('vod', data[6], data[3], data[9], 'deeplink');
+}
+
+function Main_DeeplinkOpenVodError() {
+    console.log('Unable to open VOD deeplink');
+}
+
+function Main_DeeplinkOpenClip(id) {
+    var clipId = id.split('?')[0],
+        theUrl;
+
+    if (!clipId) {
+        Main_DeeplinkOpenClipError();
+        return;
+    }
+
+    theUrl = Main_helix_api + 'clips?id=' + encodeURIComponent(clipId);
+
+    BaseXmlHttpGet(theUrl, Main_DeeplinkOpenClipSuccess, Main_DeeplinkOpenClipError, null, null, true);
+}
+
+function Main_DeeplinkOpenClipSuccess(response) {
+    response = JSON.parse(response);
+
+    if (!response.data || !response.data.length) {
+        Main_DeeplinkOpenClipError();
+        return;
+    }
+
+    var data = ScreensObj_ClipCellArray(response.data[0], false, null);
+
+    Main_clearAllPlayerEvents();
+
+    Play_data = JSON.parse(JSON.stringify(Play_data_base));
+    Main_values_Play_data = data;
+
+    ChannelClip_playUrl = data[0];
+    Play_DurationSeconds = parseInt(data[1]);
+    Main_values.Main_selectedChannel_id = data[2];
+
+    Play_data.data[3] = data[3] ? data[3] : '';
+    ChannelClip_game = Play_data.data[3] ? STR_PLAYING + Play_data.data[3] : '';
+    ChannelClip_game_Id = data[18];
+
+    if (ChannelClip_game_Id) {
+        Play_data.data[18] = ChannelClip_game_Id;
+    }
+
+    Main_values.Main_selectedChannelDisplayname = data[4];
+    Main_values.Main_selectedChannelLogo = data[5];
+    ChannelClip_Id = data[7];
+    Main_values.Main_selectedChannel = data[6];
+    Main_values.ChannelVod_vodId = data[8];
+    ChannelVod_vodOffset = parseInt(data[9]);
+
+    ChannelClip_title = data[10];
+    ChannelClip_language = data[11];
+    ChannelClip_createdAt = STR_CREATED_AT + data[16];
+    ChannelClip_views = data[14] + STR_VIEWS;
+
+    Main_hideScene1DocAndCallBack(function () {
+        Main_showScene2Doc();
+        Main_PlayClipHandleKeyDown();
+        PlayClip_DeeplinkStandalone = true;
+        PlayClip_Start();
+
+        Main_EventPlay('clip', data[6], data[3], data[17], 'deeplink');
+    });
+}
+
+function Main_DeeplinkOpenClipError() {
+    console.log('Unable to open clip deeplink');
+}
+
+function Main_DeeplinkOpenLive(login) {
+    var theUrl = Main_helix_api + 'streams?user_login=' + encodeURIComponent(login.toLowerCase());
+
+    BaseXmlHttpGet(theUrl, Main_DeeplinkOpenLiveSuccess, Main_DeeplinkOpenLiveError, null, null, true);
+}
+
+function Main_DeeplinkOpenLiveSuccess(response) {
+    response = JSON.parse(response);
+
+    if (response.data && response.data.length) {
+        Main_onNewIntent(
+            JSON.stringify({
+                obj: response.data[0],
+                type: 'LIVE',
+                screen: 2
+            })
+        );
+        return;
+    }
+
+    Main_DeeplinkOpenLiveError();
+}
+
+function Main_DeeplinkOpenLiveError() {
+    console.log('Unable to open live deeplink');
 }
 
 function Main_GetDeeplinkObj(obj) {
@@ -3313,7 +3536,8 @@ function Main_onNewIntent(mobj) {
         } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+        Main_values_Play_data = ScreensObj_LiveCellArray(obj.obj);
+        Play_data.data = Main_values_Play_data;
 
         Main_openStream();
 

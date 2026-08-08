@@ -160,11 +160,14 @@ function Screens_first_init() {
         live_channel_call,
         game_channel_call,
         screen_channel_call,
+        deeplink_channel_call,
         tempGame;
 
     //
     if (Last_obj) {
         obj = JSON.parse(Last_obj);
+
+        deeplink_channel_call = Main_A_equals_B(obj.type, 'DEEPLINK');
 
         live_channel_call = Main_A_equals_B(obj.type, 'LIVE');
 
@@ -184,7 +187,11 @@ function Screens_first_init() {
     var StartUser = Settings_value.start_user_screen.defaultValue;
     var restore_playback = Settings_value.restor_playback.defaultValue;
 
-    if (live_channel_call) {
+    if (deeplink_channel_call) {
+        Main_values.Play_WasPlaying = 0;
+        StartUser = false;
+        restore_playback = false;
+    } else if (live_channel_call) {
         Main_values.Play_WasPlaying = 1;
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -275,6 +282,10 @@ function Screens_first_init() {
         if (Main_values.IsUpDating) {
             Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
         }
+    }
+
+    if (deeplink_channel_call) {
+        Main_HandleDeeplinkIntent(obj);
     }
 
     Main_ShowElement('topbar');

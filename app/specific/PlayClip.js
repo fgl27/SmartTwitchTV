@@ -26,6 +26,10 @@ var PlayClip_qualityIndex = 0;
 var PlayClip_qualities = [];
 var PlayClip_playingUrl = '';
 var PlayClip_replayOrNext = false;
+
+// A clip opened directly through a deep link has no clip-list navigation
+// context, so it is treated as standalone playback.
+var PlayClip_DeeplinkStandalone = false;
 var PlayClip_replay = false;
 var PlayClip_HasVOD = false;
 
@@ -100,8 +104,14 @@ function PlayClip_Start() {
     Main_ShowElementWithEle(Play_Controls_Holder);
 
     UserLiveFeed_PreventHide = false;
-    PlayClip_UpdateNext();
-
+    if (PlayClip_DeeplinkStandalone) {
+        PlayClip_HasNext = false;
+        PlayClip_HasBack = false;
+        PlayClip_HideShowNext(0, 0);
+        PlayClip_HideShowNext(1, 0);
+    } else {
+        PlayClip_UpdateNext();
+    }
     Play_SetAudioIcon();
 
     Play_EndSet(3);
@@ -556,6 +566,7 @@ function PlayClip_Enter() {
 }
 
 function PlayClip_PlayNext() {
+    if (PlayClip_DeeplinkStandalone) return;
     PlayClip_PreshutdownStream(false);
 
     Screens_KeyLeftRight(1, 0, Main_values.Main_Go);
@@ -563,6 +574,7 @@ function PlayClip_PlayNext() {
 }
 
 function PlayClip_PlayPreviously() {
+    if (PlayClip_DeeplinkStandalone) return;
     PlayClip_PreshutdownStream(false);
 
     Screens_KeyLeftRight(-1, ScreenObj[Main_values.Main_Go].ColumnsCount - 1, Main_values.Main_Go);
