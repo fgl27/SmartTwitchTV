@@ -7906,6 +7906,84 @@
      *
      */
 
+    //https://developer.android.com/reference/android/view/KeyEvent
+    //overwrite from java dispatchKeyEvent()
+    var KEY_PAUSE = 83; //overwrite key S = stop because p = play
+    var KEY_PLAY = 80; //overwrite key P = play
+
+    var KEY_STOP = 178;
+    var KEY_PLAYPAUSE = 179;
+
+    var KEY_LEFT = 37;
+    var KEY_UP = 38;
+    var KEY_RIGHT = 39;
+    var KEY_DOWN = 40;
+    var KEY_ENTER = 13;
+
+    var KEY_PG_DOWN = 34;
+    var KEY_PG_UP = 33;
+
+    var KEY_RETURN = 113; //key #F2
+
+    var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
+    var KEY_KEYBOARD_DONE = 13;
+    var KEY_KEYBOARD_SPACE = 32;
+
+    var KEY_MEDIA_NEXT = 176;
+    var KEY_MEDIA_PREVIOUS = 177;
+
+    var KEY_MEDIA_FAST_FORWARD = 228;
+    var KEY_MEDIA_REWIND = 227;
+
+    var KEY_0 = 48;
+    var KEY_1 = 49;
+    var KEY_2 = 50;
+    var KEY_3 = 51;
+    var KEY_4 = 52;
+    var KEY_5 = 53;
+    var KEY_6 = 54;
+    var KEY_7 = 55;
+    var KEY_8 = 56;
+    var KEY_9 = 57;
+
+    var KEY_NUMPAD_0 = 96;
+    var KEY_NUMPAD_1 = 97;
+    var KEY_NUMPAD_2 = 98;
+    var KEY_NUMPAD_3 = 99;
+    var KEY_NUMPAD_4 = 100;
+    var KEY_NUMPAD_5 = 101;
+    var KEY_NUMPAD_6 = 102;
+    var KEY_NUMPAD_7 = 103;
+    var KEY_NUMPAD_8 = 104;
+    var KEY_NUMPAD_9 = 105;
+
+    var KEY_A = 65;
+    var KEY_C = 67;
+    var KEY_E = 69;
+    var KEY_J = 74;
+    var KEY_K = 75;
+    var KEY_T = 84;
+    var KEY_U = 85;
+    /*
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
     //https://emojipedia.org/
@@ -8067,84 +8145,6 @@
     function calculateFontSizeTizen() {
         if (!Main_IsOn_OSInterface) calculateFontSize();
     }
-    /*
-     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
-     *
-     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
-     *
-     * SmartTwitchTV is free software: you can redistribute it and/or modify
-     * it under the terms of the GNU General Public License as published by
-     * the Free Software Foundation, either version 3 of the License, or
-     * (at your option) any later version.
-     *
-     * SmartTwitchTV is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     * GNU General Public License for more details.
-     *
-     * You should have received a copy of the GNU General Public License
-     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
-     *
-     */
-
-    //https://developer.android.com/reference/android/view/KeyEvent
-    //overwrite from java dispatchKeyEvent()
-    var KEY_PAUSE = 83; //overwrite key S = stop because p = play
-    var KEY_PLAY = 80; //overwrite key P = play
-
-    var KEY_STOP = 178;
-    var KEY_PLAYPAUSE = 179;
-
-    var KEY_LEFT = 37;
-    var KEY_UP = 38;
-    var KEY_RIGHT = 39;
-    var KEY_DOWN = 40;
-    var KEY_ENTER = 13;
-
-    var KEY_PG_DOWN = 34;
-    var KEY_PG_UP = 33;
-
-    var KEY_RETURN = 113; //key #F2
-
-    var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
-    var KEY_KEYBOARD_DONE = 13;
-    var KEY_KEYBOARD_SPACE = 32;
-
-    var KEY_MEDIA_NEXT = 176;
-    var KEY_MEDIA_PREVIOUS = 177;
-
-    var KEY_MEDIA_FAST_FORWARD = 228;
-    var KEY_MEDIA_REWIND = 227;
-
-    var KEY_0 = 48;
-    var KEY_1 = 49;
-    var KEY_2 = 50;
-    var KEY_3 = 51;
-    var KEY_4 = 52;
-    var KEY_5 = 53;
-    var KEY_6 = 54;
-    var KEY_7 = 55;
-    var KEY_8 = 56;
-    var KEY_9 = 57;
-
-    var KEY_NUMPAD_0 = 96;
-    var KEY_NUMPAD_1 = 97;
-    var KEY_NUMPAD_2 = 98;
-    var KEY_NUMPAD_3 = 99;
-    var KEY_NUMPAD_4 = 100;
-    var KEY_NUMPAD_5 = 101;
-    var KEY_NUMPAD_6 = 102;
-    var KEY_NUMPAD_7 = 103;
-    var KEY_NUMPAD_8 = 104;
-    var KEY_NUMPAD_9 = 105;
-
-    var KEY_A = 65;
-    var KEY_C = 67;
-    var KEY_E = 69;
-    var KEY_J = 74;
-    var KEY_K = 75;
-    var KEY_T = 84;
-    var KEY_U = 85;
     /*
      * Copyright (c) 2017-∞ Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -31685,6 +31685,178 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
      *
      */
 
+    var PlayTwitchSync_BaseUrl = 'https://gql.twitch.tv/gql';
+    var PlayTwitchSync_fetchQuery = '{"query":"{video(id:\\"%x\\"){self{viewingHistory{position updatedAt}}}}"}';
+    var PlayTwitchSync_updateMutation =
+        '{"query":"mutation UpdateUserViewedVideo($input: UpdateUserViewedVideoInput!){updateUserViewedVideo(input:$input){video{id}}}","variables":{"input":{"userID":"%u","videoID":"%v","videoType":"VOD","position":%p}}}';
+
+    var PlayTwitchSync_fetchId = 0;
+    var PlayTwitchSync_pushId = 0;
+    var PlayTwitchSync_resolveTimeoutMs = 2500;
+    var PlayTwitchSync_minPushIntervalMs = 30000;
+    var PlayTwitchSync_lastPushTime = 0;
+    var PlayTwitchSync_lastPushed = {};
+    var PlayTwitchSync_pendingResolve = {};
+
+    function PlayTwitchSync_IsEnabled() {
+        return AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
+    }
+
+    function PlayTwitchSync_ParseUpdatedAt(updatedAt) {
+        if (!updatedAt) return 0;
+
+        var time = new Date(updatedAt).getTime();
+
+        return isNaN(time) ? 0 : time;
+    }
+
+    function PlayTwitchSync_PickOffset(localOffset, localUpdatedAt, remoteOffset, remoteUpdatedAt) {
+        localOffset = parseFloat(localOffset) || 0;
+        remoteOffset = parseFloat(remoteOffset) || 0;
+        localUpdatedAt = localUpdatedAt || 0;
+        remoteUpdatedAt = remoteUpdatedAt || 0;
+
+        if (!remoteOffset) return localOffset;
+        if (!localOffset) return remoteOffset;
+
+        if (remoteUpdatedAt > localUpdatedAt) return remoteOffset;
+        if (localUpdatedAt > remoteUpdatedAt) return localOffset;
+
+        return Math.max(localOffset, remoteOffset);
+    }
+
+    function PlayTwitchSync_GetLocalVodProgress(vodId) {
+        var offset = 0,
+            updatedAt = 0,
+            index;
+
+        if (!AddUser_UserIsSet()) return {offset: offset, updatedAt: updatedAt};
+
+        index = Main_history_Exist('vod', vodId);
+
+        if (index > -1) {
+            offset = Main_values_History_data[AddUser_UsernameArray[0].id].vod[index].watched || 0;
+            updatedAt = Main_values_History_data[AddUser_UsernameArray[0].id].vod[index].date || 0;
+        }
+
+        return {offset: offset, updatedAt: updatedAt};
+    }
+
+    function PlayTwitchSync_ResolveTimeout(requestId) {
+        var pending = PlayTwitchSync_pendingResolve[requestId];
+
+        if (!pending || pending.resolved) return;
+
+        pending.resolved = true;
+        delete PlayTwitchSync_pendingResolve[requestId];
+        pending.callback(pending.localOffset);
+    }
+
+    function PlayTwitchSync_FetchResult(responseObj, key, requestId) {
+        var pending = PlayTwitchSync_pendingResolve[requestId],
+            remoteOffset = 0,
+            remoteUpdatedAt = 0,
+            history,
+            obj;
+
+        if (!pending || pending.resolved) return;
+
+        pending.resolved = true;
+        delete PlayTwitchSync_pendingResolve[requestId];
+
+        if (responseObj.status === 200) {
+            try {
+                obj = JSON.parse(responseObj.responseText);
+                history = obj.data && obj.data.video && obj.data.video.self && obj.data.video.self.viewingHistory;
+
+                if (history && history.position) {
+                    remoteOffset = history.position;
+                    remoteUpdatedAt = PlayTwitchSync_ParseUpdatedAt(history.updatedAt);
+                }
+            } catch (ignore) {
+                remoteOffset = 0;
+            }
+        }
+
+        pending.callback(PlayTwitchSync_PickOffset(pending.localOffset, pending.localUpdatedAt, remoteOffset, remoteUpdatedAt));
+    }
+
+    function PlayTwitchSync_ResolveOffset(vodId, callback) {
+        var local = PlayTwitchSync_GetLocalVodProgress(vodId),
+            requestId;
+
+        if (!PlayTwitchSync_IsEnabled()) {
+            callback(local.offset);
+            return;
+        }
+
+        requestId = ++PlayTwitchSync_fetchId;
+
+        PlayTwitchSync_pendingResolve[requestId] = {
+            callback: callback,
+            localOffset: local.offset,
+            localUpdatedAt: local.updatedAt,
+            resolved: false
+        };
+
+        Main_setTimeout(PlayTwitchSync_ResolveTimeout, PlayTwitchSync_resolveTimeoutMs, requestId);
+
+        FullxmlHttpGet(
+            PlayTwitchSync_BaseUrl,
+            Main_OAuth_User_Headers,
+            PlayTwitchSync_FetchResult,
+            noop_fun,
+            0,
+            requestId,
+            'POST',
+            PlayTwitchSync_fetchQuery.replace('%x', vodId)
+        );
+    }
+
+    function PlayTwitchSync_PushResult() {}
+
+    function PlayTwitchSync_Push(vodId, position) {
+        var now, body, pushId;
+
+        if (!PlayTwitchSync_IsEnabled() || !vodId) return;
+
+        position = parseInt(position);
+
+        if (position <= 0) return;
+
+        now = new Date().getTime();
+
+        if (PlayTwitchSync_lastPushed[vodId] === position && now - PlayTwitchSync_lastPushTime < PlayTwitchSync_minPushIntervalMs) return;
+
+        PlayTwitchSync_lastPushed[vodId] = position;
+        PlayTwitchSync_lastPushTime = now;
+
+        body = PlayTwitchSync_updateMutation.replace('%u', AddUser_UsernameArray[0].id).replace('%v', vodId).replace('%p', position);
+
+        pushId = ++PlayTwitchSync_pushId;
+
+        FullxmlHttpGet(PlayTwitchSync_BaseUrl, Main_OAuth_User_Headers, PlayTwitchSync_PushResult, noop_fun, 0, pushId, 'POST', body);
+    }
+    /*
+     * Copyright (c) 2017–present Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
     //Variable initialization
     var PlayVod_quality = 'Auto';
     var PlayVod_qualityPlaying = PlayVod_quality;
@@ -31714,6 +31886,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     var PlayVod_RefreshProgressBarrID;
     var PlayVod_SaveOffsetId;
     var PlayVod_VodOffset;
+    var PlayVod_offsetResolveVodId;
     var PlayVod_VodGameID;
     var PlayVod_ChaptersArray = [];
     //Variable initialization end
@@ -31801,52 +31974,61 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
 
         if (!Play_PreviewId && !Play_OpenRewind) {
             Play_showBufferDialog();
-            var isFromVod = true;
             var ShowDialog = Settings_Obj_default('vod_dialog');
             PlayVod_VodOffset = 0;
 
             if (!PlayVod_replay && !Main_vodOffset && ShowDialog < 2) {
-                var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
-
-                //Check if the vod exist in the history
-                if (VodIdex > -1) {
-                    PlayVod_VodOffset = Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched;
-                }
-
-                //Check if the vod saved position is bigger then 0 means thisvod was already watched
-                if (!PlayVod_VodOffset) {
-                    VodIdex = AddUser_UserIsSet() ? Main_history_Find_Vod_In_Live(Main_values.ChannelVod_vodId) : -1;
-
-                    if (VodIdex > -1) {
-                        isFromVod = false;
-
-                        PlayVod_VodOffset =
-                            (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date -
-                                new Date(Main_values_Play_data[12]).getTime()) /
-                            1000;
-                    }
-                }
-
-                if (!ShowDialog && PlayVod_VodOffset) {
-                    Main_vodOffset = PlayVod_VodOffset;
-                    PlayClip_OpenAVodOffset = Main_vodOffset;
-                    Play_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000), 2000);
-                }
-            }
-
-            //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
-            if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
-                Play_HideBufferDialog();
-                Play_showVodDialog(isFromVod);
-            } else {
-                if (!Main_vodOffset) {
-                    Chat_offset = 0;
-                    Chat_Init();
-                }
-
-                PlayVod_PosStart();
-            }
+                PlayVod_offsetResolveVodId = Main_values.ChannelVod_vodId;
+                PlayTwitchSync_ResolveOffset(Main_values.ChannelVod_vodId, PlayVod_ApplySavedOffset);
+            } else PlayVod_ApplySavedOffset(0);
         } else {
+            PlayVod_PosStart();
+        }
+    }
+
+    function PlayVod_ApplySavedOffset(mergedOffset) {
+        var isFromVod = true,
+            ShowDialog = Settings_Obj_default('vod_dialog'),
+            VodIdex,
+            localProgress;
+
+        if (PlayVod_offsetResolveVodId && Main_values.ChannelVod_vodId !== PlayVod_offsetResolveVodId) return;
+
+        PlayVod_VodOffset = mergedOffset || 0;
+
+        if (!PlayVod_VodOffset) {
+            VodIdex = AddUser_UserIsSet() ? Main_history_Find_Vod_In_Live(Main_values.ChannelVod_vodId) : -1;
+
+            if (VodIdex > -1) {
+                isFromVod = false;
+
+                PlayVod_VodOffset =
+                    (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(Main_values_Play_data[12]).getTime()) / 1000;
+            }
+        } else if (PlayTwitchSync_IsEnabled()) {
+            localProgress = PlayTwitchSync_GetLocalVodProgress(Main_values.ChannelVod_vodId);
+
+            if (PlayVod_VodOffset > localProgress.offset) {
+                Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, PlayVod_VodOffset, 'vod');
+            }
+        }
+
+        if (!ShowDialog && PlayVod_VodOffset) {
+            Main_vodOffset = PlayVod_VodOffset;
+            PlayClip_OpenAVodOffset = Main_vodOffset;
+            Play_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000), 2000);
+        }
+
+        //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
+        if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
+            Play_HideBufferDialog();
+            Play_showVodDialog(isFromVod);
+        } else {
+            if (!Main_vodOffset) {
+                Chat_offset = 0;
+                Chat_Init();
+            }
+
             PlayVod_PosStart();
         }
     }
@@ -32615,7 +32797,10 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
     }
 
     function PlayVod_SaveVodIds(time) {
-        if (time > 0) Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, time, 'vod');
+        if (time > 0) {
+            Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, time, 'vod');
+            PlayTwitchSync_Push(Main_values.ChannelVod_vodId, time);
+        }
     }
 
     var Play_HideVodDialogId;
@@ -34165,7 +34350,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             var response_rows = Math.ceil(response_items / ScreenObj[key].ColumnsCount),
                 max_row = ScreenObj[key].row_id + response_rows;
 
-            for (ScreenObj[key].row_id; ScreenObj[key].row_id < max_row; ) {
+            for (ScreenObj[key].row_id; ScreenObj[key].row_id < max_row;) {
                 if (ScreenObj[key].column_id === ScreenObj[key].ColumnsCount) {
                     ScreenObj[key].column_id = 0;
                 }
@@ -51804,7 +51989,7 @@ https://video-weaver.sao03.hls.ttvnw.net/v1/playlist/C.m3u8 09:36:20.90
             // Main decoding loop: start just after the last delimiter if any basic code
             // points were copied; start at the beginning otherwise.
 
-            for (index = basic > 0 ? basic + 1 : 0; index < inputLength /* no final expression */; ) {
+            for (index = basic > 0 ? basic + 1 : 0; index < inputLength /* no final expression */;) {
                 // `index` is the index of the next character to be consumed.
                 // Decode a generalized variable-length integer into `delta`,
                 // which gets added to `i`. The overflow checking is easier
