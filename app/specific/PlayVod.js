@@ -47,6 +47,7 @@ var PlayVod_updateChaptersId;
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_VodOffset;
+var PlayVod_offsetResolveVodId;
 var PlayVod_VodGameID;
 var PlayVod_ChaptersArray = [];
 //Variable initialization end
@@ -134,51 +135,62 @@ function PlayVod_Start() {
 
     if (!Play_PreviewId && !Play_OpenRewind) {
         Play_showBufferDialog();
-        var isFromVod = true;
         var ShowDialog = Settings_Obj_default('vod_dialog');
         PlayVod_VodOffset = 0;
 
         if (!PlayVod_replay && !Main_vodOffset && ShowDialog < 2) {
-            var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
-
-            //Check if the vod exist in the history
-            if (VodIdex > -1) {
-                PlayVod_VodOffset = Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched;
-            }
-
-            //Check if the vod saved position is bigger then 0 means thisvod was already watched
-            if (!PlayVod_VodOffset) {
-                VodIdex = AddUser_UserIsSet() ? Main_history_Find_Vod_In_Live(Main_values.ChannelVod_vodId) : -1;
-
-                if (VodIdex > -1) {
-                    isFromVod = false;
-
-                    PlayVod_VodOffset =
-                        (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(Main_values_Play_data[12]).getTime()) /
-                        1000;
-                }
-            }
-
-            if (!ShowDialog && PlayVod_VodOffset) {
-                Main_vodOffset = PlayVod_VodOffset;
-                PlayClip_OpenAVodOffset = Main_vodOffset;
-                Play_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000), 2000);
-            }
-        }
-
-        //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
-        if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
-            Play_HideBufferDialog();
-            Play_showVodDialog(isFromVod);
-        } else {
-            if (!Main_vodOffset) {
-                Chat_offset = 0;
-                Chat_Init();
-            }
-
-            PlayVod_PosStart();
-        }
+            PlayVod_offsetResolveVodId = Main_values.ChannelVod_vodId;
+            PlayTwitchSync_ResolveOffset(Main_values.ChannelVod_vodId, PlayVod_ApplySavedOffset);
+        } else PlayVod_ApplySavedOffset(0);
     } else {
+        PlayVod_PosStart();
+    }
+}
+
+function PlayVod_ApplySavedOffset(mergedOffset) {
+    var isFromVod = true,
+        ShowDialog = Settings_Obj_default('vod_dialog'),
+        VodIdex,
+        localProgress;
+
+    if (PlayVod_offsetResolveVodId && Main_values.ChannelVod_vodId !== PlayVod_offsetResolveVodId) return;
+
+    PlayVod_VodOffset = mergedOffset || 0;
+
+    if (!PlayVod_VodOffset) {
+        VodIdex = AddUser_UserIsSet() ? Main_history_Find_Vod_In_Live(Main_values.ChannelVod_vodId) : -1;
+
+        if (VodIdex > -1) {
+            isFromVod = false;
+
+            PlayVod_VodOffset =
+                (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(Main_values_Play_data[12]).getTime()) /
+                1000;
+        }
+    } else if (PlayTwitchSync_IsEnabled()) {
+        localProgress = PlayTwitchSync_GetLocalVodProgress(Main_values.ChannelVod_vodId);
+
+        if (PlayVod_VodOffset > localProgress.offset) {
+            Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, PlayVod_VodOffset, 'vod');
+        }
+    }
+
+    if (!ShowDialog && PlayVod_VodOffset) {
+        Main_vodOffset = PlayVod_VodOffset;
+        PlayClip_OpenAVodOffset = Main_vodOffset;
+        Play_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000), 2000);
+    }
+
+    //0.001 PlayVod_DialogPressed Don't start the vod at zero zero to avoid playback issue
+    if (PlayVod_VodOffset && PlayVod_VodOffset > 0.001 && !Main_vodOffset) {
+        Play_HideBufferDialog();
+        Play_showVodDialog(isFromVod);
+    } else {
+        if (!Main_vodOffset) {
+            Chat_offset = 0;
+            Chat_Init();
+        }
+
         PlayVod_PosStart();
     }
 }
@@ -933,7 +945,10 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 }
 
 function PlayVod_SaveVodIds(time) {
-    if (time > 0) Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, time, 'vod');
+    if (time > 0) {
+        Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, time, 'vod');
+        PlayTwitchSync_Push(Main_values.ChannelVod_vodId, time);
+    }
 }
 
 var Play_HideVodDialogId;
