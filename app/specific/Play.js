@@ -1196,6 +1196,7 @@ function Play_onPlayer() {
 
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
+    PlayChannelPoints_Start();
     Play_SkipStartAuto = false;
 
     Play_SetControlsVisibilityPlayer(1);
@@ -1350,6 +1351,10 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream(closePlayer) {
     //Main_Log('Play_PreshutdownStream ' + closePlayer);
+
+    if (closePlayer) {
+        PlayChannelPoints_Stop();
+    }
 
     if (Main_IsOn_OSInterface) {
         if (closePlayer) {
